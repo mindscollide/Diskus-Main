@@ -82,6 +82,7 @@ import {
   meetingParticipantAdded,
   LeaveMeetingVideo,
   meetingReminderNotifcation,
+  searchNewUserMeeting,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -344,8 +345,12 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               if (
-                Number(meetingVideoID) === Number(data.payload.meeting.pK_MDID)
+                Number(meetingVideoID) ===
+                Number(data?.payload?.meeting?.pK_MDID)
               ) {
+                let getMeetingParticipants = data.payload.meeting.meetingAttendees.filter(
+                  (attendeeData) => attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -362,7 +367,24 @@ const Dashboard = () => {
                   RoomID: currentMeetingVideoID,
                   UserGUID: userGUID,
                 };
-                dispatch(LeaveMeetingVideo(Data, navigate, t));
+                dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                if (getMeetingParticipants.length > 0) {
+                  let userID = localStorage.getItem("userID");
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent = parseInt(
+                    localStorage.getItem("MeetingPageCurrent")
+                  );
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow),
+                    PublishedMeetings: true,
+                  };
+                  dispatch(searchNewUserMeeting(navigate, searchData, t));
+                }
               }
 
               dispatch(mqttCurrentMeetingEnded(data.payload));
@@ -1098,6 +1120,7 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_COMMITTEE_CREATION".toLowerCase()
@@ -1202,10 +1225,14 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Group".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_GROUP_CREATION".toLowerCase()
         ) {
+          console.log(data.payload.message, "actionactionactionaction");
+          console.log(data.viewable, "actionactionactionaction");
+          console.log(data.payload, "actionactionactionaction");
           if (data.viewable) {
             setNotification({
               notificationShow: true,

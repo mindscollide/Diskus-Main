@@ -152,42 +152,8 @@ const Notes = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center justify-content-between"
-                      >
-                        <span className="d-flex gap-2">
-                          {data.isStarred ? (
-                            <Tooltip
-                              placement="bottomLeft"
-                              title={t("Starred")}
-                            >
-                              <img
-                                src={hollowstar}
-                                width="17.26px"
-                                height="16.62px"
-                                alt=""
-                                draggable="false"
-                                className={
-                                  styles["starIcon-In-Collapse-material"]
-                                }
-                              />
-                            </Tooltip>
-                          ) : (
-                            <Tooltip
-                              placement="bottomLeft"
-                              title={t("Unstarred")}
-                            >
-                              <img
-                                src={StarIcon}
-                                width="17.34px"
-                                height="16.62px"
-                                alt=""
-                                draggable="false"
-                                className={
-                                  styles["starIcon-In-Collapse-material"]
-                                }
-                              />
-                            </Tooltip>
-                          )}
+                        className='d-flex gap-2 align-items-center justify-content-between'>
+                        <span >
                           {data.isAttachment && (
                             <span>
                               <img

@@ -12,7 +12,12 @@ import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_
 
 const ViewPoll = () => {
   const dispatch = useDispatch();
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerviewPollModal = useSelector(
+    (state) => state.PollsReducer.viewPollModal
+  );
 
   const [viewpollMembers, setViewPollmembers] = useState([]);
 
@@ -25,18 +30,18 @@ const ViewPoll = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 0) {
-        setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions);
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      if (Object.keys(PollsReducerAllpolls.poll.pollOptions).length > 0) {
+        setPollAnswersDetailsView(PollsReducerAllpolls.poll.pollOptions);
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
       let users = [];
-      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
-        PollsReducer.Allpolls.poll.pollParticipants.forEach((data) => {
+      if (Object.keys(PollsReducerAllpolls.poll.pollParticipants).length > 0) {
+        PollsReducerAllpolls.poll.pollParticipants.forEach((data) => {
           users.push({
             emailAddress: data.emailAddress,
             userName: data.userName,
@@ -46,19 +51,19 @@ const ViewPoll = () => {
       }
       setViewPollsDetails({
         ...viewPollsDetails,
-        date: PollsReducer.Allpolls.poll.pollDetails.dueDate,
-        Title: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
+        date: PollsReducerAllpolls.poll.pollDetails.dueDate,
+        Title: PollsReducerAllpolls.poll.pollDetails.pollTitle,
         allowmultipleanswers:
-          PollsReducer.Allpolls.poll.pollDetails.allowMultipleAnswers,
+          PollsReducerAllpolls.poll.pollDetails.allowMultipleAnswers,
       });
       setViewPollmembers(users);
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   return (
     <Container>
       <Modal
-        show={PollsReducer.viewPollModal}
+        show={PollsReducerviewPollModal}
         setShow={dispatch(setviewpollModal)}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}

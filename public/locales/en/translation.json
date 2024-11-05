@@ -2215,5 +2215,8 @@
   "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
   "Successfully-updated-participants-list": "Successfully updated participants list",
   "Upcoming-tasks": "Upcoming Tasks",
-  "Upcoming-meetings": "Upcoming Meetings"
+  "Upcoming-meetings": "Upcoming Meetings",
+  "GROUP_STATUS_EDITED_ACTIVE": "Group [Group Title] in which you are a member has been set as Active",
+  "View-your-vote": "View your vote",
+  "At-least-one-organizer-is-must" : "At least one organizer is must"
 }

@@ -5,7 +5,7 @@ import {
   ChevronDown,
   Plus,
 } from "react-bootstrap-icons";
-import { Select } from "antd";
+import { Checkbox, Dropdown, Menu, Select } from "antd";
 import {
   Button,
   TableToDo,
@@ -55,6 +55,7 @@ const TodoList = () => {
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
+  const [duplicateData, setDuplicateData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
@@ -79,6 +80,7 @@ const TodoList = () => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   console.log(rowsToDo, "rowsToDorowsToDo");
+
   // GET TODOS STATUS
   useEffect(() => {
     try {
@@ -108,7 +110,7 @@ const TodoList = () => {
       console.log(error, "error");
     }
   }, []);
-
+  const [originalData, setOriginalData] = useState([]);
   //get todolist reducer
   useEffect(() => {
     try {
@@ -128,6 +130,7 @@ const TodoList = () => {
           });
 
           setRowToDo(sortedTasks);
+          setOriginalData(sortedTasks);
         } else {
           setRowToDo([]);
         }
@@ -200,29 +203,33 @@ const TodoList = () => {
     } catch {}
   }, [toDoListReducer.socketTodoStatusData]);
 
-  // SET STATUS VALUES
   useEffect(() => {
     try {
       let optionsArr = [];
       let newOptionsFilter = [];
       let newArrStatus = [""];
+
       if (
         todoStatus.Response !== null &&
         todoStatus.Response !== "" &&
         todoStatus.Response.length > 0
       ) {
-        todoStatus.Response.forEach((data, index) => {
-          optionsArr.push({
-            id: data.pK_TSID,
-            status: data.status,
-          });
-          newArrStatus.push(data.status);
-          newOptionsFilter.push({
-            key: data.pK_TSID,
-            label: data.status,
-          });
+        todoStatus.Response.forEach((data) => {
+          // Check if pK_TSID is not 1 and not 6
+          if (data.pK_TSID !== 1 && data.pK_TSID !== 6) {
+            optionsArr.push({
+              id: data.pK_TSID,
+              status: data.status,
+            });
+            newArrStatus.push(data.status);
+            newOptionsFilter.push({
+              key: data.pK_TSID,
+              label: data.status,
+            });
+          }
         });
       }
+
       setStatusValues(newArrStatus);
       setStatusOptions(optionsArr);
     } catch (error) {
@@ -258,6 +265,98 @@ const TodoList = () => {
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
   };
+
+  //Filter table work
+
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ]);
+
+  const filters = [
+    {
+      value: "1",
+      text: "In Progress",
+    },
+    {
+      value: "2",
+      text: "Pending",
+    },
+    {
+      value: "3",
+      text: "Upcoming",
+    },
+    {
+      value: "4",
+      text: "Cancelled",
+    },
+    {
+      value: "5",
+      text: "Completed",
+    },
+    {
+      value: "6",
+      text: "Deleted",
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.pK_TSID.toString())
+    );
+    setRowToDo(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["1", "2", "3", "4", "5", "6"]); // Reset to initial filter values
+    setRowToDo(originalData); // Reset to unfiltered data
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  console.log(selectedValues, "selectedValuesselectedValuesselectedValues");
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center">
+        <Button
+          text={"Apply"}
+          disableBtn={selectedValues.length === 0}
+          className="ApplyBtn"
+          onClick={handleApplyFilter}
+        />
+        <Button text={"Reset"} className="ClearBtn" onClick={resetFilter} />
+      </div>
+    </Menu>
+  );
 
   const columnsToDo = [
     {
@@ -375,44 +474,23 @@ const TodoList = () => {
       key: "status",
       align: "center",
       width: "220px",
-      filters: [
-        {
-          text: t("In-progress"),
-          value: "In Progress",
-        },
-        {
-          text: t("Pending"),
-          value: "Pending",
-        },
-        {
-          text: t("Upcoming"),
-          value: "Upcoming",
-        },
-        {
-          text: t("Cancelled"),
-          value: "Cancelled",
-        },
-        {
-          text: t("Completed"),
-          value: "Completed",
-        },
-      ],
-      defaultFilteredValue: [
-        "In Progress",
-        "Pending",
-        "Upcoming",
-        "Cancelled",
-        "Completed",
-      ],
+
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) => {
-        return record?.status?.status
-          ?.toLowerCase()
-          .includes(value.toLowerCase());
-      },
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (

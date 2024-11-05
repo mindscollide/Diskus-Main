@@ -445,7 +445,7 @@ const ViewMeeting = (
               await dispatch(
                 ViewMeetingSuccess(response.data.responseResult, "")
               );
-              if (no === 1) {
+              if (Number(no) === 1) {
                 setViewFlag(true);
                 dispatch(scheduleMeetingPageFlag(false));
               } else if (no === 2) {

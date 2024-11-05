@@ -31,7 +31,7 @@ const NotificationBar = ({
       description: (
         <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
       ),
-      classname: "custom-notification-antdesign",
+      className: "MQTT_Notification",
       placement: "bottomLeft",
       duration: 4,
       icon: iconName,

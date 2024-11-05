@@ -21,7 +21,12 @@ import { showMessage } from "../../../components/elements/snack_bar/utill";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerisVotePollModal = useSelector(
+    (state) => state.PollsReducer.isVotePollModal
+  );
   let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
@@ -39,8 +44,8 @@ const Votepoll = () => {
   });
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll;
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      let pollData = PollsReducerAllpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollOptions = pollData.pollOptions;
 
@@ -58,7 +63,7 @@ const Votepoll = () => {
         });
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
@@ -120,7 +125,7 @@ const Votepoll = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.isVotePollModal}
+          show={PollsReducerisVotePollModal}
           setShow={dispatch(setVotePollModal)}
           onHide={() => {
             dispatch(setVotePollModal(false));

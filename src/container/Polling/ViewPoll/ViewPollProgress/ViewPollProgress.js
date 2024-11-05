@@ -23,7 +23,12 @@ const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerviewPollProgress = useSelector(
+    (state) => state.PollsReducer.viewPollProgress
+  );
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -35,8 +40,8 @@ const ViewPollProgress = () => {
   const [pollsOption, setPollsOption] = useState([]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll;
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      let pollData = PollsReducerAllpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollParticipants = pollData.pollParticipants;
       let pollOptions = pollData.pollOptions;
@@ -99,7 +104,7 @@ const ViewPollProgress = () => {
         PollID: pollDetails.pollID,
       });
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const changeDateStartHandler2 = (date) => {
     console.log(date, "viewProgressPollsDetails");
@@ -118,7 +123,7 @@ const ViewPollProgress = () => {
   return (
     <Container>
       <Modal
-        show={PollsReducer.viewPollProgress}
+        show={PollsReducerviewPollProgress}
         setShow={dispatch(setviewpollProgressModal)}
         modalTitleClassName={styles["ModalHeader_View_poll_progress"]}
         modalHeaderClassName={

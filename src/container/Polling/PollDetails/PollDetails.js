@@ -14,7 +14,12 @@ import {
 const PollDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerviewVotes = useSelector(
+    (state) => state.PollsReducer.viewVotes
+  );
+  const PollsReducerviewVotesDetails = useSelector(
+    (state) => state.PollsReducer.viewVotesDetails
+  );
   const { t } = useTranslation();
   const [pollId, setPollId] = useState(0);
   let userID = localStorage.getItem("userID");
@@ -25,7 +30,7 @@ const PollDetails = () => {
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
-    let vieVotePollDetails = PollsReducer.viewVotes;
+    let vieVotePollDetails = PollsReducerviewVotes;
     let pollOptions = vieVotePollDetails.pollOptions;
     let pollAttendies = vieVotePollDetails.pollParticipants;
     let Options = [];
@@ -51,7 +56,7 @@ const PollDetails = () => {
         }
       }
     }
-  }, [PollsReducer.viewVotes]);
+  }, [PollsReducerviewVotes]);
 
   const handleClosed = async () => {
     let data = {
@@ -64,7 +69,7 @@ const PollDetails = () => {
   return (
     <Container>
       <Modal
-        show={PollsReducer.viewVotesDetails}
+        show={PollsReducerviewVotesDetails}
         setShow={dispatch(viewVotesDetailsModal)}
         onHide={() => {
           dispatch(viewVotesDetailsModal(false));

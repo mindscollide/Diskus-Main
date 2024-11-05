@@ -62,7 +62,10 @@ import { UpdateOrganizersMeeting } from "../../../../../../store/actions/Meeting
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
 import { Tooltip } from "antd";
-import { mqttMeetingData } from "../../../../../../hooks/meetingResponse/response";
+import {
+  getAllUnpublishedMeetingData,
+  mqttMeetingData,
+} from "../../../../../../hooks/meetingResponse/response";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
 
 const UnpublishedProposedMeeting = ({
@@ -86,6 +89,7 @@ const UnpublishedProposedMeeting = ({
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
+  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
 
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -446,7 +450,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "115px",
+      width: "125px",
       render: (text, record) => {
         return (
           <>
@@ -734,23 +738,39 @@ const UnpublishedProposedMeeting = ({
   }, [publishState]);
 
   useEffect(() => {
-    if (
-      meetingStatusProposedMqttData !== null &&
-      meetingStatusProposedMqttData !== undefined
-    ) {
-      let meetingData = meetingStatusProposedMqttData;
-      const indexToUpdate = rows.findIndex(
-        (obj) => obj.pK_MDID === meetingData.pK_MDID
-      );
-      if (indexToUpdate !== -1) {
-        let updatedRows = [...rows];
-        updatedRows[indexToUpdate] = meetingData;
-        setRow(updatedRows);
-      } else {
-        let updatedRows = [...rows, meetingData];
-        setRow(updatedRows);
+    const updateMeetingData = async () => {
+      if (
+        meetingStatusProposedMqttData !== null &&
+        meetingStatusProposedMqttData !== undefined
+      ) {
+        let meetingData = meetingStatusProposedMqttData;
+        const indexToUpdate = rows.findIndex(
+          (obj) => obj.pK_MDID === meetingData.pK_MDID
+        );
+
+        // Fetching unpublished meeting data
+        let getMeetingDataArray = await getAllUnpublishedMeetingData(
+          [meetingData],
+          1
+        );
+        console.log(getMeetingDataArray, "getMeetingDataArray");
+
+        // Assuming getMeetingDataArray is an array with a single object
+        const getMeetingData = getMeetingDataArray[0];
+
+        // Check if the meeting exists in the current rows
+        if (indexToUpdate !== -1) {
+          let updatedRows = [...rows];
+          updatedRows[indexToUpdate] = getMeetingData;
+          setRow(updatedRows);
+        } else {
+          let updatedRows = [getMeetingData, ...rows];
+          setRow(updatedRows);
+        }
       }
-    }
+    };
+
+    updateMeetingData();
   }, [meetingStatusProposedMqttData]);
 
   useEffect(() => {
@@ -887,7 +907,56 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
+  console.log(
+    UserMeetPropoDatPoll,
+    "UserMeetPropoDatPollUserMeetPropoDatPollUserMeetPropoDatPoll"
+  );
+  useEffect(() => {
+    if (UserMeetPropoDatPoll !== null) {
+      try {
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              UserMeetPropoDatPoll,
+              navigate,
+              t
+            )(dispatch); // Ensure you're passing dispatch here
+            console.log(
+              getApiResponse,
+              "getApiResponsegetApiResponsegetApiResponse"
+            );
+            if (getApiResponse) {
+              localStorage.setItem(
+                "viewProposeDatePollMeetingID",
+                getApiResponse.meetingID
+              );
+              localStorage.removeItem("UserMeetPropoDatPoll");
+              dispatch(showSceduleProposedMeeting(true));
+              setViewProposeOrganizerPoll(false);
+              dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              dispatch(meetingDetailsGlobalFlag(false));
+              dispatch(organizersGlobalFlag(false));
+              dispatch(agendaContributorsGlobalFlag(false));
+              dispatch(participantsGlobalFlag(false));
+              dispatch(agendaGlobalFlag(false));
+              dispatch(meetingMaterialGlobalFlag(false));
+              dispatch(minutesGlobalFlag(false));
+              dispatch(proposedMeetingDatesGlobalFlag(false));
+              dispatch(actionsGlobalFlag(false));
+              dispatch(pollsGlobalFlag(false));
+              dispatch(attendanceGlobalFlag(false));
+              dispatch(uploadGlobalFlag(false));
+            }
+          } catch (error) {
+            console.error("Error in API call:", error);
+          }
+        };
 
+        callApi();
+      } catch (error) {}
+    }
+  }, [UserMeetPropoDatPoll]);
+  console.log(rows, "MeetingProposedRow Data");
   return (
     <section>
       <Row>

@@ -14,8 +14,9 @@ const DeletePoll = ({ id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
-
+  const PollsReducerdeletePollsModal = useSelector(
+    (state) => state.PollsReducer.deletePollsModal
+  );
   const handleNofunction = () => {
     dispatch(setDeltePollModal(false));
   };
@@ -30,7 +31,7 @@ const DeletePoll = ({ id }) => {
   return (
     <Container>
       <Modal
-        show={PollsReducer.deletePollsModal}
+        show={PollsReducerdeletePollsModal}
         setShow={dispatch(setDeltePollModal)}
         onHide={() => {
           dispatch(setDeltePollModal(false));

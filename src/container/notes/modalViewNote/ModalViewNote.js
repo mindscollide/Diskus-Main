@@ -81,15 +81,16 @@ const ModalViewNote = ({
           onHide={() => {
             setViewNotes(false);
           }}
-          modalHeaderClassName={styles["header-modal-close-btn"]}
+          modalHeaderClassName={`${styles["header-modal-close-btn"]} ${"d-none"}`}
           setShow={setViewNotes}
           ButtonTitle={ModalTitle}
+          
           centered
           modalFooterClassName={styles["modalViewNoteClass"]}
           size={isUpdateNote === true ? "md" : "md"}
           ModalBody={
             <>
-              <Row className="d-flex align-items-center">
+              {/* <Row className="d-flex align-items-center">
                 <Col
                   lg={12}
                   md={12}
@@ -118,7 +119,7 @@ const ModalViewNote = ({
                     />
                   )}
                 </Col>
-              </Row>
+              </Row> */}
 
               <Row>
                 <Col

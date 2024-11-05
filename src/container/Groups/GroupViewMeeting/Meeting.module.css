@@ -140,3 +140,27 @@
 .iconsWidth {
   min-width: 25px !important;
 }
+.ApplyBtn {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  display: flex;
+  align-items: center !important;
+  gap: 5px;
+  border: none;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+.ClearBtn {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  display: flex;
+  align-items: center !important;
+  gap: 5px;
+  border: 1px solid #e1e1e1;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}

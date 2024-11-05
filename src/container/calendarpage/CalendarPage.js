@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
 
 const CalendarPage = () => {
   const { t } = useTranslation();
@@ -49,7 +50,9 @@ const CalendarPage = () => {
     adminReducer,
     meetingIdReducer,
     getTodosStatus,
+    NewMeetingreducer,
   } = state;
+  const MeetingPublishData = NewMeetingreducer.meetingStatusPublishedMqttData;
   const [calenderData, setCalenderDatae] = useState([]);
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -543,7 +546,58 @@ const CalendarPage = () => {
     } else {
     }
   }, [assignees.ViewMeetingDetails]);
-
+  useEffect(() => {
+    try {
+      if (MeetingPublishData !== null) {
+        console.log(MeetingPublishData, "MeetingPublishDataMeetingPublishData");
+        let StartingTime = forMainCalendar(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+        );
+        let EndingTime = forMainCalendar(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingEndTime
+        );
+        let meetingStartTime = newTimeFormaterAsPerUTC(
+          MeetingPublishData.dateOfMeeting + MeetingPublishData.meetingStartTime
+        );
+        let findRoleID = MeetingPublishData.meetingAttendees.find(
+          (attendeeData, index) =>
+            Number(attendeeData?.fK_ParticipantRoleID) === Number(userID)
+        );
+        let diskusEventColor =
+          localStorage.getItem("diskusEventColor") !== null
+            ? localStorage.getItem("diskusEventColor")
+            : "#000";
+        let MeetingData = {
+          id: parseInt(MeetingPublishData.pK_CEID),
+          eventID: parseInt(MeetingPublishData.fK_CESID),
+          title: meetingStartTime + " - " + MeetingPublishData.title,
+          allDay: true,
+          start: new Date(StartingTime),
+          end: new Date(EndingTime),
+          border: `2px solid ${diskusEventColor}`,
+          // color: "#ffff",
+          backgroundColor: diskusEventColor,
+          calendarTypeId: Number(MeetingPublishData.fK_CETID),
+          isQuickMeeting: MeetingPublishData.isQuickMeeting,
+          statusID: Number(MeetingPublishData.statusID),
+          participantRoleID:
+            findRoleID !== undefined ? findRoleID.fK_ParticipantRoleID : 2,
+          attendeeRoleID:
+            findRoleID !== undefined
+              ? findRoleID.meetingAttendeeRole.pK_MARID
+              : 2,
+          isPrimaryOrganizer:
+            findRoleID !== undefined ? findRoleID.isPrimaryOrganizer : false,
+          meetingID: MeetingPublishData.pK_MDID,
+        };
+        setCalenderDatae([...calenderData, MeetingData]);
+        dispatch(meetingStatusPublishedMqtt(null));
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, [MeetingPublishData]);
+  console.log(calenderData, "calenderDatacalenderData");
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
@@ -562,10 +616,10 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !=
+      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
         t("No-records-found") &&
-      adminReducer.UpdateOrganizationMessageResponseMessage != ""
+      adminReducer.UpdateOrganizationMessageResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.UpdateOrganizationMessageResponseMessage,
@@ -574,10 +628,10 @@ const CalendarPage = () => {
       );
       dispatch(cleareMessage());
     } else if (
-      adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !=
+      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
         t("No-records-found") &&
-      adminReducer.DeleteOrganizationMessageResponseMessage != ""
+      adminReducer.DeleteOrganizationMessageResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.DeleteOrganizationMessageResponseMessage,
@@ -587,9 +641,9 @@ const CalendarPage = () => {
 
       dispatch(cleareMessage());
     } else if (
-      adminReducer.AllOrganizationResponseMessage != "" &&
-      adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
-      adminReducer.AllOrganizationResponseMessage != ""
+      adminReducer.AllOrganizationResponseMessage !== "" &&
+      adminReducer.AllOrganizationResponseMessage !== t("No-records-found") &&
+      adminReducer.AllOrganizationResponseMessage !== ""
     ) {
       showMessage(
         adminReducer.AllOrganizationResponseMessage,
@@ -618,17 +672,17 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("No-records-found")
+      meetingIdReducer.ResponseMessage !== "" &&
+      meetingIdReducer.ResponseMessage !== "" &&
+      meetingIdReducer.ResponseMessage !==t("No-records-found")
     ) {
       showMessage(meetingIdReducer.ResponseMessage, "success", setOpen);
 
       dispatch(HideNotificationMeetings());
     } else if (
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("No-records-found")
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(assignees.ResponseMessage, "success", setOpen);
 
@@ -641,18 +695,18 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != t("No-records-found")
+      toDoListReducer.ResponseMessage !== "" &&
+      toDoListReducer.ResponseMessage !== undefined &&
+      toDoListReducer.ResponseMessage !== "" &&
+      toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
 
       dispatch(clearResponce());
     } else if (
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("No-records-found")
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(assignees.ResponseMessage, "success", setOpen);
 
@@ -665,28 +719,28 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage != "" &&
-      getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != "" &&
-      getTodosStatus.ResponseMessage != t("No-records-found")
+      getTodosStatus.ResponseMessage !== "" &&
+      getTodosStatus.ResponseMessage !== undefined &&
+      getTodosStatus.ResponseMessage !== "" &&
+      getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage != "" &&
-      getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != "" &&
-      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
+      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
+      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatus != "" &&
-      getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != "" &&
-      getTodosStatus.UpdateTodoStatus != t("No-records-found")
+      getTodosStatus.UpdateTodoStatus !== "" &&
+      getTodosStatus.UpdateTodoStatus !== undefined &&
+      getTodosStatus.UpdateTodoStatus !== "" &&
+      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
       showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
 
