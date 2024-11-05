@@ -253,7 +253,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   };
 
   //Filter table work
-
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
     "1",
