@@ -27,10 +27,8 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   LeaveCurrentMeetingOtherMenus,
-  LeaveCurrentMeeting,
   currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
@@ -142,9 +140,8 @@ const Sidebar = () => {
             Length: Number(meetingpageRow),
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
           let searchData = {
             Date: "",
@@ -157,9 +154,8 @@ const Sidebar = () => {
           };
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
           // localStorage.setItem("MeetingCurrentView", 1);
         }
         dispatch(viewMeetingFlag(false));
@@ -214,7 +210,6 @@ const Sidebar = () => {
         dispatch(currentMeetingStatus(0));
       }
     }
-    // navigate(`/${todoListNavigation}`);
   };
 
   //Calendar Sidebar Click
@@ -310,10 +305,6 @@ const Sidebar = () => {
               disabled={true}
               className="new_sidebar p-0 d-flex justify-content-center gap-5 align-items-center flex-column"
             >
-              {/* <Nav.Link as={Link} to="home" eventKey="link-1">
-          <img src={Logo} className="mb-5" />
-        </Nav.Link> */}
-
               <>
                 {/* Meeting Menu */}
                 <Nav.Link
