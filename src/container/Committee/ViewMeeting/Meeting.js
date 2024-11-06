@@ -636,7 +636,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         } else {
           if (isQuickMeeting) {
             if (isOrganiser) {
-              // if (record.status !== "10") {
+              if (record.status !== "10") {
                 return (
                   <>
                     {committeeStatus === 3 && (
@@ -659,7 +659,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     )}
                   </>
                 );
-              // }
+              }
             }
           }
         }

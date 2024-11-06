@@ -1423,24 +1423,10 @@ const SignatureViewer = () => {
 
   // this for cancel modal
   const handleHideModal = () => {
-    if (signerData.length > 0) {
+    if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
-      setSingerUserData({
-        label: "",
-        name: "",
-        value: 0,
-      });
-      setSigners({
-        EmailAddress: "",
-        Name: "",
-        UserID: 0,
-      });
     } else {
-      setOpen({
-        ...open,
-        message: "Data Must Required",
-        open: true,
-      });
+      window.close();
     }
   };
 
