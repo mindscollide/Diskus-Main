@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 const DeleteOrganizationAdmin = () => {
   const { t } = useTranslation();
 
-  const { UserMangementReducer } = useSelector((state) => state);
 
   const UserMangementReducerLoadingData = useSelector(
     (state) => state.UserMangementReducer.Loading
@@ -110,7 +109,7 @@ const DeleteOrganizationAdmin = () => {
           </Row>
         </Col>
       </Row>
-      {UserMangementReducerLoadingData ? <Loader /> : null}
+      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

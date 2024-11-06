@@ -896,7 +896,7 @@ const ManageUsers = () => {
       {UserManagementModalssuccessfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      {UserMangementReducerLoadingData ? <Loader /> : null}
+      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </Container>
   );

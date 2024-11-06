@@ -31,12 +31,56 @@ import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
+const MIN_LOADER_DISPLAY_TIME = 500;
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-
+  const {
+    auth,
+    assignees,
+    CommitteeReducer,
+    toDoListReducer,
+    getTodosStatus,
+    downloadReducer,
+    todoStatus,
+    uploadReducer,
+    settingReducer,
+    fAQsReducer,
+    meetingIdReducer,
+    calendarReducer,
+    OnBoardModal,
+    postAssigneeComments,
+    VideoChatReducer,
+    minuteofMeetingReducer,
+    countryNamesReducer,
+    GetSubscriptionPackage,
+    Authreducer,
+    roleListReducer,
+    NotesReducer,
+    GroupsReducer,
+    ResolutionReducer,
+    RealtimeNotification,
+    OrganizationBillingReducer,
+    PollsReducer,
+    NewMeetingreducer,
+    LanguageReducer,
+    webViewer,
+    MeetingOrganizersReducer,
+    MeetingAgendaReducer,
+    attendanceMeetingReducer,
+    actionMeetingReducer,
+    AgendaWiseAgendaListReducer,
+    DataRoomReducer,
+    DataRoomFileAndFoldersDetailsReducer,
+    SignatureWorkFlowReducer,
+    UserMangementReducer,
+    adminReducer,
+    UserReportReducer,
+    MinutesReducer,
+    UserManagementModals,
+  } = useSelector((state) => state);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -56,7 +100,7 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-
+  console.log("loader checking ");
   // Show modal if accessed on a mobile browser
   useEffect(() => {
     if (isMobileDevice()) {
@@ -105,7 +149,68 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
+  const isLoading = [
+    NewMeetingreducer.Loading,
+    auth.Loading,
+    assignees.Loading,
+    MeetingOrganizersReducer.LoadingMeetingOrganizer,
+    MeetingOrganizersReducer.Loading,
+    PollsReducer.Loading,
+    CommitteeReducer.Loading,
+    toDoListReducer.Loading,
+    todoStatus.Loading,
+    getTodosStatus.Loading,
+    MeetingAgendaReducer.Loading,
+    actionMeetingReducer.Loading,
+    AgendaWiseAgendaListReducer.loading,
+    downloadReducer.Loading,
+    attendanceMeetingReducer.Loading,
+    webViewer.Loading,
+    LanguageReducer.Loading,
+    uploadReducer.Loading,
+    settingReducer.Loading,
+    fAQsReducer.Loading,
+    meetingIdReducer.Loading,
+    calendarReducer.Loading,
+    OnBoardModal.Loading,
+    postAssigneeComments.Loading,
+    VideoChatReducer.Loading,
+    minuteofMeetingReducer.Loading,
+    countryNamesReducer.Loading,
+    GetSubscriptionPackage.Loading,
+    Authreducer.Loading,
+    roleListReducer.Loading,
+    NotesReducer.Loading,
+    GroupsReducer.Loading,
+    GroupsReducer.getAllLoading,
+    ResolutionReducer.Loading,
+    RealtimeNotification.Loading,
+    OrganizationBillingReducer.Loading,
+    DataRoomReducer.Loading,
+    MinutesReducer.Loading,
+    UserManagementModals.Loading,
+    DataRoomFileAndFoldersDetailsReducer.Loading,
+    SignatureWorkFlowReducer.Loading,
+    adminReducer.Loading,
+    UserReportReducer.Loading,
+    UserMangementReducer.Loading,
+  ].some((state) => state);
+  const [showLoader, setShowLoader] = useState(false);
 
+  useEffect(() => {
+    let timer;
+    if (isLoading) {
+      // Show loader immediately when any state is loading
+      setShowLoader(true);
+    } else {
+      // Set a timeout to delay hiding the loader
+      timer = setTimeout(() => {
+        setShowLoader(false);
+      }, MIN_LOADER_DISPLAY_TIME);
+    }
+    // Clean up timeout on component unmount or if `isLoading` changes
+    return () => clearTimeout(timer);
+  }, [isLoading]);
   useEffect(() => {
     if (
       SessionExpireResponseMessage !== null &&
@@ -120,17 +225,66 @@ const App = () => {
 
   return (
     <>
-        {/* Define your routes here */}
-        <RouterProvider router={router} />
-        {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
-        {paymentProcessModal && <OpenPaymentForm />}
-        {updateVersion && (
-          <UpdateVersionNotifyModal
-            setUpdateVersion={setUpdateVersion}
-            updateVersion={updateVersion}
-          />
-        )}
-        <Notification open={open} setOpen={setOpen} />
+      {/* Define your routes here */}
+      <RouterProvider router={router} />
+      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+      {paymentProcessModal && <OpenPaymentForm />}
+      {updateVersion && (
+        <UpdateVersionNotifyModal
+          setUpdateVersion={setUpdateVersion}
+          updateVersion={updateVersion}
+        />
+      )}
+      {/* {navigator.onLine ? ( // Check for loading states to determine whether to display loader
+        NewMeetingreducer.Loading ||
+        auth.Loading ||
+        assignees.Loading ||
+        MeetingOrganizersReducer.LoadingMeetingOrganizer ||
+        MeetingOrganizersReducer.Loading ||
+        PollsReducer.Loading ||
+        CommitteeReducer.Loading ||
+        toDoListReducer.Loading ||
+        todoStatus.Loading ||
+        getTodosStatus.Loading ||
+        MeetingAgendaReducer.Loading ||
+        actionMeetingReducer.Loading ||
+        AgendaWiseAgendaListReducer.loading ||
+        downloadReducer.Loading ||
+        attendanceMeetingReducer.Loading ||
+        webViewer.Loading ||
+        LanguageReducer.Loading ||
+        uploadReducer.Loading ||
+        settingReducer.Loading ||
+        fAQsReducer.Loading ||
+        meetingIdReducer.Loading ||
+        calendarReducer.Loading ||
+        OnBoardModal.Loading ||
+        postAssigneeComments.Loading ||
+        VideoChatReducer.Loading ||
+        minuteofMeetingReducer.Loading ||
+        countryNamesReducer.Loading ||
+        GetSubscriptionPackage.Loading ||
+        Authreducer.Loading ||
+        roleListReducer.Loading ||
+        NotesReducer.Loading ||
+        GroupsReducer.Loading ||
+        GroupsReducer.getAllLoading ||
+        ResolutionReducer.Loading ||
+        RealtimeNotification.Loading ||
+        OrganizationBillingReducer.Loading ||
+        DataRoomReducer.Loading ||
+        MinutesReducer.Loading ||
+        UserManagementModals.Loading ||
+        DataRoomFileAndFoldersDetailsReducer.Loading ||
+        SignatureWorkFlowReducer.Loading ||
+        adminReducer.Loading ||
+        UserReportReducer.Loading ||
+        UserMangementReducer.Loading ? (
+          <Loader />
+        ) : null
+      ) : null} */}
+      {navigator.onLine && showLoader && <Loader />}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

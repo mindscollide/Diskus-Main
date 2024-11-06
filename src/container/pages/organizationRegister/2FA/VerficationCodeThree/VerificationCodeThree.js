@@ -326,10 +326,10 @@ const VerificationCodeThree = () => {
             </Row>
           </Col>
         </Row>
-        {(Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null) ||
+        {/* {(Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null) ||
         LanguageReducer.Loading ? (
           <Loader />
-        ) : null}
+        ) : null} */}
       </Container>
     </>
   );

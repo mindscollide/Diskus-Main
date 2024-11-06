@@ -298,9 +298,9 @@ const PackageDetails = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
+      {/* {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

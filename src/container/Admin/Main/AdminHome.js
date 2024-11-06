@@ -196,11 +196,11 @@ const AdminHome = () => {
         />
         <Outlet />
         {TrialExpireSelectPac && <UpgradeNowModal />}
-        {settingReducer.Loading ||
+        {/* {settingReducer.Loading ||
         UserReportReducer.Loading ||
         downloadReducer.Loading ? (
           <Loader />
-        ) : null}
+        ) : null} */}
       </ConfigProvider>
     </>
   );

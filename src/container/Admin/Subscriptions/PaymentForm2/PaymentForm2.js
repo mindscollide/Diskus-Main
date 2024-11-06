@@ -182,7 +182,7 @@ const PaymentForm2 = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || (LanguageReducer.Loading && <Loader />)}
+      {/* {Authreducer.Loading || (LanguageReducer.Loading && <Loader />)} */}
     </>
   );
 };

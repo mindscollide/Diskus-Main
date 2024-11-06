@@ -389,7 +389,7 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
+      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </div>
   );

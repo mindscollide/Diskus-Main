@@ -696,11 +696,11 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
+      {/* {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : adminReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

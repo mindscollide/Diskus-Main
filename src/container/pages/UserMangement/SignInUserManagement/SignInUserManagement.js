@@ -346,9 +346,9 @@ const SignInUserManagement = () => {
               </Col>
             </Row>
             <Notification open={open} setOpen={setOpen} />
-            {AuthreducerLoadingData || LanguageReducerLoadingData ? (
+            {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? (
               <Loader />
-            ) : null}
+            ) : null} */}
           </>
         )}
       </Container>

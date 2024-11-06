@@ -551,7 +551,7 @@ const AddUsers = () => {
           )}
         </Col>
       </Row>
-      {UserMangementReducerLoadingData ? <Loader /> : null}
+      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

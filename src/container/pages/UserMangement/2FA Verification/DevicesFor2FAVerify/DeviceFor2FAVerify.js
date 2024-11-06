@@ -397,7 +397,7 @@ const DeviceFor2FAVerify = () => {
           </Col>
         </Row>
       </Container>{" "}
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
+      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
     </>
   );
 };

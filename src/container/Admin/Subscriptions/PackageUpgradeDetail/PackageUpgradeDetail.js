@@ -192,11 +192,11 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading ||
+      {/* {GetSubscriptionPackage.Loading ||
       Authreducer.Loading ||
       LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

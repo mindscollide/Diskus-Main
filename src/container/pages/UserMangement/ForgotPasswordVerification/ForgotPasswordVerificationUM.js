@@ -335,13 +335,13 @@ const ForgotPasswordVerificationUM = () => {
           </Col>
         </Row>
       </Container>
-      {authLoadingData || LanguageReducerLoadingData ? (
+      {/* {authLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : AuthreducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
       ) : UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

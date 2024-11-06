@@ -448,9 +448,9 @@ const BillingMethodUsermanagement = () => {
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
       {UserManagementModalsthanksForPaymentModalData && <ThankForPayment />}
-      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
+      {/* {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </Container>
   );
 };

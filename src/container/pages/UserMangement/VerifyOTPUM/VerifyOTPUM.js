@@ -302,7 +302,7 @@ const VerifyOTPUM = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

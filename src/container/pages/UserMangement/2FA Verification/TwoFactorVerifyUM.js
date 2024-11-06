@@ -298,7 +298,7 @@ const TwoFactorVerifyUM = () => {
           </Col>
         </Row>
       </Container>
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
+      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
     </>
   );
 };

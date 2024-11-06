@@ -361,7 +361,7 @@ const ChangePassword = () => {
         }
       />
       <Notification open={open} setOpen={setOpen} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

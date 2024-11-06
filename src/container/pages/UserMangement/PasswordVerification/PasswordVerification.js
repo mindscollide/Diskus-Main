@@ -411,7 +411,7 @@ const PasswordVerification = () => {
         </Row>
       </Container>
       <Notification open={open} setOpen={setOpen} />
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
+      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
     </>
   );
 };

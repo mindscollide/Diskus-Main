@@ -428,11 +428,11 @@ const Summary = () => {
         />
         <Notification open={open} setOpen={setOpen} />
       </Fragment>
-      {OrganizationBillingReducer.Loading ||
+      {/* {OrganizationBillingReducer.Loading ||
       LanguageReducer.Loading ||
       adminReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

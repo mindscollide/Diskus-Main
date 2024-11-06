@@ -506,7 +506,7 @@ const CreateAddtionalUsersModal = () => {
                 </Col>
               </Row>
             </section>{" "}
-            {UserMangementReducerLoadingData ? <Loader /> : null}
+            {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
           </>
         }
       />

@@ -302,9 +302,9 @@ const PayOutstanding = () => {
         InvoiceModal={invoiceModal}
         setInvoiceModal={setInvoiceModal}
       />
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+      {/* {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

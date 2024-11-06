@@ -50,7 +50,7 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
-      {fAQsReducer.Loading ? <Loader /> : null}
+      {/* {fAQsReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

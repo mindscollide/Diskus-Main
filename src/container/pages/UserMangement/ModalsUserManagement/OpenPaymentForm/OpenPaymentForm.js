@@ -61,7 +61,7 @@ const OpenPaymentForm = () => {
           }
         />
       </Container>
-      {UserManagementModalsLoadingData ? <Loader /> : null}
+      {/* {UserManagementModalsLoadingData ? <Loader /> : null} */}
     </>
   );
 };

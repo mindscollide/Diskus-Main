@@ -360,9 +360,9 @@ const BillProcessStepThree = () => {
           </Col>
         </Row>
       </section>
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+      {/* {UserMangementReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

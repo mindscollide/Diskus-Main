@@ -340,11 +340,11 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      {auth.Loading || LanguageReducer.Loading ? (
+      {/* {auth.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : Authreducer.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

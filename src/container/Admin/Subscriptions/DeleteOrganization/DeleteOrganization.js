@@ -106,7 +106,7 @@ const DeleteOrganization = () => {
           </Col>
         </Row>
       </Container>
-      {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

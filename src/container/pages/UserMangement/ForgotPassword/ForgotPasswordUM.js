@@ -212,7 +212,7 @@ const ForgotPasswordUM = () => {
           </Col>
         </Row>
       </Container>
-      {authLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
+      {/* {authLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

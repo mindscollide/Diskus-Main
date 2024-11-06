@@ -368,7 +368,7 @@ const Participants = ({
         )}
         <Notification open={open} setOpen={setOpen} />
       </section>
-      {NewMeetingreducer.LoadingParticipants && <Loader />}
+      {/* {NewMeetingreducer.LoadingParticipants && <Loader />} */}
     </>
   );
 };

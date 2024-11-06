@@ -1186,7 +1186,7 @@ const Header2 = ({ isVideo }) => {
         />
       )}
       {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
-      {Authreducer.Loading ? <Loader /> : null}
+      {/* {Authreducer.Loading ? <Loader /> : null} */}
       {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
     </>
   );

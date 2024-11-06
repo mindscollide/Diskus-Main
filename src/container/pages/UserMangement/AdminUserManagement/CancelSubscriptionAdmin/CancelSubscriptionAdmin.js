@@ -362,7 +362,7 @@ const CancelSubscriptionAdmin = () => {
           subscriptionID={subscriptionID}
         />
       )}
-      {UserMangementReducerLoadingData ? <Loader /> : null}
+      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

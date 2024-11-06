@@ -368,9 +368,11 @@ const Dashboard = () => {
                 Number(meetingVideoID) ===
                 Number(data?.payload?.meeting?.pK_MDID)
               ) {
-                let getMeetingParticipants = data.payload.meeting.meetingAttendees.filter(
-                  (attendeeData) => attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                );
+                let getMeetingParticipants =
+                  data.payload.meeting.meetingAttendees.filter(
+                    (attendeeData) =>
+                      attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                  );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2558,10 +2560,8 @@ const Dashboard = () => {
           videoFeatureReducer.MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-          {!navigator.onLine ? (
-            <React.Fragment></React.Fragment>
-          ) : // Check for loading states to determine whether to display loader
-          NewMeetingreducer.Loading ||
+          {/* {navigator.onLine ? ( // Check for loading states to determine whether to display loader
+            NewMeetingreducer.Loading ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||
@@ -2601,8 +2601,9 @@ const Dashboard = () => {
             DataRoomFileAndFoldersDetailsReducer.Loading ||
             SignatureWorkFlowReducer.Loading ||
             UserMangementReducer.Loading ? (
-            <Loader /> // <Loader />
-          ) : null}
+              <Loader />
+            ) : null
+          ) : null} */}
           {/* Disconnectivity Modal  */}
           {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
           <Notification

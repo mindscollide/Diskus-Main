@@ -310,7 +310,7 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
-      {UserMangementReducerLoadingData ? <Loader /> : null}
+      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };
