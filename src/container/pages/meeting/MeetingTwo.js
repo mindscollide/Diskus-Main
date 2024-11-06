@@ -716,12 +716,8 @@ const NewMeeting = () => {
 
   //  Call all search meetings api
   useEffect(() => {
-    if (
-      NewMeetingreducer.CalendarDashboardEventData === null ||
-      NewMeetingreducer.CalendarDashboardEventData === undefined
-    ) {
+   
       callApi();
-    }
     return () => {
       setResponseByDate("");
       setDashboardEventData(null);
