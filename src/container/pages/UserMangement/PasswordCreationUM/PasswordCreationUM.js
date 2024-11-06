@@ -3,7 +3,6 @@ import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button, Paper, Loader } from "../../../../components/elements";
-import { Checkbox } from "antd";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useSelector } from "react-redux";
@@ -11,7 +10,6 @@ import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg"
 import PasswordChecklist from "react-password-checklist";
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
@@ -85,16 +83,6 @@ const PasswordCreationUM = () => {
     return encryptedPassword;
   };
 
-  //Decryption Password
-  const decryptPassword = (encryptedPassword) => {
-    let password = "";
-    for (let i = 0; i < encryptedPassword.length; i++) {
-      const charCode = encryptedPassword.charCodeAt(i);
-      password += String.fromCharCode(charCode - 1);
-    }
-    return password;
-  };
-
   //OnChange Password handler
   const passwordChangeHandler = (e) => {
     setErrorBar(false);
@@ -102,7 +90,6 @@ const PasswordCreationUM = () => {
     let name = e.target.name;
     var valueCheck = value.replace(/\s+/g, "");
     if (valueCheck === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
       setPassword("");
       setPasswordDetails({
         ...passwordDetails,
@@ -110,8 +97,6 @@ const PasswordCreationUM = () => {
       });
       setErrorBar(true);
     } else if (valueCheck !== "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
-
       if (remeberPassword === true) {
         setPasswordDetails({
           ...passwordDetails,
@@ -154,7 +139,6 @@ const PasswordCreationUM = () => {
       setErrorBar(true);
     } else {
       setErrorBar(false);
-      // navigate("/")
 
       if (
         updateCheckPasswordFlag !== undefined &&
@@ -167,48 +151,6 @@ const PasswordCreationUM = () => {
       }
     }
   };
-
-  //RemeberPassword Checker
-  // const rememberPasswordCheck = () => {
-  //   SetRememberPassword(!remeberPassword);
-  //   if (!remeberPassword === true) {
-  //     localStorage.setItem("remeberPassword", true);
-  //     let newPassword = encryptPassword(passwordDetails.password);
-  //     localStorage.setItem("rememberPasswordValue", newPassword);
-  //   } else {
-  //     localStorage.setItem("remeberPassword", false);
-  //     localStorage.setItem("rememberPasswordValue", "");
-  //   }
-  // };
-
-  //Remember Password
-  // commented instructed by sir Sumair
-  // useEffect(() => {
-  //   let RememberPasswordLocal = JSON.parse(
-  //     localStorage.getItem("remeberPassword")
-  //   );
-  //   console.log("createpasswordorganization", RememberPasswordLocal);
-  //   console.log("createpasswordorganization", RememberPasswordLocal === true);
-  //   if (RememberPasswordLocal === true) {
-  //     let RememberPasswordLocalValue = localStorage.getItem(
-  //       "rememberPasswordValue"
-  //     );
-  //     console.log("createpasswordorganization", RememberPasswordLocalValue);
-
-  //     SetRememberPassword(RememberPasswordLocal);
-  //     let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
-  //     setPasswordDetails({
-  //       ...passwordDetails,
-  //       // ["ConfirmPassword "]: newPasswordDecript,
-  //       ["Password"]: newPasswordDecript,
-  //     });
-  //     // setPassword(newPasswordDecript);
-  //   } else {
-  //     localStorage.setItem("remeberPassword", false);
-  //     localStorage.setItem("rememberPasswordValue", "");
-  //   }
-  //   passwordRef.current.focus();
-  // }, []);
 
   const goBackButton = () => {
     localStorage.removeItem("SignupFlowPageRoute");

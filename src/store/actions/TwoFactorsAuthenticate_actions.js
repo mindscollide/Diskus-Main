@@ -113,12 +113,8 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                 )
               );
               if (response.data.responseResult.userDevices.length === 1) {
-                // navigate("/sendmailwithdevice");
-                //localStorage.setItem("LoginFlowPageRoute", 8);
                 dispatch(LoginFlowRoutes(8));
               } else {
-                // navigate("/twofacmultidevice");
-                //localStorage.setItem("LoginFlowPageRoute", 13);
                 dispatch(LoginFlowRoutes(13));
               }
             } else if (

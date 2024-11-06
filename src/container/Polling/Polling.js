@@ -916,7 +916,6 @@ const Polling = () => {
                 change={HandleSearchPollsMain}
                 onKeyDown={handleKeyDownSearch}
                 labelclass="d-none"
-                // clickIcon={}
                 inputicon={
                   <>
                     <Row>
