@@ -1425,6 +1425,17 @@ const SignatureViewer = () => {
   const handleHideModal = () => {
     if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
+      setSingerUserData({
+        value: 0,
+        label: "",
+        name: "",
+      });
     } else {
       window.close();
     }
@@ -1434,6 +1445,17 @@ const SignatureViewer = () => {
   const handleClickCancel = () => {
     if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
+      setSingerUserData({
+        value: 0,
+        label: "",
+        name: "",
+      });
     } else {
       window.close();
     }
