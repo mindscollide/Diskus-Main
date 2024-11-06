@@ -7,8 +7,6 @@ import {
 } from "../../../../../components/elements";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
-import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
@@ -20,22 +18,16 @@ import { useNavigate } from "react-router-dom";
 import {
   cleareAllState,
   searchNewUserMeeting,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   clearResponseMessage,
   GetAllMeetingOrganizers,
-  getAllMeetingOrganizers_fail,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Organizers = ({
-  editorRole,
   setmeetingDetails,
   setorganizers,
   advanceMeetingModalID,
@@ -60,7 +52,6 @@ const Organizers = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
 
-  const [viewOrganizers, setviewOrganizers] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -91,10 +82,6 @@ const Organizers = ({
     message: "",
   });
 
-  const handleCancelOrganizer = () => {
-    setCancelModalView(true);
-  };
-
   useEffect(() => {
     if (advanceMeetingModalID) {
       let Data = { MeetingID: advanceMeetingModalID };
@@ -122,38 +109,29 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        // width: "200px",
         align: "left",
         ellipsis: true,
-        // render: (text) => (
-        //   <label className={styles["Title_desc"]}>{text}</label>
-        // ),
       },
 
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
-        // width: "250px",
         align: "left",
         ellipsis: true,
-        // render: (text) => <label className="column-boldness">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
         align: "center",
-        // width: "250px",
         ellipsis: true,
-        // render: (text) => <label className="column-boldness">{text}</label>,
       },
 
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "left",
-        // width: "200px",
         ellipsis: true,
         render: (text, record, rowIndex) => (
           <Row>
@@ -220,36 +198,12 @@ const Organizers = ({
             );
           }
         },
-        // render: (text, record) => {
-        //   if (record.isRSVP === true) {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsup}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   } else {
-        //     return (
-        //       <img
-        //         draggable={false}
-        //         src={thumbsdown}
-        //         height="30px"
-        //         width="30px"
-        //         alt=""
-        //       />
-        //     );
-        //   }
-        // },
       },
 
       {
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        // width: "180px",
         ellipsis: true,
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
@@ -308,38 +262,29 @@ const Organizers = ({
         ),
         dataIndex: "userName",
         key: "userName",
-        // width: "200px",
         ellipsis: true,
         align: "left",
-        // render: (text) => (
-        //   <label className={`${styles["Title_desc"]} ${"w-100"}`}>{text}</label>
-        // ),
       },
 
       {
         title: t("Email"),
         dataIndex: "email",
         key: "email",
-        // width: "250px",
         ellipsis: true,
         align: "left",
-        // render: (text) => <label className="column-boldness w-100">{text}</label>,
       },
       {
         title: t("Organizer-title"),
         dataIndex: "organizerTitle",
         key: "organizerTitle",
         align: "center",
-        // width: "250px",
         ellipsis: true,
-        // render: (text) => <label className="column-boldness w-100">{text}</label>,
       },
 
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "left",
-        // width: "200px",
         ellipsis: true,
         render: (text, record, rowIndex) => (
           <Row>
@@ -360,7 +305,6 @@ const Organizers = ({
         title: t("Notification"),
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
-        // width: "180px",
         ellipsis: true,
         render: (text, record) => {
           if (record.isOrganizerNotified === true) {
@@ -407,13 +351,6 @@ const Organizers = ({
     ];
   }
 
-  const previousTabOrganizer = () => {
-    setAgendaContributors(false);
-    setmeetingDetails(true);
-    setorganizers(false);
-    setRowsData([]);
-  };
-
   const nextTabOrganizer = () => {
     setAgendaContributors(true);
     setmeetingDetails(false);
@@ -432,8 +369,8 @@ const Organizers = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -598,21 +535,11 @@ const Organizers = ({
         <Row>
           <Col lg={12} md={12} sm={12}>
             <section className={styles["Footer_button"]}>
-              {/* <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Organization"]}
-              onClick={handleCancelOrganizer}
-            /> */}
               <Button
                 text={t("Cancel")}
                 className={styles["Cancel_Meeting_Details"]}
                 onClick={handleCancelMeetingNoPopup}
               />
-              {/* <Button
-              text={t("Previous")}
-              className={styles["publish_button_Organization"]}
-              onClick={previousTabOrganizer}
-            /> */}
 
               <Button
                 text={t("Next")}

@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./ExpandedMenu.css";
-import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Tooltip from "../../../elements/tooltip/Tooltip";
 import { useTranslation } from "react-i18next";
-import { getDocumentsAndFolderApi } from "../../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DataroomImage from "../../../../assets/images/sidebar_icons/Dataroom.png";
 import GroupImage from "../../../../assets/images/sidebar_icons/Group.png";
 import CommitteeImage from "../../../../assets/images/sidebar_icons/Committee.png";
@@ -289,15 +286,16 @@ const ExpandedMenu = () => {
               ? "/DisKus/Meeting"
               : "/DisKus/dataroom"
           }
-          draggable='false'
+          draggable="false"
           className={
             location.pathname === "/DisKus/dataroom" ||
             location.pathname === "/Diskus/dataroom"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarDataroom}>
-          <img src={DataroomImage} alt='DataroomIcon' />
+          onClick={handleMeetingSidebarDataroom}
+        >
+          <img src={DataroomImage} alt="DataroomIcon" />
           <p>{t("Data-room")}</p>
         </Nav.Link>
       ) : null}
@@ -319,16 +317,17 @@ const ExpandedMenu = () => {
               : "/DisKus/groups"
           }
           disabled={false}
-          draggable='false'
+          draggable="false"
           className={
             location.pathname === "/DisKus/groups" ||
             location.pathname === "/Diskus/groups"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarGroups}>
+          onClick={handleMeetingSidebarGroups}
+        >
           {/* Grouo Icon */}
-          <img src={GroupImage} alt='' />
+          <img src={GroupImage} alt="" />
 
           <p>{t("Groups")}</p>
         </Nav.Link>
@@ -351,17 +350,18 @@ const ExpandedMenu = () => {
               : "/DisKus/committee"
           }
           disabled={false}
-          draggable='false'
+          draggable="false"
           className={
             location.pathname === "/DisKus/committee" ||
             location.pathname === "/Diskus/committee"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarCommittees}>
+          onClick={handleMeetingSidebarCommittees}
+        >
           {/* CommitteeIcon */}
 
-          <img src={CommitteeImage} alt='' />
+          <img src={CommitteeImage} alt="" />
           <p>{t("Committees")}</p>
         </Nav.Link>
       ) : null}
@@ -383,16 +383,17 @@ const ExpandedMenu = () => {
               : "/DisKus/resolution"
           }
           disabled={false}
-          draggable='false'
+          draggable="false"
           className={
             location.pathname === "/DisKus/resolution" ||
             location.pathname === "/Diskus/resolution"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarResolutions}>
+          onClick={handleMeetingSidebarResolutions}
+        >
           {/* Resolution Icon */}
-          <img src={ResolutionImage} alt='' />
+          <img src={ResolutionImage} alt="" />
           <p>{t("Resolutions")}</p>
         </Nav.Link>
       ) : null}
@@ -414,15 +415,16 @@ const ExpandedMenu = () => {
               : "/DisKus/polling"
           }
           disabled={false}
-          draggable='false'
+          draggable="false"
           className={
             location.pathname === "/DisKus/polling" ||
             location.pathname === "/Diskus/polling"
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarPolls}>
-          <img src={PollImage} alt='' />
+          onClick={handleMeetingSidebarPolls}
+        >
+          <img src={PollImage} alt="" />
 
           <p>{t("Polls")}</p>
         </Nav.Link>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ModalViewToDo.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
 import { LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
@@ -15,16 +14,13 @@ import {
   Button,
   AttachmentViewer,
 } from "./../../components/elements";
-import userImage from "../../assets/images/user.png";
 import {
   newTimeFormaterAsPerUTCFullDate,
   RemoveTimeDashes,
 } from "./../../commen/functions/date_formater";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
-  clearState,
-  ViewToDoList,
   deleteCommentApi,
 } from "./../../store/actions/ToDoList_action";
 import { getRandomUniqueNumber } from "../pages/meeting/scedulemeeting/Agenda/drageFunction";
@@ -37,13 +33,10 @@ import {
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
-import {
-  fileFormatforSignatureFlow,
-  truncateText,
-} from "../../commen/functions/utils";
+import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //For Localization
@@ -54,7 +47,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   let createrID = localStorage.getItem("userID");
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
-  const [commentID, setCommentID] = useState(0);
   const { Comments } = postAssigneeComments;
 
   //To Display Modal
@@ -79,32 +71,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   });
 
   //Current Date
-  const date = new Date();
   let currentDateTime = new Date();
   let changeDateFormat = moment(currentDateTime).utc();
   let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
 
-  const year = currentDateTime.getFullYear();
-  const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
-  const day = currentDateTime.getDate().toString().padStart(2, "0");
-  const hour = currentDateTime.getHours().toString().padStart(2, "0");
-  const minute = currentDateTime.getMinutes().toString().padStart(2, "0");
-  const second = currentDateTime.getSeconds().toString().padStart(2, "0");
-
-  let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`;
-  //Current Time
-  let currentTime =
-    date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-  currentTime = RemoveTimeDashes(currentTime);
-
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 20,
-      }}
-      spin
-    />
-  );
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
   const todoComments = useRef();
@@ -149,6 +119,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
       let viewData = toDoListReducer.ToDoDetails;
+      console.log(viewData, "viewDataviewDataviewData");
       setTask({
         ...task,
         PK_TID: viewData.pK_TID,
@@ -346,16 +317,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     }
   }, [viewFlagToDo]);
 
-  // download file
-  const downloadClick = (e, record) => {
-    let data = {
-      OriginalFileName: record.OriginalAttachmentName,
-      DisplayFileName: record.DisplayAttachmentName,
-    };
-
-    dispatch(DownloadFile(navigate, data));
-  };
-
   const handleClickCommentSubmit = async (e, id) => {
     e.preventDefault();
     if (assgineeComments !== "" && assgineeComments.trim() !== "") {
@@ -403,7 +364,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       );
     }
   };
-  // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
 
   useEffect(() => {
     if (
@@ -431,23 +391,24 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         onHide={handleClose}
         show={viewFlagToDo}
         setShow={setViewFlagToDo}
-        className='todview-modal'
-        modalBodyClassName='modalTodoViewBody'
-        modalFooterClassName='modalTodoViewFooter'
-        modalHeaderClassName='modalTodoViewHeader d-none'
-        size='md'
+        className="todview-modal"
+        modalBodyClassName="modalTodoViewBody"
+        modalFooterClassName="modalTodoViewFooter"
+        modalHeaderClassName="modalTodoViewHeader d-none"
+        size="md"
         ModalBody={
           <>
             <Row>
               {/* Assigned to Heading */}
-              <Col sm={12} md={12} lg={12} className='mt-2'>
-                <p className=' AssignedToDoView'>{t("Assigned-to")}</p>
+              <Col sm={12} md={12} lg={12} className="mt-2">
+                <p className=" AssignedToDoView">{t("Assigned-to")}</p>
               </Col>
               {/* Task Assigned Person Details */}
               <Col sm={12} md={12} lg={12}>
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
+                      console.log(assgineeData, "assgineeDataassgineeData");
                       if (
                         Number(
                           toDoListReducer.ToDoDetails.taskCreator.pK_UID
@@ -459,7 +420,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               employeeName={assgineeData.name}
                               employeeDesignation={"Test Designation"}
                               cardText={assgineeData.datetimeFormating}
-                              cardTextIconStyle='DateTimeViewTodo'
+                              cardTextIconStyle="DateTimeViewTodo"
                               userImage={assgineeData.displayProfilePicture}
                             />
                           </Col>
@@ -472,7 +433,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                 employeeName={assgineeData.name}
                                 employeeDesignation={"assgineeData.designation"}
                                 cardText={assgineeData.datetimeFormating}
-                                cardTextIconStyle='DateTimeViewTodo'
+                                cardTextIconStyle="DateTimeViewTodo"
                                 userImage={assgineeData.displayProfilePicture}
                               />
                             </Col>
@@ -484,21 +445,21 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 ) : null}
               </Col>
               {/* Task Title and Description */}
-              <Col sm={12} md={12} lg={12} className='task-and-description'>
+              <Col sm={12} md={12} lg={12} className="task-and-description">
                 {/* Task Title */}
-                <p className='todo-modal-title mb-0' title={task.Title}>
+                <p className="todo-modal-title mb-0" title={task.Title}>
                   {" "}
                   {task.Title}{" "}
                 </p>
 
                 {/* Task Description */}
-                <p className='Modal-todo-view-discription1'>
+                <p className="Modal-todo-view-discription1">
                   {task.Description}
                 </p>
               </Col>
 
               {/* Task Comments */}
-              <Col sm={12} md={12} lg={12} className='taskComments'>
+              <Col sm={12} md={12} lg={12} className="taskComments">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
                       if (Number(commentData.userID) === Number(createrID)) {
@@ -508,35 +469,36 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className='MontserratRegular my-1 FontArabicRegular position-relative'
-                              key={commentData.taskCommentID}>
+                              className="MontserratRegular my-1 FontArabicRegular position-relative"
+                              key={commentData.taskCommentID}
+                            >
                               <TextArea
                                 rows={2}
                                 timeValue={newTimeFormaterAsPerUTCFullDate(
                                   commentData.DateTime
                                 )}
                                 label={commentData.taskCommentUserName}
-                                labelClassName=' d-flex justify-content-start  fw-bold '
-                                disable='false'
-                                className='comment-view sender text-white  '
+                                labelClassName=" d-flex justify-content-start  fw-bold "
+                                disable="false"
+                                className="comment-view sender text-white  "
                                 value={commentData.Comment}
                                 timeClass={"timeClass"}
-                                formClassPosition='relative-position-form'
+                                formClassPosition="relative-position-form"
                               />
 
                               {toDoListReducer.deleteCommentSpinner &&
                               deleteCommentsId === commentData.taskCommentID ? (
-                                <span className='deleteCommentSpinner'>
-                                  <Spin size='small' />
+                                <span className="deleteCommentSpinner">
+                                  <Spin size="small" />
                                 </span>
                               ) : commentData.taskCommentID === 0 ||
                                 commentData.taskCommentID !== 0 ? (
                                 <>
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={CrossIcon}
                                     width={14}
-                                    alt=''
+                                    alt=""
                                     onClick={() =>
                                       handleDeleteComments(
                                         commentData.taskCommentID,
@@ -561,20 +523,21 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className='MontserratRegular my-1 FontArabicRegular'
-                              key={commentData.taskCommentID}>
+                              className="MontserratRegular my-1 FontArabicRegular"
+                              key={commentData.taskCommentID}
+                            >
                               <TextArea
                                 rows={2}
                                 label={commentData.taskCommentUserName}
-                                disable='false'
-                                className='comment-view'
+                                disable="false"
+                                className="comment-view"
                                 value={commentData.Comment}
-                                labelClassName=' d-flex justify-content-start mx-2 '
+                                labelClassName=" d-flex justify-content-start mx-2 "
                                 timeValue={newTimeFormaterAsPerUTCFullDate(
                                   commentData.DateTime
                                 )}
                                 timeClass={"timeClass Participant"}
-                                formClassPosition='relative-position-form'
+                                formClassPosition="relative-position-form"
                               />
                             </Col>
                           </>
@@ -585,18 +548,20 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 <div ref={todoComments} />
               </Col>
               {/* Task Submit */}
-              <Col sm={12} md={12} lg={12} className='mb-2'>
+              <Col sm={12} md={12} lg={12} className="mb-2">
                 <Form
-                  className='d-flex'
-                  onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}>
+                  className="d-flex"
+                  onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
+                >
                   <Col
                     sm={11}
                     md={11}
                     lg={11}
-                    className='todolist-modal-fields InputFieldStyle'>
+                    className="todolist-modal-fields InputFieldStyle"
+                  >
                     <TextField
                       placeholder={t("Type-in")}
-                      applyClass='todoviewmodalcomments'
+                      applyClass="todoviewmodalcomments"
                       width={"460"}
                       labelclass={"d-none"}
                       value={assgineeComments}
@@ -604,13 +569,13 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                       maxLength={100}
                     />
                   </Col>
-                  <Col sm={1} md={1} lg={1} className='comment-enter-button'>
+                  <Col sm={1} md={1} lg={1} className="comment-enter-button">
                     {currentLanguage === "ar" ? (
                       <ChevronLeft
                         width={25}
                         height={35}
                         color={"white"}
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
@@ -620,7 +585,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                         width={25}
                         height={35}
                         color={"white"}
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
@@ -630,12 +595,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 </Form>
               </Col>
               {/* Attachment Heading */}
-              <Col sm={12} md={12} lg={12} className='fw-600'>
+              <Col sm={12} md={12} lg={12} className="fw-600">
                 {/* Attachments */}
                 {t("Attachement")}
               </Col>
               {/* Task Attachment List */}
-              <Col sm={12} md={12} lg={12} className='todoModalViewFiles'>
+              <Col sm={12} md={12} lg={12} className="todoModalViewFiles">
                 {tasksAttachments.TasksAttachments.length > 0
                   ? tasksAttachments.TasksAttachments.map(
                       (modalviewAttachmentFiles, index) => {
@@ -690,7 +655,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-end'>
+                className="d-flex justify-content-end"
+              >
                 <Button
                   className={"cancelButton_createTodo"}
                   onClick={handleClose}

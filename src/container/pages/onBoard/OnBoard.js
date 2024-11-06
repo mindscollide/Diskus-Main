@@ -56,6 +56,7 @@ const OnBoard = () => {
               <img
                 draggable="false"
                 width={70}
+                alt=""
                 src={ScheduleLeftArrow}
                 className="meeting-icon-arrow"
               />
@@ -74,6 +75,7 @@ const OnBoard = () => {
           <img
             draggable="false"
             src={ScheduleUpArrow}
+            alt=""
             width={55}
             className="meeting-btn-arrow"
           />
@@ -82,7 +84,6 @@ const OnBoard = () => {
           </h4>
         </div>
       ),
-      // observe: "[data-tut='show-modal']"
     },
     {
       selector: "[data-tut='meeting-modal']",
@@ -94,6 +95,7 @@ const OnBoard = () => {
           <img
             draggable="false"
             src={ScheduleRightArrow}
+            alt=""
             width={70}
             className="meeting-modal-arrow"
           />
@@ -105,12 +107,10 @@ const OnBoard = () => {
       selector: "[data-tut='congrats-screen']",
       content: () => (
         <>
-          {/* <Mask className='congrats-mask' > */}
           <Popover
             className="welcomePopver"
             children={<Congrats message={t("All-done")} />}
           />
-          {/* </Mask> */}
         </>
       ),
     },

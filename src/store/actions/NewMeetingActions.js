@@ -9278,6 +9278,13 @@ const GetAllMeetingDetialsData = () => {
   };
 };
 
+const showCancelModalAgendaBuilder = (response) => {
+  return {
+    type: actions.UNSAVED_NEW_AGENDA_CANCEL_MODAL,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9450,5 +9457,6 @@ export {
   proposedMeetingData,
   ParticipantsData,
   GetAllMeetingDetialsData,
-  getDashboardMeetingCountMQTT
+  getDashboardMeetingCountMQTT,
+  showCancelModalAgendaBuilder,
 };

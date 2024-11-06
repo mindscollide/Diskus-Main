@@ -26,6 +26,7 @@ import {
   getAllAgendaContributorApi,
   GetAllMeetingUserApiFunc,
   searchNewUserMeeting,
+  showCancelModalAgendaBuilder,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   CreateUpdateMeetingDataRoomMap,
@@ -56,6 +57,7 @@ import {
   nextTabAgenda,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import NewCancelAgendaBuilderModal from "../../viewMeetings/Agenda/NewCancelAgendaBuilderModal/NewCancelAgendaBuilderModal";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -99,7 +101,9 @@ const Agenda = ({
   } = useSelector((state) => state);
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
-
+  const ShowCancelAgendaBuilderModal = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgendaSavedModal
+  );
   let meetingTitle = localStorage.getItem("MeetingTitle");
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
@@ -174,12 +178,12 @@ const Agenda = ({
         label: (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <img
-                  alt=''
+                  alt=""
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width='17px'
-                  height='17px'
+                  width="17px"
+                  height="17px"
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -324,25 +328,7 @@ const Agenda = ({
   };
 
   const handleCancelClick = async () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(showCancelModalAgenda(true));
-    } else {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-      };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      setSceduleMeeting(false);
-      localStorage.setItem("folderDataRoomMeeting", 0);
-    }
+    dispatch(showCancelModalAgendaBuilder(true));
   };
 
   // // Function to capitalize the first letter of a string
@@ -1508,7 +1494,8 @@ const Agenda = ({
             {editorRole.role === "Agenda Contributor" &&
             rows[0].title === "" ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
                 {emptyStateRows === true &&
                 (editorRole.role === "Agenda Contributor" ||
                   editorRole.role === "Participant") ? null : (
@@ -1521,16 +1508,19 @@ const Agenda = ({
                         rows.length > 1
                           ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                           : styles["Scroller_Agenda"]
-                      }>
+                      }
+                    >
                       <Droppable
                         //  key={`main-agenda-${rows.id}`}
                         //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId='board'
-                        type='PARENT'>
+                        droppableId="board"
+                        type="PARENT"
+                      >
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}>
+                            {...provided.droppableProps}
+                          >
                             {rows.length > 0
                               ? rows.map((data, index) => {
                                   return (
@@ -1543,7 +1533,8 @@ const Agenda = ({
                                             "Agenda Contributor"
                                             ? "d-none"
                                             : styles["agenda-border-class"]
-                                        }>
+                                        }
+                                      >
                                         <ParentAgenda
                                           fileForSend={fileForSend}
                                           setFileForSend={setFileForSend}
@@ -1617,13 +1608,14 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <img
                       draggable={false}
                       src={emptyContributorState}
-                      width='274.05px'
-                      alt=''
-                      height='230.96px'
+                      width="274.05px"
+                      alt=""
+                      height="230.96px"
                       className={styles["Image-Add-Agenda"]}
                     />
                   </Col>
@@ -1633,7 +1625,8 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <span className={styles["Empty_state_heading"]}>
                       {t("No-agenda-availabe-to-discuss").toUpperCase()}
                     </span>
@@ -1646,7 +1639,7 @@ const Agenda = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.status === "9" ||
             editorRole.status === 9 ? null : (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button
                     text={
@@ -1656,13 +1649,14 @@ const Agenda = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center gap-2 align-items-center'>
+                            className="d-flex justify-content-center gap-2 align-items-center"
+                          >
                             <img
                               draggable={false}
                               src={plusFaddes}
-                              height='10.77px'
-                              width='10.77px'
-                              alt=''
+                              height="10.77px"
+                              width="10.77px"
+                              alt=""
                             />
                             <span className={styles["Add_Agen_Heading"]}>
                               {t("Add-agenda")}
@@ -1673,7 +1667,8 @@ const Agenda = ({
                     }
                     className={styles["AddMoreBtnAgenda"]}
                     disableBtn={
-                      Number(editorRole.status) === 10 && !isAgendaUpdateWhenMeetingActive
+                      Number(editorRole.status) === 10 &&
+                      !isAgendaUpdateWhenMeetingActive
                         ? true
                         : false
                     }
@@ -1682,12 +1677,13 @@ const Agenda = ({
                 </Col>
               </Row>
             )}
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
@@ -1813,7 +1809,13 @@ const Agenda = ({
           setAgenda={setAgenda}
         />
       )}
-
+      {ShowCancelAgendaBuilderModal && (
+        <NewCancelAgendaBuilderModal
+          currentState={currentState}
+          rows={rows}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
