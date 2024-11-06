@@ -226,8 +226,8 @@ button.AttendeeUpper {
   border-radius: 4px !important;
   padding: 3px 20px !important;
   font-size: 14px !important;
-  height: 33px !important;
   font-weight: 600;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isDetail-View-top-btn {
@@ -241,7 +241,6 @@ body[dir="rtl"] .isDetail-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
-  height: 33px !important;
   font-weight: 600;
 }
 
@@ -251,9 +250,8 @@ body[dir="rtl"] .isDetail-View-top-btn {
   border-radius: 4px !important;
   padding: 3px 20px !important;
   font-size: 14px !important;
-  margin-left: -15px;
-  height: 33px !important;
   font-weight: 600;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isAgenda-View-top-btn {
@@ -267,8 +265,6 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
-  margin-left: -15px;
-  height: 33px !important;
   font-weight: 600;
 }
 
@@ -278,9 +274,8 @@ body[dir="rtl"] .isAgenda-View-top-btn {
   border-radius: 4px !important;
   padding: 3px 20px !important;
   font-size: 14px !important;
-  margin-left: -15px;
-  height: 33px !important;
   font-weight: 600;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isAttendee-View-top-btn {
@@ -294,10 +289,7 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
-  margin-left: -15px;
   font-weight: 600;
-
-  height: 33px !important;
 }
 
 .isMinutes-View-top-btn {
@@ -306,9 +298,8 @@ body[dir="rtl"] .isAttendee-View-top-btn {
   border-radius: 4px !important;
   padding: 3px 20px !important;
   font-size: 14px !important;
-  margin-left: -10px;
   font-weight: 600;
-  height: 33px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isMinutes-View-top-btn {
@@ -323,19 +314,16 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   background: #fff !important;
   font-size: 14px !important;
   font-weight: 600;
-  margin-left: -5px;
-  height: 33px !important;
 }
 
 .isDataRoom-View-top-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   border-radius: 4px !important;
-  padding: 3px 6px 4px 7px !important;
+  padding: 3px 20px !important;
   font-size: 14px !important;
-  margin-left: -10px;
   font-weight: 600;
-  height: 33px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isDataRoom-View-top-btn {
@@ -345,12 +333,10 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 .isDataRoom-View-top-btn-Outline {
   color: #505050 !important;
   border-color: #e1e1e1 !important;
-  padding: 3px 6px 4px 7px !important;
+  padding: 3px 20px !important;
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
-  margin-left: -10px;
-  height: 33px !important;
   font-weight: 600;
 }
 
