@@ -64,29 +64,38 @@ const SignupProcessUserManagement = () => {
     message: "",
     severity: "error",
   });
+  let signUpUserManagementRoute = Number(localStorage.getItem("SignupFlowPageRoute"));
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const storedStep = Number(localStorage.getItem("signupCurrentPage"));
+  const [storedStep, setStoredStep] = useState(
+    Number(localStorage.getItem("SignupFlowPageRoute"))
+  );
   useEffect(() => {
     // Retrieve current step from local storage
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      console.log("SignupFlowPageRoute");
       if (storedStep) {
-        dispatch(signUpFlowRoutes(storedStep));
+      console.log("SignupFlowPageRoute");
+      dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
-      localStorage.setItem("SignupFlowPageRoute", 2);
+      console.log("SignupFlowPageRoute");
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      setStoredStep(1);
+      dispatch(signUpFlowRoutes(1));
     }
   }, []);
 
   useEffect(() => {
-    if (UserMangementReducerdefaultRoutingValue) {
-      // Update local storage with the current step
-      localStorage.setItem(
-        "SignupFlowPageRoute",
-        UserMangementReducerdefaultRoutingValue
-      );
+    if (signUpUserManagementRoute !== null && signUpUserManagementRoute !== 0) {
+        setStoredStep(signUpUserManagementRoute);
+    } else {
+      setStoredStep(1);
+      localStorage.setItem("SignupFlowPageRoute", 1);
     }
-  }, [UserMangementReducerdefaultRoutingValue]);
+  }, [signUpUserManagementRoute]);
+        console.log("SignupFlowPageRoute",signUpUserManagementRoute,storedStep,UserMangementReducerdefaultRoutingValue);
+
 
   //For SnakBar Messeges
 
@@ -309,9 +318,7 @@ const SignupProcessUserManagement = () => {
 
   let SignupComponent;
   if (
-    UserMangementReducerdefaultRoutingValue === 1 ||
-    UserMangementReducerdefaultRoutingValue === null ||
-    UserMangementReducerdefaultRoutingValue === undefined
+    UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1
   ) {
     SignupComponent = <PakageDetailsUserManagement />;
   } else if (UserMangementReducerdefaultRoutingValue === 2) {

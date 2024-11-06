@@ -64,7 +64,6 @@ const PakageDetailsUserManagement = () => {
       console.log(error, "error");
     }
   }, []);
-  console.log("check error k");
 
   useEffect(() => {
     try {
@@ -123,20 +122,9 @@ const PakageDetailsUserManagement = () => {
     }
   }, [UserMangementReducergetAllSelectedPakagesData]);
 
-  // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
 
   const ColumnsPakageSelection = [
     {
@@ -437,7 +425,7 @@ const PakageDetailsUserManagement = () => {
         );
         localStorage.setItem("SignupFlowPageRoute", 2);
         dispatch(signUpFlowRoutes(2));
-        navigate("/Signup");
+        // navigate("/Signup");
       } else if (Boolean(trialPage) === true) {
         let requestData = {
           TenureOfSubscriptionID: Number(tenureOfSuscriptionID),

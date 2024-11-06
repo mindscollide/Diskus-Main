@@ -147,7 +147,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.removeItem("SignupFlowPageRoute", 2);
                 localStorage.setItem("SignupFlowPageRoute", 3);
                 dispatch(signUpFlowRoutes(3));
-                navigate("/Signup");
+                // navigate("/Signup");
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
