@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: flex-start;
   /* z-index: 0; */
-  z-index: 999999 !important;
+  z-index: 101 !important;
 }
 
 .new_sidebar {
