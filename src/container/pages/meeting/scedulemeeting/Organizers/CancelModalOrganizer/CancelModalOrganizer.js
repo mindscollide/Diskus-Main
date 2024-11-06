@@ -44,75 +44,72 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (
     <section>
-      {" "}
-      <section>
-        <Modal
-          show={NewMeetingreducer.cancelModalOrganizer}
-          setShow={dispatch(showCancelModalOrganizers)}
-          modalHeaderClassName={"d-block"}
-          modalFooterClassName={"d-block"}
-          onHide={() => {
-            dispatch(showCancelModalOrganizers(false));
-          }}
-          ModalBody={
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <span className={styles["UnsaveheadingFileUpload"]}>
-                    {t("Any-unsaved-changes-will-be")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <span className={styles["UnsaveheadingFileUpload"]}>
-                    {t("Lost-continue")}
-                  </span>
-                </Col>
-              </Row>
-            </>
-          }
-          ModalFooter={
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center gap-2"
-                >
-                  <Button
-                    text={t("No")}
-                    className={styles["Yes_unsave_File_Upload"]}
-                    onClick={handleNOFunctionality}
-                  />
-                  <Button
-                    text={t("Yes")}
-                    className={styles["No_unsave_File_Upload"]}
-                    onClick={handleYesFunctionality}
-                  />
-                </Col>
-              </Row>
-            </>
-          }
-        />
-      </section>
+      <Modal
+        show={NewMeetingreducer.cancelModalOrganizer}
+        setShow={dispatch(showCancelModalOrganizers)}
+        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block"}
+        onHide={() => {
+          dispatch(showCancelModalOrganizers(false));
+        }}
+        ModalBody={
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["UnsaveheadingFileUpload"]}>
+                  {t("Any-unsaved-changes-will-be")}
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["UnsaveheadingFileUpload"]}>
+                  {t("Lost-continue")}
+                </span>
+              </Col>
+            </Row>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center gap-2"
+              >
+                <Button
+                  text={t("No")}
+                  className={styles["Yes_unsave_File_Upload"]}
+                  onClick={handleNOFunctionality}
+                />
+                <Button
+                  text={t("Yes")}
+                  className={styles["No_unsave_File_Upload"]}
+                  onClick={handleYesFunctionality}
+                />
+              </Col>
+            </Row>
+          </>
+        }
+      />
     </section>
   );
 };

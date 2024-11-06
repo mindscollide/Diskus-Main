@@ -157,6 +157,8 @@ const initialState = {
   getMeetingUsersRSVP: null,
   meetingReminderNotification: null,
   updatedPartcipantsData: null,
+
+  cancelAgendaSavedModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1917,6 +1919,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getallDocumentsForAgendaWiseMinutes: [],
         getUserProposedOrganizerData: [],
         getMeeingUsersRSVPDetails: null,
+        cancelAgendaSavedModal: false,
       };
     }
 
@@ -2464,6 +2467,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: true,
         updatedPartcipantsData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UNSAVED_NEW_AGENDA_CANCEL_MODAL: {
+      return {
+        ...state,
+        cancelAgendaSavedModal: action.response,
       };
     }
 
