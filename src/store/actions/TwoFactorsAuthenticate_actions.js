@@ -131,9 +131,11 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   // t("User-doesnt-have-saved-devices")
                 )
               );
+              localStorage.removeItem("signupCurrentPage");
               localStorage.setItem("LoginFlowPageRoute", 4);
               dispatch(LoginFlowRoutes(4));
-              // navigate("/twofac");
+              navigate("/");
+              console.log("Complete");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
