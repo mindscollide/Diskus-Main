@@ -924,14 +924,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       StatusID: 9,
     };
-    console.log("end meeting chaek")
+    console.log("end meeting chaek");
     await dispatch(
       endMeetingStatusApi(
         navigate,
         t,
         newData,
         setViewFlag,
-        setEndMeetingConfirmationModal,
+        setEndMeetingConfirmationModal
       )
     );
   }, []);
@@ -1130,19 +1130,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           // setCurrentMeetingID(0);
           // setAdvanceMeetingModalID(null);
           // setDataroomMapFolderId(0);
-        //   let searchData = {
-        //     Date: "",
-        //     Title: "",
-        //     HostName: "",
-        //     UserID: currentUserID,
-        //     PageNumber:
-        //       meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        //     Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        //     PublishedMeetings:
-        //       currentView && Number(currentView) === 1 ? true : false,
-        //   };
-        // console.log("chek search meeting")
-        // dispatch(searchNewUserMeeting(navigate, searchData, t));
+          //   let searchData = {
+          //     Date: "",
+          //     Title: "",
+          //     HostName: "",
+          //     UserID: currentUserID,
+          //     PageNumber:
+          //       meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          //     Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          //     PublishedMeetings:
+          //       currentView && Number(currentView) === 1 ? true : false,
+          //   };
+          // console.log("chek search meeting")
+          // dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     } catch (error) {
@@ -1179,103 +1179,63 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ModalBody={
             <>
               <Row>
-                <Col lg={3} md={3} sm={2} xs={12} className='isDetailBtn'>
+                <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                   <Button
                     className={
                       isDetails
-                        ? " btn btn-primary d-flex align-items-center isDetail-View-top-btn"
-                        : " btn btn-outline-primary d-flex align-items-center isDetail-View-top-btn-Outline"
+                        ? "isDetail-View-top-btn"
+                        : "isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details")}
                     onClick={changeSelectDetails}
                   />
-                </Col>
-                <Col
-                  lg={3}
-                  md={3}
-                  sm={2}
-                  xs={12}
-                  className={"AgendaShowBtn" + " " + currentLanguage}
-                  // className={"" + " " + currentLanguage}
-                >
                   <Button
                     className={
                       isAgenda
-                        ? " btn btn-primary d-flex align-items-center isAgenda-View-top-btn"
-                        : " btn btn-outline-primary  d-flex align-items-center isAgenda-View-top-btn-Outline"
+                        ? "isAgenda-View-top-btn"
+                        : "isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Agendas")}
                     onClick={changeSelectAgenda}
                     datatut='show-agenda'
                   />
-                </Col>
-                <Col
-                  lg={3}
-                  md={3}
-                  sm={2}
-                  xs={12}
-                  className={" AttendeeShowBtn" + " " + currentLanguage}
-                  // className={"attendees-upper-btn" + " " + currentLanguage}
-                >
                   <Button
                     className={
                       isAttendees
-                        ? " btn btn-primary d-flex align-items-center isAttendee-View-top-btn"
-                        : " btn btn-outline-primary d-flex align-items-center isAttendee-View-top-btn-Outline"
+                        ? "isAttendee-View-top-btn"
+                        : "isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
                     datatut='show-meeting-attendees'
-                    onClick={changeSelectAttendees}></Button>
-                </Col>
-                {minutesOftheMeatingStatus ? (
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={2}
-                    xs={12}
-                    className={" minutes-upper-btn" + " " + currentLanguage}>
+                    onClick={changeSelectAttendees}
+                  />
+                  {minutesOftheMeatingStatus && (
                     <Button
                       className={
                         isMinutes
-                          ? " btn btn-primary d-flex align-items-center isMinutes-View-top-btn"
-                          : " btn btn-outline-primary d-flex align-items-center isMinutes-View-top-btn-Outline"
+                          ? "isMinutes-View-top-btn"
+                          : "isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
                       datatut='show-minutes'
-                      onClick={navigateToMinutes}></Button>
-                  </Col>
-                ) : null}
-
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={2}
-                  xs={12}
-                  className={" DataRoomShowBtn" + " " + currentLanguage}
-                  // className={
-                  //   "attachment-upper-btn view" + " " + currentLanguage
-                  // }
-                >
+                      onClick={navigateToMinutes}
+                    />
+                  )}
                   <Button
                     className={
                       isAttachments
-                        ? " btn btn-primary isDataRoom-View-top-btn" +
-                          " " +
-                          currentLanguage
-                        : " btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
-                          " " +
-                          currentLanguage
+                        ? "isDataRoom-View-top-btn"
+                        : "isDataRoom-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Data-room")}
                     onClick={changeSelectAttachments}
                   />
                 </Col>
-                <Col lg={2} md={2} sm={2} xs={12}></Col>
               </Row>
               {isDetails ? (
                 <>
