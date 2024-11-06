@@ -90,7 +90,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
   const handleViewMeeting = async (meetingID, isQuickMeeting, status) => {
     // console.log(record, "recordrecord")
-    if(Number(status) === 10) {
+    if (Number(status) === 10) {
       let joinMeetingData = {
         FK_MDID: Number(meetingID),
         DateTime: getCurrentDateTimeUTC(),
@@ -125,7 +125,6 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       );
       // setEditMeetingModal(true);
     }
-  
   };
   const handleEditMeeting = async (meetingID, isQuickMeeting) => {
     let Data = { MeetingID: Number(meetingID) };
@@ -242,7 +241,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+              handleViewMeeting(
+                record.pK_MDID,
+                record.isQuickMeeting,
+                record.status
+              );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
             }}>
@@ -343,17 +346,22 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "35px",
+      width: "45px",
       render: (text, record) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
+        console.log(record, "recordrecordrecordrecord");
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12} className='d-flex'>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className='d-flex align-items-center'>
                 {record.isAttachment ? (
                   <span
                     className={
@@ -361,14 +369,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         ? "margin-left-10"
                         : "margin-right-10"
                     }>
-                    <Tooltip placement='topRight' title={t("ClipIcon")}>
-                      <img
-                        src={ClipIcon}
-                        className='cursor-pointer'
-                        alt=''
-                        draggable='false'
-                      />
-                    </Tooltip>
+                    <img
+                      src={ClipIcon}
+                      className='cursor-pointer'
+                      alt=''
+                      draggable='false'
+                      title={t("ClipIcon")}
+                    />
                   </span>
                 ) : (
                   <span
@@ -384,19 +391,14 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       currentLanguage === "ar"
                         ? "margin-left-10"
                         : "margin-right-10"
-                    }
-                    // onClick={(e) => groupChatInitiation(record)}
-                  >
-                    <Tooltip placement='topLeft' title={t("Chat")}>
-                      <img
-                        src={CommentIcon}
-                        className='cursor-pointer'
-                        // width="20.06px"
-                        // height="15.95px"
-                        alt=''
-                        draggable='false'
-                      />
-                    </Tooltip>
+                    }>
+                    <img
+                      src={CommentIcon}
+                      className='cursor-pointer'
+                      alt=''
+                      draggable='false'
+                      title={t("Chat")}
+                    />
                   </span>
                 ) : (
                   <span
@@ -413,7 +415,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                         ? "margin-left-10"
                         : "margin-right-10"
                     }>
-                    <img src={VideoIcon} alt='' draggable='false' />
+                    <img
+                      src={VideoIcon}
+                      alt=''
+                      title={t("Video")}
+                      draggable='false'
+                    />
                   </span>
                 ) : (
                   <span
@@ -424,17 +431,16 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     }></span>
                 )}
                 {record.status === "9" && isOrganiser && (
-                  <Tooltip placement='topLeft' title={t("member")}>
-                    <img
-                      src={member}
-                      className='cursor-pointer'
-                      width='17.1px'
-                      height='16.72px'
-                      alt=''
-                      draggable='false'
-                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                    />
-                  </Tooltip>
+                  <img
+                    src={member}
+                    className='cursor-pointer'
+                    width='17.1px'
+                    height='16.72px'
+                    alt=''
+                    title={t("Member")}
+                    draggable='false'
+                    onClick={() => onClickDownloadIcon(record.pK_MDID)}
+                  />
                 )}
               </Col>
             </Row>
@@ -532,7 +538,10 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);
-                        localStorage.setItem("videoCallURL", record.videoCallURL);
+                        localStorage.setItem(
+                          "videoCallURL",
+                          record.videoCallURL
+                        );
                       }}
                     />
                   </Col>
@@ -547,10 +556,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -560,10 +572,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -573,10 +588,13 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
                 onClick={() => {
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting,record.status);
+                  handleViewMeeting(
+                    record.pK_MDID,
+                    record.isQuickMeeting,
+                    record.status
+                  );
                   localStorage.setItem("meetingTitle", record.title);
                   localStorage.setItem("videoCallURL", record.videoCallURL);
-
                 }}
               />
             );
@@ -907,20 +925,20 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return (
-                  record.meetingAgenda.length > 0 &&
-                  record.meetingAgenda.map((data) => (
-                    <p className='meeting-expanded-row'>
-                      {data.objMeetingAgenda.title}
-                    </p>
-                  ))
-                );
-              },
-              rowExpandable: (record) =>
-                record.meetingAgenda.length > 0 ? true : false,
-            }}
+            // expandable={{
+            //   expandedRowRender: (record) => {
+            //     return (
+            //       record.meetingAgenda.length > 0 &&
+            //       record.meetingAgenda.map((data) => (
+            //         <p className='meeting-expanded-row'>
+            //           {data.objMeetingAgenda.title}
+            //         </p>
+            //       ))
+            //     );
+            //   },
+            //   rowExpandable: (record) =>
+            //     record.meetingAgenda.length > 0 ? true : false,
+            // }}
           />
         </Col>
         {rows && rows.length > 0 ? (

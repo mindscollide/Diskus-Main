@@ -113,12 +113,8 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                 )
               );
               if (response.data.responseResult.userDevices.length === 1) {
-                // navigate("/sendmailwithdevice");
-                //localStorage.setItem("LoginFlowPageRoute", 8);
                 dispatch(LoginFlowRoutes(8));
               } else {
-                // navigate("/twofacmultidevice");
-                //localStorage.setItem("LoginFlowPageRoute", 13);
                 dispatch(LoginFlowRoutes(13));
               }
             } else if (
@@ -135,9 +131,11 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   // t("User-doesnt-have-saved-devices")
                 )
               );
+              localStorage.removeItem("signupCurrentPage");
               localStorage.setItem("LoginFlowPageRoute", 4);
               dispatch(LoginFlowRoutes(4));
-              // navigate("/twofac");
+              navigate("/");
+              console.log("Complete");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

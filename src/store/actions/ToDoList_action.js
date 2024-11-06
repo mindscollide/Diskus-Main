@@ -956,7 +956,12 @@ const TodoCounter = (response) => {
     response: response,
   };
 };
-
+const getDashboardTaskCountMQTT = (response) => {
+  return {
+    type: actions.GETTASKCOUNT_DASHBOARD_MQTT,
+    payload: response
+  }
+}
 //CLear State
 const clearResponce = () => {
   return {
@@ -1911,4 +1916,5 @@ export {
   toDoListLoaderStart,
   uploadDocumentsTaskApi,
   saveFilesTaskApi,
+  getDashboardTaskCountMQTT
 };

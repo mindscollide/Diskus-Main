@@ -81,6 +81,7 @@ import {
   createTaskCommitteeMQTT,
   createTaskGroupMQTT,
   createTaskMeetingMQTT,
+  getDashboardTaskCountMQTT,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
   TodoCounter,
@@ -98,6 +99,7 @@ import {
   LeaveMeetingVideo,
   meetingReminderNotifcation,
   searchNewUserMeeting,
+  getDashboardMeetingCountMQTT,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -533,7 +535,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "NEW_MEETINGS_COUNT".toLowerCase()
             ) {
-              dispatch(meetingCount(data.payload));
+              dispatch(getDashboardMeetingCountMQTT(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
@@ -841,7 +843,7 @@ const Dashboard = () => {
         } else if (
           data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()
         ) {
-          dispatch(TodoCounter(data.payload));
+          dispatch(getDashboardTaskCountMQTT(data.payload));
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()

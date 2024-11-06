@@ -2062,5 +2062,9 @@
   "Your-slots-has-been-added-successfully": "Your slots have been added successfully.",
   "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
   "Please-add-atleast-one-participant": "Please add atleast one participant",
-  "Not-allowed-more-than-5-files": "Not allowed more than 5 files"
+  "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
+  "You-have-unsaved-changes-if-you-leave-this-page-your-changes": "You have unsaved changes. If you leave this page, your changes",
+  "will-be-lost-do-you-want-to-continue-without-saving": "will be lost. Do you want to continue without saving?",
+  "Continue": "Continue",
+  "Unsaved-changes": "Unsaved Changes"
 }
