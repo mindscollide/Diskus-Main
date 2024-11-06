@@ -29,10 +29,8 @@ const Events = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
-  const Spinner = useSelector(
-    (state) => state.meetingIdReducer.Spinner
-  );
-  
+  const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
+
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const [upComingEvents, setUpComingEvents] = useState([]);
@@ -210,8 +208,11 @@ const Events = () => {
                 (upcomingEventsData.meetingDetails.statusID === 1 &&
                   minutesDifference < 15) ||
                 upcomingEventsData.meetingDetails.statusID === 10
-                  ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
-                  : "event-details upcoming_events todayEvent border-0"
+                  ? `${styles["upcoming_events"]} ${styles["event-details"]} ${
+                      styles["todayEvent"]
+                    }
+                     ${"border-0 d-flex align-items-center"}`
+                  : `${styles["event-details"]}`
               }
             >
               <div
@@ -219,14 +220,14 @@ const Events = () => {
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
                     minutesDifference < 15) ||
                   upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details-block"
+                    ? `${styles["event-details-block"]}`
                     : ""
                 }
               >
-                <p className="events-description ">
+                <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
-                <p className="events-dateTime ">
+                <p className={styles["events-dateTime"]}>
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
                       upcomingEventsData.meetingEvent.startTime
@@ -239,7 +240,7 @@ const Events = () => {
                 minutesDifference < 15 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className="Start-Meeting-Upcoming"
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -254,7 +255,7 @@ const Events = () => {
                   minutesDifference < 15 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className="Start-Meeting-Upcoming"
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -268,7 +269,7 @@ const Events = () => {
                 upcomingEventsData.participantRoleID === 2 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -280,7 +281,7 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 4 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -292,7 +293,7 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 1 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -306,14 +307,14 @@ const Events = () => {
             </div>
           ) : indexforUndeline !== null && indexforUndeline === index ? (
             <>
-              <span className="bordertop" />
+              <span className={styles["bordertop"]} />
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
                     minutesDifference < 15) ||
                   upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details d-flex justify-content-center align-items-center"
-                    : "event-details"
+                    ? `${styles["event-details d-flex justify-content-center align-items-center"]}`
+                    : `${styles["event-details"]}`
                 }
               >
                 <div
@@ -321,14 +322,14 @@ const Events = () => {
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
                       minutesDifference < 15) ||
                     upcomingEventsData.meetingDetails.statusID === 10
-                      ? "event-details-block"
+                      ? `${styles["event-details-block"]}`
                       : ""
                   }
                 >
-                  <p className="events-description">
+                  <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
-                  <p className="events-dateTime">
+                  <p className={styles["events-dateTime"]}>
                     {newTimeFormaterAsPerUTCFullDate(
                       upcomingEventsData.meetingEvent.meetingDate +
                         upcomingEventsData.meetingEvent.startTime
@@ -341,7 +342,7 @@ const Events = () => {
                   minutesDifference < 15 ? (
                     <Button
                       text={t("Start-meeting")}
-                      className="Start-Meeting-Upcoming"
+                      className={styles["Start-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -354,7 +355,7 @@ const Events = () => {
                       false && minutesDifference < 15 ? (
                     <Button
                       text={t("Start-meeting")}
-                      className="Start-Meeting-Upcoming"
+                      className={styles["Start-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
 
@@ -369,7 +370,7 @@ const Events = () => {
                   upcomingEventsData.participantRoleID === 2 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className="joining-Meeting-Upcoming"
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -381,7 +382,7 @@ const Events = () => {
                   ) : upcomingEventsData.participantRoleID === 4 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className="joining-Meeting-Upcoming"
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -393,7 +394,7 @@ const Events = () => {
                   ) : upcomingEventsData.participantRoleID === 1 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className="joining-Meeting-Upcoming"
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -412,8 +413,8 @@ const Events = () => {
                 (upcomingEventsData.meetingDetails.statusID === 1 &&
                   minutesDifference < 15) ||
                 upcomingEventsData.meetingDetails.statusID === 10
-                  ? "event-details d-flex justify-content-center align-items-center"
-                  : "event-details"
+                  ? `${styles["event-details d-flex justify-content-center align-items-center"]}`
+                  : `${styles["event-details"]}`
               }
             >
               <div
@@ -421,14 +422,14 @@ const Events = () => {
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
                     minutesDifference < 15) ||
                   upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details-block"
+                    ? `${styles["event-details-block"]}`
                     : ""
                 }
               >
-                <p className="events-description">
+                <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
-                <p className="events-dateTime">
+                <p className={styles["events-dateTime"]}>
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
                       upcomingEventsData.meetingEvent.startTime
@@ -441,7 +442,7 @@ const Events = () => {
                 minutesDifference < 15 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className="Start-Meeting-Upcoming"
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -454,7 +455,7 @@ const Events = () => {
                     false && minutesDifference < 15 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className="Start-Meeting-Upcoming"
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -468,7 +469,7 @@ const Events = () => {
                 upcomingEventsData.participantRoleID === 2 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -480,7 +481,7 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 4 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -492,7 +493,7 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 1 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className="joining-Meeting-Upcoming"
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(

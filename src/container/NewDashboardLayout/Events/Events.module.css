@@ -1,12 +1,142 @@
 .Events_Empty {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
 }
 .No_UpcomingEvent_Text {
-    color: #6172d6 !important;
-    font-weight: 600;
-    font-size: 18px;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.upcoming_events {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+body[dir="rtl"] .upcoming_events {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.upcoming_events p {
+  color: #fff !important;
+}
+
+.Start-Meeting-Upcoming,
+.Start-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 125px;
+  height: auto;
+  font-size: 11px;
+  background: #fff !important;
+  border: none;
+  border-radius: 4px !important;
+  color: #6172d6 !important;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.joining-Meeting-Upcoming,
+.joining-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 125px;
+  font-size: 11px;
+  background: #fff !important;
+  border: none;
+  border-radius: 4px !important;
+  color: #81db86 !important;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Start-Meeting-Upcoming,
+.Start-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
+  width: 125px;
+  height: auto;
+  font-size: 11px;
+  background: #fff !important;
+  border: none;
+  border-radius: 4px !important;
+  color: #6172d6 !important;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todayEvent {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.event-details-block {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.event-details {
+  padding: 8px 15px;
+  border-radius: 7px;
+  margin: 5px 5px;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #6172d6;
+}
+.event-details:hover {
+  padding: 8px 15px;
+  border-radius: 7px;
+  margin: 5px 5px;
+  color: #fff;
+  font-size: 15px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border-color: transparent !important;
+  border-right: none;
+  border-left: none;
+}
+
+body[dir="rtl"] .event-details:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.event-details:hover p {
+  color: #fff !important;
+}
+
+.event-details p {
+  margin: 0;
+}
+
+.events-description {
+  font-size: calc(22px - 20%) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #6172d6;
+  font-weight: 600;
+}
+
+.events-dateTime {
+  font-size: calc(16px - 24%) !important;
+  color: #000;
+  font-weight: 600;
+}
+
+.bordertop {
+  border: 1px solid #707070;
+  display: block;
+  margin-left: 15px;
+  margin-right: 15px;
 }
