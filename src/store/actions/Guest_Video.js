@@ -844,7 +844,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              dispatch(guestVideoNavigationScreen(4));
+              dispatch(guestVideoNavigationScreen(1));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
