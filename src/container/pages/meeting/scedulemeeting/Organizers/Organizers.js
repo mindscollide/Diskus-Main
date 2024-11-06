@@ -4,7 +4,6 @@ import {
   Button,
   Table,
   TextField,
-  Switch,
   Notification,
 } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
