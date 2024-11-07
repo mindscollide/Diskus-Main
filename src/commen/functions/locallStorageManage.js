@@ -34,7 +34,8 @@ export const localStorageManage = (
     localStorage.getItem("remeberPassword")
   );
   let LoginFlowPageRoute =
-    localStorage.getItem("LoginFlowPageRoute") !== null
+    localStorage.getItem("LoginFlowPageRoute") !== null ||
+    localStorage.getItem("LoginFlowPageRoute") !== undefined
       ? JSON.parse(localStorage.getItem("LoginFlowPageRoute"))
       : 1;
 
