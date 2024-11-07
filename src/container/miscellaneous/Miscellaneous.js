@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Accordian, Loader } from "./../../components/elements";
+import { Accordian } from "./../../components/elements";
 import "./Miscellaneous.css";
 import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
 import { Row, Col, Card } from "react-bootstrap";
@@ -50,7 +50,6 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
-      {/* {fAQsReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

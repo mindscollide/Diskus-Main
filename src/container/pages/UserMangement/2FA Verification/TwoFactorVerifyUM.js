@@ -3,7 +3,7 @@ import styles from "./TwoFactorVerifyUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import img5 from "../../../../assets/images/5.png";
 import img10 from "../../../../assets/images/10.png";
@@ -298,7 +298,6 @@ const TwoFactorVerifyUM = () => {
           </Col>
         </Row>
       </Container>
-      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
     </>
   );
 };

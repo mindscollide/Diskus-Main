@@ -4,12 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../../../../components/elements/index";
+import { Notification } from "../../../../components/elements/index";
 import {
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
 } from "../../../../store/actions/workflow_actions";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
 import {
@@ -28,7 +27,6 @@ const ViewSignatureDocument = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
-    Loading,
     getDataroomAnnotation,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -44,7 +42,6 @@ const ViewSignatureDocument = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
-  const [removeXmlAfterHideDAta, setRemoveXmlAfterHideDAta] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
@@ -521,7 +518,6 @@ const ViewSignatureDocument = () => {
         setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
-      {/* {Loading && <Loader />} */}
     </>
   );
 };

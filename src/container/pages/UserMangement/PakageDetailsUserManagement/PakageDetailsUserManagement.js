@@ -599,9 +599,6 @@ const PakageDetailsUserManagement = () => {
           </>
         ) : null}
       </>
-      {/* {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : null} */}
     </Container>
   );
 };

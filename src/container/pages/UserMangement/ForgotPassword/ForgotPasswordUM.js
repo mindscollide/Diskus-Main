@@ -7,7 +7,6 @@ import LanguageSelector from "./../../../../components/elements/languageSelector
 import {
   Button,
   Notification,
-  Loader,
 } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,12 +21,6 @@ const ForgotPasswordUM = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-
-  const authLoadingData = useSelector((state) => state.auth.Loading);
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -212,7 +205,6 @@ const ForgotPasswordUM = () => {
           </Col>
         </Row>
       </Container>
-      {/* {authLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

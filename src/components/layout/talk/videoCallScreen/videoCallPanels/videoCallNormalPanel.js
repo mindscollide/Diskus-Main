@@ -18,26 +18,19 @@ import {
   generateURLParticipant,
 } from "../../../../../commen/functions/urlVideoCalls";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
-import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
 import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
+import { useTranslation } from "react-i18next";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
 
-  const { videoFeatureReducer, VideoMainReducer, GuestVideoReducer } =
-    useSelector((state) => state);
-  console.log(
-    videoFeatureReducer.participantWaitinglistBox,
-    "GuestVideoReducerGuestVideoReducer"
+  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state
   );
-  let currentUserID = Number(localStorage.getItem("userID"));
-  // let currentUserName = localStorage.getItem('name')
 
-  let callerID = Number(localStorage.getItem("callerID"));
-  let recipentID = Number(localStorage.getItem("recipentID"));
-  let roomID = localStorage.getItem("NewRoomID");
-  let callerName = localStorage.getItem("callerName");
-  let recipentName = localStorage.getItem("recipentName");
+  let currentUserID = Number(localStorage.getItem("userID"));
+  const { t } = useTranslation();
+
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
   localStorage.setItem("VideoView", "Sidebar");
@@ -50,9 +43,8 @@ const VideoPanelNormal = () => {
   const [callerURL, setCallerURL] = useState("");
   const [participantURL, setParticipantURL] = useState("");
 
-  const [isActiveIcon, setIsActiveIcon] = useState(false);
-  const [isNoteActive, setIsNoteActive] = useState(false);
-  const [isNote2Active, setIsNote2Active] = useState(false);
+  const [showTile, setShowTile] = useState(false);
+
   const [isScreenActive, setIsScreenActive] = useState(false);
 
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
@@ -60,60 +52,6 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
-
-  const onClickCloseChatHandler = () => {
-    if (isActiveIcon === false) {
-      dispatch(chatEnableNormalFlag(true));
-      setIsActiveIcon(true);
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    } else {
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
-
-  const onClickNoteIconHandler = () => {
-    if (isNoteActive === false) {
-      dispatch(agendaEnableNormalFlag(true));
-      setIsNoteActive(true);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    } else {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
-
-  const onClickMinutesHandler = () => {
-    if (isNote2Active === false) {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(true));
-      setIsNote2Active(true);
-    } else {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
 
   useEffect(() => {
     try {
@@ -179,8 +117,6 @@ const VideoPanelNormal = () => {
     }
   };
 
-  const [showTile, setShowTile] = useState(false);
-
   const layoutCurrentChange = () => {
     let videoView = localStorage.getItem("VideoView");
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -213,7 +149,6 @@ const VideoPanelNormal = () => {
   };
 
   useEffect(() => {
-    console.log("Normalize UseEffect Check", micStatus, isMicActive);
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (micStatus !== isMicActive) {
@@ -270,9 +205,9 @@ const VideoPanelNormal = () => {
             {VideoMainReducer.FullLoader === true ? (
               <>
                 <LoaderPanelVideoScreen
-                  message={
-                    "Securing your connection, You'll be able to join in a moment"
-                  }
+                  message={t(
+                    "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
+                  )}
                 />
               </>
             ) : (

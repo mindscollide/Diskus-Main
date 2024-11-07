@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./UpdatedCancelSubscription.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
@@ -24,10 +24,6 @@ const UpdatedCancelSubscription = () => {
         state.UserMangementReducer
           .organizationSelectedPakagesByOrganizationIDData
     );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   //Cancel Subscription Table Data
   const [cancelSubscription, setCancelSubscription] = useState([]);
@@ -552,7 +548,6 @@ const UpdatedCancelSubscription = () => {
           />
         </Col>
       </Row>
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

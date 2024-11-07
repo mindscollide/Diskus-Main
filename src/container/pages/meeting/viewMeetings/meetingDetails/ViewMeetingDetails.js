@@ -854,7 +854,6 @@ const ViewMeetingDetails = ({
             handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
           />
         }
-        {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}

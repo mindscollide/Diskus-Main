@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./BillProcessStepThree.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo, Loader } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,9 +22,7 @@ const BillProcessStepThree = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
-  const { UserMangementReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { UserMangementReducer } = useSelector((state) => state);
 
   const organizationName = localStorage.getItem("organizatioName");
   const organizationSubscriptionID = localStorage.getItem(
@@ -360,9 +358,6 @@ const BillProcessStepThree = () => {
           </Col>
         </Row>
       </section>
-      {/* {UserMangementReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

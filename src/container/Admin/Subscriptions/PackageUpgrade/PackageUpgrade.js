@@ -9,9 +9,7 @@ import styles from "../PackageUpgrade/PackageUpgrade.module.css";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageUpgrade = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { GetSubscriptionPackage } = useSelector((state) => state);
 
   const [currentPackageId, setCurrentPackageId] = useState(0);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
@@ -341,9 +339,6 @@ const PackageUpgrade = () => {
           )}
         </Row>
       </Container>
-      {/* {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

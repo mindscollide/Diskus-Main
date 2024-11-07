@@ -1,4 +1,4 @@
-import { Button, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useTranslation } from "react-i18next";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -17,7 +17,6 @@ import LanguageSelector from "../../../../../components/elements/languageSelecto
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationCodeThree = () => {
   const { t } = useTranslation();
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -326,10 +325,6 @@ const VerificationCodeThree = () => {
             </Row>
           </Col>
         </Row>
-        {/* {(Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null) ||
-        LanguageReducer.Loading ? (
-          <Loader />
-        ) : null} */}
       </Container>
     </>
   );

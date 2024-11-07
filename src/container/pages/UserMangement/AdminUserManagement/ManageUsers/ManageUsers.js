@@ -11,7 +11,6 @@ import {
   Checkbox,
   Table,
   TextField,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
 import greenCheck from "../../../../../assets/images/greenCheck.svg";
@@ -896,7 +895,6 @@ const ManageUsers = () => {
       {UserManagementModalssuccessfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
       <Notification open={open} setOpen={setOpen} />
     </Container>
   );

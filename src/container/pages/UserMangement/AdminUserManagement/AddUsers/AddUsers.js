@@ -7,7 +7,6 @@ import {
   Button,
   Checkbox,
   TextField,
-  Loader,
 } from "../../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
@@ -28,8 +27,6 @@ const AddUsers = () => {
 
   const dispatch = useDispatch();
 
-  const { UserMangementReducer } = useSelector((state) => state);
-
   const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
     (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
   );
@@ -40,10 +37,6 @@ const AddUsers = () => {
         state.UserMangementReducer
           .organizationSelectedPakagesByOrganizationIDData
     );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   let organizationID = localStorage.getItem("organizationID");
   let organizationNames = localStorage.getItem("organizatioName");
@@ -551,7 +544,6 @@ const AddUsers = () => {
           )}
         </Col>
       </Row>
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

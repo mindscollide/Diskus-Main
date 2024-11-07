@@ -10,7 +10,6 @@ import {
   Button,
   Table,
   Notification,
-  Loader,
 } from "../../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -368,7 +367,6 @@ const Participants = ({
         )}
         <Notification open={open} setOpen={setOpen} />
       </section>
-      {/* {NewMeetingreducer.LoadingParticipants && <Loader />} */}
     </>
   );
 };

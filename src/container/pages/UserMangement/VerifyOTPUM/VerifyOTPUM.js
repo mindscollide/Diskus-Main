@@ -10,7 +10,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import {
   Button,
   VerificationInputField,
-  Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
@@ -24,8 +23,6 @@ const VerifyOTPUM = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
   const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
@@ -302,7 +299,6 @@ const VerifyOTPUM = () => {
           </Col>
         </Row>
       </Container>
-      {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

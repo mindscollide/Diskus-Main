@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { getSubscriptionUpgradePaymentCompleteApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm2 = () => {
-  const { t, i18n } = useTranslation();
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { t } = useTranslation();
+  const { Authreducer } = useSelector((state) => state);
   const [totalAmount, setTotalAmount] = useState(0);
   let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"));
   useEffect(() => {
@@ -182,7 +182,6 @@ const PaymentForm2 = () => {
           </Col>
         </Row>
       </Container>
-      {/* {Authreducer.Loading || (LanguageReducer.Loading && <Loader />)} */}
     </>
   );
 };

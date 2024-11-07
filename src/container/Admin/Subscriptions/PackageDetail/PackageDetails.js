@@ -12,9 +12,7 @@ import { isHTML } from "../../../../commen/functions/html_formater";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageDetails = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { GetSubscriptionPackage } = useSelector((state) => state);
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
@@ -298,9 +296,6 @@ const PackageDetails = () => {
           </Col>
         </Row>
       </Container>
-      {/* {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./CancelSubscriptionAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import CancelSubscriptionModal from "../../ModalsUserManagement/CancelSubscriptionModal/CancelSubscriptionModal";
 import { useSelector } from "react-redux";
 import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMangementModalActions";
@@ -25,12 +25,6 @@ const CancelSubscriptionAdmin = () => {
 
   const { CancellationDetials } = location.state;
 
-  console.log(CancellationDetials, "CancellationDetialsCancellationDetials");
-
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
-  );
-
   const UserManagementModalscancelSubscriptionModal = useSelector(
     (state) => state.UserManagementModals.cancelSubscriptionModal
   );
@@ -45,10 +39,6 @@ const CancelSubscriptionAdmin = () => {
         state.UserMangementReducer
           .organizationSelectedPakagesByOrganizationIDData
     );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   // state for passing SubscriptionStatusID
   const [completionContract, setCompletionContract] = useState(false);
@@ -362,7 +352,6 @@ const CancelSubscriptionAdmin = () => {
           subscriptionID={subscriptionID}
         />
       )}
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

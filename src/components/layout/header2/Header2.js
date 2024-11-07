@@ -48,7 +48,7 @@ const Header2 = ({ isVideo }) => {
   const state = useSelector((state) => state);
   const { settingReducer, NewMeetingreducer } = state;
   const { UserProfileData } = settingReducer;
-  const { UserManagementModals, Authreducer } = useSelector((state) => state);
+  const { UserManagementModals } = useSelector((state) => state);
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
@@ -1186,7 +1186,6 @@ const Header2 = ({ isVideo }) => {
         />
       )}
       {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
-      {/* {Authreducer.Loading ? <Loader /> : null} */}
       {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
     </>
   );

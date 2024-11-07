@@ -5,7 +5,6 @@ import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
 import {
   Button,
-  Loader,
   Modal,
   Notification,
   NotificationBar,
@@ -165,48 +164,8 @@ const Dashboard = () => {
   const location = useLocation();
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
-  const {
-    videoFeatureReducer,
-    assignees,
-    CommitteeReducer,
-    toDoListReducer,
-    getTodosStatus,
-    downloadReducer,
-    todoStatus,
-    uploadReducer,
-    settingReducer,
-    fAQsReducer,
-    meetingIdReducer,
-    calendarReducer,
-    OnBoardModal,
-    postAssigneeComments,
-    VideoChatReducer,
-    minuteofMeetingReducer,
-    countryNamesReducer,
-    GetSubscriptionPackage,
-    Authreducer,
-    roleListReducer,
-    NotesReducer,
-    GroupsReducer,
-    ResolutionReducer,
-    RealtimeNotification,
-    OrganizationBillingReducer,
-    PollsReducer,
-    NewMeetingreducer,
-    LanguageReducer,
-    webViewer,
-    MeetingOrganizersReducer,
-    MeetingAgendaReducer,
-    attendanceMeetingReducer,
-    actionMeetingReducer,
-    AgendaWiseAgendaListReducer,
-    DataRoomReducer,
-    DataRoomFileAndFoldersDetailsReducer,
-    SignatureWorkFlowReducer,
-    UserMangementReducer,
-    MinutesReducer,
-    UserManagementModals,
-  } = useSelector((state) => state);
+  const { videoFeatureReducer, meetingIdReducer, UserManagementModals } =
+    useSelector((state) => state);
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
@@ -2560,50 +2519,6 @@ const Dashboard = () => {
           videoFeatureReducer.MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-          {/* {navigator.onLine ? ( // Check for loading states to determine whether to display loader
-            NewMeetingreducer.Loading ||
-            assignees.Loading ||
-            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ||
-            CommitteeReducer.Loading ||
-            toDoListReducer.Loading ||
-            todoStatus.Loading ||
-            getTodosStatus.Loading ||
-            MeetingAgendaReducer.Loading ||
-            actionMeetingReducer.Loading ||
-            AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ||
-            attendanceMeetingReducer.Loading ||
-            webViewer.Loading ||
-            LanguageReducer.Loading ||
-            uploadReducer.Loading ||
-            settingReducer.Loading ||
-            fAQsReducer.Loading ||
-            meetingIdReducer.Loading ||
-            calendarReducer.Loading ||
-            OnBoardModal.Loading ||
-            postAssigneeComments.Loading ||
-            VideoChatReducer.Loading ||
-            minuteofMeetingReducer.Loading ||
-            countryNamesReducer.Loading ||
-            GetSubscriptionPackage.Loading ||
-            Authreducer.Loading ||
-            roleListReducer.Loading ||
-            NotesReducer.Loading ||
-            GroupsReducer.Loading ||
-            GroupsReducer.getAllLoading ||
-            ResolutionReducer.Loading ||
-            RealtimeNotification.Loading ||
-            OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ||
-            MinutesReducer.Loading ||
-            DataRoomFileAndFoldersDetailsReducer.Loading ||
-            SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading ? (
-              <Loader />
-            ) : null
-          ) : null} */}
           {/* Disconnectivity Modal  */}
           {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
           <Notification

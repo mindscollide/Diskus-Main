@@ -4,7 +4,6 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  Loader,
   TableToDo,
   TextField,
 } from "../../../../../../components/elements";
@@ -38,14 +37,8 @@ const DowngradeSubscription = () => {
 
   const { subscriptionDetails } = location.state;
 
-  const { UserMangementReducer } = useSelector((state) => state);
-
   const UserMangementReducergetOrganizationWalletData = useSelector(
     (state) => state.UserMangementReducer.getOrganizationWallet
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
   );
 
   //Data States
@@ -553,7 +546,6 @@ const DowngradeSubscription = () => {
             />
           </Col>
         </Row>
-        {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
       </section>
     </>
   );

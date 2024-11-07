@@ -346,15 +346,10 @@ const SignInUserManagement = () => {
               </Col>
             </Row>
             <Notification open={open} setOpen={setOpen} />
-            {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? (
-              <Loader />
-            ) : null} */}
           </>
         )}
       </Container>
-      {getpayemntString && getpayemntString !== "" && UserMangementReducerLoading && (
-        <Loader />
-      )}
+      {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
     </>
   );

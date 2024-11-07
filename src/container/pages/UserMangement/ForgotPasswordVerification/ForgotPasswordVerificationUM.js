@@ -9,7 +9,6 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import {
   Button,
   Notification,
-  Loader,
   VerificationInputField,
 } from "../../../../components/elements";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -25,20 +24,6 @@ const ForgotPasswordVerificationUM = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-
-  const authLoadingData = useSelector((state) => state.auth.Loading);
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   const [key, setKey] = useState(1);
   const [open, setOpen] = useState({
@@ -335,13 +320,6 @@ const ForgotPasswordVerificationUM = () => {
           </Col>
         </Row>
       </Container>
-      {/* {authLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : AuthreducerLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : null} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

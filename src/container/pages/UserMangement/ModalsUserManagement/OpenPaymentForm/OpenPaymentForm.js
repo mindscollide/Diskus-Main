@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Loader, Modal } from "../../../../../components/elements";
+import { Modal } from "../../../../../components/elements";
 import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 
 const OpenPaymentForm = () => {
@@ -17,10 +17,6 @@ const OpenPaymentForm = () => {
 
   const UserMangementReducerpaymentInitiateDataData = useSelector(
     (state) => state.UserMangementReducer.paymentInitiateData
-  );
-
-  const UserManagementModalsLoadingData = useSelector(
-    (state) => state.UserManagementModals.Loading
   );
 
   useEffect(() => {
@@ -61,7 +57,6 @@ const OpenPaymentForm = () => {
           }
         />
       </Container>
-      {/* {UserManagementModalsLoadingData ? <Loader /> : null} */}
     </>
   );
 };

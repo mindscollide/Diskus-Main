@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./SubscriptionDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -564,7 +564,6 @@ const SubscriptionDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

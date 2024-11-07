@@ -11,7 +11,6 @@ import {
   Checkbox,
   Modal,
   TextField,
-  Loader,
   AddtionalUserCard,
 } from "../../../../../components/elements";
 import Cookies from "js-cookie";
@@ -506,7 +505,6 @@ const CreateAddtionalUsersModal = () => {
                 </Col>
               </Row>
             </section>{" "}
-            {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
           </>
         }
       />

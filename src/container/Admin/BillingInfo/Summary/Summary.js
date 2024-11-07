@@ -50,12 +50,9 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const {
-    Authreducer,
-    OrganizationBillingReducer,
-    LanguageReducer,
-    adminReducer,
-  } = useSelector((state) => state);
+  const { Authreducer, OrganizationBillingReducer, adminReducer } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
@@ -428,11 +425,6 @@ const Summary = () => {
         />
         <Notification open={open} setOpen={setOpen} />
       </Fragment>
-      {/* {OrganizationBillingReducer.Loading ||
-      LanguageReducer.Loading ||
-      adminReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

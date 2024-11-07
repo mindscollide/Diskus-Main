@@ -16,7 +16,7 @@ import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import "react-phone-input-2/lib/style.css";
-import { Button, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 import {
@@ -933,7 +933,6 @@ const AddUserMain = () => {
             </Container>
           </Col>
         </Row>
-        {/* {UserMangementReducer.Loading ? <Loader /> : null} */}
       </Container>
     </>
   );

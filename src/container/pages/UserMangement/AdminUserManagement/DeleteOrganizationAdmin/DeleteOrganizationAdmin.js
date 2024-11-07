@@ -2,16 +2,11 @@ import React from "react";
 import styles from "./DeleteOrganizationAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import FailedIcon from "../../../../../assets/images/failed.png";
-import { Button, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 const DeleteOrganizationAdmin = () => {
   const { t } = useTranslation();
 
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   return (
     <Container>
@@ -109,7 +104,6 @@ const DeleteOrganizationAdmin = () => {
           </Row>
         </Col>
       </Row>
-      {/* {UserMangementReducerLoadingData ? <Loader /> : null} */}
     </Container>
   );
 };

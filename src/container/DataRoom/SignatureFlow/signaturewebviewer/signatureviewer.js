@@ -10,7 +10,6 @@ import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
 import { useTranslation } from "react-i18next";
 import {
   Notification,
-  Loader,
   Modal,
   Button,
   TextField,
@@ -20,7 +19,6 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
-  clearWorkFlowResponseMessage,
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
 } from "../../../../store/actions/workflow_actions";
@@ -40,7 +38,6 @@ const SignatureViewer = () => {
     getAllFieldsByWorkflowID,
     saveWorkFlowResponse,
     getWorkfFlowByFileId,
-    Loading,
     ResponseMessage,
     getDataroomAnnotation,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -1725,6 +1722,7 @@ const SignatureViewer = () => {
                                             className="my-1 d-flex align-items-end mb-2"
                                           >
                                             <img
+                                              alt=""
                                               src={DragIcon}
                                               width={20}
                                               ref={provided.innerRef}
@@ -1787,6 +1785,7 @@ const SignatureViewer = () => {
                                             className="my-1 d-flex align-items-end mb-3"
                                           >
                                             <img
+                                              alt=""
                                               src={DeleteIcon}
                                               className="cursor-pointer"
                                               onClick={() =>
@@ -1881,7 +1880,6 @@ const SignatureViewer = () => {
           setPdfResponceData={setPdfResponceData}
         />
       )}
-      {/* {Loading && <Loader />} */}
     </>
   );
 };

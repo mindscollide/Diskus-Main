@@ -47,7 +47,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
   const navigate = useNavigate();
-  const { adminReducer, LanguageReducer } = useSelector((state) => state);
+  const { adminReducer } = useSelector((state) => state);
   const [allMeetingData, setAllMeetingData] = useState([]);
   const [isMeetingId, setMeetingId] = useState(0);
   const [isMeetingStatusId, setMeetingStatusId] = useState(0);
@@ -1195,11 +1195,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      {adminReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : (rows.length < 0 && rows.length === 0) || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

@@ -11,7 +11,6 @@ import {
   Button,
   Checkbox,
   Notification,
-  Loader,
 } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import {
@@ -411,7 +410,6 @@ const PasswordVerification = () => {
         </Row>
       </Container>
       <Notification open={open} setOpen={setOpen} />
-      {/* {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null} */}
     </>
   );
 };
