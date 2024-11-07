@@ -224,8 +224,7 @@ const Polling = () => {
       ) {
         if (PollsReducer.SearchPolls.polls.length > 0) {
           setTotalRecords(PollsReducer.SearchPolls.totalRecords);
-          // setRows(PollsReducer.SearchPolls.polls);
-          setRows([]);
+          setRows(PollsReducer.SearchPolls.polls);
         } else {
           setRows([]);
         }
