@@ -159,6 +159,7 @@ const initialState = {
   updatedPartcipantsData: null,
 
   cancelAgendaSavedModal: false,
+  shareViaDataRoomPathConfirmation: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2477,6 +2478,12 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SHARE_VIA_DATAROOM_PATH_CONFIRMATION: {
+      return {
+        ...state,
+        shareViaDataRoomPathConfirmation: action.response,
+      };
+    }
     default:
       return {
         ...state,

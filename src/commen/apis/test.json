@@ -1,9 +1,20 @@
 {
-  "MeetingID": 3920,
-  "SendResponsebyDate": "20241018",
-  "ProposedDates": [
-    { "ProposedDate": "20241018", "StartTime": "090000", "EndTime": "100000" },
-    { "ProposedDate": "20241019", "StartTime": "090000", "EndTime": "100000" },
-    { "ProposedDate": "20241020", "StartTime": "110000", "EndTime": "130000" }
-  ]
+  "ListOfEmailAddresses": ["saifEssential@yopmail.com"],
+  "Messege": "test",
+  "isNotify": true,
+  "sendViaDataRoom": false,
+  "BoarddeckFileParams": {
+    "PK_MDID": 3887,
+    "fetchOrganizers": true,
+    "fetchAgendaContributors": true,
+    "fetchParticipants": true,
+    "fetchMinutes": true,
+    "fetchTasks": true,
+    "fetchPolls": true,
+    "fetchAttendance": true,
+    "fetchVideo": true,
+    "fetchAgenda": true,
+    "fetchAgendaWithAttachments": true,
+    "fetchAdvanceMeetingDetails": true
+  }
 }

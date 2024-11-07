@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import {
   boardDeckEmailModal,
   boardDeckShareModal,
+  showShareViaDataRoomPathConfirmation,
 } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
+  console.log(radioValue, "radioValueradioValueradioValueradioValue");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -31,8 +33,13 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
   }, []);
 
   const handleSharebutton = () => {
-    dispatch(boardDeckShareModal(false));
-    dispatch(boardDeckEmailModal(true));
+    if (radioValue === 1) {
+      dispatch(boardDeckShareModal(false));
+      dispatch(showShareViaDataRoomPathConfirmation(true));
+    } else {
+      dispatch(boardDeckShareModal(false));
+      dispatch(boardDeckEmailModal(true));
+    }
   };
 
   const handleCrossButton = () => {

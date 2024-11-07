@@ -1,0 +1,65 @@
+.FileShareModalHeading {
+  color: #6172d6 !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+}
+
+.YourFileSharedHeading {
+  color: #5a5a5a !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.PathBoxStyles {
+  background: #e1e1e1 !important;
+  display: inline-block !important;
+  height: 60px !important;
+  width: 70% !important;
+  padding: 15px 10px !important;
+  border-radius: 4px !important;
+}
+
+.PaddingForSection {
+  padding: 0px 30px !important;
+}
+
+.PathColor {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+.ViewDataRoomBtn {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.ViewDataRoomBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.CloseBtn {
+  padding: 12px 30px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.CloseBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}

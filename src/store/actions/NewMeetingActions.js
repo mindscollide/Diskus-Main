@@ -9278,6 +9278,13 @@ const showCancelModalAgendaBuilder = (response) => {
   };
 };
 
+const showShareViaDataRoomPathConfirmation = (response) => {
+  return {
+    type: actions.SHARE_VIA_DATAROOM_PATH_CONFIRMATION,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9451,4 +9458,5 @@ export {
   ParticipantsData,
   GetAllMeetingDetialsData,
   showCancelModalAgendaBuilder,
+  showShareViaDataRoomPathConfirmation,
 };
