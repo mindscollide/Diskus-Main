@@ -407,7 +407,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Col sm={12} md={12} lg={12}>
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
-                    {TaskAssignedTo.forEach((assgineeData, index) => {
+                    {TaskAssignedTo.map((assgineeData, index) => {
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)

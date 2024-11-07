@@ -80,7 +80,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     organizationName = "",
     fK_UID = 0,
     userProfilePicture = "",
-  } = UserProfileData;
+  } = UserProfileData || {};
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);

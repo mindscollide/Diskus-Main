@@ -4,7 +4,6 @@ import {
   Button,
   Table,
   TextField,
-  Switch,
   Notification,
 } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
@@ -95,6 +94,10 @@ const Organizers = ({
 
   const navigate = useNavigate();
 
+  const UserID = localStorage.getItem("userID");
+
+  console.log(UserID, "recordrecordrecord");
+
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
@@ -155,22 +158,6 @@ const Organizers = ({
         return row;
       });
     });
-  };
-
-  const handleSwitchChange = (checked, rowIndex) => {
-    const updatedRowsData = rowsData.map((row, index) => {
-      if (index === rowIndex) {
-        return {
-          ...row,
-          isPrimaryOrganizer: checked,
-        };
-      }
-      return {
-        ...row,
-        isPrimaryOrganizer: false,
-      };
-    });
-    setRowsData(updatedRowsData);
   };
 
   let allowRSVPValue =
@@ -269,12 +256,11 @@ const Organizers = ({
               sm={12}
               className="d-flex gap-3 align-items-center"
             >
-              <Switch
-                checkedValue={text}
-                onChange={(checked) => handleSwitchChange(checked, rowIndex)}
-                disabled={record.disabledSwitch === true ? true : false}
-              />
-              <label className="column-boldness w-100">{t("Primary")}</label>
+              <label className="column-boldness w-100">
+                {Number(record.userID) !== Number(UserID)
+                  ? t("Secondary")
+                  : t("Primary")}
+              </label>
             </Col>
           </Row>
         ),
@@ -411,7 +397,11 @@ const Organizers = ({
         align: "left",
 
         render: (text, record) => {
-          if (record.isDeletable === true) {
+          console.log(record.userID, "recordrecordrecord");
+          if (
+            record.isDeletable === true &&
+            Number(record.userID) !== Number(UserID)
+          ) {
             return (
               <img
                 draggable={false}
@@ -508,7 +498,6 @@ const Organizers = ({
           }
         },
       },
-
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
@@ -522,12 +511,11 @@ const Organizers = ({
               sm={12}
               className="d-flex gap-3 align-items-center"
             >
-              <Switch
-                checkedValue={text}
-                onChange={(checked) => handleSwitchChange(checked, rowIndex)}
-                disabled={record.disabledSwitch === true ? true : false}
-              />
-              <label className="column-boldness w-100">{t("Primary")}</label>
+              <label className="column-boldness w-100">
+                {Number(record.userID) !== Number(UserID)
+                  ? t("Secondary")
+                  : t("Primary")}
+              </label>
             </Col>
           </Row>
         ),
@@ -606,13 +594,15 @@ const Organizers = ({
         },
       },
       {
-        // title: t('RSVP'),
         dataIndex: "isDeletable",
         key: "isDeletable",
         ellipsis: true,
         align: "left",
         render: (text, record) => {
-          if (record.isDeletable === true) {
+          if (
+            record.isDeletable === true &&
+            Number(record.userID) !== Number(UserID)
+          ) {
             return (
               <img
                 draggable={false}
@@ -670,22 +660,6 @@ const Organizers = ({
     setEditValue(1);
     dispatch(showAddUserModal(true));
     dispatch(saveMeetingFlag(true));
-  };
-
-  const previousTabOrganizer = () => {
-    setmeetingDetails(true);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
   };
 
   const handlePublishButton = () => {

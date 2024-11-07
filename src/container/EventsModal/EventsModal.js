@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EventModal.module.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +10,14 @@ import {
   newTimeFormaterAsPerUTC,
 } from "../../commen/functions/date_formater";
 import { dashboardCalendarEvent } from "../../store/actions/NewMeetingActions";
+import { useSelector } from "react-redux";
 
 const EventsModal = ({ eventModal, setEventsModal, events }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { settingReducer, meetingIdReducer } = useSelector((state) => state);
+  const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
   let diskusEventColor =
     localStorage.getItem("diskusEventColor") !== null
       ? localStorage.getItem("diskusEventColor")
@@ -27,7 +30,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
     localStorage.getItem("officeEventColor") !== null
       ? localStorage.getItem("officeEventColor")
       : "#000";
-
+  let defaultColor = "#00000";
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -42,6 +45,30 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
     localStorage.setItem("meetingTitle", data.title);
     navigate("/DisKus/Meeting");
   };
+  useEffect(() => {
+    if (settingReducer?.UserProfileData !== null) {
+      let settingConfigurations =
+        settingReducer?.UserProfileData?.configurations;
+      if (
+        settingConfigurations !== null &&
+        settingConfigurations !== undefined &&
+        settingConfigurations.length > 0
+      ) {
+        let findReminingMinutesAgo = settingConfigurations.find(
+          (remainsData, index) =>
+            remainsData?.configKey?.toLowerCase() ===
+            "Join_Meeting_Before_Minutes".toLowerCase()
+        );
+        console.log(
+          findReminingMinutesAgo,
+          "findReminingMinutesAgofindReminingMinutesAgo"
+        );
+        if (findReminingMinutesAgo !== undefined) {
+          setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
+        }
+      }
+    }
+  }, [settingReducer?.UserProfileData]);
 
   return (
     <Modal
@@ -125,10 +152,12 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                       </Row>
                       <Row>
                         <Col sm={12} md={6} lg={6}>
-                          {eventData.statusID === 1 &&
+                          {Number(eventData.statusID) === 1 &&
                           eventData.participantRoleID === 1 ? (
                             eventData.isQuickMeeting === true &&
-                            minutesDifference <= 15 ? (
+                            minutesDifference <= remainingMinutesAgo ? (
+                              // &&
+                              // minutesDifference > 0
                               <Button
                                 text={t("Start-meeting")}
                                 className={styles["Start-Meeting"]}
@@ -137,7 +166,12 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                                 }
                               />
                             ) : eventData.isQuickMeeting === false &&
-                              minutesDifference <= 15 ? (
+                              minutesDifference <= remainingMinutesAgo ? (
+                              // &&
+                              // minutesDifference > 0
+                              //   &&
+                              //     minutesDifference <= 99999999 &&
+                              //     minutesDifference > 0
                               <Button
                                 text={t("Start-meeting")}
                                 className={styles["Start-Meeting"]}
@@ -146,7 +180,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                                 }
                               />
                             ) : null
-                          ) : eventData.statusID === 10 ? (
+                          ) : Number(eventData.statusID) === 10 ? (
                             eventData.participantRoleID === 2 ? (
                               <Button
                                 text={t("Join-meeting")}

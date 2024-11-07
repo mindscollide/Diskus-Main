@@ -2557,15 +2557,23 @@ const NewMeeting = () => {
           let meetingID = allMeetingsSocketData.pK_MDID;
           let meetingData = allMeetingsSocketData;
           let newMeetingData = await mqttMeetingData(meetingData, 1);
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return newMeetingData;
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
+          let checkifAlreadyExist = rows.find(
+            (meetingRowsData, index) =>
+              Number(meetingRowsData.pK_MDID) === Number(meetingID)
+          );
+          if (checkifAlreadyExist !== undefined) {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return newMeetingData;
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
             });
-          });
+          } else {
+            setRow([newMeetingData, ...rows]);
+          }
         };
         updateMeeting();
       } catch (error) {

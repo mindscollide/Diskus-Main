@@ -71,11 +71,11 @@ const UserManagementProcess = () => {
   useEffect(() => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
-        if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
         console.log("LoginFlowPageRoute");
         if (storedStep) {
-        console.log("LoginFlowPageRoute");
-        dispatch(LoginFlowRoutes(storedStep));
+          console.log("LoginFlowPageRoute");
+          dispatch(LoginFlowRoutes(storedStep));
         }
       } else {
         console.log("LoginFlowPageRoute");
@@ -93,13 +93,12 @@ const UserManagementProcess = () => {
     }
   }, [currentUrl]);
 
-
   useEffect(() => {
-    if (userManagementRoute !== null &&userManagementRoute !== 0) {
-        console.log("LoginFlowPageRoute",userManagementRoute);
-        setStoredStep(userManagementRoute);
+    if (userManagementRoute !== null && userManagementRoute !== 0) {
+      console.log("LoginFlowPageRoute", userManagementRoute);
+      setStoredStep(userManagementRoute);
     } else {
-        console.log("LoginFlowPageRoute");
+      console.log("LoginFlowPageRoute");
       setStoredStep(1);
       localStorage.setItem("LoginFlowPageRoute", 1);
     }

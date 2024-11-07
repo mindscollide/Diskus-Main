@@ -18,6 +18,7 @@ import {
   getAllAgendaContributorApi,
   GetAllMeetingUserApiFunc,
   searchNewUserMeeting,
+  showCancelModalAgendaBuilder,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   UploadDocumentsAgendaApi,
@@ -47,6 +48,7 @@ import {
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import NewCancelAgendaBuilderModal from "../../viewMeetings/Agenda/NewCancelAgendaBuilderModal/NewCancelAgendaBuilderModal";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -86,6 +88,11 @@ const Agenda = ({
     (state) => state
   );
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+
+  const ShowCancelAgendaBuilderModal = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgendaSavedModal
+  );
+  let meetingTitle = localStorage.getItem("MeetingTitle");
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   const [enableVotingPage, setenableVotingPage] = useState(false);
@@ -307,25 +314,7 @@ const Agenda = ({
   // };
 
   const handleCancelClick = async () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(showCancelModalAgenda(true));
-    } else {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-      };
-      console.log("chek search meeting");
-      await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      setSceduleMeeting(false);
-      localStorage.setItem("folderDataRoomMeeting", 0);
-    }
+    dispatch(showCancelModalAgendaBuilder(true));
   };
 
   // // Function to capitalize the first letter of a string
@@ -1844,6 +1833,13 @@ const Agenda = ({
         />
       )}
       <Notification open={open} setOpen={setOpen} />
+      {ShowCancelAgendaBuilderModal && (
+        <NewCancelAgendaBuilderModal
+          currentState={currentState}
+          rows={rows}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
     </>
   );
 };

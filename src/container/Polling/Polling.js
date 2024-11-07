@@ -45,13 +45,20 @@ import {
 } from "../../store/actions/Polls_actions";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { _justShowDateformatBilling } from "../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  utcConvertintoGMT,
+} from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
+import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
+import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
+import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
+import ArrowUpIcon from "../MinutesNewFlow/Images/Arrow-up.png";
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -109,6 +116,10 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
+  const [sortOrderCreatedBy, setSortOrderCreatedBy] = useState(null);
+  const [sortOrderPollingTitle, setSortOrderPollingTitle] = useState(null);
+
+  const [sortOrderDueDate, setSortOrderDueDate] = useState(null);
 
   let organizationID = localStorage.getItem("organizationID");
   let pollPub = localStorage.getItem("poPub");
@@ -118,6 +129,7 @@ const Polling = () => {
   const [isTotalRecords, setTotalRecords] = useState(0);
 
   const [searchpoll, setSearchpoll] = useState(false);
+  console.log(searchpoll, "searchpollsearchpoll");
   const [idForDelete, setIdForDelete] = useState(0);
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
@@ -225,12 +237,12 @@ const Polling = () => {
     if (pollUpda !== null) {
       validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
         .then(async (result) => {
-          localStorage.removeItem("poUpda");
           let data = {
             PollID: result.pollID,
             UserID: parseInt(result.userID),
           };
           await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+          localStorage.removeItem("poUpda");
         })
         .catch((error) => {
           console.log(error, "result");
@@ -485,7 +497,14 @@ const Polling = () => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span>{t("Poll-title")}</span>
+              <span className="d-flex gap-2">
+                {t("Poll-title")}{" "}
+                {sortOrderPollingTitle === "descend" ? (
+                  <img src={DescendIcon} alt="" />
+                ) : (
+                  <img src={AscendIcon} alt="" />
+                )}
+              </span>
             </Col>
           </Row>
         </>
@@ -493,7 +512,18 @@ const Polling = () => {
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
-      sorter: (a, b) => a.pollTitle.localeCompare(b.pollTitle),
+      sorter: (a, b) =>
+        a.pollTitle.toLowerCase().localeCompare(b.pollTitle.toLowerCase()),
+      sortOrderPollingTitle,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderPollingTitle((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         return (
           <span
@@ -540,32 +570,67 @@ const Polling = () => {
       },
     },
     {
-      title: t("Due-date"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Due-date")}
+            {sortOrderDueDate === "descend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "dueDate",
       key: "dueDate",
       width: "89px",
+
       sorter: (a, b) =>
-        new Date(
-          a.dueDate.slice(0, 4),
-          a.dueDate.slice(4, 6) - 1,
-          a.dueDate.slice(6, 8)
-        ) -
-        new Date(
-          b.dueDate.slice(0, 4),
-          b.dueDate.slice(4, 6) - 1,
-          b.dueDate.slice(6, 8)
-        ),
-      sortDirections: ["ascend", "descend"],
-      render: (text) => {
+        utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
+      setSortOrderDueDate,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderDueDate((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
+      render: (text, record) => {
         return _justShowDateformatBilling(text);
       },
     },
     {
-      title: t("Created-by"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {" "}
+            {t("Created-by")}
+            {sortOrderCreatedBy === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "pollCreator",
       key: "pollCreator",
       width: "97px",
-      sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      sorter: (a, b) =>
+        a.pollCreator.toLowerCase().localeCompare(b.pollCreator.toLowerCase()),
+      sortOrderCreatedBy,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderCreatedBy((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         return <span className="text-truncate d-block">{text}</span>;
       },
@@ -883,11 +948,11 @@ const Polling = () => {
   };
 
   const handleResettingPage = () => {
-    setSearchpoll(false);
     setPollsState({
       ...pollsState,
       searchValue: "",
     });
+    setSearchpoll(false);
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -942,7 +1007,6 @@ const Polling = () => {
                 change={HandleSearchPollsMain}
                 onKeyDown={handleKeyDownSearch}
                 labelclass="d-none"
-                clickIcon={HandleShowSearch}
                 inputicon={
                   <>
                     <Row>
@@ -972,6 +1036,7 @@ const Polling = () => {
                             alt=""
                             className={styles["Search_Bar_icon_class"]}
                             draggable="false"
+                            onClick={HandleShowSearch}
                           />
                         </Tooltip>
                       </Col>

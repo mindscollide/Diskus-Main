@@ -8764,6 +8764,13 @@ const getDashbardMeetingData_fail = (message = "") => {
     message: message,
   };
 };
+
+const getDashboardMeetingCountMQTT = (response) => {
+  return {
+    type: actions.GETMEETINGCOUNT_DASHBOARD_MQTT,
+    payload: response
+  }
+}
 const getDashbardMeetingDataApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9011,6 +9018,13 @@ const GetAllMeetingDetialsData = () => {
   };
 };
 
+const showCancelModalAgendaBuilder = (response) => {
+  return {
+    type: actions.UNSAVED_NEW_AGENDA_CANCEL_MODAL,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9182,4 +9196,6 @@ export {
   proposedMeetingData,
   ParticipantsData,
   GetAllMeetingDetialsData,
+  getDashboardMeetingCountMQTT,
+  showCancelModalAgendaBuilder
 };

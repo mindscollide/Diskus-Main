@@ -29,16 +29,16 @@ const Events = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
-  const Spinner = useSelector(
-    (state) => state.meetingIdReducer.Spinner
-  );
-  
+  const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
+
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const [upComingEvents, setUpComingEvents] = useState([]);
   let getCurrentDate = moment(new Date()).format("DD");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
+  console.log(remainingMinutesAgo, "remainingMinutesAgoremainingMinutesAgo");
   const currentUTCDateTime = multiDatePickerDateChangIntoUTC(new Date());
   useEffect(() => {
     let Data2 = {
@@ -160,6 +160,7 @@ const Events = () => {
     let indexforUndeline = null;
     try {
       upComingEvents.map((upcomingEventsData, index) => {
+        console.log(upComingEvents, getCurrentDate, "upcomingEventsHandler");
         if (
           upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
           getCurrentDate
@@ -173,7 +174,7 @@ const Events = () => {
     } catch (error) {
       console.log(error);
     }
-
+    console.log(flag, indexforUndeline, "upcomingEventsHandler");
     return upComingEvents.map((upcomingEventsData, index) => {
       let meetingDateTime =
         upcomingEventsData.meetingEvent.meetingDate +
@@ -208,7 +209,7 @@ const Events = () => {
             <div
               className={
                 (upcomingEventsData.meetingDetails.statusID === 1 &&
-                  minutesDifference < 15) ||
+                  minutesDifference < remainingMinutesAgo) ||
                 upcomingEventsData.meetingDetails.statusID === 10
                   ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
                   : "event-details upcoming_events todayEvent border-0"
@@ -217,7 +218,7 @@ const Events = () => {
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < 15) ||
+                    minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? "event-details-block"
                     : ""
@@ -236,7 +237,12 @@ const Events = () => {
               {upcomingEventsData.meetingDetails.statusID === 1 &&
               upcomingEventsData.participantRoleID === 1 ? (
                 upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < 15 ? (
+                minutesDifference < remainingMinutesAgo ? (
+                  // &&
+                  // minutesDifference > 0
+                  //   &&
+                  //   minutesDifference <= 99999999 &&
+                  //   minutesDifference > 0
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -251,7 +257,12 @@ const Events = () => {
                 ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
                     false &&
                   upcomingEventsData.participantRoleID === 1 &&
-                  minutesDifference < 15 ? (
+                  minutesDifference < remainingMinutesAgo ? (
+                  // &&
+                  // minutesDifference > 0
+                  //   &&
+                  //     minutesDifference <= 99999999 &&
+                  //     minutesDifference > 0
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -310,7 +321,7 @@ const Events = () => {
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < 15) ||
+                    minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? "event-details d-flex justify-content-center align-items-center"
                     : "event-details"
@@ -319,7 +330,7 @@ const Events = () => {
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-                      minutesDifference < 15) ||
+                      minutesDifference < remainingMinutesAgo) ||
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? "event-details-block"
                       : ""
@@ -338,7 +349,7 @@ const Events = () => {
                 {upcomingEventsData.meetingDetails.statusID === 1 &&
                 upcomingEventsData.participantRoleID === 1 ? (
                   upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                  minutesDifference < 15 ? (
+                  minutesDifference < remainingMinutesAgo ? (
                     <Button
                       text={t("Start-meeting")}
                       className="Start-Meeting-Upcoming"
@@ -351,7 +362,7 @@ const Events = () => {
                       }}
                     />
                   ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                      false && minutesDifference < 15 ? (
+                      false && minutesDifference < remainingMinutesAgo ? (
                     <Button
                       text={t("Start-meeting")}
                       className="Start-Meeting-Upcoming"
@@ -410,7 +421,7 @@ const Events = () => {
             <div
               className={
                 (upcomingEventsData.meetingDetails.statusID === 1 &&
-                  minutesDifference < 15) ||
+                  minutesDifference < remainingMinutesAgo) ||
                 upcomingEventsData.meetingDetails.statusID === 10
                   ? "event-details d-flex justify-content-center align-items-center"
                   : "event-details"
@@ -419,7 +430,7 @@ const Events = () => {
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < 15) ||
+                    minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? "event-details-block"
                     : ""
@@ -438,7 +449,7 @@ const Events = () => {
               {upcomingEventsData.meetingDetails.statusID === 1 &&
               upcomingEventsData.participantRoleID === 1 ? (
                 upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < 15 ? (
+                minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -451,7 +462,7 @@ const Events = () => {
                     }}
                   />
                 ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                    false && minutesDifference < 15 ? (
+                    false && minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className="Start-Meeting-Upcoming"
@@ -531,6 +542,60 @@ const Events = () => {
       console.log(error);
     }
   }, [MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (settingReducer?.UserProfileData !== null) {
+      let settingConfigurations =
+        settingReducer?.UserProfileData?.configurations;
+      if (
+        settingConfigurations !== null &&
+        settingConfigurations !== undefined &&
+        settingConfigurations.length > 0
+      ) {
+        let findReminingMinutesAgo = settingConfigurations.find(
+          (remainsData, index) =>
+            remainsData?.configKey?.toLowerCase() ===
+            "Join_Meeting_Before_Minutes".toLowerCase()
+        );
+        console.log(
+          findReminingMinutesAgo,
+          "findReminingMinutesAgofindReminingMinutesAgo"
+        );
+        if (findReminingMinutesAgo !== undefined) {
+          setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
+        }
+      }
+    }
+  }, [settingReducer?.UserProfileData]);
+
+  useEffect(() => {
+    if (meetingIdReducer.MQTTUpcomingEvents !== null) {
+      try {
+        const upComingMeetingEvent = meetingIdReducer.MQTTUpcomingEvents;
+        setUpComingEvents((prevUpcomingEvents) => {
+          const existingEventIndex = prevUpcomingEvents.findIndex(
+            (event) =>
+              event.meetingDetails.pK_MDID ===
+              upComingMeetingEvent.meetingDetails.pK_MDID
+          );
+
+          if (existingEventIndex !== -1) {
+            // Update existing event
+            return prevUpcomingEvents.map((event, index) =>
+              index === existingEventIndex
+                ? { ...event, ...upComingMeetingEvent } // Update with new event details
+                : event
+            );
+          } else {
+            // Add new event
+            return [...prevUpcomingEvents, upComingMeetingEvent];
+          }
+        });
+      } catch (error) {
+        console.error("Error updating upcoming events:", error);
+      }
+    }
+  }, [meetingIdReducer.MQTTUpcomingEvents]);
 
   return (
     <>

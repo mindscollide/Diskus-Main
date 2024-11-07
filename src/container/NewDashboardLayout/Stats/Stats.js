@@ -35,10 +35,15 @@ const Stats = () => {
       dispatch(getDashbardTaskDataApi(navigate, t));
     }
     dispatch(getDashbardPendingApprovalDataApi(navigate, t));
-  }, [dispatch, navigate, t]);
+  }, []);
 
   useEffect(() => {
     if (NewMeetingreducer.getDashboardMeetingData) {
+      console.log(
+        NewMeetingreducer.getDashboardMeetingData,
+        "NEW_MEETINGS_COUNTNEW_MEETINGS_COUNT"
+      );
+
       const { totalNumberOfMeetings, numberOfUpcommingMeetings } =
         NewMeetingreducer.getDashboardMeetingData;
       setCounts((prevCounts) => ({
@@ -103,7 +108,7 @@ const Stats = () => {
     ],
     [counts]
   );
-
+  console.log({ counts }, "countscountscounts");
   return (
     <Row>
       <Col sm={12} md={6} lg={6}>

@@ -36,6 +36,7 @@ import {
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
+  allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
@@ -907,13 +908,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   }, [assigneesRemindersData]);
 
+  const callApi = async () => {
+    if (checkFlag !== 6 && checkFlag !== 7) {
+      await dispatch(allAssignessList(navigate, t, false));
+    }
+    // dispatch(GetAllReminders(navigate, t));
+  };
+
   // for list of all assignees
   useEffect(() => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-
-      setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+      callApi();
+      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
     } else {
       setEditFlag(false);
@@ -1345,7 +1353,86 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           CommitteeMembers !== undefined &&
           CommitteeMembers.length > 0
         ) {
+          let findisCreatorFind = CommitteeMembers.find(
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+          console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
+          if (findisCreatorFind === undefined) {
+            setDefaultPresenter({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userName,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userName,
+            });
+          }
+
           CommitteeMembers.forEach((committeesMember, index) => {
+            usersData.push({
+              creationDate: "",
+              creationTime: "",
+              designation: "",
+              displayProfilePictureName:
+                committeesMember.userProfilePicture.displayProfilePictureName,
+              emailAddress: committeesMember.email,
+              mobileNumber: "",
+              name: committeesMember.userName,
+              organization: localStorage.getItem("organizatioName"),
+              orignalProfilePictureName:
+                committeesMember.userProfilePicture.orignalProfilePictureName,
+              pK_UID: committeesMember.pK_UID,
+            });
             membersData.push({
               label: (
                 <>
@@ -1399,6 +1486,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
           setAllPresenters(PresenterData);
         }
+
+        setAllPresenters(membersData);
+        setAttendeesParticipant(membersData);
+
+        setMeetingAttendeesList(usersData);
       } else if (Number(checkFlag) === 7) {
         let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
         if (
@@ -1498,7 +1590,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
         // meeting Members
       }
-      setAttendeesParticipant(membersData);
     } catch {}
   }, [checkFlag]);
 

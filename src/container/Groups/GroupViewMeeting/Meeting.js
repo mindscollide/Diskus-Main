@@ -341,6 +341,34 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "status",
       key: "status",
       width: "90px",
+      align: "center",
+      filters: [
+        {
+          text: t("Active"),
+          value: "10",
+        },
+        // {
+        //   text: t("Start"),
+        //   value: "2",
+        // },
+        {
+          text: t("Upcoming"),
+          value: "1",
+        },
+        {
+          text: t("Ended"),
+          value: "9",
+        },
+        {
+          text: t("Not-conducted"),
+          value: "8",
+        },
+        {
+          text: t("Cancelled"),
+          value: "4",
+        },
+      ],
+      defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -365,6 +393,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
+      align: "center",
       width: "90px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
@@ -379,7 +408,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "dateOfMeeting",
       width: "115px",
       ellipsis: true,
-
+      align: "center",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -476,6 +505,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "Join",
       key: "Join",
       width: "55px",
+      align: "center",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
@@ -929,17 +959,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             className="newMeetingTable"
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
-            }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return record.meetingAgenda.map((data) => (
-                  <p className="meeting-expanded-row">
-                    {data.objMeetingAgenda.title}
-                  </p>
-                ));
-              },
-              rowExpandable: (record) =>
-                record.meetingAgenda.length > 0 ? true : false,
             }}
           />
         </Col>

@@ -133,7 +133,8 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className='d-flex justify-content-start'>
+                  className="d-flex justify-content-start"
+                >
                   <p className={styles["date-updatenote"]}>
                     {t("Last-modified-On")}:{" "}
                     {_justShowDateformat(notesData.date + notesData.time)} |{" "}
@@ -142,7 +143,7 @@ const ModalViewNote = ({
                 </Col>
               </Row>
 
-              <Row className='my-2'>
+              <Row className="my-2">
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <p className={styles["modal-View-title"]}>
                     {notesData.title}
@@ -156,7 +157,8 @@ const ModalViewNote = ({
                     className={styles["modal-view-discription"]}
                     dangerouslySetInnerHTML={{
                       __html: notesData.description,
-                    }}></p>
+                    }}
+                  ></p>
                 </Col>
               </Row>
 
@@ -166,7 +168,8 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className='d-flex justify-content-start'>
+                  className="d-flex justify-content-start"
+                >
                   <p className={styles["modal-update-attachment-heading"]}>
                     {t("Attachments")}
                   </p>
@@ -175,7 +178,7 @@ const ModalViewNote = ({
               <section className={styles["NotesViewAttachment"]}>
                 <Row>
                   {notesData.notesAttachments.length > 0
-                    ? notesData.notesAttachments.map((data) => {
+                    ? notesData.notesAttachments.map((data, index) => {
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
@@ -198,7 +201,8 @@ const ModalViewNote = ({
                   lg={12}
                   md={12}
                   xs={12}
-                  className='d-flex justify-content-end'>
+                  className="d-flex justify-content-end"
+                >
                   <Button
                     text={t("Close")}
                     className={styles["close-note-modal-btn"]}

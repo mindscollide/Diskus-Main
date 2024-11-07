@@ -37,7 +37,6 @@ const PasswordCreationUM = () => {
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordStrong, setPasswordStrong] = useState(false);
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
   const [passwordDetails, setPasswordDetails] = useState({
@@ -92,7 +91,6 @@ const PasswordCreationUM = () => {
     let name = e.target.name;
     var valueCheck = value.replace(/\s+/g, "");
     if (valueCheck === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
       setPassword("");
       setPasswordDetails({
         ...passwordDetails,
@@ -100,8 +98,6 @@ const PasswordCreationUM = () => {
       });
       setErrorBar(true);
     } else if (valueCheck !== "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
-
       if (remeberPassword === true) {
         setPasswordDetails({
           ...passwordDetails,

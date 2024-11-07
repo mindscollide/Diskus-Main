@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import EventsModal from "../../EventsModal/EventsModal";
 import {
+  allMeetingsSocket,
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
@@ -42,6 +43,7 @@ const NewCalendar = () => {
 
   const calendarRef = useRef();
   const [calendarEvents, setCalendarEvents] = useState([]);
+  console.log({ calendarEvents }, "calendarEventscalendarEvents");
   let userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   const [calenderData, setCalenderData] = useState([]);
@@ -340,10 +342,112 @@ const NewCalendar = () => {
     try {
       if (NewMeetingreducer.meetingStatusPublishedMqttData !== null) {
         let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
-
+        console.log(meetingData, "meetingDatameetingDatameetingData");
         const formattedDate =
           meetingData.dateOfMeeting &&
-          new DateObject(
+          new Date(
+            forHomeCalendar(
+              meetingData.dateOfMeeting + meetingData.meetingStartTime
+            )
+          );
+        console.log(formattedDate, "meetingDatameetingDatameetingData");
+
+        let findPartcipantRoleID = meetingData.meetingAttendees.find(
+          (attendeeData, index) => {
+            if (attendeeData.user.pK_UID === parseInt(userID)) {
+              return attendeeData.meetingAttendeeRole.pK_MARID;
+            }
+          }
+        )?.meetingAttendeeRole.pK_MARID;
+        console.log(findPartcipantRoleID, "meetingDatameetingDatameetingData");
+
+        let dashboardData = {
+          pK_MDID: meetingData.pK_MDID,
+          pK_CEID: meetingData.pK_CEID,
+          fK_TZID: meetingData.fK_TZID,
+          fK_CETID: meetingData.fK_CETID,
+          fK_CESID: meetingData.fK_CESID,
+          location: meetingData.location,
+          eventDate: meetingData.dateOfMeeting,
+          startTime: meetingData.meetingStartTime,
+          endTime: meetingData.meetingEndTime,
+          title: meetingData.title,
+          description: "",
+          calenderEventSource:
+            meetingData.fK_CESID === 1
+              ? "Google"
+              : meetingData.fK_CESID === 2
+              ? "Office"
+              : meetingData.fK_CESID === 3
+              ? "Diskus"
+              : meetingData.fK_CESID === 4
+              ? "Microsoft"
+              : "",
+          calenderEventType:
+            meetingData.fK_CETID === 1
+              ? "None"
+              : meetingData.fK_CETID === 2
+              ? "Meeting"
+              : meetingData.fK_CETID === 3
+              ? "Task"
+              : meetingData.fK_CETID === 4
+              ? "Resolution"
+              : meetingData.fK_CETID === 5
+              ? "Polls"
+              : "",
+          timeZone: meetingData.timeZone,
+          statusID: meetingData.status,
+          participantRoleID: findPartcipantRoleID,
+          isQuickMeeting: meetingData.isQuickMeeting,
+        };
+        console.log(dashboardData, "meetingDatameetingDatameetingData");
+
+        // Check if the meeting ID already exists in the upComingEvents array
+        const isExistAlready = calendarEvents.findIndex(
+          (data) => data.pK_MDID === meetingData.pK_MDID
+        );
+
+        // Its Check if the event calendar modal is open and also a for a  same date  modal
+        if (eventModal) {
+          events.find((newData, index) => {
+            if (newData.eventDate === dashboardData.eventDate) {
+              setEvents([...events, dashboardData]);
+            }
+          });
+        }
+        console.log(isExistAlready, "meetingDatameetingDatameetingData");
+
+        // If meeting ID doesn't exist, add the meeting data to upComingEvents
+        if (isExistAlready === -1) {
+          setCalendarEvents([...calendarEvents, dashboardData]);
+          setDates((prev) => [...prev, formattedDate]);
+        } else {
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+                return dashboardData;
+              } else {
+                return data;
+              }
+            });
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+  useEffect(() => {
+    if (meetingIdReducer.allMeetingsSocketData !== null) {
+      try {
+        let meetingData = meetingIdReducer.allMeetingsSocketData;
+        console.log(
+          meetingData,
+          "meetingDatameetingDatameetingData allMeetingsSocketData"
+        );
+        const formattedDate =
+          meetingData.dateOfMeeting &&
+          new Date(
             forHomeCalendar(
               meetingData.dateOfMeeting + meetingData.meetingStartTime
             )
@@ -355,11 +459,8 @@ const NewCalendar = () => {
             }
           }
         )?.meetingAttendeeRole.pK_MARID;
+        console.log(findPartcipantRoleID, "meetingDatameetingDatameetingData");
 
-        console.log(
-          findPartcipantRoleID,
-          "findPartcipantRoleIDfindPartcipantRoleIDfindPartcipantRoleID"
-        );
         let dashboardData = {
           pK_MDID: meetingData.pK_MDID,
           pK_CEID: meetingData.pK_CEID,
@@ -403,14 +504,40 @@ const NewCalendar = () => {
         const isExistAlready = calendarEvents.findIndex(
           (data) => data.pK_MDID === meetingData.pK_MDID
         );
+        console.log(eventModal, dashboardData, events, "eventseventsevents");
         // Its Check if the event calendar modal is open and also a for a  same date  modal
         if (eventModal) {
-          events.find((newData) => {
-            if (newData.eventDate === dashboardData.eventDate) {
+          // Check if any event already exists with the same event date
+          let findisDateSame = events.find(
+            (newData) => newData.eventDate === dashboardData.eventDate
+          );
+
+          if (findisDateSame) {
+            // Check if an event with the same ID already exists
+            let isAlreadyEventExist = events.find(
+              (newData) => newData.pK_MDID === dashboardData.pK_MDID
+            );
+
+            if (isAlreadyEventExist) {
+              // Update the existing event with new data
+              setEvents((allevents) => {
+                return allevents.map((data) => {
+                  if (Number(data.pK_MDID) === Number(dashboardData.pK_MDID)) {
+                    return dashboardData;
+                  } else {
+                    return data;
+                  }
+                });
+              });
+            } else {
+              // Add new event if ID doesn't exist
               setEvents([...events, dashboardData]);
             }
-          });
+          }
         }
+
+        console.log(isExistAlready, "meetingDatameetingDatameetingData");
+
         // If meeting ID doesn't exist, add the meeting data to upComingEvents
         if (isExistAlready === -1) {
           setCalendarEvents([...calendarEvents, dashboardData]);
@@ -426,9 +553,16 @@ const NewCalendar = () => {
             });
           });
         }
+        dispatch(allMeetingsSocket(null));
+      } catch (error) {
+        dispatch(allMeetingsSocket(null));
+        console.log(error);
       }
-    } catch {}
-  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+    }
+  }, [meetingIdReducer.allMeetingsSocketData]);
+  console.log(calendarEvents, "meetingDatameetingDatameetingData");
+  console.log({ events }, "meetingDatameetingDatameetingData");
+
   //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
     if (meetingIdReducer.MeetingStatusSocket !== null) {
