@@ -296,6 +296,7 @@ const Resolution = () => {
 
   const handleResettingPage = () => {
     setIsSearching(false);
+    setEnterpressed(false);
     dispatch(getResolutions(navigate, buttonTab, t));
     dispatch(getVoterResolution(navigate, buttonTab, t));
   };
