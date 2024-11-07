@@ -920,8 +920,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-      callApi();
-      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
+
+      setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
       setAddedParticipantNameList(List);
     } else {
       setEditFlag(false);

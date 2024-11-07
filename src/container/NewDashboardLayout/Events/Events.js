@@ -29,6 +29,13 @@ const Events = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
+  const UserProfileData = useSelector(
+    (state) => state.settingReducer.UserProfileData
+  );
+  const MQTTUpcomingEvents = useSelector(
+    (state) => state.meetingIdReducer.MQTTUpcomingEvents
+  );
+
   const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
 
   const { t } = useTranslation();
@@ -544,9 +551,8 @@ const Events = () => {
   }, [MeetingStatusEnded]);
 
   useEffect(() => {
-    if (settingReducer?.UserProfileData !== null) {
-      let settingConfigurations =
-        settingReducer?.UserProfileData?.configurations;
+    if (UserProfileData !== null) {
+      let settingConfigurations = UserProfileData?.configurations;
       if (
         settingConfigurations !== null &&
         settingConfigurations !== undefined &&
@@ -566,12 +572,12 @@ const Events = () => {
         }
       }
     }
-  }, [settingReducer?.UserProfileData]);
+  }, [UserProfileData]);
 
   useEffect(() => {
-    if (meetingIdReducer.MQTTUpcomingEvents !== null) {
+    if (MQTTUpcomingEvents !== null) {
       try {
-        const upComingMeetingEvent = meetingIdReducer.MQTTUpcomingEvents;
+        const upComingMeetingEvent = MQTTUpcomingEvents;
         setUpComingEvents((prevUpcomingEvents) => {
           const existingEventIndex = prevUpcomingEvents.findIndex(
             (event) =>
@@ -595,7 +601,7 @@ const Events = () => {
         console.error("Error updating upcoming events:", error);
       }
     }
-  }, [meetingIdReducer.MQTTUpcomingEvents]);
+  }, [MQTTUpcomingEvents]);
 
   return (
     <>
