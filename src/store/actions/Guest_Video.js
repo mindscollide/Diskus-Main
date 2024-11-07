@@ -439,6 +439,7 @@ const admitRejectAttendeeMainApi = (
                     isMute: userData.IsMuted,
                     hideVideo: userData.HideVideo,
                     isHandRaise: false,
+                    isGuest: userData.IsGuest,
                   };
                 });
                 console.log(getNames, "getNamesgetNames");
@@ -845,6 +846,9 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                 )
               );
               dispatch(guestVideoNavigationScreen(1));
+              dispatch(setVideoCameraGuest(false));
+              dispatch(setVoiceControleGuest(false));
+              sessionStorage.clear();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

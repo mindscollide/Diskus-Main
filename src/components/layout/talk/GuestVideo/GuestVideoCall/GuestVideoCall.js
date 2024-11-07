@@ -13,6 +13,8 @@ import {
   hideUnHideVideoByHost,
   hostEndVideoCallMeeting,
   muteUnMuteByHost,
+  setVideoCameraGuest,
+  setVoiceControleGuest,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
@@ -21,6 +23,7 @@ import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttcon
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 import { participantWaitingList } from "../../../../../store/actions/VideoFeature_actions";
+import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
 
 const GuestVideoCall = () => {
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ const GuestVideoCall = () => {
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
   );
-  let viewState = Number(sessionStorage.getItem("viewState"));
+  // let viewState = sessionStorage.getItem("viewState");
 
   const [actionValue, setActionValue] = useState("");
   //video Url state
@@ -118,7 +121,9 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "REMOVE_PARTICIPANT_FROM_MEETING".toLowerCase()
         ) {
-          dispatch(guestVideoNavigationScreen(4));
+          dispatch(setVideoCameraGuest(false));
+          dispatch(setVoiceControleGuest(false));
+          dispatch(guestVideoNavigationScreen(5));
         } else if (
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
@@ -156,6 +161,15 @@ const GuestVideoCall = () => {
       console.log(guestUserId, "guestUserIdguestUserId");
     }
   }, [guestClient, guestUserId]);
+
+  // useEffect(() => {
+  //   if (viewState !== null && viewState !== 0) {
+  //     dispatch(guestVideoNavigationScreen(Number(viewState)));
+  //   } else {
+  //     sessionStorage.setItem("viewState", 1);
+  //     dispatch(guestVideoNavigationScreen(1));
+  //   }
+  // }, []);
 
   // get the String from API
   useEffect(() => {
@@ -243,6 +257,12 @@ const GuestVideoCall = () => {
         <>
           <div className="Main-Guest-Video">
             <GuestVideoReject />
+          </div>
+        </>
+      ) : guestVideoNavigationData === 5 ? (
+        <>
+          <div className="Main-Guest-Video">
+            <GuestRemoveByHost />
           </div>
         </>
       ) : null}

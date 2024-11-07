@@ -54,6 +54,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.voiceControle
   );
   console.log(videoCameraGuest, "videoCameraGuestvideoCameraGuest");
+  console.log(voiceControle, "voiceControlevoiceControle");
 
   let guestName = sessionStorage.getItem("joinName");
 
@@ -67,7 +68,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
-  console.log(micOn, "isVideoOnisVideoOn");
+  console.log({ micOn, isVideoOn }, "isVideoOnisVideoOn");
 
   useEffect(() => {
     if (guestMuteUnMuteData !== null) {
@@ -79,9 +80,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       if (iframe.contentWindow !== null) {
         if (guestMuteUnMuteData.isMuted === true) {
           iframe.contentWindow.postMessage("MicOff", "*");
+          console.log("isVideoOnisVideoOn");
+
           setMicOn(true);
         } else {
           iframe.contentWindow.postMessage("MicOn", "*");
+          console.log("isVideoOnisVideoOn");
+
           setMicOn(false);
         }
       }
@@ -94,9 +99,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       if (iframe.contentWindow !== null) {
         if (guesthideunHideByHostData.isVideoHidden === true) {
           iframe.contentWindow.postMessage("VidOff", "*");
+          console.log("isVideoOnisVideoOn");
+
           setIsVideoOn(true);
         } else {
           iframe.contentWindow.postMessage("VidOn", "*");
+          console.log("isVideoOnisVideoOn");
+
           setIsVideoOn(false);
         }
       }
@@ -113,9 +122,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       console.log("Sending message...");
       if (videoCameraGuest) {
         iframe.contentWindow.postMessage("VidOff", "*");
+        console.log("isVideoOnisVideoOn");
         setIsVideoOn(true);
       } else {
         iframe.contentWindow.postMessage("VidOn", "*");
+        console.log("isVideoOnisVideoOn");
+
         setIsVideoOn(false);
       }
     }
@@ -129,8 +141,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       setMicOn(voiceControle);
       if (voiceControle) {
         iframe.contentWindow.postMessage("MicOff", "*");
+        console.log("isVideoOnisVideoOn");
       } else {
         iframe.contentWindow.postMessage("MicOn", "*");
+        console.log("isVideoOnisVideoOn");
       }
     }
     console.log("Webcam status read from sessionStorage:", webcamStatus);
@@ -224,6 +238,8 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   };
 
   const onClickEndGuestVideo = () => {
+    setIsVideoOn(false);
+    setMicOn(false);
     let data = {
       RoomID: String(roomId),
       UID: String(joinGuestData.guestGuid),
