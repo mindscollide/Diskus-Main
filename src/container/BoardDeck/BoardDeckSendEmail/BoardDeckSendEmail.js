@@ -129,7 +129,7 @@ const BoardDeckSendEmail = ({
           ListOfEmailAddresses: mergedUserEmails,
           Messege: notificationMessage,
           isNotify: notifyPeople.notifyPeople,
-          sendViaDataRoom: false,
+          sendViaDataRoom: true,
           BoarddeckFileParams: {
             PK_MDID: boardDeckMeetingID,
             fetchOrganizers: boarddeckOptions.Organizer,
@@ -154,7 +154,7 @@ const BoardDeckSendEmail = ({
           ListOfEmailAddresses: mergedUserEmails,
           Messege: notificationMessage,
           isNotify: notifyPeople.notifyPeople,
-          sendViaDataRoom: true,
+          sendViaDataRoom: false,
           BoarddeckFileParams: {
             PK_MDID: boardDeckMeetingID,
             fetchOrganizers: boarddeckOptions.Organizer,
