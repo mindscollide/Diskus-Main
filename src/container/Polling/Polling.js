@@ -6,13 +6,12 @@ import {
   Table,
   TextField,
   Notification,
-  Paper,
 } from "../../components/elements";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { ChevronDown } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import BinIcon from "../../assets/images/bin.svg";
@@ -30,7 +29,6 @@ import { useDispatch, useSelector } from "react-redux";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
-  castVoteApi,
   deletePollsMQTT,
   getPollsByPollIdApi,
   globalFlag,
@@ -49,15 +47,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   _justShowDateformatBilling,
-  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
-import {
-  regexOnlyCharacters,
-  regexOnlyForNumberNCharacters,
-} from "../../commen/functions/regex";
+import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
@@ -71,6 +65,7 @@ const Polling = () => {
   const { PollsReducer } = useSelector((state) => state);
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -229,7 +224,8 @@ const Polling = () => {
       ) {
         if (PollsReducer.SearchPolls.polls.length > 0) {
           setTotalRecords(PollsReducer.SearchPolls.totalRecords);
-          setRows(PollsReducer.SearchPolls.polls);
+          // setRows(PollsReducer.SearchPolls.polls);
+          setRows([]);
         } else {
           setRows([]);
         }
@@ -366,6 +362,7 @@ const Polling = () => {
 
   const handleSearchEvent = () => {
     setSearchpoll(false);
+    setIsSearching(true);
     setPollsState({
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
@@ -717,6 +714,7 @@ const Polling = () => {
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
       setEnterpressed(true);
+      setIsSearching(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
@@ -844,7 +842,7 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
-
+    setIsSearching(false);
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -861,6 +859,7 @@ const Polling = () => {
       ...pollsState,
       searchValue: "",
     });
+    setIsSearching(false);
     setSearchpoll(false);
     let data = {
       UserID: parseInt(userID),
@@ -987,7 +986,6 @@ const Polling = () => {
                             placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelclass="d-none"
-                            // onKeyDown={handleKeyDownSearchModal}
                             name={"searchbytitle"}
                             value={searchBoxState.searchByTitle}
                             change={HandleSearchboxNameTitle}
@@ -998,7 +996,6 @@ const Polling = () => {
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
                             labelclass="d-none"
-                            // onKeyDown={handleKeyDownSearchModal}
                             name={"seachbyname"}
                             value={searchBoxState.searchByName}
                             change={HandleSearchboxNameTitle}
@@ -1036,56 +1033,63 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            {rows.length > 0 ? (
-              <Table
-                column={PollTableColumns}
-                scroll={{ y: "53vh" }}
-                pagination={false}
-                className={"Polling_main_table"}
-                rows={rows}
-              />
-            ) : (
-              <Paper className={styles["Poll_emptyState"]}>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center align-items-center flex-column gap-2"
-                  >
-                    <img src={PollsEmpty} alt="poll_icon" draggable="false" />
-                    <span className={styles["No_Poll_Heading"]}>
-                      {t("No-polls")}
-                    </span>
-                    <span className={styles["No_Poll_Text"]}>
-                      {t(
-                        "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                      )}
-                    </span>
-                    <Button
-                      text={t("New")}
-                      className={styles["new_Poll_Button"]}
-                      icon={
+            <Table
+              column={PollTableColumns}
+              scroll={{ y: "53vh" }}
+              pagination={false}
+              className={"Polling_main_table"}
+              rows={rows}
+              locale={{
+                emptyText: (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center align-items-center flex-column gap-2"
+                      >
                         <img
-                          src={plusbutton}
-                          height="7.6px"
-                          width="7.6px"
-                          alt=""
-                          className="align-items-center"
+                          src={PollsEmpty}
+                          alt="poll_icon"
                           draggable="false"
                         />
-                      }
-                      onClick={() =>
-                        dispatch(
-                          setCreatePollModal(true),
-                          dispatch(LoaderState(true))
-                        )
-                      }
-                    />
-                  </Col>
-                </Row>
-              </Paper>
-            )}
+                        <span className={styles["No_Poll_Heading"]}>
+                          {t("No-polls")}
+                        </span>
+                        <span className={styles["No_Poll_Text"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                        {!isSearching && (
+                          <Button
+                            text={t("New")}
+                            className={styles["new_Poll_Button"]}
+                            icon={
+                              <img
+                                src={plusbutton}
+                                height="7.6px"
+                                width="7.6px"
+                                alt=""
+                                className="align-items-center"
+                                draggable="false"
+                              />
+                            }
+                            onClick={() =>
+                              dispatch(
+                                setCreatePollModal(true),
+                                dispatch(LoaderState(true))
+                              )
+                            }
+                          />
+                        )}
+                      </Col>
+                    </Row>
+                  </>
+                ),
+              }}
+            />
           </Col>
         </Row>
         <Row className="mt-4">
