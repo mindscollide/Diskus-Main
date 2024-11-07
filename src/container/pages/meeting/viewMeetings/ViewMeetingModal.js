@@ -100,7 +100,6 @@ const ViewMeetingModal = ({
 
   const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
 
-
   useEffect(() => {
     if (routeID !== null) {
       if (Number(routeID) === 1) {
@@ -305,7 +304,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -337,7 +336,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -482,7 +481,8 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {Number(editorRole.status) === 9 && isMinutePublished === "true" ? (
+                    {Number(editorRole.status) === 9 &&
+                    isMinutePublished === "true" ? (
                       <Button
                         text={t("Minutes")}
                         className={
@@ -555,10 +555,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 ||
-                    (Number(editorRole.status) === 9 &&
-                      editorRole.role === "Agenda Contributor") ||
-                    editorRole.role === "Participant" ? null : (
+                    {Number(editorRole.status) === 10 &&
+                    editorRole.role === "Organizer" &&
+                    editorRole.isPrimaryOrganizer ? (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -576,7 +575,7 @@ const ViewMeetingModal = ({
                             : true
                         }
                       />
-                    )}
+                    ) : null}
                     {editorRole.role !== "Organizer" && (
                       <Button
                         text={t("Attendees")}

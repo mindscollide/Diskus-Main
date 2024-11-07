@@ -51,6 +51,8 @@ export const localStorageManage = (
     AdOrg: localStorage.getItem("AdOrg"),
     AgCont: localStorage.getItem("AgCont"),
     meetingCanc: localStorage.getItem("meetingCanc"),
+    resVot : localStorage.getItem("resVot"),
+    resNonVot: localStorage.getItem("resNonVot")
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {
@@ -75,9 +77,7 @@ export const localStorageManage = (
     setRememberEmail(RememberEmailLocal);
     setEmail(RememberEmailLocalValue);
 
-    // Remove specific items if applicable
-    localStorage.removeItem("resVot");
-    localStorage.removeItem("resNonVot");
+ 
   } else {
     manageCommonLocalStorage(
       LoginFlowPageRoute,
