@@ -157,6 +157,8 @@ const initialState = {
   getMeetingUsersRSVP: null,
   meetingReminderNotification: null,
   updatedPartcipantsData: null,
+
+  cancelAgendaSavedModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1917,6 +1919,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getallDocumentsForAgendaWiseMinutes: [],
         getUserProposedOrganizerData: [],
         getMeeingUsersRSVPDetails: null,
+        cancelAgendaSavedModal: false,
       };
     }
 
@@ -2330,6 +2333,11 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETDASHBOARDMEETINGDATA_SUCCESS: {
+      console.log(
+        action,
+        "GETMEETINGCOUNT_DASHBOARD_MQTTGETMEETINGCOUNT_DASHBOARD_MQTT"
+      );
+
       return {
         ...state,
         Loading: false,
@@ -2343,6 +2351,17 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getDashboardMeetingData: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMEETINGCOUNT_DASHBOARD_MQTT: {
+   
+      let newRecords = {
+        totalNumberOfMeetings: action?.payload?.totalNumberOfMeetingsThisWeek,
+        numberOfUpcommingMeetings: action?.payload?.totalNumberOfUpcommingMeetingsInWeek,
+      };
+      return {
+        ...state,
+        getDashboardMeetingData: newRecords,
       };
     }
     case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_INIT: {
@@ -2464,6 +2483,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: true,
         updatedPartcipantsData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UNSAVED_NEW_AGENDA_CANCEL_MODAL: {
+      return {
+        ...state,
+        cancelAgendaSavedModal: action.response,
       };
     }
 

@@ -37,10 +37,7 @@ const UserManagementProcess = () => {
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
-  console.log(
-    userManagementRoute,
-    "userManagementuserManagementuserManagement"
-  );
+
   const { UserMangementReducer, Authreducer } = useSelector((state) => state);
 
   //state to show snackbar
@@ -209,11 +206,6 @@ const UserManagementProcess = () => {
       Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer?.VerifyOTPEmailResponseMessage !== undefined
     ) {
-      console.log(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
-      );
-
       setOpen({
         ...open,
         open: true,
