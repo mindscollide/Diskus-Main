@@ -129,11 +129,13 @@ const VerificationCodeThree = () => {
           }
         }
       }
-    } else {
+    } else if (
+      data.payload.message.toLowerCase() ===
+      "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
+    ) {
       localStorage.setItem("TowApproval", false);
       console.log("TowApproval");
       dispatch(LoginFlowRoutes(7));
-      // navigate("/SigninDenied/");
     }
   };
 
