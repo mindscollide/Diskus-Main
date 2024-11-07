@@ -2334,6 +2334,11 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETDASHBOARDMEETINGDATA_SUCCESS: {
+      console.log(
+        action,
+        "GETMEETINGCOUNT_DASHBOARD_MQTTGETMEETINGCOUNT_DASHBOARD_MQTT"
+      );
+
       return {
         ...state,
         Loading: false,
@@ -2347,6 +2352,17 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getDashboardMeetingData: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMEETINGCOUNT_DASHBOARD_MQTT: {
+   
+      let newRecords = {
+        totalNumberOfMeetings: action?.payload?.totalNumberOfMeetingsThisWeek,
+        numberOfUpcommingMeetings: action?.payload?.totalNumberOfUpcommingMeetingsInWeek,
+      };
+      return {
+        ...state,
+        getDashboardMeetingData: newRecords,
       };
     }
     case actions.VALIDATEENCRYPTEDSTRINGPARTICIPANTPROPOSED_INIT: {

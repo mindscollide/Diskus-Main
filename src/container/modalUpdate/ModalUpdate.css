@@ -95,17 +95,12 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-attendees-row {
-  /* border: 1px solid #e0e0e0;
-  margin: 20px 0px !important; */
   margin-top: 20px;
-  margin-bottom: 20px;
   border-radius: 4px !important;
-  /* margin-left: -1px !important; */
 }
 
 .updatemeeting-participant-scroll {
   height: 300px !important;
-  margin-top: 30px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
@@ -125,15 +120,16 @@ fieldset:disabled .btn {
 
 .updatemeeting-participant-scroll-organizer {
   color: #6172d6;
+  font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .updatemeeting-participant-scroll-participant {
   color: #6172d6;
-  margin-top: 25px;
   font-size: 20px;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .updatemeetingofminutes-row {

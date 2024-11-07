@@ -1423,24 +1423,21 @@ const SignatureViewer = () => {
 
   // this for cancel modal
   const handleHideModal = () => {
-    if (signerData.length > 0) {
+    if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
       setSingerUserData({
+        value: 0,
         label: "",
         name: "",
-        value: 0,
-      });
-      setSigners({
-        EmailAddress: "",
-        Name: "",
-        UserID: 0,
       });
     } else {
-      setOpen({
-        ...open,
-        message: "Data Must Required",
-        open: true,
-      });
+      window.close();
     }
   };
 
@@ -1448,6 +1445,17 @@ const SignatureViewer = () => {
   const handleClickCancel = () => {
     if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
+      setSingerUserData({
+        value: 0,
+        label: "",
+        name: "",
+      });
     } else {
       window.close();
     }

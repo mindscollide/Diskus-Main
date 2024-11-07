@@ -39,6 +39,7 @@ import {
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
+  allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
@@ -70,6 +71,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     uploadReducer,
     CommitteeReducer,
     GroupsReducer,
+    meetingIdReducer,
     settingReducer,
   } = useSelector((state) => state);
   const {
@@ -983,13 +985,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     });
   }, [assignees.RemindersData]);
 
+  const callApi = async () => {
+    if (checkFlag !== 6 && checkFlag !== 7) {
+      await dispatch(allAssignessList(navigate, t, false));
+    }
+    // dispatch(GetAllReminders(navigate, t));
+  };
+
   // for list of all assignees
   useEffect(() => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-      //     dispatch(allAssignessList(navigate, t,false));
-      // dispatch(GetAllReminders(navigate, t));
+      callApi();
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
     } else {
@@ -1060,7 +1068,32 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (Object.keys(assignees.user).length > 0) {
       setMeetingAttendeesList(assignees.user);
       let PresenterData = [];
+      let membersData = [];
       assignees.user.forEach((user, index) => {
+        membersData.push({
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-2 align-items-center'>
+                  <img
+                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
+                  />
+                  <span>{user?.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: user?.pK_UID,
+          name: user?.name,
+        });
         if (Number(user.pK_UID) === Number(createrID)) {
           setDefaultPresenter({
             label: (
@@ -1120,6 +1153,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         }
       });
+      setAttendeesParticipant(membersData);
     }
   }, [assignees.user]);
 

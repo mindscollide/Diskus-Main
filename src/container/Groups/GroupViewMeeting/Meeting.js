@@ -257,6 +257,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "status",
       key: "status",
       width: "90px",
+      align: "center",
       filters: [
         {
           text: t("Active"),
@@ -298,6 +299,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
+      align: "center",
       width: "90px",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
@@ -312,7 +314,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "dateOfMeeting",
       width: "115px",
       ellipsis: true,
-
+      align: "center",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -410,6 +412,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       dataIndex: "Join",
       key: "Join",
       width: "55px",
+      align: "center",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
@@ -873,17 +876,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return record.meetingAgenda.map((data) => (
-                  <p className='meeting-expanded-row'>
-                    {data.objMeetingAgenda.title}
-                  </p>
-                ));
-              },
-              rowExpandable: (record) =>
-                record.meetingAgenda.length > 0 ? true : false,
-            }}
+     
           />
         </Col>
         {rows && rows.length > 0 ? (
