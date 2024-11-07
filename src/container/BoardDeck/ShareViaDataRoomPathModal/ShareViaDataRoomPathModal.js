@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap";
 const ShareViaDataRoomPathModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const meetingTitle = localStorage.getItem("MeetingTitle");
   const shareViaBoardDeckModalConfirmation = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
@@ -16,6 +16,8 @@ const ShareViaDataRoomPathModal = () => {
   const handleCloseBtn = () => {
     dispatch(showShareViaDataRoomPathConfirmation(false));
   };
+
+  const handleonClickDataRoom = () => {};
 
   return (
     <section>
@@ -52,7 +54,7 @@ const ShareViaDataRoomPathModal = () => {
                       <span>Dataroom</span> <span>{">"}</span>{" "}
                       <span>Meetings</span> <span>{">"}</span>{" "}
                       <span>Board Deck</span> <span>{">"}</span>{" "}
-                      <span>Boarddeck</span>
+                      <span>Boarddeck - {meetingTitle}</span>
                     </span>
                   </span>
                 </Col>
@@ -73,6 +75,7 @@ const ShareViaDataRoomPathModal = () => {
                   <Button
                     text={t("View-in-dataroom")}
                     className={styles["ViewDataRoomBtn"]}
+                    onClick={handleonClickDataRoom}
                   />
                   <Button
                     text={t("Close")}

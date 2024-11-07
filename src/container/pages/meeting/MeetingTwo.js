@@ -3244,6 +3244,7 @@ const NewMeeting = () => {
         <ShareModalBoarddeck
           radioValue={radioValue}
           setRadioValue={setRadioValue}
+          boarddeckOptions={boarddeckOptions}
         />
       )}
       {NewMeetingreducer.boardDeckEmailModal && (
