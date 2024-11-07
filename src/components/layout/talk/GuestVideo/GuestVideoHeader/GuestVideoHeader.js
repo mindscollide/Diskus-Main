@@ -63,7 +63,6 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const [isRaiseHand, setIsRaiseHand] = useState(false);
   const [isSpeakerView, setIsSpeakerView] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
-  const [isIframeLoaded, setIsIframeLoaded] = useState(false);
   const [showTile, setShowTile] = useState(false);
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
@@ -183,7 +182,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     setIsVideoOn(flag);
 
     // Persist the new video status to sessionStorage
-    sessionStorage.setItem("isWebCamEnabled", flag);
+    sessionStorage.setItem("enableVideo", flag);
   };
 
   const openScreenShare = () => {

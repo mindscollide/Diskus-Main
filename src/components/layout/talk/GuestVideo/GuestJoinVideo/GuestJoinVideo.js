@@ -142,6 +142,14 @@ const GuestJoinVideo = ({
     }
   };
 
+  // useEffect(() => {
+  //   const savedName = sessionStorage.getItem("joinName");
+  //   if (savedName) {
+  //     setJoinName(savedName); // Set the saved name to display in the text field
+  //   }
+  //   console.log(savedName, "savedatdadadad");
+  // }, []);
+
   useEffect(() => {
     // Automatically enable the webcam on initial load
     if (isWebCamEnabled) {
@@ -190,6 +198,7 @@ const GuestJoinVideo = ({
                     <Col lg={5} md={5} sm={12}>
                       <TextField
                         name={"joinName"}
+                        value={joinName}
                         change={handleNameChange}
                         labelclass="d-none"
                         placeholder={"Enter your name"}
