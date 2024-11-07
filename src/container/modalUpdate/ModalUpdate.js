@@ -39,6 +39,7 @@ import {
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
+  allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
@@ -984,13 +985,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     });
   }, [assignees.RemindersData]);
 
+  const callApi = async () => {
+    if (checkFlag !== 6 && checkFlag !== 7) {
+      await dispatch(allAssignessList(navigate, t, false));
+    }
+    // dispatch(GetAllReminders(navigate, t));
+  };
+
   // for list of all assignees
   useEffect(() => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-      //     dispatch(allAssignessList(navigate, t,false));
-      // dispatch(GetAllReminders(navigate, t));
+      callApi();
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
     } else {
@@ -1146,7 +1153,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         }
       });
-      setAttendeesParticipant(membersData)
+      setAttendeesParticipant(membersData);
     }
   }, [assignees.user]);
 
