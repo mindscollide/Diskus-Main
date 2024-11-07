@@ -1753,88 +1753,91 @@ const Resolution = () => {
             ) : resolutionView !== null && resolutionView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {isSearchVoter !== null &&
-                  isSearchVoter !== undefined &&
-                  isSearchVoter.length > 0 ? (
-                    <>
-                      <TableToDo
-                        sortDirections={["descend", "ascend"]}
-                        column={
-                          buttonTab !== null && buttonTab === 2
-                            ? columnsVotersClosed
-                            : columnsvoters
-                        }
-                        className="Resolution_table"
-                        scroll={{ y: "53vh" }}
-                        pagination={false}
-                        loading={{
-                          indicator: (
-                            <div className={styles["resolution_spinner"]}>
-                              <Spin />
-                            </div>
-                          ),
-                          spinning: ResolutionReducer.Loading,
-                        }}
-                        rows={isSearchVoter}
+                  <TableToDo
+                    sortDirections={["descend", "ascend"]}
+                    column={
+                      buttonTab !== null && buttonTab === 2
+                        ? columnsVotersClosed
+                        : columnsvoters
+                    }
+                    className="Resolution_table"
+                    scroll={{ y: "53vh" }}
+                    pagination={false}
+                    loading={{
+                      indicator: (
+                        <div className={styles["resolution_spinner"]}>
+                          <Spin />
+                        </div>
+                      ),
+                      spinning: ResolutionReducer.Loading,
+                    }}
+                    rows={isSearchVoter}
+                    locale={{
+                      emptyText: (
+                        <>
+                          <Row>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className={styles["empty_Resolutions"]}
+                            >
+                              <img
+                                draggable="false"
+                                src={EmptyResolution}
+                                alt=""
+                              />
+                              <h2 className={styles["NoResolutionHeading"]}>
+                                {t("No-resolution-to-display")}
+                              </h2>
+                              <p className={styles["NoResolution_Tagline"]}>
+                                {t("Seeking-opinions-on-something")}
+                              </p>
+                              {!isSearching && (
+                                <Button
+                                  className={styles["create-Resolution-btn"]}
+                                  text={
+                                    <span className={styles["Btn_create_text"]}>
+                                      {t("Create-new-resolution")}
+                                    </span>
+                                  }
+                                  icon={
+                                    <img
+                                      draggable="false"
+                                      src={plusbutton}
+                                      height="7.6px"
+                                      width="7.6px"
+                                      alt=""
+                                      className="align-items-center"
+                                    />
+                                  }
+                                  onClick={() => createresolution()}
+                                />
+                              )}
+                            </Col>
+                          </Row>
+                        </>
+                      ),
+                    }}
+                  />
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center my-3 pagination-groups-table"
+                    >
+                      <CustomPagination
+                        current={voterPage !== null ? Number(voterPage) : 1}
+                        total={totalVoterResolution}
+                        pageSize={voterRows !== null ? Number(voterRows) : 50}
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangeVoterResolutionPagination}
+                        showSizer={true}
                       />
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-center my-3 pagination-groups-table"
-                        >
-                          <CustomPagination
-                            current={voterPage !== null ? Number(voterPage) : 1}
-                            total={totalVoterResolution}
-                            pageSize={
-                              voterRows !== null ? Number(voterRows) : 50
-                            }
-                            pageSizeOptionsValues={["30", "50", "100", "200"]}
-                            className={styles["PaginationStyle-Resolution"]}
-                            onChange={handleChangeVoterResolutionPagination}
-                            showSizer={true}
-                          />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <Row>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className={styles["empty_Resolutions"]}
-                      >
-                        <img draggable="false" src={EmptyResolution} alt="" />
-                        <h2 className={styles["NoResolutionHeading"]}>
-                          {t("No-resolution-to-display")}
-                        </h2>
-                        <p className={styles["NoResolution_Tagline"]}>
-                          {t("Seeking-opinions-on-something")}
-                        </p>
-                        <Button
-                          className={styles["create-Resolution-btn"]}
-                          text={
-                            <span className={styles["Btn_create_text"]}>
-                              {t("Create-new-resolution")}
-                            </span>
-                          }
-                          icon={
-                            <img
-                              draggable="false"
-                              src={plusbutton}
-                              height="7.6px"
-                              width="7.6px"
-                              alt=""
-                              className="align-items-center"
-                            />
-                          }
-                          onClick={() => createresolution()}
-                        />
-                      </Col>
-                    </Row>
-                  )}
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             ) : null}
