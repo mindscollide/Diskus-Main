@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { showShareViaDataRoomPathConfirmation } from "../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const ShareViaDataRoomPathModal = () => {
+const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const meetingTitle = localStorage.getItem("MeetingTitle");
   const shareViaBoardDeckModalConfirmation = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
@@ -54,7 +53,7 @@ const ShareViaDataRoomPathModal = () => {
                       <span>Dataroom</span> <span>{">"}</span>{" "}
                       <span>Meetings</span> <span>{">"}</span>{" "}
                       <span>Board Deck</span> <span>{">"}</span>{" "}
-                      <span>Boarddeck - {meetingTitle}</span>
+                      <span>Boarddeck - {boardDeckMeetingTitle}</span>
                     </span>
                   </span>
                 </Col>

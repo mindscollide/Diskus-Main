@@ -172,7 +172,7 @@ const NewMeeting = () => {
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let now = new Date();
   let year = now.getUTCFullYear();
@@ -308,7 +308,6 @@ const NewMeeting = () => {
 
   const callApi = async () => {
     try {
-   
       if (meetingpageRow !== null && meetingPageCurrent !== null) {
         let searchData = {
           Date: "",
@@ -606,14 +605,12 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
-
         })
         .catch((error) => {
           console.error("Error:", error);
           localStorage.removeItem("meetingStr");
           //
         });
-   
     }
   }, [MeetingStr]);
   useEffect(() => {
@@ -639,14 +636,12 @@ const NewMeeting = () => {
                 )
               );
             }
- 
           })
           .catch((error) => {
             console.error("Error:", error);
             localStorage.removeItem("meetingCanc");
             //
           });
-       
       } catch (error) {
         localStorage.removeItem("meetingCanc");
       }
@@ -700,7 +695,6 @@ const NewMeeting = () => {
     }
   }, [MeetinUpd]);
 
-
   useEffect(() => {
     if (MeetingMin !== null) {
       // Email Route 5
@@ -724,13 +718,12 @@ const NewMeeting = () => {
           });
           localStorage.removeItem("meetingMin");
         })
-   
+
         .catch((error) => {
           console.error("Error:", error);
           localStorage.removeItem("meetingMin");
           //
         });
-   
     }
   }, [MeetingMin]);
 
@@ -1952,8 +1945,10 @@ const NewMeeting = () => {
 
   // Enter Press click handler on input field
   const handleKeyPress = async (event) => {
-
-    console.log(meetingPageCurrent, "meetingPageCurrentmeetingPageCurrentmeetingPageCurrent")
+    console.log(
+      meetingPageCurrent,
+      "meetingPageCurrentmeetingPageCurrentmeetingPageCurrent"
+    );
     if (event.key === "Enter" && searchText !== "") {
       let searchData = {
         Date: "",
@@ -1970,6 +1965,10 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
+  console.log(
+    boardDeckMeetingTitle,
+    "boardDeckMeetingTitleboardDeckMeetingTitle"
+  );
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
     setBoardDeckMeetingID(record.pK_MDID);
@@ -3304,7 +3303,11 @@ const NewMeeting = () => {
         />
       )}
 
-      {shareViaDataRoomPathConfirmModal && <ShareViaDataRoomPathModal />}
+      {shareViaDataRoomPathConfirmModal && (
+        <ShareViaDataRoomPathModal
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
+        />
+      )}
     </>
   );
 };
