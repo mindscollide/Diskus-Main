@@ -2220,5 +2220,8 @@
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes": "You have unsaved changes. If you leave this page, your changes",
   "will-be-lost-do-you-want-to-continue-without-saving": "will be lost. Do you want to continue without saving?",
   "Continue": "Continue",
-  "Unsaved-changes": "Unsaved Changes"
+  "Unsaved-changes": "Unsaved Changes",
+  "File-shared-successfully": "File Shared Successfully",
+  "Your-file-has-been-shared": "Your file has been shared",
+  "View-in-dataroom": "View in Dataroom"
 }
