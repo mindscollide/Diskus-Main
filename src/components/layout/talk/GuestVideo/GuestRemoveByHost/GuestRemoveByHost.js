@@ -12,8 +12,9 @@ const GuestRemoveByHost = () => {
   const dispatch = useDispatch();
 
   const navigateToJoinScreen = () => {
-    sessionStorage.setItem("isRejoining", "true");
+    // sessionStorage.setItem("isRejoining", "true");
     // sessionStorage.setItem("guestName", joinName || "");
+
     dispatch(guestVideoNavigationScreen(1));
   };
 
