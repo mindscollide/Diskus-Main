@@ -5,7 +5,7 @@ import Helper from "./history_logout";
 
 let newClient;
 
-export const mqttConnection = (subscribeID) => {
+export const mqttConnection = (subscribeID, dispatch) => {
   if (!subscribeID) {
     console.error("No subscribeID provided for MQTT connection.");
     return;
@@ -20,7 +20,7 @@ export const mqttConnection = (subscribeID) => {
 
   newClient.onConnectionLost = (responseObject) => {
     console.log("Connection lost:", responseObject.errorMessage);
-    setTimeout(() => mqttConnection(subscribeID), 6000); // Reconnect after 3 seconds
+    setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Reconnect after 3 seconds
   };
 
   // newClient.onMessageArrived = onMessageArrived;
@@ -36,7 +36,7 @@ export const mqttConnection = (subscribeID) => {
     },
     onFailure: (error) => {
       console.log("Failed to connect to MQTT broker:", error.errorMessage);
-      setTimeout(() => mqttConnection(subscribeID), 6000); // Retry connection after 6 seconds
+      setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Retry connection after 6 seconds
     },
     keepAliveInterval: 30,
     reconnect: true,
@@ -46,5 +46,5 @@ export const mqttConnection = (subscribeID) => {
 
   newClient.connect(options);
   Helper.socket = newClient;
-  setClient(newClient);
+  dispatch(setClient(newClient));
 };
