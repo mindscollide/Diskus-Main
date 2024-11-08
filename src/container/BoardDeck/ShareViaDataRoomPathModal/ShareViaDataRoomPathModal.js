@@ -5,9 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { showShareViaDataRoomPathConfirmation } from "../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../components/elements";
 import { Col, Row } from "react-bootstrap";
+import { getFolderDocumentsApi } from "../../../store/actions/DataRoom_actions";
+import { useNavigate } from "react-router-dom";
 const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const BordDeckFolderID = localStorage.getItem("BoardDeckFolderID");
+
   const shareViaBoardDeckModalConfirmation = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
@@ -16,7 +21,10 @@ const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
     dispatch(showShareViaDataRoomPathConfirmation(false));
   };
 
-  const handleonClickDataRoom = () => {};
+  const handleonClickDataRoom = () => {
+    localStorage.setItem("setTableView", 3);
+    dispatch(getFolderDocumentsApi(navigate, Number(BordDeckFolderID), t, 5));
+  };
 
   return (
     <section>
