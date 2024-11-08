@@ -137,7 +137,7 @@ const VerificationIphone = () => {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [newClient]);

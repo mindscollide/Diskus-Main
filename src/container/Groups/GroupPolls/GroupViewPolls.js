@@ -299,6 +299,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       dataIndex: "Status",
       key: "Status",
       width: "70px",
+      align: "center",
       filters: [
         {
           text: t("Published"),
@@ -339,6 +340,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       dataIndex: "dueDate",
       key: "dueDate",
       width: "90px",
+      align: "center",
       sorter: (a, b) =>
         new Date(
           a.dueDate.slice(0, 4),
@@ -371,6 +373,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       dataIndex: "pollCreator",
       key: "pollCreator",
       width: "80px",
+      align: "center",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => {
         return <span className={styles["poll_status"]}>{text}</span>;
@@ -380,6 +383,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
+      align: "center",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
