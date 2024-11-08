@@ -121,6 +121,7 @@ import { MeetingContext } from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -216,6 +217,7 @@ const NewMeeting = () => {
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
