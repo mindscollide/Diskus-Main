@@ -81,6 +81,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   const [todoCreator, setTodoCreator] = useState(null);
+  const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
+    useState("");
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assigeeDetails, setAssigneeDetails] = useState(null);
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
@@ -133,6 +135,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.forEach((data, index) => {
+          console.log(data, "taskAssignedTotaskAssignedTo");
+          setTaskAssignedToDesignation(data.designation);
           if (data.pK_UID === TaskAssignedTo) {
           }
         });
@@ -418,7 +422,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                           <Col sm={12} md={12} lg={12}>
                             <TodoAssgineeEmployeeCard
                               employeeName={assgineeData.name}
-                              employeeDesignation={"Test Designation"}
+                              employeeDesignation={taskAssignedToDesignation}
                               cardText={assgineeData.datetimeFormating}
                               cardTextIconStyle="DateTimeViewTodo"
                               userImage={assgineeData.displayProfilePicture}

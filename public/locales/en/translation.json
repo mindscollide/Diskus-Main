@@ -2249,5 +2249,8 @@
   "You've-left-the-meeting": "You've Left The Meeting",
   "Want-to-rejoin?-click-here-to-return-to-the-session": "Want to rejoin? Click here to return to the session",
   "Rejoin": "Rejoin",
-  "Join-now": "Join Now"
+  "Join-now": "Join Now",
+  "File-shared-successfully": "File Shared Successfully",
+  "Your-file-has-been-shared": "Your file has been shared",
+  "View-in-dataroom": "View in Dataroom"
 }

@@ -123,6 +123,7 @@ import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSend
 import { MeetingContext } from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
+import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -150,6 +151,10 @@ const NewMeeting = () => {
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
 
+  const shareViaDataRoomPathConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
+  );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
@@ -167,7 +172,7 @@ const NewMeeting = () => {
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let now = new Date();
   let year = now.getUTCFullYear();
@@ -303,6 +308,7 @@ const NewMeeting = () => {
 
   const callApi = async () => {
     try {
+   
       if (meetingpageRow !== null && meetingPageCurrent !== null) {
         let searchData = {
           Date: "",
@@ -312,7 +318,9 @@ const NewMeeting = () => {
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
           PublishedMeetings:
-            MeetingProp !== null || UserMeetPropoDatPoll !== null
+            MeetingProp !== null
+              ? false
+              : UserMeetPropoDatPoll !== null
               ? false
               : true,
         };
@@ -336,7 +344,9 @@ const NewMeeting = () => {
           PageNumber: 1,
           Length: 30,
           PublishedMeetings:
-            MeetingProp !== null || UserMeetPropoDatPoll !== null
+            MeetingProp !== null
+              ? false
+              : UserMeetPropoDatPoll !== null
               ? false
               : true,
         };
@@ -354,6 +364,14 @@ const NewMeeting = () => {
         console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
         // localStorage.setItem("MeetingCurrentView", 1);
+      }
+      if (
+        localStorage.getItem("meetingprop") !== null ||
+        localStorage.getItem("UserMeetPropoDatPoll") !== null
+      ) {
+        localStorage.setItem("MeetingCurrentView", 2);
+      } else {
+        localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -476,10 +494,12 @@ const NewMeeting = () => {
           })
           .catch((error) => {
             console.error("Error:", error);
+            localStorage.removeItem("mtAgUpdate");
             // Handle errors here
           });
       } catch (error) {
         console.error("Error:", error);
+        localStorage.removeItem("mtAgUpdate");
       }
     }
   }, [MtAgUpdate]);
@@ -509,6 +529,7 @@ const NewMeeting = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("AgCont");
           // Handle errors here
         });
     }
@@ -539,6 +560,7 @@ const NewMeeting = () => {
         .catch((error) => {
           console.error("Error:", error);
           // Handle errors here
+          localStorage.removeItem("AdOrg");
         });
     }
   }, [AdOrg]);
@@ -584,12 +606,14 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
-          localStorage.removeItem("meetingStr");
+
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingStr");
           //
         });
+   
     }
   }, [MeetingStr]);
   useEffect(() => {
@@ -615,13 +639,17 @@ const NewMeeting = () => {
                 )
               );
             }
-            localStorage.removeItem("meetingCanc");
+ 
           })
           .catch((error) => {
             console.error("Error:", error);
+            localStorage.removeItem("meetingCanc");
             //
           });
-      } catch (error) {}
+       
+      } catch (error) {
+        localStorage.removeItem("meetingCanc");
+      }
     }
   }, [meetingCanc]);
   useEffect(() => {
@@ -666,22 +694,12 @@ const NewMeeting = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingUpd");
           //
         });
     }
   }, [MeetinUpd]);
 
-  useEffect(() => {
-    if (MeetingProp !== null || UserMeetPropoDatPoll !== null) {
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    } else {
-      localStorage.setItem("MeetingCurrentView", 1);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [MeetingProp, UserMeetPropoDatPoll]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -706,11 +724,13 @@ const NewMeeting = () => {
           });
           localStorage.removeItem("meetingMin");
         })
+   
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingMin");
           //
         });
-      localStorage.removeItem("meetingMin");
+   
     }
   }, [MeetingMin]);
 
@@ -728,6 +748,16 @@ const NewMeeting = () => {
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
+      setSearchFeilds({
+        ...searchFields,
+        Date: "",
+        DateView: "",
+        MeetingTitle: "",
+        OrganizerName: "",
+      });
+      setSearchMeeting(false);
+      setSearchText("");
+      setentereventIcon(false);
       // setRow([]);
       // setEdiorRole({
       //   status: null,
@@ -1089,6 +1119,16 @@ const NewMeeting = () => {
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   const handleEditMeeting = async (id, isQuick, role, record) => {
@@ -1174,6 +1214,16 @@ const NewMeeting = () => {
       }
     } else {
     }
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   // onClick to download Report Api on download Icon
@@ -1236,7 +1286,8 @@ const NewMeeting = () => {
               );
               localStorage.setItem("meetingTitle", record.title);
               // setIsOrganisers(isOrganiser);
-            }}>
+            }}
+          >
             {text}
           </span>
         );
@@ -1281,7 +1332,7 @@ const NewMeeting = () => {
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
@@ -1308,7 +1359,7 @@ const NewMeeting = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className='text-truncate d-block'>
+            <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -1337,7 +1388,7 @@ const NewMeeting = () => {
       defaultFilteredValue: defaultFiltersValues || null,
       filterResetToDefaultFilteredValue: true,
       filterIcon: () => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
         const meetingType = Number(record.meetingType);
@@ -1366,12 +1417,12 @@ const NewMeeting = () => {
             <div className={styles["icon-wrapper"]}>
               {record.isAttachment ? (
                 <span>
-                  <Tooltip placement='topRight' title={t("ClipIcon")}>
+                  <Tooltip placement="topRight" title={t("ClipIcon")}>
                     <img
                       src={ClipIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
                     />
                   </Tooltip>
                 </span>
@@ -1381,32 +1432,32 @@ const NewMeeting = () => {
                 <span>
                   <img
                     src={VideoIcon}
-                    alt=''
+                    alt=""
                     title={t("Video")}
-                    draggable='false'
+                    draggable="false"
                   />
                 </span>
               ) : null}
               {record.isChat ? (
                 <span onClick={(e) => groupChatInitiation(record)}>
-                  <Tooltip placement='topLeft' title={t("Chat")}>
+                  <Tooltip placement="topLeft" title={t("Chat")}>
                     <img
                       src={CommentIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
                     />
                   </Tooltip>
                 </span>
               ) : null}
               {record.status === "9" &&
               (record.isOrganizer || record.isPrimaryOrganizer) ? (
-                <Tooltip placement='topLeft' title={t("Attendance")}>
+                <Tooltip placement="topLeft" title={t("Attendance")}>
                   <img
                     src={member}
-                    className='cursor-pointer'
-                    alt=''
-                    draggable='false'
+                    className="cursor-pointer"
+                    alt=""
+                    draggable="false"
                     onClick={() => onClickDownloadIcon(record.pK_MDID)}
                   />
                 </Tooltip>
@@ -1416,13 +1467,14 @@ const NewMeeting = () => {
               record.isRecordingAvailable &&
               record.isPrimaryOrganizer ? (
                 <Tooltip
-                  placement='topLeft'
-                  title={t("Download-video-recording")}>
+                  placement="topLeft"
+                  title={t("Download-video-recording")}
+                >
                   <img
                     src={VideoRecordIcon}
-                    className='cursor-pointer'
-                    alt=''
-                    draggable='false'
+                    className="cursor-pointer"
+                    alt=""
+                    draggable="false"
                     onClick={() => downloadVideoCall(record)}
                   />
                 </Tooltip>
@@ -1733,15 +1785,16 @@ const NewMeeting = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className='d-flex justify-content-center'>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        className="d-flex justify-content-center"
+                      >
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='17.11px'
-                            height='17.11px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
                             onClick={() => {
                               handleEditMeeting(
                                 record.pK_MDID,
@@ -1777,15 +1830,16 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
+                      className="d-flex justify-content-center"
+                    >
+                      <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1825,15 +1879,16 @@ const NewMeeting = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
+                      className="d-flex justify-content-center"
+                    >
+                      <Tooltip placement="topRight" title={t("Edit")}>
                         <img
                           src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
                           onClick={() => {
                             handleEditMeeting(
                               record.pK_MDID,
@@ -1897,6 +1952,8 @@ const NewMeeting = () => {
 
   // Enter Press click handler on input field
   const handleKeyPress = async (event) => {
+
+    console.log(meetingPageCurrent, "meetingPageCurrentmeetingPageCurrentmeetingPageCurrent")
     if (event.key === "Enter" && searchText !== "") {
       let searchData = {
         Date: "",
@@ -2191,9 +2248,9 @@ const NewMeeting = () => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -2866,27 +2923,30 @@ const NewMeeting = () => {
           />
         ) : (
           <>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col
                 sm={12}
                 md={8}
                 lg={8}
-                className='d-flex gap-3 align-items-center'>
+                className="d-flex gap-3 align-items-center"
+              >
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <Dropdown
-                      className='SceduleMeetingButton'
-                      onClick={eventClickHandler}>
+                      className="SceduleMeetingButton"
+                      onClick={eventClickHandler}
+                    >
                       <Dropdown.Toggle title={t("Create")}>
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["schedule_button"]}>
+                            className={styles["schedule_button"]}
+                          >
                             <Plus width={20} height={20} fontWeight={800} />
                             <span> {t("Schedule-a-meeting")}</span>
                           </Col>
@@ -2896,16 +2956,18 @@ const NewMeeting = () => {
                       <Dropdown.Menu>
                         {checkFeatureIDAvailability(1) ? (
                           <Dropdown.Item
-                            className='dropdown-item'
-                            onClick={CreateQuickMeeting}>
+                            className="dropdown-item"
+                            onClick={CreateQuickMeeting}
+                          >
                             {t("Quick-meeting")}
                           </Dropdown.Item>
                         ) : null}
 
                         {checkFeatureIDAvailability(9) ? (
                           <Dropdown.Item
-                            className='dropdown-item'
-                            onClick={openSceduleMeetingPage}>
+                            className="dropdown-item"
+                            onClick={openSceduleMeetingPage}
+                          >
                             {t("Advance-meeting")}
                           </Dropdown.Item>
                         ) : null}
@@ -2914,8 +2976,9 @@ const NewMeeting = () => {
                         {checkFeatureIDAvailability(12) ? (
                           <>
                             <Dropdown.Item
-                              className='dropdown-item'
-                              onClick={openProposedNewMeetingPage}>
+                              className="dropdown-item"
+                              onClick={openProposedNewMeetingPage}
+                            >
                               {t("Propose-new-meeting")}
                             </Dropdown.Item>
                           </>
@@ -2937,14 +3000,15 @@ const NewMeeting = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className='d-flex justify-content-end align-items-center'>
-                <span className='position-relative'>
+                className="d-flex justify-content-end align-items-center"
+              >
+                <span className="position-relative">
                   <TextField
                     width={"490px"}
                     placeholder={t("Search")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
-                    labelclass='d-none'
+                    labelclass="d-none"
                     value={searchText}
                     change={handleSearchChange}
                     onKeyDown={handleKeyPress}
@@ -2954,25 +3018,27 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex gap-2 align-items-center'>
+                          className="d-flex gap-2 align-items-center"
+                        >
                           {entereventIcon === true ? (
                             <img
                               src={BlackCrossIcon}
-                              className='cursor-pointer'
+                              className="cursor-pointer"
                               onClick={handleClearSearch}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           ) : null}
                           <Tooltip
-                            placement='bottomLeft'
-                            title={t("Search-filters")}>
+                            placement="bottomLeft"
+                            title={t("Search-filters")}
+                          >
                             <img
                               src={searchicon}
                               className={styles["Search_Bar_icon_class"]}
                               onClick={HandleShowSearch} // Add click functionality here
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Tooltip>
                         </Col>
@@ -2987,52 +3053,54 @@ const NewMeeting = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Search-Box_meeting"]}>
-                          <Row className='mt-2'>
+                          className={styles["Search-Box_meeting"]}
+                        >
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-end'>
+                              className="d-flex justify-content-end"
+                            >
                               <img
                                 src={BlackCrossIcon}
                                 className={styles["Cross_Icon_Styling"]}
-                                width='16px'
-                                height='16px'
+                                width="16px"
+                                height="16px"
                                 onClick={HandleCloseSearchModalMeeting}
-                                alt=''
-                                draggable='false'
+                                alt=""
+                                draggable="false"
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-4'>
+                          <Row className="mt-4">
                             <Col lg={12} md={12} sm={12}>
                               <TextField
                                 placeholder={t("Meeting-title")}
                                 applyClass={"meetinInnerSearch"}
-                                labelclass='d-none'
-                                name='MeetingTitle'
+                                labelclass="d-none"
+                                name="MeetingTitle"
                                 value={searchFields.MeetingTitle}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-3'>
+                          <Row className="mt-3">
                             <Col lg={6} md={6} sm={12}>
                               <DatePicker
                                 value={searchFields.DateView}
                                 format={"DD/MM/YYYY"}
-                                placeholder='DD/MM/YYYY'
+                                placeholder="DD/MM/YYYY"
                                 render={
                                   <InputIcon
-                                    placeholder='DD/MM/YYYY'
-                                    className='datepicker_input'
+                                    placeholder="DD/MM/YYYY"
+                                    className="datepicker_input"
                                   />
                                 }
                                 editable={false}
-                                className='datePickerTodoCreate2'
+                                className="datePickerTodoCreate2"
                                 onOpenPickNewDate={false}
-                                inputMode=''
+                                inputMode=""
                                 calendar={calendarValue}
                                 locale={localValue}
                                 ref={calendRef}
@@ -3042,20 +3110,21 @@ const NewMeeting = () => {
                             <Col lg={6} md={6} sm={12}>
                               <TextField
                                 placeholder={t("Organizer-name")}
-                                labelclass='d-none'
-                                name='OrganizerName'
+                                labelclass="d-none"
+                                name="OrganizerName"
                                 applyClass={"meetinInnerSearch"}
                                 value={searchFields.OrganizerName}
                                 change={searchMeetingChangeHandler}
                               />
                             </Col>
                           </Row>
-                          <Row className='mt-4'>
+                          <Row className="mt-4">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-end gap-2'>
+                              className="d-flex justify-content-end gap-2"
+                            >
                               <Button
                                 text={t("Reset")}
                                 className={styles["ResetButtonMeeting"]}
@@ -3075,11 +3144,11 @@ const NewMeeting = () => {
                 </span>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                       <Button
                         text={t("Published-meetings")}
                         className={
@@ -3123,7 +3192,7 @@ const NewMeeting = () => {
                       setIsProposedMeetEdit={setIsProposedMeetEdit}
                     />
                   ) : Number(currentView) === 1 ? (
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <>
                           {/* {defaultFiltersValues.length > 0 ? ( */}
@@ -3131,7 +3200,7 @@ const NewMeeting = () => {
                             column={MeetingColoumns}
                             scroll={{ y: "54vh", x: false }}
                             pagination={false}
-                            className='newMeetingTable'
+                            className="newMeetingTable"
                             rows={rows}
                             locale={{
                               emptyText: emptyText(), // Set your custom empty text here
@@ -3142,9 +3211,8 @@ const NewMeeting = () => {
                                   record.meetingAgenda.length > 0 &&
                                   record.meetingAgenda.map((data) => (
                                     <p
-                                      className={
-                                        styles["meeting-expanded-row"]
-                                      }>
+                                      className={styles["meeting-expanded-row"]}
+                                    >
                                       {data.objMeetingAgenda.title}
                                     </p>
                                   ))
@@ -3161,18 +3229,20 @@ const NewMeeting = () => {
                   ) : null}
                   {rows.length > 0 ? (
                     <>
-                      <Row className='mt-5'>
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center '>
+                          className="d-flex justify-content-center "
+                        >
                           <Row className={styles["PaginationStyle-Committee"]}>
                             <Col
                               className={"pagination-groups-table"}
                               sm={12}
                               md={12}
-                              lg={12}>
+                              lg={12}
+                            >
                               <CustomPagination
                                 current={
                                   meetingPageCurrent !== null &&
@@ -3221,6 +3291,7 @@ const NewMeeting = () => {
         <ShareModalBoarddeck
           radioValue={radioValue}
           setRadioValue={setRadioValue}
+          boarddeckOptions={boarddeckOptions}
         />
       )}
       {NewMeetingreducer.boardDeckEmailModal && (
@@ -3232,6 +3303,8 @@ const NewMeeting = () => {
           setBoarddeckOptions={setBoarddeckOptions}
         />
       )}
+
+      {shareViaDataRoomPathConfirmModal && <ShareViaDataRoomPathModal />}
     </>
   );
 };

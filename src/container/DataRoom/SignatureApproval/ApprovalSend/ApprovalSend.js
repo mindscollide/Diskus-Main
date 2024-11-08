@@ -241,7 +241,7 @@ const ApprovalSend = () => {
               ...signatureFlowDocumentsForCreator,
               ...approvalsData,
             ]);
-            if (totalCount !== undefined) {
+            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
               setTotalRecords(totalCount);
             }
             setPageNo((prev) => prev + 1);
@@ -250,7 +250,7 @@ const ApprovalSend = () => {
             );
           } else {
             setApprovalsData(signatureFlowDocumentsForCreator);
-            if (totalCount !== undefined) {
+            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
               setTotalRecords(totalCount);
             }
             setPageNo(1);
