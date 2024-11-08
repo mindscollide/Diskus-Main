@@ -151,8 +151,9 @@ const initialState = {
   getMeetingUsersRSVP: null,
   meetingReminderNotification: null,
   updatedPartcipantsData: null,
-
+  validateEncryptedStringUserMeetingProposeDatesPoll: null,
   cancelAgendaSavedModal: false,
+  shareViaDataRoomPathConfirmation: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2348,10 +2349,10 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETMEETINGCOUNT_DASHBOARD_MQTT: {
-   
       let newRecords = {
         totalNumberOfMeetings: action?.payload?.totalNumberOfMeetingsThisWeek,
-        numberOfUpcommingMeetings: action?.payload?.totalNumberOfUpcommingMeetingsInWeek,
+        numberOfUpcommingMeetings:
+          action?.payload?.totalNumberOfUpcommingMeetingsInWeek,
       };
       return {
         ...state,
@@ -2487,6 +2488,34 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SHARE_VIA_DATAROOM_PATH_CONFIRMATION: {
+      return {
+        ...state,
+        shareViaDataRoomPathConfirmation: action.response,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringUserMeetingProposeDatesPoll: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringUserMeetingProposeDatesPoll: null,
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return {
         ...state,

@@ -2177,5 +2177,15 @@
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes": "You have unsaved changes. If you leave this page, your changes",
   "will-be-lost-do-you-want-to-continue-without-saving": "will be lost. Do you want to continue without saving?",
   "Continue": "Continue",
-  "Unsaved-changes": "Unsaved Changes"
+  "Unsaved-changes": "Unsaved Changes",
+  "The-organizer-has-removed-you-from-the-meeting-click-here-to-request-permission-to-rejoin": "The organizer has removed you from the meeting click here to request permission to rejoin.",
+  "You’ve-been-removed": "You’ve Been Removed",
+  "Request-to-rejoin": "Request to Rejoin",
+  "You've-left-the-meeting": "You've Left The Meeting",
+  "Want-to-rejoin?-click-here-to-return-to-the-session": "Want to rejoin? Click here to return to the session",
+  "Rejoin": "Rejoin",
+  "Join-now": "Join Now",
+  "File-shared-successfully": "File Shared Successfully",
+  "Your-file-has-been-shared": "Your file has been shared",
+  "View-in-dataroom": "View in Dataroom"
 }

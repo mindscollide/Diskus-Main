@@ -535,10 +535,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 ||
-                    (Number(editorRole.status) === 9 &&
-                      editorRole.role === "Agenda Contributor") ||
-                    editorRole.role === "Participant" ? null : (
+                    {Number(editorRole.status) === 10 &&
+                    editorRole.role === "Organizer" &&
+                    editorRole.isPrimaryOrganizer ? (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -556,7 +555,7 @@ const ViewMeetingModal = ({
                             : true
                         }
                       />
-                    )}
+                    ) : null}
                     {editorRole.role !== "Organizer" && (
                       <Button
                         text={t("Attendees")}

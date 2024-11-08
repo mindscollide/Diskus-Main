@@ -18,6 +18,7 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   formattedString,
   utcConvertintoGMT,
+  getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
@@ -31,7 +32,10 @@ import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
-import { meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
+import {
+  JoinCurrentMeeting,
+  meetingStatusPublishedMqtt,
+} from "../../store/actions/NewMeetingActions";
 
 const CalendarPage = () => {
   const { t } = useTranslation();
@@ -111,7 +115,29 @@ const CalendarPage = () => {
           CalendarEventId: value.id,
           CalendarEventTypeId: value.calendarTypeId,
         };
-        dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+        if (Number(value.statusID) === 10) {
+          let joinMeetingData = {
+            FK_MDID: value.meetingID,
+            DateTime: getCurrentDateTimeUTC(),
+          };
+
+          await dispatch(
+            JoinCurrentMeeting(
+              true,
+              navigate,
+              t,
+              joinMeetingData,
+              setCalendarViewModal,
+              "",
+              "", // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
+              10, // Calendar View
+              "",
+              ""
+            )
+          );
+        } else {
+          dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+        }
       }
     }
   };
@@ -674,7 +700,7 @@ const CalendarPage = () => {
     if (
       meetingIdReducer.ResponseMessage !== "" &&
       meetingIdReducer.ResponseMessage !== "" &&
-      meetingIdReducer.ResponseMessage !==t("No-records-found")
+      meetingIdReducer.ResponseMessage !== t("No-records-found")
     ) {
       showMessage(meetingIdReducer.ResponseMessage, "success", setOpen);
 

@@ -99,6 +99,7 @@ const Polling = () => {
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -394,6 +395,7 @@ const Polling = () => {
 
   const handleSearchEvent = () => {
     setSearchpoll(false);
+    setIsSearching(true);
     setPollsState({
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
@@ -819,6 +821,7 @@ const Polling = () => {
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
       setEnterpressed(true);
+      setIsSearching(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
@@ -935,7 +938,7 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
-
+    setIsSearching(false);
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -952,6 +955,7 @@ const Polling = () => {
       ...pollsState,
       searchValue: "",
     });
+    setIsSearching(false);
     setSearchpoll(false);
     let data = {
       UserID: parseInt(userID),
@@ -1125,56 +1129,63 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            {rows.length > 0 ? (
-              <Table
-                column={PollTableColumns}
-                scroll={{ y: "53vh" }}
-                pagination={false}
-                className={"Polling_main_table"}
-                rows={rows}
-              />
-            ) : (
-              <span className={styles["Poll_emptyState"]}>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center align-items-center flex-column gap-2"
-                  >
-                    <img src={PollsEmpty} alt="poll_icon" draggable="false" />
-                    <span className={styles["No_Poll_Heading"]}>
-                      {t("No-polls")}
-                    </span>
-                    <span className={styles["No_Poll_Text"]}>
-                      {t(
-                        "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                      )}
-                    </span>
-                    <Button
-                      text={t("New")}
-                      className={styles["new_Poll_Button"]}
-                      icon={
+            <Table
+              column={PollTableColumns}
+              scroll={{ y: "53vh" }}
+              pagination={false}
+              className={"Polling_main_table"}
+              rows={rows}
+              locale={{
+                emptyText: (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center align-items-center flex-column gap-2"
+                      >
                         <img
-                          src={plusbutton}
-                          height="7.6px"
-                          width="7.6px"
-                          alt=""
-                          className="align-items-center"
+                          src={PollsEmpty}
+                          alt="poll_icon"
                           draggable="false"
                         />
-                      }
-                      onClick={() =>
-                        dispatch(
-                          setCreatePollModal(true),
-                          dispatch(LoaderState(true))
-                        )
-                      }
-                    />
-                  </Col>
-                </Row>
-              </span>
-            )}
+                        <span className={styles["No_Poll_Heading"]}>
+                          {t("No-polls")}
+                        </span>
+                        <span className={styles["No_Poll_Text"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                        {!isSearching && (
+                          <Button
+                            text={t("New")}
+                            className={styles["new_Poll_Button"]}
+                            icon={
+                              <img
+                                src={plusbutton}
+                                height="7.6px"
+                                width="7.6px"
+                                alt=""
+                                className="align-items-center"
+                                draggable="false"
+                              />
+                            }
+                            onClick={() =>
+                              dispatch(
+                                setCreatePollModal(true),
+                                dispatch(LoaderState(true))
+                              )
+                            }
+                          />
+                        )}
+                      </Col>
+                    </Row>
+                  </>
+                ),
+              }}
+            />
           </Col>
         </Row>
         <Row className="mt-4">

@@ -2251,11 +2251,12 @@ const Dashboard = () => {
         if (
           data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
         ) {
-          let getToken =
-            localStorage.getItem("token") !== null &&
-            localStorage.getItem("token");
+          let getUserID =
+            localStorage.getItem("userID") !== null &&
+            localStorage.getItem("userID");
+
           if (
-            getToken !== data?.payload?.authToken?.token &&
+            Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
             Number(data?.payload?.deviceID) === 1
           ) {
             dispatch(userLogOutApiFunc(navigate, t));

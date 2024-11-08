@@ -68,6 +68,7 @@ import {
   getAllMeetingUsersRSVPDetailsRM,
   leaveMeetingVideo,
   ProposeNewMeetingSaveParticipants,
+  ValidateEncryptedStringUserMeetingProposeDatesPollRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { callRequestReceivedMQTT, LeaveCall } from "./VideoMain_actions";
@@ -8599,6 +8600,7 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Unsuccessful")));
+
               reject("Unsuccessful");
             } else if (
               response.data.responseResult.responseMessage
@@ -8608,19 +8610,23 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+
               reject("Something-went-wrong");
             }
           } else {
             dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+
             reject("Something-went-wrong");
           }
         } else {
           dispatch(validateStringEmail_fail(t("Something-went-wrong")));
+
           reject("Something-went-wrong");
         }
       })
       .catch((error) => {
         dispatch(validateStringEmail_fail("Something-went-wrong"));
+
         reject(error);
       });
   });
@@ -8768,9 +8774,9 @@ const getDashbardMeetingData_fail = (message = "") => {
 const getDashboardMeetingCountMQTT = (response) => {
   return {
     type: actions.GETMEETINGCOUNT_DASHBOARD_MQTT,
-    payload: response
-  }
-}
+    payload: response,
+  };
+};
 const getDashbardMeetingDataApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9025,6 +9031,147 @@ const showCancelModalAgendaBuilder = (response) => {
   };
 };
 
+const showShareViaDataRoomPathConfirmation = (response) => {
+  return {
+    type: actions.SHARE_VIA_DATAROOM_PATH_CONFIRMATION,
+    response: response,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_INIT,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Success = (
+  response,
+  message
+) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Fail = (message) => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_FAIL,
+    message: message,
+  };
+};
+
+const validateStringUserMeetingProposedDatesPollsApi = (
+  emailString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let Data = {
+        EncryptedString: emailString,
+      };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateStringUserMeetingProposedDatesPolls_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringUserMeetingProposeDatesPollRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(Data));
+
+      let response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        // Token expired, refresh token and retry
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API call
+        return dispatch(
+          validateStringUserMeetingProposedDatesPollsApi(
+            emailString,
+            navigate,
+            t
+          )
+        );
+      }
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringUserMeetingProposeDatesPoll_01".toLowerCase()
+            )
+          ) {
+            // Success case
+            await dispatch(
+              validateStringUserMeetingProposedDatesPolls_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return responseResult.data;
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringUserMeetingProposeDatesPoll_02".toLowerCase()
+            )
+          ) {
+            // Failure case
+            dispatch(
+              validateStringUserMeetingProposedDatesPolls_Fail(
+                t("Unsuccessful")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringUserMeetingProposeDatesPoll_03".toLowerCase()
+            )
+          ) {
+            // Something went wrong case
+            dispatch(
+              validateStringUserMeetingProposedDatesPolls_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          }
+        } else {
+          dispatch(
+            validateStringUserMeetingProposedDatesPolls_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          throw new Error(t("Something-went-wrong"));
+        }
+      } else {
+        dispatch(
+          validateStringUserMeetingProposedDatesPolls_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        throw new Error(t("Something-went-wrong"));
+      }
+    } catch (error) {
+      dispatch(
+        validateStringUserMeetingProposedDatesPolls_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      throw new Error(t("Something-went-wrong"));
+    }
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9196,6 +9343,8 @@ export {
   proposedMeetingData,
   ParticipantsData,
   GetAllMeetingDetialsData,
+  showCancelModalAgendaBuilder,
+  showShareViaDataRoomPathConfirmation,
   getDashboardMeetingCountMQTT,
-  showCancelModalAgendaBuilder
+  validateStringUserMeetingProposedDatesPollsApi,
 };

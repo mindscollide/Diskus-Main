@@ -1832,7 +1832,13 @@ const ProposeNewMeetingSaveParticipants = {
   RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
 };
 
+const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesPoll",
+};
+
 export {
+  ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
   validateEncryptedStringParticipantProposedRM,

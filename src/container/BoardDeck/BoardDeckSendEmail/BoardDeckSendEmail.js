@@ -128,27 +128,57 @@ const BoardDeckSendEmail = ({
     let mergedUserEmails = organizationalUsers.concat(tags);
 
     if (mergedUserEmails.length !== 0) {
-      let data = {
-        ListOfEmailAddresses: mergedUserEmails,
-        Messege: notificationMessage,
-        isNotify: notifyPeople.notifyPeople,
-        BoarddeckFileParams: {
-          PK_MDID: boardDeckMeetingID,
-          fetchOrganizers: boarddeckOptions.Organizer,
-          fetchAgendaContributors: boarddeckOptions.AgendaContributor,
-          fetchParticipants: boarddeckOptions.Participants,
-          fetchMinutes: boarddeckOptions.Minutes,
-          fetchTasks: boarddeckOptions.Task,
-          fetchPolls: boarddeckOptions.polls,
-          fetchAttendance: boarddeckOptions.attendeceReport,
-          fetchVideo: boarddeckOptions.video,
-          fetchAgenda: boarddeckOptions.Agenda,
-          fetchAgendaWithAttachments: boarddeckOptions.Agenda,
-          fetchAdvanceMeetingDetails: true,
-        },
-      };
-      console.log(data, "datadatadatadatadata");
-      dispatch(BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions));
+      if (radioValue === 1) {
+        let data = {
+          ListOfEmailAddresses: mergedUserEmails,
+          Messege: notificationMessage,
+          isNotify: notifyPeople.notifyPeople,
+          sendViaDataRoom: true,
+          BoarddeckFileParams: {
+            PK_MDID: boardDeckMeetingID,
+            fetchOrganizers: boarddeckOptions.Organizer,
+            fetchAgendaContributors: boarddeckOptions.AgendaContributor,
+            fetchParticipants: boarddeckOptions.Participants,
+            fetchMinutes: boarddeckOptions.Minutes,
+            fetchTasks: boarddeckOptions.Task,
+            fetchPolls: boarddeckOptions.polls,
+            fetchAttendance: boarddeckOptions.attendeceReport,
+            fetchVideo: boarddeckOptions.video,
+            fetchAgenda: boarddeckOptions.Agenda,
+            fetchAgendaWithAttachments: boarddeckOptions.Agenda,
+            fetchAdvanceMeetingDetails: true,
+          },
+        };
+        console.log(data, "datadatadatadatadata");
+        dispatch(
+          BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 1)
+        );
+      } else {
+        let data = {
+          ListOfEmailAddresses: mergedUserEmails,
+          Messege: notificationMessage,
+          isNotify: notifyPeople.notifyPeople,
+          sendViaDataRoom: false,
+          BoarddeckFileParams: {
+            PK_MDID: boardDeckMeetingID,
+            fetchOrganizers: boarddeckOptions.Organizer,
+            fetchAgendaContributors: boarddeckOptions.AgendaContributor,
+            fetchParticipants: boarddeckOptions.Participants,
+            fetchMinutes: boarddeckOptions.Minutes,
+            fetchTasks: boarddeckOptions.Task,
+            fetchPolls: boarddeckOptions.polls,
+            fetchAttendance: boarddeckOptions.attendeceReport,
+            fetchVideo: boarddeckOptions.video,
+            fetchAgenda: boarddeckOptions.Agenda,
+            fetchAgendaWithAttachments: boarddeckOptions.Agenda,
+            fetchAdvanceMeetingDetails: true,
+          },
+        };
+        console.log(data, "datadatadatadatadata");
+        dispatch(
+          BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions, 2)
+        );
+      }
     } else {
       showMessage(t("Atleast-add-one-user"), "error", setOpen);
     }

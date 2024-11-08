@@ -31,16 +31,7 @@ const PrivateRoutes = () => {
     if (
       currentUrl.toLowerCase().includes("DisKus/dataroom?action=".toLowerCase())
     ) {
-      // Extract action parameter from URL
-      const parts = currentUrl.split("?action=");
-      if (parts.length === 2) {
-        const remainingString = parts[1];
-        // Save Data Room email data to local storage
-        localStorage.setItem("DataRoomEmail", remainingString);
-      } else {
-        // Clear Data Room email data from local storage if condition not met
-        localStorage.removeItem("DataRoomEmail");
-      }
+      localStorage.setItem("DataRoomEmail", currentUrl);
     }
 
     // Action: Meeting Minute Collaboration
@@ -203,9 +194,6 @@ const PrivateRoutes = () => {
       // Add action-specific logic here if needed
     }
 
-    if (currentUrl.includes("GuestVideoCall?validateguest_action")) {
-      console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
-    }
     if (
       currentUrl
         .toLowerCase()

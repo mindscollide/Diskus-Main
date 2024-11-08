@@ -160,9 +160,7 @@ const DataRoom = () => {
   const [actionundonenotification, setActionundonenotification] =
     useState(false);
   const [collapes, setCollapes] = useState(false);
-  const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  // const [tasksAttachments, setTasksAttachments] = useState([]);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
   const [showrenamenotification, setShowrenamenotification] = useState(false);
   const [showrenamemodal, setShowreanmemodal] = useState(false);
@@ -181,7 +179,6 @@ const DataRoom = () => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
-  console.log(getAllData, "getAllDatagetAllDatagetAllData");
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [sortValue, setSortValue] = useState(1);
   const [isAscending, setIsAscending] = useState(true);
@@ -266,44 +263,15 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
-  //validate User Encrypted String Api
-  useEffect(() => {
-    try {
-      if (currentUrl.includes("DisKus/dataroom?action=")) {
-        console.log("Test Dataroom");
 
-        const remainingString = currentUrl.split("?action=")[1];
-        if (remainingString !== "") {
-          console.log("Test Dataroom");
-
-          setDataRoomString(remainingString);
-          // APi call
-          let Data = { Link: currentUrl };
-          dispatch(
-            validateUserAvailibilityEncryptedStringDataRoomApi(
-              navigate,
-              Data,
-              t,
-              setShareFileModal,
-              setRequestFile
-            )
-          );
-        }
-        // Save something in local storage if the condition is true
-      }
-    } catch (error) {
-      console.log("Test Dataroom", error);
-    }
-
-    return () => {};
-  }, []);
   useEffect(() => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         console.log("Test Dataroom");
-        const remainingString = DataRoomString.replace("/", "");
+        const remainingString = DataRoomString
         console.log(remainingString, "remainingStringremainingString");
         setDataRoomString(remainingString);
+        // setRequestingAccess(true);
         let Data = { Link: remainingString };
 
         dispatch(
