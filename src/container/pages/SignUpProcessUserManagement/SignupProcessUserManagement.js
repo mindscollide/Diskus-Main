@@ -330,9 +330,7 @@ const SignupProcessUserManagement = () => {
 
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
-    if (
-      UserMangementReducer.ResponseMessage !== "" 
-    ) {
+    if (UserMangementReducer.ResponseMessage !== "") {
       setOpen({
         open: true,
         message: UserMangementReducer.ResponseMessage,
@@ -385,7 +383,10 @@ const SignupProcessUserManagement = () => {
           }
         }
       }
-    } else {
+    } else if (
+      data.payload.message.toLowerCase() ===
+      "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
+    ) {
       localStorage.setItem("TowApproval", false);
       console.log("TowApproval");
       dispatch(LoginFlowRoutes(7));

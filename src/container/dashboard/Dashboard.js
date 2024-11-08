@@ -352,9 +352,11 @@ const Dashboard = () => {
                 Number(meetingVideoID) ===
                 Number(data?.payload?.meeting?.pK_MDID)
               ) {
-                let getMeetingParticipants = data.payload.meeting.meetingAttendees.filter(
-                  (attendeeData) => attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                );
+                let getMeetingParticipants =
+                  data.payload.meeting.meetingAttendees.filter(
+                    (attendeeData) =>
+                      attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                  );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2286,11 +2288,12 @@ const Dashboard = () => {
         if (
           data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
         ) {
-          let getToken =
-            localStorage.getItem("token") !== null &&
-            localStorage.getItem("token");
+          let getUserID =
+            localStorage.getItem("userID") !== null &&
+            localStorage.getItem("userID");
+
           if (
-            getToken !== data?.payload?.authToken?.token &&
+            Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
             Number(data?.payload?.deviceID) === 1
           ) {
             dispatch(userLogOutApiFunc(navigate, t));
