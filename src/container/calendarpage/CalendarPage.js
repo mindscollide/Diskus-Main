@@ -27,6 +27,7 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   formattedString,
   utcConvertintoGMT,
+  getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
@@ -43,7 +44,7 @@ import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
-import { meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
+import { JoinCurrentMeeting, meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
 
 const CalendarPage = () => {
   //For Localization
@@ -125,7 +126,31 @@ const CalendarPage = () => {
           CalendarEventId: value.id,
           CalendarEventTypeId: value.calendarTypeId,
         };
-        dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+        if(Number(value.statusID) === 10) {
+          let joinMeetingData = {
+            FK_MDID: value.meetingID,
+            DateTime: getCurrentDateTimeUTC(),
+          };
+  
+          await dispatch(
+            JoinCurrentMeeting(
+              true,
+              navigate,
+              t,
+              joinMeetingData,
+              setCalendarViewModal,
+              "",
+              "", // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
+              10, // Calendar View
+              "",
+              ""
+            )
+          );
+        } else {
+          dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
+        }
+
+  
       }
     }
   };

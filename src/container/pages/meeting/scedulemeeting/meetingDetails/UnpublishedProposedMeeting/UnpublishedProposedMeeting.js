@@ -44,6 +44,7 @@ import {
   GetAllProposedMeetingDateApiFunc,
   GetAllSavedparticipantsAPI,
   CleareMessegeNewMeeting,
+  validateStringUserMeetingProposedDatesPollsApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -745,7 +746,6 @@ const UnpublishedProposedMeeting = ({
           [meetingData],
           1
         );
-        console.log(getMeetingDataArray, "getMeetingDataArray");
 
         // Assuming getMeetingDataArray is an array with a single object
         const getMeetingData = getMeetingDataArray[0];
@@ -791,7 +791,6 @@ const UnpublishedProposedMeeting = ({
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
-            console.log(getData, "getDatagetDatagetData");
           } catch (error) {
             console.log(error, "getDatagetDatagetData");
           }
@@ -905,24 +904,29 @@ const UnpublishedProposedMeeting = ({
           }
         } catch (error) {
           console.error("Error in API call:", error);
+          localStorage.removeItem("meetingprop");
         }
       };
 
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
-  console.log(UserMeetPropoDatPoll, "UserMeetPropoDatPollUserMeetPropoDatPollUserMeetPropoDatPoll")
+  console.log(
+    UserMeetPropoDatPoll,
+    "UserMeetPropoDatPollUserMeetPropoDatPollUserMeetPropoDatPoll"
+  );
   useEffect(() => {
     if (UserMeetPropoDatPoll !== null) {
       try {
-        const callApi = async () => {
+        const callApi1 = async () => {
           try {
-            let getApiResponse = await validateStringParticipantProposedApi(
-              UserMeetPropoDatPoll,
-              navigate,
-              t
-            )(dispatch); // Ensure you're passing dispatch here
-            console.log(getApiResponse, "getApiResponsegetApiResponsegetApiResponse")
+            let getApiResponse =
+              await validateStringUserMeetingProposedDatesPollsApi(
+                UserMeetPropoDatPoll,
+                navigate,
+                t
+              )(dispatch); // Ensure you're passing dispatch here
+      
             if (getApiResponse) {
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
@@ -947,14 +951,14 @@ const UnpublishedProposedMeeting = ({
             }
           } catch (error) {
             console.error("Error in API call:", error);
+            localStorage.removeItem("UserMeetPropoDatPoll");
           }
         };
 
-        callApi();
+        callApi1();
       } catch (error) {}
     }
   }, [UserMeetPropoDatPoll]);
-  console.log(rows, "MeetingProposedRow Data");
   return (
     <section>
       <Row>

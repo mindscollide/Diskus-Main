@@ -9,7 +9,11 @@ const PrivateRoutes = () => {
   useEffect(() => {
     // Action: Meeting RSVP
     if (
-      currentUrl.toLowerCase().includes("DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase())
+      currentUrl
+        .toLowerCase()
+        .includes(
+          "DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
+        )
     ) {
       // Extract action parameter from URL
       const parts = currentUrl.split("?action=".toLowerCase());
@@ -24,22 +28,19 @@ const PrivateRoutes = () => {
     }
 
     // Action: Data Room
-    if (currentUrl.toLowerCase().includes("DisKus/dataroom?action=".toLowerCase())) {
-      // Extract action parameter from URL
-      const parts = currentUrl.split("?action=");
-      if (parts.length === 2) {
-        const remainingString = parts[1];
-        // Save Data Room email data to local storage
-        localStorage.setItem("DataRoomEmail", remainingString);
-      } else {
-        // Clear Data Room email data from local storage if condition not met
-        localStorage.removeItem("DataRoomEmail");
-      }
+    if (
+      currentUrl.toLowerCase().includes("DisKus/dataroom?action=".toLowerCase())
+    ) {
+      localStorage.setItem("DataRoomEmail", currentUrl);
     }
 
     // Action: Meeting Minute Collaboration
     if (
-      currentUrl.toLowerCase().includes("DisKus/Meeting/Meetingminutecollaborate?action=".toLowerCase())
+      currentUrl
+        .toLowerCase()
+        .includes(
+          "DisKus/Meeting/Meetingminutecollaborate?action=".toLowerCase()
+        )
     ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
@@ -47,47 +48,75 @@ const PrivateRoutes = () => {
     }
 
     // Action: Meeting Proposed
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Meetingproposed_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Meetingproposed_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingprop", parts);
     }
 
     // Action: Cancel Meeting
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Cancelmeeting_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Cancelmeeting_action=".toLowerCase())
+    ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingCanc", parts);
     }
 
     // Action: Delete Meeting
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Deletemeeting_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Deletemeeting_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       navigate("/Diskus/Meeting");
     }
 
     // Action: Update Meeting
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Updatemeeting_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Updatemeeting_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingUpd", parts);
     }
 
     // Action: Start Meeting
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Startmeeting_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Startmeeting_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("meetingStr", parts);
     }
 
     if (
-      currentUrl.toLowerCase().includes("DisKus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase())
+      currentUrl
+        .toLowerCase()
+        .includes(
+          "DisKus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase()
+        )
     ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("UserMeetPropoDatPoll", parts);
     }
 
     // Action: Poll Expire
-    if (currentUrl.toLowerCase().includes("DisKus/polling?PollExpire_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/polling?PollExpire_action=".toLowerCase())
+    ) {
       console.log("pollExpirepollExpirepollExpire", currentUrl);
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("pollExpire", parts);
@@ -95,14 +124,22 @@ const PrivateRoutes = () => {
     }
 
     // Action: Poll Published
-    if (currentUrl.toLowerCase().includes("DisKus/polling?PollPublished_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/polling?PollPublished_action=".toLowerCase())
+    ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("poPub", parts);
       // Add action-specific logic here if needed
     }
 
     // Action: Poll Update
-    if (currentUrl.toLowerCase().includes("DisKus/polling?PollUpdated_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/polling?PollUpdated_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       console.log(parts, "pollingpolling");
@@ -111,33 +148,57 @@ const PrivateRoutes = () => {
     }
 
     // Action: Resolution Reminder
-    if (currentUrl.toLowerCase().includes("DisKus/resolution?Resolutionreminder_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/resolution?Resolutionreminder_action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resVot", parts);
     }
 
-    if (currentUrl.toLowerCase().includes("DisKus/resolution?ResolutionVoter_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/resolution?ResolutionVoter_action=".toLowerCase())
+    ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resVot", parts);
     }
-    if (currentUrl.toLowerCase().includes("DisKus/resolution?ResolutionNonVoter_action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/resolution?ResolutionNonVoter_action=".toLowerCase())
+    ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("resNonVot", parts);
     }
     // Action: Organization Status Enable
-    if (currentUrl.toLowerCase().includes("DisKus/Admin/Organizationstatusenable?action=".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Admin/Organizationstatusenable?action=".toLowerCase())
+    ) {
       // Add action-specific logic here if needed
     }
 
     // Action: Organization Subscription Enable
     if (
-      currentUrl.toLowerCase().includes("DisKus/Admin/Organizationsubscriptionenable?action=".toLowerCase())
+      currentUrl
+        .toLowerCase()
+        .includes(
+          "DisKus/Admin/Organizationsubscriptionenable?action=".toLowerCase()
+        )
     ) {
       // Add action-specific logic here if needed
     }
 
-    if (currentUrl.toLowerCase().includes("DisKus/Meeting?Activeagendaedit_action".toLowerCase())) {
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/Meeting?Activeagendaedit_action".toLowerCase())
+    ) {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
@@ -164,9 +225,11 @@ const PrivateRoutes = () => {
     <Navigate
       to={
         currentUrl !== "" &&
-        (currentUrl.toLowerCase().includes(
-          "DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
-        ) ||
+        (currentUrl
+          .toLowerCase()
+          .includes(
+            "DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
+          ) ||
           currentUrl.toLowerCase().includes("DisKus/dataroom".toLowerCase()) ||
           currentUrl.toLowerCase().includes("DisKus/Meeting".toLowerCase()) ||
           currentUrl.toLowerCase().includes("DisKus/polling".toLowerCase()) ||
