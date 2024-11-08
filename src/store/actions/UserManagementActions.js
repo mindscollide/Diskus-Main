@@ -49,7 +49,11 @@ import {
   clearPaymentActionFromUrl,
   handleLoginResponse,
 } from "../../commen/functions/utils";
-import { boardDeckEmailModal, boardDeckModal } from "./NewMeetingActions";
+import {
+  boardDeckEmailModal,
+  boardDeckModal,
+  showShareViaDataRoomPathConfirmation,
+} from "./NewMeetingActions";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -2593,7 +2597,13 @@ const BoardDeckSendEmail_failed = (message) => {
   };
 };
 
-const BoardDeckSendEmailApi = (navigate, t, data, setBoarddeckOptions) => {
+const BoardDeckSendEmailApi = (
+  navigate,
+  t,
+  data,
+  setBoarddeckOptions,
+  radioValue
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(BoardDeckSendEmail_init());
@@ -2612,7 +2622,13 @@ const BoardDeckSendEmailApi = (navigate, t, data, setBoarddeckOptions) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            BoardDeckSendEmailApi(navigate, t, data, setBoarddeckOptions)
+            BoardDeckSendEmailApi(
+              navigate,
+              t,
+              data,
+              setBoarddeckOptions,
+              radioValue
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2637,6 +2653,9 @@ const BoardDeckSendEmailApi = (navigate, t, data, setBoarddeckOptions) => {
                 video: false,
                 Agenda: false,
               });
+              if (radioValue === 1) {
+                dispatch(showShareViaDataRoomPathConfirmation(true));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

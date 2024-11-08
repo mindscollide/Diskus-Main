@@ -8847,7 +8847,6 @@ const validateStringEmailApi = (
             ) {
               dispatch(validateStringEmail_fail(t("Unsuccessful")));
 
-
               reject("Unsuccessful");
             } else if (
               response.data.responseResult.responseMessage
@@ -8857,7 +8856,7 @@ const validateStringEmailApi = (
                 )
             ) {
               dispatch(validateStringEmail_fail(t("Something-went-wrong")));
- 
+
               reject("Something-went-wrong");
             }
           } else {
@@ -8873,7 +8872,7 @@ const validateStringEmailApi = (
       })
       .catch((error) => {
         dispatch(validateStringEmail_fail("Something-went-wrong"));
-    
+
         reject(error);
       });
   });
@@ -9021,9 +9020,9 @@ const getDashbardMeetingData_fail = (message = "") => {
 const getDashboardMeetingCountMQTT = (response) => {
   return {
     type: actions.GETMEETINGCOUNT_DASHBOARD_MQTT,
-    payload: response
-  }
-}
+    payload: response,
+  };
+};
 const getDashbardMeetingDataApi = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9292,26 +9291,39 @@ const showCancelModalAgendaBuilder = (response) => {
   };
 };
 
-const validateStringUserMeetingProposedDatesPolls_Init =  () => {
+const showShareViaDataRoomPathConfirmation = (response) => {
   return {
-    type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_INIT
-  }
-}
-const validateStringUserMeetingProposedDatesPolls_Success =  (response, message) => {
+    type: actions.SHARE_VIA_DATAROOM_PATH_CONFIRMATION,
+    response: response,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Init = () => {
+  return {
+    type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_INIT,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Success = (
+  response,
+  message
+) => {
   return {
     type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_SUCCESS,
     response: response,
-    message: message
-  }
-}
-const validateStringUserMeetingProposedDatesPolls_Fail =  (message) => {
+    message: message,
+  };
+};
+const validateStringUserMeetingProposedDatesPolls_Fail = (message) => {
   return {
     type: actions.VALIDATEENCRYPTEDSTRINGUSERMEETINGPROPOSEDATESPOLL_FAIL,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 
-const validateStringUserMeetingProposedDatesPollsApi = (emailString, navigate, t) => {
+const validateStringUserMeetingProposedDatesPollsApi = (
+  emailString,
+  navigate,
+  t
+) => {
   return async (dispatch) => {
     try {
       let Data = {
@@ -9342,7 +9354,11 @@ const validateStringUserMeetingProposedDatesPollsApi = (emailString, navigate, t
         await dispatch(RefreshToken(navigate, t));
         // Retry the API call
         return dispatch(
-          validateStringUserMeetingProposedDatesPollsApi(emailString, navigate, t)
+          validateStringUserMeetingProposedDatesPollsApi(
+            emailString,
+            navigate,
+            t
+          )
         );
       }
       if (response.data.responseCode === 200) {
@@ -9370,7 +9386,11 @@ const validateStringUserMeetingProposedDatesPollsApi = (emailString, navigate, t
             )
           ) {
             // Failure case
-            dispatch(validateStringUserMeetingProposedDatesPolls_Fail(t("Unsuccessful")));
+            dispatch(
+              validateStringUserMeetingProposedDatesPolls_Fail(
+                t("Unsuccessful")
+              )
+            );
             throw new Error(t("Something-went-wrong"));
           } else if (
             message.includes(
@@ -9379,25 +9399,33 @@ const validateStringUserMeetingProposedDatesPollsApi = (emailString, navigate, t
           ) {
             // Something went wrong case
             dispatch(
-              validateStringUserMeetingProposedDatesPolls_Fail(t("Something-went-wrong"))
+              validateStringUserMeetingProposedDatesPolls_Fail(
+                t("Something-went-wrong")
+              )
             );
             throw new Error(t("Something-went-wrong"));
           }
         } else {
           dispatch(
-            validateStringUserMeetingProposedDatesPolls_Fail(t("Something-went-wrong"))
+            validateStringUserMeetingProposedDatesPolls_Fail(
+              t("Something-went-wrong")
+            )
           );
           throw new Error(t("Something-went-wrong"));
         }
       } else {
         dispatch(
-          validateStringUserMeetingProposedDatesPolls_Fail(t("Something-went-wrong"))
+          validateStringUserMeetingProposedDatesPolls_Fail(
+            t("Something-went-wrong")
+          )
         );
         throw new Error(t("Something-went-wrong"));
       }
     } catch (error) {
       dispatch(
-        validateStringUserMeetingProposedDatesPolls_Fail(t("Something-went-wrong"))
+        validateStringUserMeetingProposedDatesPolls_Fail(
+          t("Something-went-wrong")
+        )
       );
       throw new Error(t("Something-went-wrong"));
     }
@@ -9576,7 +9604,8 @@ export {
   proposedMeetingData,
   ParticipantsData,
   GetAllMeetingDetialsData,
-  getDashboardMeetingCountMQTT,
   showCancelModalAgendaBuilder,
-  validateStringUserMeetingProposedDatesPollsApi
+  showShareViaDataRoomPathConfirmation,
+  getDashboardMeetingCountMQTT,
+  validateStringUserMeetingProposedDatesPollsApi,
 };
