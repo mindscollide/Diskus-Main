@@ -1810,11 +1810,7 @@ const Agenda = ({
         />
       )}
       {ShowCancelAgendaBuilderModal && (
-        <NewCancelAgendaBuilderModal
-          currentState={currentState}
-          rows={rows}
-          setSceduleMeeting={setSceduleMeeting}
-        />
+        <NewCancelAgendaBuilderModal setSceduleMeeting={setSceduleMeeting} />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
