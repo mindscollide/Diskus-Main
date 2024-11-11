@@ -31,7 +31,10 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { getTasksByGroupIDApi } from "../../../store/actions/Polls_actions";
-
+import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 const CreateTodoCommittee = ({ groupStatus }) => {
   //For Localization
   const { t } = useTranslation();
@@ -47,7 +50,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
@@ -61,7 +63,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     message: "",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  const [tableFilterOptions, setTableFilterOptions] = useState([]);
+  const [taskTitleSort, setTaskTitleSort] = useState(null);
+  const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
+  const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
+  const [taskDeadlineSort, setDeadlineSort] = useState(null);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -186,7 +191,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       setStatusValues(newArrStatus);
 
       setStatusOptions(optionsArr);
-      setTableFilterOptions(newOptionsFilter);
     } catch (error) {
       console.log(error, "error");
     }
@@ -213,52 +217,109 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 4, setShow));
   };
 
+
   const columnsToDo = [
     {
-      title: t("Task"),
+      title: (
+        <>
+          <span className='d-flex gap-2 align-items-center'>
+            {t("Task")}
+            {taskTitleSort === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "title",
       key: "title",
-      width: "220px",
+      width: "260px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      taskDeadlineSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
-          onClick={(e) => viewModalHandler(record.pK_TID)}
-        >
+          className='todolist-title-col'
+          title={text}
+          onClick={(e) => viewModalHandler(record.pK_TID)}>
           {text}
         </p>
       ),
     },
     {
-      title: t("Assigned-by"),
+      title: (
+        <>
+          <span className='d-flex gap-2 align-items-center'>
+            {t("Assigned-by")}
+            {taskAssignedBySort === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
+      // align: "left",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedBySort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
+      sorter: (a, b) => {
+        return (
+          a?.taskCreator?.name
+            .toLowerCase()
+            .localeCompare(b?.taskCreator?.name?.toLowerCase()),
+          taskAssignedBySort
+        );
+      },
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
-              src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
-              alt="userimage"
+              draggable='false'
+              className='data-img'
+              src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
+              alt=''
             />
             {record?.name}
           </p>
         );
       },
-      sorter: (a, b) => {
-        return a?.taskCreator?.name
-          .toLowerCase()
-          .localeCompare(b?.taskCreator?.name.toLowerCase());
-      },
     },
     {
-      title: t("Assigned-to"),
+      title: (
+        <>
+          <span className='d-flex gap-2 align-items-center'>
+            {t("Assigned-to")}{" "}
+            {taskAssignedToSort === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
@@ -267,19 +328,29 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         a.taskAssignedTo[0].name
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+      taskAssignedToSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedToSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      draggable='false'
+                      className='data-img'
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
+                      alt=''
                     />
 
                     {text[0].name}
@@ -287,10 +358,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
-                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      draggable='false'
+                      className='data-img'
+                      src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
+                      alt=''
                     />
                     {text[0].name}
                   </>
@@ -302,19 +373,41 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       },
     },
     {
-      title: t("Deadline"),
+      title: (
+        <>
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
+            {t("Deadline")}
+            {taskDeadlineSort === "descend" ? (
+              <img src={ArrowDownIcon} alt='' />
+            ) : (
+              <img src={ArrowUpIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
-      className: "deadLineTodo",
-      width: "220px",
       ellipsis: true,
+      width: "220px",
+
+      align: "center",
       sortDirections: ["descend", "ascend"],
+      onHeaderCell: () => ({
+        onClick: () => {
+          setDeadlineSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
+
       render: (text, record) => {
         return (
-          <span className="MontserratRegular">
+          <span className='text-nowrap text-center'>
             {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
           </span>
         );
@@ -330,15 +423,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         {
           text: t("In-progress"),
           value: "In Progress",
+          // className: currentLanguage,
         },
         {
           text: t("Pending"),
           value: "Pending",
         },
-        {
-          text: t("Upcoming"),
-          value: "Upcoming",
-        },
+
         {
           text: t("Cancelled"),
           value: "Cancelled",
@@ -351,25 +442,26 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       defaultFilteredValue: [
         "In Progress",
         "Pending",
-        "Upcoming",
         "Cancelled",
         "Completed",
       ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) => {
-        return record.status.status.toLowerCase().includes(value.toLowerCase());
+        return record?.status?.status
+          ?.toLowerCase()
+          .includes(value.toLowerCase());
       },
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
             <>
               <Select
-                defaultValue={text.status}
+                value={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                dropdownClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -383,8 +475,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -400,41 +491,38 @@ const CreateTodoCommittee = ({ groupStatus }) => {
             <p
               className={
                 text.pK_TSID === 1
-                  ? "InProgress custom-class   color-5a5a5a text-center  my-1"
+                  ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class  color-5a5a5a text-center my-1"
+                  ? "Pending  custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 3
                   ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 4
-                  ? "Cancelled  custom-class  color-5a5a5a text-center my-1"
+                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
                   : text.pK_TSID === 5
-                  ? "Completed  custom-class  color-5a5a5a  text-center my-1"
+                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
         }
       },
+
       filterMultiple: true,
     },
     {
-      title: t("Delete"),
-      dataIndex: "taskCreator",
+      title: "",
+      dataIndex: "",
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        if (
-          Number(record?.pK_UID) === Number(createrID) &&
-          Number(groupStatus) === 3
-        ) {
+        if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
-              onClick={(e) => deleteTodolist(index)}
-            >
-              <img draggable="false" src={del} alt="" />
+              className='meeting-editbutton cursor-pointer'
+              title={t("Delete")}
+              onClick={(e) => deleteTodolist(record)}>
+              <img draggable='false' src={del} alt='' />
             </i>
           );
         } else {
@@ -443,6 +531,237 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       },
     },
   ];
+
+  // const columnsToDo = [
+  //   {
+  //     title: t("Task"),
+  //     dataIndex: "title",
+  //     key: "title",
+  //     width: "220px",
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+  //     render: (text, record) => (
+  //       <p
+  //         className="todolist-title-col"
+  //         onClick={(e) => viewModalHandler(record.pK_TID)}
+  //       >
+  //         {text}
+  //       </p>
+  //     ),
+  //   },
+  //   {
+  //     title: t("Assigned-by"),
+  //     dataIndex: "taskCreator",
+  //     key: "taskCreator",
+  //     width: "220px",
+  //     sortDirections: ["descend", "ascend"],
+  //     render: (record, index) => {
+  //       return (
+  //         <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+  //           {" "}
+  //           <img
+  //             draggable="false"
+  //             className="data-img"
+  //             src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+  //             alt="userimage"
+  //           />
+  //           {record?.name}
+  //         </p>
+  //       );
+  //     },
+  //     sorter: (a, b) => {
+  //       return a?.taskCreator?.name
+  //         .toLowerCase()
+  //         .localeCompare(b?.taskCreator?.name.toLowerCase());
+  //     },
+  //   },
+  //   {
+  //     title: t("Assigned-to"),
+  //     width: "220px",
+  //     dataIndex: "taskAssignedTo",
+  //     key: "taskAssignedTo",
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       a.taskAssignedTo[0].name
+  //         .toLowerCase()
+  //         .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+  //     render: (text, record) => {
+  //       if (text !== undefined && text !== null && text.length > 0) {
+  //         return (
+  //           <>
+  //             <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+  //               {" "}
+  //               {currentLanguage === "ar" ? (
+  //                 <>
+  //                   <img
+  //                     draggable="false"
+  //                     className="data-img"
+  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+  //                     alt="userimage"
+  //                   />
+
+  //                   {text[0].name}
+  //                 </>
+  //               ) : (
+  //                 <>
+  //                   <img
+  //                     draggable="false"
+  //                     className="data-img"
+  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+  //                     alt="userimage"
+  //                   />
+  //                   {text[0].name}
+  //                 </>
+  //               )}
+  //             </p>
+  //           </>
+  //         );
+  //       }
+  //     },
+  //   },
+  //   {
+  //     title: t("Deadline"),
+  //     dataIndex: "deadlineDateTime",
+  //     key: "deadlineDateTime",
+  //     className: "deadLineTodo",
+  //     width: "220px",
+  //     ellipsis: true,
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       utcConvertintoGMT(a.deadlineDateTime) -
+  //       utcConvertintoGMT(b.deadlineDateTime),
+  //     render: (text, record) => {
+  //       return (
+  //         <span className="MontserratRegular">
+  //           {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
+  //         </span>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     title: t("Status"),
+  //     dataIndex: "status",
+  //     key: "status",
+  //     align: "center",
+  //     width: "220px",
+  //     filters: [
+  //       {
+  //         text: t("In-progress"),
+  //         value: "In Progress",
+  //       },
+  //       {
+  //         text: t("Pending"),
+  //         value: "Pending",
+  //       },
+  //       {
+  //         text: t("Upcoming"),
+  //         value: "Upcoming",
+  //       },
+  //       {
+  //         text: t("Cancelled"),
+  //         value: "Cancelled",
+  //       },
+  //       {
+  //         text: t("Completed"),
+  //         value: "Completed",
+  //       },
+  //     ],
+  //     defaultFilteredValue: [
+  //       "In Progress",
+  //       "Pending",
+  //       "Upcoming",
+  //       "Cancelled",
+  //       "Completed",
+  //     ],
+  //     filterResetToDefaultFilteredValue: true,
+  //     filterIcon: (filtered) => (
+  //       <ChevronDown className="filter-chevron-icon-todolist" />
+  //     ),
+  //     onFilter: (value, record) => {
+  //       return record.status.status.toLowerCase().includes(value.toLowerCase());
+  //     },
+  //     render: (text, record) => {
+  //       if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
+  //         return (
+  //           <>
+  //             <Select
+  //               defaultValue={text.status}
+  //               bordered={false}
+  //               dropdownClassName="Status-Todo"
+  //               className={
+  //                 text.pK_TSID === 1
+  //                   ? "InProgress  custom-class "
+  //                   : text.pK_TSID === 2
+  //                   ? "Pending  custom-class "
+  //                   : text.pK_TSID === 3
+  //                   ? "Upcoming  custom-class "
+  //                   : text.pK_TSID === 4
+  //                   ? "Cancelled  custom-class "
+  //                   : text.pK_TSID === 5
+  //                   ? "Completed  custom-class "
+  //                   : null
+  //               }
+  //               onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+  //             >
+  //               {statusOptions.map((optValue, index) => {
+  //                 return (
+  //                   <option key={optValue.id} value={optValue.id}>
+  //                     {optValue.status}
+  //                   </option>
+  //                 );
+  //               })}
+  //             </Select>
+  //           </>
+  //         );
+  //       } else {
+  //         return (
+  //           <p
+  //             className={
+  //               text.pK_TSID === 1
+  //                 ? "InProgress custom-class   color-5a5a5a text-center  my-1"
+  //                 : text.pK_TSID === 2
+  //                 ? "Pending  custom-class  color-5a5a5a text-center my-1"
+  //                 : text.pK_TSID === 3
+  //                 ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+  //                 : text.pK_TSID === 4
+  //                 ? "Cancelled  custom-class  color-5a5a5a text-center my-1"
+  //                 : text.pK_TSID === 5
+  //                 ? "Completed  custom-class  color-5a5a5a  text-center my-1"
+  //                 : null
+  //             }
+  //           >
+  //             {text.status}
+  //           </p>
+  //         );
+  //       }
+  //     },
+  //     filterMultiple: true,
+  //   },
+  //   {
+  //     title: t("Delete"),
+  //     dataIndex: "taskCreator",
+  //     key: "taskCreator",
+  //     width: "120px",
+  //     render: (record, index) => {
+  //       if (
+  //         Number(record?.pK_UID) === Number(createrID) &&
+  //         Number(groupStatus) === 3
+  //       ) {
+  //         return (
+  //           <i
+  //             className="meeting-editbutton cursor-pointer"
+  //             onClick={(e) => deleteTodolist(index)}
+  //           >
+  //             <img draggable="false" src={del} alt="" />
+  //           </i>
+  //         );
+  //       } else {
+  //         <></>;
+  //       }
+  //     },
+  //   },
+  // ];
 
   useEffect(() => {
     try {
