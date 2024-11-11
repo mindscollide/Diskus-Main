@@ -766,15 +766,6 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: "",
-      PollTitle: "",
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(searchPollsApi(navigate, t, data));
   };
 
   const HandleShowSearch = () => {
