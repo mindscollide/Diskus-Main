@@ -2394,7 +2394,7 @@ const Dashboard = () => {
     if (Helper.socket === null) {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
     if (newClient !== null) {
