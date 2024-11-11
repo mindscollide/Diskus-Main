@@ -3520,11 +3520,33 @@ body[dir="rtl"] span.userstatus-signal-enabled {
   margin-top: 5px;
 }
 
+span.userstatus-signal-PublishedPolls {
+  width: 10px !important;
+  height: 10px !important;
+  background: #6de595;
+  border-radius: 50% !important;
+  margin-right: 7px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body[dir="rtl"] span.userstatus-signal-PublishedPolls {
+  width: 10px !important;
+  height: 10px !important;
+  background: #6de595;
+  border-radius: 50% !important;
+  margin-right: 0px;
+  margin-left: 7px;
+  margin-top: 5px;
+}
+
 span.userstatus-signal-disabled {
   width: 10px;
   height: 10px;
   background: #f16b6b;
-  border-radius: 100%;
+  border-radius: 50%;
   margin-right: 10px;
   margin-top: 5px;
 }
@@ -3532,6 +3554,25 @@ span.userstatus-signal-disabled {
 body[dir="rtl"] span.userstatus-signal-disabled {
   width: 10px;
   height: 10px;
+  background: #f16b6b;
+  border-radius: 50%;
+  margin-right: 0px;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+span.userstatus-signal-ExpiredPolls {
+  width: 13px;
+  height: 13px;
+  background: #f16b6b;
+  border-radius: 100%;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+body[dir="rtl"] span.userstatus-signal-ExpiredPolls {
+  width: 13px;
+  height: 13px;
   background: #f16b6b;
   border-radius: 100%;
   margin-right: 0px;
@@ -3593,6 +3634,25 @@ body[dir="rtl"] span.userstatus-signal-dormant {
   border-radius: 100%;
   margin-right: 0px;
   margin-left: 10px;
+  margin-top: 5px;
+}
+
+span.userstatus-signal-Unpublished {
+  width: 10px;
+  height: 10px;
+  background: #949494;
+  border-radius: 50%;
+  margin-right: 7px;
+  margin-top: 5px;
+}
+
+body[dir="rtl"] span.userstatus-signal-Unpublished {
+  width: 10px;
+  height: 10px;
+  background: #949494;
+  border-radius: 50%;
+  margin-right: 0px;
+  margin-left: 7px;
   margin-top: 5px;
 }
 
@@ -6555,7 +6615,7 @@ textarea {
 .Polling_main_table {
   height: calc(91vh - 30vh) !important;
 }
-.Polling_main_table .ant-table-column-sorters .ant-table-column-sorter{
+.Polling_main_table .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
 
@@ -8416,3 +8476,55 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
   top: 0px !important;
 }
 /* Scedule a meeting  Ends  */
+
+/* Menu Polls  Status Starts */
+.menu-text {
+  flex: 1;
+  margin-left: 8px;
+}
+
+body[dir="rtl"] .menu-text {
+  margin-right: 8px !important;
+}
+
+.checkmark {
+  color: black; /* Adjust color as needed */
+  font-weight: bold;
+}
+
+.userstatus-signal-PublishedPolls_Menu {
+  background: #6de595 !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+.userstatus-signal-Unpublished_Menu {
+  background: #949494 !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+.userstatus-signal-disabled_Menu {
+  background: #f16b6b !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+.checkmark {
+  margin-left: 10px !important;
+}
+
+.Filter_polls span {
+  margin-right: 30px !important;
+}
+
+.Polls_Menu_items {
+  width: 135px !important;
+}
+/* Menu Polls  Status Ends */

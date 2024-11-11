@@ -26,6 +26,7 @@ import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
+import Tick from "../../assets/images/Tick-Icon.png";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
@@ -469,24 +470,42 @@ const Polling = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
+          onClick={() => {
+            console.log(filter, "filterfilterfilter");
+            handleMenuClick(filter.value);
+          }}
+          className="d-flex align-items-center justify-content-between"
         >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
+          <div className="Polls_Menu_items">
+            <span
+              className={
+                filter.value === "Published"
+                  ? "userstatus-signal-PublishedPolls_Menu"
+                  : filter.value === "UnPublished"
+                  ? "userstatus-signal-Unpublished_Menu"
+                  : "userstatus-signal-disabled_Menu"
+              }
+            ></span>
+            <span className="menu-text">{filter.text}</span>
+            {selectedValues.includes(filter.value) && (
+              <span className="checkmark">
+                <img src={Tick} alt="" />
+              </span>
+            )}
+          </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className="d-flex align-items-center justify-content-between p-2">
         <Button
           text={"Reset"}
-          className={"FilterResetBtn"}
+          className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text="Ok"
           disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
+          className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
       </div>
@@ -544,7 +563,7 @@ const Polling = () => {
       dataIndex: "pollStatus",
       key: "pollStatus",
       width: "78px",
-
+      align: "left",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -563,11 +582,28 @@ const Polling = () => {
       ),
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className="text-success">{t("Published")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-PublishedPolls"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Published")}</p>
+            </div>
+          );
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className="text-success">{t("Unpublished")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-Unpublished"></span>
+              <p className="m-0 userName FontArabicRegular">
+                {t("Unpublished")}
+              </p>
+            </div>
+          );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className="text-success">{t("Expired")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-disabled"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Expired")}</p>
+            </div>
+          );
         }
       },
     },
