@@ -104,6 +104,16 @@ const Actions = ({
   // Rows for table rendering in Action
   const [actionsRows, setActionsRows] = useState([]);
 
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ]);
+
   // dispatch Api in useEffect
   useEffect(() => {
     dispatch(getTodoStatus(navigate, t));
@@ -209,31 +219,30 @@ const Actions = ({
     );
   };
 
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "In Progress",
-    "Pending",
-    "Cancelled",
-    "Completed",
-  ]);
-
   const filters = [
     {
+      value: "1",
       text: t("In-progress"),
-      value: "In Progress",
     },
     {
+      value: "2",
       text: t("Pending"),
-      value: "Pending",
     },
-
     {
+      value: "3",
+      text: t("Upcoming"),
+    },
+    {
+      value: "4",
       text: t("Cancelled"),
-      value: "Cancelled",
     },
     {
+      value: "5",
       text: t("Completed"),
-      value: "Completed",
+    },
+    {
+      value: "6",
+      text: t("Deleted"),
     },
   ];
 
@@ -255,7 +264,7 @@ const Actions = ({
   };
 
   const resetFilter = () => {
-    setSelectedValues(["In Progress", "Pending", "Cancelled", "Completed"]);
+    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
     setActionsRows(originalData);
     setVisible(false);
   };
@@ -280,13 +289,13 @@ const Actions = ({
       <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
           text={"Reset"}
-          className="FilterResetBtn"
+          className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
           text={"Ok"}
           disableBtn={selectedValues.length === 0}
-          className="ResetOkBtn"
+          className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
       </div>
@@ -734,7 +743,7 @@ const Actions = ({
                     <Col lg={12} md={12} sm={12}>
                       <Table
                         column={ActionsColoumn}
-                        scroll={{ y: "40vh", x: false }}
+                        scroll={{ y: "46vh", x: "hidden" }}
                         pagination={false}
                         className={"ToDo"}
                         rows={actionsRows}
@@ -752,8 +761,6 @@ const Actions = ({
                                     alt=""
                                     draggable={false}
                                     src={EmptyStates}
-                                    width="306.27px"
-                                    height="230px"
                                   />
                                 </Col>
                               </Row>

@@ -2817,7 +2817,7 @@ input#Participant::placeholder {
 .ToDo .ant-table table {
   border-spacing: 0 10px !important;
   border-radius: 50px !important;
-  table-layout: inherit !important;
+  table-layout: fixed !important;
   margin-top: -19px !important;
 }
 
