@@ -6605,6 +6605,9 @@ textarea {
 .Polling_main_table .ant-table-column-sorters .ant-table-column-sorter{
   display: none !important;
 }
+.ToDo .ant-table-column-sorters .ant-table-column-sorter{
+  display: none !important;
+}
 
 button.grayScaled {
   filter: grayscale(0.8);

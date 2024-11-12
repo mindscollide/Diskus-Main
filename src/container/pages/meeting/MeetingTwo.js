@@ -1550,6 +1550,11 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    setEdiorRole({
+                      status: record.status,
+                      role: "Organizer",
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
+                    });
                     setVideoTalk({
                       isChat: record.isChat,
                       isVideoCall: record.isVideoCall,
