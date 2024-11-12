@@ -37,7 +37,6 @@ const SubscriptionDetailsUserManagement = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
 
   const handleDowngradeOption = (subscriptionDetails) => {
-    console.log(subscriptionDetails, "subscriptionDetails");
     navigate("/Admin/downgradeSubscription", {
       state: { subscriptionDetails },
     });
