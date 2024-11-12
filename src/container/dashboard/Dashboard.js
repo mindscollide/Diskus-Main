@@ -2535,7 +2535,7 @@ const Dashboard = () => {
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
-          {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
+          {isInternetDisconnectModalVisible && <InternetConnectivityModal open={isInternetDisconnectModalVisible}/>}
           <Notification
             open={open.open}
             message={open.message}
