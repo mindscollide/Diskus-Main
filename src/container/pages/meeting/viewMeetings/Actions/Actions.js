@@ -35,7 +35,7 @@ import {
   createTaskMeetingMQTT,
 } from "../../../../../store/actions/ToDoList_action";
 import ModalViewToDo from "../../../../todolistviewModal/ModalViewToDo";
-import { Select } from "antd";
+import { Checkbox, Dropdown, Menu, Select } from "antd";
 import {
   getTodoStatus,
   updateTodoStatusFunc,
@@ -83,6 +83,7 @@ const Actions = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [statusValues, setStatusValues] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [viewTaskModal, setViewTaskModal] = useState(false);
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -207,6 +208,90 @@ const Actions = ({
       updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, currentMeeting)
     );
   };
+
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "In Progress",
+    "Pending",
+    "Cancelled",
+    "Completed",
+  ]);
+
+  const filters = [
+    {
+      text: t("In-progress"),
+      value: "In Progress",
+    },
+    {
+      text: t("Pending"),
+      value: "Pending",
+    },
+
+    {
+      text: t("Cancelled"),
+      value: "Cancelled",
+    },
+    {
+      text: t("Completed"),
+      value: "Completed",
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.pK_TSID.toString())
+    );
+    setActionsRows(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["In Progress", "Pending", "Cancelled", "Completed"]);
+    setActionsRows(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className="FilterResetBtn"
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className="ResetOkBtn"
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
   const ActionsColoumn = [
     {
       title: (
@@ -264,7 +349,6 @@ const Actions = ({
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
@@ -410,41 +494,22 @@ const Actions = ({
       key: "status",
       align: "center",
       width: "220px",
-      filters: [
-        {
-          text: t("In-progress"),
-          value: "In Progress",
-          // className: currentLanguage,
-        },
-        {
-          text: t("Pending"),
-          value: "Pending",
-        },
-
-        {
-          text: t("Cancelled"),
-          value: "Cancelled",
-        },
-        {
-          text: t("Completed"),
-          value: "Completed",
-        },
-      ],
-      defaultFilteredValue: [
-        "In Progress",
-        "Pending",
-        "Cancelled",
-        "Completed",
-      ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) => {
-        return record?.status?.status
-          ?.toLowerCase()
-          .includes(value.toLowerCase());
-      },
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
           return (
@@ -525,248 +590,6 @@ const Actions = ({
       },
     },
   ];
-  // const ActionsColoumn = [
-  //   {
-  //     title: t("Title"),
-  //     dataIndex: "title",
-  //     key: "title",
-  //     ellipsis: true,
-  //     width: "200px",
-
-  //     render: (text, record) => {
-  //       return (
-  //         <span
-  //           onClick={() => viewActionModal(record)}
-  //           className={styles["Action_title"]}>
-  //           {text}
-  //         </span>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     title: t("Assigned-by"),
-  //     dataIndex: "taskCreator",
-  //     key: "taskCreator",
-  //     width: "220px",
-  //     sortDirections: ["descend", "ascend"],
-  //     // align: "left",
-  //     render: (record, index) => {
-  //       return (
-  //         <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
-  //           {" "}
-  //           <img
-  //             draggable='false'
-  //             className='data-img'
-  //             src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-  //             alt=''
-  //           />
-  //           {record?.name}
-  //         </p>
-  //       );
-  //     },
-  //     sorter: (a, b) => {
-  //       return a?.taskCreator?.name
-  //         .toLowerCase()
-  //         .localeCompare(b?.taskCreator?.name?.toLowerCase());
-  //     },
-  //   },
-  //   {
-  //     title: t("Assigned-to"),
-  //     width: "220px",
-  //     dataIndex: "taskAssignedTo",
-  //     key: "taskAssignedTo",
-  //     sortDirections: ["descend", "ascend"],
-  //     sorter: (a, b) =>
-  //       a.taskAssignedTo[0].name
-  //         .toLowerCase()
-  //         .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
-  //     render: (text, record) => {
-  //       if (text !== undefined && text !== null && text.length > 0) {
-  //         return (
-  //           <>
-  //             <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
-  //               {" "}
-  //               {currentLanguage === "ar" ? (
-  //                 <>
-  //                   <img
-  //                     draggable='false'
-  //                     className='data-img'
-  //                     src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-  //                     alt=''
-  //                   />
-
-  //                   {text[0].name}
-  //                 </>
-  //               ) : (
-  //                 <>
-  //                   <img
-  //                     draggable='false'
-  //                     className='data-img'
-  //                     src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-  //                     alt=''
-  //                   />
-  //                   {text[0].name}
-  //                 </>
-  //               )}
-  //             </p>
-  //           </>
-  //         );
-  //       }
-  //     },
-  //   },
-  //   {
-  //     title: t("Due-date"),
-  //     dataIndex: "deadlineDate",
-  //     key: "deadlineDate",
-  //     width: "200px",
-  //     render: (text, record) => {
-  //       return (
-  //         <span className={styles["Action-Date-title"]}>
-  //           {_justShowDateformatBilling(record.deadlineDateTime)}
-  //         </span>
-  //       );
-  //     },
-  //   },
-  //   // {
-  //   //   title: t("Assigned-to"),
-  //   //   dataIndex: "taskAssignedTo",
-  //   //   key: "taskAssignedTo",
-  //   //   width: "200px",
-  //   //   render: (text, record) => {
-  //   //     return (
-  //   //       <>
-  //   //         <span className={styles["Action-Date-title"]}>
-  //   //           {record.taskAssignedTo[0].name}
-  //   //         </span>
-  //   //       </>
-  //   //     );
-  //   //   },
-  //   // },
-  //   {
-  //     title: t("Status"),
-  //     dataIndex: "status",
-  //     key: "status",
-  //     align: "center",
-  //     width: "220px",
-  //     filters: [
-  //       {
-  //         text: t("In-progress"),
-  //         value: 1,
-  //         // className: currentLanguage,
-  //       },
-  //       {
-  //         text: t("Pending"),
-  //         value: 2,
-  //       },
-  //       {
-  //         text: t("Upcoming"),
-  //         value: 3,
-  //       },
-  //       {
-  //         text: t("Cancelled"),
-  //         value: 4,
-  //       },
-  //       {
-  //         text: t("Completed"),
-  //         value: 5,
-  //       },
-  //     ],
-  //     defaultFilteredValue: [1, 2, 3, 4, 5],
-  //     filterIcon: (filtered) => (
-  //       <ChevronDown className='filter-chevron-icon-todolist' />
-  //     ),
-  //     onFilter: (value, record) => {
-  //       return Number(record?.status?.pK_TSID) === Number(value);
-  //     },
-  //     render: (text, record) => {
-  //       if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
-  //         return (
-  //           <>
-  //             <Select
-  //               defaultValue={text.status}
-  //               bordered={false}
-  //               dropdownClassName='Status-Todo'
-  //               className={
-  //                 text.pK_TSID === 1
-  //                   ? "InProgress  custom-class "
-  //                   : text.pK_TSID === 2
-  //                   ? "Pending  custom-class "
-  //                   : text.pK_TSID === 3
-  //                   ? "Upcoming  custom-class "
-  //                   : text.pK_TSID === 4
-  //                   ? "Cancelled  custom-class "
-  //                   : text.pK_TSID === 5
-  //                   ? "Completed  custom-class "
-  //                   : null
-  //               }
-  //               onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
-  //               {statusOptions.map((optValue, index) => {
-  //                 return (
-  //                   <option key={optValue.id} value={optValue.id}>
-  //                     {optValue.status}
-  //                   </option>
-  //                 );
-  //               })}
-  //             </Select>
-  //           </>
-  //         );
-  //       } else {
-  //         return (
-  //           <p
-  //             className={
-  //               text.pK_TSID === 1
-  //                 ? "InProgress  custom-class  color-5a5a5a text-center  my-1"
-  //                 : text.pK_TSID === 2
-  //                 ? "Pending   custom-class color-5a5a5a text-center my-1"
-  //                 : text.pK_TSID === 3
-  //                 ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-  //                 : text.pK_TSID === 4
-  //                 ? "Cancelled  custom-class  color-5a5a5a text-center my-1"
-  //                 : text.pK_TSID === 5
-  //                 ? "Completed  custom-class  color-5a5a5a  text-center my-1"
-  //                 : null
-  //             }>
-  //             {text.status}
-  //           </p>
-  //         );
-  //       }
-  //     },
-
-  //     filterMultiple: true,
-  //   },
-  //   // {
-  //   //   title: t("Status"),
-  //   //   dataIndex: "status",
-  //   //   key: "status",
-  //   //   width: "150px",
-  //   //   render: (text, record) => (
-  //   //     <>
-  //   //       <span className={styles["Action-Date-title"]}>
-  //   //         {record.status.status}
-  //   //       </span>
-  //   //     </>
-  //   //   ),
-  //   // },
-  //   {
-  //     dataIndex: "RedCrossIcon",
-  //     key: "RedCrossIcon",
-  //     width: "50px",
-  //     render: (text, record) => {
-  //       if (Number(record?.taskCreator?.pK_UID) === Number(userID)) {
-  //         return (
-  //           <i>
-  //             <img
-  //               alt={"Cross"}
-  //               src={del}
-  //               className={styles["action-delete-cursor"]}
-  //               onClick={() => deleteActionHandler(record)}
-  //             />
-  //           </i>
-  //         );
-  //       }
-  //     },
-  //   },
-  // ];
 
   const deleteActionHandler = (record) => {
     let NewData = {
@@ -798,8 +621,10 @@ const Actions = ({
         console.log(todoListMeetingTask.toDoLists, "actionMeetingReducer");
         setTotalRecords(todoListMeetingTask.totalRecords);
         setActionsRows(todoListMeetingTask.toDoLists);
+        setOriginalData(todoListMeetingTask.toDoLists);
       } else {
         setActionsRows([]);
+        setOriginalData([]);
         setTotalRecords(0);
       }
     } catch {}
@@ -903,104 +728,111 @@ const Actions = ({
 
           <Row>
             <Col lg={12} md={12} sm={12}>
-              {Object.keys(actionsRows)?.length === 0 ? (
-                <>
-                  <Row className="mt-0">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <img
-                        alt=""
-                        draggable={false}
-                        src={EmptyStates}
-                        width="306.27px"
-                        height="230px"
+              <>
+                <section className={styles["HeightDefined"]}>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <Table
+                        column={ActionsColoumn}
+                        scroll={{ y: "40vh", x: false }}
+                        pagination={false}
+                        className={"ToDo"}
+                        rows={actionsRows}
+                        locale={{
+                          emptyText: (
+                            <>
+                              <Row className="mt-0">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <img
+                                    alt=""
+                                    draggable={false}
+                                    src={EmptyStates}
+                                    width="306.27px"
+                                    height="230px"
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["Empty-State_Heading"]}
+                                  >
+                                    {t("Create-tasks-instantly")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["EmptyState_SubHeading"]}
+                                  >
+                                    {t(
+                                      "The-meeting-wrapped-up-lets-dive-into-some-task"
+                                    )}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </>
+                          ), //
+                        }}
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <span className={styles["Empty-State_Heading"]}>
-                        {t("Create-tasks-instantly")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <span className={styles["EmptyState_SubHeading"]}>
-                        {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ) : (
-                <>
-                  <section className={styles["HeightDefined"]}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Table
-                          column={ActionsColoumn}
-                          scroll={{ y: "40vh", x: false }}
-                          pagination={false}
-                          className={"ToDo"}
-                          rows={actionsRows}
-                        />
+
+                  {Object.keys(actionsRows).length > 0 && (
+                    <Row className="">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={
+                              "pagination-groups-table d-flex justify-content-center"
+                            }
+                          >
+                            <span className="PaginationStyle-TodoList">
+                              <CustomPagination
+                                onChange={handleForPagination}
+                                current={currentPage}
+                                showSizer={true}
+                                total={totalRecords}
+                                pageSizeOptionsValues={[
+                                  "10",
+                                  "25",
+                                  "50",
+                                  "100",
+                                ]}
+                                pageSize={currentPageSize}
+                              />
+                            </span>
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
-
-                    {Object.keys(actionsRows).length > 0 && (
-                      <Row className="">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className={
-                                "pagination-groups-table d-flex justify-content-center"
-                              }
-                            >
-                              <span className="PaginationStyle-TodoList">
-                                <CustomPagination
-                                  onChange={handleForPagination}
-                                  current={currentPage}
-                                  showSizer={true}
-                                  total={totalRecords}
-                                  pageSizeOptionsValues={[
-                                    "10",
-                                    "25",
-                                    "50",
-                                    "100",
-                                  ]}
-                                  pageSize={currentPageSize}
-                                />
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    )}
-                  </section>
-                </>
-              )}
+                  )}
+                </section>
+              </>
               <Row className="mt-3">
                 <Col
                   lg={12}

@@ -426,7 +426,6 @@ const TodoList = () => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
