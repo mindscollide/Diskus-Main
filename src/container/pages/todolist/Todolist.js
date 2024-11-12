@@ -54,7 +54,25 @@ const TodoList = () => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
+  const { assignees, getTodosStatus } = state;
+  const SearchTodolist = useSelector(
+    (state) => state.toDoListReducer.SearchTodolist
+  );
+  const SocketTodoActivityData = useSelector(
+    (state) => state.toDoListReducer.SocketTodoActivityData
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+  const ToDoDetails = useSelector((state) => state.toDoListReducer.ToDoDetails);
+
+  const ResponseMessageTodoReducer = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const ResponseStatusReducer = useSelector(
+    (state) => state.todoStatus.Response
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
@@ -92,7 +110,7 @@ const TodoList = () => {
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!ResponseStatusReducer?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (todoListPageSize !== null && todoListCurrentPage !== null) {
@@ -122,13 +140,10 @@ const TodoList = () => {
   //get todolist reducer
   useEffect(() => {
     try {
-      if (
-        toDoListReducer.SearchTodolist !== null &&
-        toDoListReducer.SearchTodolist !== undefined
-      ) {
-        setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-        if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-          let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+      if (SearchTodolist !== null && SearchTodolist !== undefined) {
+        setTotalRecords(SearchTodolist.totalRecords);
+        if (SearchTodolist.toDoLists.length > 0) {
+          let dataToSort = [...SearchTodolist.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -148,23 +163,20 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [SearchTodolist]);
 
   useEffect(() => {
     try {
       if (
-        toDoListReducer.SocketTodoActivityData !== null &&
-        toDoListReducer.SocketTodoActivityData !== undefined
+        SocketTodoActivityData !== null &&
+        SocketTodoActivityData !== undefined
       ) {
         if (
-          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-          toDoListReducer.SocketTodoActivityData.meetingID === -1
+          SocketTodoActivityData.comitteeID === -1 &&
+          SocketTodoActivityData.groupID === -1 &&
+          SocketTodoActivityData.meetingID === -1
         ) {
-          let dataToSort = [
-            toDoListReducer.SocketTodoActivityData.todoList,
-            ...rowsToDo,
-          ];
+          let dataToSort = [SocketTodoActivityData.todoList, ...rowsToDo];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -178,12 +190,12 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [SocketTodoActivityData]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (Number(payloadData.todoStatusID) === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -209,7 +221,7 @@ const TodoList = () => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     try {
@@ -218,11 +230,11 @@ const TodoList = () => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response.length > 0
+        ResponseStatusReducer !== null &&
+        ResponseStatusReducer !== "" &&
+        ResponseStatusReducer.length > 0
       ) {
-        todoStatus.Response.forEach((data) => {
+        ResponseStatusReducer.forEach((data) => {
           // Check if pK_TSID is not 1 and not 6
           if (data.pK_TSID !== 1 && data.pK_TSID !== 6) {
             optionsArr.push({
@@ -243,7 +255,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [todoStatus]);
+  }, [ResponseStatusReducer]);
 
   // for modal create  handler
   const modalHandler = (e) => {
@@ -673,7 +685,7 @@ const TodoList = () => {
   useEffect(() => {
     try {
       setViewFlagToDo(false);
-      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (Object.keys(ToDoDetails).length > 0) {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
@@ -683,7 +695,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [ToDoDetails]);
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -776,12 +788,12 @@ const TodoList = () => {
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== undefined &&
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== undefined &&
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== t("No-records-found")
     ) {
-      showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodoReducer, "success", setOpen);
       dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage !== "" &&
@@ -795,7 +807,7 @@ const TodoList = () => {
       dispatch(clearResponce());
       dispatch(clearResponseMessage());
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [ResponseMessageTodoReducer, assignees.ResponseMessage]);
 
   useEffect(() => {
     try {

@@ -167,7 +167,7 @@ const BillingMethodUsermanagement = lazy(() =>
 );
 const ManageUsers = lazy(() =>
   import(
-    "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement.js"
+    "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers"
   )
 );
 const Reports = lazy(() => import("../container/Admin/Reports/Reports.js"));
