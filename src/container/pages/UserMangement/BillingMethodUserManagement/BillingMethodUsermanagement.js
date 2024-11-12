@@ -295,9 +295,9 @@ const BillingMethodUsermanagement = () => {
 
   //React Stepper Numbers manuipulation
   useEffect(() => {
-    const firstvaue = document.querySelector(".StepButtonContent-d1-0-3-7");
-    const secondvaue = document.querySelector(".StepButtonContent-d3-0-3-13");
-    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-3-21");
+    const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
+    const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
+    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
 
     const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
 
