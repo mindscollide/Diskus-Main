@@ -65,6 +65,20 @@ const Stats = () => {
       }));
     }
   }, [toDoListReducer.getDashboardTaskData]);
+  
+  useEffect(() => {
+    if (toDoListReducer.getDashboardTaskCountMQTT !== null) {
+      try {
+        const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
+          toDoListReducer.getDashboardTaskCountMQTT;
+        setCounts((prevCounts) => ({
+          ...prevCounts,
+          totalTaskCount: totalNumberOfToDoList,
+          upComingTaskCount: totalNumberOfAssignedToDoList,
+        }));
+      } catch (error) {}
+    }
+  }, [toDoListReducer.getDashboardTaskCountMQTT]);
 
   useEffect(() => {
     if (SignatureWorkFlowReducer.getDashboardPendingApprovalData) {

@@ -448,6 +448,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       width="18.32px"
                       draggable="false"
                       alt=""
+                      className="border-rounded"
                     />
                     <span>{user.userName}</span>
                   </Col>
@@ -475,6 +476,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         width="18.32px"
                         draggable="false"
                         alt=""
+                        className="border-rounded"
                       />
                       <span>{user.userName}</span>
                     </Col>

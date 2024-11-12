@@ -2655,6 +2655,10 @@ const BoardDeckSendEmailApi = (
               });
               if (radioValue === 1) {
                 dispatch(showShareViaDataRoomPathConfirmation(true));
+                localStorage.setItem(
+                  "BoardDeckFolderID",
+                  response.data.responseResult.boardDeckFolderID
+                );
               }
             } else if (
               response.data.responseResult.responseMessage

@@ -364,11 +364,11 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   // setSceduleMeeting(false);
-                  setEdiorRole({
-                    status: "10",
-                    role: "Organizer",
-                    isPrimaryOrganizer: false,
-                  });
+                  // setEdiorRole({
+                  //   status: "10",
+                  //   role: "Organizer",
+                  //   isPrimaryOrganizer: true,
+                  // });
                   dispatch(
                     JoinCurrentMeeting(
                       false,

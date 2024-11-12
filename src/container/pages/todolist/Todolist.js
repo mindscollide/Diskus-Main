@@ -44,6 +44,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
 const TodoList = () => {
   //For Localization
@@ -63,6 +67,10 @@ const TodoList = () => {
   const [statusValues, setStatusValues] = useState([]);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
+  const [taskTitleSort, setTaskTitleSort] = useState(null);
+  const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
+  const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
+  const [taskDeadlineSort, setDeadlineSort] = useState(null);
   const [searchData, setSearchData] = useState({
     Date: "",
     Title: "",
@@ -363,13 +371,34 @@ const TodoList = () => {
 
   const columnsToDo = [
     {
-      title: t("Task"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Task")}
+            {taskTitleSort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "title",
       key: "title",
       width: "260px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      taskDeadlineSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           className="todolist-title-col"
@@ -381,11 +410,40 @@ const TodoList = () => {
       ),
     },
     {
-      title: t("Assigned-by"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Assigned-by")}
+            {taskAssignedBySort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
+      // align: "left",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedBySort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
+      sorter: (a, b) => {
+        return (
+          a?.taskCreator?.name
+            .toLowerCase()
+            .localeCompare(b?.taskCreator?.name?.toLowerCase()),
+          taskAssignedBySort
+        );
+      },
       render: (record, index) => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
@@ -400,14 +458,20 @@ const TodoList = () => {
           </p>
         );
       },
-      sorter: (a, b) => {
-        return a?.taskCreator?.name
-          .toLowerCase()
-          .localeCompare(b?.taskCreator?.name?.toLowerCase());
-      },
     },
     {
-      title: t("Assigned-to"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Assigned-to")}{" "}
+            {taskAssignedToSort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
@@ -416,6 +480,16 @@ const TodoList = () => {
         a.taskAssignedTo[0].name
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+      taskAssignedToSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedToSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
@@ -451,7 +525,18 @@ const TodoList = () => {
       },
     },
     {
-      title: t("Deadline"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
+            {t("Deadline")}
+            {taskDeadlineSort === "descend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
@@ -459,9 +544,19 @@ const TodoList = () => {
 
       align: "center",
       sortDirections: ["descend", "ascend"],
+      onHeaderCell: () => ({
+        onClick: () => {
+          setDeadlineSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
+      taskDeadlineSort,
 
       render: (text, record) => {
         return (
@@ -553,17 +648,17 @@ const TodoList = () => {
       filterMultiple: true,
     },
     {
-      title: t("Delete"),
+      title: "",
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        if (parseInt(record?.pK_UID) === parseInt(createrID)) {
+        if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <Tooltip placement="topRight" title={t("Delete")}>
               <i
                 className="meeting-editbutton cursor-pointer"
-                onClick={(e) => deleteTodolist(index)}
+                onClick={(e) => deleteTodolist(record)}
               >
                 <img draggable="false" src={del} alt="" />
               </i>

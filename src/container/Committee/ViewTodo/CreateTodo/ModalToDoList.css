@@ -187,7 +187,7 @@ body[dir="rtl"] .ArabicFontSemiBold {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border-radius: 4px !important;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
   display: flex;
   align-items: center !important;
   gap: 5px;
@@ -216,4 +216,8 @@ body[dir="rtl"] .ArabicFontSemiBold {
   max-height: 120px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.border-rounded {
+  border-radius: 50%;
 }

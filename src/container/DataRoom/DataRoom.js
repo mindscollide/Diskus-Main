@@ -268,7 +268,7 @@ const DataRoom = () => {
     try {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         console.log("Test Dataroom");
-        const remainingString = DataRoomString
+        const remainingString = DataRoomString;
         console.log(remainingString, "remainingStringremainingString");
         setDataRoomString(remainingString);
         // setRequestingAccess(true);
@@ -342,15 +342,19 @@ const DataRoom = () => {
       });
     } catch {}
     if (currentView !== null) {
-      apiCalling();
+      if (localStorage.getItem("BoardDeckFolderID") === null) {
+        apiCalling();
+      }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
       localStorage.removeItem("folderID");
+      localStorage.removeItem("BoardDeckFolderID");
     }
     return () => {
       localStorage.removeItem("folderID");
       localStorage.removeItem("setTableView");
+      localStorage.removeItem("BoardDeckFolderID");
     };
   }, []);
 

@@ -1727,6 +1727,11 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    setEdiorRole({
+                      status: record.status,
+                      role: "Organizer",
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
+                    });
                     setVideoTalk({
                       isChat: record.isChat,
                       isVideoCall: record.isVideoCall,
@@ -2142,6 +2147,10 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
+  console.log(
+    boardDeckMeetingTitle,
+    "boardDeckMeetingTitleboardDeckMeetingTitle"
+  );
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
     setBoardDeckMeetingID(record.pK_MDID);
@@ -3410,7 +3419,11 @@ const NewMeeting = () => {
         />
       )}
 
-      {shareViaDataRoomPathConfirmModal && <ShareViaDataRoomPathModal />}
+      {shareViaDataRoomPathConfirmModal && (
+        <ShareViaDataRoomPathModal
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
+        />
+      )}
     </>
   );
 };
