@@ -18,6 +18,8 @@ const UpdatedCancelSubscription = () => {
 
   const dispatch = useDispatch();
 
+  let Locale = localStorage.getItem("i18nextLng");
+
   const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
     useSelector(
       (state) =>
@@ -213,7 +215,8 @@ const UpdatedCancelSubscription = () => {
                   <Col lg={12} md={12} sm={12} className="text-center">
                     <span className={styles["SubscritionNumber_Styles"]}>
                       {formatDateDownGradeSubscription(
-                        record.subscriptionStartDate
+                        record.subscriptionStartDate,
+                        Locale
                       )}
                     </span>
                   </Col>
@@ -246,7 +249,8 @@ const UpdatedCancelSubscription = () => {
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
                   {formatDateDownGradeSubscription(
-                    record.subscriptionExpiryDate
+                    record.subscriptionExpiryDate,
+                    Locale
                   )}
                 </span>
               </>
@@ -300,7 +304,7 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return (
@@ -490,7 +494,7 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return <></>;
