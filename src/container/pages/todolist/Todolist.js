@@ -289,27 +289,27 @@ const TodoList = () => {
   const filters = [
     {
       value: "1",
-      text: "In Progress",
+      text: t("In-progress"),
     },
     {
       value: "2",
-      text: "Pending",
+      text: t("Pending"),
     },
     {
       value: "3",
-      text: "Upcoming",
+      text: t("Upcoming"),
     },
     {
       value: "4",
-      text: "Cancelled",
+      text: t("Cancelled"),
     },
     {
       value: "5",
-      text: "Completed",
+      text: t("Completed"),
     },
     {
       value: "6",
-      text: "Deleted",
+      text: t("Deleted"),
     },
   ];
 
@@ -426,7 +426,6 @@ const TodoList = () => {
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
