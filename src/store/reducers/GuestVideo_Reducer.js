@@ -23,6 +23,7 @@ const initialState = {
   hideunHideByHost: null,
   videoCameraGuest: false,
   voiceControle: false,
+  getAllParticipantGuest: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -295,6 +296,40 @@ const GuestVideoReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         hideUnhideSelfVideo: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_SELF_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        hideUnhideSelfVideo: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllParticipantGuest: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllParticipantGuest: null,
         ResponseMessage: action.message,
       };
     }

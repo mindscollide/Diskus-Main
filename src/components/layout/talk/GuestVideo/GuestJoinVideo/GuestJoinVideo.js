@@ -134,7 +134,8 @@ const GuestJoinVideo = ({
     } else {
       setErrorMessage(false);
       setGetReady(true);
-      setIsWaiting(true);
+      setIsWaiting(true); // Show the waiting room text
+      setRejoinState(false); // Exit rejoin state
       onJoinNameChange(joinName);
       sessionStorage.setItem("guestName", joinName);
       sessionStorage.removeItem("isRejoining");
@@ -151,7 +152,10 @@ const GuestJoinVideo = ({
   useEffect(() => {
     const savedName = sessionStorage.getItem("guestName");
     const isRejoining = sessionStorage.getItem("isRejoining") === "true";
-
+    console.log(
+      { savedName, isRejoining },
+      "isRejoiningisRejoiningisRejoiningF"
+    );
     if (isRejoining) {
       setJoinName(savedName || ""); // Populate name from storage
       setGetReady(false); // Ensure waiting state is not active
@@ -170,9 +174,8 @@ const GuestJoinVideo = ({
     // Automatically enable the webcam on initial load
     if (isWebCamEnabled) {
       const mediaDevices = navigator.mediaDevices;
-
       mediaDevices
-        .getUserMedia({
+        ?.getUserMedia({
           video: true,
           audio: true,
         })
