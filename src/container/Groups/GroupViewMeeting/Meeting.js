@@ -521,7 +521,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
+                  className="d-flex justify-content-start"
                 >
                   <Button
                     text={t("Join-meeting")}
