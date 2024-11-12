@@ -35,9 +35,16 @@
   background-color: #fff !important;
   border: 1px solid #000 !important;
 }
+.newDashboardTable table:not(:nth-child(1)) {
+  width: 100% !important;
+  border-spacing: 0 10px !important;
+}
 .newDashboardTable table {
   width: 100% !important;
   border-spacing: 0 10px !important;
+}
+.newDashboardTable table .ant-table-tbody .ant-table-measure-row {
+  visibility: collapse !important;
 }
 
 .newDashboardTable

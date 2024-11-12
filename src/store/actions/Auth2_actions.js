@@ -632,7 +632,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             )
           );
           localStorage.setItem("2fa", true);
-          mqttConnection(response.data.responseResult.authToken.userID);
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
           await dispatch(
             TwoFaAuthenticate(
               t,
@@ -645,7 +648,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
 
             dispatch(
               enterPasswordSuccess(
@@ -661,7 +667,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
             dispatch(enterPasswordSuccess(response.data.responseResult, ""));
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
@@ -727,7 +736,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
             navigate("/Admin/ManageUsers");
             dispatch(
               enterPasswordSuccess(
@@ -744,7 +756,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
 
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
@@ -1970,7 +1985,10 @@ const createPasswordAction = (value, navigate, t) => {
           // ) {
           dispatch(createPasswordSuccess(response.data.responseResult, ""));
           localStorage.setItem("2fa", true);
-          mqttConnection(response.data.responseResult.authToken.userID);
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
           await dispatch(
             TwoFaAuthenticate(
               t,

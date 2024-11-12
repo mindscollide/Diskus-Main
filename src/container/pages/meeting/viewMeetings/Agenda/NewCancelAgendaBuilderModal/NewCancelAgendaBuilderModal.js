@@ -8,15 +8,10 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
   searchNewUserMeeting,
-  showCancelModalAgenda,
   showCancelModalAgendaBuilder,
 } from "../../../../../../store/actions/NewMeetingActions";
 import blackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-const NewCancelAgendaBuilderModal = ({
-  currentState,
-  rows,
-  setSceduleMeeting,
-}) => {
+const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,26 +29,21 @@ const NewCancelAgendaBuilderModal = ({
     dispatch(showCancelModalAgendaBuilder(false));
   };
   const handleContinueBtn = async () => {
-    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
-      dispatch(showCancelModalAgenda(true));
-    } else {
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber:
-          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-      };
-      console.log("chek search meeting");
-      await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      setSceduleMeeting(false);
-      localStorage.setItem("folderDataRoomMeeting", 0);
-      dispatch(showCancelModalAgendaBuilder(false));
-    }
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setSceduleMeeting(false);
+    localStorage.setItem("folderDataRoomMeeting", 0);
+    dispatch(showCancelModalAgendaBuilder(false));
   };
 
   return (

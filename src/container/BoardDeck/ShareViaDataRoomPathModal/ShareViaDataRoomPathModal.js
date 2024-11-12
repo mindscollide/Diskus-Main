@@ -5,10 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { showShareViaDataRoomPathConfirmation } from "../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const ShareViaDataRoomPathModal = () => {
+import { getFolderDocumentsApi } from "../../../store/actions/DataRoom_actions";
+import { useNavigate } from "react-router-dom";
+const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const meetingTitle = localStorage.getItem("MeetingTitle");
+  const navigate = useNavigate();
+  const BordDeckFolderID = localStorage.getItem("BoardDeckFolderID");
+
   const shareViaBoardDeckModalConfirmation = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
@@ -17,7 +21,10 @@ const ShareViaDataRoomPathModal = () => {
     dispatch(showShareViaDataRoomPathConfirmation(false));
   };
 
-  const handleonClickDataRoom = () => {};
+  const handleonClickDataRoom = () => {
+    localStorage.setItem("setTableView", 3);
+    dispatch(getFolderDocumentsApi(navigate, Number(BordDeckFolderID), t, 5));
+  };
 
   return (
     <section>
@@ -54,7 +61,7 @@ const ShareViaDataRoomPathModal = () => {
                       <span>Dataroom</span> <span>{">"}</span>{" "}
                       <span>Meetings</span> <span>{">"}</span>{" "}
                       <span>Board Deck</span> <span>{">"}</span>{" "}
-                      <span>Boarddeck - {meetingTitle}</span>
+                      <span>Boarddeck - {boardDeckMeetingTitle}</span>
                     </span>
                   </span>
                 </Col>

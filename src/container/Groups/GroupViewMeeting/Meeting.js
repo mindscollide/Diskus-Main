@@ -240,7 +240,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+              handleViewMeeting(record.pK_MDID, record.isQuickMeeting, record.status);
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
             }}>

@@ -398,7 +398,7 @@ const ViewMeetingModal = ({
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
-  console.log(editorRole.role, "editorRoleeditorRole");
+  console.log(editorRole, "editorRoleeditorRole");
   return (
     <>
       <section className='position-relative'>
