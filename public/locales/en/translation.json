@@ -2252,5 +2252,9 @@
   "Join-now": "Join Now",
   "File-shared-successfully": "File Shared Successfully",
   "Your-file-has-been-shared": "Your file has been shared",
-  "View-in-dataroom": "View in Dataroom"
+  "View-in-dataroom": "View in Dataroom",
+  "Waiting-for-entry": "Waiting for entry",
+  "Allow-all": "Allow All",
+  "Deny-all": "Deny All",
+  "Mute-all": "Mute All"
 }

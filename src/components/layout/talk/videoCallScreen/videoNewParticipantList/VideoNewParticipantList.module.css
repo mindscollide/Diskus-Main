@@ -1,0 +1,171 @@
+.Waiting-New-Participant-List {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  height: 91% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  overflow-y: scroll !important;
+}
+
+.WaitingParticipantBoxNorm {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  height: 57% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  overflow-y: scroll !important;
+}
+
+.Waiting-New-Participant-List_box_title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6127d6;
+  line-height: 14.63px;
+}
+
+.Waiting-New-Participant-Hosts-Title {
+  background-color: #f6f9fc;
+  color: #6127d6;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px !important;
+}
+
+.Waiting-New-Participant-HostsList-Name {
+  background-color: #f6f9fc;
+  color: #5a5a5a;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0px !important;
+}
+.Waiting-New-Participant-hosttab {
+  background-color: #f6f9fc;
+  margin: 15px 0 5px 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 10px 15px;
+}
+
+.Waiting-New-Participant-HostNameList {
+  background-color: #f6f9fc;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 10px 15px;
+}
+
+.Waiting-New-ParticipantNameList {
+  background-color: #f6f9fc;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 10px 15px;
+  height: 15vh !important;
+  max-height: 20vh;
+  overflow-y: auto;
+}
+
+.Waiting-New-Participant-AcceptAndDeniedBtns {
+  background-color: #f6f9fc;
+  margin: 15px 0 10px 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 10px 15px;
+}
+.AcceptAndDeniedManual {
+  background-color: rgba(246, 249, 252, 1);
+  padding: 5px 15px;
+  height: 23vh;
+  max-height: 25vh !important;
+  overflow-y: scroll;
+  /* padding: 10px 15px;
+  max-height: 49vh;
+  overflow-y: auto; */
+}
+.AcceptAndDeniedManual_Nor {
+  background-color: rgba(246, 249, 252, 1);
+  margin: 0 0 10px 0;
+  padding: 10px 15px;
+  max-height: 25vh;
+  overflow-y: auto;
+}
+.Waiting-New-Participant-denyAllBtn {
+  background: transparent !important;
+  color: #5a5a5a !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  padding: 3px 40px;
+  border: 1px solid #e1e1e1 !important;
+  white-space: nowrap !important;
+  border-radius: 4px !important;
+}
+.Waiting-New-Participant-AcceptAllBtn {
+  background: #55ce5c !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  padding: 3px 40px;
+  border: 1px solid #e1e1e1 !important;
+  white-space: nowrap !important;
+  border-radius: 4px !important;
+}
+.Waiting-New-Participant-denyAllBtn-small {
+  background: transparent !important;
+  color: #5a5a5a !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  padding: 4px 20px;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  white-space: nowrap !important;
+}
+.Waiting-New-Participant-AcceptAllBtn-small {
+  background: #55ce5c !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 600;
+  padding: 4px 20px;
+  border: none !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+}
+.participantImage {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.participant_name {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Waiting-New-Participant-muteAll {
+  background: transparent !important;
+  color: #6127d6 !important;
+  font-size: 8px !important;
+  font-weight: 600 !important;
+  padding: 2px 20px !important;
+  border: 1px solid #6127d6 !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+}
+
+.New-ParticipantList-Name {
+  background-color: #f6f9fc;
+  color: #5a5a5a;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}

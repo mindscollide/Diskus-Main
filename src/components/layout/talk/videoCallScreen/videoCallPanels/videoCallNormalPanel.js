@@ -23,6 +23,7 @@ import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg"
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
 import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
+import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -349,7 +350,9 @@ const VideoPanelNormal = () => {
                             : "ParticipantsWaiting_Out"
                         } ps-0`}
                       >
-                        <VideoCallParticipants />
+                        {/* <VideoCallParticipants /> */}
+
+                        <VideoNewParticipantList />
                       </Col>
                     ) : null}
                     {/* <VideoCallParticipants /> */}
