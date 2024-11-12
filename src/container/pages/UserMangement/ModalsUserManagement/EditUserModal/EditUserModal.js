@@ -316,15 +316,13 @@ const EditUserModal = ({ editModalData }) => {
     setEditPakageID(selectedOption.value);
   };
 
-  console.log(selected, "selectedselected");
-
   return (
     <section>
       <Modal
         show={UserManagementModalseditUserModalData}
         setShow={dispatch(showEditUserModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block border-0"}
+        modalHeaderClassName={"d-block border-0"}
         onHide={() => {
           dispatch(showEditUserModal(false));
         }}

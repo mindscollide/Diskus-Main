@@ -25,8 +25,8 @@ const SuccessfullyUpdateModal = () => {
       <Modal
         show={UserManagementModalssuccessfullyUpdatedData}
         setShow={dispatch(showSucessfullyUpdatedModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block border-0"}
+        modalHeaderClassName={"d-block border-0"}
         size={"sm"}
         onHide={() => {
           dispatch(showSucessfullyUpdatedModal(false));
