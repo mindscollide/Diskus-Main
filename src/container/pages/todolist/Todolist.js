@@ -53,8 +53,7 @@ const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
-  const { assignees, getTodosStatus } = state;
+
   const SearchTodolist = useSelector(
     (state) => state.toDoListReducer.SearchTodolist
   );
@@ -72,6 +71,21 @@ const TodoList = () => {
 
   const ResponseStatusReducer = useSelector(
     (state) => state.todoStatus.Response
+  );
+
+  const ResponseMessageAssigneesReducer = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const UpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const ResponseMessageTodoStatusReducer = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+  const UpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -796,24 +810,24 @@ const TodoList = () => {
       showMessage(ResponseMessageTodoReducer, "success", setOpen);
       dispatch(clearResponce());
     } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found") &&
-      assignees.ResponseMessage !== t("The-meeting-has-been-cancelled")
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found") &&
+      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
     ) {
-      showMessage(assignees.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
       dispatch(clearResponseMessage());
     } else {
       dispatch(clearResponce());
       dispatch(clearResponseMessage());
     }
-  }, [ResponseMessageTodoReducer, assignees.ResponseMessage]);
+  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          UpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -827,41 +841,41 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== undefined &&
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodoStatusReducer, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== undefined &&
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
+      showMessage(UpdateTodoStatusMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== undefined &&
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
+      showMessage(UpdateTodoStatus, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    ResponseMessageTodoStatusReducer,
+    UpdateTodoStatusMessage,
+    UpdateTodoStatus,
   ]);
 
   const scroll = {

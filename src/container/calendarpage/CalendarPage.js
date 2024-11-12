@@ -41,22 +41,75 @@ const CalendarPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state) => state);
+  const MeetingPublishData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+  );
+  const getEventTypeIds = useSelector(
+    (state) => state.calendarReducer.getEventTypeIds
+  );
+  const eventsDetails = useSelector(
+    (state) => state.calendarReducer.eventsDetails
+  );
+  const CalenderData = useSelector(
+    (state) => state.calendarReducer.CalenderData
+  );
+  const googleEventCreate = useSelector(
+    (state) => state.calendarReducer.googleEventCreate
+  );
+  const googleEventUpdate = useSelector(
+    (state) => state.calendarReducer.googleEventUpdate
+  );
+  const googleEventDelete = useSelector(
+    (state) => state.calendarReducer.googleEventDelete
+  );
+  const microsoftEventCreate = useSelector(
+    (state) => state.calendarReducer.microsoftEventCreate
+  );
+  const microsoftEventUpdate = useSelector(
+    (state) => state.calendarReducer.microsoftEventUpdate
+  );
+  const microsoftEventDelete = useSelector(
+    (state) => state.calendarReducer.microsoftEventDelete
+  );
+  const ViewMeetingDetails = useSelector(
+    (state) => state.assignees.ViewMeetingDetails
+  );
+  const ResponseMessageAssigneesReducer = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+  const ResponseMessageTodolistReducer = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+  const UpdateOrganizationMessageResponseMessage = useSelector(
+    (state) => state.adminReducer.UpdateOrganizationMessageResponseMessage
+  );
+  const DeleteOrganizationMessageResponseMessage = useSelector(
+    (state) => state.adminReducer.DeleteOrganizationMessageResponseMessage
+  );
+  const AllOrganizationResponseMessage = useSelector(
+    (state) => state.adminReducer.AllOrganizationResponseMessage
+  );
+  const ResponseMessageAdminReducer = useSelector(
+    (state) => state.adminReducer.ResponseMessage
+  );
+  const ResponseMessageMeetingReducer = useSelector(
+    (state) => state.meetingIdReducer.ResponseMessage
+  );
+  const ResponseMessageTodoStatusReducer = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+  const UpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+  const UpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
+
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [EventTypes, setEventTypes] = useState([]);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
   const [viewFlag, setViewFlag] = useState(false);
-  const {
-    calendarReducer,
-    assignees,
-    toDoListReducer,
-    adminReducer,
-    meetingIdReducer,
-    getTodosStatus,
-    NewMeetingreducer,
-  } = state;
-  const MeetingPublishData = NewMeetingreducer.meetingStatusPublishedMqttData;
   const [calenderData, setCalenderDatae] = useState([]);
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -153,7 +206,7 @@ const CalendarPage = () => {
       setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
       await dispatch(getCalendarDataResponse(navigate, t, calendarData));
-      if (!calendarReducer.getEventTypeIds?.length > 0) {
+      if (!getEventTypeIds?.length > 0) {
         await dispatch(getEventsTypes(navigate, t));
       }
     } catch (error) {
@@ -254,7 +307,7 @@ const CalendarPage = () => {
 
   // set Data for Calendar
   useEffect(() => {
-    let Data = calendarReducer.CalenderData;
+    let Data = CalenderData;
     let officeEventColor =
       localStorage.getItem("officeEventColor") !== null
         ? localStorage.getItem("officeEventColor")
@@ -344,16 +397,16 @@ const CalendarPage = () => {
       });
       setCalenderDatae(newList);
     }
-  }, [calendarReducer.CalenderData]);
+  }, [CalenderData]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.googleEventCreate !== null) {
+      if (googleEventCreate !== null) {
         // Google Calenadar Event Source ID # 01
         // Add New Event in State
         let googleEventColor = localStorage.getItem("googleEventColor");
 
-        let calendarData = calendarReducer.googleEventCreate;
+        let calendarData = googleEventCreate;
         let newData = {
           id: Number(calendarData.calendarEventID),
           eventID: Number(calendarData.calendarEventSourceID),
@@ -385,16 +438,16 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.googleEventCreate]);
+  }, [googleEventCreate]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.googleEventUpdate !== null) {
+      if (googleEventUpdate !== null) {
         // Google Calenadar Event Source ID # 01
         // Update Existing Event in State
         let googleEventColor = localStorage.getItem("googleEventColor");
 
-        let calendarData = calendarReducer.googleEventUpdate;
+        let calendarData = googleEventUpdate;
         let newData = {
           id: Number(calendarData.calendarEventID),
           eventID: Number(calendarData.calendarEventSourceID),
@@ -434,15 +487,15 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.googleEventUpdate]);
+  }, [googleEventUpdate]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.googleEventDelete !== null) {
+      if (googleEventDelete !== null) {
         // Google Calenadar Event Source ID # 01
         // Remove Existing Event in State
 
-        let calendarData = calendarReducer.googleEventDelete;
+        let calendarData = googleEventDelete;
         setCalenderDatae((calendarData2) =>
           calendarData2.filter(
             (data2, index) => data2.id !== calendarData.calendarEventID
@@ -452,15 +505,15 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.googleEventDelete]);
+  }, [googleEventDelete]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.microsoftEventCreate !== null) {
+      if (microsoftEventCreate !== null) {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Add New Event in State
         let officeEventColor = localStorage.getItem("officeEventColor");
-        let calendarData = calendarReducer.microsoftEventCreate;
+        let calendarData = microsoftEventCreate;
         let newData = {
           id: Number(calendarData.calendarEventID),
           eventID: Number(calendarData.calendarEventSourceID),
@@ -492,15 +545,15 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.microsoftEventCreate]);
+  }, [microsoftEventCreate]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.microsoftEventUpdate !== null) {
+      if (microsoftEventUpdate !== null) {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Update Existing Event in State
         let officeEventColor = localStorage.getItem("officeEventColor");
-        let calendarData = calendarReducer.microsoftEventUpdate;
+        let calendarData = microsoftEventUpdate;
         let newData = {
           id: Number(calendarData.calendarEventID),
           eventID: Number(calendarData.calendarEventSourceID),
@@ -540,15 +593,15 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.microsoftEventUpdate]);
+  }, [microsoftEventUpdate]);
 
   useEffect(() => {
     try {
-      if (calendarReducer.microsoftEventDelete !== null) {
+      if (microsoftEventDelete !== null) {
         // Microsoft Calenadar Event Source ID # 02 & 04
         // Remove Existing Event in State
 
-        let calendarData = calendarReducer.microsoftEventDelete;
+        let calendarData = microsoftEventDelete;
         setCalenderDatae((calendarData2) =>
           calendarData2.filter(
             (data2, index) => data2.id !== calendarData.calendarEventID
@@ -558,20 +611,15 @@ const CalendarPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [calendarReducer.microsoftEventDelete]);
+  }, [microsoftEventDelete]);
 
   // setting view flag
   useEffect(() => {
-    if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-      console.log(
-        "ViewMeetingDetails",
-        assignees,
-        assignees.ViewMeetingDetails
-      );
+    if (Object.keys(ViewMeetingDetails).length > 0) {
       setViewFlag(true);
     } else {
     }
-  }, [assignees.ViewMeetingDetails]);
+  }, [ViewMeetingDetails]);
   useEffect(() => {
     try {
       if (MeetingPublishData !== null) {
@@ -642,166 +690,145 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (
-      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("No-records-found") &&
-      adminReducer.UpdateOrganizationMessageResponseMessage !== ""
+      UpdateOrganizationMessageResponseMessage !== "" &&
+      UpdateOrganizationMessageResponseMessage !== t("No-records-found") &&
+      UpdateOrganizationMessageResponseMessage !== ""
     ) {
-      showMessage(
-        adminReducer.UpdateOrganizationMessageResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(UpdateOrganizationMessageResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("No-records-found") &&
-      adminReducer.DeleteOrganizationMessageResponseMessage !== ""
+      DeleteOrganizationMessageResponseMessage !== "" &&
+      DeleteOrganizationMessageResponseMessage !== t("No-records-found") &&
+      DeleteOrganizationMessageResponseMessage !== ""
     ) {
-      showMessage(
-        adminReducer.DeleteOrganizationMessageResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(DeleteOrganizationMessageResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      adminReducer.AllOrganizationResponseMessage !== "" &&
-      adminReducer.AllOrganizationResponseMessage !== t("No-records-found") &&
-      adminReducer.AllOrganizationResponseMessage !== ""
+      AllOrganizationResponseMessage !== "" &&
+      AllOrganizationResponseMessage !== t("No-records-found") &&
+      AllOrganizationResponseMessage !== ""
     ) {
-      showMessage(
-        adminReducer.AllOrganizationResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(AllOrganizationResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== t("No-records-found") &&
-      adminReducer.ResponseMessage !== ""
+      ResponseMessageAdminReducer !== "" &&
+      ResponseMessageAdminReducer !== t("No-records-found") &&
+      ResponseMessageAdminReducer !== ""
     ) {
-      showMessage(adminReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageAdminReducer, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    adminReducer.UpdateOrganizationMessageResponseMessage,
-    adminReducer.DeleteOrganizationMessageResponseMessage,
-    adminReducer.AllOrganizationResponseMessage,
-    adminReducer.ResponseMessage,
+    UpdateOrganizationMessageResponseMessage,
+    DeleteOrganizationMessageResponseMessage,
+    AllOrganizationResponseMessage,
+    ResponseMessageAdminReducer,
   ]);
 
   useEffect(() => {
     if (
-      meetingIdReducer.ResponseMessage !== "" &&
-      meetingIdReducer.ResponseMessage !== "" &&
-      meetingIdReducer.ResponseMessage !== t("No-records-found")
+      ResponseMessageMeetingReducer !== "" &&
+      ResponseMessageMeetingReducer !== "" &&
+      ResponseMessageMeetingReducer !== t("No-records-found")
     ) {
-      showMessage(meetingIdReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageMeetingReducer, "success", setOpen);
 
       dispatch(HideNotificationMeetings());
     } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found")
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found")
     ) {
-      showMessage(assignees.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
 
       dispatch(clearResponseMessage());
     } else {
       dispatch(HideNotificationMeetings());
       dispatch(clearResponseMessage());
     }
-  }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [ResponseMessageMeetingReducer, ResponseMessageAssigneesReducer]);
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== undefined &&
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodolistReducer !== "" &&
+      ResponseMessageTodolistReducer !== undefined &&
+      ResponseMessageTodolistReducer !== "" &&
+      ResponseMessageTodolistReducer !== t("No-records-found")
     ) {
-      showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodolistReducer, "success", setOpen);
 
       dispatch(clearResponce());
     } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found")
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found")
     ) {
-      showMessage(assignees.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
 
       dispatch(clearResponseMessage());
     } else {
       dispatch(clearResponce());
       dispatch(clearResponseMessage());
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [ResponseMessageTodolistReducer, ResponseMessageAssigneesReducer]);
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== undefined &&
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodoStatusReducer, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== undefined &&
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
+      showMessage(UpdateTodoStatusMessage, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else if (
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== undefined &&
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
+      showMessage(UpdateTodoStatus, "success", setOpen);
 
       dispatch(cleareMessagetodo());
     } else {
       dispatch(cleareMessagetodo());
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    ResponseMessageTodoStatusReducer,
+    UpdateTodoStatusMessage,
+    UpdateTodoStatus,
   ]);
 
   useEffect(() => {
     if (
-      calendarReducer.getEventTypeIds !== null &&
-      calendarReducer.getEventTypeIds !== undefined &&
-      calendarReducer.getEventTypeIds.length > 0
+      getEventTypeIds !== null &&
+      getEventTypeIds !== undefined &&
+      getEventTypeIds.length > 0
     ) {
-      setEventTypes(calendarReducer.getEventTypeIds);
+      setEventTypes(getEventTypeIds);
     }
-  }, [calendarReducer.getEventTypeIds]);
+  }, [getEventTypeIds]);
   useEffect(() => {
-    if (
-      calendarReducer.eventsDetails !== null &&
-      calendarReducer.eventsDetails !== undefined
-    ) {
-      setMeetingData(calendarReducer.eventsDetails.diskusCalendarEvent);
+    if (eventsDetails !== null && eventsDetails !== undefined) {
+      setMeetingData(eventsDetails.diskusCalendarEvent);
     }
-  }, [calendarReducer.eventsDetails]);
-  console.log(
-    calenderData,
-    calendarReducer,
-    "calendarReducercalendarReducercalendarReducercalendarReducer"
-  );
+  }, [eventsDetails]);
+
   return (
     <>
       <div className="calendar_container">

@@ -113,6 +113,7 @@ const GuestVideoCall = () => {
           if (data.payload.isAccepted === true) {
             setVideoUrl(data.payload.videoUrl);
             setRoomId(data.payload.roomID);
+            sessionStorage.setItem("roomId", data.payload.roomID);
             dispatch(guestVideoNavigationScreen(2));
           } else {
             dispatch(guestVideoNavigationScreen(3));

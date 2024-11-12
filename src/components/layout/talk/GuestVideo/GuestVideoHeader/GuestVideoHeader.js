@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
+  getVideoCallParticipantsGuestMainApi,
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
   muteUnMuteParticipantMainApi,
@@ -46,6 +47,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.hideunHideByHost
   );
 
+  const getAllParticipantGuest = useSelector(
+    (state) => state.GuestVideoReducer.getAllParticipantGuest
+  );
+
   const videoCameraGuest = useSelector(
     (state) => state.GuestVideoReducer.videoCameraGuest
   );
@@ -53,10 +58,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const voiceControle = useSelector(
     (state) => state.GuestVideoReducer.voiceControle
   );
-  console.log(videoCameraGuest, "videoCameraGuestvideoCameraGuest");
+  console.log(
+    getAllParticipantGuest,
+    "getAllParticipantGuestgetAllParticipantGuest"
+  );
   console.log(voiceControle, "voiceControlevoiceControle");
 
-  let guestName = sessionStorage.getItem("joinName");
+  let guestName = sessionStorage.getItem("guestName");
 
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
@@ -66,9 +74,32 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const [isParticipant, setIsParticipant] = useState(false);
   const [showTile, setShowTile] = useState(false);
 
+  const [allParticipantGuest, setAllParticipantGuest] = useState([]);
+  console.log(allParticipantGuest, "allParticipantGuest");
+
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
   console.log({ micOn, isVideoOn }, "isVideoOnisVideoOn");
+
+  useEffect(() => {
+    let getRoomId = sessionStorage.getItem("roomId");
+    let Data = {
+      RoomID: String(getRoomId),
+    };
+    dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      getAllParticipantGuest !== null &&
+      getAllParticipantGuest !== undefined &&
+      getAllParticipantGuest.participantList.length > 0
+    ) {
+      setAllParticipantGuest(getAllParticipantGuest.participantList);
+    } else {
+      setAllParticipantGuest([]);
+    }
+  }, [getAllParticipantGuest]);
 
   useEffect(() => {
     if (guestMuteUnMuteData !== null) {
@@ -111,10 +142,6 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       }
     }
   }, [guesthideunHideByHostDatas]);
-
-  // Fetch the webcam status from sessionStorage
-  // const webcamStatus = sessionStorage.getItem("isWebCamEnabled") === "true";
-  // console.log(webcamStatus, "webcamStatuswebcamStatus");
 
   useEffect(() => {
     const iframe = frameRef.current;
@@ -167,13 +194,6 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     // Dispatch the API call with the structured request data
     dispatch(muteUnMuteSelfMainApi(navigate, t, data));
   };
-
-  // const openVideoStatus = () => {
-  //   const iframe = frameRef.current;
-  //   iframe.contentWindow.postMessage("VidOff", "*");
-  //   setIsVideoOn(!isVideoOn);
-  //   sessionStorage.setItem("VidOff", !isVideoOn);
-  // };
 
   const openVideoStatus = (flag) => {
     const iframe = frameRef.current;
@@ -305,61 +325,39 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
               <>
                 <img src={ParticipantSelected} onClick={openParticipant} />
                 <div className="New-List-Participants">
-                  {/* Your additional div content here */}
-                  <Row>
-                    <Col
-                      lg={7}
-                      md={7}
-                      sm={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <p>Sarah Thompson</p>
-                    </Col>
-                    <Col
-                      lg={5}
-                      md={5}
-                      sm={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <img src={RaiseHand} width="13px" height="16px" />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={7}
-                      md={7}
-                      sm={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <p>Michael Davis</p>
-                    </Col>
-                    <Col
-                      lg={5}
-                      md={5}
-                      sm={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <img src={RaiseHand} width="13px" height="16px" />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={7}
-                      md={7}
-                      sm={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <p>Emily Parkor</p>
-                    </Col>
-                    <Col
-                      lg={5}
-                      md={5}
-                      sm={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <img src={RaiseHand} width="13px" height="16px" />
-                    </Col>
-                  </Row>
+                  {allParticipantGuest.length > 0 &&
+                    allParticipantGuest.map((participant, index) => {
+                      console.log(participant, "datadatadatadata");
+                      return (
+                        <>
+                          <Row key={participant.guid}>
+                            <Col
+                              lg={7}
+                              md={7}
+                              sm={12}
+                              className="d-flex justify-content-start"
+                            >
+                              <p>{participant.name}</p>{" "}
+                            </Col>
+                            <Col
+                              lg={5}
+                              md={5}
+                              sm={12}
+                              className="d-flex justify-content-end"
+                            >
+                              {!participant.raiseHand && (
+                                <img
+                                  src={RaiseHand}
+                                  width="13px"
+                                  height="16px"
+                                  alt="raise hand"
+                                />
+                              )}{" "}
+                            </Col>
+                          </Row>
+                        </>
+                      );
+                    })}
                 </div>
               </>
             ) : (
