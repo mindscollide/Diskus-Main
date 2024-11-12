@@ -169,7 +169,9 @@ const UpdatedCancelSubscription = () => {
           if (record.IsDefaultRow) {
             return (
               <>
-                <span className={styles["TableheadingTotal"]}>
+                <span
+                  className={styles["TableheadingTotal_Main_Total_heading"]}
+                >
                   {t("Total")}
                 </span>
               </>
