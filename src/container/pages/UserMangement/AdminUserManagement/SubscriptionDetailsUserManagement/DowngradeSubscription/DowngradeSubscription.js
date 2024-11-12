@@ -92,6 +92,11 @@ const DowngradeSubscription = () => {
     }
   }, [subscriptionDetails]);
 
+  console.log(
+    downgradeSubsData,
+    "downgradeSubsDatadowngradeSubsDatadowngradeSubsData"
+  );
+
   //Extracting Wallet Data
   useEffect(() => {
     try {
@@ -173,8 +178,7 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           return (
             <>
               <span className={styles["TableheadingTotal"]}>Total</span>
@@ -205,8 +209,9 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (record) => {
-        if (record.IsDefaultRow) {
+      render: (text, record) => {
+        console.log(record, "recordrecordrecordrecord");
+        if (record && record.IsDefaultRow) {
           // Get the total charges only once, assuming you have access to the original data
           const totalCharges = calculateTotalChargesDowngradeSubscription(
             subscriptionDetails.organizationSelectedPackages
@@ -238,7 +243,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totalHeadCount = calculateTotalHeadCountDowngradeSubscription(
             subscriptionDetails.organizationSelectedPackages
           );
@@ -271,7 +276,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           // Get the total alloted users only once, assuming you have access to the original data
           const totalAllotedUsers =
             calculateTotalAllotedUsersDowngradeSubscription(
@@ -307,7 +312,7 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           // Get the total not utilized only once, assuming you have access to the original data
           const totalNotUtilized =
             calculateTotalNotUtilizedDowngradeSubscription(
@@ -342,7 +347,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totalReduction =
             calculateTotalReductionDowngradeSubscription(textFieldValues);
           return (
@@ -397,7 +402,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totaltransfertowallet = calculateTotalTransferAmount(
             downgradeSubsData,
             textFieldValues
