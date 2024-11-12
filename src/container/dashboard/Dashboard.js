@@ -165,15 +165,42 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 const Dashboard = () => {
   const location = useLocation();
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-
-  const { videoFeatureReducer, meetingIdReducer, UserManagementModals } =
-    useSelector((state) => state);
+  const navigate = useNavigate();
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
+  const isInternetDisconnectModalVisible = useSelector(
+    (state) => state.UserManagementModals.internetDisconnectModal
+  );
+  const mobileAppPopUp = useSelector(
+    (state) => state.UserManagementModals.mobileAppPopUp
+  );
+  const IncomingVideoCallFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+  const NormalizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+  );
+  const MaximizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+  );
+  const ShowGuestPopup = useSelector(
+    (state) => state.videoFeatureReducer.ShowGuestPopup
+  );
+  const VideoChatMessagesFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+  );
+  const MinimizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
 
-  const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
@@ -206,15 +233,8 @@ const Dashboard = () => {
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
   const [handsRaisedCount, setHandsRaisedCount] = useState(0);
   const [participantsList, setParticipantsList] = useState([]);
-  console.log(
-    { handsRaisedCount, participantsList },
-    "participantsListparticipantsList"
-  );
-  let Blur = localStorage.getItem("blur");
 
-  const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
-  );
+  let Blur = localStorage.getItem("blur");
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
@@ -233,9 +253,6 @@ const Dashboard = () => {
     dispatch(userLogOutApiFunc(navigate, t));
   };
 
-  const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
-  );
   useEffect(() => {
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
@@ -1771,7 +1788,7 @@ const Dashboard = () => {
                 CallStatusID: 3,
                 CallTypeID: callTypeID,
               };
-              if (videoFeatureReducer.IncomingVideoCallFlag === true) {
+              if (IncomingVideoCallFlagReducer === true) {
                 dispatch(VideoCallResponse(Data, navigate, t));
               }
             }, timeValue);
@@ -1779,7 +1796,7 @@ const Dashboard = () => {
             return () => clearTimeout(timeoutId);
           } else if (
             callStatus === false &&
-            videoFeatureReducer.IncomingVideoCallFlag === false
+            IncomingVideoCallFlagReducer === false
           ) {
             dispatch(incomingVideoCallFlag(true));
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
@@ -1981,10 +1998,7 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let callerID = JSON.parse(localStorage.getItem("callerID"));
           let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
-          if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
-            callStatus === false
-          ) {
+          if (IncomingVideoCallFlagReducer === true && callStatus === false) {
             let callerID = Number(localStorage.getItem("callerID"));
             let newCallerID = Number(localStorage.getItem("newCallerID"));
             if (callerID === newCallerID) {
@@ -2001,9 +2015,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2019,7 +2033,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === false &&
+            IncomingVideoCallFlagReducer === false &&
             callStatus === true
           ) {
             let callerID = Number(localStorage.getItem("callerID"));
@@ -2038,9 +2052,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2056,7 +2070,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
+            IncomingVideoCallFlagReducer === true &&
             callStatus === true
           ) {
             if (
@@ -2379,9 +2393,9 @@ const Dashboard = () => {
     }
   }, [
     newClient,
-    videoFeatureReducer.IncomingVideoCallFlag,
-    videoFeatureReducer.NormalizeVideoFlag,
-    videoFeatureReducer.MaximizeVideoFlag,
+    IncomingVideoCallFlagReducer,
+    NormalizeVideoFlag,
+    MaximizeVideoFlag,
   ]);
 
   useEffect(() => {
@@ -2430,11 +2444,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (
-      meetingIdReducer.MeetingStatusEnded !== null &&
-      meetingIdReducer.MeetingStatusEnded !== undefined &&
-      meetingIdReducer.MeetingStatusEnded.length !== 0
+      MeetingStatusEnded !== null &&
+      MeetingStatusEnded !== undefined &&
+      MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer?.MeetingStatusEnded?.meeting;
+      let endMeetingData = MeetingStatusEnded?.meeting;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
@@ -2450,7 +2464,7 @@ const Dashboard = () => {
         }
       }
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [MeetingStatusEnded]);
 
   useEffect(() => {
     let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -2473,7 +2487,7 @@ const Dashboard = () => {
         direction={currentLanguage === "ar" ? ar_EG : en_US}
         locale={currentLanguage === "ar" ? ar_EG : en_US}
       >
-        {videoFeatureReducer.IncomingVideoCallFlag === true && (
+        {IncomingVideoCallFlagReducer === true && (
           <div className="overlay-incoming-videocall" />
         )}
         <Layout className="mainDashboardLayout">
@@ -2502,24 +2516,22 @@ const Dashboard = () => {
             id={notificationID}
           />
 
-          {videoFeatureReducer.ShowGuestPopup && (
+          {ShowGuestPopup && (
             <div>
               <GuestJoinRequest />
             </div>
           )}
-          {videoFeatureReducer.IncomingVideoCallFlag === true ? (
-            <VideoMaxIncoming />
-          ) : null}
-          {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+          {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
+          {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
               chatParentHead="chat-messenger-head-video"
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {videoFeatureReducer.NormalizeVideoFlag === true ||
-          videoFeatureReducer.MinimizeVideoFlag === true ||
-          videoFeatureReducer.MaximizeVideoFlag === true ? (
+          {NormalizeVideoFlag === true ||
+          MinimizeVideoFlag === true ||
+          MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -2593,7 +2605,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
+          {mobileAppPopUp && <MobileAppPopUpModal />}
         </Layout>
       </ConfigProvider>
     </>
