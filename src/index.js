@@ -1,10 +1,9 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { Loader } from "./components/elements";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { MeetingProvider } from "./context/MeetingContext";
 const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming you're using BrowserRouter

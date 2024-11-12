@@ -213,7 +213,7 @@ const VerificationEmailAndNumber = () => {
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
