@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In Task.png";
 
 const RecentActivity = () => {
-  const { settingReducer } = useSelector((state) => state);
   const RecentActivityData = useSelector(
     (state) => state.settingReducer.RecentActivityData
   );

@@ -38,8 +38,27 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const scheduleMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const viewProposeDateMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+  );
+  const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+  const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+  );
+  const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+  );
+  const proposeNewMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+  );
+  const viewMeetingFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewMeetingFlag
+  );
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -92,13 +111,13 @@ const Sidebar = () => {
   const handleMeetingSidebarClick = () => {
     localStorage.setItem("navigateLocation", "Meeting");
     if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
+      (scheduleMeetingPageFlagReducer === true ||
+        viewProposeDateMeetingPageFlagReducer === true ||
+        viewAdvanceMeetingPublishPageFlagReducer === true ||
+        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+        viewProposeOrganizerMeetingPageFlagReducer === true ||
+        proposeNewMeetingPageFlagReducer === true) &&
+      viewMeetingFlagReducer === false
     ) {
       setMeetingNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -121,13 +140,13 @@ const Sidebar = () => {
         dispatch(currentMeetingStatus(0));
       }
       if (
-        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-        NewMeetingreducer.viewMeetingFlag === true
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === true
       ) {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           let searchData = {
@@ -174,13 +193,13 @@ const Sidebar = () => {
   // Todo Sidebar Click
   const handleMeetingSidebarTodo = () => {
     if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
+      (scheduleMeetingPageFlagReducer === true ||
+        viewProposeDateMeetingPageFlagReducer === true ||
+        viewAdvanceMeetingPublishPageFlagReducer === true ||
+        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+        viewProposeOrganizerMeetingPageFlagReducer === true ||
+        proposeNewMeetingPageFlagReducer === true) &&
+      viewMeetingFlagReducer === false
     ) {
       setTodoListNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -210,13 +229,13 @@ const Sidebar = () => {
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
     if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
+      (scheduleMeetingPageFlagReducer === true ||
+        viewProposeDateMeetingPageFlagReducer === true ||
+        viewAdvanceMeetingPublishPageFlagReducer === true ||
+        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+        viewProposeOrganizerMeetingPageFlagReducer === true ||
+        proposeNewMeetingPageFlagReducer === true) &&
+      viewMeetingFlagReducer === false
     ) {
       setCalendarNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -245,13 +264,13 @@ const Sidebar = () => {
 
   const handleMeetingSidebarNotes = () => {
     if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
+      (scheduleMeetingPageFlagReducer === true ||
+        viewProposeDateMeetingPageFlagReducer === true ||
+        viewAdvanceMeetingPublishPageFlagReducer === true ||
+        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+        viewProposeOrganizerMeetingPageFlagReducer === true ||
+        proposeNewMeetingPageFlagReducer === true) &&
+      viewMeetingFlagReducer === false
     ) {
       setNotesNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -707,17 +726,13 @@ const Sidebar = () => {
                   <Nav.Link
                     as={Link}
                     to={
-                      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                      NewMeetingreducer.viewMeetingFlag === false
+                      (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
                         ? "/DisKus/Meeting"
                         : "/DisKus/Meeting"
                     }
@@ -771,17 +786,13 @@ const Sidebar = () => {
                   <Nav.Link
                     as={Link}
                     to={
-                      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                      NewMeetingreducer.viewMeetingFlag === false
+                      (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
                         ? "/DisKus/Meeting"
                         : "/DisKus/todolist"
                     }
@@ -844,17 +855,13 @@ const Sidebar = () => {
                   <Nav.Link
                     as={Link}
                     to={
-                      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                      NewMeetingreducer.viewMeetingFlag === false
+                      (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
                         ? "/DisKus/Meeting"
                         : "/DisKus/calendar"
                     }
@@ -918,17 +925,13 @@ const Sidebar = () => {
                     as={Link}
                     disabled={false}
                     to={
-                      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                      NewMeetingreducer.viewMeetingFlag === false
+                      (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
                         ? "/DisKus/Meeting"
                         : "/DisKus/Notes"
                     }

@@ -14,11 +14,21 @@ import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workfl
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
 const Stats = () => {
-  const { NewMeetingreducer, toDoListReducer, SignatureWorkFlowReducer } =
-    useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const getDashboardMeetingData = useSelector(
+    (state) => state.NewMeetingreducer.getDashboardMeetingData
+  );
+  const getDashboardTaskData = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskData
+  );
+  const getDashboardTaskCountMQTT = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskCountMQTT
+  );
+  const getDashboardPendingApprovalData = useSelector(
+    (state) => state.SignatureWorkFlowReducer.getDashboardPendingApprovalData
+  );
 
   const [counts, setCounts] = useState({
     totalMeetingCount: 0,
@@ -38,39 +48,34 @@ const Stats = () => {
   }, []);
 
   useEffect(() => {
-    if (NewMeetingreducer.getDashboardMeetingData) {
-      console.log(
-        NewMeetingreducer.getDashboardMeetingData,
-        "NEW_MEETINGS_COUNTNEW_MEETINGS_COUNT"
-      );
-
+    if (getDashboardMeetingData) {
       const { totalNumberOfMeetings, numberOfUpcommingMeetings } =
-        NewMeetingreducer.getDashboardMeetingData;
+        getDashboardMeetingData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalMeetingCount: totalNumberOfMeetings,
         upcomingMeetingCount: numberOfUpcommingMeetings,
       }));
     }
-  }, [NewMeetingreducer.getDashboardMeetingData]);
+  }, [getDashboardMeetingData]);
 
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskData) {
+    if (getDashboardTaskData) {
       const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
-        toDoListReducer.getDashboardTaskData;
+        getDashboardTaskData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalTaskCount: totalNumberOfToDoList,
         upComingTaskCount: totalNumberOfAssignedToDoList,
       }));
     }
-  }, [toDoListReducer.getDashboardTaskData]);
-  
+  }, [getDashboardTaskData]);
+
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskCountMQTT !== null) {
+    if (getDashboardTaskCountMQTT !== null) {
       try {
         const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
-          toDoListReducer.getDashboardTaskCountMQTT;
+          getDashboardTaskCountMQTT;
         setCounts((prevCounts) => ({
           ...prevCounts,
           totalTaskCount: totalNumberOfToDoList,
@@ -78,19 +83,19 @@ const Stats = () => {
         }));
       } catch (error) {}
     }
-  }, [toDoListReducer.getDashboardTaskCountMQTT]);
+  }, [getDashboardTaskCountMQTT]);
 
   useEffect(() => {
-    if (SignatureWorkFlowReducer.getDashboardPendingApprovalData) {
+    if (getDashboardPendingApprovalData) {
       const { pendingApprovalsCount, totalApprovalsCount } =
-        SignatureWorkFlowReducer.getDashboardPendingApprovalData;
+        getDashboardPendingApprovalData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalPendingApprovalCount: totalApprovalsCount,
         upComingApprovalCount: pendingApprovalsCount,
       }));
     }
-  }, [SignatureWorkFlowReducer.getDashboardPendingApprovalData]);
+  }, [getDashboardPendingApprovalData]);
 
   const progressBarData = useMemo(
     () => [
