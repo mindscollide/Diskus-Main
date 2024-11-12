@@ -263,54 +263,6 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      {/* {navigator.onLine ? ( // Check for loading states to determine whether to display loader
-        NewMeetingreducer.Loading ||
-        auth.Loading ||
-        assignees.Loading ||
-        MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-        MeetingOrganizersReducer.Loading ||
-        PollsReducer.Loading ||
-        CommitteeReducer.Loading ||
-        toDoListReducer.Loading ||
-        todoStatus.Loading ||
-        getTodosStatus.Loading ||
-        MeetingAgendaReducer.Loading ||
-        actionMeetingReducer.Loading ||
-        AgendaWiseAgendaListReducer.loading ||
-        downloadReducer.Loading ||
-        attendanceMeetingReducer.Loading ||
-        webViewer.Loading ||
-        LanguageReducer.Loading ||
-        uploadReducer.Loading ||
-        settingReducer.Loading ||
-        fAQsReducer.Loading ||
-        meetingIdReducer.Loading ||
-        calendarReducer.Loading ||
-        OnBoardModal.Loading ||
-        postAssigneeComments.Loading ||
-        VideoChatReducer.Loading ||
-        minuteofMeetingReducer.Loading ||
-        countryNamesReducer.Loading ||
-        GetSubscriptionPackage.Loading ||
-        Authreducer.Loading ||
-        roleListReducer.Loading ||
-        NotesReducer.Loading ||
-        GroupsReducer.Loading ||
-        GroupsReducer.getAllLoading ||
-        ResolutionReducer.Loading ||
-        RealtimeNotification.Loading ||
-        OrganizationBillingReducer.Loading ||
-        DataRoomReducer.Loading ||
-        MinutesReducer.Loading ||
-        UserManagementModals.Loading ||
-        DataRoomFileAndFoldersDetailsReducer.Loading ||
-        SignatureWorkFlowReducer.Loading ||
-        adminReducer.Loading ||
-        UserReportReducer.Loading ||
-        UserMangementReducer.Loading ? (
-          <Loader />
-        ) : null
-      ) : null} */}
       {navigator.onLine && showLoader && <Loader />}
       <Notification open={open} setOpen={setOpen} />
     </>

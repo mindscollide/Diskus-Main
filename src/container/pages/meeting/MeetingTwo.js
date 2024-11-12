@@ -130,7 +130,6 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { editorRole, setEdiorRole } = useContext(MeetingContext);
-  const { NewMeetingreducer } = useSelector((state) => state);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
