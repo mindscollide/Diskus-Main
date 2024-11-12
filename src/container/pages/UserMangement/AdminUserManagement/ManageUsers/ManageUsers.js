@@ -631,21 +631,21 @@ const ManageUsers = () => {
             />
           ) : null}
         </Col>
+        <Col lg={1} md={1} sm={1} xs={12}></Col>
         <Col
-          lg={6}
-          md={6}
-          sm={6}
+          lg={5}
+          md={5}
+          sm={5}
           xs={12}
-          className="justify-content-end d-flex align-items-center"
+          className="justify-content-end d-block align-items-center m-0 p-0"
         >
           <span className="position-relative">
             <TextField
-              // width={"502px"}
               placeholder={t("Search")}
               name={"SearchVal"}
               value={manangeUserSearch.searchValue}
               onKeyDown={handleKeyDownSearchManageUsers}
-              // applyClass={"PollingSearchInput"}
+              applyClass={"PollingSearchInput"}
               labelclass="d-none"
               change={handleSeachFieldManageUsers}
               inputicon={
