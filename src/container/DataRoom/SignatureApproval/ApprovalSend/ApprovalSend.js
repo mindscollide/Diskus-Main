@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
@@ -120,7 +121,7 @@ const ApprovalSend = () => {
         } else {
           return (
             <span className={styles["date_vale"]}>
-              {SignatureandPendingApprovalDateTIme(text)}
+              {SignatureandPendingApprovalDateTIme(text, CurrentLanguage)}
             </span>
           );
         }
@@ -241,7 +242,11 @@ const ApprovalSend = () => {
               ...signatureFlowDocumentsForCreator,
               ...approvalsData,
             ]);
-            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
+            if (
+              totalCount !== undefined &&
+              totalCount !== null &&
+              totalCount !== 0
+            ) {
               setTotalRecords(totalCount);
             }
             setPageNo((prev) => prev + 1);
@@ -250,7 +255,11 @@ const ApprovalSend = () => {
             );
           } else {
             setApprovalsData(signatureFlowDocumentsForCreator);
-            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
+            if (
+              totalCount !== undefined &&
+              totalCount !== null &&
+              totalCount !== 0
+            ) {
               setTotalRecords(totalCount);
             }
             setPageNo(1);

@@ -766,10 +766,6 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   width: 100%;
 }
 
-body[dir="rtl"] .Data_room_btn {
-  margin-right: 20px !important;
-}
-
 .font_size {
   font-size: 12px;
   font-weight: 600;
