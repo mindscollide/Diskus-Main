@@ -406,7 +406,7 @@ body[dir="rtl"] .user-name {
 }
 
 body[dir="rtl"] .dropdown-menu.show {
-  top: 30px !important;
+  top: 0px !important;
 }
 
 .Profile_dropdown_menu.dropdown-menu.show {
