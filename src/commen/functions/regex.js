@@ -61,6 +61,7 @@ export const formatValue = (value, locale) => {
   return formattedValue;
 };
 export const convertToArabicNumerals = (input, locale) => {
+  console.log(input, "inputinputinputinput");
   // Check for null or undefined input
   if (input == null) {
     return ""; // Return an empty string if input is null or undefined

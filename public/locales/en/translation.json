@@ -2258,7 +2258,15 @@
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
-  "Mute-all": "Mute All",
   "Device-Id": "DeviceID",
-  "Reports": "Reports"
+  "Reports": "Reports",
+  "Mute-all": "Mute All",
+  "Review-minutes": "Review Minutes",
+  "Review-&-sign": "Review & Sign",
+  "Accept-all": "Accept All",
+  "Decline": "Decline",
+  "Google": "Google",
+  "Office": "Office",
+  "Microsoft": "Microsoft",
+  "None": "None"
 }

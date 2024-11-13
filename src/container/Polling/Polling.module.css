@@ -23,6 +23,9 @@
   font-weight: 600;
   border: none !important;
 }
+body[dir="rtl"] .new_Poll_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
 
 .polling_searchinput {
   display: inline-block;

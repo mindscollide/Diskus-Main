@@ -130,7 +130,7 @@ body[dir="rtl"] .Add_another_field {
 
 body[dir="rtl"] .polling_Options_backGround {
   position: absolute !important;
-  left: 0 !important;
+  left: 13px !important;
   right: auto;
   display: flex !important;
   width: auto !important;
@@ -210,6 +210,10 @@ body[dir="rtl"] .Card_border2 {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+body[dir="rtl"] .Name_cards {
+  margin-right: 5px !important;
 }
 
 .Cancell_btn_class_Update_polls {
@@ -489,6 +493,10 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 
 .scrollable-title2 {
   min-height: 39px !important;
+}
+
+body[dir="rtl"] .scrollable-title2 {
+  margin-right: 20px !important;
 }
 
 /* Common styles for all browsers except Firefox */

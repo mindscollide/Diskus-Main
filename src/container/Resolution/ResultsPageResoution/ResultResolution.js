@@ -16,11 +16,13 @@ import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const ResultResolution = ({ setResultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const ResolutionReducergetResolutionResult = useSelector(
     (state) => state.ResolutionReducer.getResolutionResult
   );
@@ -293,7 +295,7 @@ const ResultResolution = ({ setResultresolution }) => {
                     <span className={styles["Total_voters"]}>
                       {t("Total-voters")}
                       <span className={styles["No_of_Votes"]}>
-                        {totalVoters}
+                        {convertToArabicNumerals(totalVoters, CurrentLanguage)}
                       </span>
                     </span>
                   </Col>

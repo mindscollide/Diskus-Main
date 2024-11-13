@@ -21,6 +21,7 @@ import {
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
 } from "../../../store/actions/DataRoom_actions";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const ViewDetailsModal = ({
   setDetailView,
@@ -33,6 +34,7 @@ const ViewDetailsModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { DatafileandFolderDetails, getDataAnalyticsDetails } = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer
   );
@@ -170,6 +172,7 @@ const ViewDetailsModal = ({
       }
     } catch {}
   }, [DatafileandFolderDetails]);
+
   return (
     <section>
       <Row>
@@ -422,7 +425,10 @@ const ViewDetailsModal = ({
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  200KB
+                                  {`${convertToArabicNumerals(
+                                    documentDetails?.sizeOnDisk,
+                                    CurrentLanguage
+                                  )} MB`}
                                 </span>
                               </Col>
                             </Row>
@@ -467,7 +473,9 @@ const ViewDetailsModal = ({
                                   {`${
                                     documentDetails?.openedDate !== ""
                                       ? newTimeFormaterAsPerUTCTalkDate(
-                                          documentDetails?.openedDate + "000000"
+                                          documentDetails?.openedDate +
+                                            "000000",
+                                          CurrentLanguage
                                         )
                                       : ""
                                   } ${t("By")} ${
@@ -516,7 +524,10 @@ const ViewDetailsModal = ({
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  {documentDetails?.size}
+                                  {`${convertToArabicNumerals(
+                                    documentDetails?.size,
+                                    CurrentLanguage
+                                  )} MB`}
                                 </span>
                               </Col>
                             </Row>
@@ -558,7 +569,8 @@ const ViewDetailsModal = ({
                                     documentDetails?.modifiedDate !== ""
                                       ? newTimeFormaterAsPerUTCTalkDate(
                                           documentDetails?.modifiedDate +
-                                            "000000"
+                                            "000000",
+                                          CurrentLanguage
                                         )
                                       : ""
                                   } ${t("By")} ${
@@ -588,7 +600,8 @@ const ViewDetailsModal = ({
                                   }
                                 >
                                   {newTimeFormaterAsPerUTCTalkDate(
-                                    documentDetails?.createdDate + "000000"
+                                    documentDetails?.createdDate + "000000",
+                                    CurrentLanguage
                                   )}
                                 </span>
                               </Col>
@@ -673,7 +686,8 @@ const ViewDetailsModal = ({
                                           >
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                todayData.createdDateTime
+                                                todayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -717,7 +731,8 @@ const ViewDetailsModal = ({
                                           >
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                todayData.createdDateTime
+                                                todayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -762,7 +777,8 @@ const ViewDetailsModal = ({
                                           >
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                todayData.createdDateTime
+                                                todayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -807,7 +823,8 @@ const ViewDetailsModal = ({
                                           >
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                todayData.createdDateTime
+                                                todayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -852,7 +869,8 @@ const ViewDetailsModal = ({
                                           >
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                todayData.createdDateTime
+                                                todayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -937,7 +955,8 @@ const ViewDetailsModal = ({
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                YesterDayData.createdDateTime
+                                                YesterDayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -983,7 +1002,8 @@ const ViewDetailsModal = ({
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                YesterDayData.createdDateTime
+                                                YesterDayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1029,7 +1049,8 @@ const ViewDetailsModal = ({
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                YesterDayData.createdDateTime
+                                                YesterDayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1075,7 +1096,8 @@ const ViewDetailsModal = ({
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                YesterDayData.createdDateTime
+                                                YesterDayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1120,7 +1142,8 @@ const ViewDetailsModal = ({
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                YesterDayData.createdDateTime
+                                                YesterDayData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1206,7 +1229,8 @@ const ViewDetailsModal = ({
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisweekData.createdDateTime
+                                                thisweekData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1252,7 +1276,8 @@ const ViewDetailsModal = ({
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisweekData.createdDateTime
+                                                thisweekData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1298,7 +1323,8 @@ const ViewDetailsModal = ({
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisweekData.createdDateTime
+                                                thisweekData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1345,7 +1371,8 @@ const ViewDetailsModal = ({
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisweekData.createdDateTime
+                                                thisweekData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1391,7 +1418,8 @@ const ViewDetailsModal = ({
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisweekData.createdDateTime
+                                                thisweekData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1476,7 +1504,8 @@ const ViewDetailsModal = ({
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisMonthData.createdDateTime
+                                                thisMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1522,7 +1551,8 @@ const ViewDetailsModal = ({
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisMonthData.createdDateTime
+                                                thisMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1568,7 +1598,8 @@ const ViewDetailsModal = ({
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisMonthData.createdDateTime
+                                                thisMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1614,7 +1645,8 @@ const ViewDetailsModal = ({
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisMonthData.createdDateTime
+                                                thisMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1659,7 +1691,8 @@ const ViewDetailsModal = ({
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                thisMonthData.createdDateTime
+                                                thisMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1745,7 +1778,8 @@ const ViewDetailsModal = ({
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                previousMonthData.createdDateTime
+                                                previousMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1793,7 +1827,8 @@ const ViewDetailsModal = ({
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                previousMonthData.createdDateTime
+                                                previousMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1841,7 +1876,8 @@ const ViewDetailsModal = ({
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                previousMonthData.createdDateTime
+                                                previousMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1889,7 +1925,8 @@ const ViewDetailsModal = ({
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                previousMonthData.createdDateTime
+                                                previousMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
@@ -1936,7 +1973,8 @@ const ViewDetailsModal = ({
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
-                                                previousMonthData.createdDateTime
+                                                previousMonthData.createdDateTime,
+                                                CurrentLanguage
                                               )}
                                           </span>
                                           <Row>
