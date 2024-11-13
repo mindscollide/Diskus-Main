@@ -1184,6 +1184,11 @@ body[dir="rtl"] .dataroom_searchinput2 {
   justify-content: center !important;
   border: none !important;
 }
+
+body[dir="rtl"] .DataRoom_DropDown button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .DataRoom_DropDown button:hover {
   border: none !important;
 }
