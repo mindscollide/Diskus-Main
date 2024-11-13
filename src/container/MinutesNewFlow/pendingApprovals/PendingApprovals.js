@@ -29,6 +29,7 @@ import {
   getAllPendingApprovalsStatsApi,
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -46,7 +47,7 @@ const PendingApproval = () => {
   );
 
   //Getting current Language
-  let currentLanguage = localStorage.getItem("i18nextLng");
+  let lang = localStorage.getItem("i18nextLng");
 
   // State for tracking the active state of each button
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
@@ -293,7 +294,7 @@ const PendingApproval = () => {
               <div className={styles["overallGap"]}>
                 {/* Buttons for reviewing minutes */}
                 <Button
-                  text="Review Minutes"
+                  text={t("Review-minutes")}
                   className={
                     reviewMinutesActive
                       ? styles.activeMinutes
@@ -305,7 +306,7 @@ const PendingApproval = () => {
                 {(checkFeatureIDAvailability(19) ||
                   checkFeatureIDAvailability(21)) && (
                   <Button
-                    text="Review & Sign"
+                    text={t("Review-&-sign")}
                     className={
                       reviewAndSignActive
                         ? styles.activeMinutes
@@ -337,7 +338,7 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#6172D6",
                                 }}
-                                label={`${progress.reviewedPercentage}%`}
+                                label={`${convertToArabicNumerals(progress.reviewedPercentage,lang)}%`}
                                 now={progress.reviewedPercentage}
                                 key={1}
                               />
@@ -345,7 +346,7 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#ffc300",
                                 }}
-                                label={`${progress.pendingPercentage}%`}
+                                label={`${convertToArabicNumerals(progress.pendingPercentage,lang)}%`}
                                 now={progress.pendingPercentage}
                                 key={2}
                               />
@@ -353,7 +354,7 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#F16B6B",
                                 }}
-                                label={`${progress.expiredPercentage}%`}
+                                label={`${convertToArabicNumerals(progress.expiredPercentage,lang)}%`}
                                 now={progress.expiredPercentage}
                                 key={3}
                               />
@@ -367,7 +368,10 @@ const PendingApproval = () => {
                               }
                             >
                               <span className={styles["numeric-value"]}>
-                                {progress.reviewed}
+                                {convertToArabicNumerals(
+                                  progress.reviewed,
+                                  lang
+                                )}
                               </span>
                               <span className={styles["value"]}>
                                 {t("Reviewed")}
@@ -380,7 +384,10 @@ const PendingApproval = () => {
                               }
                             >
                               <span className={styles["numeric-value"]}>
-                                {progress.pending}
+                                {convertToArabicNumerals(
+                                  progress.pending,
+                                  lang
+                                )}
                               </span>
                               <span className={styles["value"]}>
                                 {t("Pending")}
@@ -391,7 +398,10 @@ const PendingApproval = () => {
                               className={styles["progress-value-wrapper-red"]}
                             >
                               <span className={styles["numeric-value"]}>
-                                {progress.expired}
+                                {convertToArabicNumerals(
+                                  progress.expired,
+                                  lang
+                                )}
                               </span>
                               <span className={styles["value"]}>
                                 {t("Expired")}

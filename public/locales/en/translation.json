@@ -2258,5 +2258,9 @@
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
-  "Mute-all": "Mute All"
+  "Mute-all": "Mute All",
+  "Review-minutes": "Review Minutes",
+  "Review-&-sign": "Review & Sign",
+  "Accept-all": "Accept All",
+  "Decline": "Decline"
 }

@@ -2190,5 +2190,9 @@
   "View-in-dataroom": "View in Dataroom",
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
-  "Deny-all": "Deny All"
+  "Deny-all": "Deny All",
+  "Review-minutes": "Review Minutes",
+  "Review-&-sign": "Review & Sign",
+  "Accept-all": "Accept All",
+  "Decline": "Decline"
 }
