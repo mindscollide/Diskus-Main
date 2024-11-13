@@ -550,3 +550,23 @@ body[dir="rtl"] .signUp_goBack {
   background: #ccc;
   margin-left: -15px;
 }
+
+.languageSelector-Signup {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector-Signup {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
