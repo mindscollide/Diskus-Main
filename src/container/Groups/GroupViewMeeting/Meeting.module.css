@@ -9,6 +9,10 @@
   display: block !important;
 }
 
+body[dir="rtl"] .meetingTitle {
+  margin-right: 20px !important;
+}
+
 .Start-Meeting {
   width: 118px;
   height: 28px;
@@ -199,4 +203,8 @@
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .TitleArabic {
+  margin-right: 20px !important;
 }

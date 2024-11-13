@@ -414,8 +414,6 @@ const Polling = () => {
     dispatch(searchPollsApi(navigate, t, data));
   };
 
-  //Filteration Work Polls
-
   //Filteration Work polls
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
