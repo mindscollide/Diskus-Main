@@ -258,22 +258,22 @@ const Organizers = ({
         key: "isPrimaryOrganizer",
         align: "center",
         ellipsis: "120px",
-        render: (text, record, rowIndex) => (
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-3 align-items-center"
-            >
-              <label className="column-boldness w-100">
-                {Number(record.userID) !== Number(UserID)
-                  ? t("Secondary")
-                  : t("Primary")}
-              </label>
-            </Col>
-          </Row>
-        ),
+        render: (text, record, rowIndex) => {
+          console.log(record, "isPrimaryOrganizerisPrimaryOrganizer");
+          return (
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className='d-flex gap-3 align-items-center'>
+                <label className='column-boldness w-100'>
+                  {record.isPrimaryOrganizer ? t("Primary") : t("Secondary")}
+                </label>
+              </Col>
+            </Row>
+          );
+        },
       },
 
       {
@@ -289,9 +289,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -299,9 +299,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -309,9 +309,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -319,9 +319,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -342,25 +342,24 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height="30px"
-                      width="30px"
-                      alt=""
+                      height='30px'
+                      width='30px'
+                      alt=''
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height="30px"
-                      width="30px"
+                      height='30px'
+                      width='30px'
                       onClick={() => sendRecentNotification(record)}
-                      className="cursor-pointer"
-                      alt=""
+                      className='cursor-pointer'
+                      alt=''
                     />
                   )}
                 </Col>
@@ -373,25 +372,24 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height="30px"
-                      width="30px"
-                      alt=""
+                      height='30px'
+                      width='30px'
+                      alt=''
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height="30px"
-                      width="30px"
+                      height='30px'
+                      width='30px'
                       onClick={() => sendRecentNotification(record)}
-                      className="cursor-pointer"
-                      alt=""
+                      className='cursor-pointer'
+                      alt=''
                     />
                   )}
                 </Col>
@@ -407,24 +405,24 @@ const Organizers = ({
         align: "left",
 
         render: (text, record) => {
-          console.log(record.userID, "recordrecordrecord");
+          console.log(record, "recordrecordrecord");
           if (
-            record.isDeletable === true &&
-            Number(record.userID) !== Number(UserID)
+            record.isPrimaryOrganizer ||
+            Number(record.userID) === Number(UserID)
           ) {
+            return null;
+          } else if (record.isDeletable) {
             return (
               <img
                 draggable={false}
                 src={CrossResolution}
-                height="30px"
-                alt=""
-                width="30px"
-                className="cursor-pointer"
+                height='30px'
+                alt=''
+                width='30px'
+                className='cursor-pointer'
                 onClick={() => deleteRow(record)}
               />
             );
-          } else {
-            return null;
           }
         },
       },
@@ -519,12 +517,9 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-3 align-items-center"
-            >
-              <label className="column-boldness w-100">
-                {Number(record.userID) !== Number(UserID)
-                  ? t("Secondary")
-                  : t("Primary")}
+              className='d-flex gap-3 align-items-center'>
+              <label className='column-boldness w-100'>
+                {record.isPrimaryOrganizer ? t("Primary") : t("Secondary")}
               </label>
             </Col>
           </Row>
@@ -545,25 +540,24 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height="30px"
-                      width="30px"
-                      alt=""
+                      height='30px'
+                      width='30px'
+                      alt=''
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height="30px"
-                      width="30px"
+                      height='30px'
+                      width='30px'
                       onClick={() => sendRecentNotification(record)}
-                      className="cursor-pointer"
-                      alt=""
+                      className='cursor-pointer'
+                      alt=''
                     />
                   )}
                 </Col>
@@ -576,25 +570,24 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   {record.disabledNotification === true ? (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height="30px"
-                      width="30px"
-                      alt=""
+                      height='30px'
+                      width='30px'
+                      alt=''
                     />
                   ) : (
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height="30px"
-                      width="30px"
+                      height='30px'
+                      width='30px'
                       onClick={() => sendRecentNotification(record)}
-                      className="cursor-pointer"
-                      alt=""
+                      className='cursor-pointer'
+                      alt=''
                     />
                   )}
                 </Col>
@@ -610,22 +603,22 @@ const Organizers = ({
         align: "left",
         render: (text, record) => {
           if (
-            record.isDeletable === true &&
-            Number(record.userID) !== Number(UserID)
+            record.isPrimaryOrganizer ||
+            Number(record.userID) === Number(UserID)
           ) {
+            return null;
+          } else if (record.isDeletable) {
             return (
               <img
                 draggable={false}
                 src={CrossResolution}
-                height="30px"
-                alt=""
-                width="30px"
-                className="cursor-pointer"
+                height='30px'
+                alt=''
+                width='30px'
+                className='cursor-pointer'
                 onClick={() => deleteRow(record)}
               />
             );
-          } else {
-            return null;
           }
         },
       },
@@ -986,21 +979,20 @@ const Organizers = ({
         <OrganizersViewPage />
       ) : (
         <>
-          <section className="position-relative">
-            <Row className="mt-4 m-0 p-0">
+          <section className='position-relative'>
+            <Row className='mt-4 m-0 p-0'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-4"
-              >
+                className='d-flex justify-content-end gap-4'>
                 {isEdit ? (
                   <>
-                    <Row className="d-flex align-items-center gap-2">
+                    <Row className='d-flex align-items-center gap-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Button
                           text={t("Cancel")}
-                          className={styles["publish_button_Organization"]}
+                          className={styles["Cancel_Organization"]}
                           style={{ marginRight: "10px" }}
                           onClick={handleCancelEdit}
                         />
@@ -1027,16 +1019,16 @@ const Organizers = ({
                         <img
                           draggable={false}
                           src={EditIcon}
-                          width="11.75px"
-                          height="11.75px"
-                          alt=""
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
                         />
                       }
                       onClick={enableEditButton}
                     />
                     <Button
                       text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} alt="" />}
+                      icon={<img draggable={false} src={addmore} alt='' />}
                       className={styles["AddMoreBtn"]}
                       onClick={openAddUserModal}
                     />
@@ -1051,7 +1043,7 @@ const Organizers = ({
                     column={MeetingColoumns}
                     scroll={{ y: "62vh" }}
                     pagination={false}
-                    className="Polling_table"
+                    className='Polling_table'
                     rows={rowsData}
                   />
                 </Col>
