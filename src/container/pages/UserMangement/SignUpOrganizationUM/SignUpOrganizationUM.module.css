@@ -257,6 +257,15 @@ body[dir="rtl"] .errorMessageCompany_hidden {
   color: green;
 }
 
+body[dir="rtl"] .isCompanyNameUnique {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  top: 15px;
+  color: green;
+  transform: rotate3d(10, 70, 15, 190deg);
+}
+
 .isEmailUnique {
   position: absolute;
   right: 35px;
@@ -264,6 +273,16 @@ body[dir="rtl"] .errorMessageCompany_hidden {
   height: 30px;
   bottom: 15px;
   color: green;
+}
+
+body[dir="rtl"] .isEmailUnique {
+  position: absolute;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  bottom: 15px;
+  color: green;
+  transform: rotate3d(10, 70, 15, 190deg);
 }
 
 .checkEmailSpinner {

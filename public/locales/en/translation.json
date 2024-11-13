@@ -2258,5 +2258,7 @@
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
-  "Mute-all": "Mute All"
+  "Mute-all": "Mute All",
+  "Device-Id": "DeviceID",
+  "Reports": "Reports"
 }

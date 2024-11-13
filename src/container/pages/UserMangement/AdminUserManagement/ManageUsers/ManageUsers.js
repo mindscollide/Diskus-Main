@@ -275,7 +275,7 @@ const ManageUsers = () => {
       },
     },
     {
-      title: "User Status",
+      title: t("User-status"),
       dataIndex: "userStatus",
       key: "userStatus",
       align: "left",

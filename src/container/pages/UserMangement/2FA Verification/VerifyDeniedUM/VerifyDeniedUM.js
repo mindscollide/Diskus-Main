@@ -96,7 +96,7 @@ const VerifyDeniedUM = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center mt-5"
+                    className="d-flex justify-content-center mt-4"
                   >
                     <Button
                       text={t("Back-to-sign-in").toUpperCase()}

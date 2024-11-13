@@ -184,8 +184,8 @@ body[dir="rtl"] .resendCode_btn {
 }
 
 .resendCode_btn:disabled {
-  opacity: 30%;
-  color: #000;
+  opacity: 30% !important;
+  color: #000 !important;
 }
 
 .resendCode_btn span {

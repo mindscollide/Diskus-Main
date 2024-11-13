@@ -1775,7 +1775,7 @@
   "Charges-per": "رسوم لكل",
   "License-US$": "License US$",
   "of-licenses": "مِن الرُّخَص",
-  "charges-in": "Charges in US$",
+  "charges-in": "الرسوم بالدولار الأمريكي",
   "Quarterly": "ربع سنويّ",
   "Yearly": "سنويًّا",
   "Board-meeting": "اجتماع مجلس الإدارة",
@@ -2190,5 +2190,7 @@
   "View-in-dataroom": "View in Dataroom",
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
-  "Deny-all": "Deny All"
+  "Deny-all": "Deny All",
+  "Device-Id": "DeviceID",
+  "Reports": "Reports"
 }

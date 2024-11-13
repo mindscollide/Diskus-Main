@@ -94,7 +94,7 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .auth_container {
-  position: relative;
+  position: fixed;
 }
 
 .auth_container.container-fluid {
