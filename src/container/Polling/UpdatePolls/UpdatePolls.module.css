@@ -212,6 +212,10 @@ body[dir="rtl"] .Card_border2 {
   text-overflow: ellipsis;
 }
 
+body[dir="rtl"] .Name_cards {
+  margin-right: 5px !important;
+}
+
 .Cancell_btn_class_Update_polls {
   font-size: 12px !important;
   padding: 12px 30px !important;
@@ -489,6 +493,10 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 
 .scrollable-title2 {
   min-height: 39px !important;
+}
+
+body[dir="rtl"] .scrollable-title2 {
+  margin-right: 20px !important;
 }
 
 /* Common styles for all browsers except Firefox */
