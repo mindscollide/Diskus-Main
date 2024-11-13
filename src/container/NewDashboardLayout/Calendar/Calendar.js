@@ -196,7 +196,7 @@ const NewCalendar = () => {
   };
 
   useEffect(() => {
-    if (lang !== undefined) {
+    if (lang !== null) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -210,6 +210,7 @@ const NewCalendar = () => {
   const handleClickonDate = (dateSelect) => {
     try {
       let selectDate = dateSelect?.toString().split("/").join("");
+      console.log(selectDate, "handleClickonDatehandleClickonDate")
       if (calendarEvents.length > 0) {
         const findData = calendarEvents.filter(
           (data) =>
@@ -641,6 +642,7 @@ const NewCalendar = () => {
             className={styles["custom-multi-date-picker"]}
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
+            
           />
         </>
       )}
