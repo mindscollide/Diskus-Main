@@ -55,10 +55,13 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-weight: 600;
-
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .allDocuments_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .allDocuments_btn:hover,
@@ -81,6 +84,10 @@
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .myDocument_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .myDocument_btn {
@@ -114,6 +121,10 @@
   font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Shared_with_me_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Shared_with_me_btn {
@@ -163,6 +174,11 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
+
+body[dir="rtl"] .Send_for_approval_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .profile_picture {
   border-radius: 30px !important;
 }
@@ -769,6 +785,10 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .font_size {
   font-size: 12px;
   font-weight: 600;
+}
+
+body[dir="rtl"] .font_size {
+  margin-left: 20px !important;
 }
 
 .dataroom_searchinput {
