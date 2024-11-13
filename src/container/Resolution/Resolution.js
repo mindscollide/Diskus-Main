@@ -883,7 +883,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
-      render: (data) => {
+      render: (text, data) => {
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
