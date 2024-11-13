@@ -16,7 +16,10 @@ import {
   LoginFlowRoutes,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+
 import { calculateTotals } from "../../../../commen/functions/TableDataCalculation";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const PakageDetailsUserManagement = () => {
   const navigate = useNavigate();
@@ -24,6 +27,8 @@ const PakageDetailsUserManagement = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+
+  let locale = localStorage.getItem("i18nextLng");
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
@@ -124,8 +129,6 @@ const PakageDetailsUserManagement = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-
-
   const ColumnsPakageSelection = [
     {
       title: (
@@ -165,14 +168,15 @@ const PakageDetailsUserManagement = () => {
       width: 100,
       align: "center",
       render: (text, row) => {
-        console.log(row, "checkccheckcheckhcek");
         // Check if 'price' is available and greater than zero before rendering it
         if (row.isTotalRow) {
           return;
         } else {
           return (
             <>
-              <span className={styles["ChargesPerLicesense"]}>{row.price}</span>
+              <span className={styles["ChargesPerLicesense"]}>
+                {convertToArabicNumerals(row.price, locale)}
+              </span>
             </>
           );
         }
@@ -461,6 +465,11 @@ const PakageDetailsUserManagement = () => {
 
   return (
     <Container>
+      <Row className="posotion-relative">
+        <Col className={styles["languageSelector-Signup"]}>
+          <LanguageSelector />
+        </Col>
+      </Row>
       <Row>
         <Col sm={12} className="mt-4">
           <h2

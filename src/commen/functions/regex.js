@@ -60,11 +60,24 @@ export const formatValue = (value, locale) => {
 
   return formattedValue;
 };
-export const convertToArabicNumerals = (number, locale ) => {
-  if (locale === 'ar') {
-    return number.toString().replace(/\d/g, (digit) =>
+export const convertToArabicNumerals = (input, locale) => {
+  // Check for null or undefined input
+  if (input == null) {
+    return ""; // Return an empty string if input is null or undefined
+  }
+  if (input == undefined) {
+    return ""; // Return an empty string if input is null or undefined
+  }
+  // Convert input to a string if it's a number or if it's not already a string
+  const number = input.toString();
+
+  // If locale is 'ar', replace digits with Arabic numerals
+  if (locale === "ar") {
+    return number.replace(/\d/g, (digit) =>
       String.fromCharCode(0x0660 + parseInt(digit))
     );
   }
-  return number;
+
+  // Return the input as is if locale is not 'ar'
+  return input;
 };
