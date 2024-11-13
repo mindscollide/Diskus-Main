@@ -162,10 +162,11 @@ body[dir="rtl"] .Card_border2 {
   margin: 0 0 10px 0;
 }
 .scrollable-title {
-  max-height: 100px;
-  min-height: 39px; /* Set the maximum height you desire for the title */
+  max-height: 60px;
+  padding-right: 5px;
   overflow: hidden;
-  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 .scrollable-title::-webkit-scrollbar {
   width: 0.5rem;

@@ -20,6 +20,7 @@ export const MeetingProvider = ({ children }) => {
     role: null,
     isPrimaryOrganizer: false,
   });
+  const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null)
   useEffect(() => {
     try {
       if (
@@ -48,6 +49,8 @@ export const MeetingProvider = ({ children }) => {
         setCancelConfirmationModal,
         endMeetingConfirmationModal,
         setEndMeetingConfirmationModal,
+        setCurrentMeetingStatus,
+        currentMeetingStatus
       }}>
       {children}
     </MeetingContext.Provider>

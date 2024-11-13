@@ -16,11 +16,20 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {  settingReducer,meetingIdReducer } = useSelector((state) => state);
+  const { settingReducer, meetingIdReducer } = useSelector((state) => state);
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
-  let diskusEventColor = localStorage.getItem("diskusEventColor") !== null ? localStorage.getItem("diskusEventColor"): "#000";
-  let googleEventColor = localStorage.getItem("googleEventColor") !== null ? localStorage.getItem("googleEventColor"): "#000";
-  let officeEventColor = localStorage.getItem("officeEventColor") !== null ? localStorage.getItem("officeEventColor"): "#000";
+  let diskusEventColor =
+    localStorage.getItem("diskusEventColor") !== null
+      ? localStorage.getItem("diskusEventColor")
+      : "#000";
+  let googleEventColor =
+    localStorage.getItem("googleEventColor") !== null
+      ? localStorage.getItem("googleEventColor")
+      : "#000";
+  let officeEventColor =
+    localStorage.getItem("officeEventColor") !== null
+      ? localStorage.getItem("officeEventColor")
+      : "#000";
   let defaultColor = "#00000";
   let now = new Date();
   let year = now.getUTCFullYear();
@@ -108,7 +117,14 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                   const minutesDifference = Math.floor(
                     timeDifference / (1000 * 60)
                   );
-
+                  console.log(
+                    "eventDataeventData",
+                    eventData,
+                    Number(eventData.statusID) === 1,
+                    eventData.participantRoleID === 1,
+                    eventData.isQuickMeeting === true,
+                    minutesDifference <= remainingMinutesAgo
+                  );
                   return (
                     <section
                       key={index}
@@ -122,15 +138,13 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             ? `1px solid ${officeEventColor}`
                             : `1px solid #000`,
                       }}
-                      className={styles["eventBox"]}
-                    >
+                      className={styles["eventBox"]}>
                       <Row>
                         <Col
                           sm={12}
                           md={10}
                           lg={10}
-                          className="d-flex flex-column "
-                        >
+                          className='d-flex flex-column '>
                           <span className={styles["event__title"]}>
                             {eventData.title}
                           </span>
@@ -140,12 +154,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             )}
                           </span>
                         </Col>
-                        <Col
-                          sm={12}
-                          md={2}
-                          lg={2}
-                          //   className="d-flex justify-content-end align-items-center"
-                        ></Col>
                       </Row>
                       <Row>
                         <Col sm={12} md={6} lg={6}>
@@ -209,8 +217,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                           sm={12}
                           md={6}
                           lg={6}
-                          className="d-flex justify-content-end align-items-end"
-                        >
+                          className='d-flex justify-content-end align-items-end'>
                           <p className={styles["event__type"]}>
                             {eventData.calenderEventType}
                           </p>

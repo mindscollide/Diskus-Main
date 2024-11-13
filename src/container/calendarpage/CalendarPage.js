@@ -44,7 +44,10 @@ import { clearResponce } from "../../store/actions/ToDoList_action";
 import { useNavigate } from "react-router-dom";
 import MeetingViewModalCalendar from "../modalView/ModalView";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
-import { JoinCurrentMeeting, meetingStatusPublishedMqtt } from "../../store/actions/NewMeetingActions";
+import {
+  JoinCurrentMeeting,
+  meetingStatusPublishedMqtt,
+} from "../../store/actions/NewMeetingActions";
 
 const CalendarPage = () => {
   //For Localization
@@ -126,12 +129,12 @@ const CalendarPage = () => {
           CalendarEventId: value.id,
           CalendarEventTypeId: value.calendarTypeId,
         };
-        if(Number(value.statusID) === 10) {
+        if (Number(value.statusID) === 10) {
           let joinMeetingData = {
             FK_MDID: value.meetingID,
             DateTime: getCurrentDateTimeUTC(),
           };
-  
+
           await dispatch(
             JoinCurrentMeeting(
               true,
@@ -149,8 +152,6 @@ const CalendarPage = () => {
         } else {
           dispatch(getEventsDetails(navigate, Data, t, setCalendarViewModal));
         }
-
-  
       }
     }
   };
@@ -1011,12 +1012,14 @@ const CalendarPage = () => {
           />
         </Row>
       </div>
+      {calendarViewModal && (
+        <MeetingViewModalCalendar
+          viewFlag={calendarViewModal}
+          setViewFlag={setCalendarViewModal}
+          data={meetingData}
+        />
+      )}
 
-      <MeetingViewModalCalendar
-        viewFlag={calendarViewModal}
-        setViewFlag={setCalendarViewModal}
-        data={meetingData}
-      />
       {meetingModalShow && (
         <ModalMeeting
           // this is check from where its called 2 is from Calendar

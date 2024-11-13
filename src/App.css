@@ -6608,7 +6608,9 @@ textarea {
 .ToDo .ant-table-column-sorters .ant-table-column-sorter{
   display: none !important;
 }
-
+.ApprovalsTable  .ant-table-column-sorters .ant-table-column-sorter{
+  display: none !important;
+}
 button.grayScaled {
   filter: grayscale(0.8);
   background: #ccc !important;
