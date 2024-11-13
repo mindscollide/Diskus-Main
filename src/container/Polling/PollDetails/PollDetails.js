@@ -116,30 +116,30 @@ const PollDetails = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
+                    className={`${styles["BOx_for_yes"]} d-flex align-items-center`}
+                  >
+                    <span className={styles["scrollable-title"]}>
+                      {" "}
+                      {pollTitle}
+                    </span>
+                  </Col>
+                </Row>
+                {/* <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Box_For_Title_toShow"]}
                   >
                     <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        {pollTitle.length > 100 ? (
-                          // Add d-flex class and justify-content-center to center the text
-                          <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
-                            {pollTitle}
-                          </div>
-                        ) : (
-                          // Add d-flex class and align-items-center to center the text
-                          <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
-                            {pollTitle}
-                          </div>
-                        )}
+                      <Col lg={12} sm={12} md={12}>
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          {pollTitle}
+                        </span>
                       </Col>
                     </Row>
                   </Col>
-                </Row>
-
+                </Row> */}
                 <Row className="mt-1">
                   <Col
                     lg={12}

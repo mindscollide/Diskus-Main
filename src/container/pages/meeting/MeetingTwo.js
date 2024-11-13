@@ -875,7 +875,7 @@ const NewMeeting = () => {
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
 
     setSearchMeeting(false);
-    setentereventIcon(true);
+    // setentereventIcon(true);
   };
 
   const HandleCloseSearchModalMeeting = () => {
@@ -1031,6 +1031,16 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   //UnPublished Meeting Page
@@ -1055,6 +1065,16 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   const handleViewMeeting = async (id, isQuickMeeting, status) => {
@@ -1941,7 +1961,9 @@ const NewMeeting = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        console.log(record, "checkIsPrimaryOrganizercheckIsPrimaryOrganizer")
         const isQuickMeeting = record.isQuickMeeting;
+        let checkIsPrimaryOrganizer = record.isPrimaryOrganizer
         if (
           record.status === "8" ||
           record.status === "4" ||
@@ -3319,22 +3341,7 @@ const NewMeeting = () => {
                             locale={{
                               emptyText: emptyText(), // Set your custom empty text here
                             }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return (
-                                  record.meetingAgenda.length > 0 &&
-                                  record.meetingAgenda.map((data) => (
-                                    <p
-                                      className={styles["meeting-expanded-row"]}
-                                    >
-                                      {data.objMeetingAgenda.title}
-                                    </p>
-                                  ))
-                                );
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda.length > 0 ? true : false,
-                            }}
+                    
                           />
                           {/* // ) : null} */}
                         </>

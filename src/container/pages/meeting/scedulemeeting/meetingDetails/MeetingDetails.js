@@ -63,14 +63,25 @@ const MeetingDetails = ({
   setSceduleMeeting,
   setCurrentMeetingID,
   currentMeeting,
-  editorRole,
+  setEditMeeting,
   isEditMeeting,
   setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setGoBackCancelModal } = useContext(MeetingContext);
+  const {
+    setGoBackCancelModal,
+    setCurrentMeetingStatus,
+    currentMeetingStatus,
+    editorRole,
+  } = useContext(MeetingContext);
+
+  console.log(
+    currentMeetingStatus,
+    editorRole,
+    "currentMeetingStatuscurrentMeetingStatus"
+  );
   const nextConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.nextConfirmModal
   );
@@ -584,7 +595,7 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: publishedFlag ? 1 : 11,
+          MeetingStatusID: currentMeetingStatus,
         },
       };
       console.log(data, "newArrnewArrnewArrnewArr");
@@ -688,7 +699,7 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: publishedFlag ? 1 : 11,
+          MeetingStatusID: currentMeetingStatus,
         },
       };
       dispatch(
@@ -974,6 +985,8 @@ const MeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingType = MeetingData.meetingType;
+        let wasPublishedFlag = MeetingData.wasMeetingPublished;
+        setCurrentMeetingStatus(MeetingData.meetingStatus.pK_MSID);
         setMeetingDetails({
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
@@ -1054,6 +1067,7 @@ const MeetingDetails = ({
         setRows(newDateTimeData);
         setPublishedFlag(PublishedMeetingStatus);
       } else {
+        setCurrentMeetingStatus(11);
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
@@ -1940,23 +1954,18 @@ const MeetingDetails = ({
               />
             </>
           )}
-          {Number(currentMeeting) !== 0 && (
-            <>
-              {(Number(editorRole.status) === 11 ||
-                Number(editorRole.status) === 12) && (
-                <>
-                  {editorRole.role === "Organizer" && (
-                    <Button
-                      disableBtn={!meetingDetails.IsPublished}
-                      text={t("Publish")}
-                      className={styles["Update_Next"]}
-                      onClick={handlePublish}
-                    />
-                  )}
-                </>
-              )}
-            </>
-          )}
+
+          {editorRole.role === "Organizer" &&
+          (Number(editorRole.status) === 11 ||
+            Number(editorRole.status) === 12) &&
+          meetingDetails.IsPublished ? (
+            <Button
+              disableBtn={!meetingDetails.IsPublished}
+              text={t("Publish")}
+              className={styles["Update_Next"]}
+              onClick={handlePublish}
+            />
+          ) : null}
         </Col>
       </Row>
 
