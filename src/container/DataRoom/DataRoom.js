@@ -121,12 +121,12 @@ import {
 import ModalDeleteFile from "./ModalDeleteFile/ModalDeleteFile";
 import ModalDeleteFolder from "./ModalDeleteFolder/ModalDeleteFolder";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { convertToArabicNumerals } from "../../commen/functions/regex";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
   let DataRoomString = localStorage.getItem("DataRoomEmail");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
-
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -1252,7 +1252,14 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          return <span className={styles["ownerName"]}>{`${text} MB`}</span>;
+          {
+            console.log("File-size", text);
+          }
+          return (
+            <span className={styles["ownerName"]}>
+              {`${convertToArabicNumerals(text, CurrentLanguage)} MB`}
+            </span>
+          );
         }
       },
     },
@@ -1845,7 +1852,12 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          return <span className={styles["ownerName"]}>{`${text} MB`}</span>;
+          return (
+            <span className={styles["ownerName"]}>{`${convertToArabicNumerals(
+              text,
+              CurrentLanguage
+            )} MB`}</span>
+          );
         }
       },
     },

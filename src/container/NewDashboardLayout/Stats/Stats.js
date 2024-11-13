@@ -12,6 +12,7 @@ import { getDashbardTaskDataApi } from "../../../store/actions/ToDoList_action";
 import { getDashbardMeetingDataApi } from "../../../store/actions/NewMeetingActions";
 import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Stats = () => {
   const dispatch = useDispatch();
@@ -127,7 +128,10 @@ const Stats = () => {
     ],
     [counts]
   );
-  console.log({ counts }, "countscountscounts");
+
+  let locale = localStorage.getItem("i18nextLng");
+
+
   return (
     <Row>
       <Col sm={12} md={6} lg={6}>
@@ -173,7 +177,7 @@ const Stats = () => {
             <ProgressBar
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
-              label={`${bar.now}/${bar.max}`}
+              label={`${convertToArabicNumerals(bar.now, locale)}/${convertToArabicNumerals(bar.max, locale)}`}
               className={
                 checkisbothValueisEqual
                   ? styles["dashboard_progress_upcomingmeeting_R"]

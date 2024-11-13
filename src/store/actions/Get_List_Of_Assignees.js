@@ -209,8 +209,8 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                console.log("chek search meeting");
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else if (checkFlag === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -307,8 +307,8 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   Length: Number(meetingpageRow),
                   PublishedMeetings: true,
                 };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                console.log("chek search meeting");
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else if (checkFlag === 7) {
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
@@ -445,19 +445,24 @@ const ViewMeeting = (
               await dispatch(
                 ViewMeetingSuccess(response.data.responseResult, "")
               );
-              if (Number(no) === 1) {
-                setViewFlag(true);
-                dispatch(scheduleMeetingPageFlag(false));
-              } else if (no === 2) {
-                dispatch(GetAllReminders(navigate, t));
-                setEditFlag(true);
-              } else if (no === 3) {
-                setCalendarViewModal(true);
-              } else if (no === 4) {
-                setViewMeetingModal(true);
-                dispatch(scheduleMeetingPageFlag(false));
-              } else if (no === 5) {
-                setEditMeetingModal(true);
+              try {
+                if (Number(no) === 1) {
+                  setViewFlag(true);
+                  dispatch(scheduleMeetingPageFlag(false));
+                } else if (no === 2) {
+                  dispatch(GetAllReminders(navigate, t));
+                  setEditFlag(true);
+                } else if (no === 3 || no === 10) {
+                  setViewFlag(true)
+                  setCalendarViewModal(true);
+                } else if (no === 4) {
+                  setViewMeetingModal(true);
+                  dispatch(scheduleMeetingPageFlag(false));
+                } else if (no === 5) {
+                  setEditMeetingModal(true);
+                }
+              } catch (error) {
+                console.log(error, "errorerror");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -597,8 +602,8 @@ const CancelMeeting = (navigate, object, t, value) => {
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                console.log("chek search meeting");
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -802,8 +807,8 @@ const EndMeeting = (navigate, object, t, searchData) => {
                 )
               );
 
-        console.log("chek search meeting")
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              console.log("chek search meeting");
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

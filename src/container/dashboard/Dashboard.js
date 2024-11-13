@@ -164,8 +164,29 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 
 const Dashboard = () => {
   const location = useLocation();
-  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
+  const { Sider, Content } = Layout;
+
   const navigate = useNavigate();
+  //Translation
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  let i18nextLng = localStorage.getItem("i18nextLng");
+
+  // let createrID = 5;
+  let userGUID = localStorage.getItem("userGUID");
+
+  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
+
+  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
+  let createrID = localStorage.getItem("userID");
+
+  let currentOrganization = localStorage.getItem("organizationID");
+
+  let currentUserName = localStorage.getItem("name");
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
@@ -202,17 +223,6 @@ const Dashboard = () => {
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
-  let createrID = localStorage.getItem("userID");
-  let currentOrganization = localStorage.getItem("organizationID");
-  let currentUserName = localStorage.getItem("name");
-  const { Sider, Content } = Layout;
-  //Translation
-  const { t } = useTranslation();
-
-  // let createrID = 5;
-  const dispatch = useDispatch();
-  let userGUID = localStorage.getItem("userGUID");
-  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -233,6 +243,7 @@ const Dashboard = () => {
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
   const [handsRaisedCount, setHandsRaisedCount] = useState(0);
   const [participantsList, setParticipantsList] = useState([]);
+  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
   let Blur = localStorage.getItem("blur");
 
@@ -2406,8 +2417,6 @@ const Dashboard = () => {
     }
   }, [Blur]);
 
-  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
-
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
@@ -2435,8 +2444,6 @@ const Dashboard = () => {
     dispatch(GetPendingApprovalsCount(navigate, t));
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
-
-  let i18nextLng = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
     setCurrentLanguage(i18nextLng);
@@ -2535,7 +2542,11 @@ const Dashboard = () => {
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
-          {isInternetDisconnectModalVisible && <InternetConnectivityModal open={isInternetDisconnectModalVisible}/>}
+          {isInternetDisconnectModalVisible && (
+            <InternetConnectivityModal
+              open={isInternetDisconnectModalVisible}
+            />
+          )}
           <Notification
             open={open.open}
             message={open.message}

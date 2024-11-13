@@ -116,7 +116,14 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                   const minutesDifference = Math.floor(
                     timeDifference / (1000 * 60)
                   );
-
+                  console.log(
+                    "eventDataeventData",
+                    eventData,
+                    Number(eventData.statusID) === 1,
+                    eventData.participantRoleID === 1,
+                    eventData.isQuickMeeting === true,
+                    minutesDifference <= remainingMinutesAgo
+                  );
                   return (
                     <section
                       key={index}
@@ -148,7 +155,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             )}
                           </span>
                         </Col>
-                        <Col sm={12} md={2} lg={2}></Col>
                       </Row>
                       <Row>
                         <Col sm={12} md={6} lg={6}>

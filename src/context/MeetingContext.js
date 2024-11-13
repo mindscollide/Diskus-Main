@@ -21,6 +21,7 @@ export const MeetingProvider = ({ children }) => {
     role: null,
     isPrimaryOrganizer: false,
   });
+  const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
   useEffect(() => {
     try {
       if (UserProfileData !== null && UserProfileData !== undefined) {
@@ -46,6 +47,8 @@ export const MeetingProvider = ({ children }) => {
         setCancelConfirmationModal,
         endMeetingConfirmationModal,
         setEndMeetingConfirmationModal,
+        setCurrentMeetingStatus,
+        currentMeetingStatus,
       }}
     >
       {children}

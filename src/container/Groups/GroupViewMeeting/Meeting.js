@@ -323,7 +323,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting, record.status);
+              handleViewMeeting(
+                record.pK_MDID,
+                record.isQuickMeeting,
+                record.status
+              );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
             }}
@@ -601,19 +605,28 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         } else if (Number(record.status) === 10) {
           if (isParticipant) {
             return (
-              <Button
-                text={t("Join-meeting")}
-                className={styles["joining-Meeting"]}
-                onClick={() => {
-                  handleViewMeeting(
-                    record.pK_MDID,
-                    record.isQuickMeeting,
-                    record.status
-                  );
-                  localStorage.setItem("meetingTitle", record.title);
-                  localStorage.setItem("videoCallURL", record.videoCallURL);
-                }}
-              />
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-start"
+                >
+                  <Button
+                    text={t("Join-meeting")}
+                    className={styles["joining-Meeting"]}
+                    onClick={() => {
+                      handleViewMeeting(
+                        record.pK_MDID,
+                        record.isQuickMeeting,
+                        record.status
+                      );
+                      localStorage.setItem("meetingTitle", record.title);
+                      localStorage.setItem("videoCallURL", record.videoCallURL);
+                    }}
+                  />
+                </Col>
+              </Row>
             );
           } else if (isAgendaContributor) {
             return (
