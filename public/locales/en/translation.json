@@ -2262,5 +2262,9 @@
   "Review-minutes": "Review Minutes",
   "Review-&-sign": "Review & Sign",
   "Accept-all": "Accept All",
-  "Decline": "Decline"
+  "Decline": "Decline",
+  "Google": "Google",
+  "Office": "Office",
+  "Microsoft": "Microsoft",
+  "None": "None"
 }

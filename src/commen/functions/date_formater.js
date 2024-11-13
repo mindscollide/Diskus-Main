@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 import moment from "moment";
+import { formatDistanceToNow } from 'date-fns';
+import { enUS, arSA } from 'date-fns/locale';
 
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
@@ -1012,25 +1014,34 @@ export const DateFormatForPolls = (date) => {
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };
 
-export const timePassed = (dateString) => {
+// export const timePassed = (dateString, locale) => {
+//   const givenDate = new Date(dateString);
+//   const currentDate = new Date();
+
+//   const diffInMs = currentDate - givenDate; // Difference in milliseconds
+//   const diffInSeconds = Math.floor(diffInMs / 1000);
+//   const diffInMinutes = Math.floor(diffInSeconds / 60);
+//   const diffInHours = Math.floor(diffInMinutes / 60);
+//   const diffInDays = Math.floor(diffInHours / 24);
+
+//   if (diffInDays > 0) {
+//     return `${diffInDays} day(s) ago`;
+//   } else if (diffInHours > 0) {
+//     return `${diffInHours} hour(s) ago`;
+//   } else if (diffInMinutes > 0) {
+//     return `${diffInMinutes} minute(s) ago`;
+//   } else {
+//     return `${diffInSeconds} second(s) ago`;
+//   }
+// };
+export const timePassed = (dateString, locale) => {
   const givenDate = new Date(dateString);
-  const currentDate = new Date();
 
-  const diffInMs = currentDate - givenDate; // Difference in milliseconds
-  const diffInSeconds = Math.floor(diffInMs / 1000);
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  const diffInDays = Math.floor(diffInHours / 24);
+  // Choose the locale based on the input (`en` for English, `ar` for Arabic)
+  const selectedLocale = locale === 'ar' ? arSA : enUS;
 
-  if (diffInDays > 0) {
-    return `${diffInDays} day(s) ago`;
-  } else if (diffInHours > 0) {
-    return `${diffInHours} hour(s) ago`;
-  } else if (diffInMinutes > 0) {
-    return `${diffInMinutes} minute(s) ago`;
-  } else {
-    return `${diffInSeconds} second(s) ago`;
-  }
+  // Calculate and format the relative time distance to now, with localization
+  return formatDistanceToNow(givenDate, { addSuffix: true, locale: selectedLocale });
 };
 
 export const convertIntoDateObject = (dateTime) => {
