@@ -22,16 +22,14 @@ const SubscriptionDetailsUserManagement = () => {
 
   const dispatch = useDispatch();
 
+  let Locale = localStorage.getItem("i18nextLng");
+
   const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
     useSelector(
       (state) =>
         state.UserMangementReducer
           .organizationSelectedPakagesByOrganizationIDData
     );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   //Subscription Details Table Data
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
@@ -168,12 +166,12 @@ const SubscriptionDetailsUserManagement = () => {
       key: "SubscriptionNumber",
       ellipsis: true,
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return (
               <>
-                <span className={styles["TableheadingTotal"]}>
+                <span className={styles["TableheadingTotal_Main_Heading"]}>
                   {t("Total")}
                 </span>
               </>
@@ -219,7 +217,8 @@ const SubscriptionDetailsUserManagement = () => {
                   <Col lg={12} md={12} sm={12} className="text-center">
                     <span className={styles["SubscritionNumber_Styles"]}>
                       {formatDateDownGradeSubscription(
-                        record.subscriptionStartDate
+                        record.subscriptionStartDate,
+                        Locale
                       )}
                     </span>
                   </Col>
@@ -243,7 +242,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
       align: "center",
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return <></>;
@@ -252,7 +251,8 @@ const SubscriptionDetailsUserManagement = () => {
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
                   {formatDateDownGradeSubscription(
-                    record.subscriptionExpiryDate
+                    record.subscriptionExpiryDate,
+                    Locale
                   )}
                 </span>
               </>
@@ -274,7 +274,7 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return <></>;
@@ -306,7 +306,7 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return (

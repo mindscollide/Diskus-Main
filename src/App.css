@@ -7527,14 +7527,6 @@ body[dir="rtl"] .ant-table-wrapper.SubscriptionExpiryTableStyles {
   border-bottom-left-radius: 4px !important;
 }
 
-.SubscriptionExpiryTableStyles
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:last-child {
-  border-right: 1px solid #e1e1e1 !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
-}
-
 body[dir="rtl"]
   .SubscriptionExpiryTableStyles
   tr.ant-table-row.ant-table-row-level-0
