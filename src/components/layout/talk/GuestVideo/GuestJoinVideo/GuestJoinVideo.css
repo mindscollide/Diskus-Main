@@ -99,17 +99,38 @@ video.video-size {
   object-fit: cover;
 }
 
-@keyframes ZoomIn {
+@keyframes zoom-in-zoom-out {
   0% {
-    opacity: 0;
-    transform: scale(0.9); /* Start slightly smaller */
+    transform: scale(0.8);
+  }
+  30% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(1.1);
   }
   100% {
-    opacity: 1;
-    transform: scale(1); /* End at normal size */
+    transform: scale(0.8);
   }
 }
 
 .waiting-text-animation {
-  animation: ZoomIn 1s ease-in-out;
+  animation: zoom-in-zoom-out 5s ease-in-out infinite;
+}
+
+.left-meeting-text {
+  color: #6172d6 !important;
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center !important;
+  margin-bottom: 0px;
+}
+
+.left-meeting-rejoin-text {
+  color: #5a5a5a !important;
+  font-size: 20px;
+  font-weight: 600;
 }

@@ -94,7 +94,7 @@ const VideoCallNormalHeader = ({
 
   console.log(participantWaitingList, "participantWaitingList");
 
-  const participantCounter = participantData.length;
+  const participantCounter = participantData?.length;
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -429,13 +429,25 @@ const VideoCallNormalHeader = ({
       participantAcceptedName !== undefined &&
       participantAcceptedName.length > 0
     ) {
-      setParticipantData(participantAcceptedName);
+      // Filter out duplicates based on UID
+      const uniqueParticipants = participantAcceptedName.reduce(
+        (acc, current) => {
+          console.log(acc, "datadatdtad");
+          // Only add the current participant if its UID is not already in acc
+          if (!acc.find((participant) => participant.UID === current.UID)) {
+            acc.push(current);
+          }
+          return acc;
+        },
+        []
+      );
+
+      setParticipantData(uniqueParticipants);
+      console.log(uniqueParticipants, "uniqueParticipants");
     } else {
       setParticipantData([]);
     }
   }, [participantAcceptedName]);
-  console.log(participantData, "participantDataparticipantDataparticipantData");
-  useEffect(() => {}, [participantData]);
 
   // makeLeave or transfer Meeting Host API
   const makeLeaveOnClick = (usersData) => {

@@ -79,26 +79,31 @@ const CreateNewShoutAll = () => {
   }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   //Search Shout All User
-  const searchShoutAllUserUser = (e) => {
-    if (e !== "") {
-      setSearchShoutAllUserValue(e);
-      let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
-        (value) => {
-          return value.fullName
-            .toLowerCase()
-            .includes(searchShoutAllUserValue.toLowerCase());
+  const searchShoutAllUserUser = (values) => {
+    try{
+      if (values !== "") {
+        setSearchShoutAllUserValue(values);
+        let filteredData =
+          talkStateData?.AllUsers?.AllUsersData?.allUsers?.filter((value) => {
+            return value.fullName
+              .toLowerCase()
+              .includes(searchShoutAllUserValue.toLowerCase());
+          });
+          let dataFilteredData=filteredData?filteredData:[]
+        if (dataFilteredData.length === 0) {
+          setAllUsers(talkStateData?.AllUsers?.AllUsersData?.allUsers);
+        } else {
+          setAllUsers(dataFilteredData);
         }
-      );
-      if (filteredData.length === 0) {
-        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-      } else {
-        setAllUsers(filteredData);
+      } else if (values === "" || values === null) {
+        let data = talkStateData?.AllUsers?.AllUsersData?.allUsers;
+        setSearchShoutAllUserValue("");
+        setAllUsers(data);
       }
-    } else if (e === "" || e === null) {
-      let data = talkStateData.AllUsers.AllUsersData.allUsers;
-      setSearchShoutAllUserValue("");
-      setAllUsers(data);
+    }catch(error){
+      console.error(error)
     }
+   
   };
 
   //On Change Shout All Users

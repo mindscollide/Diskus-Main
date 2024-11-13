@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./UpdatedCancelSubscription.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
@@ -18,16 +18,14 @@ const UpdatedCancelSubscription = () => {
 
   const dispatch = useDispatch();
 
+  let Locale = localStorage.getItem("i18nextLng");
+
   const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
     useSelector(
       (state) =>
         state.UserMangementReducer
           .organizationSelectedPakagesByOrganizationIDData
     );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
 
   //Cancel Subscription Table Data
   const [cancelSubscription, setCancelSubscription] = useState([]);
@@ -171,7 +169,9 @@ const UpdatedCancelSubscription = () => {
           if (record.IsDefaultRow) {
             return (
               <>
-                <span className={styles["TableheadingTotal"]}>
+                <span
+                  className={styles["TableheadingTotal_Main_Total_heading"]}
+                >
                   {t("Total")}
                 </span>
               </>
@@ -217,7 +217,8 @@ const UpdatedCancelSubscription = () => {
                   <Col lg={12} md={12} sm={12} className="text-center">
                     <span className={styles["SubscritionNumber_Styles"]}>
                       {formatDateDownGradeSubscription(
-                        record.subscriptionStartDate
+                        record.subscriptionStartDate,
+                        Locale
                       )}
                     </span>
                   </Col>
@@ -250,7 +251,8 @@ const UpdatedCancelSubscription = () => {
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
                   {formatDateDownGradeSubscription(
-                    record.subscriptionExpiryDate
+                    record.subscriptionExpiryDate,
+                    Locale
                   )}
                 </span>
               </>
@@ -304,7 +306,7 @@ const UpdatedCancelSubscription = () => {
       ellipsis: true,
       align: "center",
       width: 100,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return (
@@ -494,7 +496,7 @@ const UpdatedCancelSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (record) => {
+      render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
             return <></>;
@@ -552,7 +554,6 @@ const UpdatedCancelSubscription = () => {
           />
         </Col>
       </Row>
-      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

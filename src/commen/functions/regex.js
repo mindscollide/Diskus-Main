@@ -47,4 +47,24 @@ export const regexOnlyNumbers = (data) => {
   return data.replace(/^\s/, "").replace(/\D/g, "");
 };
 
-export const formatValue = (value) => (value < 10 ? `0${value}` : value);
+// export const formatValue = (value) => (value < 10 ? `0${value}` : value);
+export const formatValue = (value, locale) => {
+  const formattedValue = value < 10 ? `0${value}` : value;
+
+  if (locale === "ar") {
+    // Convert each digit to its Arabic numeral equivalent
+    return formattedValue
+      .toString()
+      .replace(/\d/g, (digit) => String.fromCharCode(0x0660 + parseInt(digit)));
+  }
+
+  return formattedValue;
+};
+export const convertToArabicNumerals = (number, locale ) => {
+  if (locale === 'ar') {
+    return number.toString().replace(/\d/g, (digit) =>
+      String.fromCharCode(0x0660 + parseInt(digit))
+    );
+  }
+  return number;
+};

@@ -24,17 +24,13 @@ import UpgradeNowModal from "../../pages/UserMangement/ModalsUserManagement/Upgr
 const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state) => state);
-  // settingReducer.Loading;
-  const location = useLocation();
-  const { settingReducer, UserReportReducer, downloadReducer } = state;
-  const [currentLanguge, setCurrentLanguage] = useState("en");
   const { t } = useTranslation();
   let isExpiry = localStorage.getItem("isAlert");
   let color = localStorage.getItem("color");
   let remainingDays = localStorage.getItem("remainingDays");
   let currentLanguageSelect = localStorage.getItem("i18nextLng");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
+  const [currentLanguge, setCurrentLanguage] = useState("en");
   const [notificationID, setNotificationID] = useState(0);
   const [notification, setNotification] = useState({
     notificationShow: false,
@@ -151,7 +147,7 @@ const AdminHome = () => {
     if (Helper.socket === null) {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
     if (newClient != null) {
@@ -196,11 +192,6 @@ const AdminHome = () => {
         />
         <Outlet />
         {TrialExpireSelectPac && <UpgradeNowModal />}
-        {settingReducer.Loading ||
-        UserReportReducer.Loading ||
-        downloadReducer.Loading ? (
-          <Loader />
-        ) : null}
       </ConfigProvider>
     </>
   );

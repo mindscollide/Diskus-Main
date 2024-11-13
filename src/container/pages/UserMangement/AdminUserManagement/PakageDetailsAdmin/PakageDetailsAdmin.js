@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./PakageDetailsAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
@@ -310,7 +310,6 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
-      {UserMangementReducerLoadingData ? <Loader /> : null}
     </Container>
   );
 };

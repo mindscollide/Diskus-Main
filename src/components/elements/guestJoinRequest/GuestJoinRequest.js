@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Card, Container, Row, Col } from "react-bootstrap";
+import { Card, Container, Row, Col, Spinner } from "react-bootstrap";
 import { Button } from "./../../elements";
 import styles from "./GuestJoinRequest.module.css";
 import { useTranslation } from "react-i18next";
@@ -24,6 +24,9 @@ const GuestJoinRequest = () => {
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
+
+  const [loadingAdmit, setLoadingAdmit] = useState(false);
+  const [loadingDeny, setLoadingDeny] = useState(false);
 
   let roomID = localStorage.getItem("activeRoomID");
   console.log(
@@ -57,6 +60,12 @@ const GuestJoinRequest = () => {
   );
 
   const handleAdmit = (flag) => {
+    if (flag === 1) {
+      setLoadingAdmit(true); // Admit button
+    } else if (flag === 2) {
+      setLoadingDeny(true); // Deny button
+    }
+
     let Data = {
       MeetingId: meetingID,
       RoomId: String(roomID),
@@ -69,13 +78,23 @@ const GuestJoinRequest = () => {
           UserID: UserID,
           IsMuted: mute,
           HideVideo: hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
+          IsRequestAccepted: flag === 1,
           IsGuest: isGuest,
         },
       ],
     };
 
-    dispatch(admitRejectAttendeeMainApi(Data, navigate, t));
+    dispatch(
+      admitRejectAttendeeMainApi(
+        Data,
+        navigate,
+        t,
+        flag,
+        "",
+        setLoadingAdmit,
+        setLoadingDeny
+      )
+    );
   };
 
   useEffect(() => {
@@ -146,14 +165,32 @@ const GuestJoinRequest = () => {
                     <Button
                       className={styles["title-deny"]}
                       onClick={() => handleAdmit(2)}
-                      text={t("Deny")}
+                      text={
+                        loadingDeny ? (
+                          <Spinner
+                            animation="border"
+                            size="sm"
+                            variant="success"
+                          />
+                        ) : (
+                          t("Deny")
+                        )
+                      }
+                      disableBtn={loadingDeny}
                     />
                   </Col>
                   <Col xs={5}>
                     <Button
                       className={styles["title-admit"]}
                       onClick={() => handleAdmit(1)}
-                      text={t("Admit")}
+                      text={
+                        loadingAdmit ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : (
+                          t("Admit")
+                        )
+                      }
+                      disableBtn={loadingAdmit}
                     />
                   </Col>
                 </Row>

@@ -5,7 +5,6 @@ import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
 import {
   Button,
-  Loader,
   Modal,
   Notification,
   NotificationBar,
@@ -80,6 +79,7 @@ import {
   createTaskCommitteeMQTT,
   createTaskGroupMQTT,
   createTaskMeetingMQTT,
+  getDashboardTaskCountMQTT,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
   TodoCounter,
@@ -97,6 +97,7 @@ import {
   LeaveMeetingVideo,
   meetingReminderNotifcation,
   searchNewUserMeeting,
+  getDashboardMeetingCountMQTT,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -163,68 +164,65 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 
 const Dashboard = () => {
   const location = useLocation();
+
+  const { Sider, Content } = Layout;
+
+  const navigate = useNavigate();
+  //Translation
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  let i18nextLng = localStorage.getItem("i18nextLng");
+
+  // let createrID = 5;
+  let userGUID = localStorage.getItem("userGUID");
+
+  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
+
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
-  const {
-    videoFeatureReducer,
-    assignees,
-    CommitteeReducer,
-    toDoListReducer,
-    getTodosStatus,
-    downloadReducer,
-    todoStatus,
-    uploadReducer,
-    settingReducer,
-    fAQsReducer,
-    meetingIdReducer,
-    calendarReducer,
-    OnBoardModal,
-    postAssigneeComments,
-    VideoChatReducer,
-    minuteofMeetingReducer,
-    countryNamesReducer,
-    GetSubscriptionPackage,
-    Authreducer,
-    roleListReducer,
-    NotesReducer,
-    GroupsReducer,
-    ResolutionReducer,
-    RealtimeNotification,
-    OrganizationBillingReducer,
-    PollsReducer,
-    NewMeetingreducer,
-    LanguageReducer,
-    webViewer,
-    MeetingOrganizersReducer,
-    MeetingAgendaReducer,
-    attendanceMeetingReducer,
-    actionMeetingReducer,
-    AgendaWiseAgendaListReducer,
-    DataRoomReducer,
-    DataRoomFileAndFoldersDetailsReducer,
-    SignatureWorkFlowReducer,
-    UserMangementReducer,
-    MinutesReducer,
-    UserManagementModals,
-  } = useSelector((state) => state);
+  let createrID = localStorage.getItem("userID");
+
+  let currentOrganization = localStorage.getItem("organizationID");
+
+  let currentUserName = localStorage.getItem("name");
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
+  const isInternetDisconnectModalVisible = useSelector(
+    (state) => state.UserManagementModals.internetDisconnectModal
+  );
+  const mobileAppPopUp = useSelector(
+    (state) => state.UserManagementModals.mobileAppPopUp
+  );
+  const IncomingVideoCallFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+  const NormalizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+  );
+  const MaximizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+  );
+  const ShowGuestPopup = useSelector(
+    (state) => state.videoFeatureReducer.ShowGuestPopup
+  );
+  const VideoChatMessagesFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+  );
+  const MinimizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
 
-  const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
-  let createrID = localStorage.getItem("userID");
-  let currentOrganization = localStorage.getItem("organizationID");
-  let currentUserName = localStorage.getItem("name");
-  const { Sider, Content } = Layout;
-  //Translation
-  const { t } = useTranslation();
-
-  // let createrID = 5;
-  const dispatch = useDispatch();
-  let userGUID = localStorage.getItem("userGUID");
-  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -245,15 +243,9 @@ const Dashboard = () => {
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
   const [handsRaisedCount, setHandsRaisedCount] = useState(0);
   const [participantsList, setParticipantsList] = useState([]);
-  console.log(
-    { handsRaisedCount, participantsList },
-    "participantsListparticipantsList"
-  );
-  let Blur = localStorage.getItem("blur");
+  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
-  const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
-  );
+  let Blur = localStorage.getItem("blur");
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
@@ -272,9 +264,6 @@ const Dashboard = () => {
     dispatch(userLogOutApiFunc(navigate, t));
   };
 
-  const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
-  );
   useEffect(() => {
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
@@ -368,9 +357,11 @@ const Dashboard = () => {
                 Number(meetingVideoID) ===
                 Number(data?.payload?.meeting?.pK_MDID)
               ) {
-                let getMeetingParticipants = data.payload.meeting.meetingAttendees.filter(
-                  (attendeeData) => attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                );
+                let getMeetingParticipants =
+                  data.payload.meeting.meetingAttendees.filter(
+                    (attendeeData) =>
+                      attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                  );
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -527,7 +518,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "NEW_MEETINGS_COUNT".toLowerCase()
             ) {
-              dispatch(meetingCount(data.payload));
+              dispatch(getDashboardMeetingCountMQTT(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
@@ -812,7 +803,7 @@ const Dashboard = () => {
         } else if (
           data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()
         ) {
-          dispatch(TodoCounter(data.payload));
+          dispatch(getDashboardTaskCountMQTT(data.payload));
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_COMMENT_DELETION".toLowerCase()
@@ -1808,7 +1799,7 @@ const Dashboard = () => {
                 CallStatusID: 3,
                 CallTypeID: callTypeID,
               };
-              if (videoFeatureReducer.IncomingVideoCallFlag === true) {
+              if (IncomingVideoCallFlagReducer === true) {
                 dispatch(VideoCallResponse(Data, navigate, t));
               }
             }, timeValue);
@@ -1816,7 +1807,7 @@ const Dashboard = () => {
             return () => clearTimeout(timeoutId);
           } else if (
             callStatus === false &&
-            videoFeatureReducer.IncomingVideoCallFlag === false
+            IncomingVideoCallFlagReducer === false
           ) {
             dispatch(incomingVideoCallFlag(true));
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
@@ -2018,10 +2009,7 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let callerID = JSON.parse(localStorage.getItem("callerID"));
           let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
-          if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
-            callStatus === false
-          ) {
+          if (IncomingVideoCallFlagReducer === true && callStatus === false) {
             let callerID = Number(localStorage.getItem("callerID"));
             let newCallerID = Number(localStorage.getItem("newCallerID"));
             if (callerID === newCallerID) {
@@ -2038,9 +2026,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2056,7 +2044,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === false &&
+            IncomingVideoCallFlagReducer === false &&
             callStatus === true
           ) {
             let callerID = Number(localStorage.getItem("callerID"));
@@ -2075,9 +2063,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2093,7 +2081,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
+            IncomingVideoCallFlagReducer === true &&
             callStatus === true
           ) {
             if (
@@ -2288,11 +2276,12 @@ const Dashboard = () => {
         if (
           data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
         ) {
-          let getToken =
-            localStorage.getItem("token") !== null &&
-            localStorage.getItem("token");
+          let getUserID =
+            localStorage.getItem("userID") !== null &&
+            localStorage.getItem("userID");
+
           if (
-            getToken !== data?.payload?.authToken?.token &&
+            Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
             Number(data?.payload?.deviceID) === 1
           ) {
             dispatch(userLogOutApiFunc(navigate, t));
@@ -2406,7 +2395,7 @@ const Dashboard = () => {
     if (Helper.socket === null) {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
     if (newClient !== null) {
@@ -2415,9 +2404,9 @@ const Dashboard = () => {
     }
   }, [
     newClient,
-    videoFeatureReducer.IncomingVideoCallFlag,
-    videoFeatureReducer.NormalizeVideoFlag,
-    videoFeatureReducer.MaximizeVideoFlag,
+    IncomingVideoCallFlagReducer,
+    NormalizeVideoFlag,
+    MaximizeVideoFlag,
   ]);
 
   useEffect(() => {
@@ -2427,8 +2416,6 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -2458,19 +2445,17 @@ const Dashboard = () => {
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
-  let i18nextLng = localStorage.getItem("i18nextLng");
-
   useEffect(() => {
     setCurrentLanguage(i18nextLng);
   }, [i18nextLng]);
 
   useEffect(() => {
     if (
-      meetingIdReducer.MeetingStatusEnded !== null &&
-      meetingIdReducer.MeetingStatusEnded !== undefined &&
-      meetingIdReducer.MeetingStatusEnded.length !== 0
+      MeetingStatusEnded !== null &&
+      MeetingStatusEnded !== undefined &&
+      MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer?.MeetingStatusEnded?.meeting;
+      let endMeetingData = MeetingStatusEnded?.meeting;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
@@ -2486,7 +2471,7 @@ const Dashboard = () => {
         }
       }
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [MeetingStatusEnded]);
 
   useEffect(() => {
     let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -2509,7 +2494,7 @@ const Dashboard = () => {
         direction={currentLanguage === "ar" ? ar_EG : en_US}
         locale={currentLanguage === "ar" ? ar_EG : en_US}
       >
-        {videoFeatureReducer.IncomingVideoCallFlag === true && (
+        {IncomingVideoCallFlagReducer === true && (
           <div className="overlay-incoming-videocall" />
         )}
         <Layout className="mainDashboardLayout">
@@ -2538,73 +2523,30 @@ const Dashboard = () => {
             id={notificationID}
           />
 
-          {videoFeatureReducer.ShowGuestPopup && (
+          {ShowGuestPopup && (
             <div>
               <GuestJoinRequest />
             </div>
           )}
-          {videoFeatureReducer.IncomingVideoCallFlag === true ? (
-            <VideoMaxIncoming />
-          ) : null}
-          {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+          {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
+          {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
               chatParentHead="chat-messenger-head-video"
               chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {videoFeatureReducer.NormalizeVideoFlag === true ||
-          videoFeatureReducer.MinimizeVideoFlag === true ||
-          videoFeatureReducer.MaximizeVideoFlag === true ? (
+          {NormalizeVideoFlag === true ||
+          MinimizeVideoFlag === true ||
+          MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-          {!navigator.onLine ? (
-            <React.Fragment></React.Fragment>
-          ) : // Check for loading states to determine whether to display loader
-          NewMeetingreducer.Loading ||
-            assignees.Loading ||
-            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ||
-            CommitteeReducer.Loading ||
-            toDoListReducer.Loading ||
-            todoStatus.Loading ||
-            getTodosStatus.Loading ||
-            MeetingAgendaReducer.Loading ||
-            actionMeetingReducer.Loading ||
-            AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ||
-            attendanceMeetingReducer.Loading ||
-            webViewer.Loading ||
-            LanguageReducer.Loading ||
-            uploadReducer.Loading ||
-            settingReducer.Loading ||
-            fAQsReducer.Loading ||
-            meetingIdReducer.Loading ||
-            calendarReducer.Loading ||
-            OnBoardModal.Loading ||
-            postAssigneeComments.Loading ||
-            VideoChatReducer.Loading ||
-            minuteofMeetingReducer.Loading ||
-            countryNamesReducer.Loading ||
-            GetSubscriptionPackage.Loading ||
-            Authreducer.Loading ||
-            roleListReducer.Loading ||
-            NotesReducer.Loading ||
-            GroupsReducer.Loading ||
-            GroupsReducer.getAllLoading ||
-            ResolutionReducer.Loading ||
-            RealtimeNotification.Loading ||
-            OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ||
-            MinutesReducer.Loading ||
-            DataRoomFileAndFoldersDetailsReducer.Loading ||
-            SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading ? (
-            <Loader /> // <Loader />
-          ) : null}
           {/* Disconnectivity Modal  */}
-          {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
+          {isInternetDisconnectModalVisible && (
+            <InternetConnectivityModal
+              open={isInternetDisconnectModalVisible}
+            />
+          )}
           <Notification
             open={open.open}
             message={open.message}
@@ -2674,7 +2616,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
+          {mobileAppPopUp && <MobileAppPopUpModal />}
         </Layout>
       </ConfigProvider>
     </>

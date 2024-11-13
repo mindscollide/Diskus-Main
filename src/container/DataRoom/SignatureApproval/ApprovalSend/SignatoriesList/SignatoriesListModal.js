@@ -94,7 +94,12 @@ const SignatoriesList = ({
 
   const columns = [
     {
-      title: <span> Signed({formatValue(signedSignatories)})</span>,
+      title: (
+        <span>
+          {" "}
+          {t("Signed")}({formatValue(signedSignatories)})
+        </span>
+      ),
       dataIndex: "signed",
       key: "signed",
       render: (record) =>
@@ -114,7 +119,12 @@ const SignatoriesList = ({
         ) : null,
     },
     {
-      title: <span> Declined({formatValue(declineSignatories)})</span>,
+      title: (
+        <span>
+          {" "}
+          {t("Declined")}({formatValue(declineSignatories)})
+        </span>
+      ),
       dataIndex: "declined",
       key: "declined",
       render: (record) =>
@@ -134,7 +144,11 @@ const SignatoriesList = ({
         ) : null,
     },
     {
-      title: <span> Pending Signature({formatValue(pendingSignatories)})</span>,
+      title: (
+        <span>
+          {t(" Pending-signature")}({formatValue(pendingSignatories)})
+        </span>
+      ),
       dataIndex: "pending",
       key: "pending",
       render: (record) =>

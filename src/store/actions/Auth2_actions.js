@@ -507,7 +507,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
   let MeetinUpd = localStorage.getItem("meetingUpd");
   let MeetingMin = localStorage.getItem("meetingMin");
   let Meetingprop = localStorage.getItem("meetingprop");
-  let meetingCanc = localStorage.getItem("meetingCanc")
+  let meetingCanc = localStorage.getItem("meetingCanc");
   let mtAgUpdate = localStorage.getItem("mtAgUpdate");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   let pollExpire = localStorage.getItem("pollExpire");
@@ -609,7 +609,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             )
           );
           localStorage.setItem("2fa", true);
-          mqttConnection(response.data.responseResult.authToken.userID);
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
           await dispatch(
             TwoFaAuthenticate(
               t,
@@ -622,7 +625,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           if (response.data.responseResult.hasAdminRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
 
             dispatch(
               enterPasswordSuccess(
@@ -638,7 +644,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
             dispatch(enterPasswordSuccess(response.data.responseResult, ""));
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
                 navigate("/DisKus/Meeting/Useravailabilityformeeting");
@@ -655,7 +664,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 AgCont !== null ||
                 AdOrg !== null ||
                 mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null || meetingCanc !== null
+                UserMeetPropoDatPoll !== null ||
+                meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
               } else if (
@@ -681,11 +691,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null || meetingCanc !== null
+                AdOrg !== null ||
+                meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
-              } else if (PollPublish !== null || PollUpd !== null ||
-                pollExpire !== null) {
+              } else if (
+                PollPublish !== null ||
+                PollUpd !== null ||
+                pollExpire !== null
+              ) {
                 navigate("/Diskus/polling");
               } else {
                 navigate("/DisKus/");
@@ -699,7 +713,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
             navigate("/Admin/ManageUsers");
             dispatch(
               enterPasswordSuccess(
@@ -716,7 +733,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
           if (response.data.responseResult.hasUserRights) {
-            mqttConnection(response.data.responseResult.authToken.userID);
+            mqttConnection(
+              response.data.responseResult.authToken.userID,
+              dispatch
+            );
 
             if (response.data.responseResult.authToken.isFirstLogIn) {
               if (RSVP !== undefined && RSVP !== null) {
@@ -734,10 +754,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 AgCont !== null ||
                 AdOrg !== null ||
                 mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null || meetingCanc !== null
+                UserMeetPropoDatPoll !== null ||
+                meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
-              } else if (PollPublish !== null || PollUpd !== null || pollExpire !== null) {
+              } else if (
+                PollPublish !== null ||
+                PollUpd !== null ||
+                pollExpire !== null
+              ) {
                 navigate("/Diskus/polling");
               } else {
                 navigate("/onboard");
@@ -756,12 +781,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 MeetingMin !== null ||
                 Meetingprop !== null ||
                 AgCont !== null ||
-                AdOrg !== null||
+                AdOrg !== null ||
                 mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null || meetingCanc !== null
+                UserMeetPropoDatPoll !== null ||
+                meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");
-              } else if (PollPublish !== null || PollUpd !== null || pollExpire) {
+              } else if (
+                PollPublish !== null ||
+                PollUpd !== null ||
+                pollExpire
+              ) {
                 navigate("/Diskus/polling");
               } else {
                 navigate("/Diskus/");
@@ -1924,7 +1954,10 @@ const createPasswordAction = (value, navigate, t) => {
           // ) {
           dispatch(createPasswordSuccess(response.data.responseResult, ""));
           localStorage.setItem("2fa", true);
-          mqttConnection(response.data.responseResult.authToken.userID);
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
           await dispatch(
             TwoFaAuthenticate(
               t,

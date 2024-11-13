@@ -514,7 +514,7 @@ const VideoPanelBodyRecent = () => {
                               ? recentCallData.recipients[0].userName
                               : recentCallData.callerName}
                             <span className="call-status-icon">
-                              <img src={MissedCallIcon} />
+                              <img src={MissedCallIcon} alt="" />
                             </span>
                           </p>
                         ) : (recentCallData.callStatus.status ===
@@ -524,7 +524,7 @@ const VideoPanelBodyRecent = () => {
                           <p className="Video-chat-username m-0">
                             {formatUserNames(recentCallData.recipients)}
                             <span className="call-status-icon">
-                              <img src={MissedCallIcon} />
+                              <img src={MissedCallIcon} alt="" />
                             </span>
                           </p>
                         ) : recentCallData.callType.callTypeID === 3 ? (
@@ -544,9 +544,9 @@ const VideoPanelBodyRecent = () => {
                               : null}
                             <span className="call-status-icon">
                               {recentCallData.isIncoming === false ? (
-                                <img src={OutgoingIcon} />
+                                <img src={OutgoingIcon} alt="" />
                               ) : (
-                                <img src={IncomingIcon} />
+                                <img src={IncomingIcon} alt="" />
                               )}
                             </span>
                           </p>
@@ -599,6 +599,7 @@ const VideoPanelBodyRecent = () => {
                         title={t("Start-video-call")}
                       >
                         <img
+                          alt=""
                           className="cursor-pointer"
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
@@ -612,7 +613,7 @@ const VideoPanelBodyRecent = () => {
           </InfiniteScroll>
         ) : VideoMainReducer.Loading === true ? (
           <>
-            <LoaderPanel message={"Protecting your data"} />
+            <LoaderPanel message={t("Protecting-your-data")} />
           </>
         ) : (
           <EmptyRecentCalls />

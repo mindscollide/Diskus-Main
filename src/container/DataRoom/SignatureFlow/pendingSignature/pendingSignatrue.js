@@ -3,10 +3,8 @@ import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../../../../components/elements/index";
-import { Col, Row } from "react-bootstrap";
+import { Notification } from "../../../../components/elements/index";
 import {
   addUpdateFieldValueApi,
   clearWorkFlowResponseMessage,
@@ -39,7 +37,6 @@ const SignatureViewer = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
-    Loading,
     getDataroomAnnotation,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -908,7 +905,6 @@ const SignatureViewer = () => {
         setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
-      {/* {Loading && <Loader />} */}
     </>
   );
 };

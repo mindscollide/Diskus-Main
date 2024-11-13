@@ -363,20 +363,6 @@ const ViewMeetingModal = ({
         setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
-        // let searchData = {
-        //   Date: "",
-        //   Title: "",
-        //   HostName: "",
-        //   UserID: Number(userID),
-        //   PageNumber:
-        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        //   PublishedMeetings:
-        //     currentView && Number(currentView) === 1 ? true : false,
-        // };
-        // console.log("chek search meeting")
-        // dispatch(searchNewUserMeeting(navigate, searchData, t));
-
         localStorage.setItem("folderDataRoomMeeting", 0);
       }
     }
@@ -535,10 +521,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
-                    {Number(editorRole.status) === 10 ||
-                    (Number(editorRole.status) === 9 &&
-                      editorRole.role === "Agenda Contributor") ||
-                    editorRole.role === "Participant" ? null : (
+                    {Number(editorRole.status) === 10 &&
+                    editorRole.role === "Organizer" &&
+                    editorRole.isPrimaryOrganizer ? (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -556,7 +541,7 @@ const ViewMeetingModal = ({
                             : true
                         }
                       />
-                    )}
+                    ) : null}
                     {editorRole.role !== "Organizer" && (
                       <Button
                         text={t("Attendees")}

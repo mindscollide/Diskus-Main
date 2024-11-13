@@ -29,6 +29,7 @@ const initialState = {
   createTaskCommittee: null,
   createTaskMeeting: null,
   getDashboardTaskData: null,
+  getDashboardTaskCountMQTT: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {
@@ -469,6 +470,17 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         getDashboardTaskData: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.GETTASKCOUNT_DASHBOARD_MQTT: {
+      let newRecords = {
+        totalNumberOfToDoList: action?.payload?.totalNumberOfToDoListInThisWeek,
+        totalNumberOfAssignedToDoList:
+          action?.payload?.totalNumberOfAssignedToDoListInThisWeek,
+      };
+      return {
+        ...state,
+        getDashboardTaskCountMQTT: newRecords,
       };
     }
     default:

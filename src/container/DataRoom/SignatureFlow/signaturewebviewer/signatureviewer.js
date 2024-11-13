@@ -10,7 +10,6 @@ import DragIcon from "../../../../assets/images/DragIcon_SignatureFlow.png";
 import { useTranslation } from "react-i18next";
 import {
   Notification,
-  Loader,
   Modal,
   Button,
   TextField,
@@ -20,7 +19,6 @@ import { Col, Row } from "react-bootstrap";
 import DeleteIcon from "../../../../assets/images/Icon material-delete.svg";
 import Select from "react-select";
 import {
-  clearWorkFlowResponseMessage,
   getWorkFlowByWorkFlowIdwApi,
   saveWorkflowApi,
 } from "../../../../store/actions/workflow_actions";
@@ -40,7 +38,6 @@ const SignatureViewer = () => {
     getAllFieldsByWorkflowID,
     saveWorkFlowResponse,
     getWorkfFlowByFileId,
-    Loading,
     ResponseMessage,
     getDataroomAnnotation,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -1431,20 +1428,21 @@ const SignatureViewer = () => {
 
   // this for cancel modal
   const handleHideModal = () => {
-    if (signerData.length > 0) {
+    if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
       setSingerUserData({
+        value: 0,
         label: "",
         name: "",
-        value: 0,
-      });
-      setSigners({
-        EmailAddress: "",
-        Name: "",
-        UserID: 0,
       });
     } else {
-      showMessage(t("Data-must-required"), "error", setOpen);
+      window.close();
     }
   };
 
@@ -1452,6 +1450,17 @@ const SignatureViewer = () => {
   const handleClickCancel = () => {
     if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
+      setSigners({
+        ...signers,
+        EmailAddress: "",
+        UserID: 0,
+        Name: "",
+      });
+      setSingerUserData({
+        value: 0,
+        label: "",
+        name: "",
+      });
     } else {
       window.close();
     }
@@ -1725,6 +1734,7 @@ const SignatureViewer = () => {
                                             className="my-1 d-flex align-items-end mb-2"
                                           >
                                             <img
+                                              alt=""
                                               src={DragIcon}
                                               width={20}
                                               ref={provided.innerRef}
@@ -1787,6 +1797,7 @@ const SignatureViewer = () => {
                                             className="my-1 d-flex align-items-end mb-3"
                                           >
                                             <img
+                                              alt=""
                                               src={DeleteIcon}
                                               className="cursor-pointer"
                                               onClick={() =>
@@ -1881,7 +1892,6 @@ const SignatureViewer = () => {
           setPdfResponceData={setPdfResponceData}
         />
       )}
-      {/* {Loading && <Loader />} */}
     </>
   );
 };

@@ -44,13 +44,49 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
 const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
+
+  const SearchTodolist = useSelector(
+    (state) => state.toDoListReducer.SearchTodolist
+  );
+  const SocketTodoActivityData = useSelector(
+    (state) => state.toDoListReducer.SocketTodoActivityData
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+  const ToDoDetails = useSelector((state) => state.toDoListReducer.ToDoDetails);
+
+  const ResponseMessageTodoReducer = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const ResponseStatusReducer = useSelector(
+    (state) => state.todoStatus.Response
+  );
+
+  const ResponseMessageAssigneesReducer = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const UpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const ResponseMessageTodoStatusReducer = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+  const UpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
@@ -63,6 +99,10 @@ const TodoList = () => {
   const [statusValues, setStatusValues] = useState([]);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
+  const [taskTitleSort, setTaskTitleSort] = useState(null);
+  const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
+  const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
+  const [taskDeadlineSort, setDeadlineSort] = useState(null);
   const [searchData, setSearchData] = useState({
     Date: "",
     Title: "",
@@ -84,7 +124,7 @@ const TodoList = () => {
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!ResponseStatusReducer?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (todoListPageSize !== null && todoListCurrentPage !== null) {
@@ -114,13 +154,10 @@ const TodoList = () => {
   //get todolist reducer
   useEffect(() => {
     try {
-      if (
-        toDoListReducer.SearchTodolist !== null &&
-        toDoListReducer.SearchTodolist !== undefined
-      ) {
-        setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-        if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-          let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+      if (SearchTodolist !== null && SearchTodolist !== undefined) {
+        setTotalRecords(SearchTodolist.totalRecords);
+        if (SearchTodolist.toDoLists.length > 0) {
+          let dataToSort = [...SearchTodolist.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -140,23 +177,20 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [SearchTodolist]);
 
   useEffect(() => {
     try {
       if (
-        toDoListReducer.SocketTodoActivityData !== null &&
-        toDoListReducer.SocketTodoActivityData !== undefined
+        SocketTodoActivityData !== null &&
+        SocketTodoActivityData !== undefined
       ) {
         if (
-          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-          toDoListReducer.SocketTodoActivityData.meetingID === -1
+          SocketTodoActivityData.comitteeID === -1 &&
+          SocketTodoActivityData.groupID === -1 &&
+          SocketTodoActivityData.meetingID === -1
         ) {
-          let dataToSort = [
-            toDoListReducer.SocketTodoActivityData.todoList,
-            ...rowsToDo,
-          ];
+          let dataToSort = [SocketTodoActivityData.todoList, ...rowsToDo];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -170,12 +204,12 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [SocketTodoActivityData]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (Number(payloadData.todoStatusID) === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -201,7 +235,7 @@ const TodoList = () => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     try {
@@ -210,11 +244,11 @@ const TodoList = () => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response.length > 0
+        ResponseStatusReducer !== null &&
+        ResponseStatusReducer !== "" &&
+        ResponseStatusReducer.length > 0
       ) {
-        todoStatus.Response.forEach((data) => {
+        ResponseStatusReducer.forEach((data) => {
           // Check if pK_TSID is not 1 and not 6
           if (data.pK_TSID !== 1 && data.pK_TSID !== 6) {
             optionsArr.push({
@@ -235,7 +269,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [todoStatus]);
+  }, [ResponseStatusReducer]);
 
   // for modal create  handler
   const modalHandler = (e) => {
@@ -281,27 +315,27 @@ const TodoList = () => {
   const filters = [
     {
       value: "1",
-      text: "In Progress",
+      text: t("In-progress"),
     },
     {
       value: "2",
-      text: "Pending",
+      text: t("Pending"),
     },
     {
       value: "3",
-      text: "Upcoming",
+      text: t("Upcoming"),
     },
     {
       value: "4",
-      text: "Cancelled",
+      text: t("Cancelled"),
     },
     {
       value: "5",
-      text: "Completed",
+      text: t("Completed"),
     },
     {
       value: "6",
-      text: "Deleted",
+      text: t("Deleted"),
     },
   ];
 
@@ -363,13 +397,34 @@ const TodoList = () => {
 
   const columnsToDo = [
     {
-      title: t("Task"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Task")}
+            {taskTitleSort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "title",
       key: "title",
       width: "260px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      taskDeadlineSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           className="todolist-title-col"
@@ -381,11 +436,39 @@ const TodoList = () => {
       ),
     },
     {
-      title: t("Assigned-by"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Assigned-by")}
+            {taskAssignedBySort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "220px",
       sortDirections: ["descend", "ascend"],
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedBySort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
+      sorter: (a, b) => {
+        return (
+          a?.taskCreator?.name
+            .toLowerCase()
+            .localeCompare(b?.taskCreator?.name?.toLowerCase()),
+          taskAssignedBySort
+        );
+      },
       render: (record, index) => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
@@ -400,14 +483,20 @@ const TodoList = () => {
           </p>
         );
       },
-      sorter: (a, b) => {
-        return a?.taskCreator?.name
-          .toLowerCase()
-          .localeCompare(b?.taskCreator?.name?.toLowerCase());
-      },
     },
     {
-      title: t("Assigned-to"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Assigned-to")}{" "}
+            {taskAssignedToSort === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
@@ -416,6 +505,16 @@ const TodoList = () => {
         a.taskAssignedTo[0].name
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+      taskAssignedToSort,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setTaskAssignedToSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
@@ -451,7 +550,18 @@ const TodoList = () => {
       },
     },
     {
-      title: t("Deadline"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
+            {t("Deadline")}
+            {taskDeadlineSort === "descend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
@@ -459,9 +569,19 @@ const TodoList = () => {
 
       align: "center",
       sortDirections: ["descend", "ascend"],
+      onHeaderCell: () => ({
+        onClick: () => {
+          setDeadlineSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
+      taskDeadlineSort,
 
       render: (text, record) => {
         return (
@@ -553,17 +673,17 @@ const TodoList = () => {
       filterMultiple: true,
     },
     {
-      title: t("Delete"),
+      title: "",
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        if (parseInt(record?.pK_UID) === parseInt(createrID)) {
+        if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <Tooltip placement="topRight" title={t("Delete")}>
               <i
                 className="meeting-editbutton cursor-pointer"
-                onClick={(e) => deleteTodolist(index)}
+                onClick={(e) => deleteTodolist(record)}
               >
                 <img draggable="false" src={del} alt="" />
               </i>
@@ -579,7 +699,7 @@ const TodoList = () => {
   useEffect(() => {
     try {
       setViewFlagToDo(false);
-      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (Object.keys(ToDoDetails).length > 0) {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
@@ -589,7 +709,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [ToDoDetails]);
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -682,32 +802,32 @@ const TodoList = () => {
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== undefined &&
-      toDoListReducer.ResponseMessage !== "" &&
-      toDoListReducer.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== undefined &&
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== t("No-records-found")
     ) {
-      showMessage(toDoListReducer.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodoReducer, "success", setOpen);
       dispatch(clearResponce());
     } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("No-records-found") &&
-      assignees.ResponseMessage !== t("The-meeting-has-been-cancelled")
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found") &&
+      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
     ) {
-      showMessage(assignees.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
       dispatch(clearResponseMessage());
     } else {
       dispatch(clearResponce());
       dispatch(clearResponseMessage());
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          UpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -721,41 +841,41 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== undefined &&
-      getTodosStatus.ResponseMessage !== "" &&
-      getTodosStatus.ResponseMessage !== t("No-records-found")
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== undefined &&
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.ResponseMessage, "success", setOpen);
+      showMessage(ResponseMessageTodoStatusReducer, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-      getTodosStatus.UpdateTodoStatusMessage !== "" &&
-      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== undefined &&
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatusMessage, "success", setOpen);
+      showMessage(UpdateTodoStatusMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== undefined &&
-      getTodosStatus.UpdateTodoStatus !== "" &&
-      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== undefined &&
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== t("No-records-found")
     ) {
-      showMessage(getTodosStatus.UpdateTodoStatus, "success", setOpen);
+      showMessage(UpdateTodoStatus, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    ResponseMessageTodoStatusReducer,
+    UpdateTodoStatusMessage,
+    UpdateTodoStatus,
   ]);
 
   const scroll = {

@@ -1,4 +1,4 @@
-import { Button, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationIphone.css";
@@ -108,7 +108,7 @@ const VerificationIphone = () => {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [newClient]);
@@ -272,7 +272,6 @@ const VerificationIphone = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

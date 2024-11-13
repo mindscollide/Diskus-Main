@@ -364,11 +364,11 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   // setSceduleMeeting(false);
-                  setEdiorRole({
-                    status: "10",
-                    role: "Organizer",
-                    isPrimaryOrganizer: false,
-                  });
+                  // setEdiorRole({
+                  //   status: "10",
+                  //   role: "Organizer",
+                  //   isPrimaryOrganizer: true,
+                  // });
                   dispatch(
                     JoinCurrentMeeting(
                       false,
@@ -427,9 +427,9 @@ const UpdateOrganizersMeeting = (
                 } else if (route === 5) {
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                  let meetingPageCurrent = parseInt(
-                    localStorage.getItem("MeetingPageCurrent")
-                  );
+                  let meetingPageCurrent =
+                    localStorage.getItem("MeetingPageCurrent");
+
                   let userID = localStorage.getItem("userID");
                   let searchData = {
                     Date: "",
@@ -487,7 +487,7 @@ const UpdateOrganizersMeeting = (
 
                   // setPublishState(Data.MeetingID);
                 } else if (route === 7) {
-                  if(Data.StatusID === 10) {
+                  if (Data.StatusID === 10) {
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -517,7 +517,6 @@ const UpdateOrganizersMeeting = (
                     };
                     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                   }
-                 
                 }
               } catch (error) {
                 console.error("error");

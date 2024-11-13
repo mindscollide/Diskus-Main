@@ -1832,7 +1832,17 @@ const ProposeNewMeetingSaveParticipants = {
   RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
 };
 
+const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesPoll",
+};
+
+const getVideoCallParticipantsForGuest = {
+  RequestMethod: "ServiceManager.GetVideoCallParticipantsForGuest",
+};
+
 export {
+  ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,
   validateEncryptedStringParticipantProposedRM,
@@ -2316,4 +2326,5 @@ export {
   hideUnHideVideoSelf,
   hideUnHidePaticipantVideo,
   ProposeNewMeetingSaveParticipants,
+  getVideoCallParticipantsForGuest,
 };

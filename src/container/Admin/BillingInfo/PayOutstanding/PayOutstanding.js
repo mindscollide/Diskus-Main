@@ -18,9 +18,7 @@ import {
 import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
-  const { OrganizationBillingReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { OrganizationBillingReducer } = useSelector((state) => state);
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -302,9 +300,6 @@ const PayOutstanding = () => {
         InvoiceModal={invoiceModal}
         setInvoiceModal={setInvoiceModal}
       />
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </>
   );
 };

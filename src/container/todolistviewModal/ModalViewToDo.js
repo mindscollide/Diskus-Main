@@ -95,6 +95,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   const [todoCreator, setTodoCreator] = useState(null);
+  const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
+    useState("");
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
@@ -143,6 +145,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.forEach((data, index) => {
+          console.log(data, "taskAssignedTotaskAssignedTo");
+          setTaskAssignedToDesignation(data.designation);
           if (data.pK_UID === TaskAssignedTo) {
           }
         });
@@ -407,7 +411,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Col sm={12} md={12} lg={12}>
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
-                    {TaskAssignedTo.forEach((assgineeData, index) => {
+                    {TaskAssignedTo.map((assgineeData, index) => {
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)
@@ -416,7 +420,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                           <Col sm={12} md={12} lg={12}>
                             <TodoAssgineeEmployeeCard
                               employeeName={assgineeData.name}
-                              employeeDesignation={"Test Designation"}
+                              employeeDesignation={taskAssignedToDesignation}
                               cardText={assgineeData.datetimeFormating}
                               cardTextIconStyle="DateTimeViewTodo"
                               userImage={assgineeData.displayProfilePicture}

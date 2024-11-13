@@ -2064,5 +2064,12 @@
   "Please-add-atleast-one-participant": "Please add atleast one participant",
   "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
   "Upcoming-tasks": "Upcoming Tasks",
-  "Upcoming-meetings": "Upcoming Meetings"
+  "Upcoming-meetings": "Upcoming Meetings",
+  "You-have-unsaved-changes-if-you-leave-this-page-your-changes": "You have unsaved changes. If you leave this page, your changes",
+  "will-be-lost-do-you-want-to-continue-without-saving": "will be lost. Do you want to continue without saving?",
+  "Continue": "Continue",
+  "Unsaved-changes": "Unsaved Changes",
+  "File-shared-successfully": "File Shared Successfully",
+  "Your-file-has-been-shared": "Your file has been shared",
+  "View-in-dataroom": "View in Dataroom"
 }

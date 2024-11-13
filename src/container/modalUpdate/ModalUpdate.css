@@ -91,15 +91,14 @@ fieldset:disabled .btn {
 
 .updatemeeting-attendees-row {
   margin-top: 20px;
-  margin-bottom: 20px;
   border-radius: 4px !important;
 }
 
 .updatemeeting-participant-scroll {
-  height: 300px !important;
-  margin-top: 30px !important;
+  max-height: 53vh !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
+  margin-top: 10px !important;
 }
 
 .updatemeeting-participant-scroll::-webkit-scrollbar-thumb {
@@ -117,15 +116,16 @@ fieldset:disabled .btn {
 
 .updatemeeting-participant-scroll-organizer {
   color: #6172d6;
+  font-weight: 600;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .updatemeeting-participant-scroll-participant {
   color: #6172d6;
-  margin-top: 25px;
   font-size: 20px;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .updatemeetingofminutes-row {
@@ -645,11 +645,10 @@ body[dir="rtl"] .isMinutes-Update-btn {
   margin-top: -1px !important;
 }
 .meeting_update .modal-content {
-  height: 580px !important;
   width: 700px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
 }
 .Confirmationmodal_body_text_meeting_update {
   padding: 0 20px !important;
@@ -739,4 +738,7 @@ body[dir="rtl"] .errorMessage {
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+.modal_update_bodyClass {
+  border-bottom: 0px !important
 }

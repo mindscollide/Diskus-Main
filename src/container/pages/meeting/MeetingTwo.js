@@ -121,6 +121,7 @@ import { MeetingContext } from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -129,7 +130,6 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { editorRole, setEdiorRole } = useContext(MeetingContext);
-  const { NewMeetingreducer } = useSelector((state) => state);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
@@ -213,6 +213,10 @@ const NewMeeting = () => {
   const boarddeckShareModal = useSelector(
     (state) => state.NewMeetingreducer.boarddeckShareModal
   );
+  const shareViaDataRoomPathConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
+  );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
@@ -230,7 +234,7 @@ const NewMeeting = () => {
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let now = new Date();
   let year = now.getUTCFullYear();
@@ -359,7 +363,9 @@ const NewMeeting = () => {
           PageNumber: Number(meetingPageCurrent),
           Length: Number(meetingpageRow),
           PublishedMeetings:
-            MeetingProp !== null || UserMeetPropoDatPoll !== null
+            MeetingProp !== null
+              ? false
+              : UserMeetPropoDatPoll !== null
               ? false
               : true,
         };
@@ -381,7 +387,9 @@ const NewMeeting = () => {
           PageNumber: 1,
           Length: 30,
           PublishedMeetings:
-            MeetingProp !== null || UserMeetPropoDatPoll !== null
+            MeetingProp !== null
+              ? false
+              : UserMeetPropoDatPoll !== null
               ? false
               : true,
         };
@@ -396,6 +404,14 @@ const NewMeeting = () => {
 
         console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+      if (
+        localStorage.getItem("meetingprop") !== null ||
+        localStorage.getItem("UserMeetPropoDatPoll") !== null
+      ) {
+        localStorage.setItem("MeetingCurrentView", 2);
+      } else {
+        localStorage.setItem("MeetingCurrentView", 1);
       }
     } catch (error) {}
   };
@@ -510,10 +526,12 @@ const NewMeeting = () => {
           })
           .catch((error) => {
             console.error("Error:", error);
+            localStorage.removeItem("mtAgUpdate");
             // Handle errors here
           });
       } catch (error) {
         console.error("Error:", error);
+        localStorage.removeItem("mtAgUpdate");
       }
     }
   }, [MtAgUpdate]);
@@ -543,6 +561,7 @@ const NewMeeting = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("AgCont");
           // Handle errors here
         });
     }
@@ -573,6 +592,7 @@ const NewMeeting = () => {
         .catch((error) => {
           console.error("Error:", error);
           // Handle errors here
+          localStorage.removeItem("AdOrg");
         });
     }
   }, [AdOrg]);
@@ -618,10 +638,10 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
-          localStorage.removeItem("meetingStr");
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingStr");
           //
         });
     }
@@ -649,13 +669,15 @@ const NewMeeting = () => {
                 )
               );
             }
-            localStorage.removeItem("meetingCanc");
           })
           .catch((error) => {
             console.error("Error:", error);
+            localStorage.removeItem("meetingCanc");
             //
           });
-      } catch (error) {}
+      } catch (error) {
+        localStorage.removeItem("meetingCanc");
+      }
     }
   }, [meetingCanc]);
   useEffect(() => {
@@ -700,22 +722,11 @@ const NewMeeting = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingUpd");
           //
         });
     }
   }, [MeetinUpd]);
-
-  useEffect(() => {
-    if (MeetingProp !== null || UserMeetPropoDatPoll !== null) {
-      localStorage.setItem("MeetingCurrentView", 2);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    } else {
-      localStorage.setItem("MeetingCurrentView", 1);
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-    }
-  }, [MeetingProp, UserMeetPropoDatPoll]);
 
   useEffect(() => {
     if (MeetingMin !== null) {
@@ -740,11 +751,12 @@ const NewMeeting = () => {
           });
           localStorage.removeItem("meetingMin");
         })
+
         .catch((error) => {
           console.error("Error:", error);
+          localStorage.removeItem("meetingMin");
           //
         });
-      localStorage.removeItem("meetingMin");
     }
   }, [MeetingMin]);
 
@@ -767,6 +779,22 @@ const NewMeeting = () => {
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
+      setSearchFeilds({
+        ...searchFields,
+        Date: "",
+        DateView: "",
+        MeetingTitle: "",
+        OrganizerName: "",
+      });
+      setSearchMeeting(false);
+      setSearchText("");
+      setentereventIcon(false);
+      // setRow([]);
+      // setEdiorRole({
+      //   status: null,
+      //   role: null,
+      //   isPrimaryOrganizer: false,
+      // });
     };
   }, []);
 
@@ -847,7 +875,7 @@ const NewMeeting = () => {
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
 
     setSearchMeeting(false);
-    setentereventIcon(true);
+    // setentereventIcon(true);
   };
 
   const HandleCloseSearchModalMeeting = () => {
@@ -1003,6 +1031,16 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   //UnPublished Meeting Page
@@ -1027,6 +1065,16 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", 1);
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   const handleViewMeeting = async (id, isQuickMeeting, status) => {
@@ -1116,6 +1164,16 @@ const NewMeeting = () => {
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   const handleEditMeeting = async (id, isQuick, role, record) => {
@@ -1201,6 +1259,16 @@ const NewMeeting = () => {
       }
     } else {
     }
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
   };
 
   // onClick to download Report Api on download Icon
@@ -1678,6 +1746,11 @@ const NewMeeting = () => {
                         setEditFlag
                       )
                     );
+                    setEdiorRole({
+                      status: record.status,
+                      role: "Organizer",
+                      isPrimaryOrganizer: record.isPrimaryOrganizer,
+                    });
                     setVideoTalk({
                       isChat: record.isChat,
                       isVideoCall: record.isVideoCall,
@@ -1888,7 +1961,9 @@ const NewMeeting = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        console.log(record, "checkIsPrimaryOrganizercheckIsPrimaryOrganizer")
         const isQuickMeeting = record.isQuickMeeting;
+        let checkIsPrimaryOrganizer = record.isPrimaryOrganizer
         if (
           record.status === "8" ||
           record.status === "4" ||
@@ -2073,6 +2148,10 @@ const NewMeeting = () => {
 
   // Enter Press click handler on input field
   const handleKeyPress = async (event) => {
+    console.log(
+      meetingPageCurrent,
+      "meetingPageCurrentmeetingPageCurrentmeetingPageCurrent"
+    );
     if (event.key === "Enter" && searchText !== "") {
       let searchData = {
         Date: "",
@@ -2089,6 +2168,10 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
+  console.log(
+    boardDeckMeetingTitle,
+    "boardDeckMeetingTitleboardDeckMeetingTitle"
+  );
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
     setBoardDeckMeetingID(record.pK_MDID);
@@ -2557,15 +2640,23 @@ const NewMeeting = () => {
           let meetingID = allMeetingsSocketData.pK_MDID;
           let meetingData = allMeetingsSocketData;
           let newMeetingData = await mqttMeetingData(meetingData, 1);
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return newMeetingData;
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
+          let checkifAlreadyExist = rows.find(
+            (meetingRowsData, index) =>
+              Number(meetingRowsData.pK_MDID) === Number(meetingID)
+          );
+          if (checkifAlreadyExist !== undefined) {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return newMeetingData;
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
             });
-          });
+          } else {
+            setRow([newMeetingData, ...rows]);
+          }
         };
         updateMeeting();
       } catch (error) {
@@ -3250,22 +3341,7 @@ const NewMeeting = () => {
                             locale={{
                               emptyText: emptyText(), // Set your custom empty text here
                             }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return (
-                                  record.meetingAgenda.length > 0 &&
-                                  record.meetingAgenda.map((data) => (
-                                    <p
-                                      className={styles["meeting-expanded-row"]}
-                                    >
-                                      {data.objMeetingAgenda.title}
-                                    </p>
-                                  ))
-                                );
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda.length > 0 ? true : false,
-                            }}
+                    
                           />
                           {/* // ) : null} */}
                         </>
@@ -3336,6 +3412,7 @@ const NewMeeting = () => {
         <ShareModalBoarddeck
           radioValue={radioValue}
           setRadioValue={setRadioValue}
+          boarddeckOptions={boarddeckOptions}
         />
       )}
       {boardDeckEmailModal && (
@@ -3345,6 +3422,12 @@ const NewMeeting = () => {
           boarddeckOptions={boarddeckOptions}
           radioValue={radioValue}
           setBoarddeckOptions={setBoarddeckOptions}
+        />
+      )}
+
+      {shareViaDataRoomPathConfirmModal && (
+        <ShareViaDataRoomPathModal
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
         />
       )}
     </>

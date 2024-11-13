@@ -64,7 +64,9 @@ const SignupProcessUserManagement = () => {
     message: "",
     severity: "error",
   });
-  let signUpUserManagementRoute = Number(localStorage.getItem("SignupFlowPageRoute"));
+  let signUpUserManagementRoute = Number(
+    localStorage.getItem("SignupFlowPageRoute")
+  );
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
   const [storedStep, setStoredStep] = useState(
@@ -75,8 +77,8 @@ const SignupProcessUserManagement = () => {
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
       console.log("SignupFlowPageRoute");
       if (storedStep) {
-      console.log("SignupFlowPageRoute");
-      dispatch(signUpFlowRoutes(storedStep));
+        console.log("SignupFlowPageRoute");
+        dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
       console.log("SignupFlowPageRoute");
@@ -88,14 +90,18 @@ const SignupProcessUserManagement = () => {
 
   useEffect(() => {
     if (signUpUserManagementRoute !== null && signUpUserManagementRoute !== 0) {
-        setStoredStep(signUpUserManagementRoute);
+      setStoredStep(signUpUserManagementRoute);
     } else {
       setStoredStep(1);
       localStorage.setItem("SignupFlowPageRoute", 1);
     }
   }, [signUpUserManagementRoute]);
-        console.log("SignupFlowPageRoute",signUpUserManagementRoute,storedStep,UserMangementReducerdefaultRoutingValue);
-
+  console.log(
+    "SignupFlowPageRoute",
+    signUpUserManagementRoute,
+    storedStep,
+    UserMangementReducerdefaultRoutingValue
+  );
 
   //For SnakBar Messeges
 
@@ -296,7 +302,10 @@ const SignupProcessUserManagement = () => {
           }
         }
       }
-    } else {
+    } else if (
+      data.payload.message.toLowerCase() ===
+      "2FA_VERIFIED_NOT_FROM_DEVICE".toLowerCase()
+    ) {
       localStorage.setItem("TowApproval", false);
       console.log("TowApproval");
       dispatch(LoginFlowRoutes(7));
@@ -306,20 +315,18 @@ const SignupProcessUserManagement = () => {
   let newClient = Helper.socket;
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [Helper.socket]);
 
   let SignupComponent;
-  if (
-    UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1
-  ) {
+  if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
     SignupComponent = <PakageDetailsUserManagement />;
   } else if (UserMangementReducerdefaultRoutingValue === 2) {
     SignupComponent = <SignUpOrganizationUM />;

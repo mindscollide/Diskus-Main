@@ -41,8 +41,8 @@ const DeleteUserModal = ({ deleteModalData }) => {
       <Modal
         show={UserManagementModalsdeleteUsersModalData}
         setShow={dispatch(showDeleteUsersModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block border-0"}
+        modalHeaderClassName={"d-block border-0"}
         size={"md"}
         onHide={() => {
           dispatch(showDeleteUsersModal(false));

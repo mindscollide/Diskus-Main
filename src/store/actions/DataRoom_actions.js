@@ -37,6 +37,7 @@ import {
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
+import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -556,11 +557,12 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
                 )
             ) {
               dispatch(
-                getFolerDocuments_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getFolerDocuments_success(response.data.responseResult, "")
               );
+              if (no === 5) {
+                dispatch(showShareViaDataRoomPathConfirmation(false));
+                navigate("/Diskus/dataroom");
+              }
               dispatch(isFolder(1));
             } else if (
               response.data.responseResult.responseMessage
@@ -805,10 +807,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()
             ) {
               dispatch(
-                getDocumentsAndFolders_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getDocumentsAndFolders_success(response.data.responseResult, "")
               );
               if (statusID === 1) {
                 localStorage.setItem("setTableView", 1);
@@ -898,10 +897,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
             ) {
               dispatch(tableSpinner(false));
               dispatch(
-                getDocumentsAndFolders_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getDocumentsAndFolders_success(response.data.responseResult, "")
               );
               if (statusID === 1) {
                 localStorage.setItem("setTableView", 1);
@@ -998,10 +994,7 @@ const getFolderDocumentsApiScrollBehaviour = (
                 )
             ) {
               dispatch(
-                getFolerDocuments_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getFolerDocuments_success(response.data.responseResult, "")
               );
               dispatch(isFolder(1));
               dispatch(tableSpinner(false));
@@ -1014,10 +1007,7 @@ const getFolderDocumentsApiScrollBehaviour = (
             ) {
               dispatch(tableSpinner(false));
               dispatch(
-                getFolerDocuments_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getFolerDocuments_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3152,7 +3142,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
       responseType: "blob",
     })
       .then(async (response) => {
-        console.log(response, "responseresponseresponse")
+        console.log(response, "responseresponseresponse");
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
@@ -3169,7 +3159,7 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
         }
       })
       .catch((response) => {
-        console.log(response, "responseresponseresponse")
+        console.log(response, "responseresponseresponse");
 
         dispatch(DownloadMessage(0));
 
@@ -3615,7 +3605,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
         localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
       localStorage.removeItem("DataRoomEmail");
     }

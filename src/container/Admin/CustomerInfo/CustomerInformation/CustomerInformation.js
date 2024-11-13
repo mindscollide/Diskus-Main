@@ -9,12 +9,7 @@ import {
   countryNameforPhoneNumber,
 } from "../../AllUsers/AddUser/CountryJson";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import {
-  Button,
-  Modal,
-  Loader,
-  Notification,
-} from "../../../../components/elements";
+import { Button, Modal, Notification } from "../../../../components/elements";
 import styles from "./CustomerInformation.module.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,9 +27,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { countryNamesReducer, adminReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { countryNamesReducer, adminReducer } = useSelector((state) => state);
 
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
@@ -1081,7 +1074,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

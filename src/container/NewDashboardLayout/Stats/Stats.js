@@ -12,13 +12,24 @@ import { getDashbardTaskDataApi } from "../../../store/actions/ToDoList_action";
 import { getDashbardMeetingDataApi } from "../../../store/actions/NewMeetingActions";
 import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Stats = () => {
-  const { NewMeetingreducer, toDoListReducer, SignatureWorkFlowReducer } =
-    useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const getDashboardMeetingData = useSelector(
+    (state) => state.NewMeetingreducer.getDashboardMeetingData
+  );
+  const getDashboardTaskData = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskData
+  );
+  const getDashboardTaskCountMQTT = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskCountMQTT
+  );
+  const getDashboardPendingApprovalData = useSelector(
+    (state) => state.SignatureWorkFlowReducer.getDashboardPendingApprovalData
+  );
 
   const [counts, setCounts] = useState({
     totalMeetingCount: 0,
@@ -35,43 +46,57 @@ const Stats = () => {
       dispatch(getDashbardTaskDataApi(navigate, t));
     }
     dispatch(getDashbardPendingApprovalDataApi(navigate, t));
-  }, [dispatch, navigate, t]);
+  }, []);
 
   useEffect(() => {
-    if (NewMeetingreducer.getDashboardMeetingData) {
+    if (getDashboardMeetingData) {
       const { totalNumberOfMeetings, numberOfUpcommingMeetings } =
-        NewMeetingreducer.getDashboardMeetingData;
+        getDashboardMeetingData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalMeetingCount: totalNumberOfMeetings,
         upcomingMeetingCount: numberOfUpcommingMeetings,
       }));
     }
-  }, [NewMeetingreducer.getDashboardMeetingData]);
+  }, [getDashboardMeetingData]);
 
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskData) {
+    if (getDashboardTaskData) {
       const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
-        toDoListReducer.getDashboardTaskData;
+        getDashboardTaskData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalTaskCount: totalNumberOfToDoList,
         upComingTaskCount: totalNumberOfAssignedToDoList,
       }));
     }
-  }, [toDoListReducer.getDashboardTaskData]);
+  }, [getDashboardTaskData]);
 
   useEffect(() => {
-    if (SignatureWorkFlowReducer.getDashboardPendingApprovalData) {
+    if (getDashboardTaskCountMQTT !== null) {
+      try {
+        const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
+          getDashboardTaskCountMQTT;
+        setCounts((prevCounts) => ({
+          ...prevCounts,
+          totalTaskCount: totalNumberOfToDoList,
+          upComingTaskCount: totalNumberOfAssignedToDoList,
+        }));
+      } catch (error) {}
+    }
+  }, [getDashboardTaskCountMQTT]);
+
+  useEffect(() => {
+    if (getDashboardPendingApprovalData) {
       const { pendingApprovalsCount, totalApprovalsCount } =
-        SignatureWorkFlowReducer.getDashboardPendingApprovalData;
+        getDashboardPendingApprovalData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalPendingApprovalCount: totalApprovalsCount,
         upComingApprovalCount: pendingApprovalsCount,
       }));
     }
-  }, [SignatureWorkFlowReducer.getDashboardPendingApprovalData]);
+  }, [getDashboardPendingApprovalData]);
 
   const progressBarData = useMemo(
     () => [
@@ -103,6 +128,9 @@ const Stats = () => {
     ],
     [counts]
   );
+
+  let locale = localStorage.getItem("i18nextLng");
+
 
   return (
     <Row>
@@ -149,7 +177,7 @@ const Stats = () => {
             <ProgressBar
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
-              label={`${bar.now}/${bar.max}`}
+              label={`${convertToArabicNumerals(bar.now, locale)}/${convertToArabicNumerals(bar.max, locale)}`}
               className={
                 checkisbothValueisEqual
                   ? styles["dashboard_progress_upcomingmeeting_R"]

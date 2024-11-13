@@ -43,15 +43,45 @@ import {
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 
 const Header2 = ({ isVideo }) => {
-  const location = useLocation();
-  // const languageref = useRef()
-  const state = useSelector((state) => state);
-  const { settingReducer, NewMeetingreducer } = state;
-  const { UserProfileData } = settingReducer;
-  const { UserManagementModals, Authreducer } = useSelector((state) => state);
   const navigate = useNavigate();
-  const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { t } = useTranslation();
+  const scheduleMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const viewProposeDateMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+  );
+  const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+  const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+  );
+  const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+  );
+  const proposeNewMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+  );
+  const viewMeetingFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewMeetingFlag
+  );
+  const UserProfileData = useSelector(
+    (state) => state.settingReducer.UserProfileData
+  );
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+
+  const UpgradeNowModalReducer = useSelector(
+    (state) => state.UserManagementModals.UpgradeNowModal
+  );
+  const requestExtentionModal = useSelector(
+    (state) => state.UserManagementModals.requestExtentionModal
+  );
+  const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserProfilePic, setCurrentUserProfilePic] = useState(null);
@@ -75,12 +105,7 @@ const Header2 = ({ isVideo }) => {
 
   let currentOrganizationName = localStorage.getItem("organizatioName");
 
-  const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
-  );
-
   const [show, setShow] = useState(false);
-  const { t } = useTranslation();
   useEffect(() => {
     if (Blur !== null) {
       console.log("Blur", Blur);
@@ -161,13 +186,13 @@ const Header2 = ({ isVideo }) => {
 
   const RecentFilesTab = async () => {
     if (
-      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-      NewMeetingreducer.viewMeetingFlag === false
+      (scheduleMeetingPageFlagReducer === true ||
+        viewProposeDateMeetingPageFlagReducer === true ||
+        viewAdvanceMeetingPublishPageFlagReducer === true ||
+        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+        viewProposeOrganizerMeetingPageFlagReducer === true ||
+        proposeNewMeetingPageFlagReducer === true) &&
+      viewMeetingFlagReducer === false
     ) {
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "dataroom");
@@ -196,13 +221,13 @@ const Header2 = ({ isVideo }) => {
   const homePageDashboardClick = (event) => {
     if (location.pathname.includes("/Admin") === false) {
       if (
-        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-        NewMeetingreducer.viewMeetingFlag === false
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
       ) {
         event.preventDefault();
         dispatch(showCancelModalmeetingDeitals(true));
@@ -231,13 +256,13 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarSettings = () => {
     if (location.pathname.includes("/Admin") === false) {
       if (
-        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-        NewMeetingreducer.viewMeetingFlag === false
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
       ) {
         dispatch(showCancelModalmeetingDeitals(true));
         localStorage.setItem("navigateLocation", "setting");
@@ -265,13 +290,13 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingPendingApprovals = () => {
     if (location.pathname.includes("/Admin") === false) {
       if (
-        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-        NewMeetingreducer.viewMeetingFlag === false
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
       ) {
         dispatch(showCancelModalmeetingDeitals(true));
         localStorage.setItem("navigateLocation", "Minutes");
@@ -299,13 +324,13 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarFAQ = () => {
     if (location.pathname.includes("/Admin") === false) {
       if (
-        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
-          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
-          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
-          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-        NewMeetingreducer.viewMeetingFlag === false
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
       ) {
         dispatch(showCancelModalmeetingDeitals(true));
         localStorage.setItem("navigateLocation", "faq's");
@@ -421,19 +446,16 @@ const Header2 = ({ isVideo }) => {
                         <Nav.Link
                           as={Link}
                           to={
-                            (NewMeetingreducer.scheduleMeetingPageFlag ===
-                              true ||
-                              NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                            (scheduleMeetingPageFlagReducer === true ||
+                              viewProposeDateMeetingPageFlagReducer === true ||
+                              viewAdvanceMeetingPublishPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              viewAdvanceMeetingUnpublishPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              viewProposeOrganizerMeetingPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                true ||
-                              NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                true) &&
-                            NewMeetingreducer.viewMeetingFlag === false
+                              proposeNewMeetingPageFlagReducer === true) &&
+                            viewMeetingFlagReducer === false
                               ? "/DisKus/Meeting"
                               : "/DisKus/Minutes"
                           }
@@ -521,18 +543,15 @@ const Header2 = ({ isVideo }) => {
                       <Nav.Link
                         as={Link}
                         to={
-                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          (scheduleMeetingPageFlagReducer === true ||
+                            viewProposeDateMeetingPageFlagReducer === true ||
+                            viewAdvanceMeetingPublishPageFlagReducer === true ||
+                            viewAdvanceMeetingUnpublishPageFlagReducer ===
                               true ||
-                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                            viewProposeOrganizerMeetingPageFlagReducer ===
                               true ||
-                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.proposeNewMeetingPageFlag ===
-                              true) &&
-                          NewMeetingreducer.viewMeetingFlag === false
+                            proposeNewMeetingPageFlagReducer === true) &&
+                          viewMeetingFlagReducer === false
                             ? "/DisKus/Meeting"
                             : "/DisKus/setting"
                         }
@@ -550,18 +569,15 @@ const Header2 = ({ isVideo }) => {
                       <Nav.Link
                         as={Link}
                         to={
-                          (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                            NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          (scheduleMeetingPageFlagReducer === true ||
+                            viewProposeDateMeetingPageFlagReducer === true ||
+                            viewAdvanceMeetingPublishPageFlagReducer === true ||
+                            viewAdvanceMeetingUnpublishPageFlagReducer ===
                               true ||
-                            NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                            viewProposeOrganizerMeetingPageFlagReducer ===
                               true ||
-                            NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                              true ||
-                            NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                              true ||
-                            NewMeetingreducer.proposeNewMeetingPageFlag ===
-                              true) &&
-                          NewMeetingreducer.viewMeetingFlag === false
+                            proposeNewMeetingPageFlagReducer === true) &&
+                          viewMeetingFlagReducer === false
                             ? "/DisKus/Meeting"
                             : "/DisKus/faq's"
                         }
@@ -602,17 +618,13 @@ const Header2 = ({ isVideo }) => {
                 to={
                   location.pathname.includes("/Admin")
                     ? "/Admin/faq's"
-                    : (NewMeetingreducer.scheduleMeetingPageFlag === true ||
-                        NewMeetingreducer.viewProposeDateMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
-                          true ||
-                        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                          true ||
-                        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
-                      NewMeetingreducer.viewMeetingFlag === false
+                    : (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
                     ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
@@ -767,20 +779,18 @@ const Header2 = ({ isVideo }) => {
                               <>
                                 <Dropdown.Item className="d-flex title-className">
                                   {/* {t("Upload-document")} */}
-                                  {(NewMeetingreducer.scheduleMeetingPageFlag ===
-                                    true ||
-                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  {(scheduleMeetingPageFlagReducer === true ||
+                                    viewProposeDateMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                    viewAdvanceMeetingPublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                    viewAdvanceMeetingUnpublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                    viewProposeOrganizerMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                    proposeNewMeetingPageFlagReducer ===
                                       true) &&
-                                  NewMeetingreducer.viewMeetingFlag ===
-                                    false ? (
+                                  viewMeetingFlagReducer === false ? (
                                     <div
                                       className="New_folder_shortcutkeys"
                                       onClick={() => {
@@ -818,19 +828,18 @@ const Header2 = ({ isVideo }) => {
                               <Nav.Link
                                 as={Link}
                                 to={
-                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                    true ||
-                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  (scheduleMeetingPageFlagReducer === true ||
+                                    viewProposeDateMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                    viewAdvanceMeetingPublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                    viewAdvanceMeetingUnpublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                    viewProposeOrganizerMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                    proposeNewMeetingPageFlagReducer ===
                                       true) &&
-                                  NewMeetingreducer.viewMeetingFlag === false
+                                  viewMeetingFlagReducer === false
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/Minutes"
                                 }
@@ -990,19 +999,18 @@ const Header2 = ({ isVideo }) => {
                               <Nav.Link
                                 as={Link}
                                 to={
-                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                    true ||
-                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  (scheduleMeetingPageFlagReducer === true ||
+                                    viewProposeDateMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                    viewAdvanceMeetingPublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                    viewAdvanceMeetingUnpublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                    viewProposeOrganizerMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                    proposeNewMeetingPageFlagReducer ===
                                       true) &&
-                                  NewMeetingreducer.viewMeetingFlag === false
+                                  viewMeetingFlagReducer === false
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/setting"
                                 }
@@ -1020,19 +1028,18 @@ const Header2 = ({ isVideo }) => {
                               <Nav.Link
                                 as={Link}
                                 to={
-                                  (NewMeetingreducer.scheduleMeetingPageFlag ===
-                                    true ||
-                                    NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                                  (scheduleMeetingPageFlagReducer === true ||
+                                    viewProposeDateMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                                    viewAdvanceMeetingPublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                                    viewAdvanceMeetingUnpublishPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
+                                    viewProposeOrganizerMeetingPageFlagReducer ===
                                       true ||
-                                    NewMeetingreducer.proposeNewMeetingPageFlag ===
+                                    proposeNewMeetingPageFlagReducer ===
                                       true) &&
-                                  NewMeetingreducer.viewMeetingFlag === false
+                                  viewMeetingFlagReducer === false
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/faq's"
                                 }
@@ -1075,19 +1082,16 @@ const Header2 = ({ isVideo }) => {
                       to={
                         location.pathname.includes("/Admin")
                           ? "/Admin/faq's"
-                          : (NewMeetingreducer.scheduleMeetingPageFlag ===
-                              true ||
-                              NewMeetingreducer.viewProposeDateMeetingPageFlag ===
+                          : (scheduleMeetingPageFlagReducer === true ||
+                              viewProposeDateMeetingPageFlagReducer === true ||
+                              viewAdvanceMeetingPublishPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag ===
+                              viewAdvanceMeetingUnpublishPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag ===
+                              viewProposeOrganizerMeetingPageFlagReducer ===
                                 true ||
-                              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag ===
-                                true ||
-                              NewMeetingreducer.proposeNewMeetingPageFlag ===
-                                true) &&
-                            NewMeetingreducer.viewMeetingFlag === false
+                              proposeNewMeetingPageFlagReducer === true) &&
+                            viewMeetingFlagReducer === false
                           ? "/DisKus/Meeting"
                           : "/DisKus/faq's"
                       }
@@ -1185,9 +1189,8 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
-      {UserManagementModals.UpgradeNowModal && <UpgradeNowModal />}
-      {Authreducer.Loading ? <Loader /> : null}
-      {UserManagementModals.requestExtentionModal && <RequestExtensionModal />}
+      {UpgradeNowModalReducer && <UpgradeNowModal />}
+      {requestExtentionModal && <RequestExtensionModal />}
     </>
   );
 };

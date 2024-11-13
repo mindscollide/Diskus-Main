@@ -3,7 +3,6 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Notification,
-  Loader,
   VerificationInputField,
 } from "./../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +20,7 @@ import {
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ForgotPasswordVerification = () => {
-  const { auth, Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { auth, Authreducer } = useSelector((state) => state);
   const [key, setKey] = useState(1);
 
   const dispatch = useDispatch();
@@ -340,11 +339,6 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      {auth.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : Authreducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

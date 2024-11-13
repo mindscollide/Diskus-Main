@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
-import { Button, TextField, Loader } from "../../../../components/elements";
+import { Button, TextField } from "../../../../components/elements";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -47,14 +47,6 @@ const SignUpOrganizationUM = () => {
 
   const adminReducerEmailCheckSpinnerData = useSelector(
     (state) => state.adminReducer.EmailCheckSpinner
-  );
-
-  const LanguageReducerLoaderData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
   );
 
   const location = useLocation();
@@ -1201,10 +1193,7 @@ const SignUpOrganizationUM = () => {
               className={styles["rightsection_roundLogo"]}
             />
           </Col>
-        </Row>{" "}
-        {UserMangementReducerLoadingData || LanguageReducerLoaderData ? (
-          <Loader />
-        ) : null}{" "}
+        </Row>
       </Container>
     </>
   );

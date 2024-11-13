@@ -413,8 +413,8 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 
 .CreateMeetingDate .rmdp-calendar {
   background: #fff !important;
-  border: 1px solid #ccc;
-  border-radius: 7px;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
 }
 
 .CreateMeetingDate .rmdp-week-day {
@@ -511,14 +511,6 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 
   .datepicker {
     width: 80px !important;
-  }
-
-  /* for datepicker */
-  .CreateMeetingDate .rmdp-calendar {
-    background: #fff !important;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    width: 200px !important;
   }
 
   .CreateMeetingDate .rmdp-week-day {

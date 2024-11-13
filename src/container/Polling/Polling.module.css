@@ -324,36 +324,36 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .FilterResetBtn {
-  padding: 6px 10px !important;
+  padding: 2px 14px !important;
   border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-size: 10px !important;
-  border: none !important;
+  border: 1px solid #5a5a5a !important;
 }
 
 .FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
+  padding: 2px 14px !important;
   border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-size: 10px !important;
-  border: none !important;
+  border: 1px solid #5a5a5a !important;
 }
 
 .ResetOkBtn {
-  padding: 6px 10px !important;
+  padding: 3px 14px !important;
   border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: #6172d6 !important;
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;
 }
 
 .ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
+  padding: 3px 14px !important;
   border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: #6172d6 !important;
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;

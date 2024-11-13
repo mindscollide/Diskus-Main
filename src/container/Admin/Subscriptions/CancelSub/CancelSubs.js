@@ -37,7 +37,7 @@ const CancelSubs = () => {
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
-  const { GetSubscriptionPackage, adminReducer, LanguageReducer } = useSelector(
+  const { GetSubscriptionPackage, adminReducer } = useSelector(
     (state) => state
   );
 
@@ -696,11 +696,6 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : adminReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

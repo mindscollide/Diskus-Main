@@ -12,7 +12,7 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage, Authreducer, LanguageReducer } = Data;
+  const { GetSubscriptionPackage } = Data;
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -192,11 +192,6 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading ||
-      Authreducer.Loading ||
-      LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

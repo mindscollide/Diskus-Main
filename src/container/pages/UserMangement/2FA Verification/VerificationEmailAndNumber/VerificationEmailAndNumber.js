@@ -13,7 +13,6 @@ import {
   Button,
   VerificationInputField,
   Notification,
-  Loader,
 } from "../../../../../components/elements";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { useTranslation } from "react-i18next";
@@ -41,14 +40,6 @@ const VerificationEmailAndNumber = () => {
 
   const AuthreducerSendTwoFacOTPResponseMessage = useSelector(
     (state) => state.Authreducer.SendTwoFacOTPResponseMessage
-  );
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
   );
 
   const [email, setEmail] = useState("");
@@ -222,11 +213,11 @@ const VerificationEmailAndNumber = () => {
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [Helper.socket]);
@@ -389,7 +380,6 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </div>
   );

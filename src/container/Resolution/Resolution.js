@@ -9,6 +9,7 @@ import {
 import { Col, Row } from "react-bootstrap";
 import searchicon from "../../assets/images/searchicon.svg";
 import plusbutton from "../../assets/images/Group 119.svg";
+import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import AbstainvoterIcon from "../../assets/images/resolutions/Abstainvoter_icon.svg";
@@ -117,6 +118,8 @@ const Resolution = () => {
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
   const [searchIcon, setSearchIcon] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [enterpressed, setEnterpressed] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
@@ -260,6 +263,7 @@ const Resolution = () => {
   });
 
   const showSearchOptions = () => {
+    setIsSearching(true);
     let getUserID = JSON.parse(localStorage.getItem("userID"));
     let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
     let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
@@ -312,6 +316,7 @@ const Resolution = () => {
   };
 
   const hideSearchOptions = () => {
+    setIsSearching(false);
     if (resolutionView === 1) {
       dispatch(getResolutions(navigate, buttonTab, t));
     } else {
@@ -326,8 +331,16 @@ const Resolution = () => {
     setSearchIcon(false);
   };
 
+  const handleResettingPage = () => {
+    setIsSearching(false);
+    setEnterpressed(false);
+    dispatch(getResolutions(navigate, buttonTab, t));
+    dispatch(getVoterResolution(navigate, buttonTab, t));
+  };
+
   const closeSeachBar = () => {
     setSearchIcon(false);
+    setIsSearching(false);
   };
 
   const openSearchBox = () => {
@@ -415,6 +428,8 @@ const Resolution = () => {
   };
   const handleClickSearch = (event) => {
     if (event.key === "Enter") {
+      setEnterpressed(true);
+      setIsSearching(true);
       let getUserID = JSON.parse(localStorage.getItem("userID"));
       let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
       let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
@@ -1406,18 +1421,47 @@ const Resolution = () => {
                         change={(e) => filterResolution(e)}
                         onKeyDown={handleClickSearch}
                         applyClass={"resolution-search-input"}
-                        iconclassname={styles["Search_Icon"]}
+                        iconclassname={
+                          isSearching
+                            ? styles["Search_IconWithCrossIcon"]
+                            : styles["Search_Icon"]
+                        }
                         inputicon={
                           <>
-                            <Tooltip
-                              placement="bottomLeft"
-                              title={t("Search-filters")}
-                            >
-                              <img draggable="false" src={searchicon} alt="" />
-                            </Tooltip>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex gap-1 align-items-center"
+                              >
+                                {allSearchInput && enterpressed ? (
+                                  <>
+                                    <img
+                                      src={BlackCrossIcon}
+                                      className="cursor-pointer"
+                                      draggable="false"
+                                      alt=""
+                                      onClick={handleResettingPage}
+                                    />
+                                  </>
+                                ) : null}
+                                <Tooltip
+                                  placement="bottomLeft"
+                                  title={t("Search-filters")}
+                                >
+                                  <img
+                                    draggable="false"
+                                    src={searchicon}
+                                    alt=""
+                                    className={styles["searchIcon"]}
+                                    onClick={openSearchBox}
+                                  />
+                                </Tooltip>
+                              </Col>
+                            </Row>
                           </>
                         }
-                        clickIcon={openSearchBox}
                       />
                       {searchIcon ? (
                         <>
@@ -1573,177 +1617,189 @@ const Resolution = () => {
             {resolutionView !== null && resolutionView === 1 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {rows !== null && rows !== undefined && rows.length > 0 ? (
-                    <>
-                      <TableToDo
-                        sortDirections={["descend", "ascend"]}
-                        column={
-                          buttonTab !== null && buttonTab === 2
-                            ? columnsModeratorClosed
-                            : columnsModerator
-                        }
-                        className="Resolution_table"
-                        scroll={{ y: "53vh" }}
-                        pagination={false}
-                        loading={{
-                          indicator: (
-                            <div className={styles["resolution_spinner"]}>
-                              <Spin />
-                            </div>
-                          ),
-                          spinning: ResolutionReducerLoading,
-                        }}
-                        rows={rows}
-                      />
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-center my-3 pagination-groups-table"
-                        >
-                          <CustomPagination
-                            current={
-                              moderatorPage !== null ? Number(moderatorPage) : 1
-                            }
-                            onChange={handleChangeResolutionPagination}
-                            pageSizeOptionsValues={["30", "50", "100", "200"]}
-                            showSizer={true}
-                            pageSize={
-                              moderatorRows !== null
-                                ? Number(moderatorRows)
-                                : 50
-                            }
-                            className={styles["PaginationStyle-Resolution"]}
-                            total={totalResolution}
-                          />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
+                  <>
+                    <TableToDo
+                      sortDirections={["descend", "ascend"]}
+                      column={
+                        buttonTab !== null && buttonTab === 2
+                          ? columnsModeratorClosed
+                          : columnsModerator
+                      }
+                      className="Resolution_table"
+                      scroll={{ y: "53vh" }}
+                      pagination={false}
+                      loading={{
+                        indicator: (
+                          <div className={styles["resolution_spinner"]}>
+                            <Spin />
+                          </div>
+                        ),
+                        spinning: ResolutionReducerLoading,
+                      }}
+                      rows={rows}
+                      locale={{
+                        emptyText: (
+                          <>
+                            <Row>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["empty_Resolutions"]}
+                              >
+                                <img
+                                  draggable="false"
+                                  src={EmptyResolution}
+                                  alt=""
+                                />
+                                <h2 className={styles["NoResolutionHeading"]}>
+                                  {t("No-resolution-to-display")}
+                                </h2>
+                                <p className={styles["NoResolution_Tagline"]}>
+                                  {t("Seeking-opinions-on-something")}
+                                </p>
+                                {!isSearching && (
+                                  <Button
+                                    className={styles["create-Resolution-btn"]}
+                                    text={
+                                      <span
+                                        className={styles["Btn_create_text"]}
+                                      >
+                                        {t("Create-new-resolution")}
+                                      </span>
+                                    }
+                                    icon={
+                                      <img
+                                        draggable="false"
+                                        src={plusbutton}
+                                        height="7.6px"
+                                        width="7.6px"
+                                        alt=""
+                                        className="align-items-center"
+                                      />
+                                    }
+                                    onClick={() => createresolution()}
+                                  />
+                                )}
+                              </Col>
+                            </Row>
+                          </>
+                        ),
+                      }}
+                    />
                     <Row>
                       <Col
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles["empty_Resolutions"]}
+                        className="d-flex justify-content-center my-3 pagination-groups-table"
                       >
-                        <img draggable="false" src={EmptyResolution} alt="" />
-                        <h2 className={styles["NoResolutionHeading"]}>
-                          {t("No-resolution-to-display")}
-                        </h2>
-                        <p className={styles["NoResolution_Tagline"]}>
-                          {t("Seeking-opinions-on-something")}
-                        </p>
-                        <Button
-                          className={styles["create-Resolution-btn"]}
-                          text={
-                            <span className={styles["Btn_create_text"]}>
-                              {t("Create-new-resolution")}
-                            </span>
+                        <CustomPagination
+                          current={
+                            moderatorPage !== null ? Number(moderatorPage) : 1
                           }
-                          icon={
-                            <img
-                              draggable="false"
-                              src={plusbutton}
-                              height="7.6px"
-                              width="7.6px"
-                              alt=""
-                              className="align-items-center"
-                            />
+                          onChange={handleChangeResolutionPagination}
+                          pageSizeOptionsValues={["30", "50", "100", "200"]}
+                          showSizer={true}
+                          pageSize={
+                            moderatorRows !== null ? Number(moderatorRows) : 50
                           }
-                          onClick={() => createresolution()}
+                          className={styles["PaginationStyle-Resolution"]}
+                          total={totalResolution}
                         />
                       </Col>
                     </Row>
-                  )}
+                  </>
                 </Col>
               </Row>
             ) : resolutionView !== null && resolutionView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {isSearchVoter !== null &&
-                  isSearchVoter !== undefined &&
-                  isSearchVoter.length > 0 ? (
-                    <>
-                      <TableToDo
-                        sortDirections={["descend", "ascend"]}
-                        column={
-                          buttonTab !== null && buttonTab === 2
-                            ? columnsVotersClosed
-                            : columnsvoters
-                        }
-                        className="Resolution_table"
-                        scroll={{ y: "53vh" }}
-                        pagination={false}
-                        loading={{
-                          indicator: (
-                            <div className={styles["resolution_spinner"]}>
-                              <Spin />
-                            </div>
-                          ),
-                          spinning: ResolutionReducerLoading,
-                        }}
-                        rows={isSearchVoter}
+                  <TableToDo
+                    sortDirections={["descend", "ascend"]}
+                    column={
+                      buttonTab !== null && buttonTab === 2
+                        ? columnsVotersClosed
+                        : columnsvoters
+                    }
+                    className="Resolution_table"
+                    scroll={{ y: "53vh" }}
+                    pagination={false}
+                    loading={{
+                      indicator: (
+                        <div className={styles["resolution_spinner"]}>
+                          <Spin />
+                        </div>
+                      ),
+                      spinning: ResolutionReducerLoading,
+                    }}
+                    rows={isSearchVoter}
+                    locale={{
+                      emptyText: (
+                        <>
+                          <Row>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className={styles["empty_Resolutions"]}
+                            >
+                              <img
+                                draggable="false"
+                                src={EmptyResolution}
+                                alt=""
+                              />
+                              <h2 className={styles["NoResolutionHeading"]}>
+                                {t("No-resolution-to-display")}
+                              </h2>
+                              <p className={styles["NoResolution_Tagline"]}>
+                                {t("Seeking-opinions-on-something")}
+                              </p>
+                              {!isSearching && (
+                                <Button
+                                  className={styles["create-Resolution-btn"]}
+                                  text={
+                                    <span className={styles["Btn_create_text"]}>
+                                      {t("Create-new-resolution")}
+                                    </span>
+                                  }
+                                  icon={
+                                    <img
+                                      draggable="false"
+                                      src={plusbutton}
+                                      height="7.6px"
+                                      width="7.6px"
+                                      alt=""
+                                      className="align-items-center"
+                                    />
+                                  }
+                                  onClick={() => createresolution()}
+                                />
+                              )}
+                            </Col>
+                          </Row>
+                        </>
+                      ),
+                    }}
+                  />
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center my-3 pagination-groups-table"
+                    >
+                      <CustomPagination
+                        current={voterPage !== null ? Number(voterPage) : 1}
+                        total={totalVoterResolution}
+                        pageSize={voterRows !== null ? Number(voterRows) : 50}
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangeVoterResolutionPagination}
+                        showSizer={true}
                       />
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-center my-3 pagination-groups-table"
-                        >
-                          <CustomPagination
-                            current={voterPage !== null ? Number(voterPage) : 1}
-                            total={totalVoterResolution}
-                            pageSize={
-                              voterRows !== null ? Number(voterRows) : 50
-                            }
-                            pageSizeOptionsValues={["30", "50", "100", "200"]}
-                            className={styles["PaginationStyle-Resolution"]}
-                            onChange={handleChangeVoterResolutionPagination}
-                            showSizer={true}
-                          />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <Row>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className={styles["empty_Resolutions"]}
-                      >
-                        <img draggable="false" src={EmptyResolution} alt="" />
-                        <h2 className={styles["NoResolutionHeading"]}>
-                          {t("No-resolution-to-display")}
-                        </h2>
-                        <p className={styles["NoResolution_Tagline"]}>
-                          {t("Seeking-opinions-on-something")}
-                        </p>
-                        <Button
-                          className={styles["create-Resolution-btn"]}
-                          text={
-                            <span className={styles["Btn_create_text"]}>
-                              {t("Create-new-resolution")}
-                            </span>
-                          }
-                          icon={
-                            <img
-                              draggable="false"
-                              src={plusbutton}
-                              height="7.6px"
-                              width="7.6px"
-                              alt=""
-                              className="align-items-center"
-                            />
-                          }
-                          onClick={() => createresolution()}
-                        />
-                      </Col>
-                    </Row>
-                  )}
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             ) : null}

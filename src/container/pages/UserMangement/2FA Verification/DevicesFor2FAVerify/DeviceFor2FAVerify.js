@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Paper, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -175,7 +175,7 @@ const DeviceFor2FAVerify = () => {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [Helper.socket]);
@@ -397,7 +397,6 @@ const DeviceFor2FAVerify = () => {
           </Col>
         </Row>
       </Container>{" "}
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
     </>
   );
 };

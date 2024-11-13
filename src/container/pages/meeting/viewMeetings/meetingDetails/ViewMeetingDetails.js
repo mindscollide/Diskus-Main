@@ -108,7 +108,7 @@ const ViewMeetingDetails = ({
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -854,7 +854,6 @@ const ViewMeetingDetails = ({
             handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
           />
         }
-        {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}

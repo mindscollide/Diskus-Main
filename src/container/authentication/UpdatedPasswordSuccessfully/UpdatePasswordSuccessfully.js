@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Button, Notification, Loader } from "./../../../components/elements";
+import { Button, Notification } from "./../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
@@ -12,7 +12,7 @@ import LanguageSelector from "../../../components/elements/languageSelector/Lang
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UpdatePasswordSuccessfully = () => {
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { Authreducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -156,7 +156,6 @@ const UpdatePasswordSuccessfully = () => {
         </Row>
       </Container>
       <Notification open={open} setOpen={setOpen} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

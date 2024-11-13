@@ -667,9 +667,6 @@ const EditUser = ({ ModalTitle }) => {
         />
       </Container>
       <Notification open={open} setOpen={setOpen} />
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </>
   );
 };

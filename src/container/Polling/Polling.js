@@ -26,6 +26,7 @@ import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
+import Tick from "../../assets/images/Tick-Icon.png";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
@@ -45,13 +46,20 @@ import {
 } from "../../store/actions/Polls_actions";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { _justShowDateformatBilling } from "../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  utcConvertintoGMT,
+} from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
+import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
+import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
+import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
+import ArrowUpIcon from "../MinutesNewFlow/Images/Arrow-up.png";
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -92,6 +100,7 @@ const Polling = () => {
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -109,6 +118,10 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
+  const [sortOrderCreatedBy, setSortOrderCreatedBy] = useState(null);
+  const [sortOrderPollingTitle, setSortOrderPollingTitle] = useState(null);
+
+  const [sortOrderDueDate, setSortOrderDueDate] = useState(null);
 
   let organizationID = localStorage.getItem("organizationID");
   let pollPub = localStorage.getItem("poPub");
@@ -118,6 +131,7 @@ const Polling = () => {
   const [isTotalRecords, setTotalRecords] = useState(0);
 
   const [searchpoll, setSearchpoll] = useState(false);
+  console.log(searchpoll, "searchpollsearchpoll");
   const [idForDelete, setIdForDelete] = useState(0);
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
@@ -225,12 +239,12 @@ const Polling = () => {
     if (pollUpda !== null) {
       validateStringPollApi(pollUpda, navigate, t, 2, dispatch)
         .then(async (result) => {
-          localStorage.removeItem("poUpda");
           let data = {
             PollID: result.pollID,
             UserID: parseInt(result.userID),
           };
           await dispatch(getPollsByPollIdApi(navigate, data, 4, t));
+          localStorage.removeItem("poUpda");
         })
         .catch((error) => {
           console.log(error, "result");
@@ -382,6 +396,7 @@ const Polling = () => {
 
   const handleSearchEvent = () => {
     setSearchpoll(false);
+    setIsSearching(true);
     setPollsState({
       ...pollsState,
       searchValue: searchBoxState.searchByTitle,
@@ -455,24 +470,42 @@ const Polling = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
+          onClick={() => {
+            console.log(filter, "filterfilterfilter");
+            handleMenuClick(filter.value);
+          }}
+          className="d-flex align-items-center justify-content-between"
         >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
+          <div className="Polls_Menu_items">
+            <span
+              className={
+                filter.value === "Published"
+                  ? "userstatus-signal-PublishedPolls_Menu"
+                  : filter.value === "UnPublished"
+                  ? "userstatus-signal-Unpublished_Menu"
+                  : "userstatus-signal-disabled_Menu"
+              }
+            ></span>
+            <span className="menu-text">{filter.text}</span>
+            {selectedValues.includes(filter.value) && (
+              <span className="checkmark">
+                <img src={Tick} alt="" />
+              </span>
+            )}
+          </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className="d-flex align-items-center justify-content-between p-2">
         <Button
           text={"Reset"}
-          className={"FilterResetBtn"}
+          className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text="Ok"
           disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
+          className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
       </div>
@@ -485,7 +518,14 @@ const Polling = () => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span>{t("Poll-title")}</span>
+              <span className="d-flex gap-2">
+                {t("Poll-title")}{" "}
+                {sortOrderPollingTitle === "descend" ? (
+                  <img src={DescendIcon} alt="" />
+                ) : (
+                  <img src={AscendIcon} alt="" />
+                )}
+              </span>
             </Col>
           </Row>
         </>
@@ -493,7 +533,18 @@ const Polling = () => {
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
-      sorter: (a, b) => a.pollTitle.localeCompare(b.pollTitle),
+      sorter: (a, b) =>
+        a.pollTitle.toLowerCase().localeCompare(b.pollTitle.toLowerCase()),
+      sortOrderPollingTitle,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderPollingTitle((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         return (
           <span
@@ -512,7 +563,7 @@ const Polling = () => {
       dataIndex: "pollStatus",
       key: "pollStatus",
       width: "78px",
-
+      align: "left",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -531,41 +582,93 @@ const Polling = () => {
       ),
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className="text-success">{t("Published")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-PublishedPolls"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Published")}</p>
+            </div>
+          );
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className="text-success">{t("Unpublished")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-Unpublished"></span>
+              <p className="m-0 userName FontArabicRegular">
+                {t("Unpublished")}
+              </p>
+            </div>
+          );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className="text-success">{t("Expired")}</span>;
+          return (
+            <div className="d-flex">
+              <span className="userstatus-signal-disabled"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Expired")}</p>
+            </div>
+          );
         }
       },
     },
     {
-      title: t("Due-date"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {t("Due-date")}
+            {sortOrderDueDate === "descend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={ArrowUpIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "dueDate",
       key: "dueDate",
       width: "89px",
+
       sorter: (a, b) =>
-        new Date(
-          a.dueDate.slice(0, 4),
-          a.dueDate.slice(4, 6) - 1,
-          a.dueDate.slice(6, 8)
-        ) -
-        new Date(
-          b.dueDate.slice(0, 4),
-          b.dueDate.slice(4, 6) - 1,
-          b.dueDate.slice(6, 8)
-        ),
-      sortDirections: ["ascend", "descend"],
-      render: (text) => {
+        utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
+      setSortOrderDueDate,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderDueDate((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
+      render: (text, record) => {
         return _justShowDateformatBilling(text);
       },
     },
     {
-      title: t("Created-by"),
+      title: (
+        <>
+          <span className="d-flex gap-2 align-items-center">
+            {" "}
+            {t("Created-by")}
+            {sortOrderCreatedBy === "descend" ? (
+              <img src={DescendIcon} alt="" />
+            ) : (
+              <img src={AscendIcon} alt="" />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "pollCreator",
       key: "pollCreator",
       width: "97px",
-      sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      sorter: (a, b) =>
+        a.pollCreator.toLowerCase().localeCompare(b.pollCreator.toLowerCase()),
+      sortOrderCreatedBy,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortOrderCreatedBy((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         return <span className="text-truncate d-block">{text}</span>;
       },
@@ -754,6 +857,7 @@ const Polling = () => {
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter") {
       setEnterpressed(true);
+      setIsSearching(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
@@ -806,15 +910,6 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: "",
-      PollTitle: "",
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(searchPollsApi(navigate, t, data));
   };
 
   const HandleShowSearch = () => {
@@ -870,7 +965,7 @@ const Polling = () => {
       searchByTitle: "",
     });
     setSearchpoll(false);
-
+    setIsSearching(false);
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -883,11 +978,12 @@ const Polling = () => {
   };
 
   const handleResettingPage = () => {
-    setSearchpoll(false);
     setPollsState({
       ...pollsState,
       searchValue: "",
     });
+    setIsSearching(false);
+    setSearchpoll(false);
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -942,7 +1038,6 @@ const Polling = () => {
                 change={HandleSearchPollsMain}
                 onKeyDown={handleKeyDownSearch}
                 labelclass="d-none"
-                clickIcon={HandleShowSearch}
                 inputicon={
                   <>
                     <Row>
@@ -972,6 +1067,7 @@ const Polling = () => {
                             alt=""
                             className={styles["Search_Bar_icon_class"]}
                             draggable="false"
+                            onClick={HandleShowSearch}
                           />
                         </Tooltip>
                       </Col>
@@ -1060,56 +1156,63 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            {rows.length > 0 ? (
-              <Table
-                column={PollTableColumns}
-                scroll={{ y: "53vh" }}
-                pagination={false}
-                className={"Polling_main_table"}
-                rows={rows}
-              />
-            ) : (
-              <span className={styles["Poll_emptyState"]}>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center align-items-center flex-column gap-2"
-                  >
-                    <img src={PollsEmpty} alt="poll_icon" draggable="false" />
-                    <span className={styles["No_Poll_Heading"]}>
-                      {t("No-polls")}
-                    </span>
-                    <span className={styles["No_Poll_Text"]}>
-                      {t(
-                        "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                      )}
-                    </span>
-                    <Button
-                      text={t("New")}
-                      className={styles["new_Poll_Button"]}
-                      icon={
+            <Table
+              column={PollTableColumns}
+              scroll={{ y: "53vh" }}
+              pagination={false}
+              className={"Polling_main_table"}
+              rows={rows}
+              locale={{
+                emptyText: (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className="d-flex justify-content-center align-items-center flex-column gap-2"
+                      >
                         <img
-                          src={plusbutton}
-                          height="7.6px"
-                          width="7.6px"
-                          alt=""
-                          className="align-items-center"
+                          src={PollsEmpty}
+                          alt="poll_icon"
                           draggable="false"
                         />
-                      }
-                      onClick={() =>
-                        dispatch(
-                          setCreatePollModal(true),
-                          dispatch(LoaderState(true))
-                        )
-                      }
-                    />
-                  </Col>
-                </Row>
-              </span>
-            )}
+                        <span className={styles["No_Poll_Heading"]}>
+                          {t("No-polls")}
+                        </span>
+                        <span className={styles["No_Poll_Text"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                        {!isSearching && (
+                          <Button
+                            text={t("New")}
+                            className={styles["new_Poll_Button"]}
+                            icon={
+                              <img
+                                src={plusbutton}
+                                height="7.6px"
+                                width="7.6px"
+                                alt=""
+                                className="align-items-center"
+                                draggable="false"
+                              />
+                            }
+                            onClick={() =>
+                              dispatch(
+                                setCreatePollModal(true),
+                                dispatch(LoaderState(true))
+                              )
+                            }
+                          />
+                        )}
+                      </Col>
+                    </Row>
+                  </>
+                ),
+              }}
+            />
           </Col>
         </Row>
         <Row className="mt-4">

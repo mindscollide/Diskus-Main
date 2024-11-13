@@ -912,8 +912,8 @@ export const newDateFormatForMinutes = (dateTime) => {
   return { DateVal, TimeVal };
 };
 
-//Date formatter Subscription DownGrade
-export function formatDateDownGradeSubscription(dateString) {
+//Date formatter Subscription DownGrade for both english and arabic
+export function formatDateDownGradeSubscription(dateString, locale) {
   if (!dateString || dateString.length < 8) {
     return "Invalid date";
   }
@@ -926,8 +926,8 @@ export function formatDateDownGradeSubscription(dateString) {
   // Create a new Date object
   const date = new Date(`${year}-${month}-${day}`);
 
-  // Define an array of month names
-  const monthNames = [
+  // Define arrays of month names in English and Arabic
+  const monthNamesEn = [
     "January",
     "February",
     "March",
@@ -941,14 +941,36 @@ export function formatDateDownGradeSubscription(dateString) {
     "November",
     "December",
   ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select the appropriate month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
 
   // Get the formatted day, month, and year
   const formattedDay = date.getDate();
   const formattedMonth = monthNames[date.getMonth()];
   const formattedYear = date.getFullYear();
 
-  // Return the formatted date string
-  return `${formattedDay} ${formattedMonth} ${formattedYear}`;
+  // Format and return the date string
+  return locale === "ar"
+    ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
+        /[0-9]/g,
+        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+      ) // Convert to Arabic numerals
+    : `${formattedDay} ${formattedMonth} ${formattedYear}`;
 }
 
 export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {

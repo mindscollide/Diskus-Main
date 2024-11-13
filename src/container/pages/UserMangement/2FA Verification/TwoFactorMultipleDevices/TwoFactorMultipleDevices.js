@@ -19,26 +19,12 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import {
-  Button,
-  Notification,
-  Loader,
-} from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const TwoFactorMultipleDevices = () => {
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
-
   const AuthreducerAuthenticateAFAResponse = useSelector(
     (state) => state.Authreducer.AuthenticateAFAResponse
-  );
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
   );
 
   const { t } = useTranslation();
@@ -177,11 +163,11 @@ const TwoFactorMultipleDevices = () => {
   }, []);
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
-        mqttConnection(userID);
+        mqttConnection(userID, dispatch);
       }
     }
   }, [Helper.socket]);
@@ -450,7 +436,6 @@ const TwoFactorMultipleDevices = () => {
           </Col>
         </Row>
       </Container>
-      {AuthreducerLoadingData || LanguageReducerLoadingData ? <Loader /> : null}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

@@ -386,6 +386,7 @@ const VideoPanelBodyContact = () => {
                 <Col lg={2} md={2} sm={2} className="video_call_icon mt-4">
                   <Tooltip placement="bottomLeft" title={t("Start-video-call")}>
                     <img
+                    alt=""
                       className="cursor-pointer"
                       src={VideoCallIcon}
                       onClick={() => otoVideoCall(userData)}
@@ -398,7 +399,7 @@ const VideoPanelBodyContact = () => {
         ) : VideoMainReducer.Loading === true ? (
           <>
             <LoaderPanel
-              message={"Safeguarding your data to enhance the experience"}
+              message={t("Safeguarding-your-data-to-enhance-the-experience")}
             />
           </>
         ) : (

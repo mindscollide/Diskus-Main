@@ -636,9 +636,6 @@ const PakageDetailsUMUpgrade = () => {
           </span>
         </Col>
       </Row>
-      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : null}
     </Container>
   );
 };

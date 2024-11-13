@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useSelector } from "react-redux";
@@ -37,7 +37,6 @@ const PasswordCreationUM = () => {
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordStrong, setPasswordStrong] = useState(false);
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
   const [passwordDetails, setPasswordDetails] = useState({
@@ -92,7 +91,6 @@ const PasswordCreationUM = () => {
     let name = e.target.name;
     var valueCheck = value.replace(/\s+/g, "");
     if (valueCheck === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
       setPassword("");
       setPasswordDetails({
         ...passwordDetails,
@@ -100,8 +98,6 @@ const PasswordCreationUM = () => {
       });
       setErrorBar(true);
     } else if (valueCheck !== "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
-
       if (remeberPassword === true) {
         setPasswordDetails({
           ...passwordDetails,
@@ -374,7 +370,6 @@ const PasswordCreationUM = () => {
         </Row>
       </Container>
 
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}

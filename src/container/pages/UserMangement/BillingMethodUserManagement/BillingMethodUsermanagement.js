@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
@@ -27,14 +27,6 @@ const BillingMethodUsermanagement = () => {
 
   const countryNamesReducerCountryNamesDataData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
   );
 
   let OrganizationSubscriptionID = localStorage.getItem(
@@ -303,9 +295,9 @@ const BillingMethodUsermanagement = () => {
 
   //React Stepper Numbers manuipulation
   useEffect(() => {
-    const firstvaue = document.querySelector(".StepButtonContent-d1-0-3-7");
-    const secondvaue = document.querySelector(".StepButtonContent-d3-0-3-13");
-    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-3-21");
+    const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
+    const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
+    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
 
     const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
 
@@ -448,9 +440,6 @@ const BillingMethodUsermanagement = () => {
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
       {UserManagementModalsthanksForPaymentModalData && <ThankForPayment />}
-      {UserMangementReducerLoadingData || LanguageReducerLoadingData ? (
-        <Loader />
-      ) : null}
     </Container>
   );
 };

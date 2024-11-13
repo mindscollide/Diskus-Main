@@ -23,7 +23,7 @@ import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { Authreducer } = useSelector((state) => state);
   const [oldPassword, setOldPassword] = useState("");
   const [showOldPassword, setShowOldPasssword] = useState(false);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -361,7 +361,6 @@ const ChangePassword = () => {
         }
       />
       <Notification open={open} setOpen={setOpen} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

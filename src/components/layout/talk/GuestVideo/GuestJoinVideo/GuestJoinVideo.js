@@ -39,11 +39,15 @@ const GuestJoinVideo = ({
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [getReady, setGetReady] = useState(false);
 
-  const [joinName, setJoinName] = useState("");
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [rejoinState, setRejoinState] = useState(false);
 
+  const [joinName, setJoinName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
-  console.log({ extractMeetingId, extractMeetingTitle }, "namenamenamename");
+  console.log(rejoinState, "rejoinStaterejoinState");
+
+  const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
@@ -130,8 +134,11 @@ const GuestJoinVideo = ({
     } else {
       setErrorMessage(false);
       setGetReady(true);
+      setIsWaiting(true); // Show the waiting room text
+      setRejoinState(false); // Exit rejoin state
       onJoinNameChange(joinName);
-      sessionStorage.setItem("joinName", joinName);
+      sessionStorage.setItem("guestName", joinName);
+      sessionStorage.removeItem("isRejoining");
       let data = {
         MeetingId: extractMeetingId,
         GuestName: joinName,
@@ -143,12 +150,32 @@ const GuestJoinVideo = ({
   };
 
   useEffect(() => {
+    const savedName = sessionStorage.getItem("guestName");
+    const isRejoining = sessionStorage.getItem("isRejoining") === "true";
+    console.log(
+      { savedName, isRejoining },
+      "isRejoiningisRejoiningisRejoiningF"
+    );
+    if (isRejoining) {
+      setJoinName(savedName || ""); // Populate name from storage
+      setGetReady(false); // Ensure waiting state is not active
+      setRejoinState(true); // Show "You've-left-the-meeting" condition
+      setIsWaiting(false);
+      sessionStorage.removeItem("isRejoining"); // Clear rejoin flag
+    } else {
+      setJoinName(""); // Reset name
+      setGetReady(false); // Default state on refresh
+      setRejoinState(false); // Show "Ready-to-join" condition
+      setIsWaiting(false);
+    }
+  }, []);
+
+  useEffect(() => {
     // Automatically enable the webcam on initial load
     if (isWebCamEnabled) {
       const mediaDevices = navigator.mediaDevices;
-
       mediaDevices
-        .getUserMedia({
+        ?.getUserMedia({
           video: true,
           audio: true,
         })
@@ -190,9 +217,11 @@ const GuestJoinVideo = ({
                     <Col lg={5} md={5} sm={12}>
                       <TextField
                         name={"joinName"}
+                        value={joinName}
                         change={handleNameChange}
                         labelclass="d-none"
                         placeholder={"Enter your name"}
+                        disable={getReady || rejoinState}
                       />
                       <span>
                         <p className="name-field-error">
@@ -255,13 +284,53 @@ const GuestJoinVideo = ({
 
                     <Col lg={7} md={7} sm={12}>
                       <div className="guest-video-inside-component">
-                        {!getReady ? (
+                        {isWaiting ? (
+                          <div className="waiting-text-animation">
+                            <p className="waiting-room-class">
+                              {t("You-are-in-the-waiting-room")}
+                            </p>
+                            <p className="organizer-allow-class">
+                              {t(
+                                "The-organizer-will-allow-you-to-join-shortly"
+                              )}
+                            </p>
+                          </div>
+                        ) : rejoinState ? (
+                          <>
+                            <p className="left-meeting-text">
+                              {t("You've-left-the-meeting")}
+                            </p>
+                            <p className="left-meeting-rejoin-text">
+                              {t(
+                                "Want-to-rejoin?-click-here-to-return-to-the-session"
+                              )}
+                            </p>
+                            <Button
+                              text={t("Rejoin")}
+                              className="Join-Now-Btn"
+                              onClick={onJoinNowButton}
+                            />
+                          </>
+                        ) : !getReady ? (
                           <>
                             <p className="ready-to-join">
                               {t("Ready-to-join")}
                             </p>
                             <Button
-                              text="Join Now"
+                              text={t("Join-now")}
+                              className="Join-Now-Btn"
+                              onClick={onJoinNowButton}
+                            />
+                          </>
+                        ) : null}
+
+                        {/* {!getReady ? (
+                          <>
+                            <p className="ready-to-join">
+                              {t("Ready-to-join")}
+                            </p>
+                            <Button
+                              text={t("Join-now")}
                               className="Join-Now-Btn"
                               onClick={onJoinNowButton}
                             />
@@ -279,7 +348,25 @@ const GuestJoinVideo = ({
                               </p>
                             </div>
                           </>
-                        )}
+                        )} */}
+
+                        {/* {
+                          <>
+                            <p className="left-meeting-text">
+                              {t("You've-left-the-meeting")}
+                            </p>
+                            <p className="left-meeting-rejoin-text">
+                              {t(
+                                "Want-to-rejoin?-click-here-to-return-to-the-session"
+                              )}
+                            </p>
+                            <Button
+                              text={t("Rejoin")}
+                              className="Join-Now-Btn"
+                              onClick={onJoinNowButton}
+                            />
+                          </>
+                        } */}
                       </div>
                     </Col>
                   </Row>

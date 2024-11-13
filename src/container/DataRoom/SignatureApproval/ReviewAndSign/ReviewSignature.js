@@ -364,7 +364,7 @@ const ReviewSignature = () => {
                   <span className={styles["numeric-value"]}>
                     {formatValue(approvalStats.signed)}
                   </span>
-                  <span className={styles["value"]}>Signed</span>
+                  <span className={styles["value"]}>{t("Signed")}</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-pending"]}>

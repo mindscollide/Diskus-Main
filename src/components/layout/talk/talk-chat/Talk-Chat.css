@@ -979,17 +979,17 @@ body[dir="rtl"] span.securityicon-box {
 }
 
 .dropdown-menus-chathead {
-  position: absolute;
   background: #fff;
-  display: inline-grid;
-  text-align: center;
-  top: 14px;
-  width: 100px;
-  border-radius: 5px;
   border: 1px solid #b6b6b6;
-  z-index: 9999999;
-  right: -22px;
+  border-radius: 5px;
+  display: inline-grid;
   padding-top: 10px;
+  position: absolute;
+  right: 0px;
+  text-align: center;
+  top: 18px;
+  width: 100px;
+  z-index: 9999999;
 }
 
 .dropdown-menus-chathead span {
