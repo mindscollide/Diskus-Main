@@ -24,7 +24,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
 
   const sceduleproposedMeeting = useSelector(
