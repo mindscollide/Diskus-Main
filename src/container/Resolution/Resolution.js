@@ -775,7 +775,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (data) => {
+      render: (text, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         if (votingDeadline < newDate) {
