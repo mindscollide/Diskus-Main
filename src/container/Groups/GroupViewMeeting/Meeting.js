@@ -923,6 +923,14 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     }
   }, [MeetingStatusEnded]);
 
+  const scroll = {
+    y: "39vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
+  };
+
   return (
     <>
       {createMeetingModal && (
@@ -963,7 +971,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "39vh", x: "max-content" }}
+            scroll={scroll}
             rows={rows}
             pagination={false}
             size="small"
