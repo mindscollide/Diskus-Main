@@ -7,11 +7,6 @@ import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen } from "../../../../elements";
 import {
-  agendaEnableNormalFlag,
-  chatEnableNormalFlag,
-  minutesMeetingEnableNormalFlag,
-} from "../../../../../store/actions/VideoFeature_actions";
-import {
   endIndexUrl,
   extractedUrl,
   generateURLCaller,
@@ -20,6 +15,7 @@ import {
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
 import { useTranslation } from "react-i18next";
+import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -281,7 +277,9 @@ const VideoPanelNormal = () => {
                             : "ParticipantsWaiting_Out"
                         } ps-0`}
                       >
-                        <VideoCallParticipants />
+                        {/* <VideoCallParticipants /> */}
+
+                        <VideoNewParticipantList />
                       </Col>
                     ) : null}
                     {/* <VideoCallParticipants /> */}

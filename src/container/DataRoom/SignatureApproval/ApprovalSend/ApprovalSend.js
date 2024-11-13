@@ -26,6 +26,10 @@ import {
 } from "../../../../store/actions/workflow_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import DescendIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
@@ -45,12 +49,27 @@ const ApprovalSend = () => {
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
+  const [fileNameSort, setFileNameSort] = useState(null);
+  const [signatoriesSort, setSignatoriesSort] = useState(null);
+  const [statusSort, setStatusSort] = useState(null);
+  const [sentOnSort, setSentOnSort] = useState(null);
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
       // Column for file name
-      title: t("File-name"),
+      title: (
+        <>
+          <span>
+            {t("File-name")}
+            {fileNameSort === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "fileName",
       key: "fileName",
       className: "nameParticipant",
@@ -60,12 +79,20 @@ const ApprovalSend = () => {
       sortDirections: ["ascend", "descend"],
       sortOrder: "ascend",
       sorter: (a, b) => b.name - a.name, // Custom sorter function for sorting by name
+      onHeaderCell: () => ({
+        onClick: () => {
+          setFileNameSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         return (
           <span
-            className="d-flex gap-2 align-items-center cursor-pointer"
-            onClick={() => handleClickOpenDoc(record)}
-          >
+            className='d-flex gap-2 align-items-center cursor-pointer'
+            onClick={() => handleClickOpenDoc(record)}>
             <img src={getIconSource(getFileExtension(text))} />
             <p className={styles["fileName_Approvals"]}>{text}</p>
           </span>
@@ -74,7 +101,18 @@ const ApprovalSend = () => {
     },
     {
       // Column for signatories
-      title: t("Signatories"),
+      title: (
+        <>
+          <span>
+            {t("Signatories")}
+            {fileNameSort === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "numberOfSignatories",
       key: "numberOfSignatories",
       className: "signatories",
@@ -84,13 +122,22 @@ const ApprovalSend = () => {
       align: "center",
       sortDirections: ["ascend", "descend"],
       sorter: (a, b) => b.name - a.name,
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSignatoriesSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         console.log(
           text,
           record,
           "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
         );
-        if (record.workFlowStatusID === 4) {
+        if (record?.workFlowStatusID === 4) {
           return (
             <span className={styles["status_draft_signatoriesList"]}></span>
           );
@@ -98,8 +145,9 @@ const ApprovalSend = () => {
           return (
             <span
               onClick={() => handleClickSignatoriesList(record)}
-              className={styles["signatories_vale"]}
-            >{` ${text} Signatories`}</span>
+              className={
+                styles["signatories_vale"]
+              }>{` ${text} Signatories`}</span>
           );
         }
       },
@@ -138,7 +186,7 @@ const ApprovalSend = () => {
       filters: reviewAndSignatureStatus,
       onFilter: (value, record) => Number(record.workFlowStatusID) === value,
       filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       render: (text, record) => {
         const { workFlowStatusID, status } = record;
@@ -152,8 +200,7 @@ const ApprovalSend = () => {
                 : workFlowStatusID === 3
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }
-          >
+            }>
             {status}
           </p>
         );
@@ -172,7 +219,7 @@ const ApprovalSend = () => {
           return (
             <img
               src={DeleteIcon}
-              className="cursor-pointer"
+              className='cursor-pointer'
               onClick={() => deleteSignatureDocument(record)}
             />
           );
@@ -241,7 +288,11 @@ const ApprovalSend = () => {
               ...signatureFlowDocumentsForCreator,
               ...approvalsData,
             ]);
-            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
+            if (
+              totalCount !== undefined &&
+              totalCount !== null &&
+              totalCount !== 0
+            ) {
               setTotalRecords(totalCount);
             }
             setPageNo((prev) => prev + 1);
@@ -250,13 +301,15 @@ const ApprovalSend = () => {
             );
           } else {
             setApprovalsData(signatureFlowDocumentsForCreator);
-            if (totalCount !== undefined && totalCount !== null && totalCount !== 0) {
+            if (
+              totalCount !== undefined &&
+              totalCount !== null &&
+              totalCount !== 0
+            ) {
               setTotalRecords(totalCount);
             }
             setPageNo(1);
-            setDataLength(
-              (prev) => prev + signatureFlowDocumentsForCreator.length
-            );
+            setDataLength(signatureFlowDocumentsForCreator.length);
           }
         }
       } catch (error) {
@@ -308,8 +361,19 @@ const ApprovalSend = () => {
       spin
     />
   );
-
+  console.log(
+    rowsDataLength <= totalRecords,
+    totalRecords,
+    rowsDataLength,
+    "handleScrollhandleScroll"
+  );
   const handleScroll = async () => {
+    console.log(
+      rowsDataLength <= totalRecords,
+      totalRecords,
+      rowsDataLength,
+      "handleScrollhandleScroll"
+    );
     if (rowsDataLength <= totalRecords) {
       setIsScrolling(true);
       let Data = { sRow: Number(rowsDataLength), Length: 10 };
@@ -319,9 +383,9 @@ const ApprovalSend = () => {
   return (
     <>
       {" "}
-      <Row className="mb-2">
+      <Row className='mb-2'>
         {approvalsData.length > 0 ? (
-          <Col sm={12} md={12} lg={12} className="mt-3">
+          <Col sm={12} md={12} lg={12} className='mt-3'>
             <InfiniteScroll
               dataLength={approvalsData.length}
               next={handleScroll}
@@ -329,8 +393,8 @@ const ApprovalSend = () => {
                 overflowX: "hidden",
               }}
               hasMore={approvalsData.length === totalRecords ? false : true}
-              height={"55vh"}
-              endMessage=""
+              height={"58vh"}
+              endMessage=''
               loader={
                 approvalsData.length <= totalRecords &&
                 isScrolling && (
@@ -340,23 +404,19 @@ const ApprovalSend = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center mt-2"
-                      >
+                        className='d-flex justify-content-center mt-2'>
                         <Spin indicator={antIcon} />
                       </Col>
                     </Row>
                   </>
                 )
-              }
-              scrollableTarget="scrollableDiv"
-            >
+              }>
               <TableToDo
                 sortDirections={["descend", "ascend"]}
                 column={pendingApprovalColumns}
                 className={"ApprovalsTable"}
                 // prefClassName="ApprovalSending"
                 rows={approvalsData}
-                // scroll={scroll}
                 pagination={false}
                 showHeader={true}
                 id={(record, index) =>
@@ -370,10 +430,9 @@ const ApprovalSend = () => {
             sm={12}
             md={12}
             lg={12}
-            className="d-flex justify-content-center align-items-center mt-2"
-          >
+            className='d-flex justify-content-center align-items-center mt-2'>
             <section className={styles["ApprovalSend_emptyContainer"]}>
-              <img className="d-flex justify-content-center" src={EmtpyImage} />
+              <img className='d-flex justify-content-center' src={EmtpyImage} />
               <span className={styles["emptyState_title"]}>
                 {t("Submit-document-for-approval")}
               </span>

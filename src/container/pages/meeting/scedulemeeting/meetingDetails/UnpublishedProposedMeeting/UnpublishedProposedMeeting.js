@@ -397,7 +397,6 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "status",
       key: "status",
       width: "90px",
-
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -441,7 +440,7 @@ const UnpublishedProposedMeeting = ({
       key: "Date",
       width: "155px",
       ellipsis: true,
-
+      align: "center",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -468,6 +467,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",
+      align: "center",
       render: (text, record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
@@ -580,6 +580,7 @@ const UnpublishedProposedMeeting = ({
                         setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
+                          isPrimaryOrganizer: record.isPrimaryOrganizer,
                         });
                         setEditMeeting(true);
                         dispatch(meetingDetailsGlobalFlag(false));
@@ -625,6 +626,7 @@ const UnpublishedProposedMeeting = ({
                           setEdiorRole({
                             status: record.status,
                             role: "Organizer",
+                            isPrimaryOrganizer: record.isPrimaryOrganizer,
                           });
                           setEditMeeting(true);
                           dispatch(meetingDetailsGlobalFlag(true));
@@ -1044,22 +1046,6 @@ const UnpublishedProposedMeeting = ({
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
-            }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return (
-                  record.meetingAgenda.length > 0 &&
-                  record.meetingAgenda.map((data) => (
-                    <p className={styles["meeting-expanded-row"]}>
-                      {data.objMeetingAgenda.title}
-                    </p>
-                  ))
-                );
-              },
-              rowExpandable: (record) =>
-                record.meetingAgenda !== null && record.meetingAgenda.length > 0
-                  ? true
-                  : false,
             }}
           />
         </Col>

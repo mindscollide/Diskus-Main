@@ -900,12 +900,14 @@ const CalendarPage = () => {
           />
         </Row>
       </div>
+      {calendarViewModal && (
+        <MeetingViewModalCalendar
+          viewFlag={calendarViewModal}
+          setViewFlag={setCalendarViewModal}
+          data={meetingData}
+        />
+      )}
 
-      <MeetingViewModalCalendar
-        viewFlag={calendarViewModal}
-        setViewFlag={setCalendarViewModal}
-        data={meetingData}
-      />
       {meetingModalShow && (
         <ModalMeeting
           // this is check from where its called 2 is from Calendar
