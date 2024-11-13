@@ -316,6 +316,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "status",
       key: "status",
       width: "90px",
+      align:"center",
       filters: [
         {
           text: t("Proposed"),
@@ -360,7 +361,7 @@ const UnpublishedProposedMeeting = ({
       key: "Date",
       width: "155px",
       ellipsis: true,
-
+      align: "center",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -387,6 +388,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",
+      align: "center",
       render: (text, record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = record.meetingPoll?.totalNoOfDirectorsVoted;
@@ -462,6 +464,7 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        console.log(record, "EditMeeting");
         let apiData = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 1,
@@ -501,6 +504,7 @@ const UnpublishedProposedMeeting = ({
                         setEdiorRole({
                           status: record.status,
                           role: "Agenda Contributor",
+                          isPrimaryOrganizer: record.isPrimaryOrganizer,
                         });
                         setEditMeeting(true);
                         dispatch(meetingDetailsGlobalFlag(false));
@@ -546,6 +550,7 @@ const UnpublishedProposedMeeting = ({
                           setEdiorRole({
                             status: record.status,
                             role: "Organizer",
+                            isPrimaryOrganizer: record.isPrimaryOrganizer,
                           });
                           setEditMeeting(true);
                           dispatch(meetingDetailsGlobalFlag(true));
@@ -926,7 +931,7 @@ const UnpublishedProposedMeeting = ({
                 navigate,
                 t
               )(dispatch); // Ensure you're passing dispatch here
-      
+
             if (getApiResponse) {
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
@@ -972,22 +977,7 @@ const UnpublishedProposedMeeting = ({
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return (
-                  record.meetingAgenda.length > 0 &&
-                  record.meetingAgenda.map((data) => (
-                    <p className={styles["meeting-expanded-row"]}>
-                      {data.objMeetingAgenda.title}
-                    </p>
-                  ))
-                );
-              },
-              rowExpandable: (record) =>
-                record.meetingAgenda !== null && record.meetingAgenda.length > 0
-                  ? true
-                  : false,
-            }}
+        
           />
         </Col>
       </Row>

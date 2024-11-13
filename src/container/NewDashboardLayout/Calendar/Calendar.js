@@ -135,6 +135,7 @@ const NewCalendar = () => {
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
+      console.log({Data}, "DataDataDataupdateCalendarData")
       setCalendarEvents(Data);
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
@@ -218,22 +219,22 @@ const NewCalendar = () => {
           startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
           selectDate
       );
-
+      console.log({ findData, calendarEvents }, "findDatafindDatafindData");
       if (findData.length > 0) {
         setEvents(findData); // Assuming findData is already an array
         setEventsModal(true);
         // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
-        findData.forEach((event) => {
-          if (
-            event.pK_MDID ===
-            meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
-          ) {
-            // Update the statusID to 10
-            event.statusID = 10;
-            // Dispatch an action to update the global state if needed
-            // dispatch(updateEventStatus(event)); // Assuming you have a proper action
-          }
-        });
+        // findData.forEach((event) => {
+        //   if (
+        //     event.pK_MDID ===
+        //     meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
+        //   ) {
+        //     // Update the statusID to 10
+        //     event.statusID = 10;
+        //     // Dispatch an action to update the global state if needed
+        //     // dispatch(updateEventStatus(event)); // Assuming you have a proper action
+        //   }
+        // });
       } else {
         setOpen({
           ...open,

@@ -46,5 +46,10 @@ export const mqttConnection = (subscribeID, dispatch) => {
 
   newClient.connect(options);
   Helper.socket = newClient;
-  dispatch(setClient(newClient));
+  dispatch(
+    setClient({
+      clientId: newClient.clientId,
+      isConnected: newClient.isConnected(),
+    })
+  );
 };

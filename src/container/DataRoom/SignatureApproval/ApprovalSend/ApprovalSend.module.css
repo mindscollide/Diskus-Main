@@ -40,6 +40,7 @@ p.draftStatus {
   text-decoration: underline;
   font-size: 12px;
   cursor: pointer;
+  text-align: center;
 }
 .date_vale {
   color: #5a5a5a;
