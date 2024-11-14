@@ -650,33 +650,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
   border: 1px solid #e1e1e1 !important;
   padding: 20px 0 0 0;
 }
-.Confirmationmodal_body_text_meeting_update {
-  padding: 0 20px !important;
-  text-align: center;
-  font-weight: 600 !important;
-  color: #5a5a5a;
-  font-size: 16px;
-  margin-top: 10px 0;
-}
 
-.Confirmationmodal_cancel_btn_meeting_update_ {
-  padding: 12px 30px;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
-  background-color: #fff !important;
-  color: #5a5a5a !important;
-  font-weight: 500 !important;
-  font-size: 12px;
-}
-.Confirmationmodal_close_btn_meeting_update_ {
-  padding: 12px 30px;
-
-  border-radius: 4px !important;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  font-weight: 500 !important;
-  font-size: 12px !important;
-}
 .deleteAgendaBtn {
   background-color: #f16b6b !important;
   width: 80px !important;

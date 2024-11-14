@@ -8074,3 +8074,41 @@ body[dir="rtl"] .menu-text {
   width: 135px !important;
 }
 /* Menu Polls  Status Ends */
+
+
+.Confirmationmodal_body_text_meeting_update {
+  padding: 0 20px !important;
+  text-align: center !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+  margin-top: 10px 0 !important;
+}
+
+.Confirmationmodal_cancel_btn_meeting_update_ {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+.Confirmationmodal_close_btn_meeting_update_ {
+  padding: 12px 30px !important;
+
+  border-radius: 4px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
+  padding: 12px 30px !important;
+
+  border-radius: 4px !important;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}

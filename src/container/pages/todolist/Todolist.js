@@ -125,45 +125,44 @@ const TodoList = () => {
     severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-//Filter table work
 
-const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-const [selectedValues, setSelectedValues] = useState([
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-]);
+  const [selectedValues, setSelectedValues] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ]);
 
-const filters = [
-  {
-    value: "1",
-    text: t("In-progress"),
-  },
-  {
-    value: "2",
-    text: t("Pending"),
-  },
-  {
-    value: "3",
-    text: t("Upcoming"),
-  },
-  {
-    value: "4",
-    text: t("Cancelled"),
-  },
-  {
-    value: "5",
-    text: t("Completed"),
-  },
-  {
-    value: "6",
-    text: t("Deleted"),
-  },
-];
+  const filters = [
+    {
+      value: "1",
+      text: t("In-progress"),
+    },
+    {
+      value: "2",
+      text: t("Pending"),
+    },
+    {
+      value: "3",
+      text: t("Upcoming"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+    {
+      value: "5",
+      text: t("Completed"),
+    },
+    {
+      value: "6",
+      text: t("Deleted"),
+    },
+  ];
 
   // GET TODOS STATUS
   useEffect(() => {
@@ -376,23 +375,24 @@ const filters = [
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex gap-3 align-items-center justify-content-center'>
+      <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
           text={"Reset"}
-          className='FilterResetBtn'
+          className="FilterResetBtn"
           onClick={resetFilter}
         />
         <Button
           text={"Ok"}
           disableBtn={selectedValues.length === 0}
-          className='ResetOkBtn'
+          className="ResetOkBtn"
           onClick={handleApplyFilter}
         />
       </div>
@@ -403,12 +403,12 @@ const filters = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -431,9 +431,10 @@ const filters = [
       }),
       render: (text, record) => (
         <p
-          className='todolist-title-col'
+          className="todolist-title-col"
           title={text}
-          onClick={(e) => viewModalHandler(record.pK_TID)}>
+          onClick={(e) => viewModalHandler(record.pK_TID)}
+        >
           {text}
         </p>
       ),
@@ -441,12 +442,12 @@ const filters = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -474,13 +475,13 @@ const filters = [
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=''
+              alt=""
             />
             {record?.name}
           </p>
@@ -490,12 +491,12 @@ const filters = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -522,15 +523,15 @@ const filters = [
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
 
                     {text[0].name}
@@ -538,10 +539,10 @@ const filters = [
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
                     {text[0].name}
                   </>
@@ -555,12 +556,12 @@ const filters = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center justify-content-center'>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -588,7 +589,7 @@ const filters = [
 
       render: (text, record) => {
         return (
-          <span className='text-nowrap text-center'>
+          <span className="text-nowrap text-center">
             {newTimeFormaterAsPerUTCFullDate(
               record.deadlineDateTime,
               currentLanguage
@@ -607,7 +608,7 @@ const filters = [
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -615,7 +616,8 @@ const filters = [
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -626,7 +628,7 @@ const filters = [
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -640,7 +642,8 @@ const filters = [
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -666,7 +669,8 @@ const filters = [
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }>
+              }
+            >
               {text.status}
             </p>
           );
@@ -683,11 +687,12 @@ const filters = [
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
-            <Tooltip placement='topRight' title={t("Delete")}>
+            <Tooltip placement="topRight" title={t("Delete")}>
               <i
-                className='meeting-editbutton cursor-pointer'
-                onClick={(e) => deleteTodolist(record)}>
-                <img draggable='false' src={del} alt='' />
+                className="meeting-editbutton cursor-pointer"
+                onClick={(e) => deleteTodolist(record)}
+              >
+                <img draggable="false" src={del} alt="" />
               </i>
             </Tooltip>
           );
@@ -890,13 +895,13 @@ const filters = [
 
   return (
     <>
-      <div className='todolistContainer'>
-        <Row className='d-flex justify-content-start align-items-center   mt-3'>
-          <Col md={2} sm={4} lg={2} className='todolist-heading-size'>
+      <div className="todolistContainer">
+        <Row className="d-flex justify-content-start align-items-center   mt-3">
+          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {t("Tasks")}
           </Col>
 
-          <Col lg={2} md={2} sm={4} className='todolist-create-btn'>
+          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
@@ -909,111 +914,112 @@ const filters = [
             md={8}
             lg={8}
             sm={4}
-            className='todo-list-field todolist-search-row '>
+            className="todo-list-field todolist-search-row "
+          >
             <Search
-              width='24px'
-              height='24px'
-              className='search-Icon toExpandSearch Meeting'
+              width="24px"
+              height="24px"
+              className="search-Icon toExpandSearch Meeting"
               onClick={ShowHide}
             />
             {isExpand && (
               <>
                 {currentLanguage === "ar" ? (
-                  <div className='expandableMenuSearch'>
-                    <Form className='d-flex'>
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='ar'
+                          locale="ar"
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='en'
+                          locale="en"
                         />
                       )}
                       <TextField
-                        width='180px'
-                        name='AssignedToName'
+                        width="180px"
+                        name="AssignedToName"
                         value={searchData.AssignedToName}
-                        className='mx-2 '
+                        className="mx-2 "
                         placeholder={t("Assigned-to")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
-                        width='250px'
-                        name='Title'
+                        width="250px"
+                        name="Title"
                         value={searchData.Title}
                         placeholder={t("Task")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
 
                       <Button
-                        className='btn btn-primary meeting search me-3'
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        type='submit'
+                        type="submit"
                         onClick={search}
                       />
                       <Button
-                        className='btn  btn-primary meeting search'
+                        className="btn  btn-primary meeting search"
                         variant={"Primary"}
-                        type='reset'
+                        type="reset"
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
                 ) : (
-                  <div className='expandableMenuSearch'>
-                    <Form className='d-flex'>
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='ar'
+                          locale="ar"
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='en'
+                          locale="en"
                         />
                       )}
                       <TextField
-                        applyClass='form-control2'
-                        width='250px'
-                        name='Title'
+                        applyClass="form-control2"
+                        width="250px"
+                        name="Title"
                         value={searchData.Title}
-                        className='mx-2'
+                        className="mx-2"
                         placeholder={t("Task")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
-                        applyClass='form-control2'
-                        width='180px'
-                        name='AssignedToName'
+                        applyClass="form-control2"
+                        width="180px"
+                        name="AssignedToName"
                         value={searchData.AssignedToName}
-                        className='mx-2'
+                        className="mx-2"
                         placeholder={t("Assigned-to")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <Button
-                        className='btn btn-primary meeting search me-3'
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowRight />}
                         onClick={search}
                       />
                       <Button
-                        className='btn  btn-primary meeting search'
+                        className="btn  btn-primary meeting search"
                         variant={"Primary"}
-                        type='reset'
+                        type="reset"
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
                       />
@@ -1024,7 +1030,7 @@ const filters = [
             )}
           </Col>
         </Row>
-        <section className='todolist_main_section'>
+        <section className="todolist_main_section">
           <Row>
             <Col>
               <TableToDo
@@ -1036,9 +1042,9 @@ const filters = [
                 locale={{
                   emptyText: (
                     <>
-                      <section className='d-flex flex-column align-items-center justify-content-center '>
-                        <img src={TodoMessageIcon1} width={"250px"} alt='' />
-                        <span className='NotaskTodolist'>{t("No-Task")}</span>
+                      <section className="d-flex flex-column align-items-center justify-content-center ">
+                        <img src={TodoMessageIcon1} width={"250px"} alt="" />
+                        <span className="NotaskTodolist">{t("No-Task")}</span>
                       </section>
                     </>
                   ), // Set your custom empty text here
@@ -1051,12 +1057,13 @@ const filters = [
           <Row>
             <Col>
               {rowsToDo.length > 0 && (
-                <Row className=''>
+                <Row className="">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Row>
                       <Col
                         lg={12}
@@ -1064,8 +1071,9 @@ const filters = [
                         sm={12}
                         className={
                           "pagination-groups-table d-flex justify-content-center"
-                        }>
-                        <span className='PaginationStyle-TodoList'>
+                        }
+                      >
+                        <span className="PaginationStyle-TodoList">
                           <CustomPagination
                             onChange={paginationChangeHandlerTodo}
                             current={
@@ -1100,7 +1108,7 @@ const filters = [
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className='toDoViewModal'
+          className="toDoViewModal"
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo

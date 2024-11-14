@@ -407,12 +407,12 @@ body[dir="rtl"] .user-name {
 }
 
 body[dir="rtl"] .dropdown-menu.show {
-  top: 0px !important;
+  top: 27px !important;
 }
 
 .Profile_dropdown_menu.dropdown-menu.show {
   width: 200px;
-  top: 30px !important;
+  top: 33px !important;
   position: absolute;
   left: 0px;
 }
@@ -420,6 +420,7 @@ body[dir="rtl"] .dropdown-menu.show {
 body[dir="rtl"] .Profile_dropdown_menu.dropdown-menu.show {
   left: auto;
   right: 0px !important;
+  top: 33px !important;
 }
 
 @media screen and (max-width: 1100px) {
