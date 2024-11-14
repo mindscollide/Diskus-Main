@@ -6,7 +6,11 @@ import { useDispatch } from "react-redux";
 import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
 import { ChevronDown } from "react-bootstrap-icons";
-import { Notification, TableToDo } from "../../../../components/elements";
+import {
+  Button,
+  Notification,
+  TableToDo,
+} from "../../../../components/elements";
 import {
   getFileExtension,
   getIconSource,
@@ -24,6 +28,7 @@ import {
 import InfiniteScroll from "react-infinite-scroll-component";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
+import { Checkbox, Dropdown, Menu } from "antd";
 
 const ReviewSignature = () => {
   const { t } = useTranslation();
@@ -45,6 +50,8 @@ const ReviewSignature = () => {
   });
 
   const [reviewSignature, setReviewSignature] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [open, setOpen] = useState({
@@ -61,6 +68,18 @@ const ReviewSignature = () => {
   const [isScrollling, setIsScrolling] = useState(false);
   const [sortOrderRequestBy, setSortOrderRequestBy] = useState(null);
   const [sortOrderDateTime, setSortOrderDateTime] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "Pending Signature",
+    "Declined",
+    "Signed",
+  ]);
+
+  const filters = [
+    { text: t("Pending"), value: "2" },
+    { text: t("Signed"), value: "3" },
+    { text: t("Declined"), value: "4" },
+  ];
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
     const barStyle = {
@@ -108,6 +127,65 @@ const ReviewSignature = () => {
       );
     }
   };
+
+  //Filteration Table
+
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  console.log(originalData, "originalDataoriginalDataoriginalData");
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.toString())
+    );
+    setReviewSignature(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["Pending Signature", "Declined", "Signed"]);
+    setReviewSignature(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className={styles["FilterResetBtn"]}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={styles["ResetOkBtn"]}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -210,11 +288,21 @@ const ReviewSignature = () => {
       align: "center",
       className: "statusParticipant",
       width: "150px",
-      filters: reviewAndSignatureStatus,
-      defaultFilteredValue: defaultreviewAndSignatureStatus,
-      onFilter: (value, record) => record.actorStatusID === value,
-      filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+      filterResetToDefaultFilteredValue: true,
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
+      ),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;
@@ -297,6 +385,7 @@ const ReviewSignature = () => {
           if (isScrollling) {
             setIsScrolling(false);
             setReviewSignature([...pendingApprovals, ...reviewSignature]);
+            setOriginalData([...pendingApprovals, ...reviewSignature]);
             setTotalRecords(totalCount);
             setTotalDataLength((prev) => prev + pendingApprovals.length);
           } else {
@@ -304,6 +393,7 @@ const ReviewSignature = () => {
             setTotalDataLength(pendingApprovals.length);
 
             setReviewSignature(pendingApprovals);
+            setOriginalData(pendingApprovals);
           }
         }
       } catch (error) {}
@@ -373,21 +463,30 @@ const ReviewSignature = () => {
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.signed, currentLanguage)}
+                    {convertToArabicNumerals(
+                      approvalStats.signed,
+                      currentLanguage
+                    )}
                   </span>
                   <span className={styles["value"]}>{t("Signed")}</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-pending"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.pending, currentLanguage)}
+                    {convertToArabicNumerals(
+                      approvalStats.pending,
+                      currentLanguage
+                    )}
                   </span>
                   <span className={styles["value"]}>{t("Pending")}</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-decline"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.declined, currentLanguage)}
+                    {convertToArabicNumerals(
+                      approvalStats.declined,
+                      currentLanguage
+                    )}
                   </span>
                   <span className={styles["value"]}>{t("Decline")}</span>
                 </div>

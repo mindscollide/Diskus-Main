@@ -59,9 +59,18 @@ const PendingApproval = () => {
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "Reviewed",
+    "Pending",
+    "Expired",
+  ]);
 
-  console.log(originalData, "originalDataoriginalData");
-  console.log(rowsPendingApproval, "originalDataoriginalData");
+  const filters = [
+    { text: t("Reviewed"), value: "Reviewed" },
+    { text: t("Pending"), value: "Pending" },
+    { text: t("Expired"), value: "Expired" },
+  ];
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
@@ -91,18 +100,6 @@ const PendingApproval = () => {
   };
 
   //Filteration Table
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "Reviewed",
-    "Pending",
-    "Expired",
-  ]);
-
-  const filters = [
-    { text: t("Reviewed"), value: "Reviewed" },
-    { text: t("Pending"), value: "Pending" },
-    { text: t("Expired"), value: "Expired" },
-  ];
 
   const handleMenuClick = (filterValue) => {
     setSelectedValues((prevValues) =>
