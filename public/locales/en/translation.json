@@ -1627,7 +1627,7 @@
   "Delete-successfully": "Delete Successfully",
   "Failed-to-delete-record": "Failed to delete record",
   "Update-successful": "Update Successful",
-  "Join-Video-Call": "Join Video Call",
+  "Join-video-call": "Join Video Call",
   "None-of-the-above": "None of the above",
   "Record-Inserted": "Record Inserted",
   "No-Agenda-found": "No Agenda Found",
@@ -2272,5 +2272,6 @@
   "Enabled": "Enabled",
   "Disabled": "Disabled",
   "Dormant": "Dormant",
-  "Locked": "Locked"
+  "Locked": "Locked",
+  "Events": "Events"
 }

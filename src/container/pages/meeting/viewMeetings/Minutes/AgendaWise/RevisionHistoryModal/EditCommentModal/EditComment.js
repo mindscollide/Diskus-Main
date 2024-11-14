@@ -96,7 +96,7 @@ const EditCommentModal = ({
         value={
           agendaDetails !== null
             ? // agendaDetails !== undefined
-              agendaDetails.agendaTitle
+              agendaDetails?.agendaTitle
             : t("General-minute")
         }
         placeholder={t("Write-a-comment")} // Placeholder text for text area

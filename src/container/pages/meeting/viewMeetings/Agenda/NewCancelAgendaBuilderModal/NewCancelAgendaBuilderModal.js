@@ -18,7 +18,7 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
 
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const ShowCancelAgendaBuilderModal = useSelector(
@@ -59,7 +59,7 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
         }}
         ModalBody={
           <>
-            <section className="p-2">
+            <section className='p-2'>
               <Row>
                 <Col lg={11} md={11} sm={11}>
                   <span className={styles["UnsanvedChangesMainHeading"]}>
@@ -69,13 +69,13 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
                 <Col lg={1} md={1} sm={1}>
                   <img
                     src={blackCrossIcon}
-                    alt=""
-                    className="cursor-pointer"
+                    alt=''
+                    className='cursor-pointer'
                     onClick={handleDiscardBtn}
                   />
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["UnsavedHeading"]}>
                     {t(
@@ -96,14 +96,13 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
         }
         ModalFooter={
           <>
-            <section className="p-2">
+            <section className='p-2'>
               <Row>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2"
-                >
+                  className='d-flex justify-content-end gap-2'>
                   <Button
                     text={t("Discard")}
                     className={styles["DiscardBtn"]}

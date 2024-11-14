@@ -36,7 +36,7 @@ const CustomModal = ({
           fullscreen={fullscreen}
         >
           <Modal.Header
-            className={modalHeaderClassName}
+            className={`${modalHeaderClassName} ${"border-0"}`}
             closeButton={closeButton}
           >
             <Modal.Title className={modalTitleClassName}>
@@ -56,7 +56,7 @@ const CustomModal = ({
             <Modal.Body className={modalBodyClassName}>{ModalBody}</Modal.Body>
           )}
 
-          <Modal.Footer className={modalFooterClassName}>
+          <Modal.Footer className={`${modalFooterClassName} ${"border-0"}`}>
             {ModalFooter}
           </Modal.Footer>
         </Modal>

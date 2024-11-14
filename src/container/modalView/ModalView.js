@@ -422,7 +422,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
-          ),
+          ),currentLanguage,
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               viewData.meetingEvent.meetingDate +
@@ -629,7 +629,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             calendarMeetingData.meetingEvent.meetingDate +
               calendarMeetingData.meetingEvent.startTime
-          ),
+          ),currentLanguage,
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               calendarMeetingData.meetingEvent.meetingDate +

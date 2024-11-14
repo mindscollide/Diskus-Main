@@ -17,7 +17,7 @@ const CancelActions = ({ setSceduleMeeting, currentMeeting }) => {
   );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
   const handleNOFunctionality = () => {
     dispatch(showCancelActions(false));

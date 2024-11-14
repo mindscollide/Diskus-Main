@@ -2203,5 +2203,8 @@
   "None": "None",
   "Enabled": "Enabled",
   "Disabled": "Disabled",
-  "Dormant": "Dormant"
+  "Dormant": "Dormant",
+  "Join-video-call": "Join Video Call",
+  "Events": "Events",
+  "Deleted": "Deleted"
 }

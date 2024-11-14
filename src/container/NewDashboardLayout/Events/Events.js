@@ -23,6 +23,7 @@ const Events = () => {
   const UpcomingEventsData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
+
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
   );
@@ -38,6 +39,7 @@ const Events = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUTCDateTime = multiDatePickerDateChangIntoUTC(new Date());
+  const currentLanguage = localStorage.getItem("i18nextLng");
   useEffect(() => {
     let Data2 = {
       UserID: parseInt(createrID),
@@ -213,8 +215,7 @@ const Events = () => {
                     }
                      ${"border-0 d-flex align-items-center"}`
                   : `${styles["event-details"]}`
-              }
-            >
+              }>
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -222,15 +223,15 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : ""
-                }
-              >
+                }>
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
                 <p className={styles["events-dateTime"]}>
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
-                      upcomingEventsData.meetingEvent.startTime
+                      upcomingEventsData.meetingEvent.startTime,
+                    currentLanguage
                   )}
                 </p>
               </div>
@@ -298,7 +299,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.titleg
                       );
                     }}
                   />
@@ -315,8 +316,7 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details d-flex justify-content-center align-items-center"]}`
                     : `${styles["event-details"]}`
-                }
-              >
+                }>
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -324,15 +324,15 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }
-                >
+                  }>
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
                   <p className={styles["events-dateTime"]}>
                     {newTimeFormaterAsPerUTCFullDate(
                       upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime,
+                      currentLanguage
                     )}
                   </p>
                 </div>
@@ -415,8 +415,7 @@ const Events = () => {
                 upcomingEventsData.meetingDetails.statusID === 10
                   ? `${styles["event-details d-flex justify-content-center align-items-center"]}`
                   : `${styles["event-details"]}`
-              }
-            >
+              }>
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -424,15 +423,14 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : ""
-                }
-              >
+                }>
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
                 <p className={styles["events-dateTime"]}>
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
-                      upcomingEventsData.meetingEvent.startTime
+                      upcomingEventsData.meetingEvent.startTime, currentLanguage
                   )}
                 </p>
               </div>
@@ -541,7 +539,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt="" width={300} draggable="false" />
+              <img src={noTask} alt='' width={300} draggable='false' />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>

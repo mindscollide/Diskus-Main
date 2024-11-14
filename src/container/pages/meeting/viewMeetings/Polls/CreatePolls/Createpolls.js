@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
-import gregorian from "react-date-object/calendars/gregorian";
+import EnglishCalendar from "react-date-object/calendars/gregorian";
+import ArabicCalendar from 'react-date-object/calendars/arabic'
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   Button,
   TextField,
@@ -51,7 +53,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const unsavedPollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.unsavedPollsMeeting
   );
-
+  let currentLanguage = localStorage.getItem("i18nextLng")
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -63,7 +65,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
 
@@ -89,6 +91,19 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   });
 
   const [members, setMembers] = useState([]);
+
+  
+  useEffect(() => {
+    if (currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(EnglishCalendar);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(ArabicCalendar);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -162,6 +177,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   const changeDateStartHandler = (date) => {
+    console.log(date, "datedatedatedatedate")
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     DateDate.setHours(23, 59, 0, 0);
