@@ -29,6 +29,9 @@ const PrivateGroups = () => {
 
   const { t } = useTranslation();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
   let currentUserId = localStorage.getItem("userID");
@@ -63,11 +66,11 @@ const PrivateGroups = () => {
         );
       setPrivateGroupsData(privateGroupsMessages);
     } else {
-      setPrivateGroupsData([])
+      setPrivateGroupsData([]);
     }
     return () => {
-      setPrivateGroupsData([])
-    }
+      setPrivateGroupsData([]);
+    };
   }, [talkStateData.AllUserChats.AllUserChatsData]);
 
   const chatClick = (record) => {
@@ -116,8 +119,8 @@ const PrivateGroups = () => {
       dispatch(mqttGroupCreated([]));
     }
     return () => {
-      setPrivateGroupsData([])
-    }
+      setPrivateGroupsData([]);
+    };
   }, [talkStateData.talkSocketGroupCreation.groupCreatedData]);
 
   //Search Chats
@@ -192,7 +195,12 @@ const PrivateGroups = () => {
                 <div className="chat-profile-icon">
                   {dataItem.messageType === "G" ? (
                     <>
-                      <img draggable="false" src={GroupIcon} width={35} />
+                      <img
+                        draggable="false"
+                        src={GroupIcon}
+                        width={35}
+                        alt=""
+                      />
                     </>
                   ) : null}
                 </div>
@@ -219,6 +227,7 @@ const PrivateGroups = () => {
                           draggable="false"
                           src={TimerIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -228,6 +237,7 @@ const PrivateGroups = () => {
                           draggable="false"
                           src={SingleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -237,6 +247,7 @@ const PrivateGroups = () => {
                           draggable="false"
                           src={DoubleTickDeliveredIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -246,6 +257,7 @@ const PrivateGroups = () => {
                           draggable="false"
                           src={DoubleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : null}
                     </span>
@@ -257,18 +269,26 @@ const PrivateGroups = () => {
                   >
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkTime(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkTime(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) ===
                       yesterdayDateUtc ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
-                          " "}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        ) + " "}
                         | {t("Yesterday")}
                       </>
                     ) : (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     )}
                   </p>
@@ -284,7 +304,7 @@ const PrivateGroups = () => {
         })
       ) : (
         <ResultMessage
-          icon={<img src={PrivateGroupIcon} width={250} />}
+          icon={<img src={PrivateGroupIcon} width={250} alt="" />}
           title={
             "No private groups created. Create a group and chat with multiple friends at once"
           }

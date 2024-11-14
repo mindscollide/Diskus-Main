@@ -50,6 +50,9 @@ const VideoPanelBodyRecent = () => {
 
   const { t } = useTranslation();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   let currentUserName = localStorage.getItem("name");
 
   let currentOrganization = Number(localStorage.getItem("organizationID"));
@@ -558,7 +561,8 @@ const VideoPanelBodyRecent = () => {
                           recentCallData.callDate !== undefined ? (
                             <>
                               {newTimeFormaterAsPerUTCTalkTime(
-                                recentCallDateTime
+                                recentCallDateTime,
+                                lang
                               )}
                             </>
                           ) : recentCallData.callDate === yesterdayDateUtc &&
@@ -566,7 +570,8 @@ const VideoPanelBodyRecent = () => {
                             recentCallData.callDate !== undefined ? (
                             <>
                               {newTimeFormaterAsPerUTCTalkDate(
-                                recentCallDateTime
+                                recentCallDateTime,
+                                lang
                               ) + " "}
                               | {t("Yesterday")}
                             </>
@@ -575,7 +580,8 @@ const VideoPanelBodyRecent = () => {
                               {recentCallData.callDate !== "" &&
                               recentCallData.callDate !== undefined
                                 ? newTimeFormaterAsPerUTCTalkDate(
-                                    recentCallDateTime
+                                    recentCallDateTime,
+                                    lang
                                   )
                                 : ""}
                             </>

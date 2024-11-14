@@ -42,6 +42,9 @@ const RecentChats = () => {
 
   const { t } = useTranslation();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   const { talkFeatureStates, talkStateData } = useSelector((state) => state);
 
   let currentUserId = localStorage.getItem("userID");
@@ -474,11 +477,11 @@ const RecentChats = () => {
           };
           dispatch(pushChatData(newGroupMessageChat));
         } else if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
           talkStateData.ActiveChatData.id ===
             mqttInsertGroupMessageData.receiverID
         ) {
@@ -502,11 +505,11 @@ const RecentChats = () => {
           dispatch(pushChatData(newGroupMessageChat));
         }
         if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
           talkStateData.ActiveChatData.id !==
             mqttInsertGroupMessageData.receiverID
         ) {
@@ -529,11 +532,11 @@ const RecentChats = () => {
           };
           dispatch(pushChatData(newGroupMessageChat));
         } else if (
-          mqttInsertGroupMessageData.senderID != undefined &&
-          mqttInsertGroupMessageData.senderID != null &&
-          mqttInsertGroupMessageData.senderID != 0 &&
-          mqttInsertGroupMessageData.senderID != "" &&
-          mqttInsertGroupMessageData.senderID != "0" &&
+          mqttInsertGroupMessageData.senderID !== undefined &&
+          mqttInsertGroupMessageData.senderID !== null &&
+          mqttInsertGroupMessageData.senderID !== 0 &&
+          mqttInsertGroupMessageData.senderID !== "" &&
+          mqttInsertGroupMessageData.senderID !== "0" &&
           parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
         ) {
           let newGroupMessageChat = {
@@ -867,18 +870,33 @@ const RecentChats = () => {
                 <div className="chat-profile-icon">
                   {dataItem.messageType === "O" ? (
                     <>
-                      <img draggable="false" src={SingleIcon} width={25} />
+                      <img
+                        draggable="false"
+                        src={SingleIcon}
+                        width={25}
+                        alt=""
+                      />
                     </>
                   ) : dataItem.messageType === "G" ? (
                     <>
-                      <img draggable="false" src={GroupIcon} width={35} />
+                      <img
+                        draggable="false"
+                        src={GroupIcon}
+                        width={35}
+                        alt=""
+                      />
                     </>
                   ) : dataItem.messageType === "B" ? (
                     <>
-                      <img draggable="false" src={ShoutIcon} width={25} />
+                      <img
+                        draggable="false"
+                        src={ShoutIcon}
+                        width={25}
+                        alt=""
+                      />
                     </>
                   ) : (
-                    <img draggable="false" src={SingleIcon} width={25} />
+                    <img draggable="false" src={SingleIcon} width={25} alt="" />
                   )}
                 </div>
               </Col>
@@ -905,6 +923,7 @@ const RecentChats = () => {
                             draggable="false"
                             src={TimerIcon}
                             className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
@@ -914,6 +933,7 @@ const RecentChats = () => {
                             draggable="false"
                             src={SingleTickIcon}
                             className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
@@ -923,6 +943,7 @@ const RecentChats = () => {
                             draggable="false"
                             src={DoubleTickDeliveredIcon}
                             className="img-cover"
+                            alt=""
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
@@ -932,6 +953,7 @@ const RecentChats = () => {
                             draggable="false"
                             src={DoubleTickIcon}
                             className="img-cover"
+                            alt=""
                           />
                         ) : null}
                       </span>
@@ -961,14 +983,19 @@ const RecentChats = () => {
                     dataItem.messageDate !== "" &&
                     dataItem.messageDate !== undefined ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkTime(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkTime(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) === yesterdayDateUtc &&
                       dataItem.messageDate !== "" &&
                       dataItem.messageDate !== undefined ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
-                          " "}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        ) + " "}
                         | {t("Yesterday")}
                       </>
                     ) : (
@@ -976,7 +1003,8 @@ const RecentChats = () => {
                         {dataItem.messageDate !== "" &&
                         dataItem.messageDate !== undefined
                           ? newTimeFormaterAsPerUTCTalkDate(
-                              dataItem.messageDate
+                              dataItem.messageDate,
+                              lang
                             )
                           : ""}
                       </>
