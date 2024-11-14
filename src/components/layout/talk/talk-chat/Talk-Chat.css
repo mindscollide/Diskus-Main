@@ -2189,10 +2189,6 @@ body[dir="rtl"] .ChatsOneToOneDropDownMenuReciever.dropdown-menu.show {
 }
 
 .ChatsOneToOneDropDownMenuSender.dropdown-menu.show {
-  position: absolute !important;
-  left: -49px !important;
-  right: auto !important;
-  top: -14px !important;
 }
 
 body[dir="rtl"] .ChatsOneToOneDropDownMenuSender.dropdown-menu.show {
