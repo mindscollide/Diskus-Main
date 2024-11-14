@@ -115,7 +115,7 @@ const PendingApproval = () => {
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.pK_TSID.toString())
+      selectedValues.includes(item.status.toString())
     );
     setRowsPendingApproval(filteredData);
     setVisible(false);
