@@ -30,7 +30,7 @@ import {
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
-import { Checkbox, Menu } from "antd";
+import { Checkbox, Dropdown, Menu } from "antd";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -91,7 +91,6 @@ const PendingApproval = () => {
   };
 
   //Filteration Table
-
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
     "Reviewed",
@@ -290,14 +289,21 @@ const PendingApproval = () => {
       align: "center",
       className: "statusParticipant",
       width: "150px",
-      filters: [
-        { text: t("Reviewed"), value: "Reviewed" },
-        { text: t("Pending"), value: "Pending" },
-        { text: t("Expired"), value: "Expired" },
-      ],
-      onFilter: (value, record) => record.status === value,
-      filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+      filterResetToDefaultFilteredValue: true,
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
+      ),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
       ),
       render: (text, record) => (
         <p
@@ -400,137 +406,123 @@ const PendingApproval = () => {
               {" "}
               <Row>
                 <Col>
-                  {rowsPendingApproval.length > 0 ? (
-                    <>
-                      <div className={styles["progressWrapper"]}>
-                        <Row>
-                          <Col lg={6} md={6} sm={12}>
-                            <ProgressBar
-                              style={{
-                                height: "30px",
-                                borderRadius: "20px",
-                              }}
-                            >
-                              <ProgressBar
-                                style={{
-                                  backgroundColor: "#6172D6",
-                                }}
-                                label={`${convertToArabicNumerals(
-                                  progress.reviewedPercentage,
-                                  lang
-                                )}%`}
-                                now={progress.reviewedPercentage}
-                                key={1}
-                              />
-                              <ProgressBar
-                                style={{
-                                  backgroundColor: "#ffc300",
-                                }}
-                                label={`${convertToArabicNumerals(
-                                  progress.pendingPercentage,
-                                  lang
-                                )}%`}
-                                now={progress.pendingPercentage}
-                                key={2}
-                              />
-                              <ProgressBar
-                                style={{
-                                  backgroundColor: "#F16B6B",
-                                }}
-                                label={`${convertToArabicNumerals(
-                                  progress.expiredPercentage,
-                                  lang
-                                )}%`}
-                                now={progress.expiredPercentage}
-                                key={3}
-                              />
-                            </ProgressBar>
-                          </Col>
-                          <Col lg={6} md={6} sm={12} className="d-flex">
-                            <span className={styles["line"]} />
-                            <div
-                              className={
-                                styles["progress-value-wrapper-purple"]
-                              }
-                            >
-                              <span className={styles["numeric-value"]}>
-                                {convertToArabicNumerals(
-                                  progress.reviewed,
-                                  lang
-                                )}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Reviewed")}
-                              </span>
-                            </div>
-                            <span className={styles["line"]} />
-                            <div
-                              className={
-                                styles["progress-value-wrapper-yellow"]
-                              }
-                            >
-                              <span className={styles["numeric-value"]}>
-                                {convertToArabicNumerals(
-                                  progress.pending,
-                                  lang
-                                )}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Pending")}
-                              </span>
-                            </div>
-                            <span className={styles["line"]} />
-                            <div
-                              className={styles["progress-value-wrapper-red"]}
-                            >
-                              <span className={styles["numeric-value"]}>
-                                {convertToArabicNumerals(
-                                  progress.expired,
-                                  lang
-                                )}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Expired")}
-                              </span>
-                            </div>
-                          </Col>
-                        </Row>
-                      </div>
-                      <Row>
-                        <Col>
-                          <TableToDo
-                            sortDirections={["descend", "ascend"]}
-                            column={pendingApprovalColumns}
-                            className={"PendingApprovalsTable"}
-                            rows={rowsPendingApproval}
-                            pagination={false}
-                            scroll={
-                              rowsPendingApproval.length > 10
-                                ? { y: 385 }
-                                : undefined
-                            }
-                            id={(record, index) =>
-                              index === rowsPendingApproval.length - 1
-                                ? "last-row-class"
-                                : ""
-                            }
+                  <div className={styles["progressWrapper"]}>
+                    <Row>
+                      <Col lg={6} md={6} sm={12}>
+                        <ProgressBar
+                          style={{
+                            height: "30px",
+                            borderRadius: "20px",
+                          }}
+                        >
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#6172D6",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.reviewedPercentage,
+                              lang
+                            )}%`}
+                            now={progress.reviewedPercentage}
+                            key={1}
                           />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <section
-                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
-                    >
-                      <img src={NoApprovals} alt="" />
-                      <span className={styles["No-Approvals"]}>
-                        {t("Approvals")}
-                      </span>
-                      <span className={styles["No-Approvals-Text"]}>
-                        {t("No-pending-approvals-at-the-moment")}
-                      </span>
-                    </section>
-                  )}
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#ffc300",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.pendingPercentage,
+                              lang
+                            )}%`}
+                            now={progress.pendingPercentage}
+                            key={2}
+                          />
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#F16B6B",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.expiredPercentage,
+                              lang
+                            )}%`}
+                            now={progress.expiredPercentage}
+                            key={3}
+                          />
+                        </ProgressBar>
+                      </Col>
+                      <Col lg={6} md={6} sm={12} className="d-flex">
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-purple"]}
+                        >
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.reviewed, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Reviewed")}
+                          </span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-yellow"]}
+                        >
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.pending, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Pending")}
+                          </span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div className={styles["progress-value-wrapper-red"]}>
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.expired, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Expired")}
+                          </span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                  <Row>
+                    <Col>
+                      <TableToDo
+                        sortDirections={["descend", "ascend"]}
+                        column={pendingApprovalColumns}
+                        className={"PendingApprovalsTable"}
+                        rows={rowsPendingApproval}
+                        pagination={false}
+                        scroll={
+                          rowsPendingApproval.length > 10
+                            ? { y: 385 }
+                            : undefined
+                        }
+                        id={(record, index) =>
+                          index === rowsPendingApproval.length - 1
+                            ? "last-row-class"
+                            : ""
+                        }
+                        locale={{
+                          emptyText: (
+                            <>
+                              <section
+                                className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
+                              >
+                                <img src={NoApprovals} alt="" />
+                                <span className={styles["No-Approvals"]}>
+                                  {t("Approvals")}
+                                </span>
+                                <span className={styles["No-Approvals-Text"]}>
+                                  {t("No-pending-approvals-at-the-moment")}
+                                </span>
+                              </section>
+                            </>
+                          ),
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </>
