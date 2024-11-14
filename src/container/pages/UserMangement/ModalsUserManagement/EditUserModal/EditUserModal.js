@@ -94,12 +94,12 @@ const EditUserModal = ({ editModalData }) => {
 
   //options for the dropdowm
   const options = [
-    { value: 1, label: "Enabled" },
-    { value: 2, label: "Disabled" },
-    { value: 3, label: "Locked" },
-    { value: 4, label: "Closed" },
-    { value: 5, label: "Dormant" },
-    { value: 6, label: "Delete" },
+    { value: 1, label: t("Enabled") },
+    { value: 2, label: t("Disabled") },
+    { value: 3, label: t("Locked") },
+    { value: 4, label: t("Closed") },
+    { value: 5, label: t("Dormant") },
+    { value: 6, label: t("Delete") },
   ];
 
   const findOptionByValue = (value) => {
