@@ -126,6 +126,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const dispatch = useDispatch();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
   var currentDateToday = moment().format("YYYYMMDD");
 
@@ -546,7 +549,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ "TasksAttachments": file });
+      setTasksAttachments({ TasksAttachments: file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -601,14 +604,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ "TasksAttachments": file });
+      setTasksAttachments({ TasksAttachments: file });
     }
   };
 
   const deleteFilefromAttachments = (data, index) => {
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": [],
+      TasksAttachments: [],
     });
     setUploadFileTalk({});
     setFile("");
@@ -2203,7 +2206,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setFile("");
       setTasksAttachments({
         ...tasksAttachments,
-        "TasksAttachments": [],
+        TasksAttachments: [],
       });
       setUploadFileTalk({});
       if (inputRef.current) {
@@ -2803,7 +2806,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setUploadFileTalk({});
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": [],
+      TasksAttachments: [],
     });
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };
@@ -3886,7 +3889,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -3895,7 +3899,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -3903,7 +3908,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   "" ? null : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -4234,7 +4240,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4243,14 +4250,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -4472,7 +4481,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4481,14 +4491,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -4774,7 +4786,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4783,14 +4796,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -5034,7 +5049,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -5043,7 +5059,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -5051,7 +5068,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   "" ? null : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -5867,7 +5885,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.sentDate
+                          messageInfoData.sentDate,
+                          lang
                         )
                       )}
                     </div>
@@ -5886,7 +5905,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.receivedDate
+                          messageInfoData.receivedDate,
+                          lang
                         )
                       )}
                     </div>
@@ -5901,7 +5921,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.seenDate
+                          messageInfoData.seenDate,
+                          lang
                         )
                       )}
                     </div>
@@ -6065,7 +6086,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       {groupInfoData === undefined || groupInfoData.length === 0
                         ? ""
                         : newTimeFormaterAsPerUTCTalkDateTime(
-                            messageInfoData.seenDate
+                            messageInfoData.seenDate,
+                            lang
                           )}
                     </p>
                   </Col>

@@ -28,6 +28,7 @@ const Task = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let creatorID = Number(localStorage.getItem("userID"));
+  let locale = localStorage.getItem("i18nextLng") || "en";
   const [rowsToDo, setRowToDo] = useState([]);
   const [totalDataRecords, setTotalDataRecords] = useState(0);
   console.log(totalDataRecords, "totalDataRecordstotalDataRecords");
@@ -44,6 +45,7 @@ const Task = () => {
       width: "35%",
       className: "titleDashboard",
       ellipsis: true,
+      align: locale === "en" ? "left" : "right",
       render: (text, record) => {
         const className =
           Number(record?.taskCreator?.pK_UID) === creatorID
@@ -59,10 +61,11 @@ const Task = () => {
       width: "40%",
       className: "deadlineDashboard",
       ellipsis: true,
+      align: "center",
 
       render: (text, record) => {
         return (
-          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
+          <span className="cursor-pointer">{_justShowDateformat(text, )}</span>
         );
       },
     },
@@ -70,7 +73,8 @@ const Task = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "25%",
+      width: "35%",
+      align: "center",
       className: "statusDashboard",
       ellipsis: true,
 

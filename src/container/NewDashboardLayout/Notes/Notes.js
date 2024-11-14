@@ -21,6 +21,7 @@ import { Tooltip } from "antd";
 import {
   _justShowDateformat,
   _justShowDay,
+  formatToLocalTimezone,
 } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
@@ -166,8 +167,8 @@ const Notes = () => {
                           )}
                         </span>
                         <span className={styles['DataTimeDay']}>
-                          {_justShowDateformat(data.date + data.time)} |
-                          {_justShowDay(data.date + data.time)}
+                          {formatToLocalTimezone(data.date + data.time)}
+                      
                         </span>
                       </Col>
                     </Row>

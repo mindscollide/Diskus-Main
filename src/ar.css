@@ -204,10 +204,10 @@ body[dir="rtl"] .todolist-title-col {
   text-align: right !important;
 }
 
-body[dir="rtl"] td.ant-table-cell {
+/* body[dir="rtl"] td.ant-table-cell {
   text-align: right !important;
   font-weight: 400;
-}
+} */
 
 body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
   text-align: center !important;
@@ -428,17 +428,17 @@ body[dir="rtl"] .DataRoomShowBtn {
   margin-left: 0 !important;
 }
 
-body[dir="rtl"] .ant-table-thead > tr > th {
-  text-align: right !important;
+/* body[dir="rtl"] .ant-table-thead > tr > th {
+  text-align: center !important;
 }
 
 body[dir="rtl"]
   th.ant-table-cell.ant-table-column-has-sorters
   .ant-table-column-sorters {
-  text-align: right !important;
+  text-align: center !important;
   float: right !important;
   font-weight: 600;
-}
+} */
 
 body[dir="rtl"] i.edit-icon-adminmeeting {
   margin-right: 10px;

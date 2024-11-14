@@ -4423,6 +4423,10 @@ const TalkChat = () => {
                               allBroadcastMessages.length === 0 &&
                               allGroupMessages.length === 0 ? (
                                 allOtoMessages.map((messageData, index) => {
+                                  console.log(
+                                    messageData,
+                                    "messageDatamessageDatamessageData"
+                                  );
                                   var ext = messageData.attachmentLocation
                                     .split(".")
                                     .pop();
@@ -4701,7 +4705,8 @@ const TalkChat = () => {
                                                                               'hhmmss',
                                                                             ).format('hh:mm a')} */}
                                                       {newTimeFormaterAsPerUTCTalkTime(
-                                                        messageData.sentDate
+                                                        messageData.sentDate,
+                                                        lang
                                                       )}
                                                     </>
                                                   ) : messageData.sentDate.slice(
@@ -4718,7 +4723,8 @@ const TalkChat = () => {
                                                                               'DD-MMM-YYYY',
                                                                             )}{' '} */}
                                                       {newTimeFormaterAsPerUTCTalkDate(
-                                                        messageData.sentDate
+                                                        messageData.sentDate,
+                                                        lang
                                                       ) + " "}
                                                       | Yesterday
                                                     </>
@@ -4732,7 +4738,8 @@ const TalkChat = () => {
                                                                               ),
                                                                             ).format('DD-MMM-YYYY')} */}
                                                       {newTimeFormaterAsPerUTCTalkDate(
-                                                        messageData.sentDate
+                                                        messageData.sentDate,
+                                                        lang
                                                       )}
                                                     </>
                                                   )}
@@ -5018,7 +5025,8 @@ const TalkChat = () => {
                                                                             'hhmmss',
                                                                           ).format('hh:mm a')} */}
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -5033,14 +5041,16 @@ const TalkChat = () => {
                                                                             ),
                                                                           ).format('DD-MMM-YYYY')}{' '} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | Yesterday
                                                   </>
                                                 ) : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -5084,6 +5094,7 @@ const TalkChat = () => {
                                               draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownIcon}
+                                              alt=""
                                             />
                                             {chatFeatureActive ===
                                             messageData.messageID ? (
@@ -5266,7 +5277,8 @@ const TalkChat = () => {
                                                                             'hhmmss',
                                                                           ).format('hh:mm a')} */}
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -5281,14 +5293,16 @@ const TalkChat = () => {
                                                                             ),
                                                                           ).format('DD-MMM-YYYY')}{' '} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | Yesterday
                                                   </>
                                                 ) : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -5386,6 +5400,7 @@ const TalkChat = () => {
                                               draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownChatIcon}
+                                              alt=""
                                             />
                                             {chatFeatureActive ===
                                             messageData.messageID ? (
@@ -5510,7 +5525,8 @@ const TalkChat = () => {
                                                                             'hhmmss',
                                                                           ).format('hh:mm a')} */}
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -5525,14 +5541,16 @@ const TalkChat = () => {
                                                                             ),
                                                                           ).format('DD-MMM-YYYY')}{' '} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | Yesterday
                                                   </>
                                                 ) : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -5575,6 +5593,7 @@ const TalkChat = () => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
+                                                  alt=""
                                                 />
                                                 {chatFeatureActive ===
                                                 messageData.messageID ? (
@@ -5763,7 +5782,8 @@ const TalkChat = () => {
                                                                               'hhmmss',
                                                                             ).format('hh:mm a')} */}
                                                         {newTimeFormaterAsPerUTCTalkTime(
-                                                          messageData.sentDate
+                                                          messageData.sentDate,
+                                                          lang
                                                         )}
                                                       </>
                                                     ) : messageData.sentDate.slice(
@@ -5780,7 +5800,8 @@ const TalkChat = () => {
                                                                               'DD-MMM-YYYY',
                                                                             )}{' '} */}
                                                         {newTimeFormaterAsPerUTCTalkDate(
-                                                          messageData.sentDate
+                                                          messageData.sentDate,
+                                                          lang
                                                         ) + " "}
                                                         | Yesterday
                                                       </>
@@ -5794,7 +5815,8 @@ const TalkChat = () => {
                                                                               ),
                                                                             ).format('DD-MMM-YYYY')} */}
                                                         {newTimeFormaterAsPerUTCTalkDate(
-                                                          messageData.sentDate
+                                                          messageData.sentDate,
+                                                          lang
                                                         )}
                                                       </>
                                                     )}
@@ -6595,7 +6617,8 @@ const TalkChat = () => {
                           //   'DD-MMM-YYYY',
                           // )
                           newTimeFormaterAsPerUTCTalkDate(
-                            messageInfoData.sentDate
+                            messageInfoData.sentDate,
+                            lang
                           )
                         )}
                       </div>
@@ -6617,7 +6640,8 @@ const TalkChat = () => {
                           //   messageInfoData.receivedDate.slice(0, 8),
                           // ).format('DD-MMM-YYYY')
                           newTimeFormaterAsPerUTCTalkDate(
-                            messageInfoData.receivedDate
+                            messageInfoData.receivedDate,
+                            lang
                           )
                         )}
                       </div>
@@ -6635,7 +6659,8 @@ const TalkChat = () => {
                           //   'DD-MMM-YYYY',
                           // )
                           newTimeFormaterAsPerUTCTalkDate(
-                            messageInfoData.seenDate
+                            messageInfoData.seenDate,
+                            lang
                           )
                         )}
                       </div>
@@ -6812,7 +6837,8 @@ const TalkChat = () => {
                             //     'YYYYMMDDkkmmss',
                             //   ).format('h:mm A, Do MMM, YYYY')}
                             newTimeFormaterAsPerUTCTalkDateTime(
-                              messageInfoData.seenDate
+                              messageInfoData.seenDate,
+                              lang
                             )}
                       </p>
                     </Col>

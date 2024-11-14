@@ -718,7 +718,7 @@ body[dir="rtl"] .chatBox {
   border: 1px solid #4cd7de;
   overflow: hidden auto;
   border-radius: 4px;
-  top: 73px;
+  top: 80px;
   left: 85px;
 }
 
@@ -961,6 +961,15 @@ body[dir="rtl"] span.securityicon-box {
   ) {
   min-width: 300px !important;
   width: 300px !important;
+}
+body[dir="rtl"]
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+    .rc-virtual-list-holder-inner
+      .ant-select-item.ant-select-item-option.talk-chat-filter
+  ) {
+  min-width: 300px !important;
+  width: 300px !important;
+  left: 96px !important;
 }
 
 .chat-profile-icon svg {
@@ -1261,11 +1270,11 @@ span.direct-chat-body {
 body[dir="rtl"] .direct-chat-text .chatmessage-box-icons img.dropdown-icon {
   position: absolute;
   width: 12px;
-  top: 6px;
+  top: 0px;
   right: auto;
   z-index: 9;
   cursor: pointer;
-  left: 15px;
+  right: 195px;
 }
 
 body[dir="rtl"] .dropdown-menus-chatmessage {
@@ -1493,6 +1502,7 @@ p.chat-username.blocked-users {
   justify-content: center;
   align-items: center;
   vertical-align: middle;
+  gap: 5px !important;
 }
 
 .chat-profile-icon.forward {
@@ -2096,6 +2106,13 @@ span.background-close-search {
   left: -100px !important;
 }
 
+body[dir="rtl"] .dropdown-menu-upwards {
+  position: absolute !important;
+  top: -260px !important;
+  transform: none !important;
+  left: -100px !important;
+}
+
 ::placeholder {
   font-family: "Montserrat" !important;
   font-weight: 400 !important;
@@ -2130,10 +2147,21 @@ button.talk-dropdown-toggle.dropdown-toggle {
   border: none !important;
 }
 
+body[dir="rtl"] .chat-box-icons .dropdown-menu .show {
+  top: 0px !important;
+  right: 50px !important;
+}
+
 .chat-box-icons.cursor-pointer.positionRelative.show.dropdown a.dropdown-item {
   font-size: 12px;
   font-weight: 600;
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+}
+.talkchatMsg .dropdown .dropdown-menu {
+  left: 0 !important;
+}
+body[dir="rtl"] .talkchatMsg .dropdown {
+  right: 0 !important;
 }

@@ -2,6 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Card.module.css";
 import React, { useEffect, useState } from "react";
 import img1 from "../../../assets/images/DropdownONE.svg";
+import img3 from "../../../assets/images/DropdownTHREE.svg";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../components/elements";
 import img4 from "../../../assets/images/DropdownFOUR.svg";
@@ -10,6 +11,7 @@ import editicon from "../../../assets/images/Esvg.svg";
 import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import { Tooltip } from "antd";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const Card = ({
   CardHeading,
   profile,
@@ -309,8 +311,16 @@ const Card = ({
                           className="d-flex justify-content-start gap-2  ms-1 "
                         >
                           <div className={discussionMenuClass}>
+                          <span>
+                            <img
+                              src={img3}
+                              width={15}
+                              draggable="false"
+                              alt=""
+                            />
+                          </span>
                             <span className={styles["dropdown-text"]}>
-                              {t("Discussions")}
+                              {t("Discussion")}
                             </span>
                           </div>
                         </Col>
@@ -527,7 +537,7 @@ const Card = ({
                       : styles["namecards_morethan-3"]
                   }
                 >
-                  + {profile.length - 4}
+                  + {convertToArabicNumerals(profile.length - 4)}
                 </span>
               </Col>
             ) : null}
