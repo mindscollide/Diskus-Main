@@ -998,7 +998,7 @@ const Minutes = ({
                                       >
                                         {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
-                                            data.lastUpdatedTime
+                                            data.lastUpdatedTime,currentLanguage
                                         )}
                                       </span>
                                     </Col>
