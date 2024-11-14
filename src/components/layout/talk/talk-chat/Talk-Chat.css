@@ -2192,10 +2192,9 @@ body[dir="rtl"] .ChatsOneToOneDropDownMenuReciever.dropdown-menu.show {
 }
 
 body[dir="rtl"] .ChatsOneToOneDropDownMenuSender.dropdown-menu.show {
-  left: auto !important;
-  right: 30px !important;
-  top: -2px !important;
+  margin-top: -12px !important;
   transform: none !important;
+  inset: initial !important;
 }
 
 body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
