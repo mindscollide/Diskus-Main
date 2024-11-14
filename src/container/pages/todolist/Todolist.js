@@ -51,7 +51,12 @@ import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
 const TodoList = () => {
   //For Localization
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const SearchTodolist = useSelector(
@@ -64,6 +69,13 @@ const TodoList = () => {
     (state) => state.toDoListReducer.socketTodoStatusData
   );
   const ToDoDetails = useSelector((state) => state.toDoListReducer.ToDoDetails);
+
+  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
+
+  let todoListPageSize = localStorage.getItem("todoListRow");
+
+  //Get Current User ID
+  let createrID = localStorage.getItem("userID");
 
   const ResponseMessageTodoReducer = useSelector(
     (state) => state.toDoListReducer.ResponseMessage
@@ -87,8 +99,6 @@ const TodoList = () => {
   const UpdateTodoStatus = useSelector(
     (state) => state.getTodosStatus.UpdateTodoStatus
   );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
   const [originalData, setOriginalData] = useState([]);
@@ -109,17 +119,51 @@ const TodoList = () => {
     AssignedToName: "",
     UserID: 0,
   });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
-  console.log(rowsToDo, "rowsToDorowsToDo");
+//Filter table work
+
+const [visible, setVisible] = useState(false);
+
+const [selectedValues, setSelectedValues] = useState([
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+]);
+
+const filters = [
+  {
+    value: "1",
+    text: t("In-progress"),
+  },
+  {
+    value: "2",
+    text: t("Pending"),
+  },
+  {
+    value: "3",
+    text: t("Upcoming"),
+  },
+  {
+    value: "4",
+    text: t("Cancelled"),
+  },
+  {
+    value: "5",
+    text: t("Completed"),
+  },
+  {
+    value: "6",
+    text: t("Deleted"),
+  },
+];
 
   // GET TODOS STATUS
   useEffect(() => {
@@ -299,45 +343,6 @@ const TodoList = () => {
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
   };
-
-  //Filter table work
-
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-  ]);
-
-  const filters = [
-    {
-      value: "1",
-      text: t("In-progress"),
-    },
-    {
-      value: "2",
-      text: t("Pending"),
-    },
-    {
-      value: "3",
-      text: t("Upcoming"),
-    },
-    {
-      value: "4",
-      text: t("Cancelled"),
-    },
-    {
-      value: "5",
-      text: t("Completed"),
-    },
-    {
-      value: "6",
-      text: t("Deleted"),
-    },
-  ];
 
   // Menu click handler for selecting filters
   const handleMenuClick = (filterValue) => {

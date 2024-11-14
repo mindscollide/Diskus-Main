@@ -2201,5 +2201,7 @@
   "Office": "Office",
   "Microsoft": "Microsoft",
   "None": "None",
-  "Join-video-call": "Join Video Call"
+  "Join-video-call": "Join Video Call",
+  "Events":"Events",
+  "Deleted":"Deleted"
 }
