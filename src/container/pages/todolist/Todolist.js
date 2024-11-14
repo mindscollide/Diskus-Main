@@ -626,7 +626,7 @@ const TodoList = () => {
           return (
             <>
               <Select
-                value={text.status}
+                value={t(text.status)}
                 bordered={false}
                 dropdownClassName="Status-Todo"
                 className={
@@ -647,7 +647,7 @@ const TodoList = () => {
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
-                      {optValue.status}
+                      {t(optValue.status)}
                     </option>
                   );
                 })}
@@ -671,7 +671,7 @@ const TodoList = () => {
                   : null
               }
             >
-              {text.status}
+              {t(text.status)}
             </p>
           );
         }
