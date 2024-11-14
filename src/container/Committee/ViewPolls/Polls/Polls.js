@@ -36,7 +36,6 @@ const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const cancelPolls = useSelector(
     (state) => state.NewMeetingreducer.cancelPolls
   );
@@ -437,7 +436,7 @@ const Polls = ({ committeeStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["text-success"]}>
-            {_justShowDateformatBilling(text, CurrentLanguage)}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },

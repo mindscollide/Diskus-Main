@@ -33,7 +33,8 @@ const GroupViewPolls = ({ groupStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  console.log(groupStatus, "groupStatusgroupStatusgroupStatus");
+
   const cancelPolls = useSelector(
     (state) => state.NewMeetingreducer.cancelPolls
   );
@@ -421,7 +422,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       render: (text, record) => {
         return (
           <span className={styles["poll_status"]}>
-            {_justShowDateformatBilling(text, CurrentLanguage)}
+            {_justShowDateformatBilling(text)}
           </span>
         );
       },

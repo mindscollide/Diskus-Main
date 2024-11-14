@@ -23,8 +23,6 @@ import {
 } from "../../../../commen/functions/date_formater";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
-import { convertToArabicNumerals } from "../../../../commen/functions/regex";
-
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -166,7 +164,6 @@ const ReviewSignature = () => {
             width={22}
             height={22}
             className="rounded-circle "
-            alt=""
           />
           <span>{text}</span>
         </p>
@@ -321,6 +318,7 @@ const ReviewSignature = () => {
     }
   }, [ResponseMessage]);
 
+  const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
     <>
       <Row>
@@ -338,10 +336,7 @@ const ReviewSignature = () => {
                     style={{
                       backgroundColor: "#55ce5c",
                     }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.signedPercentage,
-                      currentLanguage
-                    )}%`}
+                    label={`${approvalStats.signedPercentage}%`}
                     now={approvalStats.signedPercentage}
                     key={1}
                   />
@@ -349,10 +344,7 @@ const ReviewSignature = () => {
                     style={{
                       backgroundColor: "#ffc300",
                     }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.pendingPercentage,
-                      currentLanguage
-                    )}%`}
+                    label={`${approvalStats.pendingPercentage}%`}
                     now={approvalStats.pendingPercentage}
                     key={2}
                   />
@@ -360,10 +352,7 @@ const ReviewSignature = () => {
                     style={{
                       backgroundColor: "#F16B6B",
                     }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.declinedPercentage,
-                      currentLanguage
-                    )}%`}
+                    label={`${approvalStats.declinedPercentage}%`}
                     now={approvalStats.declinedPercentage}
                     key={3}
                   />
@@ -373,23 +362,23 @@ const ReviewSignature = () => {
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.signed, currentLanguage)}
+                    {formatValue(approvalStats.signed)}
                   </span>
                   <span className={styles["value"]}>{t("Signed")}</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-pending"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.pending, currentLanguage)}
+                    {formatValue(approvalStats.pending)}
                   </span>
-                  <span className={styles["value"]}>{t("Pending")}</span>
+                  <span className={styles["value"]}>Pending</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-decline"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.declined, currentLanguage)}
+                    {formatValue(approvalStats.declined)}
                   </span>
-                  <span className={styles["value"]}>{t("Decline")}</span>
+                  <span className={styles["value"]}>Decline</span>
                 </div>
               </Col>
             </Row>

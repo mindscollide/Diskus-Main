@@ -112,27 +112,6 @@
   transition: none !important;
   border: 1px solid #000 !important;
   border-right: none !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-}
-body[dir="rtl"]
-  .newDashboardTable
-  .ant-table-tbody
-  > tr.ant-table-row:hover
-  > td.titleDashboard,
-.newDashboardTable
-  .ant-table-tbody
-  > tr
-  > td.ant-table-cell-row-hover.titleDashboard {
-  transition: none !important;
-  border: 1px solid #000 !important;
-  border-left: none !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
 }
 
 .newDashboardTable
@@ -160,27 +139,6 @@ body[dir="rtl"]
   transition: none !important;
   border: 1px solid #000 !important;
   border-left: none !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
-}
-body[dir="rtl"]
-  .newDashboardTable
-  .ant-table-tbody
-  > tr.ant-table-row:hover
-  > td.statusDashboard,
-.newDashboardTable
-  .ant-table-tbody
-  > tr
-  > td.ant-table-cell-row-hover.statusDashboard {
-  transition: none !important;
-  border: 1px solid #000 !important;
-  border-right: none !important;
-  border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
 }
 .task-title {
   color: #5a5a5a !important;

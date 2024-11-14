@@ -54,10 +54,7 @@ import ModalCancellResolution2 from "./ModalCancellResolution2/ModalCancellResol
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
-import {
-  convertToArabicNumerals,
-  validateInput,
-} from "../../commen/functions/regex";
+import { validateInput } from "../../commen/functions/regex";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -69,7 +66,6 @@ const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const ResolutionReducerResponseMessage = useSelector(
     (state) => state.ResolutionReducer.ResponseMessage
   );
@@ -527,7 +523,7 @@ const Resolution = () => {
       render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
-            {_justShowDateformat(table, CurrentLanguage)}
+            {_justShowDateformat(table)}
           </span>
         );
       },
@@ -591,9 +587,7 @@ const Resolution = () => {
       key: "voteCount",
       width: "110px",
       render: (text) => (
-        <span className={styles["voterCountStyle"]}>
-          {convertToArabicNumerals(text, CurrentLanguage)}
-        </span>
+        <span className={styles["voterCountStyle"]}>{text}</span>
       ),
     },
     {
@@ -698,7 +692,7 @@ const Resolution = () => {
       render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
-            {_justShowDateformat(table, CurrentLanguage)}
+            {_justShowDateformat(table)}
           </span>
         );
       },
@@ -775,7 +769,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (text, data) => {
+      render: (data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         if (votingDeadline < newDate) {
@@ -837,7 +831,7 @@ const Resolution = () => {
       render: (table) => {
         return (
           <span className={styles["resolution_date_Decision_date"]}>
-            {_justShowDateformat(table, CurrentLanguage)}
+            {_justShowDateformat(table)}
           </span>
         );
       },
@@ -883,7 +877,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
@@ -981,7 +975,7 @@ const Resolution = () => {
       render: (text) => {
         return (
           <span className={styles["voterCountStyle"]}>
-            {_justShowDateformat(text, CurrentLanguage)}
+            {_justShowDateformat(text)}
           </span>
         );
       },
@@ -1004,7 +998,7 @@ const Resolution = () => {
       width: "90px",
       align: "center",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.isAttachmentAvailable) {
           return (
             <img

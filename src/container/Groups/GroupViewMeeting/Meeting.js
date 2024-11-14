@@ -40,7 +40,6 @@ import {
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID
   );
@@ -53,6 +52,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     allMeetingsSocketData,
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
+
   const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -313,7 +313,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
 
   const MeetingColoumns = [
     {
-      title: <span className={styles["TitleArabic"]}>{t("Title")}</span>,
+      title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
       width: "120px",
@@ -351,7 +351,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           text: t("Active"),
           value: "10",
         },
-
+        // {
+        //   text: t("Start"),
+        //   value: "2",
+        // },
         {
           text: t("Upcoming"),
           value: "1",
@@ -415,8 +418,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           return (
             <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime,
-                CurrentLanguage
+                record.dateOfMeeting + record.meetingStartTime
               )}
             </span>
           );
@@ -923,14 +925,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     }
   }, [MeetingStatusEnded]);
 
-  const scroll = {
-    y: "39vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
-  };
-
   return (
     <>
       {createMeetingModal && (
@@ -971,7 +965,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={scroll}
+            scroll={{ y: "39vh", x: "max-content" }}
             rows={rows}
             pagination={false}
             size="small"

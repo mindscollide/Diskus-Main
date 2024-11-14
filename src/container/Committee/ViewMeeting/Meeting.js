@@ -15,12 +15,13 @@ import addmore from "../../../assets/images/addmore.png";
 import CreateModal from "../../modalmeeting/ModalMeeting";
 import ViewModal from "../../modalView/ModalView";
 import EditModal from "../../modalUpdate/ModalUpdate";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Tooltip } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
+
 import {
   JoinCurrentMeeting,
   getMeetingByCommitteeIDApi,
@@ -41,7 +42,6 @@ import { Checkbox, Dropdown, Menu } from "antd";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID
   );
@@ -401,8 +401,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           return (
             <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime,
-                CurrentLanguage
+                record.dateOfMeeting + record.meetingStartTime
               )}
             </span>
           );
@@ -988,8 +987,22 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             size="small"
             className="newMeetingTable"
             locale={{
-              emptyText: emptyText(),
+              emptyText: emptyText(), // Set your custom empty text here
             }}
+            // expandable={{
+            //   expandedRowRender: (record) => {
+            //     return (
+            //       record.meetingAgenda.length > 0 &&
+            //       record.meetingAgenda.map((data) => (
+            //         <p className='meeting-expanded-row'>
+            //           {data.objMeetingAgenda.title}
+            //         </p>
+            //       ))
+            //     );
+            //   },
+            //   rowExpandable: (record) =>
+            //     record.meetingAgenda.length > 0 ? true : false,
+            // }}
           />
         </Col>
         {rows && rows.length > 0 ? (

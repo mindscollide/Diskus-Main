@@ -60,6 +60,7 @@ import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../commen/functions/utils";
+import { CirclePicker } from "react-color";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -1546,9 +1547,7 @@ const EditResolution = ({ setCancelresolution }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className={
-          currentLanguage === "en" ? "input-with-icon" : "input-with-icon_ar"
-        }
+        className="input-with-icon"
       />
     );
   }

@@ -137,49 +137,8 @@ const NewCalendar = () => {
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
-      let newCalendarData = [];
-      Data.forEach((calenderData, index) => {
-        newCalendarData.push({
-          pK_MDID: calenderData.pK_MDID,
-          pK_CEID: calenderData.pK_CEID,
-          fK_TZID: calenderData.fK_TZID,
-          fK_CETID: calenderData.fK_CETID,
-          fK_CESID: calenderData.fK_CESID,
-          location: calenderData.location,
-          eventDate: calenderData.eventDate,
-          startTime: calenderData.startTime,
-          endTime: calenderData.endTime,
-          title: calenderData.title,
-          description: calenderData.description,
-          calenderEventSource:
-            calenderData.fK_CESID === 1
-              ? t("Google")
-              : calenderData.fK_CESID === 2
-              ? t("Office")
-              : calenderData.fK_CESID === 3
-              ? t("Diskus")
-              : calenderData.fK_CESID === 4
-              ? t("Microsoft")
-              : "",
-          calenderEventType:
-            calenderData.fK_CETID === 1
-              ? t("None")
-              : calenderData.fK_CETID === 2
-              ? t("Meeting")
-              : calenderData.fK_CETID === 3
-              ? t("Task")
-              : calenderData.fK_CETID === 4
-              ? t("Resolution")
-              : calenderData.fK_CETID === 5
-              ? t("Polls")
-              : "",
-          timeZone: calenderData.timeZone,
-          statusID: calenderData.statusID,
-          participantRoleID: calenderData.participantRoleID,
-          isQuickMeeting: calenderData.isQuickMeeting,
-        });
-      });
-      setCalendarEvents(newCalendarData);
+      console.log({ Data }, "DataDataDataupdateCalendarData");
+      setCalendarEvents(Data);
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
         Data.map((cData, index) => {
@@ -238,7 +197,7 @@ const NewCalendar = () => {
   };
 
   useEffect(() => {
-    if (lang !== null) {
+    if (lang !== undefined) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -417,25 +376,25 @@ const NewCalendar = () => {
           description: "",
           calenderEventSource:
             meetingData.fK_CESID === 1
-              ? t("Google")
+              ? "Google"
               : meetingData.fK_CESID === 2
-              ? t("Office")
+              ? "Office"
               : meetingData.fK_CESID === 3
-              ? t("Diskus")
+              ? "Diskus"
               : meetingData.fK_CESID === 4
-              ? t("Microsoft")
+              ? "Microsoft"
               : "",
           calenderEventType:
             meetingData.fK_CETID === 1
-              ? t("None")
+              ? "None"
               : meetingData.fK_CETID === 2
-              ? t("Meeting")
+              ? "Meeting"
               : meetingData.fK_CETID === 3
-              ? t("Task")
+              ? "Task"
               : meetingData.fK_CETID === 4
-              ? t("Resolution")
+              ? "Resolution"
               : meetingData.fK_CETID === 5
-              ? t("Polls")
+              ? "Polls"
               : "",
           timeZone: meetingData.timeZone,
           statusID: meetingData.status,
@@ -517,25 +476,25 @@ const NewCalendar = () => {
           description: "",
           calenderEventSource:
             meetingData.fK_CESID === 1
-              ? t("Google")
+              ? "Google"
               : meetingData.fK_CESID === 2
-              ? t("Office")
+              ? "Office"
               : meetingData.fK_CESID === 3
-              ? t("Diskus")
+              ? "Diskus"
               : meetingData.fK_CESID === 4
-              ? t("Microsoft")
+              ? "Microsoft"
               : "",
           calenderEventType:
             meetingData.fK_CETID === 1
-              ? t("None")
+              ? "None"
               : meetingData.fK_CETID === 2
-              ? t("Meeting")
+              ? "Meeting"
               : meetingData.fK_CETID === 3
-              ? t("Task")
+              ? "Task"
               : meetingData.fK_CETID === 4
-              ? t("Resolution")
+              ? "Resolution"
               : meetingData.fK_CETID === 5
-              ? t("Polls")
+              ? "Polls"
               : "",
           timeZone: meetingData.timeZone,
           statusID: meetingData.status,

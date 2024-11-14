@@ -398,7 +398,6 @@ body[dir="rtl"] .user-name {
   border-radius: 4px;
   margin: 0;
   padding: 0;
-  width: 100% !important;
 }
 .profilebtn-dropdown .dropdown-toggle .dropdown_menu.dropdown-menu.show {
   left: 0 !important;
@@ -407,7 +406,7 @@ body[dir="rtl"] .user-name {
 }
 
 body[dir="rtl"] .dropdown-menu.show {
-  top: 0px !important;
+  top: 30px !important;
 }
 
 .Profile_dropdown_menu.dropdown-menu.show {

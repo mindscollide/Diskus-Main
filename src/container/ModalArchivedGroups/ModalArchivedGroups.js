@@ -151,7 +151,7 @@ const ModalArchivedCommittee = ({
             modalFooterClassName="d-block"
             modalHeaderClassName="d-block"
             centered
-            size={"xl"}
+            size={archivedCommittee === true ? "xl" : "xl"}
             ModalTitle={
               <>
                 <Row>

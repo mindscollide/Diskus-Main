@@ -118,10 +118,6 @@ body[dir="rtl"] .Card_border2 {
   margin-left: 5px !important;
 }
 
-body[dir="rtl"] .Name_cards {
-  margin-right: 5px !important;
-}
-
 .CheckBox_ViewProgressPolls {
   margin: 0;
   padding: 0;

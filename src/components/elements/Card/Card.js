@@ -34,7 +34,6 @@ const Card = ({
   handleClickDocumentOption,
 }) => {
   const { t } = useTranslation();
-  let Currentlanguage = localStorage.getItem("i18nextLng");
   const [editItems, setEditItems] = useState([
     { key: t("In-active"), value: 1 },
     { key: t("Archive"), value: 2 },
@@ -170,9 +169,7 @@ const Card = ({
               lg={12}
               md={12}
               sm={12}
-              className={`d-flex gap-2 mt-4 pe-3 ${
-                Currentlanguage === "ar" ? "" : "justify-content-end"
-              }`}
+              className="d-flex justify-content-end gap-2 mt-4 pe-3"
             >
               {Number(creatorId) === Number(creatorID) && (
                 <Tooltip placement="bottomLeft" title={t("Edit")}>

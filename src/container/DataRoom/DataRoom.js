@@ -124,8 +124,10 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../commen/functions/regex";
 
 const DataRoom = () => {
+  const currentUrl = window.location.href;
   let DataRoomString = localStorage.getItem("DataRoomEmail");
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  let locale = localStorage.getItem("i18nextLng");
+
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -1235,7 +1237,7 @@ const DataRoom = () => {
       render: (text, data) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
-            {_justShowDateformat(text, CurrentLanguage)}
+            {_justShowDateformat(text)}
           </span>
         );
       },
@@ -1251,14 +1253,9 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          {
-            console.log("File-size", text);
-          }
-          return (
-            <span className={styles["ownerName"]}>
-              {`${convertToArabicNumerals(text, CurrentLanguage)} MB`}
-            </span>
-          );
+          {console.log("File-size",text)}
+          return <span className={styles["ownerName"]}>{`${convertToArabicNumerals(text, locale)} MB`}
+</span>;
         }
       },
     },
@@ -1835,7 +1832,7 @@ const DataRoom = () => {
       render: (text, data) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
-            {_justShowDateformat(text, CurrentLanguage)}
+            {_justShowDateformat(text)}
           </span>
         );
       },
@@ -1851,12 +1848,7 @@ const DataRoom = () => {
         if (record.isFolder) {
           return <Dash />;
         } else {
-          return (
-            <span className={styles["ownerName"]}>{`${convertToArabicNumerals(
-              text,
-              CurrentLanguage
-            )} MB`}</span>
-          );
+          return <span className={styles["ownerName"]}>{`${convertToArabicNumerals(text, locale)} MB`}</span>;
         }
       },
     },
@@ -2282,6 +2274,7 @@ const DataRoom = () => {
       },
     },
   ];
+
   const shareWithmeColoumns = [
     {
       title: t("Name"),
@@ -2289,6 +2282,8 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
+        console.log(record, "datadatadatadata");
+
         let ext = record.name.split(".").pop();
 
         if (record.isFolder) {
@@ -2341,11 +2336,10 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
       sortOrder: currentSort,
       render: (text, record) => {
-        console.log(text, "texttexttext");
         if (text !== "") {
           return (
             <span className={styles["dataroom_table_heading"]}>
-              {_justShowDateformat(text, CurrentLanguage)}
+              {_justShowDateformat(text)}
             </span>
           );
         }

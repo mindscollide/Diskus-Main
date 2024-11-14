@@ -16,10 +16,9 @@ import SeceretBallotingIcon from "../../assets/images/resolutions/Secret_Balloti
 import { useSelector, useDispatch } from "react-redux";
 import { updateVoteApi } from "../../store/actions/Resolution_actions";
 import { useNavigate } from "react-router-dom";
-import { convertToArabicNumerals } from "../../commen/functions/regex";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
+
   const VoteDetails = useSelector(
     (state) => state.ResolutionReducer.getVoteDetailsByID
   );
@@ -509,10 +508,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <span
                               className={styles["No_of_Votes_voteResolution"]}
                             >
-                              {convertToArabicNumerals(
-                                totalVoters,
-                                CurrentLanguage
-                              ) || 0}
+                              {totalVoters || 0}
                             </span>
                           </span>
                         </Col>

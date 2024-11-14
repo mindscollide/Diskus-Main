@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreateGroupPolls.module.css";
+import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 import {
@@ -33,15 +33,12 @@ import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../store/actions/Polls_actions";
-import EnglishCalendar from "react-date-object/calendars/gregorian";
-import ArabicCalendar from "react-date-object/calendars/arabic";
 
 const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  let currentLanguage = localStorage.getItem("i18nextLng");
   const unsavedPollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.unsavedPollsMeeting
   );
@@ -52,14 +49,14 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
-  const [memberSelect, setmemberSelect] = useState([]); //For Custom language datepicker
+  const [memberSelect, setmemberSelect] = useState([]);
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   const [options, setOptions] = useState([
@@ -164,19 +161,6 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       date: DateDate,
     });
   };
-
-  useEffect(() => {
-    if (currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(EnglishCalendar);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(ArabicCalendar);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
-
   useEffect(() => {
     if (
       getGroupByGroupIdResponse !== null &&
