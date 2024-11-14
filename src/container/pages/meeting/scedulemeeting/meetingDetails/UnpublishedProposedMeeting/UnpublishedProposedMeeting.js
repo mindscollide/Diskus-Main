@@ -89,6 +89,7 @@ const UnpublishedProposedMeeting = ({
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+  const currentLanguage = localStorage.getItem("i18nextLng")
 
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -446,7 +447,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <span className="text-truncate d-block">
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime
+                record.dateOfMeeting + record.meetingStartTime, currentLanguage
               )}
             </span>
           );

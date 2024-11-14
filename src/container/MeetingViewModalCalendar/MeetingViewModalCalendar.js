@@ -384,7 +384,7 @@ const MeetingViewModalCalendar = ({
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
-          ),
+          ),currentLanguage,
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               viewData.meetingEvent.meetingDate +

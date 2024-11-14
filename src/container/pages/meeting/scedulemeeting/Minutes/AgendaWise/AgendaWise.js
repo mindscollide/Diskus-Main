@@ -1034,8 +1034,8 @@ const AgendaWise = ({
                                                   >
                                                     {newTimeFormaterAsPerUTCFullDate(
                                                       Itemsdata.lastUpdatedDate +
-                                                        Itemsdata.lastUpdatedTime
-                                                    ).toString()}
+                                                        Itemsdata.lastUpdatedTime ,currentLanguage
+                                                    )}
                                                   </span>
                                                 </Col>
                                               </Row>

@@ -1544,7 +1544,7 @@ const NewMeeting = () => {
           return (
             <span className='text-truncate d-block'>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime
+                record.dateOfMeeting + record.meetingStartTime, currentLanguage
               )}
             </span>
           );
