@@ -7918,6 +7918,10 @@ body[dir="rtl"] .SceduleMeetingButton button {
   justify-content: center;
 }
 
+body[dir="rtl"] .SceduleMeetingButton .dropdown-toggle.btn.btn-primary {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .SceduleMeetingButton .dropdown-menu.show {
   padding: 0 !important;
   width: 220px;
@@ -8081,7 +8085,6 @@ body[dir="rtl"] .menu-text {
 }
 /* Menu Polls  Status Ends */
 
-
 .Confirmationmodal_body_text_meeting_update {
   padding: 0 20px !important;
   text-align: center !important;
@@ -8121,6 +8124,7 @@ body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
 td.ant-table-column-sort {
   background: none !important;
 }
-.ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
   background: none !important;
 }
