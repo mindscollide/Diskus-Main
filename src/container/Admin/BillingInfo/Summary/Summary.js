@@ -19,29 +19,76 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
-import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  _justShowDateformatBilling,
+} from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { Record } from "react-bootstrap-icons";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  let Blur = localStorage.getItem("blur");
   let organizationID = localStorage.getItem("organizationID");
+
+  const getBillInformation = useSelector(
+    (state) => state.OrganizationBillingReducer.getBillInformation
+  );
+  const VerifyOTPEmailResponseMessage = useSelector(
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+  );
+  const EnterPasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.EnterPasswordResponseMessage
+  );
+  const OrganizationCreateResponseMessage = useSelector(
+    (state) => state.Authreducer.OrganizationCreateResponseMessage
+  );
+  const CreatePasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.CreatePasswordResponseMessage
+  );
+  const EmailValidationResponseMessage = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+  const GetSelectedPackageResponseMessage = useSelector(
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+  );
+  const searchPaymentHistory = useSelector(
+    (state) => state.adminReducer.searchPaymentHistory
+  );
   const [activateBlur, setActivateBlur] = useState(false);
+
   const [rows, setRows] = useState([]);
+
   const [summary, setSummary] = useState({
     BalanceDue: 0,
     NextInvoiceEstimate: 0,
     NextPaymentDueDate: "",
     AmountAfterDiscount: 0,
   });
-
+  console.log(
+    "lastPaymentlastPayment",
+    _justShowDateformatBilling(summary.NextPaymentDueDate)
+  );
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
     PaidAmount: 0,
   });
+  console.log(
+    "lastPaymentlastPayment",
+    _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
+  );
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
-  let Blur = localStorage.getItem("blur");
-
+  //Open Invoice Table State
+  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
   useEffect(() => {
     if (Blur != undefined) {
       setActivateBlur(true);
@@ -49,21 +96,6 @@ const Summary = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  const { Authreducer, OrganizationBillingReducer, adminReducer } = useSelector(
-    (state) => state
-  );
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-  const { t } = useTranslation();
-
-  //Open Invoice Table State
-
-  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
 
   //Invoice and payment History Api Call
   useEffect(() => {
@@ -87,100 +119,71 @@ const Summary = () => {
   //Extracting the data of payment and Invoice Details
   useEffect(() => {
     try {
-      if (
-        adminReducer.searchPaymentHistory !== null &&
-        adminReducer.searchPaymentHistory !== undefined
-      ) {
-        setOpenInvoiceRecords(adminReducer.searchPaymentHistory.paymentHistory);
+      if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
+        setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
       }
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [adminReducer.searchPaymentHistory]);
+  }, [searchPaymentHistory]);
 
   useEffect(() => {
     if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      VerifyOTPEmailResponseMessage !== "" &&
+      VerifyOTPEmailResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(VerifyOTPEmailResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      EnterPasswordResponseMessage !== "" &&
+      EnterPasswordResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
+      showMessage(EnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      OrganizationCreateResponseMessage !== "" &&
+      OrganizationCreateResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(OrganizationCreateResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      CreatePasswordResponseMessage !== "" &&
+      CreatePasswordResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(CreatePasswordResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      GetSelectedPackageResponseMessage !== "" &&
+      GetSelectedPackageResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(GetSelectedPackageResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      EmailValidationResponseMessage !== "" &&
+      EmailValidationResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(EmailValidationResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
+    EnterPasswordResponseMessage,
+    VerifyOTPEmailResponseMessage,
+    OrganizationCreateResponseMessage,
+    CreatePasswordResponseMessage,
+    EmailValidationResponseMessage,
+    GetSelectedPackageResponseMessage,
   ]);
   const closeModal = () => {
     setActivateBlur(false);
@@ -209,6 +212,13 @@ const Summary = () => {
       key: "invoiceDate",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {newTimeFormaterAsPerUTCFullDate(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Invoice-amount"),
@@ -216,6 +226,13 @@ const Summary = () => {
       key: "paidAmount",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Balance-due"),
@@ -223,6 +240,13 @@ const Summary = () => {
       key: "balancedue",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Late-charges"),
@@ -230,6 +254,13 @@ const Summary = () => {
       key: "latecharges",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Pay"),
@@ -242,11 +273,11 @@ const Summary = () => {
 
   useEffect(() => {
     try {
-      if (OrganizationBillingReducer.getBillInformation !== null) {
-        let Summary =
-          OrganizationBillingReducer.getBillInformation.accountDetails;
-        let lastpaymentDetail =
-          OrganizationBillingReducer.getBillInformation.lastPayment;
+      console.log("lastpaymentDetail", getBillInformation);
+
+      if (getBillInformation !== null) {
+        let Summary = getBillInformation.accountDetails;
+        let lastpaymentDetail = getBillInformation.lastPayment;
 
         setSummary({
           BalanceDue: Summary.balanceDue != 0 ? Summary.balanceDue : 0,
@@ -257,7 +288,7 @@ const Summary = () => {
         });
 
         let newInvoice = [];
-        OrganizationBillingReducer.getBillInformation.invoice.map((data) => {
+        getBillInformation.invoice.map((data) => {
           newInvoice.push({
             invoice: data.invoiceCustomerNumber,
             duedate: _justShowDateformatBilling(data.invoiceDueDate),
@@ -266,7 +297,6 @@ const Summary = () => {
             latecharges: data.lateFeeCharged,
           });
         });
-        console.log("SummarySummarySummary", newInvoice);
 
         setRows([...newInvoice]);
 
@@ -285,7 +315,7 @@ const Summary = () => {
     } catch {
       console.log("error");
     }
-  }, [OrganizationBillingReducer.getBillInformation]);
+  }, [getBillInformation]);
   console.log("SummarySummarySummary", rows);
 
   useEffect(() => {
@@ -303,7 +333,7 @@ const Summary = () => {
             ColThreeKey={t("Next-payment-due-date")}
             ColOneValue={
               summary.BalanceDue != 0 ? (
-                <>$ {summary.BalanceDue}</>
+                <>$ {convertToArabicNumerals(summary.BalanceDue)}</>
               ) : (
                 <>{summary.BalanceDue}</>
               )
@@ -315,9 +345,12 @@ const Summary = () => {
                 <>{summary.NextInvoiceEstimate}</>
               )
             }
-            ColThreeValue={_justShowDateformatBilling(
-              summary.NextPaymentDueDate
-            )}
+            ColThreeValue={
+              _justShowDateformatBilling(summary.NextPaymentDueDate) !==
+              "Invalid date"
+                ? _justShowDateformatBilling(summary.NextPaymentDueDate)
+                : "--"
+            }
           />
           <PaymentActivity
             PaymentActivityBoxTitle={t("Account-activity")}
@@ -326,12 +359,15 @@ const Summary = () => {
             ColTwoKey={t("Payment-received-date")}
             ColThreeKey={t("Paid-amount")}
             ColOneValue={lastPayment.Invoice}
-            ColTwoValue={_justShowDateformatBilling(
-              lastPayment.PaymentReceivedDate
-            )}
+            ColTwoValue={
+              _justShowDateformatBilling(lastPayment.PaymentReceivedDate) !==
+              "Invalid date"
+                ? _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
+                : "--"
+            }
             ColThreeValue={
               lastPayment.PaidAmount !== 0 ? (
-                <>$ {lastPayment.PaidAmount}</>
+                <>$ {convertToArabicNumerals(lastPayment.PaidAmount)}</>
               ) : (
                 <>{"--"}</>
               )

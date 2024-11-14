@@ -62,6 +62,7 @@ export const formatValue = (value, locale) => {
 };
 export const convertToArabicNumerals = (input, locale) => {
   console.log(input, "inputinputinputinput");
+  let currentLanguage = localStorage.getItem("i18nextLng");
   // Check for null or undefined input
   if (input == null) {
     return ""; // Return an empty string if input is null or undefined
@@ -73,7 +74,7 @@ export const convertToArabicNumerals = (input, locale) => {
   const number = input.toString();
 
   // If locale is 'ar', replace digits with Arabic numerals
-  if (locale === "ar") {
+  if (currentLanguage === "ar") {
     return number.replace(/\d/g, (digit) =>
       String.fromCharCode(0x0660 + parseInt(digit))
     );

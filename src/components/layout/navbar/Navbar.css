@@ -47,8 +47,7 @@ nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   padding: 0;
   top: 20px;
   left: -10px;
-  width: auto;
-  /* padding: 0 10px; */
+  width: auto !important;
 }
 body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu.show {
   left: auto;

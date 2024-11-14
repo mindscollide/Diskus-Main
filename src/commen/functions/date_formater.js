@@ -246,6 +246,7 @@ export const _justShowDateformat = (dateTime) => {
 };
 
 export const _justShowDateformatBilling = (dateTime, locale) => {
+  console.log(dateTime, "localelocalelocale");
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }

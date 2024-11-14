@@ -202,7 +202,7 @@ const ApprovalSend = () => {
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }>
-            {status}
+            {t(status)}
           </p>
         );
       },

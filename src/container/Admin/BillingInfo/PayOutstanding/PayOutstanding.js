@@ -18,7 +18,9 @@ import {
 import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
-  const { OrganizationBillingReducer } = useSelector((state) => state);
+  const getPayoutStanding = useSelector(
+    (state) => state.OrganizationBillingReducer.getPayoutStanding
+  );
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -31,10 +33,12 @@ const PayOutstanding = () => {
     BalanceDue: 0,
     InvoiceID: 0,
   });
+  console.log(payOutStanding, "payOutStandingpayOutStanding");
+
   const [invoiceModal, setInvoiceModal] = useState(false);
   useEffect(() => {
-    if (OrganizationBillingReducer.getPayoutStanding !== null) {
-      let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
+    if (getPayoutStanding !== null) {
+      let payOutStandingData = getPayoutStanding;
       setPayOutStanding({
         Invoice: payOutStandingData.invoiceCustomerNumber,
         DueDate:
@@ -66,7 +70,7 @@ const PayOutstanding = () => {
         InvoiceID: 0,
       });
     }
-  }, [OrganizationBillingReducer.getPayoutStanding]);
+  }, [getPayoutStanding]);
 
   useEffect(() => {
     dispatch(getPayoutStandingInformation(navigate, t));
@@ -139,7 +143,7 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {payOutStanding.Invoice}
+                          {payOutStanding.Invoice || 0}
                         </p>
                       </Col>
                     </Row>
@@ -151,7 +155,9 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {_justShowDateformatBilling(payOutStanding.DueDate)}
+                          {_justShowDateformatBilling(
+                            payOutStanding.DueDate
+                          ) !== "Invalid date" || "--"}
                         </p>
                       </Col>
                     </Row>
