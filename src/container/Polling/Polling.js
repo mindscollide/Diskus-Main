@@ -531,6 +531,7 @@ const Polling = () => {
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
+      align: "start",
       sorter: (a, b) =>
         a.pollTitle.toLowerCase().localeCompare(b.pollTitle.toLowerCase()),
       sortOrderPollingTitle,
