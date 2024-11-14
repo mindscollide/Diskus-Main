@@ -338,7 +338,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "title",
       key: "title",
       width: "115px",
-      align: "left",
+      align: currentLanguage === "en" ? "left" : "right",
       render: (text, record) => {
         return (
           <span

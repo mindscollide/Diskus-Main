@@ -476,7 +476,7 @@ const TodoList = () => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className='m-0 d-flex justify-content-center MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
               draggable='false'
@@ -526,7 +526,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className='m-0 MontserratRegular d-flex justify-content-center color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>

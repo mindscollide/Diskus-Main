@@ -176,29 +176,8 @@ body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
   position: relative;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.hello
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
-  position: absolute;
-  top: 0;
-}
 
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
-  position: absolute;
-  top: 15px;
-}
 
-body[dir="rtl"]
-  .ant-table-wrapper.Billing_TablePakageSelection
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
-  position: absolute;
-  top: 15px;
-}
 
 body[dir="rtl"] .todolist-title-col {
   text-align: right !important;
@@ -464,9 +443,7 @@ body[dir="rtl"] .eye_icon.valid-feedback {
   cursor: pointer;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
-  text-align: right !important;
-}
+
 
 body[dir="rtl"]
   .ant-table-wrapper.Billing_TablePakageSelection
