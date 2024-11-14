@@ -2221,6 +2221,7 @@
   "Organization-is-inactive": "Organization is inactive",
   "Archive": "Archive",
   "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details",
-  "Proposed":"Proposed",
-  "Unpublished":"Unpublished"
+  "Proposed": "Proposed",
+  "Unpublished": "Unpublished",
+  "No-document-at-the-moment-to-review": "No document at the moment to review"
 }

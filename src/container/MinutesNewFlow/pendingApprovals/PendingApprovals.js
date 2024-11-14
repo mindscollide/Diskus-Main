@@ -161,7 +161,7 @@ const PendingApproval = () => {
     {
       title: (
         <>
-          <span>
+          <span >
             {t("Meeting-title")}{" "}
             {sortOrderMeetingTitle === "descend" ? (
               <img src={DescendIcon} alt="" />
@@ -173,6 +173,7 @@ const PendingApproval = () => {
       ),
       dataIndex: "title",
       key: "title",
+      align: lang === "en" ? "left" : "right",
       className: "nameParticipant",
       width: "200px",
       ellipsis: true,
@@ -224,6 +225,7 @@ const PendingApproval = () => {
       key: "requestedBy",
       className: "emailParticipant",
       width: "180px",
+      align: "center",
       ellipsis: true,
       sorter: (a, b) =>
         a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
