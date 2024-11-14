@@ -2106,13 +2106,6 @@ span.background-close-search {
   left: -100px !important;
 }
 
-body[dir="rtl"] .dropdown-menu-upwards {
-  position: absolute !important;
-  top: -260px !important;
-  transform: none !important;
-  left: -100px !important;
-}
-
 ::placeholder {
   font-family: "Montserrat" !important;
   font-weight: 400 !important;
@@ -2164,4 +2157,14 @@ body[dir="rtl"] .chat-box-icons .dropdown-menu .show {
 }
 body[dir="rtl"] .talkchatMsg .dropdown {
   right: 0 !important;
+}
+body[dir="rtl"] .ChatsOneToOneDropDownMenuReciever.dropdown-menu.show {
+  left: auto !important;
+  right: 49px !important;
+  top: 15px !important;
+}
+
+body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
+  border: none !important;
+  display: none !important;
 }

@@ -4032,7 +4032,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         />
                                       ) : null}
 
-                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                      <div className="direct-chat-text message-inbox message-box text-start ChatsOneToOne">
                                         <div
                                           className="chatmessage-box-icons"
                                           ref={
@@ -4041,19 +4041,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             ]
                                           }
                                         >
-                                          <Dropdown className="border-none">
-                                            <Dropdown.Toggle id="dropdown-basic">
+                                          <Dropdown className="ChatsOneToOneDropDownReciever border-none">
+                                            <Dropdown.Toggle id="dropdown-basic ChatsOneToOneDropDownRecieverToggle">
                                               <img
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
                                               className={
                                                 isLastMessage
                                                   ? "dropdown-menu-upwards"
-                                                  : ""
+                                                  : "ChatsOneToOneDropDownMenuReciever"
                                               }
                                             >
                                               <>
@@ -4310,6 +4311,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4606,6 +4608,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4854,6 +4857,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
+                                                  alt=""
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
