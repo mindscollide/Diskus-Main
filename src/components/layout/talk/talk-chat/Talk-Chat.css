@@ -1261,11 +1261,11 @@ span.direct-chat-body {
 body[dir="rtl"] .direct-chat-text .chatmessage-box-icons img.dropdown-icon {
   position: absolute;
   width: 12px;
-  top: 6px;
+  top: 0px;
   right: auto;
   z-index: 9;
   cursor: pointer;
-  left: 15px;
+  right: 195px;
 }
 
 body[dir="rtl"] .dropdown-menus-chatmessage {
@@ -1493,6 +1493,7 @@ p.chat-username.blocked-users {
   justify-content: center;
   align-items: center;
   vertical-align: middle;
+  gap: 5px !important;
 }
 
 .chat-profile-icon.forward {
@@ -2128,6 +2129,11 @@ body[dir="rtl"] img.image-close {
 
 button.talk-dropdown-toggle.dropdown-toggle {
   border: none !important;
+}
+
+body[dir="rtl"] .chat-box-icons .dropdown-menu .show {
+  top: 0px !important;
+  right: 50px !important;
 }
 
 .chat-box-icons.cursor-pointer.positionRelative.show.dropdown a.dropdown-item {

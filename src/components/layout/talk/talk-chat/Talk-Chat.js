@@ -4423,6 +4423,10 @@ const TalkChat = () => {
                               allBroadcastMessages.length === 0 &&
                               allGroupMessages.length === 0 ? (
                                 allOtoMessages.map((messageData, index) => {
+                                  console.log(
+                                    messageData,
+                                    "messageDatamessageDatamessageData"
+                                  );
                                   var ext = messageData.attachmentLocation
                                     .split(".")
                                     .pop();
@@ -5090,6 +5094,7 @@ const TalkChat = () => {
                                               draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownIcon}
+                                              alt=""
                                             />
                                             {chatFeatureActive ===
                                             messageData.messageID ? (
@@ -5395,6 +5400,7 @@ const TalkChat = () => {
                                               draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownChatIcon}
+                                              alt=""
                                             />
                                             {chatFeatureActive ===
                                             messageData.messageID ? (
@@ -5587,6 +5593,7 @@ const TalkChat = () => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
+                                                  alt=""
                                                 />
                                                 {chatFeatureActive ===
                                                 messageData.messageID ? (
