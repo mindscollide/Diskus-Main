@@ -877,6 +877,7 @@
   "The-user-is-blocked": "المستخدم محظور",
   "My-document": "ملفاتي",
   "Shared-with-me": "شارك معي",
+  "Shared With Me": "شارك معي",
   "Documents": "وثائق",
   "People": "الناس",
   "Sec-remaining": "الثواني المتبقية",
@@ -939,6 +940,7 @@
   "Decision-pending": "قرار قيد الانتظار",
   "Any-where-in-dataRoom": "في أي مكان في غرفة البيانات",
   "My-documents": "مستنداتي",
+  "My Documents": "مستنداتي",
   "Owned-by-me": "التي املكها",
   "Not-owned-by-me": "ليست مملوكة لي",
   "Specific-person": "شخص معين",
@@ -1440,6 +1442,7 @@
   "1-day-before": "قبل يوم واحد",
   "7-days-before": "قبل ٧ ايام",
   "Recently-added": "أضيف مؤخرا",
+  "Recently Added": "أضيف مؤخرا",
   "Your-subscription-will-expire-soon": "سوف ينتهي اشتراكك قريبا",
   "Your-one-step-solution-to-meeting-management": "الحل الخاص بك في خطوة واحدة لإدارة الاجتماعات",
   "Please-add-valid-user": "الرجاء إضافة مستخدم صالح",
@@ -1961,6 +1964,7 @@
   "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance": "لم يتمّ تعيين أي ترخيص لك. يُرجى الاتِّصال بالمشرف لمزيدٍ من المُساعدة.",
   "Information-saved": "المعلومات المحفوظة",
   "Send-for-approval": "أرسل للموافقة",
+  "Send For Approval": "أرسل للموافقة",
   "Leave-a-comment": "اترك تعليقًا",
   "Write-a-reason": "اكتب سببًا",
   "Hide-comment": "إخفاء التعليق",
@@ -2222,6 +2226,6 @@
   "Archive": "Archive",
   "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details",
   "Proposed": "Proposed",
-  "Unpublished": "Unpublished",
-  "No-document-at-the-moment-to-review": "No document at the moment to review"
+  "No-document-at-the-moment-to-review": "No document at the moment to review",
+  "Unpublished": "Unpublished"
 }

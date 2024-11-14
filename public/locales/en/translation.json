@@ -749,6 +749,7 @@
   "File-size": "File Size",
   "My-document": "My Document",
   "Shared-with-me": "Shared with me",
+  "Shared With Me": "Shared with me",
   "Notes-you-add-appear-here": "Notes you add appear here",
   "You-dont-have-any-notes": "You dont have any notes",
   "User-already-exist": "User Already Exist",
@@ -972,6 +973,7 @@
   "Decision-pending": "Decision Pending",
   "Any-where-in-dataRoom": "Any Where in DataRoom",
   "My-documents": "My Documents",
+  "My Documents": "My Documents",
   "Owned-by-me": "Owned by me",
   "Not-owned-by-me": "Not Owned by Me",
   "Specific-person": "Specific Person",
@@ -1477,6 +1479,7 @@
   "1-day-before": "1 day before",
   "7-days-before": "7 days before",
   "Recently-added": "Recently Added",
+  "Recently Added": "Recently Added",
   "Your-subscription-will-expire-soon": "Your subscription will expire soon",
   "Your-one-step-solution-to-meeting-management": "Your one-step solution to meeting management",
   "Please-add-valid-user": "Please add valid user",
@@ -1949,6 +1952,7 @@
   "Submission-date-and-time": "Submission date and time",
   "Submit-review": "Submit Review",
   "Send-for-approval": "Send for approval",
+  "Send For Approval": "Send for approval",
   "Leave-a-comment": "Leave a comment",
   "User-dashboard": "User dashboard",
   "organization-subscription-not-cancelled": "organization subscription not cancelled",
@@ -2288,7 +2292,7 @@
   "Duration": "Duration",
   "Downgrade": "Downgrade",
   "this-committee": "this committee?",
-  "Proposed":"Proposed",
-  "Unpublished":"Unpublished",
-  "No-document-at-the-moment-to-review": "No document at the moment to review"
+  "Unpublished": "Unpublished",
+  "No-document-at-the-moment-to-review": "No document at the moment to review",
+  "Proposed": "Proposed"
 }
