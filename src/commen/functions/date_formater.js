@@ -246,6 +246,7 @@ export const _justShowDateformat = (dateTime) => {
 };
 
 export const _justShowDateformatBilling = (dateTime, locale) => {
+  console.log(dateTime, "localelocalelocale");
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }
@@ -526,22 +527,42 @@ export const EditmeetingDateFormat = (dateTime) => {
   return _dateTime;
 };
 
-export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("hh:mm a");
+
+  const date = new Date(fullDateyear);
+
+  // Format the time based on 12-hour format with AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  return formattedTime;
 };
 
 export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
@@ -612,40 +633,169 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
     : formattedDate;
 };
 
-export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = date.getDate();
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format time in 12-hour format with AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  // Format date as "h:mm A, Do MMM, YYYY"
+  const formattedDateTime = `${formattedTime}, ${formattedDay} ${formattedMonth}, ${formattedYear}`;
+
+  // Convert English digits to Arabic if locale is "ar"
+  return locale === "ar"
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDateTime;
 };
 
-export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("DD-MMM-YYYY h:mm:ss");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format time in 12-hour format with seconds and AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  // Format date as "DD-MMM-YYYY h:mm:ss"
+  const formattedDateTime = `${formattedDay}-${formattedMonth}-${formattedYear} ${formattedTime}`;
+
+  // Convert English digits to Arabic if locale is "ar"
+  return locale === "ar"
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDateTime;
 };
 
 // h:mm:ss

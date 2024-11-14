@@ -15,6 +15,7 @@ import {
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
 
@@ -183,9 +184,12 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {`${formatDateToDDMMYYYYDownGradeSubscription(
-                    startdate
-                  )}-${orgnizationID}-${organizationSubscriptionID}`}
+                  {convertToArabicNumerals(
+                    `${formatDateToDDMMYYYYDownGradeSubscription(
+                      startdate
+                    )}-${orgnizationID}-${organizationSubscriptionID}`,
+                    Locale
+                  )}
                 </span>
               </>
             );
@@ -312,7 +316,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["TableheadingTotal"]}>
-                  {totalEssentialLicenses}
+                  {convertToArabicNumerals(totalEssentialLicenses, Locale)}
                 </span>
               </>
             );
@@ -324,7 +328,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
+                  {convertToArabicNumerals(headCount, Locale)}
                 </span>
               </>
             );
@@ -354,7 +358,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["TableheadingTotal"]}>
-                  {totalProfessionalLicenses}
+                  {convertToArabicNumerals(totalProfessionalLicenses, Locale)}
                 </span>
               </>
             );
@@ -369,7 +373,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
+                  {convertToArabicNumerals(headCount, Locale)}
                 </span>
               </>
             );
@@ -399,7 +403,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["TableheadingTotal"]}>
-                  {totalPremiumLicenses}
+                  {convertToArabicNumerals(totalPremiumLicenses, Locale)}
                 </span>
               </>
             );
@@ -411,7 +415,7 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
+                  {convertToArabicNumerals(headCount, Locale)}
                 </span>
               </>
             );
@@ -442,7 +446,7 @@ const SubscriptionDetailsUserManagement = () => {
 
             return (
               <span className={styles["TableheadingTotal"]}>
-                {totalCharges}
+                {convertToArabicNumerals(totalCharges, Locale)}
               </span>
             );
           } else {
@@ -469,7 +473,10 @@ const SubscriptionDetailsUserManagement = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {EssentialTotal + ProfessionalTotal + PremiumTotal}
+                  {convertToArabicNumerals(
+                    EssentialTotal + ProfessionalTotal + PremiumTotal,
+                    Locale
+                  )}
                 </span>
               </>
             );

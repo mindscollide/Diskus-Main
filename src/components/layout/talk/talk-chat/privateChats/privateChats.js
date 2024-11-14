@@ -28,6 +28,9 @@ const PrivateChats = () => {
 
   const { t } = useTranslation();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
   let currentUserId = localStorage.getItem("userID");
@@ -156,7 +159,12 @@ const PrivateChats = () => {
                 <div className="chat-profile-icon">
                   {dataItem.messageType === "O" ? (
                     <>
-                      <img draggable="false" src={SingleIcon} width={25} />
+                      <img
+                        draggable="false"
+                        src={SingleIcon}
+                        width={25}
+                        alt=""
+                      />
                     </>
                   ) : null}
                 </div>
@@ -183,6 +191,7 @@ const PrivateChats = () => {
                           draggable="false"
                           src={TimerIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -192,6 +201,7 @@ const PrivateChats = () => {
                           draggable="false"
                           src={SingleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -201,6 +211,7 @@ const PrivateChats = () => {
                           draggable="false"
                           src={DoubleTickDeliveredIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -210,6 +221,7 @@ const PrivateChats = () => {
                           draggable="false"
                           src={DoubleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : null}
                     </span>
@@ -221,18 +233,26 @@ const PrivateChats = () => {
                   >
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkTime(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkTime(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) ===
                       yesterdayDateUtc ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
-                          " "}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        ) + " "}
                         | Yesterday
                       </>
                     ) : (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     )}
                   </p>

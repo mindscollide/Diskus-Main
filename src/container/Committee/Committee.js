@@ -47,6 +47,14 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Committee = () => {
+
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+  
+  //Current User ID
+  let currentUserId = localStorage.getItem("userID");
   const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
     (state) => state.CommitteeReducer.GetAllCommitteesByUserIDResponse
   );
@@ -86,13 +94,9 @@ const Committee = () => {
   const talkStateDataAllUserChats = useSelector(
     (state) => state.talkStateData.AllUserChats
   );
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const [showActiveGroup, setShowActivegroup] = useState(false);
-  const [totalRecords, setTotalRecords] = useState(0);
-  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
   const [editFlag, setEditFlag] = useState(false);
   const [changeStatusModal, setChangeStatusModal] = useState(false);
   const [statusUpdateData, setStatusUpdateData] = useState(null);
@@ -105,11 +109,6 @@ const Committee = () => {
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
-  //Current User ID
-  let currentUserId = localStorage.getItem("userID");
-
-  //Current Organization
-  let currentOrganizationId = localStorage.getItem("organizationID");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -117,6 +116,9 @@ const Committee = () => {
   });
   const [mapgroupsData, setMapGroupData] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [showActiveGroup, setShowActivegroup] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
   useEffect(() => {
     try {
       if (currentPage !== null) {
