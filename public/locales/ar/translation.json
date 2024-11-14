@@ -2206,5 +2206,10 @@
   "Dormant": "Dormant",
   "Join-video-call": "Join Video Call",
   "Events": "Events",
-  "Deleted": "Deleted"
+  "Deleted": "Deleted",
+  "Licenses": "Licenses",
+  "Professional": "Professional",
+  "Essential": "Essential",
+  "Duration": "Duration",
+  "Downgrade": "Downgrade"
 }

@@ -24,9 +24,39 @@ import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPayme
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const Summary = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  let Blur = localStorage.getItem("blur");
   let organizationID = localStorage.getItem("organizationID");
+
+  const getBillInformation = useSelector(
+    (state) => state.OrganizationBillingReducer.getBillInformation
+  );
+  const VerifyOTPEmailResponseMessage = useSelector(
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+  );
+  const EnterPasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.EnterPasswordResponseMessage
+  );
+  const OrganizationCreateResponseMessage = useSelector(
+    (state) => state.Authreducer.OrganizationCreateResponseMessage
+  );
+  const CreatePasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.CreatePasswordResponseMessage
+  );
+  const EmailValidationResponseMessage = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+  const GetSelectedPackageResponseMessage = useSelector(
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+  );
+  const searchPaymentHistory = useSelector(
+    (state) => state.adminReducer.searchPaymentHistory
+  );
   const [activateBlur, setActivateBlur] = useState(false);
+
   const [rows, setRows] = useState([]);
+
   const [summary, setSummary] = useState({
     BalanceDue: 0,
     NextInvoiceEstimate: 0,
@@ -40,8 +70,15 @@ const Summary = () => {
     PaidAmount: 0,
   });
 
-  let Blur = localStorage.getItem("blur");
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
+  //Open Invoice Table State
+  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
+  console.log("openInvoiceRecords", openInvoiceRecords);
   useEffect(() => {
     if (Blur != undefined) {
       setActivateBlur(true);
@@ -49,21 +86,6 @@ const Summary = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  const { Authreducer, OrganizationBillingReducer, adminReducer } = useSelector(
-    (state) => state
-  );
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-  const { t } = useTranslation();
-
-  //Open Invoice Table State
-
-  const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
 
   //Invoice and payment History Api Call
   useEffect(() => {
@@ -87,100 +109,73 @@ const Summary = () => {
   //Extracting the data of payment and Invoice Details
   useEffect(() => {
     try {
-      if (
-        adminReducer.searchPaymentHistory !== null &&
-        adminReducer.searchPaymentHistory !== undefined
-      ) {
-        setOpenInvoiceRecords(adminReducer.searchPaymentHistory.paymentHistory);
+      if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
+        console.log("openInvoiceRecords", searchPaymentHistory);
+        setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
+        console.log("openInvoiceRecords", openInvoiceRecords);
       }
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [adminReducer.searchPaymentHistory]);
+  }, [searchPaymentHistory]);
 
   useEffect(() => {
     if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      VerifyOTPEmailResponseMessage !== "" &&
+      VerifyOTPEmailResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(VerifyOTPEmailResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      EnterPasswordResponseMessage !== "" &&
+      EnterPasswordResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(Authreducer.EnterPasswordResponseMessage, "success", setOpen);
+      showMessage(EnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      OrganizationCreateResponseMessage !== "" &&
+      OrganizationCreateResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(OrganizationCreateResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      CreatePasswordResponseMessage !== "" &&
+      CreatePasswordResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(CreatePasswordResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      GetSelectedPackageResponseMessage !== "" &&
+      GetSelectedPackageResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(GetSelectedPackageResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user")
+      EmailValidationResponseMessage !== "" &&
+      EmailValidationResponseMessage !== undefined &&
+      EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      showMessage(EmailValidationResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
+    EnterPasswordResponseMessage,
+    VerifyOTPEmailResponseMessage,
+    OrganizationCreateResponseMessage,
+    CreatePasswordResponseMessage,
+    EmailValidationResponseMessage,
+    GetSelectedPackageResponseMessage,
   ]);
   const closeModal = () => {
     setActivateBlur(false);
@@ -242,11 +237,9 @@ const Summary = () => {
 
   useEffect(() => {
     try {
-      if (OrganizationBillingReducer.getBillInformation !== null) {
-        let Summary =
-          OrganizationBillingReducer.getBillInformation.accountDetails;
-        let lastpaymentDetail =
-          OrganizationBillingReducer.getBillInformation.lastPayment;
+      if (getBillInformation !== null) {
+        let Summary = getBillInformation.accountDetails;
+        let lastpaymentDetail = getBillInformation.lastPayment;
 
         setSummary({
           BalanceDue: Summary.balanceDue != 0 ? Summary.balanceDue : 0,
@@ -257,7 +250,7 @@ const Summary = () => {
         });
 
         let newInvoice = [];
-        OrganizationBillingReducer.getBillInformation.invoice.map((data) => {
+        getBillInformation.invoice.map((data) => {
           newInvoice.push({
             invoice: data.invoiceCustomerNumber,
             duedate: _justShowDateformatBilling(data.invoiceDueDate),
@@ -285,7 +278,7 @@ const Summary = () => {
     } catch {
       console.log("error");
     }
-  }, [OrganizationBillingReducer.getBillInformation]);
+  }, [getBillInformation]);
   console.log("SummarySummarySummary", rows);
 
   useEffect(() => {

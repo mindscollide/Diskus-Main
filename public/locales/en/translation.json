@@ -2273,5 +2273,10 @@
   "Disabled": "Disabled",
   "Dormant": "Dormant",
   "Locked": "Locked",
-  "Events": "Events"
+  "Events": "Events",
+  "Licenses": "Licenses",
+  "Professional": "Professional",
+  "Essential": "Essential",
+  "Duration": "Duration",
+  "Downgrade": "Downgrade"
 }
