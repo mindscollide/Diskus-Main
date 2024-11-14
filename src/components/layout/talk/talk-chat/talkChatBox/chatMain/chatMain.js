@@ -3584,7 +3584,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ]
                                             }
                                           >
-                                            <Dropdown className="border-none">
+                                            <Dropdown className="ChatsOneToOneDropDownSender border-none">
                                               <Dropdown.Toggle id="dropdown-basic">
                                                 <img
                                                   draggable="false"
@@ -3596,8 +3596,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <Dropdown.Menu
                                                 className={
                                                   isLastMessage
-                                                    ? "dropdown-menu-upwards"
-                                                    : ""
+                                                    ? "dropdown-menu-upwardsSender"
+                                                    : "ChatsOneToOneDropDownMenuSender"
                                                 }
                                               >
                                                 <>
@@ -4042,7 +4042,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                           }
                                         >
                                           <Dropdown className="ChatsOneToOneDropDownReciever border-none">
-                                            <Dropdown.Toggle id="dropdown-basic ChatsOneToOneDropDownRecieverToggle">
+                                            <Dropdown.Toggle id="ChatsOneToOneDropDownRecieverToggle">
                                               <img
                                                 draggable="false"
                                                 className="dropdown-icon"
@@ -4053,9 +4053,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             <Dropdown.Menu
                                               className={
                                                 isLastMessage
-                                                  ? "dropdown-menu-upwards"
+                                                  ? "dropdown-menu-upwardsReciever"
                                                   : "ChatsOneToOneDropDownMenuReciever"
                                               }
+                                              popperConfig={{
+                                                modifiers: [
+                                                  {
+                                                    name: "flip",
+                                                    enabled: false,
+                                                  },
+                                                ],
+                                              }}
                                             >
                                               <>
                                                 <Dropdown.Item
