@@ -35,7 +35,7 @@ const CommitteeStatusModal = ({ isActive, setIsActive, statusUpdateData }) => {
                     ? t("Active")
                     : ""
                 }
-                                ${t("this committee?")}`}
+                                ${t("this-committee")}`}
               </Col>
             </Row>
           </>

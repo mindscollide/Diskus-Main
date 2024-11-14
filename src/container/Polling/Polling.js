@@ -624,7 +624,6 @@ const Polling = () => {
 
       sorter: (a, b) =>
         utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
-      setSortOrderDueDate,
       onHeaderCell: () => ({
         onClick: () => {
           setSortOrderDueDate((order) => {

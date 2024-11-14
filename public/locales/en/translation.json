@@ -2269,5 +2269,10 @@
   "Office": "Office",
   "Microsoft": "Microsoft",
   "None": "None",
-  "Events":"Events"
+  "Enabled": "Enabled",
+  "Disabled": "Disabled",
+  "Dormant": "Dormant",
+  "Locked": "Locked",
+  "Events": "Events",
+  "this-committee": "this committee?"
 }

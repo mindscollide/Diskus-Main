@@ -89,7 +89,10 @@ import { downloadAttendanceReportApi } from "../../../store/actions/Download_act
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import { useRef } from "react";
-
+import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -244,6 +247,9 @@ const NewMeeting = () => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
+  const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -943,6 +949,7 @@ const NewMeeting = () => {
   };
 
   const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata");
     if (data.talkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -1449,10 +1456,21 @@ const NewMeeting = () => {
 
   const MeetingColoumns = [
     {
-      title: <span>{t("Title")}</span>,
+      title: (
+        <span className='d-flex gap-2 align-items-center'>
+          {" "}
+          {t("Title")}{" "}
+          {meetingTitleSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "title",
       key: "title",
       ellipsis: true,
+      align: currentLanguage === "en" ? "left" : "right",
       width: "115px",
       render: (text, record) => {
         console.log(text, "ashashkdgahsgashdgh");
@@ -1492,6 +1510,15 @@ const NewMeeting = () => {
           </span>
         );
       },
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
       },
@@ -1524,10 +1551,29 @@ const NewMeeting = () => {
       },
     },
     {
-      title: t("Organizer"),
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Organizer")}
+          {meetingOrganizerSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "host",
       key: "host",
       width: "110px",
+      align: "center",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingOrganizerSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) =>
         a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
       render: (text, record) => {
@@ -1535,16 +1581,36 @@ const NewMeeting = () => {
       },
     },
     {
-      title: t("Date-time"),
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Date-time")}
+          {meetingDateTimeSort === "descend" ? (
+            <img src={ArrowDownIcon} alt='' />
+          ) : (
+            <img src={ArrowUpIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "155px",
+      align: "center",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingDateTimeSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
             <span className='text-truncate d-block'>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime, currentLanguage
+                record.dateOfMeeting + record.meetingStartTime,
+                currentLanguage
               )}
             </span>
           );
@@ -1597,6 +1663,7 @@ const NewMeeting = () => {
       dataIndex: "Chat",
       key: "Chat",
       width: "85px",
+      align: "center",
       render: (text, record) => {
         return (
           <>
@@ -3353,15 +3420,13 @@ const NewMeeting = () => {
                               lg={12}>
                               <CustomPagination
                                 current={
-                                  meetingPageCurrent !== null &&
-                                  meetingPageCurrent !== undefined
-                                    ? meetingPageCurrent
+                                  meetingPageCurrent !== null
+                                    ? Number(meetingPageCurrent)
                                     : 1
                                 }
                                 pageSize={
-                                  meetingpageRow !== null &&
-                                  meetingpageRow !== undefined
-                                    ? meetingpageRow
+                                  meetingpageRow !== null
+                                    ? Number(meetingpageRow)
                                     : 50
                                 }
                                 onChange={handelChangePagination}

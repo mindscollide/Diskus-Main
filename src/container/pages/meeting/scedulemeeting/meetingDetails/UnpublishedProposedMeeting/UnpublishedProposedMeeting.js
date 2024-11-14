@@ -66,6 +66,10 @@ import {
   mqttMeetingData,
 } from "../../../../../../hooks/meetingResponse/response";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
+import DescendIcon from "../../../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.png";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -89,7 +93,7 @@ const UnpublishedProposedMeeting = ({
   let currentOrganizationId = localStorage.getItem("organizationID");
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
-  const currentLanguage = localStorage.getItem("i18nextLng")
+  const currentLanguage = localStorage.getItem("i18nextLng");
 
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -125,6 +129,9 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [publishState, setPublishState] = useState(null);
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
+  const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
 
   // Empty text data
   const emptyText = () => {
@@ -133,9 +140,9 @@ const UnpublishedProposedMeeting = ({
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -292,15 +299,14 @@ const UnpublishedProposedMeeting = ({
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className='d-flex  align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -318,7 +324,17 @@ const UnpublishedProposedMeeting = ({
 
   const MeetingColoumns = [
     {
-      title: <span>{t("Title")}</span>,
+      title: (
+        <span className='d-flex gap-2 align-items-center'>
+          {" "}
+          {t("Title")}{" "}
+          {meetingTitleSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "title",
       key: "title",
       width: "115px",
@@ -383,12 +399,20 @@ const UnpublishedProposedMeeting = ({
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
               dispatch(uploadGlobalFlag(false));
-            }}
-          >
+            }}>
             {truncateString(text, 35)}
           </span>
         );
       },
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
       },
@@ -398,10 +422,11 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "status",
       key: "status",
       width: "90px",
+      align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -409,8 +434,7 @@ const UnpublishedProposedMeeting = ({
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -419,12 +443,29 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: <span> {t("Organizer")}</span>,
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Organizer")}
+          {meetingOrganizerSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
       width: "110px",
       ellipsis: true,
-
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingOrganizerSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       align: "center",
       sorter: (a, b) => {
         const nameA = a.userDetails?.name || "";
@@ -436,18 +477,37 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: t("Date-time"),
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Date-time")}
+          {meetingDateTimeSort === "descend" ? (
+            <img src={ArrowDownIcon} alt='' />
+          ) : (
+            <img src={ArrowUpIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "Date",
       key: "Date",
       width: "155px",
       ellipsis: true,
       align: "center",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingDateTimeSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="text-truncate d-block">
+            <span className='text-truncate d-block '>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime, currentLanguage
+                record.dateOfMeeting + record.meetingStartTime,
+                currentLanguage
               )}
             </span>
           );
@@ -464,7 +524,11 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: t("Polls"),
+      title: (
+        <>
+          <span className='d-flex justify-content-center'>{t("Polls")}</span>
+        </>
+      ),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "115px",
@@ -476,7 +540,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
+                <Col lg={12} md={12} sm={12} className='text-center'>
                   {value === maxValue &&
                   value === 0 &&
                   maxValue === 0 ? null : record.meetingPoll
@@ -484,24 +548,25 @@ const UnpublishedProposedMeeting = ({
                     record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
-                      height="17.06px"
-                      width="17.06px"
-                      alt=""
-                      draggable="false"
+                      height='17.06px'
+                      width='17.06px'
+                      alt=''
+                      draggable='false'
                     />
                   ) : (
                     <>
-                      <span className={styles["RatioClass"]}>
-                        {record.meetingPoll?.totalNoOfDirectorsVoted}/
-                        {record.meetingPoll?.totalNoOfDirectors}
-                      </span>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"newMeetingProgressbar"}
-                        >
+                          className={
+                            "d-flex justify-content-center flex-column"
+                          }>
+                          <span className={styles["RatioClass"]}>
+                            {record.meetingPoll?.totalNoOfDirectorsVoted}/
+                            {record.meetingPoll?.totalNoOfDirectors}
+                          </span>
                           <ProgressBar
                             now={value}
                             max={maxValue}
@@ -521,15 +586,22 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: t("Send-reponse-by"),
+      title: (
+        <>
+          <span className='d-flex justify-content-center'>
+            {t("Send-reponse-by")}
+          </span>
+        </>
+      ),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
       width: "125px",
+      align: "center",
       render: (text, record) => {
         return (
           <>
             {record.status === "12" ? (
-              <span className="d-flex justify-content-center">
+              <span className='d-flex justify-content-center'>
                 {changeDateStartHandler2(record.responseDeadLine)}
               </span>
             ) : (
@@ -552,17 +624,16 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center justify-content-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.isAgendaContributor ? (
-                  <Tooltip placement="bottomLeft" title={t("Edit")}>
+                  <Tooltip placement='bottomLeft' title={t("Edit")}>
                     <img
                       src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.03px"
-                      height="17.03px"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      width='17.03px'
+                      height='17.03px'
+                      alt=''
+                      draggable='false'
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
@@ -601,14 +672,14 @@ const UnpublishedProposedMeeting = ({
                   </Tooltip>
                 ) : record.isOrganizer ? (
                   <>
-                    <Tooltip placement="bottomLeft" title={t("Edit")}>
+                    <Tooltip placement='bottomLeft' title={t("Edit")}>
                       <img
                         src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.03px"
-                        height="17.03px"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        width='17.03px'
+                        height='17.03px'
+                        alt=''
+                        draggable='false'
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
@@ -680,8 +751,7 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.status === "11" ? (
                   record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
@@ -987,10 +1057,7 @@ const UnpublishedProposedMeeting = ({
       callApi();
     }
   }, [MeetingProp]); // Add `dispatch` to the dependency array
-  console.log(
-    UserMeetPropoDatPoll,
-    "UserMeetPropoDatPollUserMeetPropoDatPollUserMeetPropoDatPoll"
-  );
+
   useEffect(() => {
     if (UserMeetPropoDatPoll !== null) {
       try {
@@ -1038,12 +1105,12 @@ const UnpublishedProposedMeeting = ({
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
             column={MeetingColoumns}
             scroll={{ y: "54vh", x: false }}
             pagination={false}
-            className="newMeetingTable"
+            className='newMeetingTable'
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
