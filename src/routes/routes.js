@@ -59,7 +59,7 @@ const ChangePassword = lazy(() =>
   import("../container/Admin/ChangePassword/ChangePassword.js")
 );
 const CustomMiscellaneous = lazy(() =>
-  import("../container/Admin/ChangePassword/ChangePassword.js")
+  import("../container/miscellaneous/Miscellaneous.js")
 );
 const Dashboard = lazy(() => import("../container/dashboard/Dashboard.js"));
 const DeleteOrganization = lazy(() =>
