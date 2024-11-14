@@ -310,7 +310,7 @@ const Card = ({
                         >
                           <div className={discussionMenuClass}>
                             <span className={styles["dropdown-text"]}>
-                              {t("Discussions")}
+                              {t("Discussion")}
                             </span>
                           </div>
                         </Col>
