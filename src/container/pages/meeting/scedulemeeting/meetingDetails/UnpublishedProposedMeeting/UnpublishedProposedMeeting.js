@@ -66,6 +66,10 @@ import {
   mqttMeetingData,
 } from "../../../../../../hooks/meetingResponse/response";
 import { checkFeatureIDAvailability } from "../../../../../../commen/functions/utils";
+import DescendIcon from "../../../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.png";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -125,6 +129,9 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [publishState, setPublishState] = useState(null);
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
+  const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
 
   // Empty text data
   const emptyText = () => {
@@ -317,7 +324,17 @@ const UnpublishedProposedMeeting = ({
 
   const MeetingColoumns = [
     {
-      title: <span>{t("Title")}</span>,
+      title: (
+        <span className='d-flex gap-2 align-items-center'>
+          {" "}
+          {t("Title")}{" "}
+          {meetingTitleSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "title",
       key: "title",
       width: "115px",
@@ -387,6 +404,15 @@ const UnpublishedProposedMeeting = ({
           </span>
         );
       },
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingTitleSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
       },
@@ -417,12 +443,29 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: <span> {t("Organizer")}</span>,
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Organizer")}
+          {meetingOrganizerSort === "descend" ? (
+            <img src={DescendIcon} alt='' />
+          ) : (
+            <img src={AscendIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "meetingAttendees",
       key: "meetingAttendees",
       width: "110px",
       ellipsis: true,
-
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingOrganizerSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       align: "center",
       sorter: (a, b) => {
         const nameA = a.userDetails?.name || "";
@@ -434,12 +477,30 @@ const UnpublishedProposedMeeting = ({
       },
     },
     {
-      title: t("Date-time"),
+      title: (
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
+          {t("Date-time")}
+          {meetingDateTimeSort === "descend" ? (
+            <img src={ArrowDownIcon} alt='' />
+          ) : (
+            <img src={ArrowUpIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "Date",
       key: "Date",
       width: "155px",
       ellipsis: true,
       align: "center",
+      onHeaderCell: () => ({
+        onClick: () => {
+          setMeetingDateTimeSort((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (

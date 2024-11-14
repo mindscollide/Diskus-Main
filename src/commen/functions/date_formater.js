@@ -1,8 +1,7 @@
 import { DateTime } from "luxon";
 import moment from "moment";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format, parse } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
-
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
   return `${value[0]}${value[1]}${value[2]}`;
@@ -176,7 +175,8 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   return moment(_dateTime).format("h:mm A, D MMM, YYYY");
 };
 
-export const _justShowDateformat = (dateTime, locale) => {
+export const _justShowDateformat = (dateTime) => {
+  let locale = localStorage.getItem("i18nextLng") || "en";
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }
@@ -1379,4 +1379,20 @@ export const convertIntoDateObject = (dateTime) => {
     ".000Z";
   let _dateTime = new Date(fullDateYear);
   return _dateTime;
+};
+export const formatToLocalTimezone = (dateString) => {
+  let currentLang = localStorage.getItem("i18nextLng") || "en";
+  // Use `arSA` for Arabic Saudi Arabia locale, otherwise default to `enUS`
+  const selectedLocale = currentLang === "ar" ? arSA : enUS;
+
+  // Parse the input date string as a UTC date
+  const utcDate = parse(dateString, "yyyyMMddHHmmss", new Date());
+
+  // Convert to local time by creating a new Date object with the UTC timestamp
+  const localDate = new Date(
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+  );
+
+  // Format the local date as "dd MMMM, yyyy | EEEE" with the specified locale
+  return format(localDate, "dd MMMM, yyyy | EEEE", { locale: selectedLocale });
 };
