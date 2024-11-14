@@ -398,7 +398,7 @@ body[dir="rtl"] .user-name {
   border-radius: 4px;
   margin: 0;
   padding: 0;
-  width: auto !important;
+  width: 100% !important;
 }
 .profilebtn-dropdown .dropdown-toggle .dropdown_menu.dropdown-menu.show {
   left: 0 !important;
