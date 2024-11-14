@@ -1546,9 +1546,8 @@ const EditResolution = ({ setCancelresolution }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className={
-          currentLanguage === "en" ? "input-with-icon" : "input-with-icon_ar"
-        }
+        className={"input-with-icon"}
+      
       />
     );
   }
