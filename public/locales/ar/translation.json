@@ -2200,5 +2200,8 @@
   "Google": "Google",
   "Office": "Office",
   "Microsoft": "Microsoft",
-  "None": "None"
+  "None": "None",
+  "Enabled": "Enabled",
+  "Disabled": "Disabled",
+  "Dormant": "Dormant"
 }
