@@ -2220,5 +2220,7 @@
   "User-created-successfully-and-the-OTP": "User created successfully and the OTP has been generated. Please verify you email",
   "Organization-is-inactive": "Organization is inactive",
   "Archive": "Archive",
-  "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details"
+  "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details",
+  "Proposed":"Proposed",
+  "Unpublished":"Unpublished"
 }
