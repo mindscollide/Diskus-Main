@@ -2201,5 +2201,10 @@
   "Office": "Office",
   "Microsoft": "Microsoft",
   "None": "None",
-  "Join-video-call": "Join Video Call"
+  "Enabled": "Enabled",
+  "Disabled": "Disabled",
+  "Dormant": "Dormant",
+  "Join-video-call": "Join Video Call",
+  "Events": "Events",
+  "Deleted": "Deleted"
 }

@@ -288,28 +288,36 @@ const ManageUsers = () => {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-enabled"></span>
-                    <p className="m-0 userName FontArabicRegular">Enabled</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Enabled")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Disabled") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-disabled"></span>
-                    <p className="m-0 userName FontArabicRegular">Disabled</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Disabled")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Dormant") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-dormant"></span>
-                    <p className="m-0 userName FontArabicRegular">Dormant</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Dormant")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Locked") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-locked"></span>
-                    <p className="m-0 userName FontArabicRegular">Locked</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Locked")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Closed") {
@@ -317,7 +325,7 @@ const ManageUsers = () => {
                   <div className="d-flex">
                     <span className="userstatus-signal-closed"></span>
                     <p className="m-0 Disabled-Close userName FontArabicRegular">
-                      Closed
+                      {t("Closed")}
                     </p>
                   </div>
                 );
@@ -521,12 +529,12 @@ const ManageUsers = () => {
 
   //Options For Search
   const options = [
-    { value: "Enabled", label: "Enabled" },
-    { value: "Disabled", label: "Disabled" },
-    { value: "Locked", label: "Locked" },
-    { value: "Closed", label: "Closed" },
-    { value: "Dormant", label: "Dormant" },
-    { value: "Delete", label: "Delete" },
+    { value: "Enabled", label: t("Enabled") },
+    { value: "Disabled", label: t("Disabled") },
+    { value: "Locked", label: t("Locked") },
+    { value: "Closed", label: t("Closed") },
+    { value: "Dormant", label: t("Dormant") },
+    { value: "Delete", label: t("Delete") },
   ];
 
   //Status onChange Search

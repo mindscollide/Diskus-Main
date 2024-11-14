@@ -81,7 +81,7 @@ const NewDashobard = () => {
                 <NewCalendar />
               </section>
               <section className={styles["EventBox"]}>
-                <span className={styles["EventBox_heading"]}>Events</span>
+                <span className={styles["EventBox_heading"]}>{t("Events")}</span>
                 <section className={styles["Events_content"]}>
                   <Events />
                 </section>

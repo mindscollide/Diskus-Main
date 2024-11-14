@@ -50,7 +50,7 @@ const RecentActivity = () => {
   return (
     <>
       {" "}
-      <span className={styles["RecentActivity_Title"]}>Recent Activity</span>
+      <span className={styles["RecentActivity_Title"]}>{t("Recent-activity")}</span>
       <div className={styles["RecentAcitivy_newDashboard"]}>
         {" "}
         {Spinner === true ? (
