@@ -684,7 +684,6 @@
   "Add-Members": "إضافة أعضاء",
   "Add-note": "اضف ملاحظة",
   "Archived": "مؤرشف",
-  "Archive": "Archive",
   "Created-on": "تم إنشاؤها على",
   "Are-you-sure-you-want-to-create": "هل أنت متأكد أنك تريد إنشاء",
   "this-note": "هذه المذكرة",
@@ -1300,7 +1299,6 @@
   "NEW_COMMENT_CREATION": "ام [User] بالتعليق على مهمة [Task Title]. راجع قائمة المهام للحصول على التفاصيل",
   "NEW_TODO_CREATION": "تم تعيين مهمة جديدة [Task Title] إليك. راجع قائمة المهام للحصول على التفاصيل",
   "TDOD_STATUS_EDITED": "تم تحديث مهمة  [Task Title]. راجع قائمة المهام للحصول على التفاصيل",
-  "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details",
   "NEW_COMMITTEE_CREATION": "لقد تمت إضافتك كعضو في لجنة [Committe Title]",
   "COMMITTTEE_STATUS_EDITED_IN_ACTIVE": "تم تعيين لجنة [Committee Title] التي أنت عضو فيها على أنها غير نشطة",
   "COMMITTTEE_STATUS_EDITED_ARCHIVED": "تم حل لجنة [Committee Title] التي أنت عضو فيها من قبل رئيس اللجنة",
@@ -2207,5 +2205,7 @@
   "we-do-not-retain-any-backup-of-data-and-will-not-be-able-to-entertain-backup-recovery-request": "we do not retain any backup of data and will not be able to entertain backup recovery request",
   "account-please-proceed-with-caution-and-at-your-own-risk": "account. Please proceed with caution and at your own risk.",
   "User-created-successfully-and-the-OTP": "User created successfully and the OTP has been generated. Please verify you email",
-  "Organization-is-inactive": "Organization is inactive"
+  "Organization-is-inactive": "Organization is inactive",
+  "Archive": "Archive",
+  "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details"
 }
