@@ -275,7 +275,7 @@ const PendingApproval = () => {
       }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
-          {newDateFormatterForMinutesPendingApproval(text)}
+          {newDateFormatterForMinutesPendingApproval(text, lang)}
         </p>
       ),
     },

@@ -33,6 +33,7 @@ import { Checkbox, Dropdown, Menu } from "antd";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const {
     getAllPendingForApprovalStats,
     listOfPendingForApprovalSignatures,
@@ -278,7 +279,9 @@ const ReviewSignature = () => {
         },
       }),
       render: (text, record) => (
-        <p className={"m-0"}>{SignatureandPendingApprovalDateTIme(text)}</p>
+        <p className={"m-0"}>
+          {SignatureandPendingApprovalDateTIme(text, CurrentLanguage)}
+        </p>
       ),
     },
     {
