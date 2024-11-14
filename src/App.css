@@ -8118,3 +8118,6 @@ body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
   font-weight: 500 !important;
   font-size: 12px !important;
 }
+td.ant-table-column-sort {
+  background: none !important;
+}
