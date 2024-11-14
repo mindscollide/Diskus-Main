@@ -63,13 +63,19 @@ const Summary = () => {
     NextPaymentDueDate: "",
     AmountAfterDiscount: 0,
   });
-
+  console.log(
+    "lastPaymentlastPayment",
+    _justShowDateformatBilling(summary.NextPaymentDueDate)
+  );
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
     PaidAmount: 0,
   });
-
+  console.log(
+    "lastPaymentlastPayment",
+    _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
+  );
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -78,7 +84,6 @@ const Summary = () => {
 
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
-  console.log("openInvoiceRecords", openInvoiceRecords);
   useEffect(() => {
     if (Blur != undefined) {
       setActivateBlur(true);
@@ -110,9 +115,7 @@ const Summary = () => {
   useEffect(() => {
     try {
       if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
-        console.log("openInvoiceRecords", searchPaymentHistory);
         setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
-        console.log("openInvoiceRecords", openInvoiceRecords);
       }
     } catch (error) {
       console.log(error, "errorerror");
@@ -237,6 +240,8 @@ const Summary = () => {
 
   useEffect(() => {
     try {
+      console.log("lastpaymentDetail", getBillInformation);
+
       if (getBillInformation !== null) {
         let Summary = getBillInformation.accountDetails;
         let lastpaymentDetail = getBillInformation.lastPayment;
@@ -259,7 +264,6 @@ const Summary = () => {
             latecharges: data.lateFeeCharged,
           });
         });
-        console.log("SummarySummarySummary", newInvoice);
 
         setRows([...newInvoice]);
 
@@ -308,9 +312,12 @@ const Summary = () => {
                 <>{summary.NextInvoiceEstimate}</>
               )
             }
-            ColThreeValue={_justShowDateformatBilling(
-              summary.NextPaymentDueDate
-            )}
+            ColThreeValue={
+              _justShowDateformatBilling(summary.NextPaymentDueDate) !==
+              "Invalid date"
+                ? _justShowDateformatBilling(summary.NextPaymentDueDate)
+                : "--"
+            }
           />
           <PaymentActivity
             PaymentActivityBoxTitle={t("Account-activity")}
@@ -319,9 +326,12 @@ const Summary = () => {
             ColTwoKey={t("Payment-received-date")}
             ColThreeKey={t("Paid-amount")}
             ColOneValue={lastPayment.Invoice}
-            ColTwoValue={_justShowDateformatBilling(
-              lastPayment.PaymentReceivedDate
-            )}
+            ColTwoValue={
+              _justShowDateformatBilling(lastPayment.PaymentReceivedDate) !==
+              "Invalid date"
+                ? _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
+                : "--"
+            }
             ColThreeValue={
               lastPayment.PaidAmount !== 0 ? (
                 <>$ {lastPayment.PaidAmount}</>
