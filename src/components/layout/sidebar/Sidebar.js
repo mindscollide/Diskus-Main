@@ -68,7 +68,7 @@ const Sidebar = () => {
   let Blur = localStorage.getItem("blur");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   const [meetingNavigation, setMeetingNavigation] = useState("Meeting");

@@ -26,8 +26,8 @@ const UnsavedPollsMeeting = ({ setCreatepoll }) => {
       <Modal
         show={unsavedPollsMeeting}
         setShow={dispatch(showUnsavedPollsMeeting)}
-        modalHeaderClassName={"d-block"}
-        modalFooterClassName={"d-block"}
+        modalHeaderClassName={"d-block border-0"}
+        modalFooterClassName={"d-block border-0"}
         onHide={() => {
           dispatch(showUnsavedPollsMeeting(false));
         }}

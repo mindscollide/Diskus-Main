@@ -38,6 +38,7 @@
 .datePickerTodoCreate2 {
   border: 1px solid #e1e1e1 !important;
   font-weight: 600 !important;
+  box-shadow: 0 0 5px #8798ad !important;
 }
 
 .proposedMeetindatesDatePicker .rmdp-container {

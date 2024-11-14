@@ -48,7 +48,7 @@ const Attendence = ({
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [useCase, setUseCase] = useState(0);
   //reducer call from Attendance_Reducers
