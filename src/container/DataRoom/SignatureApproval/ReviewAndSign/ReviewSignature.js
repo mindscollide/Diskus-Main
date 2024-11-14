@@ -71,14 +71,14 @@ const ReviewSignature = () => {
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
     "Pending Signature",
-    "Declined",
     "Signed",
+    "Declined",
   ]);
 
   const filters = [
-    { text: t("Pending"), value: "2" },
-    { text: t("Signed"), value: "3" },
-    { text: t("Declined"), value: "4" },
+    { text: t("Pending"), value: "Pending Signature" },
+    { text: t("Signed"), value: "Signed" },
+    { text: t("Declined"), value: "Declined" },
   ];
   // ProgressBar component for visualizing progress
   const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
@@ -149,7 +149,7 @@ const ReviewSignature = () => {
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Pending Signature", "Declined", "Signed"]);
+    setSelectedValues(["Pending Signature", "Signed", "Declined"]);
     setReviewSignature(originalData);
     setVisible(false);
   };
