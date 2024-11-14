@@ -1273,7 +1273,7 @@ const DataRoom = () => {
       render: (text, record) => {
         return (
           <span className={styles["Dataroom__mydocument_location"]}>
-            {text}
+            {t(text)}
           </span>
         );
       },
@@ -1871,7 +1871,7 @@ const DataRoom = () => {
       render: (text, record) => {
         return (
           <span className={styles["Dataroom__mydocument_location"]}>
-            {text}
+            {t(text)}
           </span>
         );
       },
