@@ -10,6 +10,7 @@
 .ABC {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  overflow: hidden;
 }
 
 .ABC .accordion-item .accordion-header .accordion-button:not(.collapsed) {
@@ -25,6 +26,12 @@
   width: 99% !important;
   max-width: 99% !important;
   margin-left: 20px !important;
+  margin-top: 40px !important;
+}
+body[dir="rtl"] .faqs_container {
+  width: 99% !important;
+  max-width: 99% !important;
+  margin-right: 20px !important;
   margin-top: 40px !important;
 }
 
