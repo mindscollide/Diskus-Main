@@ -136,6 +136,8 @@ const changeNewLanguage = (data, navigate, t) => {
                   "Admin_AdminServiceManager_SetLastSelectedLanguage_01".toLowerCase()
                 )
             ) {
+              let newdata = { UserID: Number(data.UserID) };
+              dispatch(getSelectedLanguage(newdata, navigate, t));
               await dispatch(
                 setLastSelectedLanguageSuccess(t("Record-Updated"))
               );
