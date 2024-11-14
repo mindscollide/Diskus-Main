@@ -81,6 +81,7 @@
 
 .status_value {
   font-weight: 500 !important;
+  text-align: center;
 }
 
 .newDashboardTable .ant-table-tbody > tr.AssignedToMe.ant-table-row:hover > td,
