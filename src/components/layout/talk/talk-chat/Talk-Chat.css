@@ -2106,6 +2106,13 @@ span.background-close-search {
   left: -100px !important;
 }
 
+body[dir="rtl"] .dropdown-menu-upwards {
+  position: absolute !important;
+  top: -260px !important;
+  transform: none !important;
+  left: -100px !important;
+}
+
 ::placeholder {
   font-family: "Montserrat" !important;
   font-weight: 400 !important;
@@ -2151,4 +2158,10 @@ body[dir="rtl"] .chat-box-icons .dropdown-menu .show {
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+}
+.talkchatMsg .dropdown .dropdown-menu {
+  left: 0 !important;
+}
+body[dir="rtl"] .talkchatMsg .dropdown {
+  right: 0 !important;
 }
