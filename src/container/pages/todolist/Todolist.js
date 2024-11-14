@@ -415,7 +415,8 @@ const TodoList = () => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "190px",
+      ellipsis: true,
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -442,7 +443,7 @@ const TodoList = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
               <img src={DescendIcon} alt="" />
@@ -454,6 +455,8 @@ const TodoList = () => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
+      align: "center",
+
       width: "220px",
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
@@ -491,7 +494,7 @@ const TodoList = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
               <img src={DescendIcon} alt="" />
@@ -503,6 +506,8 @@ const TodoList = () => {
       ),
       width: "220px",
       dataIndex: "taskAssignedTo",
+      align: "center",
+
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
@@ -684,17 +689,15 @@ const TodoList = () => {
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "120px",
-      render: (record, index) => {
+      render: (text, record) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
-            <Tooltip placement="topRight" title={t("Delete")}>
-              <i
-                className="meeting-editbutton cursor-pointer"
-                onClick={(e) => deleteTodolist(record)}
-              >
-                <img draggable="false" src={del} alt="" />
-              </i>
-            </Tooltip>
+            <i
+              className="meeting-editbutton cursor-pointer"
+              onClick={(e) => deleteTodolist(record)}
+            >
+              <img draggable="false" src={del} alt="" />
+            </i>
           );
         } else {
           <></>;
@@ -887,10 +890,7 @@ const TodoList = () => {
 
   const scroll = {
     y: "58vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
+    x: "auto",
   };
 
   return (

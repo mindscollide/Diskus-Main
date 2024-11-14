@@ -8121,3 +8121,6 @@ body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
 td.ant-table-column-sort {
   background: none !important;
 }
+.ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+  background: none !important;
+}
