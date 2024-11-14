@@ -243,9 +243,7 @@ body[dir="rtl"] .ant-select-arrow {
   right: 120px !important;
 } */
 
-body[dir="rtl"] .CreateMeetingDate .rmdp-top-class {
-  margin-left: -150px !important;
-}
+
 
 body[dir="rtl"] .Dashboard-Main-Container.container {
   margin-left: 0px;
