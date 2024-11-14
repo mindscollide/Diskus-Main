@@ -106,24 +106,6 @@
   width: 100%;
 }
 
-.Next_button_EmailVerify_For_SignInDenied {
-  width: 100%;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-}
-
-.Next_button_EmailVerify_For_SignInDenied:focus-visible {
-  width: 280px;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-}
-
 .loginbox_auth_paper_for_SignInDenied {
   padding: 40px 30px;
   border: 1px solid #e1e1e1;

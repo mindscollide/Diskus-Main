@@ -73,6 +73,7 @@ const PakageDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
+      console.log(pakageDetails, "avjshvdjhasvd");
 
       // Check if the package details object and its packages array exist and are not empty
       if (
@@ -197,6 +198,7 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
+        console.log(Numberoflicenses, "datadtadtatdt");
 
         if (row.shouldDisplayTextField) {
           return;
@@ -204,7 +206,7 @@ const PakageDetailsUserManagement = () => {
           if (row.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
-                {Numberoflicenses}
+                {convertToArabicNumerals(Numberoflicenses, locale)}
               </span>
             );
           } else {
@@ -279,11 +281,11 @@ const PakageDetailsUserManagement = () => {
         } else {
           return row.isTotalRow ? (
             <span className={styles["ChargesPerLicesense"]}>
-              {MonthCharges}
+              {convertToArabicNumerals(MonthCharges, locale)}
             </span>
           ) : (
             <span className={styles["ChargesPerLicesense"]}>
-              {monthlyCharges}
+              {convertToArabicNumerals(monthlyCharges, locale)}
             </span>
           );
         }
@@ -328,11 +330,11 @@ const PakageDetailsUserManagement = () => {
         } else {
           return row.isTotalRow ? (
             <span className={styles["ChargesPerLicesense"]}>
-              {Quarterlycharges}
+              {convertToArabicNumerals(Quarterlycharges, locale)}
             </span>
           ) : (
             <span className={styles["ChargesPerLicesense"]}>
-              {quarterlyCharges}
+              {convertToArabicNumerals(quarterlyCharges, locale)}
             </span>
           );
         }
@@ -379,11 +381,11 @@ const PakageDetailsUserManagement = () => {
         } else {
           return row.isTotalRow ? (
             <span className={styles["ChargesPerLicesense"]}>
-              {YearlychargesTotal}
+              {convertToArabicNumerals(YearlychargesTotal, locale)}
             </span>
           ) : (
             <span className={styles["ChargesPerLicesense"]}>
-              {YearlyCharges}
+              {convertToArabicNumerals(YearlyCharges, locale)}
             </span>
           );
         }
@@ -515,7 +517,7 @@ const PakageDetailsUserManagement = () => {
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
-                              ${data?.price}/
+                              ${convertToArabicNumerals(data?.price, locale)}/
                               <p className={styles["package_actualPrice_p"]}>
                                 {t("Month")}
                               </p>

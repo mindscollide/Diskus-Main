@@ -2258,6 +2258,8 @@
   "Waiting-for-entry": "Waiting for entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
+  "Device-Id": "DeviceID",
+  "Reports": "Reports",
   "Mute-all": "Mute All",
   "Review-minutes": "Review Minutes",
   "Review-&-sign": "Review & Sign",

@@ -18,11 +18,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const PollsReducerAllpolls = useSelector(
     (state) => state.PollsReducer.Allpolls
   );
@@ -241,7 +243,14 @@ const ViewPollProgress = () => {
                                       className={styles["Yes_ViewProgress"]}
                                     >
                                       {data.answer}{" "}
-                                      <span>{"(" + data.totalVotes + ")"}</span>
+                                      <span>
+                                        {"(" +
+                                          convertToArabicNumerals(
+                                            data.totalVotes,
+                                            currentLanguage
+                                          ) +
+                                          ")"}
+                                      </span>
                                     </span>
                                   </Col>
                                 </Row>
@@ -318,7 +327,12 @@ const ViewPollProgress = () => {
                                         >
                                           {data.answer}
                                           <span>
-                                            {"(" + data.totalVotes + ")"}
+                                            {"(" +
+                                              convertToArabicNumerals(
+                                                data.totalVotes,
+                                                currentLanguage
+                                              ) +
+                                              ")"}
                                           </span>
                                         </span>
                                       </Col>

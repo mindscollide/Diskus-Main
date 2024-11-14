@@ -175,7 +175,7 @@ const VerificationIphone = () => {
                   </Row>
 
                   <Row className="Scroll_bar_For_devices mt-3">
-                    {devices.length > 0
+                    {devices && devices.length > 0
                       ? devices.map((data, index) => {
                           console.log(data, "lengthlengthlength");
                           return (

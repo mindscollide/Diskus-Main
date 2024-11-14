@@ -128,6 +128,7 @@ const SignUpOrganizationUM = () => {
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [againCall, setAgainCall] = useState(false);
+  let locale = localStorage.getItem("i18nextLng");
 
   const [selected, setSelected] = useState("US");
 
@@ -492,17 +493,17 @@ const SignUpOrganizationUM = () => {
       } else {
         setSignUpDetails({
           ...signUpDetails,
-          CompanyName: {
-            value: signUpDetails.CompanyName.value,
-            errorMessage:
-              signUpDetails.CompanyName.value === ""
-                ? t("Company-name-is-required")
-                : signUpDetails.CompanyName.errorMessage,
-            errorStatus:
-              signUpDetails.CompanyName.value === ""
-                ? true
-                : signUpDetails.CompanyName.errorStatus,
-          },
+          // CompanyName: {
+          //   value: signUpDetails.CompanyName.value,
+          //   errorMessage:
+          //     signUpDetails.CompanyName.value === ""
+          //       ? `${(t("Company-name-is-required"), locale)}`
+          //       : signUpDetails.CompanyName.errorMessage,
+          //   errorStatus:
+          //     signUpDetails.CompanyName.value === ""
+          //       ? true
+          //       : signUpDetails.CompanyName.errorStatus,
+          // },
           CountryName: {
             value: signUpDetails.CountryName.value,
             errorMessage:
@@ -874,7 +875,9 @@ const SignUpOrganizationUM = () => {
                                   : `${styles["errorMessageCompany_hidden"]}`
                               }
                             >
-                              {signUpDetails.CompanyName.errorMessage}
+                              {signUpDetails.CompanyName.value === ""
+                                ? t("Company-name-is-required")
+                                : signUpDetails.CompanyName.errorMessage}
                             </p>
                           )}
                         </Col>
@@ -916,7 +919,9 @@ const SignUpOrganizationUM = () => {
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {signUpDetails.CountryName.errorMessage}
+                            {signUpDetails.CountryName.value === ""
+                              ? t("Please-select-country")
+                              : signUpDetails.CountryName.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -1037,7 +1042,9 @@ const SignUpOrganizationUM = () => {
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {signUpDetails.FullName.errorMessage}
+                            {signUpDetails.FullName.value === ""
+                              ? t("Full-name-is-required")
+                              : signUpDetails.FullName.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -1076,7 +1083,9 @@ const SignUpOrganizationUM = () => {
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
-                              {signUpDetails.Email.errorMessage}
+                              {signUpDetails.Email.value === ""
+                                ? t("Email-address-is-required")
+                                : signUpDetails.Email.errorMessage}
                             </p>
                           )}
                         </Col>
@@ -1146,7 +1155,9 @@ const SignUpOrganizationUM = () => {
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
-                              {signUpDetails.PhoneNumber.errorMessage}
+                              {signUpDetails.PhoneNumber.value === ""
+                                ? t("Phone-number-is-required")
+                                : signUpDetails.PhoneNumber.errorMessage}
                             </p>
                           </Col>
                         </Row>

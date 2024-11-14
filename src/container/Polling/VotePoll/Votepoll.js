@@ -18,9 +18,11 @@ import {
   setVotePollModal,
 } from "../../../store/actions/Polls_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const PollsReducerAllpolls = useSelector(
     (state) => state.PollsReducer.Allpolls
   );
@@ -207,7 +209,14 @@ const Votepoll = () => {
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}{" "}
-                                        <span>({data.totalVotes})</span>
+                                        <span>
+                                          (
+                                          {convertToArabicNumerals(
+                                            data.totalVotes,
+                                            CurrentLanguage
+                                          )}
+                                          )
+                                        </span>
                                       </span>
                                     </Col>
                                   </Row>
@@ -282,7 +291,14 @@ const Votepoll = () => {
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}
-                                        <span>({data.totalVotes})</span>
+                                        <span>
+                                          (
+                                          {convertToArabicNumerals(
+                                            data.totalVotes,
+                                            CurrentLanguage
+                                          )}
+                                          )
+                                        </span>
                                       </span>
                                     </Col>
                                   </Row>
