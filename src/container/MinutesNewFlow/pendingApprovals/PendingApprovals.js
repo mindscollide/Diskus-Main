@@ -30,6 +30,7 @@ import {
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
+import { Checkbox, Menu } from "antd";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -57,6 +58,10 @@ const PendingApproval = () => {
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+
+  console.log(originalData, "originalDataoriginalData");
+  console.log(rowsPendingApproval, "originalDataoriginalData");
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
@@ -84,6 +89,76 @@ const PendingApproval = () => {
     setReviewAndSignActive(true); // Set Review & Sign button to active
     // Your functionality for Review & Sign button
   };
+
+  //Filteration Table
+
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "Reviewed",
+    "Pending",
+    "Expired",
+  ]);
+
+  const filters = [
+    { text: t("Reviewed"), value: "Reviewed" },
+    { text: t("Pending"), value: "Pending" },
+    { text: t("Expired"), value: "Expired" },
+  ];
+
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.pK_TSID.toString())
+    );
+    setRowsPendingApproval(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["Reviewed", "Pending", "Expired"]);
+    setRowsPendingApproval(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className={styles["FilterResetBtn"]}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={styles["ResetOkBtn"]}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -255,8 +330,10 @@ const PendingApproval = () => {
       let reducerDataRow =
         GetMinuteReviewPendingApprovalsByReviewerIdData.pendingReviews;
       setRowsPendingApproval(reducerDataRow);
+      setOriginalData(reducerDataRow);
     } else {
       setRowsPendingApproval([]);
+      setOriginalData([]);
     }
   }, [GetMinuteReviewPendingApprovalsByReviewerIdData]);
 
@@ -338,7 +415,10 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#6172D6",
                                 }}
-                                label={`${convertToArabicNumerals(progress.reviewedPercentage,lang)}%`}
+                                label={`${convertToArabicNumerals(
+                                  progress.reviewedPercentage,
+                                  lang
+                                )}%`}
                                 now={progress.reviewedPercentage}
                                 key={1}
                               />
@@ -346,7 +426,10 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#ffc300",
                                 }}
-                                label={`${convertToArabicNumerals(progress.pendingPercentage,lang)}%`}
+                                label={`${convertToArabicNumerals(
+                                  progress.pendingPercentage,
+                                  lang
+                                )}%`}
                                 now={progress.pendingPercentage}
                                 key={2}
                               />
@@ -354,7 +437,10 @@ const PendingApproval = () => {
                                 style={{
                                   backgroundColor: "#F16B6B",
                                 }}
-                                label={`${convertToArabicNumerals(progress.expiredPercentage,lang)}%`}
+                                label={`${convertToArabicNumerals(
+                                  progress.expiredPercentage,
+                                  lang
+                                )}%`}
                                 now={progress.expiredPercentage}
                                 key={3}
                               />
