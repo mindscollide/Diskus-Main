@@ -27,7 +27,7 @@ const LanguageSelector = () => {
 
   const dispatch = useDispatch();
 
-  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentUserID = localStorage.getItem("userID");
 
   const languageref = useRef();
   const location = useLocation();
@@ -52,14 +52,10 @@ const LanguageSelector = () => {
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
-      if (
-        currentUserID !== null &&
-        currentUserID !== undefined &&
-        currentUserID !== 0
-      ) {
-        let data = { UserID: currentUserID };
-        dispatch(getSelectedLanguage(data, navigate, t));
-      }
+      // if (currentUserID !== null) {
+      //   let data = { UserID: Number(currentUserID) };
+      //   dispatch(getSelectedLanguage(data, navigate, t));
+      // }
     } catch {}
   }, []);
 
@@ -113,10 +109,12 @@ const LanguageSelector = () => {
     setLanguageDropdown(false);
     // setLanguage(lang)
     let data = {
-      UserID: currentUserID,
+      UserID: Number(currentUserID),
       SystemSupportedLanguageID: lang,
     };
-    dispatch(changeNewLanguage(data, navigate, t));
+    if (currentUserID !== null) {
+      dispatch(changeNewLanguage(data, navigate, t));
+    }
     if (lang === 1) {
       setSelectedLanguage({
         languageTitle: "English",
