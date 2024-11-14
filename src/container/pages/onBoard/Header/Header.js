@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import "./Header.css";
+import "./onBoardHeader.css";
 import { useTour } from "@reactour/tour";
 import TextField from "../../../../components/elements/input_field/Input_field";
 import { Search } from "react-bootstrap-icons";

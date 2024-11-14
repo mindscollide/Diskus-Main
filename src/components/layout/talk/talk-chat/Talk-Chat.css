@@ -2091,14 +2091,6 @@ span.background-close-search {
   text-decoration: underline;
 }
 
-.border-none.dropdown .dropdown-menu {
-  background: #fff !important;
-  text-align: center;
-  width: 100px !important;
-  border-radius: 5px;
-  border: 1px solid #b6b6b6;
-}
-
 .dropdown-menu-upwards {
   position: absolute !important;
   top: -160px !important;
@@ -2106,11 +2098,34 @@ span.background-close-search {
   left: -100px !important;
 }
 
-body[dir="rtl"] .dropdown-menu-upwards {
+.dropdown-menu-upwardsReciever {
   position: absolute !important;
-  top: -260px !important;
+  top: -160px !important;
   transform: none !important;
   left: -100px !important;
+}
+
+body[dir="rtl"] .dropdown-menu-upwardsReciever.dropdown-menu.show {
+  position: absolute !important;
+  top: -160px !important;
+  transform: none !important;
+  left: -100px !important;
+}
+
+.dropdown-menu-upwardsSender {
+  position: absolute !important;
+  top: -140px !important;
+  transform: none !important;
+  right: 28px !important;
+  left: auto !important;
+}
+
+body[dir="rtl"] .dropdown-menu-upwardsSender.dropdown-menu.show {
+  position: absolute !important;
+  top: -160px !important;
+  transform: none !important;
+  right: auto !important;
+  left: -168px !important;
 }
 
 ::placeholder {
@@ -2164,4 +2179,26 @@ body[dir="rtl"] .chat-box-icons .dropdown-menu .show {
 }
 body[dir="rtl"] .talkchatMsg .dropdown {
   right: 0 !important;
+}
+
+body[dir="rtl"] .ChatsOneToOneDropDownMenuReciever.dropdown-menu.show {
+  left: auto !important;
+  right: 49px !important;
+  top: 15px !important;
+  transform: none !important;
+}
+
+.ChatsOneToOneDropDownMenuSender.dropdown-menu.show {
+}
+
+body[dir="rtl"] .ChatsOneToOneDropDownMenuSender.dropdown-menu.show {
+  left: auto !important;
+  right: 30px !important;
+  top: -2px !important;
+  transform: none !important;
+}
+
+body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
+  border: none !important;
+  display: none !important;
 }
