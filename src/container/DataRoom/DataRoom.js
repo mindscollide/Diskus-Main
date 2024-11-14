@@ -124,7 +124,6 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../commen/functions/regex";
 
 const DataRoom = () => {
-  const currentUrl = window.location.href;
   let DataRoomString = localStorage.getItem("DataRoomEmail");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   // tooltip

@@ -48,7 +48,8 @@ const ModalRenameFile = ({
             setShowRenameFile(false);
           }}
           setShow={setShowRenameFile}
-          modalFooterClassName="d-block"
+          modalFooterClassName={"d-block border-0"}
+          modalHeaderClassName={"d-block border-0"}
           centered
           ModalBody={
             <>

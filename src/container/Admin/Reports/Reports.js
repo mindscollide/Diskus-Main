@@ -30,6 +30,7 @@ import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -228,7 +229,10 @@ const Reports = () => {
         return (
           <>
             <span className={styles["DesignationStyles"]}>
-              {getTimeDifference(record.dateLogin, record.dateLogOut)}
+              {convertToArabicNumerals(
+                getTimeDifference(record.dateLogin, record.dateLogOut),
+                currentLanguage
+              )}
             </span>
           </>
         );
@@ -258,9 +262,14 @@ const Reports = () => {
       align: "center",
       key: "loggedInFromIP",
       render: (text, record) => {
+        console.log(typeof text, "texttexttext");
+        console.log(text, "texttexttext");
+
         return (
           <>
-            <span className={styles["DesignationStyles"]}>{text}</span>
+            <span className={styles["DesignationStyles"]}>
+              {convertToArabicNumerals(text, currentLanguage)}
+            </span>
           </>
         );
       },

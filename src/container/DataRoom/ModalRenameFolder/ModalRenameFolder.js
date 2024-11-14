@@ -47,7 +47,8 @@ const ModalRenameFolder = ({
             setRenamefolder(false);
           }}
           setShow={setRenamefolder}
-          modalFooterClassName="d-block"
+          modalFooterClassName={"d-block border-0"}
+          modalHeaderClassName={"d-block border-0"}
           centered
           ModalBody={
             <>

@@ -219,7 +219,7 @@ const VerifyOTPUM = () => {
                 </Row>
 
                 <Row>
-                  <Col className="text-left d-flex justify-content-start gap-3">
+                  <Col className="text-left d-flex justify-content-start align-items-center gap-2">
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}

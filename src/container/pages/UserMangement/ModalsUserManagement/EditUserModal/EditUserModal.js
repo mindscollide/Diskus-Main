@@ -548,10 +548,9 @@ const EditUserModal = ({ editModalData }) => {
           <>
             <section className={styles["ModalAlignmnet"]}>
               <Row>
-                <Col lg={1} md={1} sm={12} xs={12}></Col>
                 <Col
-                  lg={10}
-                  md={10}
+                  lg={12}
+                  md={12}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-end"
@@ -562,7 +561,6 @@ const EditUserModal = ({ editModalData }) => {
                     onClick={handleUpdateButton}
                   />
                 </Col>
-                <Col lg={1} md={1} sm={12} xs={12}></Col>
               </Row>
             </section>
           </>

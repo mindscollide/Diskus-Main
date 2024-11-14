@@ -55,10 +55,13 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-weight: 600;
-
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .allDocuments_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .allDocuments_btn:hover,
@@ -81,6 +84,10 @@
   color: #fff;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .myDocument_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .myDocument_btn {
@@ -114,6 +121,10 @@
   font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Shared_with_me_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Shared_with_me_btn {
@@ -163,6 +174,11 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
+
+body[dir="rtl"] .Send_for_approval_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .profile_picture {
   border-radius: 30px !important;
 }
@@ -771,6 +787,10 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   font-weight: 600;
 }
 
+body[dir="rtl"] .font_size {
+  margin-left: 20px !important;
+}
+
 .dataroom_searchinput {
   display: inline-block;
   position: absolute !important;
@@ -1184,6 +1204,11 @@ body[dir="rtl"] .dataroom_searchinput2 {
   justify-content: center !important;
   border: none !important;
 }
+
+body[dir="rtl"] .DataRoom_DropDown button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .DataRoom_DropDown button:hover {
   border: none !important;
 }
@@ -1268,4 +1293,40 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   color: #5a5a5a;
   font-weight: 500;
   font-size: 12px;
+}
+
+.FilterResetBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn:is(:hover, :focus, :active, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :focus, :active, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
 }

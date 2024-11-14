@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
-import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
   Button,
@@ -33,12 +33,15 @@ import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPubli
 import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import EnglishCalendar from "react-date-object/calendars/gregorian";
+import ArabicCalendar from "react-date-object/calendars/arabic";
 
 const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const unsavedPollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.unsavedPollsMeeting
   );
@@ -56,7 +59,7 @@ const Createpolls = ({ setCreatepoll }) => {
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   const [options, setOptions] = useState([
@@ -164,6 +167,19 @@ const Createpolls = ({ setCreatepoll }) => {
       date: DateDate,
     });
   };
+
+  useEffect(() => {
+    if (currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(EnglishCalendar);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(ArabicCalendar);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
+
   useEffect(() => {
     if (
       getCommitteeByCommitteeID !== null &&
