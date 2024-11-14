@@ -19,9 +19,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
-import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  _justShowDateformatBilling,
+} from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { Record } from "react-bootstrap-icons";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -207,6 +212,13 @@ const Summary = () => {
       key: "invoiceDate",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {newTimeFormaterAsPerUTCFullDate(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Invoice-amount"),
@@ -214,6 +226,13 @@ const Summary = () => {
       key: "paidAmount",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Balance-due"),
@@ -221,6 +240,13 @@ const Summary = () => {
       key: "balancedue",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Late-charges"),
@@ -228,6 +254,13 @@ const Summary = () => {
       key: "latecharges",
       ellipsis: true,
       align: "center",
+      render: (text, Record) => {
+        return (
+          <span className="text-truncate d-block">
+            {convertToArabicNumerals(text)}
+          </span>
+        );
+      },
     },
     {
       title: t("Pay"),
@@ -300,7 +333,7 @@ const Summary = () => {
             ColThreeKey={t("Next-payment-due-date")}
             ColOneValue={
               summary.BalanceDue != 0 ? (
-                <>$ {summary.BalanceDue}</>
+                <>$ {convertToArabicNumerals(summary.BalanceDue)}</>
               ) : (
                 <>{summary.BalanceDue}</>
               )
@@ -334,7 +367,7 @@ const Summary = () => {
             }
             ColThreeValue={
               lastPayment.PaidAmount !== 0 ? (
-                <>$ {lastPayment.PaidAmount}</>
+                <>$ {convertToArabicNumerals(lastPayment.PaidAmount)}</>
               ) : (
                 <>{"--"}</>
               )

@@ -155,8 +155,9 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {_justShowDateformatBilling(payOutStanding.DueDate) ||
-                            0}
+                          {_justShowDateformatBilling(
+                            payOutStanding.DueDate
+                          ) !== "Invalid date" || "--"}
                         </p>
                       </Col>
                     </Row>
