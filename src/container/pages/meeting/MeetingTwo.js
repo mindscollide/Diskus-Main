@@ -943,6 +943,7 @@ const NewMeeting = () => {
   };
 
   const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata")
     if (data.talkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -1528,6 +1529,7 @@ const NewMeeting = () => {
       dataIndex: "host",
       key: "host",
       width: "110px",
+      align: "center",
       sorter: (a, b) =>
         a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
       render: (text, record) => {
@@ -1539,6 +1541,7 @@ const NewMeeting = () => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "155px",
+      align: "center",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
@@ -1597,6 +1600,7 @@ const NewMeeting = () => {
       dataIndex: "Chat",
       key: "Chat",
       width: "85px",
+      align: "center",
       render: (text, record) => {
         return (
           <>
@@ -3353,15 +3357,13 @@ const NewMeeting = () => {
                               lg={12}>
                               <CustomPagination
                                 current={
-                                  meetingPageCurrent !== null &&
-                                  meetingPageCurrent !== undefined
-                                    ? meetingPageCurrent
+                                  meetingPageCurrent !== null
+                                    ? Number(meetingPageCurrent)
                                     : 1
                                 }
                                 pageSize={
-                                  meetingpageRow !== null &&
-                                  meetingpageRow !== undefined
-                                    ? meetingpageRow
+                                  meetingpageRow !== null 
+                                    ? Number(meetingpageRow)
                                     : 50
                                 }
                                 onChange={handelChangePagination}

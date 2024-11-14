@@ -26,6 +26,7 @@
   display: block !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  margin: 0 5px;
 }
 
 .meeting_date {

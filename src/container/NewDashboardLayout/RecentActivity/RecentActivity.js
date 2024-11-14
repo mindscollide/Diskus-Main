@@ -99,7 +99,7 @@ const RecentActivity = () => {
                   )}
                   {recentActivityData.notificationTypes.description}
                 </div>
-                <p className='d-flex justify-content-end  me-1'>
+                <p className='d-flex justify-content-end  mx-1'>
                   {timePassed(
                     forRecentActivity(recentActivityData.creationDateTime),
                     currentLanguage

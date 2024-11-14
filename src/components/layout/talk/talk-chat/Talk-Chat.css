@@ -718,7 +718,7 @@ body[dir="rtl"] .chatBox {
   border: 1px solid #4cd7de;
   overflow: hidden auto;
   border-radius: 4px;
-  top: 73px;
+  top: 80px;
   left: 85px;
 }
 
@@ -961,6 +961,15 @@ body[dir="rtl"] span.securityicon-box {
   ) {
   min-width: 300px !important;
   width: 300px !important;
+}
+body[dir="rtl"]
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+    .rc-virtual-list-holder-inner
+      .ant-select-item.ant-select-item-option.talk-chat-filter
+  ) {
+  min-width: 300px !important;
+  width: 300px !important;
+  left: 96px !important;
 }
 
 .chat-profile-icon svg {

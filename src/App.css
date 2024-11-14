@@ -6009,19 +6009,22 @@ body[dir="rtl"] .input-with-icon {
   overflow-x: hidden !important;
 }
 
-.ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
+/* .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
   text-align: left !important;
   padding: 6px 4px !important;
-}
+} */
 
-.ant-table-expand-icon-col {
+/* .ant-table-expand-icon-col {
   width: 15px !important;
-}
+} */
 
 .newMeetingProgressbar .progress-bar {
   background: #6172d6 !important;
   margin: 2px !important;
   border-radius: 5px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .custom-progress .progress-bar {
@@ -6241,6 +6244,9 @@ textarea {
   display: none !important;
 }
 .ApprovalsTable .ant-table-column-sorters .ant-table-column-sorter {
+  display: none !important;
+}
+.newMeetingTable .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
 button.grayScaled {
