@@ -5486,12 +5486,23 @@ body[dir="rtl"] .ant-result-subtitle {
 .editSelector__control {
   height: 30px !important;
 }
-
+body[dir="rtl"] .dataroom_options .dropdown-menu {
+  z-index: 100 !important;
+  height: 100% !important;
+}
+.dataroom_options {
+  z-index: 100 !important;
+}
 .dataroom_options .dropdown-menu.show {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px !important;
   width: auto !important;
+  min-height: max-content;
+}
+body[dir="rtl"] .dataroom_options .dropdown-menu.show {
+  top: 0px !important;
+  min-height: max-content;
 }
 
 .dataroom_options .dropdown-menu.show .dropdown-item {
@@ -8081,7 +8092,6 @@ body[dir="rtl"] .menu-text {
 }
 /* Menu Polls  Status Ends */
 
-
 .Confirmationmodal_body_text_meeting_update {
   padding: 0 20px !important;
   text-align: center !important;
@@ -8121,6 +8131,7 @@ body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
 td.ant-table-column-sort {
   background: none !important;
 }
-.ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
   background: none !important;
 }
