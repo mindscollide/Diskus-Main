@@ -74,7 +74,7 @@ const ApprovalSend = () => {
       dataIndex: "fileName",
       key: "fileName",
       className: "nameParticipant",
-      align: "left",
+      align: "start",
       ellipsis: true,
       width: 200,
       sortDirections: ["ascend", "descend"],

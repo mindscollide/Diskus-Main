@@ -492,6 +492,7 @@ const GridViewDataRoom = ({
                                     <img
                                       alt=""
                                       src={threedots_dataroom}
+                                      className={styles["dots_Icons"]}
                                       width="15.02px"
                                       height="10.71px"
                                     />
@@ -580,14 +581,16 @@ const GridViewDataRoom = ({
                                 <Dropdown
                                   drop="down"
                                   align="start"
+                                  navbar={false}
                                   className={`${
                                     styles["options_dropdown"]
                                   } ${"dataroom_options"}`}
                                 >
-                                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                                  <Dropdown.Toggle>
                                     <img
                                       alt=""
                                       src={threedots_dataroom}
+                                      className={styles["dots_Icons"]}
                                       width="15.02px"
                                       height="10.71px"
                                     />
@@ -677,6 +680,7 @@ const GridViewDataRoom = ({
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
                                           <img
                                             src={threedots_dataroom}
+                                            className={styles["dots_Icons"]}
                                             width="15.02px"
                                             height="10.71px"
                                             alt=""
@@ -798,6 +802,7 @@ const GridViewDataRoom = ({
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
                                           <img
                                             src={threedots_dataroom}
+                                            className={styles["dots_Icons"]}
                                             width="15.02px"
                                             height="10.71px"
                                             alt=""

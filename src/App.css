@@ -5486,12 +5486,23 @@ body[dir="rtl"] .ant-result-subtitle {
 .editSelector__control {
   height: 30px !important;
 }
-
+body[dir="rtl"] .dataroom_options .dropdown-menu {
+  z-index: 100 !important;
+  height: 100% !important;
+}
+.dataroom_options {
+  z-index: 100 !important;
+}
 .dataroom_options .dropdown-menu.show {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px !important;
   width: auto !important;
+  min-height: max-content;
+}
+body[dir="rtl"] .dataroom_options .dropdown-menu.show {
+  top: 0px !important;
+  min-height: max-content;
 }
 
 .dataroom_options .dropdown-menu.show .dropdown-item {
@@ -7208,7 +7219,7 @@ th.ant-table-cell.statusParticipant
   font-weight: 700 !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
-  padding: 2px 8px;
+  padding: 2px 0px;
 }
 .ApprovalsTable {
   margin-bottom: 50px;

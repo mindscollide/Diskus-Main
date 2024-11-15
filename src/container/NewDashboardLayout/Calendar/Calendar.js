@@ -28,24 +28,20 @@ import {
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import styles from "./Calendar.module.css";
 const NewCalendar = () => {
-  const calendarReducer = useSelector((state) => state.calendarReducer);
-  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
-  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [dates, setDates] = useState([]);
   let currentDate = new Date(); // Get the current date
-
   let currentDateObject = new DateObject(currentDate);
   let lang = localStorage.getItem("i18nextLng");
-
-  const calendarRef = useRef();
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  console.log({ calendarEvents }, "calendarEventscalendarEvents");
   let userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
+  const calendarReducer = useSelector((state) => state.calendarReducer);
+  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const calendarRef = useRef();
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [calenderData, setCalenderData] = useState([]);
 
   //For Custom language datepicker

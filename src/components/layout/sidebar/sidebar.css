@@ -20,6 +20,13 @@
   width: 100% !important;
   border-right: 1px solid #e1e1e1;
 }
+body[dir="rtl"] .new_sidebar {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  width: 100% !important;
+  border-left: 1px solid #e1e1e1;
+}
 
 .admin_nav {
   min-height: 0vh !important;
@@ -264,7 +271,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 
 body[dir="rtl"] .expanded_menu {
   left: auto !important;
-  right: 61px !important;
+  right: 63px !important;
 }
 
 /* css */
