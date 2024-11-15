@@ -1032,7 +1032,7 @@ svg.DatePickerIcon {
   height: 29px;
   /* margin-top: 1px; */
   color: #fff !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   padding: 5px !important;
   border-radius: 4px;
   display: block;
@@ -1040,7 +1040,7 @@ svg.DatePickerIcon {
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 @import "~antd/dist/antd.less";
