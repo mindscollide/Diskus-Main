@@ -717,16 +717,13 @@ body[dir="rtl"] .cancel_icon_resolution {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 65vh !important;
   gap: 10px;
 }
 
 .NoResolutionHeading {
   color: #5a5a5a !important;
   font-weight: 600;
-  font-size: 2.5rem !important;
-  margin: 20px 0 0 0 !important;
-  padding: 0 !important;
+  font-size: 1.8rem !important;
 }
 
 .NoResolution_Tagline {
@@ -735,7 +732,6 @@ body[dir="rtl"] .cancel_icon_resolution {
   font-weight: 400;
   margin: 0 !important;
   padding: 0 !important;
-  line-height: 10px !important;
 }
 
 .searchBox_CrossIcon {
