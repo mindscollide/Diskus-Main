@@ -659,6 +659,10 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   font-weight: 600 !important;
 }
 
+body[dir="rtl"] .isDetail-Schedule-top-btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isDetail-Schedule-top-btn-NonActive {
   background-color: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -679,6 +683,10 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   font-weight: 600 !important;
 }
 
+body[dir="rtl"] .isAgenda-Schedule-top-btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAgenda-Schedule-top-btn-NonActive {
   background-color: #fff !important;
   border: 1px solid #e1e1e1 !important;
@@ -697,6 +705,9 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
+}
+body[dir="rtl"] .isAttendee-Schedule-top-btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isAttendee-Schedule-top-btn-NonActive {

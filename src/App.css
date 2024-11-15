@@ -8109,7 +8109,7 @@ body[dir="rtl"] .menu-text {
 }
 .Confirmationmodal_close_btn_meeting_update_ {
   padding: 12px 30px !important;
-
+  border: none !important;
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -8118,7 +8118,7 @@ body[dir="rtl"] .menu-text {
 }
 body[dir="rtl"] .Confirmationmodal_close_btn_meeting_update_ {
   padding: 12px 30px !important;
-
+  border: none !important;
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
