@@ -166,7 +166,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "SubscriptionNumber",
       key: "SubscriptionNumber",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: Locale === "en" ? "center" : "right",
       render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
