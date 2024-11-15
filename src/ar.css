@@ -80,7 +80,19 @@ body[dir="rtl"] .rmdp-week-day {
 
 .rmdp-day.rmdp-today span {
   color: #fff !important;
-  background-image: linear-gradient(#4bdbde, #5f7ad7) !important;
+  background-image: linear-gradient(
+    to left,
+    #49dbdb 0%,
+    #6172d6 100%
+  ) !important;
+}
+
+body[dir="rtl"] .rmdp-day.rmdp-today span {
+  background-image: linear-gradient(
+    to right,
+    #49dbdb 0%,
+    #6172d6 100%
+  ) !important;
 }
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
@@ -176,9 +188,6 @@ body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
   position: relative;
 }
 
-
-
-
 body[dir="rtl"] .todolist-title-col {
   text-align: right !important;
 }
@@ -221,8 +230,6 @@ body[dir="rtl"]
 body[dir="rtl"] .ant-select-arrow {
   right: 120px !important;
 } */
-
-
 
 body[dir="rtl"] .Dashboard-Main-Container.container {
   margin-left: 0px;
@@ -442,8 +449,6 @@ body[dir="rtl"] .eye_icon.valid-feedback {
   right: 87%;
   cursor: pointer;
 }
-
-
 
 body[dir="rtl"]
   .ant-table-wrapper.Billing_TablePakageSelection
