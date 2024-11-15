@@ -508,11 +508,15 @@ const DowngradeSubscription = () => {
                 <td>{downgradeDetails.SubscriptionNumber}</td>
                 <td>
                   {formatDateDownGradeSubscription(
-                    downgradeDetails.subscriptionStartDate
+                    downgradeDetails.subscriptionStartDate,
+                    locale
                   )}
                 </td>
                 <td>
-                  {formatDateDownGradeSubscription(downgradeDetails.ExpiryDate)}
+                  {formatDateDownGradeSubscription(
+                    downgradeDetails.ExpiryDate,
+                    locale
+                  )}
                 </td>
                 <td>{downgradeDetails.tenure}</td>
               </tr>
