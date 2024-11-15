@@ -16,7 +16,7 @@ const PrivateRoutes = () => {
         )
     ) {
       // Extract action parameter from URL
-      const parts = currentUrl.split("?action=".toLowerCase());
+      const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
         // Save RSVP data to local storage
