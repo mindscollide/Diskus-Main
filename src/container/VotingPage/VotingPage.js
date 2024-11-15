@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
+import thumbsUpWhiteicon from "../../assets/images/White Icon Thumbs Up.png";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
+import thumbsDownwhite from "../../assets/images/White Icon Thumbs Down.png";
 import result from "../../assets/images/result.svg";
 import Clock from "../../assets/images/Clock.svg";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
@@ -235,12 +237,21 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Button
                                 text={t("Not-approved")}
                                 icon={
-                                  <img
-                                    src={thumbsdown}
-                                    width="20px"
-                                    height="20px"
-                                    alt=""
-                                  />
+                                  voteId === 2 ? (
+                                    <img
+                                      src={thumbsDownwhite}
+                                      width="20px"
+                                      height="20px"
+                                      alt=""
+                                    />
+                                  ) : (
+                                    <img
+                                      src={thumbsdown}
+                                      width="20px"
+                                      height="20px"
+                                      alt=""
+                                    />
+                                  )
                                 }
                                 className={
                                   voteId === 2
@@ -254,12 +265,21 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Button
                                 text={t("Approved")}
                                 icon={
-                                  <img
-                                    src={thumbsup}
-                                    width="20px"
-                                    height="20px"
-                                    alt=""
-                                  />
+                                  voteId === 1 ? (
+                                    <img
+                                      src={thumbsUpWhiteicon}
+                                      width="20px"
+                                      height="20px"
+                                      alt=""
+                                    />
+                                  ) : (
+                                    <img
+                                      src={thumbsup}
+                                      width="20px"
+                                      height="20px"
+                                      alt=""
+                                    />
+                                  )
                                 }
                                 onClick={() => isApprovedBtn(1)}
                                 className={
