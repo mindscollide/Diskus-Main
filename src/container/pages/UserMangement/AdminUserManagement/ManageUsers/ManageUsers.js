@@ -41,6 +41,8 @@ const ManageUsers = () => {
 
   const dispatch = useDispatch();
 
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
+
   let organizationID = localStorage.getItem("organizationID");
 
   let userID = localStorage.getItem("userID");
@@ -57,10 +59,6 @@ const ManageUsers = () => {
 
   const UserMangementReducerResponseMessage = useSelector(
     (state) => state.UserMangementReducer.ResponseMessage
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
   );
 
   const UserManagementModalsdeleteUsersModal = useSelector(
@@ -193,7 +191,7 @@ const ManageUsers = () => {
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
-      align: "left",
+      align: CurrentLanguage === "en" ? "left" : " right",
       ellipsis: true,
       sorter: (a, b) => {
         if (a.userName && b.userName) {
@@ -214,7 +212,7 @@ const ManageUsers = () => {
       title: t("Designation"),
       dataIndex: "designation",
       key: "designation",
-      align: "left",
+      align: CurrentLanguage === "en" ? "left" : " right",
       ellipsis: true,
       sorter: (a, b) => {
         if (a.designation && b.designation) {
@@ -237,7 +235,7 @@ const ManageUsers = () => {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
-      align: "left",
+      align: CurrentLanguage === "en" ? "left" : " right",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -251,7 +249,7 @@ const ManageUsers = () => {
       title: t("Is-admin-also"),
       dataIndex: "userRole",
       key: "userRole",
-      align: "center",
+      align: CurrentLanguage === "en" ? "center" : " right",
       ellipsis: true,
       sorter: (a, b) => {
         if (a.userRole && b.userRole) {
@@ -278,7 +276,7 @@ const ManageUsers = () => {
       title: t("User-status"),
       dataIndex: "userStatus",
       key: "userStatus",
-      align: "left",
+      align: CurrentLanguage === "en" ? "left" : " right",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -340,7 +338,7 @@ const ManageUsers = () => {
       title: t(""),
       dataIndex: "Delete",
       key: "Delete",
-      align: "center",
+      align: CurrentLanguage === "en" ? "center" : " right",
       render: (text, record) => {
         return (
           <>
