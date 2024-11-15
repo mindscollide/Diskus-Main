@@ -2071,5 +2071,13 @@
   "Unsaved-changes": "Unsaved Changes",
   "File-shared-successfully": "File Shared Successfully",
   "Your-file-has-been-shared": "Your file has been shared",
-  "View-in-dataroom": "View in Dataroom"
+  "View-in-dataroom": "View in Dataroom",
+  "Review-minutes": "Review Minutes",
+  "Review-&-sign": "Review & Sign",
+  "Accept-all": "Accept All",
+  "Decline": "Decline",
+  "Google": "Google",
+  "Office": "Office",
+  "Microsoft": "Microsoft",
+  "None": "None"
 }

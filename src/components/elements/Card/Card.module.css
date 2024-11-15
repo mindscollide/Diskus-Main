@@ -302,7 +302,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   text-align: center !important;
   justify-content: center;
   display: grid;
-  margin: 10px 0 !important;
+  margin: 0px 0 !important;
 }
 
 .card_profile_box_InActive {

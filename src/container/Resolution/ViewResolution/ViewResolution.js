@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -135,7 +136,8 @@ const ViewResolution = ({ setViewresolution }) => {
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Datetime_view_resolution"]}>
                           {newTimeFormaterAsPerUTCFullDate(
-                            resolutionData?.resolution.circulationDateTime
+                            resolutionData?.resolution.circulationDateTime,
+                            currentLanguage
                           )}
                         </span>
                       </Col>
@@ -152,7 +154,10 @@ const ViewResolution = ({ setViewresolution }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Frequency_Viewresolution"]}>
-                          {resolutionData?.resolution?.reminderDescription}
+                          {convertToArabicNumerals(
+                            resolutionData?.resolution?.reminderDescription,
+                            currentLanguage
+                          )}
                         </span>
                       </Col>
                     </Row>
@@ -169,7 +174,8 @@ const ViewResolution = ({ setViewresolution }) => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
                       {newTimeFormaterAsPerUTCFullDate(
-                        resolutionData?.resolution?.votingDeadline
+                        resolutionData?.resolution?.votingDeadline,
+                        currentLanguage
                       )}
                     </span>
                   </Col>
@@ -185,7 +191,9 @@ const ViewResolution = ({ setViewresolution }) => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
                       {newTimeFormaterAsPerUTCFullDate(
-                        resolutionData?.resolution?.decisionAnnouncementDateTime
+                        resolutionData?.resolution
+                          ?.decisionAnnouncementDateTime,
+                        currentLanguage
                       )}
                     </span>
                   </Col>

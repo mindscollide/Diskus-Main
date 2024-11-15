@@ -41,7 +41,6 @@ const ReviewMinutes = () => {
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
 
-  const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
   const currentMeetingMinutesToReviewData = useSelector(
     (state) => state.MinutesReducer.currentMeetingMinutesToReviewData
   );
@@ -63,6 +62,9 @@ const ReviewMinutes = () => {
   );
   const AcceptCommentModal = useSelector(
     (state) => state.MinutesReducer.acceptCommentModal
+  );
+  const getallDocumentsForAgendaWiseMinutes = useSelector(
+    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes
   );
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -511,7 +513,7 @@ const ReviewMinutes = () => {
                   ?.filter((minute) => minute.agendaID === childAgenda.pK_MAID)
                   .map((minute) => {
                     const foundEntry =
-                      NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes?.data?.find(
+                      getallDocumentsForAgendaWiseMinutes?.data?.find(
                         (entry) =>
                           entry.pK_MeetingAgendaMinutesID === minute.minuteID
                       );
@@ -539,7 +541,7 @@ const ReviewMinutes = () => {
               minuteData: parentAgendaMinutes.map((minute) => ({
                 ...minute,
                 attachments:
-                  NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data.find(
+                  getallDocumentsForAgendaWiseMinutes.data.find(
                     (entry) =>
                       entry.pK_MeetingAgendaMinutesID === minute.minuteID
                   )?.files || [],
@@ -686,8 +688,6 @@ const ReviewMinutes = () => {
     [minuteDataToReject, minuteViewFlag]
   );
 
-  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {/* Container for pending approval section */}
@@ -704,7 +704,7 @@ const ReviewMinutes = () => {
           <Row className="py-3 mx-50">
             <Col sm={12} md={6} lg={6}>
               <span className={styles["pendingApprovalHeading"]}>
-                {t("Review Minutes")}
+                {t("Review-minutes")}
               </span>
             </Col>
             <Col
@@ -718,7 +718,7 @@ const ReviewMinutes = () => {
               </span>
               <Button
                 onClick={() => dispatch(acceptCommentModal(true))}
-                text={t("Accept All")}
+                text={t("Accept-all")}
                 disableBtn={minutesToReview === 0 ? true : false}
                 className={styles["Accept-all"]}
               />

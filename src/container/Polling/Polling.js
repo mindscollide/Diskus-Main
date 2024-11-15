@@ -11,7 +11,7 @@ import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import BinIcon from "../../assets/images/bin.svg";
@@ -414,8 +414,6 @@ const Polling = () => {
     dispatch(searchPollsApi(navigate, t, data));
   };
 
-  //Filteration Work Polls
-
   //Filteration Work polls
   const [visible, setVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([
@@ -637,7 +635,7 @@ const Polling = () => {
         },
       }),
       render: (text, record) => {
-        return _justShowDateformatBilling(text);
+        return _justShowDateformatBilling(text, currentLanguage);
       },
     },
     {
@@ -1011,16 +1009,7 @@ const Polling = () => {
             <Button
               text={t("New")}
               className={styles["new_Poll_Button"]}
-              icon={
-                <img
-                  src={plusbutton}
-                  height="7.6px"
-                  width="7.6px"
-                  alt=""
-                  className="align-items-center"
-                  draggable="false"
-                />
-              }
+              icon={<Plus width={20} height={20} fontWeight={800} />}
               onClick={() =>
                 dispatch(setCreatePollModal(true), dispatch(LoaderState(true)))
               }
