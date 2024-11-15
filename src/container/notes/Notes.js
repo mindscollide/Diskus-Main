@@ -6,8 +6,6 @@ import ModalViewNote from "./modalViewNote/ModalViewNote";
 import ModalAddNote from "./modalAddNote/ModalAddNote";
 import ModalUpdateNote from "./modalUpdateNote/ModalUpdateNote";
 import ClipIcon from "../../assets/images/AttachmentNotes.svg";
-import StarIcon from "../../assets/images/Star.svg";
-import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
@@ -34,18 +32,18 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 const Notes = () => {
-  //Test Accordian states start
-  const [updateNotesModal, setUpdateNotesModal] = useState(false);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NotesReducer } = useSelector((state) => state);
   //Get Current User ID
-  const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let notesPage = JSON.parse(localStorage.getItem("notesPage"));
   let notesPagesize = localStorage.getItem("notesPageSize");
   const [totalRecords, setTotalRecords] = useState(0);
+  //Test Accordian states start
+  const [updateNotesModal, setUpdateNotesModal] = useState(false);
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
   const [open, setOpen] = useState({
@@ -53,7 +51,6 @@ const Notes = () => {
     message: "",
     severity: "error",
   });
-  const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
   const [updateShow, setUpdateShow] = useState(false);
   const [notes, setNotes] = useState([]);
