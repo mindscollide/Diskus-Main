@@ -209,8 +209,6 @@ const CancelSubscriptionAdmin = () => {
       (SubsID) => SubsID.pK_OrganizationsSubscriptionID
     );
 
-  console.log(subscriptionID, "subscriptionIDsubscriptionID");
-
   const defaultRow = {
     Pakagedetails: (
       <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
@@ -235,6 +233,15 @@ const CancelSubscriptionAdmin = () => {
   const handleCompletionofContract = () => {
     dispatch(showCancelSubscriptionModal(true));
     setCompletionContract(true);
+  };
+
+  //Scroll for table
+  const scroll = {
+    y: "39vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
   };
 
   return (
@@ -325,7 +332,7 @@ const CancelSubscriptionAdmin = () => {
                     className={"package-TablePakageSelection"}
                     rows={[...Data, defaultRow]}
                     pagination={false}
-                    scroll={{ x: "max-content" }}
+                    scroll={scroll}
                     id="UpgradePakageDetails"
                     rowHoverBg="none"
                   />
