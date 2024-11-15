@@ -43,7 +43,7 @@ const BoardDeckSendEmail = ({
 
   const OrganizationID = localStorage.getItem("organizationID");
 
-  const boardDeckEmailModal = useSelector(
+  const boardDeckEmailingModal = useSelector(
     (state) => state.NewMeetingreducer.boardDeckEmailModal
   );
   const AllUserCommitteesGroupsData = useSelector(
@@ -250,7 +250,7 @@ const BoardDeckSendEmail = ({
   return (
     <Container>
       <Modal
-        show={boardDeckEmailModal}
+        show={boardDeckEmailingModal}
         setShow={dispatch(boardDeckEmailModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
