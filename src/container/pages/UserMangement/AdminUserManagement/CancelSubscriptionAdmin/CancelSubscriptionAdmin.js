@@ -14,6 +14,8 @@ import {
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
 import { useLocation, useNavigate } from "react-router-dom";
+import { locale } from "moment";
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
@@ -22,6 +24,8 @@ const CancelSubscriptionAdmin = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  let lang = localStorage.getItem("i18nextLng");
 
   const { CancellationDetials } = location.state;
 
@@ -164,17 +168,20 @@ const CancelSubscriptionAdmin = () => {
         ),
         Chargesperlicense: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.price}
+            {convertToArabicNumerals(packages.price, lang)}
           </span>
         ),
         Numberoflicenses: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.headCount}
+            {convertToArabicNumerals(packages.headCount, lang)}
           </span>
         ),
         Yearlycharges: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.price * packages.headCount * 12}
+            {convertToArabicNumerals(
+              packages.price * packages.headCount * 12,
+              lang
+            )}
           </span>
         ),
       }));
@@ -210,12 +217,12 @@ const CancelSubscriptionAdmin = () => {
     ),
     Numberoflicenses: (
       <span className={styles["ChargesPerLicesensetotal"]}>
-        {totalLicenses}
+        {convertToArabicNumerals(totalLicenses, lang)}
       </span>
     ),
     Yearlycharges: (
       <span className={styles["ChargesPerLicesensetotal"]}>
-        {totalYearlyCharges}
+        {convertToArabicNumerals(totalYearlyCharges, lang)}
       </span>
     ),
   };
@@ -265,7 +272,8 @@ const CancelSubscriptionAdmin = () => {
                 </p>
                 <p className={styles["subcriptionvalue_1"]}>
                   {formatDateDownGradeSubscription(
-                    cancelSubscriptionDetails.subscriptionStartDate
+                    cancelSubscriptionDetails.subscriptionStartDate,
+                    lang
                   )}
                 </p>
               </Col>
@@ -275,7 +283,8 @@ const CancelSubscriptionAdmin = () => {
                 <p className={styles["subcriptionkey_1"]}>{t("Expiry-date")}</p>
                 <p className={styles["subcriptionvalue_1"]}>
                   {formatDateDownGradeSubscription(
-                    cancelSubscriptionDetails.ExpiryDate
+                    cancelSubscriptionDetails.ExpiryDate,
+                    lang
                   )}
                 </p>
               </Col>
