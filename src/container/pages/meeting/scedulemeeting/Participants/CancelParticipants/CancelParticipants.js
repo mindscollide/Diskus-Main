@@ -15,9 +15,7 @@ export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cancelPartipants = useSelector(
-    (state) => state.NewMeetingreducer.cancelPartipants
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -40,13 +38,13 @@ export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>
       <Modal
-        show={cancelPartipants}
+        show={NewMeetingreducer.cancelPartipants}
         setShow={dispatch(showCancelModalPartipants)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

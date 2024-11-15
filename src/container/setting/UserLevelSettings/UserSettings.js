@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../components/elements";
+import { Loader, Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -31,11 +31,8 @@ const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const settingReducerData = useSelector(
-    (state) => state.settingReducer.UserProfileData
-  );
-
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  const { UserProfileData } = settingReducer;
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -110,7 +107,7 @@ const UserSettings = () => {
 
   console.log("Client ID:", process.env.REACT_APP_GOOGLE_LOGIN_URL);
   useEffect(() => {
-    if (settingReducerData === undefined || settingReducerData === null) {
+    if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
     }
   }, []);
@@ -147,114 +144,141 @@ const UserSettings = () => {
   });
 
   useEffect(() => {
-    if (settingReducerData !== null && settingReducerData !== undefined) {
-      if (Object.keys(settingReducerData).length > 0) {
+    if (
+      settingReducer.UserProfileData !== null &&
+      settingReducer.UserProfileData !== undefined
+    ) {
+      if (Object.keys(settingReducer.UserProfileData).length > 0) {
         setUserOptionsSettings({
-          Is2FAEnabled: settingReducerData.iS2FAEnabled,
-          EmailOnNewMeeting: settingReducerData.emailOnNewMeeting,
-          EmailEditMeeting: settingReducerData.emailOnEditMeeting,
+          Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
+          EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
+          EmailEditMeeting: settingReducer.UserProfileData.emailOnEditMeeting,
           EmailCancelOrDeleteMeeting:
-            settingReducerData.emailOnCancelledORDeleteMeeting,
+            settingReducer.UserProfileData.emailOnCancelledORDeleteMeeting,
           PushNotificationonNewMeeting:
-            settingReducerData.pushNotificationOnNewMeeting,
+            settingReducer.UserProfileData.pushNotificationOnNewMeeting,
           PushNotificationEditMeeting:
-            settingReducerData.pushNotificationOnEditMeeting,
+            settingReducer.UserProfileData.pushNotificationOnEditMeeting,
           PushNotificationCancelledOrDeleteMeeting:
-            settingReducerData.pushNotificationonCancelledORDeleteMeeting,
+            settingReducer.UserProfileData
+              .pushNotificationonCancelledORDeleteMeeting,
           ShowNotificationOnParticipantJoining:
-            settingReducerData.showNotificationOnParticipantJoining,
+            settingReducer.UserProfileData.showNotificationOnParticipantJoining,
           AllowGoogleCalenderSync:
-            settingReducerData.userAllowGoogleCalendarSynch,
+            settingReducer.UserProfileData.userAllowGoogleCalendarSynch,
           AllowMicrosoftCalenderSync:
-            settingReducerData.userAllowMicrosoftCalendarSynch,
+            settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch,
           EmailWhenAddedToCommittee:
-            settingReducerData.emailWhenAddedToCommittee,
+            settingReducer.UserProfileData.emailWhenAddedToCommittee,
           EmailWhenRemovedFromCommittee:
-            settingReducerData.emailWhenRemovedFromCommittee,
+            settingReducer.UserProfileData.emailWhenRemovedFromCommittee,
           EmailWhenCommitteeIsDissolvedOrArchived:
-            settingReducerData.emailWhenCommitteeIsDissolvedorArchived,
+            settingReducer.UserProfileData
+              .emailWhenCommitteeIsDissolvedorArchived,
           EmailWhenCommitteeIsSetInactive:
-            settingReducerData.emailWhenCommitteeIsInActive,
+            settingReducer.UserProfileData.emailWhenCommitteeIsInActive,
           EmailWhenCommitteeIsActive:
-            settingReducerData.emailWhenCommitteeIsActive,
+            settingReducer.UserProfileData.emailWhenCommitteeIsActive,
           PushNotificationWhenAddedToCommittee:
-            settingReducerData.pushNotificationWhenAddedToCommittee,
+            settingReducer.UserProfileData.pushNotificationWhenAddedToCommittee,
           PushNotificationWhenRemovedFromCommittee:
-            settingReducerData.pushNotificationWhenRemovedFromCommittee,
+            settingReducer.UserProfileData
+              .pushNotificationWhenRemovedFromCommittee,
           PushNotificationWhenCommitteeIsDissolvedOrArchived:
-            settingReducerData.pushNotificationWhenCommitteeIsDissolvedorArchived,
+            settingReducer.UserProfileData
+              .pushNotificationWhenCommitteeIsDissolvedorArchived,
           PushNotificationWhenCommitteeIsInActive:
-            settingReducerData.pushNotificationWhenCommitteeIsInActive,
+            settingReducer.UserProfileData
+              .pushNotificationWhenCommitteeIsInActive,
           PushNotificationwhenCommitteeissetActive:
-            settingReducerData.pushNotificationwhenCommitteeissetActive,
-          EmailWhenAddedToGroup: settingReducerData.emailWhenAddedToGroup,
+            settingReducer.UserProfileData
+              .pushNotificationwhenCommitteeissetActive,
+          EmailWhenAddedToGroup:
+            settingReducer.UserProfileData.emailWhenAddedToGroup,
           EmailWhenRemovedFromGroup:
-            settingReducerData.emailWhenRemovedFromGroup,
+            settingReducer.UserProfileData.emailWhenRemovedFromGroup,
           EmailWhenGroupIsDissolvedOrArchived:
-            settingReducerData.emailWhenGroupIsClosedorArchived,
+            settingReducer.UserProfileData.emailWhenGroupIsClosedorArchived,
           EmailWhenGroupisSetInactive:
-            settingReducerData.emailWhenGroupIsInActive,
+            settingReducer.UserProfileData.emailWhenGroupIsInActive,
           PushNotificationwhenGroupissetActive:
-            settingReducerData.pushNotificationwhenGroupissetActive,
-          EmailWhenGroupIsActive: settingReducerData.emailWhenGroupIsActive,
+            settingReducer.UserProfileData.pushNotificationwhenGroupissetActive,
+          EmailWhenGroupIsActive:
+            settingReducer.UserProfileData.emailWhenGroupIsActive,
           PushNotificationWhenAddedToGroup:
-            settingReducerData.pushNotificationWhenAddedToGroup,
+            settingReducer.UserProfileData.pushNotificationWhenAddedToGroup,
           PushNotificationWhenRemovedFromGroup:
-            settingReducerData.pushNotificationWhenRemoveFromGroup,
+            settingReducer.UserProfileData.pushNotificationWhenRemoveFromGroup,
           PushNotificationWhenGroupIsDissolvedOrArchived:
-            settingReducerData.pushNotificationWhenGroupIsClosedORArchived,
+            settingReducer.UserProfileData
+              .pushNotificationWhenGroupIsClosedORArchived,
           PushNotificationWhenGroupIsInActive:
-            settingReducerData.pushNotificationWhenGroupisSetInactive,
+            settingReducer.UserProfileData
+              .pushNotificationWhenGroupisSetInactive,
           EmailWhenResolutionIsCirculated:
-            settingReducerData.emailWhenNewResolutionIsCirculated,
+            settingReducer.UserProfileData.emailWhenNewResolutionIsCirculated,
           EmailWhenNewResolutionIsCancelledAfterCirculation:
-            settingReducerData.emailWhenResolutionIsCancelledAfterCirculation,
+            settingReducer.UserProfileData
+              .emailWhenResolutionIsCancelledAfterCirculation,
           EmailWhenResolutionIsClosed:
-            settingReducerData.emailWhenResolutionIsClosed,
+            settingReducer.UserProfileData.emailWhenResolutionIsClosed,
           PushNotificationWhenNewResolutionIsCirculated:
-            settingReducerData.pushNotificationWhenNewResolutionIsCirculated,
+            settingReducer.UserProfileData
+              .pushNotificationWhenNewResolutionIsCirculated,
           PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-            settingReducerData.pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+            settingReducer.UserProfileData
+              .pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
           PushNotificationWhenResolutionISClosed:
-            settingReducerData.pushNotificationWhenResolutionIsClosed,
-          DiskusCalenderColor: settingReducerData.diskusEventColor,
-          GoogleCalenderColor: settingReducerData.googleEventColor,
-          MicrosoftCalenderColor: settingReducerData.officeEventColor,
+            settingReducer.UserProfileData
+              .pushNotificationWhenResolutionIsClosed,
+          DiskusCalenderColor: settingReducer.UserProfileData.diskusEventColor,
+          GoogleCalenderColor: settingReducer.UserProfileData.googleEventColor,
+          MicrosoftCalenderColor:
+            settingReducer.UserProfileData.officeEventColor,
           EmailWhenNewPollIsPublished:
-            settingReducerData.emailWhenNewPollIsPublished,
+            settingReducer.UserProfileData.emailWhenNewPollIsPublished,
           EmailWhenPollDueDateIsPassed:
-            settingReducerData.emailWhenPollDueDateIsPassed,
+            settingReducer.UserProfileData.emailWhenPollDueDateIsPassed,
           EmailWhenPublishedPollIsDeleted:
-            settingReducerData.emailWhenPublishedPollIsDeleted,
+            settingReducer.UserProfileData.emailWhenPublishedPollIsDeleted,
           EmailWhenPublishedPollIsUpdated:
-            settingReducerData.emailWhenPublishedPollIsUpdated,
+            settingReducer.UserProfileData.emailWhenPublishedPollIsUpdated,
           PushNotificationWhenNewPollIsPublished:
-            settingReducerData.pushNotificationWhenNewPollIsPublished,
+            settingReducer.UserProfileData
+              .pushNotificationWhenNewPollIsPublished,
           PushNotificationWhenPollDueDateIsPassed:
-            settingReducerData.pushNotificationWhenPollDueDateIsPassed,
+            settingReducer.UserProfileData
+              .pushNotificationWhenPollDueDateIsPassed,
           PushNotificationWhenPublishedPollIsDeleted:
-            settingReducerData.pushNotificationWhenPublishedPollIsDeleted,
+            settingReducer.UserProfileData
+              .pushNotificationWhenPublishedPollIsDeleted,
           PushNotificationWhenPublishedPollIsUpdated:
-            settingReducerData.pushNotificationWhenPublishedPollIsUpdated,
+            settingReducer.UserProfileData
+              .pushNotificationWhenPublishedPollIsUpdated,
           PushNotificationWhenNewTODOAssigned:
-            settingReducerData.pushNotificationWhenNewTODOAssigned,
+            settingReducer.UserProfileData.pushNotificationWhenNewTODOAssigned,
           PushNotificationWhenNewTODODeleted:
-            settingReducerData.pushNotificationWhenNewTODODeleted,
+            settingReducer.UserProfileData.pushNotificationWhenNewTODODeleted,
           PushNotificationWhenNewTODOEdited:
-            settingReducerData.pushNotificationWhenNewTODOEdited,
+            settingReducer.UserProfileData.pushNotificationWhenNewTODOEdited,
           PushNotificationWhenNewCommentAdded:
-            settingReducerData.pushNotificationWhenNewCommentAdded,
+            settingReducer.UserProfileData.pushNotificationWhenNewCommentAdded,
           PushNotificationWhenCommentDeleted:
-            settingReducerData.pushNotificationWhenCommentDeleted,
-          EmailWhenCommentDeleted: settingReducerData.emailWhenCommentDeleted,
-          EmailWhenNewCommentAdded: settingReducerData.emailWhenNewCommentAdded,
-          EmailWhenNewTODOAssigned: settingReducerData.emailWhenNewTODOAssigned,
-          EmailWhenNewTODODeleted: settingReducerData.emailWhenNewTODODeleted,
-          EmailWhenNewTODOEdited: settingReducerData.emailWhenNewTODOEdited,
+            settingReducer.UserProfileData.pushNotificationWhenCommentDeleted,
+          EmailWhenCommentDeleted:
+            settingReducer.UserProfileData.emailWhenCommentDeleted,
+          EmailWhenNewCommentAdded:
+            settingReducer.UserProfileData.emailWhenNewCommentAdded,
+          EmailWhenNewTODOAssigned:
+            settingReducer.UserProfileData.emailWhenNewTODOAssigned,
+          EmailWhenNewTODODeleted:
+            settingReducer.UserProfileData.emailWhenNewTODODeleted,
+          EmailWhenNewTODOEdited:
+            settingReducer.UserProfileData.emailWhenNewTODOEdited,
         });
       }
     }
-  }, [settingReducerData]);
+  }, [settingReducer.UserProfileData]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -760,7 +784,7 @@ const UserSettings = () => {
     let AllowMicrosoftCalenderSyncCall = false;
 
     // userOptionsSettings.AllowMicrosoftCalenderSync;
-    if (settingReducerData.userAllowMicrosoftCalendarSynch) {
+    if (settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch) {
       if (userOptionsSettings.AllowMicrosoftCalenderSync === false) {
         AllowMicrosoftCalenderSyncCall = false;
         dispatch(
@@ -846,7 +870,7 @@ const UserSettings = () => {
       }
       setSignUpCodeToken("");
     } else {
-      if (settingReducerData.userAllowGoogleCalendarSynch) {
+      if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
         console.log(
           "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
           AllowMicrosoftCalenderSyncCall
@@ -2173,7 +2197,6 @@ const UserSettings = () => {
                   draggable="false"
                   src={line}
                   className={styles["user-setting-row"]}
-                  alt=""
                 />
               </Col>
               <Col lg={3} md={3} sm={3}>
@@ -2215,8 +2238,8 @@ const UserSettings = () => {
                     </Row>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
                     userOptionsSettings.AllowGoogleCalenderSync !== false &&
-                    roleID !== 1 &&
-                    roleID !== 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -2254,8 +2277,8 @@ const UserSettings = () => {
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
                     userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
-                    roleID !== 1 &&
-                    roleID !== 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}

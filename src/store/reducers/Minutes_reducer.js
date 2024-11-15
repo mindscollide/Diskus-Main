@@ -50,6 +50,10 @@ const MinutesReducer = (state = initialState, action) => {
     }
 
     case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS: {
+      console.log(
+        "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
+        action.response
+      );
       try {
         return {
           ...state,
@@ -68,6 +72,7 @@ const MinutesReducer = (state = initialState, action) => {
     case actions.GET_MINUTEREVIEWFLOWBYMEETINGID_FAIL: {
       return {
         ...state,
+        // Loading: false,
         GetMinuteReviewFlowByMeetingIdData: null,
         ResponseMessage: action.message,
       };

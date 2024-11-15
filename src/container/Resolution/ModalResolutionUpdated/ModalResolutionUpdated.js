@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalResolutionUpdated.module.css";
 import upcircle from "../../../assets/images/upcircle.svg";
@@ -12,7 +12,9 @@ const ModalResolutionUpdated = ({
   setResolutionupdated,
 }) => {
   const { t } = useTranslation();
-
+  const closebtn = async () => {
+    setResolutionupdated(false);
+  };
   return (
     <>
       <Container>
@@ -39,7 +41,6 @@ const ModalResolutionUpdated = ({
                     <span>
                       <img
                         draggable="false"
-                        alt=""
                         src={upcircle}
                         width="80px"
                         height="80px"
@@ -48,7 +49,6 @@ const ModalResolutionUpdated = ({
                     <span className={styles["Tik_arrow"]}>
                       <img
                         draggable="false"
-                        alt=""
                         src={updatetik}
                         width="41.09px"
                         height="35.02px"

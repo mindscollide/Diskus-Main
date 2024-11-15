@@ -11,6 +11,7 @@ import {
   Checkbox,
   Table,
   TextField,
+  Loader,
   Notification,
 } from "../../../../../components/elements";
 import greenCheck from "../../../../../assets/images/greenCheck.svg";
@@ -33,7 +34,6 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -45,34 +45,10 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
-  const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
-    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
-  );
+  let FreeTrial = localStorage.getItem("isTrial");
 
-  const UserMangementReducerallOrganizationUsersData = useSelector(
-    (state) => state.UserMangementReducer.allOrganizationUsersData
-  );
-
-  console.log(UserMangementReducerallOrganizationUsersData, "statestate");
-
-  const UserMangementReducerResponseMessage = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
-
-  const UserManagementModalsdeleteUsersModal = useSelector(
-    (state) => state.UserManagementModals.deleteUsersModal
-  );
-
-  const UserManagementModalseditUserModal = useSelector(
-    (state) => state.UserManagementModals.editUserModal
-  );
-
-  const UserManagementModalssuccessfullyUpdated = useSelector(
-    (state) => state.UserManagementModals.successfullyUpdated
+  const { UserMangementReducer, UserManagementModals } = useSelector(
+    (state) => state
   );
 
   //States
@@ -115,7 +91,6 @@ const ManageUsers = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   //AllOrganizationsUsers Api
@@ -148,25 +123,28 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (
-      UserMangementReducergetOrganizationUserStatsGraph !== null &&
-      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails
+      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails
         .length > 0
     ) {
       let UserCount = 0;
-      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails.forEach(
+      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.forEach(
         (data) => {
           UserCount += data.headCount - data.packageAllotedUsers;
         }
       );
       setTotalUserCount(UserCount);
     }
-  }, [UserMangementReducergetOrganizationUserStatsGraph]);
+  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     try {
-      const Users = UserMangementReducerallOrganizationUsersData;
-      Users.selectedPackageDetails.forEach((data) => {
+      console.log("datadatadata");
+      const Users = UserMangementReducer.allOrganizationUsersData;
+      console.log(Users, "UsersUsersUsersUsersUsers");
+      Users.selectedPackageDetails.map((data, index) => {
+        console.log(data, "datadatadata");
         setHeadCount(data.headCount);
       });
 
@@ -175,9 +153,8 @@ const ManageUsers = () => {
         Users.organizationUsers &&
         Users.organizationUsers.length > 0
       ) {
-        console.log(Users, "UsersUsersUsersUsersUsersUsers");
         setManageUserGrid(
-          UserMangementReducerallOrganizationUsersData.organizationUsers
+          UserMangementReducer.allOrganizationUsersData.organizationUsers
         );
       } else {
         setManageUserGrid([]);
@@ -185,7 +162,7 @@ const ManageUsers = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [UserMangementReducerallOrganizationUsersData]);
+  }, [UserMangementReducer.allOrganizationUsersData]);
 
   //Table Columns All Users
   const ManageUsersColumn = [
@@ -261,6 +238,7 @@ const ManageUsers = () => {
         }
       },
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         return (
           <>
             {(() => {
@@ -275,7 +253,7 @@ const ManageUsers = () => {
       },
     },
     {
-      title: t("User-status"),
+      title: "User Status",
       dataIndex: "userStatus",
       key: "userStatus",
       align: "left",
@@ -425,7 +403,7 @@ const ManageUsers = () => {
     }
 
     const filteredData =
-      UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
+      UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
         (user) => {
           console.log(user, "useruseruseruseruser");
           const nameInput = searchDetails.Name || "";
@@ -515,6 +493,7 @@ const ManageUsers = () => {
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
+    console.log(record, "recordrecord");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
@@ -561,7 +540,7 @@ const ManageUsers = () => {
     if (e.key === "Enter") {
       setEnterpressed(true);
       const filteredData =
-        UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
+        UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
           (user) => {
             const matchesName =
               manangeUserSearch.searchValue === "" ||
@@ -601,13 +580,22 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (
-      UserMangementReducerResponseMessage !== "" &&
-      UserMangementReducerResponseMessage !== t("No-data-found")
+      UserMangementReducer.ResponseMessage !== "" &&
+      UserMangementReducer.ResponseMessage !== t("No-data-found")
     ) {
-      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
+      setOpen({
+        open: true,
+        message: UserMangementReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 4000);
       dispatch(clearMessegesUserManagement());
     }
-  }, [UserMangementReducerResponseMessage]);
+  }, [UserMangementReducer.ResponseMessage]);
 
   return (
     <Container>
@@ -631,16 +619,16 @@ const ManageUsers = () => {
             />
           ) : null}
         </Col>
-        <Col lg={1} md={1} sm={1} xs={12}></Col>
         <Col
-          lg={5}
-          md={5}
-          sm={5}
+          lg={6}
+          md={6}
+          sm={6}
           xs={12}
-          className="justify-content-end d-block align-items-center m-0 p-0"
+          className="justify-content-end d-flex align-items-center"
         >
           <span className="position-relative">
             <TextField
+              width={"502px"}
               placeholder={t("Search")}
               name={"SearchVal"}
               value={manangeUserSearch.searchValue}
@@ -886,16 +874,17 @@ const ManageUsers = () => {
           />
         </Col>
       </Row>
-      {UserManagementModalsdeleteUsersModal && (
+      {UserManagementModals.deleteUsersModal && (
         <DeleteUserModal deleteModalData={deleteModalData} />
       )}
-      {UserManagementModalseditUserModal && (
+      {UserManagementModals.editUserModal && (
         <EditUserModal editModalData={editModalData} />
       )}
-      {UserManagementModalssuccessfullyUpdated && (
+      {UserManagementModals.successfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      {UserMangementReducer.Loading ? <Loader /> : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Container>
   );
 };

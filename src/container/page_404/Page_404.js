@@ -17,6 +17,8 @@ const NotFound = () => {
             </p>
           </div>
         </div>
+
+        {/* <Link to="/">Go Home</Link> */}
       </div>
     </>
   );

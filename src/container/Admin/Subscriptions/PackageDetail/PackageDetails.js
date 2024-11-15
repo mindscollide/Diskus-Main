@@ -2,22 +2,34 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, ProgressBar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Button, Loader } from "../../../../components/elements";
+import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import styles from "./PackageDetail.module.css";
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
-import { _justShowDateformat } from "../../../../commen/functions/date_formater";
+import {
+  dateforCalendar,
+  TimeDisplayFormat,
+  _justShowDateformat,
+} from "../../../../commen/functions/date_formater";
+import moment from "moment";
 import { isHTML } from "../../../../commen/functions/html_formater";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageDetails = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const { GetSubscriptionPackage, LanguageReducer } = useSelector(
+    (state) => state
+  );
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
   const [packageColorPath1, setPackageColorPath1] = useState("");
   const [packageColorPath2, setPackageColorPath2] = useState("");
+  // console.log(GetSubscriptionPackage, "GetSubscriptionPackage");
   const [isPackageDetail, setPackageDetail] = useState({
     PackageTitle: "",
     PackageExpiryDate: "",
@@ -69,7 +81,8 @@ const PackageDetails = () => {
           "_SEPERATOR_"
         )[1]
       );
-
+      // packageColorPath1=
+      // packageColorPath2=
       setMaxAdminUser(
         packageDetails.organizationSelectedPackage.packageAllowedAdminUsers
       );
@@ -84,6 +97,7 @@ const PackageDetails = () => {
   }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage]);
 
   const navigatetoUpgrade = () => {
+    // navigate("/Admin/UpgradePackage");
     dispatch(packagesforUpgrade(navigate, t));
   };
 
@@ -105,6 +119,11 @@ const PackageDetails = () => {
                   GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     undefined ? (
                     <>
+                      {/* <img
+                        className={styles["package-icon"]}
+                        src={GoldPackage}
+                        alt=""
+                      /> */}
                       <span class="icon-star package-icon-style">
                         <span
                           class="path1"
@@ -296,6 +315,9 @@ const PackageDetails = () => {
           </Col>
         </Row>
       </Container>
+      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

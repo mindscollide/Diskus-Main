@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
@@ -7,6 +9,7 @@ import {
   TextField,
   Checkbox,
   Notification,
+  Loader,
 } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -25,43 +28,43 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Profile from "../../../../../assets/images/newprofile.png";
+import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
-import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingUserApiFunc,
+  showUnsavedPollsMeeting,
+} from "../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../store/actions/Polls_actions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import EnglishCalendar from "react-date-object/calendars/gregorian";
-import ArabicCalendar from "react-date-object/calendars/arabic";
 
 const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const unsavedPollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.unsavedPollsMeeting
-  );
-  const getCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
+  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
+    (state) => state
   );
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
+
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
+
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -78,9 +81,8 @@ const Createpolls = ({ setCreatepoll }) => {
   ]);
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   const [members, setMembers] = useState([]);
@@ -114,10 +116,16 @@ const Createpolls = ({ setCreatepoll }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        showMessage(t("Please-fill-options"), "error", setOpen);
+        setOpen({
+          flag: true,
+          message: t("Please-fill-options"),
+        });
       }
     } else {
-      showMessage(t("Please-fill-options"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-options"),
+      });
     }
   };
 
@@ -129,6 +137,14 @@ const Createpolls = ({ setCreatepoll }) => {
 
   const handleCancelButton = () => {
     dispatch(showUnsavedPollsMeeting(true));
+  };
+
+  const handleViewPollsUnPublished = () => {
+    setSavedPolls(true);
+  };
+
+  const handleViewPollsPublished = () => {
+    setSavePollsPublished(true);
   };
 
   const HandleChange = (e, index) => {
@@ -158,6 +174,8 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const changeDateStartHandler = (date) => {
+    let newDate = new Date(date);
+    console.log(newDate, "newDatenewDatenewDatenewDatenewDate");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     DateDate.setHours(23, 59, 0, 0);
@@ -167,26 +185,14 @@ const Createpolls = ({ setCreatepoll }) => {
       date: DateDate,
     });
   };
-
-  useEffect(() => {
-    if (currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(EnglishCalendar);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(ArabicCalendar);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
-
   useEffect(() => {
     if (
-      getCommitteeByCommitteeID !== null &&
-      getCommitteeByCommitteeID !== undefined
+      CommitteeReducer.getCommitteeByCommitteeID !== null &&
+      CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
       let newArr = [];
-      let getUserDetails = getCommitteeByCommitteeID.committeMembers;
+      let getUserDetails =
+        CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
       getUserDetails.forEach((data, index) => {
         newArr.push({
           value: data.pK_UID,
@@ -221,7 +227,7 @@ const Createpolls = ({ setCreatepoll }) => {
       });
       setmemberSelect(newArr);
     }
-  }, [getCommitteeByCommitteeID]);
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -229,7 +235,9 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = [...getCommitteeByCommitteeID.committeMembers];
+    let getUserDetails = [
+      ...CommitteeReducer.getCommitteeByCommitteeID.committeMembers,
+    ];
     let tem = [...members];
     let newarr = [];
     try {
@@ -246,7 +254,7 @@ const Createpolls = ({ setCreatepoll }) => {
               if (newarr.length > 0) {
                 newarr.forEach((morganizer, index) => {
                   let check2 = newarr.find(
-                    (data) => data.UserID === morganizer.pK_UID
+                    (data, index) => data.UserID === morganizer.pK_UID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -313,18 +321,44 @@ const Createpolls = ({ setCreatepoll }) => {
       await dispatch(SavePollsApi(navigate, data, t, 3));
       setCreatepoll(false);
     } else {
+      // setError(true);
+
       if (pollsData.Title === "") {
-        showMessage(t("Title-is-required"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Title-is-required"),
+        });
       } else if (pollsData.date === "") {
-        showMessage(t("Select-date"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Select-date"),
+        });
       } else if (Object.keys(members).length === 0) {
-        showMessage(t("Atleat-one-member-required"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Atleat-one-member-required"),
+        });
       } else if (Object.keys(options).length <= 1) {
-        showMessage(t("Required-atleast-two-options"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Required-atleast-two-options"),
+        });
       } else if (!allValuesNotEmpty) {
-        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-open-option-fields"),
+        });
       } else {
-        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
+        });
       }
     }
   };
@@ -428,7 +462,6 @@ const Createpolls = ({ setCreatepoll }) => {
                                           <img
                                             draggable={false}
                                             src={WhiteCrossIcon}
-                                            alt=""
                                             width="31.76px"
                                             height="31.76px"
                                             onClick={() =>
@@ -468,7 +501,6 @@ const Createpolls = ({ setCreatepoll }) => {
                               <img
                                 draggable={false}
                                 src={plusFaddes}
-                                alt=""
                                 width="15.87px"
                                 height="15.87px"
                               />
@@ -607,7 +639,6 @@ const Createpolls = ({ setCreatepoll }) => {
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
-                                              alt=""
                                               height="33px"
                                               width="33px"
                                               className={
@@ -629,7 +660,6 @@ const Createpolls = ({ setCreatepoll }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
-                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
@@ -668,17 +698,24 @@ const Createpolls = ({ setCreatepoll }) => {
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(1)}
+                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
+
+                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            <Notification
+              setOpen={setOpen}
+              open={open.flag}
+              message={open.message}
+            />
 
-            {unsavedPollsMeeting && (
+            {NewMeetingreducer.unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
           </section>

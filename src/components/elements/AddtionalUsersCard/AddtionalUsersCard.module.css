@@ -16,6 +16,7 @@ body[dir="rtl"] .Lineheight {
   font-size: 12px !important;
   font-weight: 600 !important;
   color: #5a5a5a !important;
+  /* margin-top: 15px !important; */
 }
 
 body[dir="rtl"] .name_participant {

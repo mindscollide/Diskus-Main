@@ -141,7 +141,7 @@ const BlockedUsersList = () => {
         <>
           {/* <Spin className="talk-overallchat-spinner" /> */}
           <LoaderPanel
-            message={t("Safeguarding-your-data-to-enhance-the-experience")}
+            message={"Safeguarding your data to enhance the experience"}
           />
         </>
       ) : talkStateData.BlockedUsers.Loading === false &&

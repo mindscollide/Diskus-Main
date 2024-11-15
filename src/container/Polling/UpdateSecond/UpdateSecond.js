@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
 import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 
@@ -92,7 +94,6 @@ const UpdateSecond = ({
                   >
                     <img
                       draggable="false"
-                      alt=""
                       src={AlarmClock}
                       width="14.97px"
                       height="14.66px"
@@ -101,10 +102,13 @@ const UpdateSecond = ({
                       {t("Due-date-on")} <span>34 May 2023</span>
                     </span>
                     <MultiDatePicker
+                      // onChange={meetingDateHandler}
                       name="MeetingDate"
                       check={true}
+                      // value={meetingDate}
                       calendar={calendarValue}
                       locale={localValue}
+                      // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                 </Row>
@@ -124,7 +128,6 @@ const UpdateSecond = ({
                 <img
                   draggable="false"
                   src={BlackCrossIcon}
-                  alt=""
                   width="16px"
                   height="16px"
                   className={styles["View_cross_icon"]}
@@ -234,7 +237,6 @@ const UpdateSecond = ({
                                   <Col sm={12} md={12} lg={12}>
                                     <img
                                       draggable="false"
-                                      alt=""
                                       src={profile}
                                       width="33px"
                                       height="33px"

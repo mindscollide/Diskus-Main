@@ -9,17 +9,21 @@
 }
 .todo-employee-name-card {
   color: #086ab2;
+  /* margin-top: 15px; */
   font-size: 18px;
   text-overflow: ellipsis;
   overflow: hidden;
+  /* display   : block; */
   margin-bottom: -15px;
   text-align: left;
 }
 
 .todo-employee-label-card {
+  /* margin: 0px 0px 0px 45px; */
   font-size: 11px;
   color: #505050 !important;
 }
 .cardTextIconStyle {
   white-space: pre-wrap;
+  /* word-wrap: break-word; */
 }

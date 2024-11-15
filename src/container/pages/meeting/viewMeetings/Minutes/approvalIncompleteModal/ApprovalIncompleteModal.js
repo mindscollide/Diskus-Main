@@ -10,6 +10,7 @@ import { convertDateToGMTMinute } from "../../../../../../commen/functions/time_
 import { MeetingPublishedMinutesApi } from "../../../../../../store/actions/Minutes_action";
 
 const ApprovalIncompleteModal = ({
+  approvalModal,
   setApprovalModal,
   setPublishAnywayModal,
   advanceMeetingModalID,

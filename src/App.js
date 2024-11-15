@@ -30,88 +30,17 @@ import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotify
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
-import { showMessage } from "./components/elements/snack_bar/utill";
-const MIN_LOADER_DISPLAY_TIME = 500;
-
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-  const auth = useSelector((state) => state.auth);
-  const assignees = useSelector((state) => state.assignees);
-  const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
-  const toDoListReducer = useSelector((state) => state.toDoListReducer);
-  const getTodosStatus = useSelector((state) => state.getTodosStatus);
-  const downloadReducer = useSelector((state) => state.downloadReducer);
-  const todoStatus = useSelector((state) => state.todoStatus);
-  const uploadReducer = useSelector((state) => state.uploadReducer);
-  const settingReducer = useSelector((state) => state.settingReducer);
-  const fAQsReducer = useSelector((state) => state.fAQsReducer);
-  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
-  const calendarReducer = useSelector((state) => state.calendarReducer);
-  const OnBoardModal = useSelector((state) => state.OnBoardModal);
-  const postAssigneeComments = useSelector(
-    (state) => state.postAssigneeComments
+  console.log(
+    SessionExpireResponseMessage,
+    "SessionExpireResponseMessageSessionExpireResponseMessage"
   );
-  const VideoChatReducer = useSelector((state) => state.VideoChatReducer);
-  const minuteofMeetingReducer = useSelector(
-    (state) => state.minuteofMeetingReducer
-  );
-  const countryNamesReducer = useSelector((state) => state.countryNamesReducer);
-  const GetSubscriptionPackage = useSelector(
-    (state) => state.GetSubscriptionPackage
-  );
-  const Authreducer = useSelector((state) => state.Authreducer);
-  const roleListReducer = useSelector((state) => state.roleListReducer);
-  const NotesReducer = useSelector((state) => state.NotesReducer);
-  const GroupsReducer = useSelector((state) => state.GroupsReducer);
-  const ResolutionReducer = useSelector((state) => state.ResolutionReducer);
-  const RealtimeNotification = useSelector(
-    (state) => state.RealtimeNotification
-  );
-  const OrganizationBillingReducer = useSelector(
-    (state) => state.OrganizationBillingReducer
-  );
-  const PollsReducer = useSelector((state) => state.PollsReducer);
-  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
-  const LanguageReducer = useSelector((state) => state.LanguageReducer);
-  const webViewer = useSelector((state) => state.webViewer);
-  const MeetingOrganizersReducer = useSelector(
-    (state) => state.MeetingOrganizersReducer
-  );
-  const MeetingAgendaReducer = useSelector(
-    (state) => state.MeetingAgendaReducer
-  );
-  const attendanceMeetingReducer = useSelector(
-    (state) => state.attendanceMeetingReducer
-  );
-  const actionMeetingReducer = useSelector(
-    (state) => state.actionMeetingReducer
-  );
-  const AgendaWiseAgendaListReducer = useSelector(
-    (state) => state.AgendaWiseAgendaListReducer
-  );
-  const DataRoomReducer = useSelector((state) => state.DataRoomReducer);
-  const DataRoomFileAndFoldersDetailsReducer = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer
-  );
-  const SignatureWorkFlowReducer = useSelector(
-    (state) => state.SignatureWorkFlowReducer
-  );
-  const UserMangementReducer = useSelector(
-    (state) => state.UserMangementReducer
-  );
-  const adminReducer = useSelector((state) => state.adminReducer);
-  const UserReportReducer = useSelector((state) => state.UserReportReducer);
-  const MinutesReducer = useSelector((state) => state.MinutesReducer);
-  const UserManagementModals = useSelector(
-    (state) => state.UserManagementModals
-  );
-
-  const [open, setOpen] = useState({
-    open: false,
+  const [openNotifcationBar, setOpenNotificationBar] = useState({
+    isOpen: false,
     message: "",
-    severity: "error",
   });
   const [updateVersion, setUpdateVersion] = useState(false);
   const [currentVersion, setCurrentVersion] = useState("");
@@ -127,7 +56,7 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-  console.log("loader checking ");
+
   // Show modal if accessed on a mobile browser
   useEffect(() => {
     if (isMobileDevice()) {
@@ -176,69 +105,7 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
-  const isLoading = [
-    NewMeetingreducer?.Loading,
-    auth?.Loading,
-    assignees?.Loading,
-    MeetingOrganizersReducer?.LoadingMeetingOrganizer,
-    MeetingOrganizersReducer?.Loading,
-    PollsReducer?.Loading,
-    CommitteeReducer?.Loading,
-    toDoListReducer?.Loading,
-    todoStatus?.Loading,
-    getTodosStatus?.Loading,
-    MeetingAgendaReducer?.Loading,
-    actionMeetingReducer?.Loading,
-    AgendaWiseAgendaListReducer?.loading,
-    downloadReducer?.Loading,
-    attendanceMeetingReducer?.Loading,
-    webViewer?.Loading,
-    LanguageReducer?.Loading,
-    uploadReducer?.Loading,
-    settingReducer?.Loading,
-    fAQsReducer?.Loading,
-    meetingIdReducer?.Loading,
-    calendarReducer?.Loading,
-    OnBoardModal?.Loading,
-    postAssigneeComments?.Loading,
-    VideoChatReducer?.Loading,
-    minuteofMeetingReducer?.Loading,
-    countryNamesReducer?.Loading,
-    GetSubscriptionPackage?.Loading,
-    Authreducer?.Loading,
-    roleListReducer?.Loading,
-    NotesReducer?.Loading,
-    GroupsReducer?.Loading,
-    GroupsReducer?.getAllLoading,
-    ResolutionReducer?.Loading,
-    RealtimeNotification?.Loading,
-    OrganizationBillingReducer?.Loading,
-    DataRoomReducer?.Loading,
-    MinutesReducer?.Loading,
-    UserManagementModals?.Loading,
-    DataRoomFileAndFoldersDetailsReducer?.Loading,
-    SignatureWorkFlowReducer?.Loading,
-    adminReducer?.Loading,
-    UserReportReducer?.Loading,
-    UserMangementReducer?.Loading,
-  ].some((loading) => loading);
 
-  const [showLoader, setShowLoader] = useState(false);
-
-  useEffect(() => {
-    let timer;
-    if (isLoading) {
-      // Show loader immediately when any state is loading
-      setShowLoader(true);
-    } else {
-      // Set a timeout to delay hiding the loader
-      timer = setTimeout(() => {
-        setShowLoader(false);
-      }, MIN_LOADER_DISPLAY_TIME);
-    }
-    // Clean up timeout on component unmount or if `isLoading` changes
-    return () => clearTimeout(timer);
-  }, [isLoading]);
   useEffect(() => {
     if (
       SessionExpireResponseMessage !== null &&
@@ -246,25 +113,42 @@ const App = () => {
       SessionExpireResponseMessage !== ""
     ) {
       try {
-        showMessage(SessionExpireResponseMessage, "error", setOpen);
+        setOpenNotificationBar({
+          ...openNotifcationBar,
+          isOpen: true,
+          message: SessionExpireResponseMessage,
+        });
+        setTimeout(() => {
+          setOpenNotificationBar({
+            ...openNotifcationBar,
+            isOpen: false,
+            message: "",
+          });
+        }, 4000);
       } catch (error) {}
     }
   }, [SessionExpireResponseMessage]);
 
   return (
     <>
-      {/* Define your routes here */}
-      <RouterProvider router={router} />
-      {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
-      {paymentProcessModal && <OpenPaymentForm />}
-      {updateVersion && (
-        <UpdateVersionNotifyModal
-          setUpdateVersion={setUpdateVersion}
-          updateVersion={updateVersion}
+      <Suspense fallback={<Loader />}>
+        {/* Define your routes here */}
+        <RouterProvider router={router} />
+        {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
+        {paymentProcessModal && <OpenPaymentForm />}
+        {updateVersion && (
+          <UpdateVersionNotifyModal
+            setUpdateVersion={setUpdateVersion}
+            updateVersion={updateVersion}
+          />
+        )}
+        <Notification
+          open={openNotifcationBar.isOpen}
+          setOpen={setOpenNotificationBar}
+          message={openNotifcationBar.message}
         />
-      )}
-      {navigator.onLine && showLoader && <Loader />}
-      <Notification open={open} setOpen={setOpen} />
+      </Suspense>
+      {/* <Notification /> */}
     </>
   );
 };

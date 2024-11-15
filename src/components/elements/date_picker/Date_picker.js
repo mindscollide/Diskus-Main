@@ -13,9 +13,12 @@ const CustomDatePicker = ({
   locale,
   className,
   selected,
-  flag,
+  flag
 }) => {
   let dateFormat = "YYYY/MM/DD";
+  console.log(flag, "flagflagflagflag")
+  let currentDate = new Date();
+  let currentDate1 = moment(currentDate, moment.defaultFormat).toDate();
   const [startDate, setStartDate] = useState("");
 
   function onChange(date, e) {
@@ -27,10 +30,16 @@ const CustomDatePicker = ({
   }
   useEffect(() => {
     if (value != "") {
+      console.log("valuevalue", newValue);
       setStartDate(moment(value, moment.defaultFormat).toDate());
     }
   }, [value]);
-
+  console.log(
+    "valuevalue ",
+    value,
+    moment(startDate, moment.defaultFormat).toDate(),
+    startDate
+  );
   return (
     <>
       <label className="f-0">
@@ -41,11 +50,16 @@ const CustomDatePicker = ({
           minDate={!flag && moment().toDate()}
           locale={locale}
           className={className}
+          // value={value ? moment(value, dateFormat) : null}
+          // placeholderText={placeholderText}
           disabled={disabled}
+          // dateFormat="dd-MM-yyyy"
           name={name}
+        // value={value ? moment(value) : null}
         />
         <div className="iconForDatePicker margin-right-20">
           <CalendarFill className="DatePickerIcon" size={34} />
+          {/* <i class="icon-calendar color-white nm-icn dateinput cursor-pointer"></i> */}
         </div>
       </label>
     </>

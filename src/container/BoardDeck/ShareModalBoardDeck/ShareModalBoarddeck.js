@@ -19,9 +19,8 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
 
   const navigate = useNavigate();
 
-  const boarddeckShareModal = useSelector(
-    (state) => state.NewMeetingreducer.boarddeckShareModal
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const handleRadioChange = (value) => {
     setRadioValue(value);
     console.log("valuevaluevalue", value);
@@ -43,7 +42,7 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
   return (
     <Container>
       <Modal
-        show={boarddeckShareModal}
+        show={NewMeetingreducer.boarddeckShareModal}
         setShow={dispatch(boardDeckShareModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

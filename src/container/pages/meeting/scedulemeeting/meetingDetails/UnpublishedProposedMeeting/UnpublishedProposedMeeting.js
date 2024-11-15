@@ -4,9 +4,12 @@ import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
+import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
+
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
+  Notification,
   ResultMessage,
   Table,
 } from "../../../../../../components/elements";
@@ -40,6 +43,7 @@ import {
   validateStringParticipantProposedApi,
   GetAllProposedMeetingDateApiFunc,
   GetAllSavedparticipantsAPI,
+  CleareMessegeNewMeeting,
   validateStringUserMeetingProposedDatesPollsApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
@@ -60,7 +64,7 @@ import {
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 import moment from "moment";
 import { truncateString } from "../../../../../../commen/functions/regex";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import {
   getAllUnpublishedMeetingData,
   mqttMeetingData,
@@ -90,6 +94,11 @@ const UnpublishedProposedMeeting = ({
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
 
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -102,28 +111,12 @@ const UnpublishedProposedMeeting = ({
   const allMeetingsSocketData = useSelector(
     (state) => state.meetingIdReducer.allMeetingsSocketData
   );
-  const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData
-  );
-  const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
-  );
-  const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
-  );
-  const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
-  );
-  const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
-  );
-  const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
-  );
+
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const [rows, setRow] = useState([]);
-  const [dublicatedrows, setDublicatedrows] = useState([]);
   const [publishState, setPublishState] = useState(null);
+  const [organizerViewModal, setOrganizerViewModal] = useState(false);
 
   // Empty text data
   const emptyText = () => {
@@ -132,9 +125,9 @@ const UnpublishedProposedMeeting = ({
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -242,79 +235,6 @@ const UnpublishedProposedMeeting = ({
     return newDate;
   };
 
-  //Filteration Work Meeting
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState(["12", "11"]);
-
-  const filters = [
-    {
-      value: "12",
-      text: t("Proposed"),
-    },
-    {
-      value: "11",
-      text: t("Unpublished"),
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
-    );
-  };
-
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.status.toString())
-    );
-    console.log(filteredData, "filteredDatafilteredData");
-
-    setRow(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(["12", "11"]);
-    setRow(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
-        <Button
-          text={"Reset"}
-          className={"FilterResetBtn"}
-          onClick={resetFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
-
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -382,8 +302,7 @@ const UnpublishedProposedMeeting = ({
               dispatch(pollsGlobalFlag(false));
               dispatch(attendanceGlobalFlag(false));
               dispatch(uploadGlobalFlag(false));
-            }}
-          >
+            }}>
             {truncateString(text, 35)}
           </span>
         );
@@ -397,22 +316,24 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "status",
       key: "status",
       width: "90px",
+      align:"center",
+      filters: [
+        {
+          text: t("Proposed"),
+          value: "12",
+        },
+        {
+          text: t("Unpublished"),
+          value: "11",
+        },
+      ],
       filterResetToDefaultFilteredValue: true,
+      defaultFilteredValue: ["11", "12"],
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
+      onFilter: (value, record) =>
+        record.status.toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
         return StatusValue(t, record.status);
       },
@@ -444,7 +365,7 @@ const UnpublishedProposedMeeting = ({
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="text-truncate d-block">
+            <span className='text-truncate d-block'>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -475,7 +396,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
+                <Col lg={12} md={12} sm={12} className='text-center'>
                   {value === maxValue &&
                   value === 0 &&
                   maxValue === 0 ? null : record.meetingPoll
@@ -483,10 +404,10 @@ const UnpublishedProposedMeeting = ({
                     record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
-                      height="17.06px"
-                      width="17.06px"
-                      alt=""
-                      draggable="false"
+                      height='17.06px'
+                      width='17.06px'
+                      alt=''
+                      draggable='false'
                     />
                   ) : (
                     <>
@@ -499,8 +420,7 @@ const UnpublishedProposedMeeting = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"newMeetingProgressbar"}
-                        >
+                          className={"newMeetingProgressbar"}>
                           <ProgressBar
                             now={value}
                             max={maxValue}
@@ -528,7 +448,7 @@ const UnpublishedProposedMeeting = ({
         return (
           <>
             {record.status === "12" ? (
-              <span className="d-flex justify-content-center">
+              <span className='d-flex justify-content-center'>
                 {changeDateStartHandler2(record.responseDeadLine)}
               </span>
             ) : (
@@ -544,6 +464,11 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "33px",
       render: (text, record) => {
+        console.log(record, "EditMeeting");
+        let apiData = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 1,
+        };
         return (
           <>
             <Row>
@@ -551,17 +476,16 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center justify-content-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.isAgendaContributor ? (
-                  <Tooltip placement="bottomLeft" title={t("Edit")}>
+                  <Tooltip placement='bottomLeft' title={t("Edit")}>
                     <img
                       src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.03px"
-                      height="17.03px"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      width='17.03px'
+                      height='17.03px'
+                      alt=''
+                      draggable='false'
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
@@ -600,14 +524,14 @@ const UnpublishedProposedMeeting = ({
                   </Tooltip>
                 ) : record.isOrganizer ? (
                   <>
-                    <Tooltip placement="bottomLeft" title={t("Edit")}>
+                    <Tooltip placement='bottomLeft' title={t("Edit")}>
                       <img
                         src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.03px"
-                        height="17.03px"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        width='17.03px'
+                        height='17.03px'
+                        alt=''
+                        draggable='false'
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
@@ -679,8 +603,7 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center gap-4"
-              >
+                className='d-flex  align-items-center gap-4'>
                 {record.status === "11" ? (
                   record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
@@ -771,7 +694,6 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          console.log(searchMeetings.meetings, "searchMeetingssearchMeetings");
           // Create a deep copy of the meetings array
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
@@ -784,22 +706,18 @@ const UnpublishedProposedMeeting = ({
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-          console.log(copyMeetingData, "searchMeetingssearchMeetings");
 
           if (checkFeatureIDAvailability(12)) {
             setRow(copyMeetingData);
-            setDublicatedrows(copyMeetingData);
           } else {
             let filterOutPropsed = copyMeetingData.filter((data) => {
               return data.status !== "12";
             });
 
             setRow(filterOutPropsed);
-            setDublicatedrows(filterOutPropsed);
           }
         } else {
           setRow([]);
-          setDublicatedrows([]);
         }
       }
     } catch (error) {
@@ -820,10 +738,10 @@ const UnpublishedProposedMeeting = ({
   useEffect(() => {
     const updateMeetingData = async () => {
       if (
-        meetingStatusProposedMqttData !== null &&
-        meetingStatusProposedMqttData !== undefined
+        NewMeetingreducer.meetingStatusProposedMqttData !== null &&
+        NewMeetingreducer.meetingStatusProposedMqttData !== undefined
       ) {
-        let meetingData = meetingStatusProposedMqttData;
+        let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
         const indexToUpdate = rows.findIndex(
           (obj) => obj.pK_MDID === meetingData.pK_MDID
         );
@@ -850,14 +768,14 @@ const UnpublishedProposedMeeting = ({
     };
 
     updateMeetingData();
-  }, [meetingStatusProposedMqttData]);
+  }, [NewMeetingreducer.meetingStatusProposedMqttData]);
 
   useEffect(() => {
     if (
-      meetingStatusPublishedMqttData !== null &&
-      meetingStatusPublishedMqttData !== undefined
+      NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
+      NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
     ) {
-      let meetingData = meetingStatusPublishedMqttData;
+      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -865,13 +783,16 @@ const UnpublishedProposedMeeting = ({
         setRow(updatedRows);
       } catch {}
     }
-  }, [meetingStatusPublishedMqttData]);
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     try {
       const callAddAgendaContributor = async () => {
-        if (mqttMeetingAcAdded !== null && mqttMeetingAcAdded !== undefined) {
-          let newObj = mqttMeetingAcAdded;
+        if (
+          NewMeetingreducer.mqttMeetingAcAdded !== null &&
+          NewMeetingreducer.mqttMeetingAcAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingAcAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
@@ -888,11 +809,14 @@ const UnpublishedProposedMeeting = ({
     } catch (error) {
       console.log(error);
     }
-  }, [mqttMeetingAcAdded]);
+  }, [NewMeetingreducer.mqttMeetingAcAdded]);
 
   useEffect(() => {
-    if (mqttMeetingAcRemoved !== null && mqttMeetingAcRemoved !== undefined) {
-      let meetingData = mqttMeetingAcRemoved;
+    if (
+      NewMeetingreducer.mqttMeetingAcRemoved !== null &&
+      NewMeetingreducer.mqttMeetingAcRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -904,13 +828,16 @@ const UnpublishedProposedMeeting = ({
         dispatch(meetingOrganizerRemoved(null));
       } catch {}
     }
-  }, [mqttMeetingAcRemoved]);
+  }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
   useEffect(() => {
     try {
       const callAddOrganizer = async () => {
-        if (mqttMeetingOrgAdded !== null && mqttMeetingOrgAdded !== undefined) {
-          let newObj = mqttMeetingOrgAdded;
+        if (
+          NewMeetingreducer.mqttMeetingOrgAdded !== null &&
+          NewMeetingreducer.mqttMeetingOrgAdded !== undefined
+        ) {
+          let newObj = NewMeetingreducer.mqttMeetingOrgAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setRow([getData, ...rows]);
@@ -928,11 +855,14 @@ const UnpublishedProposedMeeting = ({
     } catch (error) {
       console.error(error);
     }
-  }, [mqttMeetingOrgAdded]);
+  }, [NewMeetingreducer.mqttMeetingOrgAdded]);
 
   useEffect(() => {
-    if (mqttMeetingOrgRemoved !== null && mqttMeetingOrgRemoved !== undefined) {
-      let meetingData = mqttMeetingOrgRemoved;
+    if (
+      NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
+      NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.mqttMeetingOrgRemoved;
       try {
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
@@ -944,7 +874,7 @@ const UnpublishedProposedMeeting = ({
         dispatch(meetingOrganizerRemoved(null));
       } catch {}
     }
-  }, [mqttMeetingOrgRemoved]);
+  }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
   useEffect(() => {
     if (MeetingProp !== null) {
@@ -1037,19 +967,21 @@ const UnpublishedProposedMeeting = ({
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
             column={MeetingColoumns}
             scroll={{ y: "54vh", x: false }}
             pagination={false}
-            className="newMeetingTable"
+            className='newMeetingTable'
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
+        
           />
         </Col>
       </Row>
+      {organizerViewModal && <OrganizerViewModal />}
       {sceduleproposedMeeting && (
         <SceduleProposedmeeting
           setDataroomMapFolderId={setDataroomMapFolderId}
@@ -1058,6 +990,7 @@ const UnpublishedProposedMeeting = ({
         />
       )}
       {deleteMeetingModal && <DeleteMeetingModal />}
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

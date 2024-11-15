@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Row, Col } from "react-bootstrap";
-import "./videoCallHeader.css";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col } from 'react-bootstrap'
+import './videoCallHeader.css'
 import {
   normalizeVideoPanelFlag,
   maximizeVideoPanelFlag,
@@ -9,50 +9,59 @@ import {
   agendaEnableNormalFlag,
   chatEnableNormalFlag,
   minutesMeetingEnableNormalFlag,
-} from "../../../../../store/actions/VideoFeature_actions";
-import MinimizeIcon from "../../../../../assets/images/newElements/MinimizeIcon.png";
-import NormalizeIcon from "../../../../../assets/images/newElements/Normalize-Icon.png";
-import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
-import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
-import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
+} from '../../../../../store/actions/VideoFeature_actions'
+import MinimizeIcon from '../../../../../assets/images/newElements/MinimizeIcon.png'
+import NormalizeIcon from '../../../../../assets/images/newElements/Normalize-Icon.png'
+import MicVideo from '../../../../../assets/images/newElements/micVideo.png'
+import VideoCallIcon from '../../../../../assets/images/newElements/VideoIconExpand.png'
+import ExpandIcon from '../../../../../assets/images/newElements/ExpandColorfullIcon.png'
+import ScreenShare from '../../../../../assets/images/newElements/ScreenShareIcon.png'
+import HandRaise from '../../../../../assets/images/newElements/HandRaiseIcon.svg'
+import Board from '../../../../../assets/images/newElements/WhiteBoard.svg'
+import ThreeDots from '../../../../../assets/images/newElements/ThreeDotsIcon.svg'
+import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
+import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.svg'
+import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
 
 const VideoCallLargeHeader = () => {
-  const dispatch = useDispatch();
+  const { videoFeatureReducer } = useSelector((state) => state)
 
-  const [isActiveIcon, setIsActiveIcon] = useState(false);
+  const dispatch = useDispatch()
+
+  const [isActiveIcon, setIsActiveIcon] = useState(false)
 
   const normalizeScreen = () => {
-    dispatch(normalizeVideoPanelFlag(true));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-  };
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+  }
 
   const minimizeVideoPanel = () => {
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(true));
-    dispatch(normalizeVideoPanelFlag(false));
-  };
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(true))
+    dispatch(normalizeVideoPanelFlag(false))
+  }
 
   const onClickCloseChatHandler = () => {
     if (isActiveIcon === false) {
-      dispatch(chatEnableNormalFlag(true));
-      setIsActiveIcon(true);
-      dispatch(agendaEnableNormalFlag(false));
-      dispatch(minutesMeetingEnableNormalFlag(false));
+      dispatch(chatEnableNormalFlag(true))
+      setIsActiveIcon(true)
+      dispatch(agendaEnableNormalFlag(false))
+      dispatch(minutesMeetingEnableNormalFlag(false))
     } else {
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(agendaEnableNormalFlag(false));
-      dispatch(minutesMeetingEnableNormalFlag(false));
+      dispatch(chatEnableNormalFlag(false))
+      setIsActiveIcon(false)
+      dispatch(agendaEnableNormalFlag(false))
+      dispatch(minutesMeetingEnableNormalFlag(false))
     }
-  };
+  }
 
   const closeVideoPanel = () => {
-    dispatch(normalizeVideoPanelFlag(false));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    localStorage.setItem("activeCall", false);
-  };
+    dispatch(normalizeVideoPanelFlag(false))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    localStorage.setItem('activeCall', false)
+  }
 
   return (
     <Row className="mt-2 mb-0">
@@ -97,7 +106,7 @@ const VideoCallLargeHeader = () => {
         /> */}
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default VideoCallLargeHeader;
+export default VideoCallLargeHeader

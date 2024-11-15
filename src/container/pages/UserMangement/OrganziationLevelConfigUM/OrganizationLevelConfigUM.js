@@ -9,6 +9,7 @@ import Calender from "../../../../assets/images/CalenderSetting.svg";
 import pollsIcon from "../../../../assets/images/pollsIcon.svg";
 import Committee from "../../../../assets/images/CommitteSetting.svg";
 import GroupIcon from "../../../../assets/images/GroupSetting.svg";
+import BlueArrowCircle from "../../../../assets/images/BlueArrowCircle.svg";
 import ResolutionIcon from "../../../../assets/images/new_ResolutionIcon2.svg";
 import {
   MonthOptions,
@@ -32,13 +33,10 @@ const OrganizationLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const settingReducerTimeZoneData = useSelector(
-    (state) => state.settingReducer.TimeZone
-  );
-
-  const settingReducerGetOrganizationLevelSettingResponseData = useSelector(
-    (state) => state.settingReducer.GetOrganizationLevelSettingResponse
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  console.log(
+    settingReducer.Loading,
+    "settingReducersettingReducersettingReducer"
   );
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
@@ -48,6 +46,8 @@ const OrganizationLevelConfigUM = () => {
   const [group, setGroup] = useState(false);
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
+  const roleID = localStorage.getItem("roleID");
+  const [worldCountryID, setWorldCountryID] = useState(0);
   const [timezone, setTimeZone] = useState([]);
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -124,7 +124,7 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenNewTODOAssigned: false,
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
-    EmailWhenActiveMeetingAgendaUpdated: false,
+    EmailWhenActiveMeetingAgendaUpdated: false
   });
 
   useEffect(() => {
@@ -132,8 +132,25 @@ const OrganizationLevelConfigUM = () => {
     dispatch(getTimeZone(navigate, t));
   }, []);
 
+  const handleGoogleLoginSuccess = (response) => {
+    setSignUpCodeToken(response.code);
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      AllowCalenderSync: true,
+    });
+  };
+
+  const handleGoogleLoginFailure = (response) => {
+    setSignUpCodeToken("");
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      AllowMicrosoftCalenderSync:
+        userOrganizationSetting.AllowMicrosoftCalenderSync,
+    });
+  };
+
   useEffect(() => {
-    let TimeZone = settingReducerTimeZoneData;
+    let TimeZone = settingReducer.TimeZone;
     if (TimeZone !== undefined && TimeZone !== null) {
       let newData = [];
       TimeZone.map((data, index) => {
@@ -152,19 +169,19 @@ const OrganizationLevelConfigUM = () => {
       });
       setTimeZone(newData);
     }
-  }, [settingReducerTimeZoneData]);
+  }, [settingReducer.TimeZone]);
 
   useEffect(() => {
     if (
-      settingReducerGetOrganizationLevelSettingResponseData !== null &&
-      settingReducerGetOrganizationLevelSettingResponseData !== undefined
+      settingReducer.GetOrganizationLevelSettingResponse !== null &&
+      settingReducer.GetOrganizationLevelSettingResponse !== undefined
     ) {
       if (
-        Object.keys(settingReducerGetOrganizationLevelSettingResponseData)
-          .length > 0
+        Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length >
+        0
       ) {
         let organizationSettings =
-          settingReducerGetOrganizationLevelSettingResponseData;
+          settingReducer.GetOrganizationLevelSettingResponse;
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -279,8 +296,7 @@ const OrganizationLevelConfigUM = () => {
             organizationSettings.emailWhenNewTODOAssigned,
           EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
           EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
-          EmailWhenActiveMeetingAgendaUpdated:
-            organizationSettings.emailWhenActiveMeetingAgendaUpdated,
+          EmailWhenActiveMeetingAgendaUpdated: organizationSettings.emailWhenActiveMeetingAgendaUpdated
         });
         let timeZoneCode = {
           label: organizationSettings.timeZones
@@ -297,7 +313,7 @@ const OrganizationLevelConfigUM = () => {
         setTimeZoneValue(timeZoneCode);
       }
     }
-  }, [settingReducerGetOrganizationLevelSettingResponseData]);
+  }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -806,6 +822,7 @@ const OrganizationLevelConfigUM = () => {
     });
   };
 
+  
   const handleChangeAgendaUpdateEmail = () => {
     setOrganizationSetting({
       ...userOrganizationSetting,
@@ -923,8 +940,7 @@ const OrganizationLevelConfigUM = () => {
         userOrganizationSetting.EmailWhenNewTODOAssigned,
       EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
       EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
-      EmailWhenActiveMeetingAgendaUpdated:
-        userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
+      EmailWhenActiveMeetingAgendaUpdated: userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
     };
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
@@ -1491,22 +1507,21 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className="mt-3">
-                    <Col lg={12} md={12} sm={12}>
-                      <Checkbox
-                        onChange={handleChangeAgendaUpdateEmail}
-                        checked={
-                          userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
-                        }
-                      >
-                        <span className={styles["Class_CheckBox"]}>
-                          {t(
-                            "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started"
-                          )}
-                        </span>
-                      </Checkbox>
-                    </Col>
-                  </Row>
+                  <Row className='mt-3'>
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={handleChangeAgendaUpdateEmail}
+                          checked={
+                            userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
+                          }>
+                          <span className={styles["Class_CheckBox"]}>
+                            {t(
+                              "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started"
+                            )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
                 </>
               ) : null}
               {calender ? (
@@ -2284,6 +2299,7 @@ const OrganizationLevelConfigUM = () => {
                         labelclass={"d-none"}
                         width="80px"
                       />
+                      {/* <Select options={MonthValues} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} /> */}
                     </Col>
                   </Row>
                 </>

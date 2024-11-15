@@ -3,11 +3,18 @@ import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
 import {
   getMeetingId,
+  searchMeetingId,
   getWeekMeetings,
   upcomingEvents,
   searchUserMeetings,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
+
+const SetLoaderTrue = () => {
+  return {
+    type: actions.SET_LOADER_TRUE,
+  };
+};
 
 const SetLoaderFalse = () => {
   return {
@@ -51,6 +58,17 @@ const getMeetingIdFail = (message) => {
     // searchResponse: searchResponse,
   };
 };
+const updateSearchResponse = () => {
+  return {
+    type: actions.SEARCH_MEETING_RESPONSE,
+  };
+};
+const clearState = () => {
+  return {
+    type: actions.MEETINGID_RESPONSE_MESSAGE,
+  };
+};
+
 //get meetinguser Socket
 const allMeetingsSocket = (response) => {
   return {
@@ -115,7 +133,10 @@ const getMeetingUserId = (navigate, data, t) => {
                 )
             ) {
               await dispatch(
-                getMeetingIdSuccess(response.data.responseResult.meetings, "")
+                getMeetingIdSuccess(
+                  response.data.responseResult.meetings,
+                  ""
+                )
               );
               dispatch(SetLoaderFalse());
             } else if (
@@ -152,6 +173,82 @@ const getMeetingUserId = (navigate, data, t) => {
       });
   };
 };
+
+//get meetinguser ID API
+
+// const searchMeetingUserId = (navigate, data, t) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return (dispatch) => {
+//     dispatch(getMeetingIdInit());
+//     let form = new FormData();
+//     form.append("RequestMethod", searchMeetingId.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     axios({
+//       method: "post",
+//       url: meetingApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(searchMeetingUserId(navigate, data, t));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(
+//                 getMeetingIdSuccess(
+//                   response.data.responseResult.meetings,
+//                   ""
+//                 )
+//               );
+//               dispatch(SetLoaderFalse());
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(getMeetingIdFail(t("No-records-found")));
+//               dispatch(updateSearchResponse());
+//               dispatch(SetLoaderFalse());
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//               dispatch(updateSearchResponse());
+//               dispatch(SetLoaderFalse());
+//             }
+//           } else {
+//             await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//             dispatch(updateSearchResponse());
+//             dispatch(SetLoaderFalse());
+//           }
+//         } else {
+//           await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//           dispatch(updateSearchResponse());
+//           dispatch(SetLoaderFalse());
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//         dispatch(SetLoaderFalse());
+//       });
+//   };
+// };
 
 //Meeting Count
 const getWeeklyMeetingsCountSuccess = (response, message) => {
@@ -202,7 +299,10 @@ const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
                 )
             ) {
               await dispatch(
-                getWeeklyMeetingsCountSuccess(response.data.responseResult, "")
+                getWeeklyMeetingsCountSuccess(
+                  response.data.responseResult,
+                  ""
+                )
               );
               dispatch(SetSpinnerFalse());
             } else if (
@@ -292,7 +392,10 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
                 )
             ) {
               await dispatch(
-                getUpcomingEventsSuccess(response.data.responseResult, "")
+                getUpcomingEventsSuccess(
+                  response.data.responseResult,
+                  ""
+                )
               );
               dispatch(SetSpinnerFalse());
             } else if (
@@ -360,7 +463,10 @@ const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
                 )
             ) {
               await dispatch(
-                getUpcomingEventsSuccess(response.data.responseResult, "")
+                getUpcomingEventsSuccess(
+                  response.data.responseResult,
+                  ""
+                )
               );
               // dispatch(SetSpinnerFalse());
             } else if (
@@ -468,7 +574,12 @@ const searchUserMeeting = (navigate, searchData, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
-              dispatch(SearchMeeting_Success(response.data.responseResult, ""));
+              dispatch(
+                SearchMeeting_Success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

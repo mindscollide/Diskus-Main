@@ -197,10 +197,25 @@ body[dir="rtl"] .attached-title {
   font-weight: 600 !important;
 }
 
+/* .UploadFileButton{ */
+/* margin-left: 50px !important; */
+/* } */
+
+/* 
+body[dir="rtl"] .Notes-upload-input {
+position: absolute;
+top: 340px !important;
+right: 10px !important;
+} */
+
 body[dir="rtl"] .star-updatenote {
   position: absolute;
   right: 185px !important;
 }
+
+/* body[dir="rtl"] .date-updatenote2 {
+  margin-left: 20px !important;
+} */
 
 body[dir="rtl"] .quill-update-height {
   width: 100% !important;
@@ -268,6 +283,10 @@ body[dir="rtl"] .errorMessage_hidden {
 .errorUpdateMessage {
   position: absolute !important;
   margin: 7.2% 6px 4px 0px;
+  /* margin-right: px !important;
+  bottom: 190px !important;
+  height: 15px; */
+  /* height: 60px; */
   color: #f16b6b;
   visibility: visible !important;
 }

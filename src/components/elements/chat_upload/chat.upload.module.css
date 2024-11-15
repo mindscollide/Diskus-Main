@@ -1,0 +1,32 @@
+.uploadText {
+    display: none !important;
+}
+
+.uploadButton {
+    border: 1 solid black !important;
+    border-radius: 0 !important;
+    background-color: #025f5c !important;
+    box-shadow: none !important;
+}
+
+.btnMiniSecondary {
+    background-color: #d08b07 !important;
+    padding: 5px 20px !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    border-radius: 0.2rem !important;
+    text-transform: none !important;
+}
+
+.btnSecondarySolid {
+    background: #d08b07 !important;
+    border-color: #d08b07 !important;
+    cursor: pointer !important;
+    border-radius: 0px !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #fff !important;
+    text-transform: none !important;
+    padding: 0px 16px !important;
+}

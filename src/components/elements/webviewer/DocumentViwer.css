@@ -1,12 +1,15 @@
 .documnetviewer {
-  width: 91vw;
-  margin: 0 auto;
-  height: 91vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+    width: 91vw;
+    margin: 0 auto;
+    height: 91vh;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-.webviewer {
-  height: 87vh;
+   
+  }
+  
+  .webviewer {
+    height: 87vh;
 }

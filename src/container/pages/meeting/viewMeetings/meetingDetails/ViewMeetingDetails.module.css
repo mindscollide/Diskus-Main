@@ -26,6 +26,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  /* margin-right: 10px; */
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -36,6 +37,8 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  /* margin-left: 10px; */
+  /* margin-right: auto !important; */
 }
 
 .CopyLinkButton {
@@ -57,6 +60,8 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  /* margin-left: 10px; */
+  /* margin-right: auto !important; */
 }
 
 .ScrollerMeeting_Active {
@@ -180,5 +185,10 @@
 }
 
 img.clipboard-icon {
+  /* margin-left: 10px; */
   cursor: pointer;
 }
+
+/* img.blue-icon {
+  margin-left: 10px;
+} */

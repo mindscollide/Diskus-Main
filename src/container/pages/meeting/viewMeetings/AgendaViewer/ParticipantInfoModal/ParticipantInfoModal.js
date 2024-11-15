@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
+  Switch,
+  TextField,
+  Table,
   TableToDo,
 } from "../../../../../../components/elements";
 import { convertAndFormatDateTimeGMT } from "../../../../../../commen/functions/date_formater";
 import { GetMeetingParticipantsAgenda } from "../../../../../../store/actions/MeetingAgenda_action";
+import { Checkbox } from "antd";
 import CrossIcon from "./../AV-Images/Cross_Icon.png";
 import styles from "./ParticipantInfoModal.module.css";
 import { useTranslation } from "react-i18next";
@@ -26,6 +30,130 @@ const ParticipantInfoModal = ({
   const [rowsParticipants, setRowsParticipants] = useState([]);
 
   const dispatch = useDispatch();
+
+  // const rowsParticipants = [
+  //   {
+  //     key: "1",
+  //     name: "John Doe",
+  //     userEmail: "john.doe@example.com",
+  //     designation: "Software Engineer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:00 AM",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //     minutes: 480,
+  //   },
+  //   {
+  //     key: "1",
+  //     name: "John Doe",
+  //     userEmail: "john.doe@example.com",
+  //     designation: "Software Engineer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:00 AM",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //     minutes: 480,
+  //   },
+  //   {
+  //     key: "1",
+  //     name: "John Doe",
+  //     userEmail: "john.doe@example.com",
+  //     designation: "Software Engineer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:00 AM",
+  //     leaveTime: "11-01-2024 | 05:00 PM",
+  //     minutes: 480,
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "Jane Smith",
+  //     userEmail: "jane.smith@example.com",
+  //     designation: "Product Manager",
+  //     status: "Absent",
+  //     joinTime: "11-01-2024 | 10:30 AM",
+  //     leaveTime: "11-01-2024 | 04:30 PM",
+  //     minutes: 360,
+  //   },
+  //   {
+  //     key: "3",
+  //     name: "Michael Johnson",
+  //     userEmail: "michael.johnson@example.com",
+  //     designation: "Data Analyst",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 08:45 AM",
+  //     leaveTime: "11-01-2024 | 05:15 PM",
+  //     minutes: 510,
+  //   },
+  //   {
+  //     key: "4",
+  //     name: "Emily Brown",
+  //     userEmail: "emily.brown@example.com",
+  //     designation: "UX Designer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:15 AM",
+  //     leaveTime: "11-01-2024 | 05:45 PM",
+  //     minutes: 510,
+  //   },
+  //   {
+  //     key: "5",
+  //     name: "David Wilson",
+  //     userEmail: "david.wilson@example.com",
+  //     designation: "Project Manager",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:30 AM",
+  //     leaveTime: "11-01-2024 | 06:00 PM",
+  //     minutes: 510,
+  //   },
+  //   {
+  //     key: "6",
+  //     name: "Sophia Lee",
+  //     userEmail: "sophia.lee@example.com",
+  //     designation: "Frontend Developer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:15 AM",
+  //     leaveTime: "11-01-2024 | 06:15 PM",
+  //     minutes: 540,
+  //   },
+  //   {
+  //     key: "7",
+  //     name: "William Taylor",
+  //     userEmail: "william.taylor@example.com",
+  //     designation: "QA Engineer",
+  //     status: "Absent",
+  //     joinTime: "11-01-2024 | 09:45 AM",
+  //     leaveTime: "11-01-2024 | 05:30 PM",
+  //     minutes: 405,
+  //   },
+  //   {
+  //     key: "8",
+  //     name: "Olivia Martinez",
+  //     userEmail: "olivia.martinez@example.com",
+  //     designation: "UI Designer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 10:00 AM",
+  //     leaveTime: "11-01-2024 | 06:30 PM",
+  //     minutes: 510,
+  //   },
+  //   {
+  //     key: "9",
+  //     name: "Daniel Anderson",
+  //     userEmail: "daniel.anderson@example.com",
+  //     designation: "Backend Developer",
+  //     status: "Present",
+  //     joinTime: "11-01-2024 | 09:00 AM",
+  //     leaveTime: "11-01-2024 | 06:00 PM",
+  //     minutes: 540,
+  //   },
+  //   {
+  //     key: "10",
+  //     name: "Ava Harris",
+  //     userEmail: "ava.harris@example.com",
+  //     designation: "System Administrator",
+  //     status: "Remote",
+  //     joinTime: "11-01-2024 | 09:30 AM",
+  //     leaveTime: "11-01-2024 | 06:15 PM",
+  //     minutes: 525,
+  //   },
+  //   // Add more data as needed
+  // ];
 
   useEffect(() => {
     let data = {
@@ -79,7 +207,7 @@ const ParticipantInfoModal = ({
       key: "attendenceStatus",
       align: "center",
       className: "statusParticipant",
-      render: (text) => (
+      render: (text, record) => (
         <p
           className={
             text === "Absent"
@@ -124,6 +252,7 @@ const ParticipantInfoModal = ({
     <section>
       <Modal
         show={true}
+        // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setParticipantInfoView(false)}
@@ -153,6 +282,7 @@ const ParticipantInfoModal = ({
               column={participantColumns}
               className={"ParticipantAV"}
               rows={rowsParticipants}
+              // scroll={scroll}
               pagination={false}
               scroll={rowsParticipants.length > 10 ? { y: 385 } : undefined}
             />

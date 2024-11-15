@@ -90,7 +90,6 @@ const AttachmentViewer = ({
       {currentUser === Number(fk_UID) && (
         <img
           src={CrossIcon}
-          alt=""
           className={styles["Cross_Icon"]}
           onClick={handleClickRemove}
         />

@@ -34,6 +34,7 @@ import {
   DeleteShout,
   UpdateShoutAll,
   OtoMessageRetryFlag,
+  InsertBulkMessages,
   DownloadChat,
 } from "../../../../store/actions/Talk_action";
 import {
@@ -50,11 +51,15 @@ import {
 } from "../../../../commen/functions/date_formater";
 import {
   TextField,
+  ChatModal,
   InputDatePicker,
   Button,
   NotificationBar,
+  UploadProgressBar,
 } from "../../../elements";
 // import Highlighter from 'react-highlight-words'
+import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
+import CustomUploadImageChat from "../../../elements/chat_upload/Chat-Upload-Image";
 import Keywords from "react-keywords";
 import { Spin } from "antd";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
@@ -99,9 +104,12 @@ import {
   markStarUnstarFunction,
   groupUpdationFunction,
 } from "./oneToOneMessage";
+import { sendChatFunction } from "./sendChat";
 import { useNavigate } from "react-router-dom";
 import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
+import talkHeader from "./talkMain/talkHeader";
+import MainWindow from "./talkMain/mainChatWindow";
 
 const TalkChat = () => {
   //Use Navigate
@@ -129,8 +137,16 @@ const TalkChat = () => {
   const { talkStateData } = useSelector((state) => state);
 
   //Current Date Time in variable
+  // var currentDateTime = moment().format('YYYYMMDDHHmmss')
+  // var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
   var currentDateToday = moment().format("YYYYMMDD");
 
+  var minimumDate = moment.min().format("YYYYMMDD");
+  var maximumDate = moment.max().format("YYYYMMDD");
+
+  // var currentTime = moment().format('HHmmss')
+
+  const date = new Date();
 
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date();
@@ -140,6 +156,7 @@ const TalkChat = () => {
   );
 
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
+  let currentUtcTime = currentDateTimeUtc.slice(8, 15);
 
   //YESTERDAY'S DATE
   let yesterdayDate = new Date();
@@ -608,7 +625,7 @@ const TalkChat = () => {
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData.length !== 0
+      talkStateData.AllUsers.AllUsersData !== []
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
@@ -672,7 +689,7 @@ const TalkChat = () => {
         undefined &&
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
         null &&
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData.length !== 0
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !== []
     ) {
       setAllUsersGroupsRooms(
         talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
@@ -768,7 +785,7 @@ const TalkChat = () => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ "TasksAttachments": file });
+      setTasksAttachments({ ["TasksAttachments"]: file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -840,7 +857,7 @@ const TalkChat = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": searchIndex,
+      ["TasksAttachments"]: searchIndex,
     });
     setUploadFileTalk({});
   };
@@ -4093,7 +4110,7 @@ const TalkChat = () => {
     // e.preventDefault()
     dispatch(activeChatID(activeChat));
     if (
-      (messageSendData.Body !== "" && Object.keys(uploadFileTalk).length !== 0) ||
+      (messageSendData.Body !== "" && uploadFileTalk !== {}) ||
       messageSendData.Body !== ""
     ) {
       if (chatClickData.messageType === "O") {
@@ -4420,7 +4437,7 @@ const TalkChat = () => {
     setFile("");
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": [],
+      ["TasksAttachments"]: [],
     });
     setUploadFileTalk({});
     if (inputRef.current) {

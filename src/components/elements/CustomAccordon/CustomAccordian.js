@@ -22,6 +22,7 @@ const CustomAccordion = ({ data, columns, ToggleButton }) => {
         </Row>
       </Container>
       {data.map((tabledata, i) => {
+        console.log(data);
         return (
           <>
             <Accordion defaultActiveKey="0" key={i}>

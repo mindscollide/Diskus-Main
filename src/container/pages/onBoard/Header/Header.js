@@ -10,7 +10,8 @@ import ModalMeeting from "../modalmeeting/ModalMeeting";
 import { useTranslation } from "react-i18next";
 import Header2 from "../../../../components/layout/header2/Header2";
 
-const Header = ({ searchVisible }) => {
+const Header = ({ heading, user, currentUserImage, searchVisible }) => {
+  //For Localization
   const { t } = useTranslation();
   const location = useLocation();
   useEffect(() => {
@@ -19,9 +20,9 @@ const Header = ({ searchVisible }) => {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [location.pathname]);
+  }, []);
 
-  const { currentStep } = useTour();
+  const { setCurrentStep, currentStep } = useTour();
   const [isExpand, setExpand] = useState(false);
   const [isMeeting, setMeeting] = useState(false);
   const { setIsOpen } = useTour();
@@ -31,7 +32,7 @@ const Header = ({ searchVisible }) => {
   useEffect(() => {
     console.log(location);
     console.log(isMeeting);
-    location.pathname === "/onboard" ? setMeeting(true) : setMeeting(false);
+    location.pathname == "/onboard" ? setMeeting(true) : setMeeting(false);
     setIsOpen(true);
   }, [location]);
 
@@ -54,6 +55,7 @@ const Header = ({ searchVisible }) => {
             sm={5}
             className="d-flex justify-content-start align-items-center mt-3"
           >
+            {/* <div className="heading  color-primary fw-600">{heading}</div> */}
             {isMeeting && (
               <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />
             )}

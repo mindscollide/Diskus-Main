@@ -92,6 +92,8 @@ body[rtl] .Camera_icon_Active {
 }
 
 .Cross_icon_class {
+  /* position: absolute !important; */
+  /* right: 43%; */
   margin: 0;
   padding: 0;
   cursor: pointer !important;
@@ -203,10 +205,12 @@ body[rtl] .Camera_icon_Active {
   color: #f16b6b;
   visibility: visible;
   font-weight: 600 !important;
+
 }
 
 body[dir="rtl"] .errorMessage-inLogin {
   font-weight: 600 !important;
+
 }
 
 .errorMessage-inLogin_hidden {

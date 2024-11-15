@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ResultResolution.module.css";
+import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import result from "../../../assets/images/result.svg";
 import Abstain from "../../../assets/images/Abstain.svg";
@@ -16,16 +17,12 @@ import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
-import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
-const ResultResolution = ({ setResultresolution }) => {
+const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
-  const ResolutionReducergetResolutionResult = useSelector(
-    (state) => state.ResolutionReducer.getResolutionResult
-  );
+  const { ResolutionReducer } = useSelector((state) => state);
   let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
@@ -35,6 +32,8 @@ const ResultResolution = ({ setResultresolution }) => {
   const [abstain, setAbstain] = useState(0);
   const [votingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
+
+  console.log(votingMethod, "votingMethodvotingMethod");
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -45,6 +44,7 @@ const ResultResolution = ({ setResultresolution }) => {
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
+    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -109,10 +109,11 @@ const ResultResolution = ({ setResultresolution }) => {
   };
   useEffect(() => {
     try {
-      if (ResolutionReducergetResolutionResult !== null) {
-        let resolutionresult = ResolutionReducergetResolutionResult;
+      if (ResolutionReducer.getResolutionResult !== null) {
+        let resolutionresult = ResolutionReducer.getResolutionResult;
         setApproved(resolutionresult.approvedVotes);
         setAbstain();
+
         setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
@@ -134,7 +135,7 @@ const ResultResolution = ({ setResultresolution }) => {
         }
       }
     } catch (error) {}
-  }, [ResolutionReducergetResolutionResult]);
+  }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
       <Row className="my-2">
@@ -144,9 +145,10 @@ const ResultResolution = ({ setResultresolution }) => {
           </span>
         </Col>
       </Row>
+
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <span className={styles["Result_page_paper"]}>
+          <Paper className={styles["Result_page_paper"]}>
             <Row>
               <Col lg={5} md={5} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
@@ -295,7 +297,7 @@ const ResultResolution = ({ setResultresolution }) => {
                     <span className={styles["Total_voters"]}>
                       {t("Total-voters")}
                       <span className={styles["No_of_Votes"]}>
-                        {convertToArabicNumerals(totalVoters, CurrentLanguage)}
+                        {totalVoters}
                       </span>
                     </span>
                   </Col>
@@ -414,7 +416,7 @@ const ResultResolution = ({ setResultresolution }) => {
                 </Row>
               </Col>
             </Row>
-          </span>
+          </Paper>
         </Col>
       </Row>
     </section>

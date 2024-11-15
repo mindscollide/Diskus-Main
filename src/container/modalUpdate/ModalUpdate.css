@@ -1,3 +1,4 @@
+/* change background color blue to this */
 .badge-icon {
   background-color: #6172d6 !important;
 
@@ -11,16 +12,19 @@
 
 .minutes-view {
   overflow-y: auto;
+  /* max-height: 475px; */
   max-height: 355px;
 }
 
 .minutes-view-2 {
   overflow-y: auto;
   max-height: 346px;
+  /* max-height: 355px; */
 }
 
 .minutes-box {
   max-height: 220px;
+  /* / overflow-y: auto; / */
 }
 
 .btn.disabled,
@@ -34,6 +38,7 @@ fieldset:disabled .btn {
   height: 20% !important;
   max-height: 20% !important;
   min-height: 20% !important;
+  /* display: block !important; */
 }
 
 .modalMeetingUpdateBody {
@@ -95,10 +100,9 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-participant-scroll {
-  max-height: 53vh !important;
+  height: 300px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  margin-top: 10px !important;
 }
 
 .updatemeeting-participant-scroll::-webkit-scrollbar-thumb {
@@ -146,6 +150,17 @@ fieldset:disabled .btn {
   width: 450px !important;
   margin-top: 20px !important;
 }
+
+/* 
+.updatemeeting-publishMeeting-btn {
+  width: 450px !important;
+  margin-top: 30px !important;
+}
+
+.updatemeeting-publishMeeting-btn {
+  width: 450px !important;
+  margin: 10px 0 !important;
+} */
 
 .updatemeeting-cancel-btn {
   width: 450px !important;
@@ -204,6 +219,8 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
+  /* margin-right: 4px !important; */
+  /* margin-top   : 6px !important; */
   font-weight: 600 !important;
 }
 
@@ -215,7 +232,8 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
-
+  /* margin-right: 4px !important; */
+  /* margin-top   : 6px !important; */
   font-weight: 600 !important;
 }
 
@@ -241,7 +259,8 @@ body[dir="rtl"] .modal-update-meeting {
 body[dir="rtl"] .modal-update-addagenda {
   background: #6172d6 !important;
   border: none !important;
-  padding: 12px 30px !important;
+  width: 140px !important;
+  height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -272,6 +291,7 @@ body[dir="rtl"] .modal-update-addagenda {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
+  margin-top: 10px;
   border: none !important;
 }
 
@@ -361,6 +381,7 @@ body[dir="rtl"] .modal-update-addagenda {
 .modalupdatemeeting-add {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
+  /* margin-left: -15px !important; */
 }
 
 .agenda-upper-button {
@@ -643,12 +664,15 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
 .select-participant-update-box {
   margin-top: -1px !important;
+  /* margin-left: -18px !important; */
+  /* width: 36% !important; */
 }
 .meeting_update .modal-content {
+  height: 580px !important;
   width: 700px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 20px 0 0 0;
+  padding: 20px 0;
 }
 .Confirmationmodal_body_text_meeting_update {
   padding: 0 20px !important;
@@ -719,26 +743,4 @@ body[dir="rtl"] .isMinutes-Update-btn {
   font-size: 14px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
-}
-
-.errorMessage {
-  margin: 4px;
-  height: 7px;
-  color: #f16b6b;
-  visibility: visible !important;
-  font-weight: 600;
-}
-
-body[dir="rtl"] .errorMessage {
-  font-weight: 600;
-}
-
-.errorMessage_hidden {
-  visibility: hidden;
-  margin: 0;
-  height: 7px;
-  color: #f16b6b !important;
-}
-.modal_update_bodyClass {
-  border-bottom: 0px !important
 }

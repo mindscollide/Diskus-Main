@@ -2,20 +2,28 @@ import React, { useEffect, useState } from "react";
 import styles from "./VerifyOTPUM.module.css";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Row } from "react-bootstrap";
 import {
   Button,
+  Paper,
   VerificationInputField,
+  Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  verificationEmailOTP,
+} from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
-import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../../../store/actions/UserManagementActions";
 
 const VerifyOTPUM = () => {
   const { t } = useTranslation();
@@ -23,6 +31,8 @@ const VerifyOTPUM = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
   const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
@@ -34,6 +44,10 @@ const VerifyOTPUM = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   const languages = [
     { name: "English", code: "en" },
@@ -167,7 +181,7 @@ const VerifyOTPUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <span className={styles["OTP_auth_paper"]}>
+            <Paper className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -219,7 +233,7 @@ const VerifyOTPUM = () => {
                 </Row>
 
                 <Row>
-                  <Col className="text-left d-flex justify-content-start align-items-center gap-2">
+                  <Col className="text-left d-flex justify-content-start gap-3">
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
@@ -272,7 +286,7 @@ const VerifyOTPUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </span>
+            </Paper>
           </Col>
           <Col
             lg={8}
@@ -299,6 +313,7 @@ const VerifyOTPUM = () => {
           </Col>
         </Row>
       </Container>
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalresolutionRemove.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../../components/elements";
+
+import { Button, InputSearchFilter, Modal } from "../../../components/elements";
+import { style } from "@mui/system";
 const ModalresolutionRemove = ({
   ModalTitle,
   removeparticipant,

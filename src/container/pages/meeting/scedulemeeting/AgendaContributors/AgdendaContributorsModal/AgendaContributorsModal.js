@@ -4,6 +4,7 @@ import {
   Modal,
   Button,
   Notification,
+  InputSearchFilter,
 } from "../../../../../../components/elements";
 import {
   showAddAgendaContributor,
@@ -20,8 +21,6 @@ import GroupIcon from "../../../../../../assets/images/GroupSetting.svg";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
-
 const AgendaContributorsModal = ({
   SelectedRSVP,
   rowsData,
@@ -37,10 +36,10 @@ const AgendaContributorsModal = ({
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [membersOrganizers, setMembersOrganizers] = useState([]);
+  const [agendaContributorUsers, setAgendaContributorUsers] = useState("");
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
@@ -54,7 +53,7 @@ const AgendaContributorsModal = ({
         let temp = [];
         if (Object.keys(newOrganizersData).length > 0) {
           if (Object.keys(newOrganizersData.groups).length > 0) {
-            newOrganizersData.groups.forEach((a, index) => {
+            newOrganizersData.groups.map((a, index) => {
               let newData = {
                 value: a.groupID,
                 name: a.groupName,
@@ -88,7 +87,7 @@ const AgendaContributorsModal = ({
             });
           }
           if (Object.keys(newOrganizersData.committees).length > 0) {
-            newOrganizersData.committees.forEach((a, index) => {
+            newOrganizersData.committees.map((a, index) => {
               let newData = {
                 value: a.committeeID,
                 name: a.committeeName,
@@ -121,7 +120,7 @@ const AgendaContributorsModal = ({
             });
           }
           if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-            newOrganizersData.organizationUsers.forEach((a, index) => {
+            newOrganizersData.organizationUsers.map((a, index) => {
               let newData = {
                 value: a.userID,
                 name: a.userName,
@@ -191,7 +190,7 @@ const AgendaContributorsModal = ({
 
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.forEach((seledtedData, index) => {
+        selectedsearch.map((seledtedData, index) => {
           if (seledtedData.type === 1) {
             let check1 = newOrganizersData.groups.find(
               (data, index) => data.groupID === seledtedData.value
@@ -199,7 +198,7 @@ const AgendaContributorsModal = ({
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.forEach((gUser, index) => {
+                groupUsers.map((gUser, index) => {
                   let check2 = membersOrganizers.find(
                     (data, index) => data.UserID === gUser.userID
                   );
@@ -230,7 +229,7 @@ const AgendaContributorsModal = ({
             if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.forEach((cUser, index) => {
+                committeesUsers.map((cUser, index) => {
                   let check2 = membersOrganizers.find(
                     (data, index) => data.UserID === cUser.userID
                   );
@@ -303,11 +302,10 @@ const AgendaContributorsModal = ({
     );
 
     if (membersOrganizers.length === 0) {
-      showMessage(
-        t("Atleast-one-agenda-contributor-should-be-selected"),
-        "error",
-        setOpen
-      );
+      setOpen({
+        flag: true,
+        message: t("Atleast-one-agenda-contributor-should-be-selected"),
+      });
     } else {
       setRowsData(newData);
       dispatch(showAddAgendaContributor(false));
@@ -469,7 +467,7 @@ const AgendaContributorsModal = ({
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

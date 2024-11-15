@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
+import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button, Checkbox } from "../../../../../../components/elements";
 import { Progress } from "antd";
 import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
@@ -16,7 +17,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const { PollsReducer } = useSelector((state) => state);
   const [viewVotes, setviewVotes] = useState(false);
 
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -32,8 +33,11 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
 
   useEffect(() => {
     try {
-      if (Allpolls !== null && Allpolls !== undefined) {
-        let pollData = Allpolls.poll;
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollData = PollsReducer.Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -55,7 +59,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
         }
       }
     } catch {}
-  }, [Allpolls]);
+  }, [PollsReducer.Allpolls]);
 
   const handleCancelButton = () => {
     setViewPublishedPoll(false);
@@ -66,6 +70,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
       PollID: viewPublishedPollDetails.PollID,
     };
     dispatch(viewVotesApi(navigate, data, t, 1, setviewVotes));
+    // setviewVotes(true);
   };
   return (
     <>

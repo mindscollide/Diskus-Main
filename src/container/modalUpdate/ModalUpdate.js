@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
+import FileIcon, { defaultStyles } from "react-file-icon";
 import Select from "react-select";
 import {
   convertDateTimeObject,
@@ -13,6 +14,7 @@ import {
   TextField,
   Button,
   Modal,
+  SelectBox,
   Accordian,
   EmployeeCard,
   Notification,
@@ -23,6 +25,7 @@ import {
   FileUploadToDo,
   ResetAllFilesUpload,
 } from "../../store/actions/Upload_action";
+import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
 import { Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -38,6 +41,7 @@ import {
   CancelMeeting,
   allAssignessList,
 } from "../../store/actions/Get_List_Of_Assignees";
+import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +53,6 @@ import {
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../commen/functions/utils";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
@@ -63,33 +66,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const assigneesViewMeetingDetails = useSelector(
-    (state) => state.assignees.ViewMeetingDetails
-  );
-
-  const assigneesRemindersData = useSelector(
-    (state) => state.assignees.RemindersData
-  );
-
-  const uploadReduceruploadDocumentsList = useSelector(
-    (state) => state.uploadReducer.uploadDocumentsList
-  );
-
-  const CommitteeReducergetCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer?.getCommitteeByCommitteeID
-  );
-
-  const GroupsReducergetGroupByGroupIdResponse = useSelector(
-    (state) => state.GroupsReducer?.getGroupByGroupIdResponse
-  );
+  const {
+    assignees,
+    uploadReducer,
+    CommitteeReducer,
+    GroupsReducer,
+    meetingIdReducer,
+    settingReducer,
+  } = useSelector((state) => state);
   const {
     userName = "",
     organizationName = "",
     fK_UID = 0,
     userProfilePicture = "",
-  } = useSelector((state) => state.settingReducer?.UserProfileData);
-  const assigneesuser = useSelector((state) => state?.assignees?.user);
+  } = settingReducer.UserProfileData;
   let OrganizationId = localStorage.getItem("organizationID");
   const [currentStep, setCurrentStep] = useState(1);
   const [isMinutes, setIsMinutes] = useState(false);
@@ -123,9 +113,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     FK_MDID: 0,
   });
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   // for upload documents
@@ -150,6 +139,16 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
 
   const [attendeesParticipant, setAttendeesParticipant] = useState([]);
+
+  // for   dropdown Attendees List
+  const [optiosnMeetingAttendeesList, setOptiosnMeetingAttendeesList] =
+    useState([]);
+
+  // for   selected Attendees Name
+  const [selectedAttendeesName, setSelectedAttendeesName] = useState("");
+
+  // for   select participant Role Name
+  const [participantRoleName, setParticipantRoleName] = useState("Participant");
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -195,6 +194,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     MeetingAgendas: [],
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
+    // MinutesOfMeeting: [],
   });
   console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
@@ -205,22 +205,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [fileSize, setFileSize] = useState(0);
   const [allPresenters, setAllPresenters] = useState([]);
-  //Reminder Stats
-  const [reminderOptions, setReminderOptions] = useState([]);
-  const [reminderOptValue, setReminderOptValue] = useState({
-    value: 0,
-    label: "",
-    duration: 0,
-  });
-
-  const [participantRoles, setParticipantsRoles] = useState([
-    { label: t("Organizer"), value: 1 },
-    { label: t("Participant"), value: 2 },
-  ]);
-  const [participantRoleValue, setParticipantRoleValue] = useState({
-    label: t("Participant"),
-    value: 2,
-  });
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
     label: "",
@@ -256,6 +240,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
+      // createMeeting.MeetingReminderID.length != 0 &&
+      // createMeeting.MeetingDescription != "" &&
+      // createMeeting.MeetingLocation != ""
+      //  &&
+      // createMeeting.MeetingTitle != ""
     ) {
       setCurrentStep(2);
       setModalField(false);
@@ -282,6 +271,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
+      // createMeeting.MeetingReminderID.length != 0 &&
+      // createMeeting.MeetingDescription != "" &&
+      // createMeeting.MeetingLocation !== ""
+      // &&
+      // createMeeting.MeetingTitle !== ""
     ) {
       setCurrentStep(3);
 
@@ -310,6 +304,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== ""
+      // createMeeting.MeetingDescription != "" &&
+      // createMeeting.MeetingLocation !== ""
+      // &&
+      // createMeeting.MeetingTitle != ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -337,6 +335,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
+      // createMeeting.MeetingDescription !== "" &&
+      // createMeeting.MeetingLocation !== "" &&
+      // createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
       meetingDate !== ""
     ) {
@@ -370,7 +371,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCurrentStep(2);
 
       setIsAttendees(false);
-      showMessage(t("Please-atleast-add-one-agenda"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-atleast-add-one-agenda"),
+      });
     }
   };
 
@@ -391,7 +396,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
-
+    let finalDateTime = createConvert(
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+    );
     let finalDateTimeWithoutUTC =
       createMeeting.MeetingDate + createMeeting.MeetingStartTime;
     let newDate = finalDateTimeWithoutUTC.slice(0, 8);
@@ -419,7 +426,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    console.log(newData, "newDatanewDatanewData");
     await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
     await setObjMeetingAgenda({
       PK_MAID: 0,
@@ -431,10 +437,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     await setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleValue({
-      label: t("Participant"),
-      value: 2,
-    });
+    await setParticipantRoleName("Participant");
+    await setSelectedAttendeesName("");
     await setCreateMeeting({
       MeetingTitle: "",
       MeetingDescription: "",
@@ -468,8 +472,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       CreationTime: "",
       FK_MDID: 0,
     });
-
+    // await setMeetingReminderValue("");
+    // await setMeetingReminderID([]);
     setReminder("");
+    setReminderValue("");
     setTaskAssignedToInput("");
   };
 
@@ -483,13 +489,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const participantOptions = [t("Organizer"), t("Participant")];
 
   // Reminder handler
-  const ReminderNameHandler = (event) => {
-    console.log(event, "ReminderNameHandlerReminderNameHandler");
-    setReminderOptValue(event);
-    setCreateMeeting({
-      ...createMeeting,
-      MeetingReminderID: [event.value],
-    });
+  const ReminderNameHandler = (e, value) => {
+    try {
+      setReminderValue(value);
+      let valueOfReminder = assignees.RemindersData;
+      valueOfReminder.map((data, index) => {
+        if (value === data.description) {
+          let id = data.pK_MRID;
+          setCreateMeeting({
+            ...createMeeting,
+            ["MeetingReminderID"]: [parseInt(id)],
+          });
+        }
+      });
+    } catch (error) {}
   };
 
   // for all details handler
@@ -497,14 +510,23 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let name = e.target.name;
     let value = e.target.value;
     let valueCheck = value.replace(/^\s/g, "");
+    // setModalField(true);
     if (name === "MeetingStartTime") {
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        MeetingEndTime: RemoveTimeDashes(value),
+        ["MeetingEndTime"]: RemoveTimeDashes(value),
       });
       setCreateMeetingTime(value);
-    } else if (name === "MeetingLocation") {
+    }
+    // else if (name === "MeetingDate") {
+    //
+    //   setCreateMeeting({
+    //     ...createMeeting,
+    //     [name]: value,
+    //   });
+    // }
+    else if (name === "MeetingLocation") {
       setCreateMeeting({
         ...createMeeting,
         [name]: valueCheck.trimStart(),
@@ -548,15 +570,20 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         Description: "",
         CreationDate: recordsMinutesOfTheMeeting.CreationDate,
         CreationTime: recordsMinutesOfTheMeeting.CreationTime,
-        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
+        FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      showMessage(t("Please-fill-description"), "error", setOpen);
+      setOpen({
+        ...open,
+        open: true,
+        message: "",
+      });
     }
   };
 
   //for onchange events  of the meeting
   const onChangeAddMinutes = (e) => {
+    let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");
     setRecordMinutesOfTheMeeting({
@@ -564,7 +591,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       Description: valueCheck.trimStart(),
       CreationDate: recordsMinutesOfTheMeeting.CreationDate,
       CreationTime: recordsMinutesOfTheMeeting.CreationTime,
-      FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
+      FK_MDID: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
     });
   };
 
@@ -576,21 +603,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (name === "Title") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
-        PK_MAID: objMeetingAgenda.PK_MAID,
+        ["PK_MAID"]: objMeetingAgenda.PK_MAID,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
+        ["FK_MDID"]: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else if (name === "PresenterName") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
+        ["FK_MDID"]: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else if (name === "URLs") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
-        FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
+        ["FK_MDID"]: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
     }
@@ -604,7 +631,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
     // Check if adding the new files exceeds the limit
     if (currentFiles.length + filesArray.length > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      setTimeout(() => {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      }, 3000);
       return;
     }
 
@@ -615,7 +647,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
       // Check total size after adding each file
       if (mergeFileSizes + fileSizeinMB > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("Not-allowed-more-than-15-files"),
+          });
+        }, 3000);
         return;
       }
 
@@ -639,15 +676,24 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         );
 
         if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          setOpen({
+            ...open,
+            flag: true,
+            message: t("File-already-exists"),
+          });
         } else if (fileSizeinMB > maxFileSize) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
-            "error",
-            setOpen
-          );
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
+            });
+          }, 3000);
         } else if (fileSizeinMB === 0) {
-          showMessage(t("File-size-is-0mb"), "error", setOpen);
+          setOpen({
+            ...open,
+            flag: true,
+            message: t("File-size-is-0mb"),
+          });
         } else {
           dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
           fileSizeArr += uploadedFile.size;
@@ -669,8 +715,16 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     });
   };
 
+  const downloadClick = (e, record) => {
+    let data = {
+      OriginalFileName: record.OriginalAttachmentName,
+      DisplayFileName: record.DisplayAttachmentName,
+    };
+    dispatch(DownloadFile(navigate, data));
+  };
+
   useEffect(() => {
-    let newData = uploadReduceruploadDocumentsList;
+    let newData = uploadReducer.uploadDocumentsList;
 
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
@@ -684,11 +738,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       });
       setMeetingAgendaAttachments({
         ...meetingAgendaAttachments,
-        MeetingAgendaAttachments: MeetingAgendaAttachment,
+        ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
       });
       dispatch(ResetAllFilesUpload());
     }
-  }, [uploadReduceruploadDocumentsList]);
+  }, [uploadReducer.uploadDocumentsList]);
 
   function urlPatternValidation(URL) {
     const regex = new RegExp(
@@ -713,7 +767,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             previousAdendas[editRecordIndex] = newData;
             setCreateMeeting({
               ...createMeeting,
-              MeetingAgendas: previousAdendas,
+              ["MeetingAgendas"]: previousAdendas,
             });
             seteditRecordIndex(null);
             seteditRecordFlag(false);
@@ -725,7 +779,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             });
           } else {
             setModalField(false);
-            showMessage(t("Enter-valid-url"), "error", setOpen);
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("Enter-valid-url"),
+            });
           }
         } else {
           let newData = {
@@ -736,7 +794,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           previousAdendas[editRecordIndex] = newData;
           setCreateMeeting({
             ...createMeeting,
-            MeetingAgendas: previousAdendas,
+            ["MeetingAgendas"]: previousAdendas,
           });
           seteditRecordIndex(null);
           seteditRecordFlag(false);
@@ -749,6 +807,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
       } else {
         setModalField(true);
+        // setOpen({
+        //   ...open,
+        //   flag: true,
+        //   message: t("Enter-Title-Information"),
+        // });
       }
     } else {
       if (objMeetingAgenda.Title !== "") {
@@ -764,7 +827,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             previousAdendas.push(newData);
             setCreateMeeting({
               ...createMeeting,
-              MeetingAgendas: previousAdendas,
+              ["MeetingAgendas"]: previousAdendas,
             });
             setObjMeetingAgenda(defaultMeetingAgenda);
             setMeetingAgendaAttachments({
@@ -774,7 +837,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             setFileSize(0);
           } else {
             setModalField(false);
-            showMessage(t("Enter-valid-url"), "error", setOpen);
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("Enter-valid-url"),
+            });
           }
         } else {
           setModalField(false);
@@ -787,7 +854,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           previousAdendas.push(newData);
           setCreateMeeting({
             ...createMeeting,
-            MeetingAgendas: previousAdendas,
+            ["MeetingAgendas"]: previousAdendas,
           });
           setObjMeetingAgenda(defaultMeetingAgenda);
           setPresenterValue(defaultPresenter);
@@ -798,6 +865,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         }
       } else {
         if (previousAdendas) {
+          console.log(createMeeting.MeetingAgendas, "agendaCountagendaCount");
+
           // Get the current count of agendas (starting from 1)
           const agendaCount = createMeeting.MeetingAgendas.length + 1;
 
@@ -848,7 +917,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   function onChange(e) {
     setCreateMeeting({
       ...createMeeting,
-      IsChat: e.target.checked,
+      ["IsChat"]: e.target.checked,
     });
   }
 
@@ -856,62 +925,65 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (createMeeting.IsVideoCall === true) {
       setCreateMeeting({
         ...createMeeting,
-        IsVideoCall: false,
+        ["IsVideoCall"]: false,
       });
     } else {
       setCreateMeeting({
         ...createMeeting,
-        IsVideoCall: true,
+        ["IsVideoCall"]: true,
       });
     }
   }
 
   // for attendies Role handler
-  const assigntRoleAttendies = (event) => {
-    setParticipantRoleValue(event);
-    let newData = {
-      User: {
-        PK_UID: meetingAttendees.User.PK_UID,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: event.value,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    };
-    setMeetingAttendees(newData);
+  const assigntRoleAttendies = (e, value) => {
+    // let value = e.target.value;
+    setParticipantRoleName(value);
+    let user = participantOptionsWithIDs;
+    if (user !== undefined) {
+      if (participantOptionsWithIDs.length > 0) {
+        participantOptionsWithIDs.map((data, index) => {
+          if (data.label === value) {
+            let newData = {
+              User: {
+                PK_UID: meetingAttendees.User.PK_UID,
+              },
+              MeetingAttendeeRole: {
+                PK_MARID: data.id,
+              },
+              AttendeeAvailability: {
+                PK_AAID: 1,
+              },
+            };
+            setMeetingAttendees(newData);
+          }
+        });
+      }
+    }
   };
 
+  // Reminder selection for drop down
   useEffect(() => {
-    try {
-      let valueOfReminder = assigneesRemindersData;
-      console.log(valueOfReminder, "valueOfRemindervalueOfReminder");
-      let reminderOptions = [];
+    let valueOfReminder = assignees.RemindersData;
+    setReminder(
+      valueOfReminder.map((data, index) => {
+        return data.description;
+      })
+    );
+  }, [assignees.RemindersData]);
 
-      valueOfReminder.forEach((reminderData, index) => {
-        if (Number(reminderData.duration) === 1) {
-          setCreateMeeting({
-            ...createMeeting,
-            MeetingReminderID: [reminderData.duration],
-          });
-          setReminderOptValue({
-            value: reminderData.pK_MRID,
-            label: reminderData.description,
-            duration: reminderData.duration,
-          });
-        }
-        reminderOptions.push({
-          value: reminderData.pK_MRID,
-          label: reminderData.description,
-          duration: reminderData.duration,
+  useEffect(() => {
+    let valueOfReminder = assignees.RemindersData;
+    valueOfReminder.map((data, index) => {
+      if (createMeeting.MeetingReminderID === data.pK_MRID) {
+        setReminderValue(data.description);
+        setCreateMeeting({
+          ...createMeeting,
+          ["MeetingReminderID"]: [parseInt(data.pK_MRID)],
         });
-      });
-      setReminderOptions(reminderOptions);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [assigneesRemindersData]);
+      }
+    });
+  }, [assignees.RemindersData]);
 
   const callApi = async () => {
     if (checkFlag !== 6 && checkFlag !== 7) {
@@ -925,8 +997,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-      callApi()
-      setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+      callApi();
+      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
     } else {
       setEditFlag(false);
@@ -949,10 +1021,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setMeetingAgendaAttachments({
         MeetingAgendaAttachments: [],
       });
-      setParticipantRoleValue({
-        label: t("Participant"),
-        value: 2,
-      });
+      setParticipantRoleName(t("Participant"));
+      setSelectedAttendeesName("");
       setCreateMeeting({
         MeetingTitle: "",
         MeetingDescription: "",
@@ -988,22 +1058,44 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       });
       setAddedParticipantNameList([]);
       setReminder("");
+      setReminderValue("");
       setTaskAssignedToInput("");
     }
   }, [editFlag]);
 
- // for api reponce of list of all assignees
- useEffect(() => {
-  try {
-    if (Object.keys(assigneesuser).length > 0) {
-      try {
-        let usersList =assigneesuser;
-        setMeetingAttendeesList(usersList);
-        let PresenterData = [];
-
-        usersList.forEach((user, index) => {
-
-          PresenterData.push({
+  // for api reponce of list of all assignees
+  useEffect(() => {
+    if (Object.keys(assignees.user).length > 0) {
+      setMeetingAttendeesList(assignees.user);
+      let PresenterData = [];
+      let membersData = [];
+      assignees.user.forEach((user, index) => {
+        membersData.push({
+          label: (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-2 align-items-center'>
+                  <img
+                    src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
+                  />
+                  <span>{user?.name}</span>
+                </Col>
+              </Row>
+            </>
+          ),
+          value: user?.pK_UID,
+          name: user?.name,
+        });
+        if (Number(user.pK_UID) === Number(createrID)) {
+          setDefaultPresenter({
             label: (
               <>
                 <Row>
@@ -1011,16 +1103,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
-                    <span>{user.name}</span>
+                    <span>{user?.name}</span>
                   </Col>
                 </Row>
               </>
@@ -1028,83 +1119,57 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             value: user?.pK_UID,
             name: user?.name,
           });
-
-          if (Number(user.pK_UID) === Number(createrID)) {
-            setDefaultPresenter({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{user?.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user?.pK_UID,
-              name: user?.name,
-            });
-            setPresenterValue({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
-                      <img
-                        src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
-                      />
-                      <span>{user?.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user?.pK_UID,
-              name: user?.name,
-            });
-            setDefaultObjMeetingAgenda({
-              ...defaultMeetingAgenda,
-              PresenterName: user?.name,
-            });
-            setObjMeetingAgenda({
-              ...objMeetingAgenda,
-              PresenterName: user?.name,
-            });
-
-   
-          }
-        });
- 
-        if (checkFlag !== 6 && checkFlag !== 7) {
-          setAttendeesParticipant(PresenterData);
+          setPresenterValue({
+            label: (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className='d-flex gap-2 align-items-center'>
+                    <img
+                      src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
+                    />
+                    <span>{user?.name}</span>
+                  </Col>
+                </Row>
+              </>
+            ),
+            value: user?.pK_UID,
+            name: user?.name,
+          });
+          setDefaultObjMeetingAgenda({
+            ...defaultMeetingAgenda,
+            PresenterName: user?.name,
+          });
+          setObjMeetingAgenda({
+            ...objMeetingAgenda,
+            PresenterName: user?.name,
+          });
         }
-        setAllPresenters(PresenterData);
-      } catch (error) {
-        console.log(error);
+      });
+      setAttendeesParticipant(membersData);
+    }
+  }, [assignees.user]);
+
+  // for  list of all assignees  drop down
+  useEffect(() => {
+    let user = meetingAttendeesList;
+    if (user !== undefined) {
+      if (meetingAttendeesList.length > 0) {
+        setOptiosnMeetingAttendeesList(
+          meetingAttendeesList.map((data, index) => {
+            return data.name;
+          })
+        );
       }
     }
-  } catch (error) {
-    console.log(error);
-  }
-}, [assigneesuser, checkFlag])
+  }, [meetingAttendeesList]);
 
   // for fetch data for edit from grid
 
@@ -1118,11 +1183,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       );
       const currentDateTime = convertDateTimeObject(getformattedDateTIme);
       if (dateTimeFormat < currentDateTime) {
-        showMessage(
-          t("Date-and-time-should-be-greater-than-current-system-time"),
-          "error",
-          setOpen
-        );
+        setOpen({
+          flag: true,
+          message: t(
+            "Date-and-time-should-be-greater-than-current-system-time"
+          ),
+        });
         setTimeout(() => {
           setMeetingDate(getCurrentDateforMeeting.DateGMT);
           setCreateMeeting({
@@ -1152,13 +1218,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for view data
   useEffect(() => {
     try {
-      if (Object.keys(assigneesViewMeetingDetails).length > 0) {
-        let viewData = assigneesViewMeetingDetails;
+      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
+        let viewData = assignees.ViewMeetingDetails;
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeetings = [];
         let externalMeetingAttendiesList = [];
-        let meetingStatus = assigneesViewMeetingDetails.meetingStatus.status;
+        let meetingStatus = assignees.ViewMeetingDetails.meetingStatus.status;
         if (meetingStatus === "2") {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(true);
@@ -1179,11 +1245,16 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           setMinutesOftheMeatingStatus(false);
           setEndMeetingStatus(false);
         }
-        viewData.meetingReminders.forEach((rdata) => {
+        viewData.meetingReminders.map((rdata, index) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
-
+        let valueOfReminder = assignees.RemindersData;
+        valueOfReminder.map((data, index) => {
+          if (data.pK_MRID === reminder[0]) {
+            setReminderValue(data.description);
+          }
+        });
         // for meeting attendies
         let List = [];
         let emptyList = [];
@@ -1216,9 +1287,25 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               setAddedParticipantNameList(List);
             }
           }
+          if (viewData.externalMeetingAttendees !== undefined) {
+            if (viewData.externalMeetingAttendees.length > 0) {
+              viewData.externalMeetingAttendees.map(
+                (externalMeetingAttendeesMeetingdata, index) => {
+                  List.push({
+                    name: externalMeetingAttendeesMeetingdata.emailAddress,
+                    designation: "Default",
+                    profilePicture: "Default",
+                    organization: "Default",
+                    role: 2,
+                  });
+                }
+              );
+            }
+          }
+          setAddedParticipantNameList(List);
         } catch (error) {}
         try {
-          viewData.meetingAgendas.forEach((atchmenData, index) => {
+          viewData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
               PK_MAID: atchmenData.objMeetingAgenda.pK_MAID,
               Title: atchmenData.objMeetingAgenda.title,
@@ -1228,7 +1315,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.forEach(
+              atchmenData.meetingAgendaAttachments.map(
                 (atchmenDataaa, index) => {
                   file.push({
                     PK_MAAID: atchmenDataaa.pK_MAAID,
@@ -1248,7 +1335,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         } catch (error) {}
         try {
-          viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
+          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeetings.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -1261,8 +1348,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           //  Block of code to handle errors
         }
         try {
-          viewData.externalMeetingAttendees.forEach(
-            (externalMeetingAttendeesData) => {
+          viewData.externalMeetingAttendees.map(
+            (externalMeetingAttendeesData, index) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
@@ -1273,7 +1360,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         } catch (error) {
           //  Block of code to handle errors
         }
-
+        // setMeetingDate(
+        //   moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").format("DD/MM/YYYY").toString()
+        // );
         setMeetingDate(
           moment(
             EditmeetingDateFormat(
@@ -1312,11 +1401,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setMinutesOfMeeting(minutesOfMeetings);
       }
     } catch (error) {}
-  }, [assigneesViewMeetingDetails]);
+  }, [assignees.ViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
     let Data;
-    assigneesuser.forEach((user) => {
+    assignees.user.forEach((user, index) => {
       if (user.name === datarecord.ObjMeetingAgenda.PresenterName) {
         Data = {
           label: (
@@ -1349,27 +1438,28 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     seteditRecordFlag(true);
     setObjMeetingAgenda({
       ...objMeetingAgenda,
-      PK_MAID: datarecord.ObjMeetingAgenda.PK_MAID,
-      Title: datarecord.ObjMeetingAgenda.Title,
-      PresenterName: datarecord.ObjMeetingAgenda.PresenterName,
-      URLs: datarecord.ObjMeetingAgenda.URLs,
-      FK_MDID: datarecord.ObjMeetingAgenda.FK_MDID,
+      ["PK_MAID"]: datarecord.ObjMeetingAgenda.PK_MAID,
+      ["Title"]: datarecord.ObjMeetingAgenda.Title,
+      ["PresenterName"]: datarecord.ObjMeetingAgenda.PresenterName,
+      ["URLs"]: datarecord.ObjMeetingAgenda.URLs,
+      ["FK_MDID"]: datarecord.ObjMeetingAgenda.FK_MDID,
     });
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
-      MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
+      ["MeetingAgendaAttachments"]: datarecord.MeetingAgendaAttachments,
     });
   };
 
   useEffect(() => {
     try {
       let membersData = [];
-      let PresenterData = [];
-      let usersData = []
+      let usersData = [];
+
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
-          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
+          CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+        console.log(CommitteeMembers, "CommitteeMembers");
         if (
           CommitteeMembers !== null &&
           CommitteeMembers !== undefined &&
@@ -1477,7 +1567,87 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               value: committeesMember?.pK_UID,
               name: committeesMember?.userName,
             });
-            PresenterData.push({
+            if (Number(committeesMember.pK_UID) === Number(createrID)) {
+              // Default Presenter Data
+              setDefaultPresenter({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span>{committeesMember?.userName}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: committeesMember?.pK_UID,
+                name: committeesMember?.userName,
+              });
+              setPresenterValue({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span>{committeesMember?.userName}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: committeesMember?.pK_UID,
+                name: committeesMember?.userName,
+              });
+              setDefaultObjMeetingAgenda({
+                ...defaultMeetingAgenda,
+                PresenterName: committeesMember?.userName,
+              });
+              setObjMeetingAgenda({
+                ...objMeetingAgenda,
+                PresenterName: committeesMember?.userName,
+              });
+            }
+          });
+        }
+
+        setAllPresenters(membersData);
+        setAttendeesParticipant(membersData);
+
+        setMeetingAttendeesList(usersData);
+      } else if (Number(checkFlag) === 7) {
+        // Group Members
+        let GroupMembers =
+          GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+
+        if (
+          GroupMembers !== null &&
+          GroupMembers !== undefined &&
+          GroupMembers.length > 0
+        ) {
+          let findisCreatorFind = GroupMembers.find(
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+          if (findisCreatorFind === undefined) {
+            setDefaultPresenter({
               label: (
                 <>
                   <Row>
@@ -1487,35 +1657,68 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       sm={12}
                       className='d-flex gap-2 align-items-center'>
                       <img
-                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
                         height='16.45px'
                         width='18.32px'
                         draggable='false'
                         alt=''
                       />
-                      <span>{committeesMember.name}</span>
+                      <span>{userName}</span>
                     </Col>
                   </Row>
                 </>
               ),
-              value: committeesMember?.pK_UID,
-              name: committeesMember?.name,
+              value: fK_UID,
+              name: userName,
             });
-          });
-          setAllPresenters(PresenterData);
-        }
-
-        setAttendeesParticipant(membersData);
-
-        setMeetingAttendeesList(usersData);
-      } else if (Number(checkFlag) === 7) {
-        let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
-        if (
-          GroupMembers !== null &&
-          GroupMembers !== undefined &&
-          GroupMembers.length > 0
-        ) {
-          GroupMembers.forEach((groupMemberData) => {
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID,
+              name: userName,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userName,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userName,
+            });
+          }
+          GroupMembers.forEach((groupMemberData, index) => {
+            usersData.push({
+              creationDate: "",
+              creationTime: "",
+              designation: "",
+              displayProfilePictureName:
+                groupMemberData.userProfilePicture.displayProfilePictureName,
+              emailAddress: groupMemberData.email,
+              mobileNumber: "",
+              name: groupMemberData.userName,
+              organization: localStorage.getItem("organizatioName"),
+              orignalProfilePictureName:
+                groupMemberData.userProfilePicture.orignalProfilePictureName,
+              pK_UID: groupMemberData.pK_UID,
+            });
             membersData.push({
               label: (
                 <>
@@ -1540,69 +1743,73 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               value: groupMemberData?.pK_UID,
               name: groupMemberData?.userName,
             });
-            PresenterData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{groupMemberData.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: groupMemberData?.pK_UID,
-              name: groupMemberData?.name,
-            });
+            if (Number(groupMemberData.pK_UID) === Number(createrID)) {
+              setDefaultPresenter({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span>{groupMemberData?.userName}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: groupMemberData?.pK_UID,
+                name: groupMemberData?.userName,
+              });
+              setPresenterValue({
+                label: (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span>{groupMemberData?.userName}</span>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+                value: groupMemberData?.pK_UID,
+                name: groupMemberData?.userName,
+              });
+              setDefaultObjMeetingAgenda({
+                ...defaultMeetingAgenda,
+                PresenterName: groupMemberData?.userName,
+              });
+              setObjMeetingAgenda({
+                ...objMeetingAgenda,
+                PresenterName: groupMemberData?.userName,
+              });
+            }
           });
-          setAllPresenters(PresenterData);
+
+          setAllPresenters(membersData);
+
+          setAttendeesParticipant(membersData);
+
+          setMeetingAttendeesList(usersData);
         }
         // Group MembersData
-      } else {
-        let allAssignees = assigneesuser;
-        if (
-          allAssignees !== undefined &&
-          allAssignees !== null &&
-          allAssignees.length !== 0
-        ) {
-          allAssignees.forEach((assigneeMember, index) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{assigneeMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: assigneeMember?.pK_UID,
-              name: assigneeMember?.name,
-            });
-          });
-        }
-        // meeting Members
       }
     } catch {}
   }, [checkFlag]);
@@ -1616,20 +1823,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
-        showMessage(t("User-already-exists"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("User-already-exists"),
+        });
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleValue({
-          label: t("Participant"),
-          value: 2,
-        });
+        setParticipantRoleName("Participant");
         setTaskAssignedToInput("");
         let newData = {
           User: {
             PK_UID: 0,
           },
           MeetingAttendeeRole: {
-            PK_MARID: participantRoleValue.value,
+            PK_MARID: 2,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1642,27 +1850,27 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             PK_UID: taskAssignedTo,
           },
           MeetingAttendeeRole: {
-            PK_MARID: participantRoleValue.value,
+            PK_MARID: meetingAttendees.MeetingAttendeeRole.PK_MARID,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
           },
         });
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.forEach((data) => {
+          meetingAttendeesList.map((data, index) => {
             if (data.pK_UID === taskAssignedTo) {
               List.push({
                 name: data.name,
                 designation: data.designation,
                 profilePicture: data.profilePicture,
                 organization: data.organization,
-                role: participantRoleValue.value,
+                role: meetingAttendees.MeetingAttendeeRole.PK_MARID,
                 displayProfilePic: data.displayProfilePictureName,
               });
             }
           });
         }
-        setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+        setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
         setAddedParticipantNameList(List);
         let newData = {
           User: {
@@ -1678,21 +1886,25 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setMeetingAttendees(newData);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleValue({
-          label: t("Participant"),
-          value: 2,
-        });
+        setParticipantRoleName("Participant");
         setTaskAssignedToInput("");
       }
     } else {
       if (found === undefined) {
-        showMessage(t("Please-add-valid-user"), "error", setOpen);
+        setOpen({
+          message: t("Please-add-valid-user"),
+          flag: true,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            message: "",
+            flag: false,
+          });
+        }, 4000);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
-        setParticipantRoleValue({
-          label: t("Participant"),
-          value: 2,
-        });
+        setParticipantRoleName("Participant");
         let newData = {
           User: {
             PK_UID: 0,
@@ -1709,11 +1921,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       }
     }
   };
-
+  console.log(createMeeting.IsVideoCall, "createMeetingcreateMeeting");
+  console.log(addedParticipantNameList, "createMeetingcreateMeeting");
   // for attendies handler
   const handleSubmit = async () => {
     if (createMeeting.IsVideoCall && addedParticipantNameList.length <= 1) {
-      showMessage(t("Please-add-atleast-one-participant"), "error", setOpen);
+      setOpen({
+        message: t("Please-add-atleast-one-participant"),
+        flag: true,
+      });
       return;
     }
     let hasOrganizer = createMeeting.MeetingAttendees.some(
@@ -1759,6 +1975,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
       console.log(newData, "newDatanewDatanewData");
+      // if (hasOrganizer) {
       await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
       await setObjMeetingAgenda({
         PK_MAID: 0,
@@ -1770,10 +1987,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       await setMeetingAgendaAttachments({
         MeetingAgendaAttachments: [],
       });
-      setParticipantRoleValue({
-        label: t("Participant"),
-        value: 2,
-      });
+      await setParticipantRoleName("Participant");
+      await setSelectedAttendeesName("");
       await setCreateMeeting({
         MeetingTitle: "",
         MeetingDescription: "",
@@ -1807,12 +2022,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         CreationTime: "",
         FK_MDID: 0,
       });
-
+      // await setMeetingReminderValue("");
+      // await setMeetingReminderID([]);
       setReminder("");
       setReminderValue("");
       setTaskAssignedToInput("");
     } else {
-      showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-atleast-add-one-organizer"),
+      });
     }
   };
 
@@ -1840,10 +2060,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleValue({
-      label: t("Participant"),
-      value: 2,
-    });
+    setParticipantRoleName("Participant");
+    setSelectedAttendeesName("");
     setCreateMeeting({
       MeetingTitle: "",
       MeetingDescription: "",
@@ -1914,10 +2132,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingAgendaAttachments({
       MeetingAgendaAttachments: [],
     });
-    setParticipantRoleValue({
-      label: t("Participant"),
-      value: 2,
-    });
+    setParticipantRoleName("Participant");
+    setSelectedAttendeesName("");
     setCreateMeeting({
       MeetingTitle: "",
       MeetingDescription: "",
@@ -1959,6 +2175,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const cancelMeetingConfirmation = async () => {
     if (minutesOftheMeatingStatus) {
       if (endMeetingStatus2) {
+        // let Data = { MinutesOfMeeting: minutesOfMeeting };
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
@@ -1979,10 +2196,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         await setMeetingAgendaAttachments({
           MeetingAgendaAttachments: [],
         });
-        setParticipantRoleValue({
-          label: t("Participant"),
-          value: 2,
-        });
+        await setParticipantRoleName("Participant");
+        await setSelectedAttendeesName("");
         await setCreateMeeting({
           MeetingTitle: "",
           MeetingDescription: "",
@@ -2016,10 +2231,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-
+        // await setMeetingReminderValue("");
+        // await setMeetingReminderID([]);
         setReminder("");
         setReminderValue("");
       } else {
+        // let Data = { MinutesOfMeeting: minutesOfMeeting };
         await setModalField(false);
         await setIsPublishMeeting(false);
         await setCancelMeetingModal(false);
@@ -2040,10 +2257,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         await setMeetingAgendaAttachments({
           MeetingAgendaAttachments: [],
         });
-        setParticipantRoleValue({
-          label: t("Participant"),
-          value: 2,
-        });
+        await setParticipantRoleName("Participant");
+        await setSelectedAttendeesName("");
         await setCreateMeeting({
           MeetingTitle: "",
           MeetingDescription: "",
@@ -2077,7 +2292,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-
+        // await setMeetingReminderValue("");
+        // await setMeetingReminderID([]);
         setReminder("");
         setReminderValue("");
         setTaskAssignedToInput("");
@@ -2093,6 +2309,32 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   };
 
+  // const deleteAttachmentfromAgenda = (attachmentdata, index) => {
+  //   let meetingAgendas = meetingAgendaAttachments.MeetingAgendaAttachments;
+  //   console.log(meetingAgendas, "meetingAgendasmeetingAgendas");
+  //   console.log(attachmentdata, "meetingAgendasmeetingAgendas");
+  //   console.log(index, "meetingAgendasmeetingAgendas");
+  //   // let newArray = {};
+
+  //   // if (attachmentdata.PK_MAAID > 0) {
+  //   //   newArray = {
+  //   //     CreationDateTime: attachmentdata.CreationDateTime,
+  //   //     DisplayAttachmentName: "",
+  //   //     FK_MAID: attachmentdata.FK_MAID,
+  //   //     OriginalAttachmentName: "",
+  //   //     PK_MAAID: attachmentdata.PK_MAAID,
+  //   //   };
+  //   //   meetingAgendas[index] = newArray;
+  //   // } else {
+  //   //   meetingAgendas.splice(index, 1);
+  //   // }
+
+  //   // setMeetingAgendaAttachments({
+  //   //   ...meetingAgendaAttachments,
+  //   //   ["MeetingAgendaAttachments"]: meetingAgendas,
+  //   // });
+  // };
+
   const deleteAttachmentfromAgenda = (attachmentdata, index) => {
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
@@ -2105,10 +2347,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   const handleDeleteAttendee = (data, index) => {
     let user1 = createMeeting.MeetingAttendees;
+    let List = addedParticipantNameList;
     user1.splice(index, 1);
     addedParticipantNameList.splice(index, 1);
     setAddedParticipantNameList(addedParticipantNameList);
-    setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+    setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
   const handleTimeChange = (newTime) => {
@@ -2166,6 +2409,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   }
   const onHideHandleModal = () => {
     setCloseConfirmationModal(true);
+    // setModalField(false);
     setIsDetails(false);
     setIsAgenda(false);
     setIsAttendees(false);
@@ -2221,8 +2465,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       MeetingAgendas: copyMeetingAgenda,
     });
   };
+  console.log(createMeeting, "handleDeleteAgendahandleDeleteAgenda");
 
   const handleChangePresenter = (value) => {
+    console.log(
+      value,
+      "handleChangePresenterhandleChangePresenterhandleChangePresenter"
+    );
     setPresenterValue(value);
     setObjMeetingAgenda({
       ...objMeetingAgenda,
@@ -2259,9 +2508,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               : "meeting_update"
           }
           ButtonTitle={ModalTitle}
-          modalFooterClassName={"d-block border-0"}
+          modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-none"}
-          modalBodyClassName={"modal_update_bodyClass"}
           size={
             isPublishMeeting || isCancelMeetingModal || closeConfirmationModal
               ? null
@@ -2347,18 +2595,27 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
                       />
-
+                      {/* <TextFieldTime
+                        type="time"
+                        labelclass="d-none"
+                        value={createMeetingTime}
+                        name="MeetingStartTime"
+                        onKeyDown={(e) => e.preventDefault()}
+                        applyClass={"quick_meeting_time"}
+                        change={detailsHandler}
+                        placeholder={"00:00"}
+                      /> */}
+                      {/* <TimePickers
+                        disable={endMeetingStatus}
+                        change={detailsHandler}
+                        placeholder={"00:00"}
+                        name="MeetingStartTime"
+                        value={createMeeting.MeetingStartTime}
+                        required
+                      /> */}
                       {modalField === true &&
                       createMeeting.MeetingStartTime === "" ? (
-                        <p
-                          className={
-                            modalField === true &&
-                            createMeeting.MeetingStartTime === ""
-                              ? "errorMessage"
-                              : "errorMessage_hidden"
-                          }>
-                          {t("Select-time")}
-                        </p>
+                        <ErrorBar errorText={t("Select-time")} />
                       ) : null}
                     </Col>
                     <Col
@@ -2385,31 +2642,44 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         onFocusedDateChange={meetingDateHandler}
-                      />
 
+                        // ref={calendRef}
+                      />
+                      {/* <MultiDatePicker
+                        onChange={meetingDateHandler}
+                        name="MeetingDate"
+                        value={meetingDate}
+                        calendar={calendarValue}
+                        locale={localValue}
+                        disabled={endMeetingStatus}
+                      /> */}
                       {modalField === true &&
                       createMeeting.MeetingDate === "" ? (
-                        <p
-                          className={
-                            modalField === true &&
-                            createMeeting.MeetingDate === ""
-                              ? "errorMessage"
-                              : "errorMessage_hidden"
-                          }>
-                          {t("Select-date")}
-                        </p>
+                        <ErrorBar errorText={t("Select-date")} />
                       ) : null}
                     </Col>
                     <Col lg={1} md={1} sm={1} xs={12}></Col>
-                    <Col lg={4} md={4} sm={5} xs={12}>
-                      <Select
-                        options={reminderOptions}
-                        maxMenuHeight={160}
-                        value={reminderOptValue}
-                        onChange={ReminderNameHandler}
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={5}
+                      xs={12}
+                      className='createmeeting-schedule-reminder CreateMeetingReminder select-participant-update-box'>
+                      <SelectBox
+                        disable={endMeetingStatus}
+                        name='MeetingReminderID'
                         placeholder={t("Reminder")}
+                        option={reminder}
+                        value={reminderValue}
+                        change={ReminderNameHandler}
+                        className='MeetingReminder'
+                        required
                       />
+                      {/* {  reminderValue === "" ? (
+                        <ErrorBar errorText={"Select Reminder"} />
+                      ) : null} */}
                     </Col>
+                    {/* <Col lg={3} md={3} xs={12}></Col> */}
                   </Row>
 
                   <Row className='updatemeetingvideoiconbtrrow'>
@@ -2448,6 +2718,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
+                      {/* {modalField === true &&
+                      createMeeting.MeetingLocation === "" ? (
+                        <ErrorBar errorText={t("This-field-is-empty")} />
+                      ) : null} */}
                     </Col>
                     <Col
                       lg={4}
@@ -2485,6 +2759,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         required={true}
                         maxLength={245}
                       />
+                      {/* {modalField === true &&
+                      createMeeting.MeetingTitle === "" ? (
+                        <ErrorBar errorText={t("This-field-is-empty")} />
+                      ) : null} */}
                     </Col>
                   </Row>
 
@@ -2506,9 +2784,30 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        // maxLength={500}
                       />
+                      {/* { 
+                      createMeeting.MeetingDescription === "" ? (
+                        <ErrorBar errorText={t("This-field-is-empty")} />
+                      ) : null} */}
                     </Col>
                   </Row>
+
+                  {/* <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      xs={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        onClick={navigateToAgenda}
+                        className={"btn btn-primary meeting next"}
+                        variant={"Primary"}
+                        text="Next"
+                      />
+                    </Col>
+                  </Row> */}
                 </>
               ) : isAgenda ? (
                 <>
@@ -2532,6 +2831,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               type='text'
                               placeholder={t("Agenda-title") + "*"}
                             />
+                            {/* {modalField === true &&
+                            objMeetingAgenda.Title === "" ? (
+                              <ErrorBar errorText={t("This-field-is-empty")} />
+                            ) : null} */}
                           </Col>
                           <Col
                             lg={5}
@@ -2553,6 +2856,16 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               placeholder='Select Presenter'
                               filterOption={filterFunc}
                             />
+                            {/* <TextField
+                              disable={endMeetingStatus}
+                              change={agendaHandler}
+                              name={"PresenterName"}
+                              value={objMeetingAgenda.PresenterName}
+                              applyClass="form-control2"
+                              type="text"
+                              maxLength={200}
+                              placeholder={t("Presenter")}
+                            /> */}
                           </Col>
                         </Row>
 
@@ -2596,6 +2909,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                   .MeetingAgendaAttachments.length > 0
                                   ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
                                       (data, index) => {
+                                        var ext =
+                                          data.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
+                                        const first =
+                                          data.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
                                         return (
                                           <Col sm={4} md={4} lg={4}>
                                             <AttachmentViewer
@@ -2622,7 +2943,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         <Button
                           style={{ display: "none" }}
                           onClick={addAnOtherAgenda}
-                          className={`modal-update-addagenda ${currentLanguage}`}
+                          className={
+                            "modal-update-addagenda" + " " + currentLanguage
+                          }
                           text={
                             editRecordFlag
                               ? t("Update-agenda")
@@ -2748,7 +3071,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                 <>
                   {!endMeetingStatus ? (
                     <Row className='updatemeeting-attendees-row '>
-                      <Col lg={5} md={5} sm={12} xs={12}>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={12}
+                        xs={12}
+                        className='attendee-title-field  addattendee-textfield-Update'>
                         <Select
                           options={attendeesParticipant}
                           classNamePrefix={"ModalOrganizerSelect"}
@@ -2762,18 +3090,34 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               : taskAssignedToInput
                           }
                         />
+                        {/* <InputSearchFilter
+                          placeholder={t("Add-attendees")}
+                          value={taskAssignedToInput}
+                          filteredDataHandler={searchFilterHandler(
+                            taskAssignedToInput
+                          )}
+                          change={onChangeSearch}
+                          applyClass={"input_searchAttendees_createMeeting"}
+                        /> */}
                       </Col>
-                      <Col lg={5} md={5} sm={12} xs={12}>
-                        <Select
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={12}
+                        xs={12}
+                        className='Atteendees-organizer-participant CreateMeetingReminder select-Update-participant-box'>
+                        <SelectBox
+                          name='Participant'
+                          width='100%'
                           placeholder={t("Participant") + "*"}
-                          onChange={assigntRoleAttendies}
-                          value={participantRoleValue}
-                          options={participantRoles}
+                          option={participantOptions}
+                          value={participantRoleName}
+                          change={assigntRoleAttendies}
                         />
                       </Col>
-                      <Col lg={2} md={2} sm={12} xs={12}>
+                      <Col lg={2} md={2} sm={12} xs={12} className='p-0'>
                         <Button
-                          className={"update-add-attendee-btn"}
+                          className={"btn update-add-attendee-btn"}
                           text={t("Add")}
                           onClick={addAttendees}
                           disableBtn={!taskAssignedToInput}
@@ -2826,8 +3170,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                       }
                                     />
                                   );
-                                } else {
-                                  return null;
                                 }
                               })}
                             </span>
@@ -2866,8 +3208,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                       }
                                     />
                                   );
-                                } else {
-                                  return null;
                                 }
                               })}
                             </span>
@@ -2944,6 +3284,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                               md={12}
                               xs={12}
                               className='d-flex justify-content-center align-items-center'>
+                              {/* <h3>There is no Minutes of the meeting</h3> */}
                               <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
@@ -3020,7 +3361,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       <Button
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
-                        className={`modal-update-addagenda ${currentLanguage}`}
+                        className={
+                          " modal-update-addagenda" + " " + currentLanguage
+                        }
                         text={
                           editRecordFlag
                             ? t("Update-agenda")
@@ -3190,7 +3533,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

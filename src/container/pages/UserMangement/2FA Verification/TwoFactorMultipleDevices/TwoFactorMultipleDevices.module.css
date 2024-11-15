@@ -26,6 +26,11 @@
   font-weight: 600 !important;
 }
 
+/* .Send_Email_Realme {
+  padding: 40px 45px;
+  border: 1px solid #e1e1e1;
+} */
+
 .forogt_email_link {
   display: flex;
   justify-content: center;
@@ -99,6 +104,7 @@ body[dir="rtl"] .SendEmailOnDeiveColor_active {
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
+  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }
@@ -115,13 +121,6 @@ body[dir="rtl"] .SendEmailOnDeiveColor_active {
   padding: 40px 30px;
   border: 1px solid #e1e1e1;
   max-width: 330px;
-  border-radius: 8px !important;
-  border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: var(--Paper-shadow);
-  display: inline-block !important;
-  background: #fff !important;
 }
 
 .select-language-signin_twofacmultidevice {

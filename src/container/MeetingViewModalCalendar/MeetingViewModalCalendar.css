@@ -35,9 +35,18 @@
 
 button.dataRoom {
   width: 130px !important;
+  /* margin-left: 25px !important; */
 }
 
+/* .modalMeetingViewFooter {
+    border-top: none !important;
+    height: 20% !important;
+    max-height: 20% !important;
+    min-height: 20% !important;
+} */
+
 .modalMeetingViewBody {
+  /* margin: 0 30px !important; */
   max-height: 75% !important;
   height: 75% !important;
   min-height: 75% !important;
@@ -121,6 +130,9 @@ button.dataRoom {
 }
 
 .minutes-upper-btn {
+  /* padding: 0px !important;
+  margin-left: 30px !important;
+  margin-right: -10px; */
   width: 115px;
 }
 
@@ -388,6 +400,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
     font-size: 12px !important;
     margin-left: 30px !important;
     margin-right: -10px;
+    /* margin-left: -5px; */
     height: 30px !important;
   }
 
@@ -401,6 +414,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
     margin-left: 30px !important;
     margin-right: -10px;
     width: 80px !important;
+    /* margin-left: -5px; */
     height: 30px !important;
   }
 
@@ -441,12 +455,15 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 
   .MinuteMeetingBtn {
     width: 80px !important;
+    /* margin-left: -8px; */
   }
 
   .DataRoomShowBtn {
     width: 130px !important;
     margin-left: 5px !important;
   }
+
+  /* .minutes-upper-btn {} */
 }
 
 .MeetingViewLocationTextField input {

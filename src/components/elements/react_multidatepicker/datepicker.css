@@ -1,3 +1,15 @@
+/* .datePicker_createTodo {
+                                             width: 100% !important;
+                                             margin-left: 15px !important;
+                                             height: 39px !important;
+                                             border: 1px solid #e1e1e1 !important;
+                                             border-radius: 4px !important;
+                                             font-size: 12px !important;
+                                             display: flex !important;
+                                             justify-content: center !important;
+                                             align-items: center !important;
+                                             padding: 0 10px !important;
+} */
 .datePicker_createTodo {
   max-width: 100% !important;
   width: 100% !important;
@@ -67,12 +79,7 @@
   color: #f16b6b !important;
 }
 
-.datepicker_input_minute_sendreview:is(
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+.datepicker_input_minute_sendreview:is(:hover, :focus, :focus-visible, :visited) {
   outline: none !important;
 }
 

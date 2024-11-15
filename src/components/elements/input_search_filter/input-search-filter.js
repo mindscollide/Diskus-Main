@@ -1,5 +1,6 @@
 import "./input-search-filter.css";
 import TextField from "./../input_field/Input_field";
+import { useTranslation } from "react-i18next";
 
 const InputSearchFilter = ({
   onclickFlag,
@@ -12,6 +13,8 @@ const InputSearchFilter = ({
   labelclass,
   flag,
 }) => {
+  //For Localization
+  const { t } = useTranslation();
   return (
     <div className="search-container-assignee">
       <div className="search-inner-textfield">

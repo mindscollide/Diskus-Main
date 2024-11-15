@@ -2,9 +2,18 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalAddFolder.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal, TextField } from "../../../components/elements";
+import {
+  Button,
+  InputSearchFilter,
+  Modal,
+  TextField,
+} from "../../../components/elements";
 import { useDispatch } from "react-redux";
-import { FolderisExist } from "../../../store/actions/DataRoom_actions";
+import { style } from "@mui/system";
+import {
+  createFolderApi,
+  FolderisExist,
+} from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 
 const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {

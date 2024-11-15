@@ -16,10 +16,15 @@ import {
   getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
   searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
   LeaveCurrentMeeting,
   JoinCurrentMeeting,
 } from "./NewMeetingActions";
+import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import { useContext } from "react";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -278,6 +283,10 @@ const UpdateOrganizersMeeting = (
 ) => {
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   let leaveMeetingData = {
     FK_MDID: Data.MeetingID,
     DateTime: getCurrentDateTimeUTC(),
@@ -399,7 +408,21 @@ const UpdateOrganizersMeeting = (
                       )
                     );
                   } else {
+                    let requestDataForMeetingDetails = {
+                      MeetingID: Number(Data.MeetingID),
+                    };
                     if (isQuickMeeting) {
+                      // await dispatch(
+                      //   ViewMeeting(
+                      //     navigate,
+                      //     requestDataForMeetingDetails,
+                      //     t,
+                      //     setViewFlag,
+                      //     setEditFlag,
+                      //     setCalendarViewModal,
+                      //     1
+                      //   )
+                      // );
                     } else {
                       setAdvanceMeetingModalID(Data.MeetingID);
                       setEdiorRole({

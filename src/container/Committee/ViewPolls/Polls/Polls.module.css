@@ -57,7 +57,13 @@
   font-weight: 600 !important;
   font-size: 14px !important;
   display: inline-block !important;
+
   cursor: pointer;
+  /* width: 80% !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  cursor: pointer !important; */
 }
 
 .EmptyState_heading {
@@ -235,6 +241,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   color: #6172d6 !important;
   border-radius: 4px !important;
   font-size: 8px !important;
+
   width: 64px !important;
   display: flex;
   justify-content: center;

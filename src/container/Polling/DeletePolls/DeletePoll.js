@@ -3,7 +3,7 @@ import styles from "./DeletePoll.module.css";
 import { Modal, Button } from "../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useSSR, useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
 import {
   UpdatePollStatusByPollIdApi,
@@ -14,9 +14,8 @@ const DeletePoll = ({ id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const PollsReducerdeletePollsModal = useSelector(
-    (state) => state.PollsReducer.deletePollsModal
-  );
+  const { PollsReducer } = useSelector((state) => state);
+
   const handleNofunction = () => {
     dispatch(setDeltePollModal(false));
   };
@@ -31,7 +30,7 @@ const DeletePoll = ({ id }) => {
   return (
     <Container>
       <Modal
-        show={PollsReducerdeletePollsModal}
+        show={PollsReducer.deletePollsModal}
         setShow={dispatch(setDeltePollModal)}
         onHide={() => {
           dispatch(setDeltePollModal(false));

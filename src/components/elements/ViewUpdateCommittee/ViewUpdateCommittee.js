@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
+import { Paper } from "@material-ui/core";
 import { Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -16,9 +17,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [committeeStatus, setCommitteeStatus] = useState(null);
-  const getCommitteeByCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.getCommitteeByCommitteeID
-  );
+  const { CommitteeReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
@@ -49,17 +48,18 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   useEffect(() => {
     try {
       if (
-        getCommitteeByCommitteeID !== null &&
-        getCommitteeByCommitteeID !== undefined
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
       ) {
         let committeeStatusID =
-          getCommitteeByCommitteeID.committeeStatus.committeeStatusID;
+          CommitteeReducer.getCommitteeByCommitteeID.committeeStatus
+            .committeeStatusID;
         setCommitteeStatus(committeeStatusID);
       } else {
         setCommitteeStatus(null);
       }
     } catch {}
-  }, [getCommitteeByCommitteeID]);
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   return (
     <>
@@ -71,8 +71,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             </span>
           </Col>
         </Row>
-
-        <span className={styles["View-Committee-paper"]}>
+        <Paper className={styles["View-Committee-paper"]}>
           <Row>
             <Col
               sm={12}
@@ -142,7 +141,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
               <CommitteeMeetingTab committeeStatus={committeeStatus} />
             </>
           ) : null}
-        </span>
+        </Paper>
       </section>
     </>
   );

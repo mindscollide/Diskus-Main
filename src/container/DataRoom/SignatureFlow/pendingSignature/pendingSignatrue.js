@@ -3,8 +3,10 @@ import WebViewer from "@pdftron/webviewer";
 import "./pendingSignature.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification } from "../../../../components/elements/index";
+import { Notification, Loader } from "../../../../components/elements/index";
+import { Col, Row } from "react-bootstrap";
 import {
   addUpdateFieldValueApi,
   clearWorkFlowResponseMessage,
@@ -26,7 +28,6 @@ import {
   revertReadOnlyFreetextElements,
 } from "./pendingSIgnatureFunctions";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignatureViewer = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const SignatureViewer = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
+    Loading,
     getDataroomAnnotation,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -59,7 +61,6 @@ const SignatureViewer = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
@@ -841,7 +842,19 @@ const SignatureViewer = () => {
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      showMessage(ResponseMessage, "error", setOpen);
+      setOpen({
+        ...open,
+        message: ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        dispatch(ClearMessageAnnotations());
+        setOpen({
+          ...open,
+          message: "",
+          open: false,
+        });
+      }, 4000);
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
@@ -878,8 +891,8 @@ const SignatureViewer = () => {
   };
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
 
       {reasonModal && (
@@ -899,12 +912,8 @@ const SignatureViewer = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      {/* {Loading && <Loader />} */}
     </>
   );
 };

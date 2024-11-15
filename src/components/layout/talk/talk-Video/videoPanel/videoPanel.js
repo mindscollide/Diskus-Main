@@ -7,9 +7,8 @@ import "./videoPanel.css";
 import { Triangle } from "react-bootstrap-icons";
 
 const VideoPanel = () => {
-  const ContactVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.ContactVideoFlag
-  );
+  const { videoFeatureReducer } = useSelector((state) => state);
+
   return (
     <>
       <div className="chatBox-video ">
@@ -22,14 +21,14 @@ const VideoPanel = () => {
             </div>
             <div
               className={
-                ContactVideoFlag === true
+                videoFeatureReducer.ContactVideoFlag === true
                   ? "videocall-normal-panel"
                   : "videocall-normal-recent"
               }
             >
               <VideoPanelBody />
             </div>
-            {/* {ContactVideoFlag === true ? (
+            {/* {videoFeatureReducer.ContactVideoFlag === true ? (
               <VideoPanelFooter />
             ) : null} */}
           </>

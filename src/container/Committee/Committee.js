@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import archivedbtn from "../../assets/images/archivedbtn.png";
 import plusbutton from "../../assets/images/Group 119.svg";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
-import CreateCommittee from "./MainCommittee/CreateCommittee/CreateCommittee";
-import UpdateCommittee from "./MainCommittee/UpdateCommittee/UpdateCommittee";
-import ViewUpdateCommittee from "./MainCommittee/ViewUpdateCommittee/ViewUpdateCommittee";
+import CreateCommittee from "../../components/elements/CreateCommittee/CreateCommittee";
+import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCommittee";
+import ViewUpdateCommittee from "../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee";
 import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
 import committeeicon from "../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,48 +44,9 @@ import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommi
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Committee = () => {
-  const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
-    (state) => state.CommitteeReducer.GetAllCommitteesByUserIDResponse
-  );
-
-  const CommitteeReducerrealtimeCommitteeStatus = useSelector(
-    (state) => state.CommitteeReducer.realtimeCommitteeStatus
-  );
-
-  const CommitteeReducerArcheivedCommittees = useSelector(
-    (state) => state.CommitteeReducer.ArcheivedCommittees
-  );
-
-  const CommitteeReducerrealtimeCommitteeCreateResponse = useSelector(
-    (state) => state.CommitteeReducer.realtimeCommitteeCreateResponse
-  );
-
-  const CommitteeReducerremoveCommitteeMember = useSelector(
-    (state) => state.CommitteeReducer.removeCommitteeMember
-  );
-
-  const CommitteeReducerviewCommitteePageFlag = useSelector(
-    (state) => state.CommitteeReducer.viewCommitteePageFlag
-  );
-
-  const CommitteeReducerResponseMessage = useSelector(
-    (state) => state.CommitteeReducer.ResponseMessage
-  );
-
-  const CommitteeReducercreateCommitteePageFlag = useSelector(
-    (state) => state.CommitteeReducer.createCommitteePageFlag
-  );
-
-  const CommitteeReducerupdateCommitteePageFlag = useSelector(
-    (state) => state.CommitteeReducer.updateCommitteePageFlag
-  );
-
-  const talkStateDataAllUserChats = useSelector(
-    (state) => state.talkStateData.AllUserChats
-  );
+  const { CommitteeReducer, talkStateData } = useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -113,7 +74,6 @@ const Committee = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [mapgroupsData, setMapGroupData] = useState(null);
 
@@ -134,18 +94,19 @@ const Committee = () => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducerGetAllCommitteesByUserIDResponse !== null &&
-        CommitteeReducerGetAllCommitteesByUserIDResponse !== undefined
+        CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
+        CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined
       ) {
         setTotalRecords(
-          CommitteeReducerGetAllCommitteesByUserIDResponse.totalRecords
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords
         );
 
         if (
-          CommitteeReducerGetAllCommitteesByUserIDResponse.committees.length > 0
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length >
+          0
         ) {
           let copyData = [
-            ...CommitteeReducerGetAllCommitteesByUserIDResponse?.committees,
+            ...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees,
           ];
           // Create a new copy of committeeMembers array for each committee
           const updatedCommittees = copyData.map((committee) => ({
@@ -161,17 +122,17 @@ const Committee = () => {
         setGetCommitteeData([]);
       }
     } catch {}
-  }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
+  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
     try {
-      if (CommitteeReducerrealtimeCommitteeStatus !== null) {
-        let status = CommitteeReducerrealtimeCommitteeStatus.committeeStatusID;
+      if (CommitteeReducer.realtimeCommitteeStatus !== null) {
+        let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
         if (status === 2) {
           let findINdexCommitteeStatus = getcommitteedata.findIndex(
             (data, index) =>
               data.committeeID ===
-              CommitteeReducerrealtimeCommitteeStatus.commmitteeID
+              CommitteeReducer.realtimeCommitteeStatus.commmitteeID
           );
           if (findINdexCommitteeStatus !== -1) {
             let newData = [...getcommitteedata];
@@ -181,18 +142,18 @@ const Committee = () => {
           }
         } else if (status === 1 || status === 3) {
           if (
-            CommitteeReducerArcheivedCommittees !== null &&
-            CommitteeReducerArcheivedCommittees.committees.length > 0
+            CommitteeReducer.ArcheivedCommittees !== null &&
+            CommitteeReducer.ArcheivedCommittees.committees.length > 0
           ) {
             let findisExist =
-              CommitteeReducerArcheivedCommittees.committees.findIndex(
+              CommitteeReducer.ArcheivedCommittees.committees.findIndex(
                 (data, index) =>
                   Number(data.groupID) ===
-                  Number(CommitteeReducerrealtimeCommitteeStatus.commmitteeID)
+                  Number(CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
               );
             if (findisExist !== -1) {
               let findGroupData =
-                CommitteeReducerArcheivedCommittees.committees[findisExist];
+                CommitteeReducer.ArcheivedCommittees.committees[findisExist];
               let modifiedData = {
                 ...findGroupData,
                 groupStatusID: status,
@@ -203,7 +164,7 @@ const Committee = () => {
             let findINdexCommitteeStatus = getcommitteedata.findIndex(
               (data, index) =>
                 data.committeeID ===
-                CommitteeReducerrealtimeCommitteeStatus.commmitteeID
+                CommitteeReducer.realtimeCommitteeStatus.commmitteeID
             );
             if (findINdexCommitteeStatus !== -1) {
               let newArr = getcommitteedata.map((committeeCard, index) => {
@@ -211,7 +172,8 @@ const Committee = () => {
                   let newData = {
                     ...committeeCard,
                     committeeStatusID:
-                      CommitteeReducerrealtimeCommitteeStatus.committeeStatusID,
+                      CommitteeReducer.realtimeCommitteeStatus
+                        .committeeStatusID,
                   };
                   return newData;
                 }
@@ -226,12 +188,12 @@ const Committee = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducerrealtimeCommitteeStatus]);
+  }, [CommitteeReducer.realtimeCommitteeStatus]);
 
   useEffect(() => {
     try {
-      if (CommitteeReducerrealtimeCommitteeCreateResponse !== null) {
-        let committeeData = CommitteeReducerrealtimeCommitteeCreateResponse;
+      if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
+        let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
         let CommitteeMembers = [...committeeData.committeeMembers];
         let newCommitteeData = {
           committeesTitle: committeeData.committeesTitle,
@@ -250,19 +212,19 @@ const Committee = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
+  }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
 
   useEffect(() => {
     try {
-      if (CommitteeReducerremoveCommitteeMember !== null) {
-        let committeeDataR = CommitteeReducerremoveCommitteeMember.committees;
+      if (CommitteeReducer.removeCommitteeMember !== null) {
+        let committeeDataR = CommitteeReducer.removeCommitteeMember.committees;
         let ViewCommitteeIDOpened = localStorage.getItem("ViewCommitteeID");
         setGetCommitteeData((committeeremover) => {
           return committeeremover.filter((commiteeData, index) => {
             return commiteeData.committeeID !== committeeDataR.committeeID;
           });
         });
-        if (ViewGroupPage && CommitteeReducerviewCommitteePageFlag === true) {
+        if (ViewGroupPage && CommitteeReducer.viewCommitteePageFlag === true) {
           if (
             Number(committeeDataR.committeeID) === Number(ViewCommitteeIDOpened)
           ) {
@@ -274,7 +236,7 @@ const Committee = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [CommitteeReducerremoveCommitteeMember]);
+  }, [CommitteeReducer.removeCommitteeMember]);
 
   const archivedmodaluser = async (e) => {
     setShowModal(true);
@@ -340,7 +302,7 @@ const Committee = () => {
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
-        talkStateDataAllUserChats.AllUserChatsData.allMessages;
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
         (item) => item.id === data.talkGroupID
       );
@@ -382,10 +344,32 @@ const Committee = () => {
           )
         );
       } else {
-        showMessage(t("No-talk-group-created"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: "No Talk Group Created",
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            flag: false,
+            message: "",
+          });
+        }, 3000);
       }
     } else {
-      showMessage(t("No-talk-group-created"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "No Talk Group Created",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
     }
   };
 
@@ -426,11 +410,22 @@ const Committee = () => {
   useEffect(() => {
     try {
       if (
-        CommitteeReducerResponseMessage !== "" &&
-        CommitteeReducerResponseMessage !== undefined &&
-        CommitteeReducerResponseMessage !== t("No-data-available")
+        CommitteeReducer.ResponseMessage !== "" &&
+        CommitteeReducer.ResponseMessage !== undefined &&
+        CommitteeReducer.ResponseMessage !== t("No-data-available")
       ) {
-        showMessage(CommitteeReducerResponseMessage, "success", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: CommitteeReducer.ResponseMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
         dispatch(getallcommitteebyuserid_clear());
       } else {
@@ -439,7 +434,7 @@ const Committee = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [CommitteeReducerResponseMessage]);
+  }, [CommitteeReducer.ResponseMessage]);
 
   const isCurrentUserCreator = (data) => {
     return (
@@ -455,22 +450,34 @@ const Committee = () => {
   };
 
   const openNotification = () => {
-    showMessage(t("Not-a-member-of-talk-group"), "error", setOpen);
+    setOpen({
+      ...open,
+      open: true,
+      message: t("Not-a-member-of-talk-group"),
+    });
+    setTimeout(() => {
+      setOpen({
+        ...open,
+        open: false,
+        message: "",
+      });
+    }, 3000);
   };
 
   return (
     <>
       <div className={styles["CommitteeContainer"]}>
-        {creategrouppage && CommitteeReducercreateCommitteePageFlag === true ? (
+        {creategrouppage &&
+        CommitteeReducer.createCommitteePageFlag === true ? (
           <>
             <CreateCommittee setCreategrouppage={setCreategrouppage} />
           </>
         ) : updateComponentpage &&
-          CommitteeReducerupdateCommitteePageFlag === true ? (
+          CommitteeReducer.updateCommitteePageFlag === true ? (
           <>
             <UpdateCommittee setUpdateComponentpage={setUpdateComponentpage} />
           </>
-        ) : ViewGroupPage && CommitteeReducerviewCommitteePageFlag === true ? (
+        ) : ViewGroupPage && CommitteeReducer.viewCommitteePageFlag === true ? (
           <>
             <ViewUpdateCommittee
               setViewGroupPage={setViewGroupPage}
@@ -526,7 +533,12 @@ const Committee = () => {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col lg={12} md={12} sm={12}>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                // className={styles["Committee-Main_Scrollbar"]}
+              >
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
@@ -711,10 +723,11 @@ const Committee = () => {
                 </Col>
               </Row>
             )}
+            {/* pagination */}
           </>
         )}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee
           archivedCommittee={showModal}
@@ -746,6 +759,14 @@ const Committee = () => {
           setIsActive={setChangeStatusModal}
         />
       )}
+      {/* {modalsure ? (
+        <ModalAreyousureActive
+          Activegroup={modalsure}
+          setActivegroup={setModalsure}
+          editFlag={editFlag}
+          setEditFlag={setEditFlag}
+        />
+      ) : null} */}
     </>
   );
 };

@@ -33,7 +33,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../commen/functions/utils";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
@@ -46,14 +45,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoDate, setCreateTodoDate] = useState(current_Date);
-
-  const toDoListReducerAllAssigneesData = useSelector(
-    (state) => state.toDoListReducer.AllAssigneesData
-  );
-
-  const toDoListReducertodoDocumentsMappingData = useSelector(
-    (state) => state.toDoListReducer.todoDocumentsMapping
-  );
+  const state = useSelector((state) => state);
+  const { toDoListReducer } = state;
 
   //To Display Modal
 
@@ -62,9 +55,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Notification State
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   const [toDoDate, setToDoDate] = useState(current_value);
@@ -113,18 +105,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
 
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo");
 
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
+  const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [createTaskID, setCreateTaskID] = useState(0);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
+  //Uploaded  objects
+  const [uploadObjects, setUploadObjects] = useState([]);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (
+        toDoListReducer.todoDocumentsUpload !== null &&
+        toDoListReducer.todoDocumentsUpload !== undefined &&
+        toDoListReducer.todoDocumentsUpload.length > 0
+      ) {
+        console.log(toDoListReducer, "toDoListReducer");
+        let uploadedFilesData = toDoListReducer.todoDocumentsUpload;
+        setUploadObjects(uploadedFilesData);
+        setIsUploadComplete(true);
+      }
+    } catch (error) {
+      console.log("todoListReducer", error);
+    }
+  }, [toDoListReducer.todoDocumentsUpload]);
 
   //To Set task Creater ID
   useEffect(() => {
@@ -167,7 +181,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //To Set task Creater ID
   useEffect(() => {
     try {
-      let data = [...toDoListReducerAllAssigneesData];
+      let data = [...toDoListReducer.AllAssigneesData];
       if (
         data !== undefined &&
         data !== null &&
@@ -236,7 +250,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducerAllAssigneesData]);
+  }, [toDoListReducer.AllAssigneesData]);
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
@@ -250,7 +264,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      TasksAttachments: searchIndex,
+      ["TasksAttachments"]: searchIndex,
     });
   };
 
@@ -261,8 +275,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     var valueCheck = value.replace(/^\s/g, "");
     if (name === "Title") {
       if (valueCheck.length > 199) {
-        showMessage(t("Title-limit-is-200"), "error", setOpen);
+        setOpen({
+          flag: true,
+          message: t("Title-limit-is-200"),
+        });
       } else {
+        setOpen({
+          flag: false,
+          message: "",
+        });
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
@@ -275,8 +296,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     } else if (name === "Description") {
       if (valueCheck.length > 2000) {
-        showMessage(t("Description-limit-is-2000"), "error", setOpen);
+        setOpen({
+          flag: true,
+          message: t("Description-limit-is-2000"),
+        });
       } else {
+        setOpen({
+          flag: false,
+          message: "",
+        });
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
@@ -295,7 +323,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let size = true;
 
     if (totalFiles > 10) {
-      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Not-allowed-more-than-10-files"),
+      });
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -310,15 +341,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
-          "error",
-          setOpen
-        );
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
+        }, 3000);
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-zero"),
+          });
+        }, 3000);
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-already-exists"),
+          });
+        }, 3000);
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -334,10 +376,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setFileForSend((prevFiles) => [...prevFiles, fileData]);
         setFileSize(fileSizeArr);
       }
+      // Update previousFileList to current fileList
+      previousFileList = filesArray;
     });
   };
 
+  let previousFileList = [];
+
   useEffect(() => {
+    // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
       dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
     } else {
@@ -357,13 +404,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTasksAttachments({ TasksAttachments: [] });
       setTaskAssignedName([]);
       setAssignees([]);
+      setTaskAssignedToInput("");
     }
   }, [show]);
 
   useEffect(() => {
     if (taskAssignedName.length > 1) {
-      showMessage(t("Only-one-assignee-allow"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Only-one-assignee-allow"),
+      });
     } else {
+      setTaskAssigneeLength(false);
     }
   }, [taskAssignedName.length]);
 
@@ -415,12 +467,24 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     };
     if (finalDateTime === undefined) {
       if (Task.DeadLineTime === "" || Task.DeadLineTime === undefined) {
-        showMessage(t("Time-missing"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Time-missing"),
+        });
       } else if (Task.DeadLineDate === "" || Task.DeadLineDate === undefined) {
-        showMessage(t("Enter-date-must"), "error", setOpen);
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Enter-date-must"),
+        });
       }
     } else if (Task.Title === "") {
-      showMessage(t("Please-select-title-for-the-task"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-select-title-for-the-task"),
+      });
     } else {
       let Data;
       if (TaskAssignedTo.length > 0) {
@@ -483,17 +547,20 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TaskID: Number(createTaskID),
         TasksAttachments: newAttachmentData,
       };
+      console.log(Data, "DataDataDataData");
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "errorerrorerrorerrorerror");
+    }
   };
 
   useEffect(() => {
-    if (toDoListReducertodoDocumentsMappingData !== 0) {
-      uploadTaskDocuments(toDoListReducertodoDocumentsMappingData);
+    if (toDoListReducer.todoDocumentsMapping !== 0) {
+      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
     }
-  }, [toDoListReducertodoDocumentsMappingData]);
+  }, [toDoListReducer.todoDocumentsMapping]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];
@@ -540,6 +607,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const filterFunc = (options, searchText) => {
+    // console.log(options, "filterFuncfilterFunc");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -574,6 +642,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       xs={12}
                       className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
                     >
+                      {/* <TextFieldTime
+                        type="time"
+                        labelclass="d-none"
+                        value={task.DeadLineTime}
+                        change={createTodoTimeChangeHandler}
+                        placeholder={"00:00"}
+                        name="DeadLineTime"
+                        applyClass={"createTodo_timePicker"}
+                        inputRef={timePickerRef}
+                        onClick={handleFocusCreateTodo}
+                        id="timeInput"
+                      /> */}
+
                       <DatePicker
                         arrowClassName="arrowClass"
                         value={task.timeforView}
@@ -584,6 +665,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         format="hh:mm A"
+                        // selected={task.timeforView}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
@@ -592,6 +674,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
                       <DatePicker
                         onFocusedDateChange={toDoDateHandler}
+                        // inputClass="datepicker_input"
                         format={"DD/MM/YYYY"}
                         value={toDoDate}
                         minDate={moment().toDate()}
@@ -604,14 +687,33 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         }
                         editable={false}
                         className="datePickerTodoCreate2"
+                        // disabled={disabled}
+                        // name={name}
                         onOpenPickNewDate={true}
                         inputMode=""
+                        // value={value}
                         calendar={calendarValue}
                         locale={localValue}
                         ref={calendRef}
                       />
+                      {/* <MultiDatePicker
+                        onChange={toDoDateHandler}
+                        name="DeadLineDate"
+                        // value={toDoDate}
+                        refProp={calendRef}
+                        calendar={calendarValue}
+                        locale={localValue}
+                      /> */}
                     </Col>
-
+                    {/* <Col
+                      lg={3}
+                      md={3}
+                      sm={2}
+                      xs={12}
+                      className="CreateMeetingDate text-center"
+                    >
+                      
+                    </Col> */}
                     <Col
                       lg={6}
                       md={6}
@@ -809,7 +911,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

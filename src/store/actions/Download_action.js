@@ -1,7 +1,10 @@
 import * as actions from "../action_types";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import {
+  settingApi,
+  meetingApi,
   reportDownload,
   settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
@@ -10,6 +13,14 @@ import {
   downloadAttendanceReport,
   LoginHistoryReportExporttoExcel,
 } from "../../commen/apis/Api_config";
+import Helper from "../../commen/functions/history_logout";
+
+const ShowNotification = (message) => {
+  return {
+    type: actions.SHOW,
+    message: message,
+  };
+};
 
 const DownloadLoaderStart = () => {
   return {
@@ -27,6 +38,26 @@ const downloadFail = (response) => {
 const SetLoaderFalseDownload = () => {
   return {
     type: actions.SET_LOADER_FALSE_DOWNLOAD,
+  };
+};
+
+const SetAttendanceLoaderFail = () => {
+  return {
+    type: actions.ATTENDANCE_DOWNLOAD_LOADER_FAIL,
+  };
+};
+
+const downloadDocumentSuccess = (response) => {
+  return {
+    type: actions.DOWNLOAD_DOCUMENT_FILE_SUCCESS,
+    response: response,
+  };
+};
+
+const downloadDocumentFail = (response) => {
+  return {
+    type: actions.DOWNLOAD_DOCUMENT_FILE_FAIL,
+    response: response,
   };
 };
 
@@ -93,6 +124,13 @@ const DownloadFile = (navigate, data, t) => {
       .catch((response) => {
         dispatch(downloadFail(response));
       });
+  };
+};
+
+// const download Report Attendance Init
+const attendanceDownloadInit = () => {
+  return {
+    type: actions.DOWNLOAD_ATTENDANCE_REPORT_INIT,
   };
 };
 

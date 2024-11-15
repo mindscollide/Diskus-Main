@@ -4,6 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import {
   Button,
   Notification,
+  Paper,
   Table,
   TextField,
 } from "../../../components/elements";
@@ -18,19 +19,17 @@ import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import searchicon from "../../../assets/images/searchicon.svg";
 import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import { validateEmailEnglishAndArabicFormat } from "../../../commen/functions/validations";
-import { LoginHistoryReport } from "../../../commen/functions/date_formater";
+import { LoginHistoryReport, newTimeFormaterForImportMeetingAgenda } from "../../../commen/functions/date_formater";
 import { getTimeDifference } from "../../../commen/functions/time_formatter";
 import moment from "moment";
 import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_action";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -50,11 +49,11 @@ const Reports = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchText, setSearchText] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
+  const [notificationMessage, setNotificationMessage] = useState({
+    show: false,
     message: "",
-    severity: "error",
   });
+  const [isEmailValid, SetIsEmailValid] = useState(false);
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
     userName: "",
@@ -214,7 +213,9 @@ const Reports = () => {
         return (
           <>
             <span className={styles["DesignationStyles"]}>
-              {text === "-" ? text : LoginHistoryReport(text)}
+              {text === "-"
+                ? text
+                : LoginHistoryReport(text)}
             </span>
           </>
         );
@@ -229,10 +230,7 @@ const Reports = () => {
         return (
           <>
             <span className={styles["DesignationStyles"]}>
-              {convertToArabicNumerals(
-                getTimeDifference(record.dateLogin, record.dateLogOut),
-                currentLanguage
-              )}
+              {getTimeDifference(record.dateLogin, record.dateLogOut)}
             </span>
           </>
         );
@@ -262,14 +260,9 @@ const Reports = () => {
       align: "center",
       key: "loggedInFromIP",
       render: (text, record) => {
-        console.log(typeof text, "texttexttext");
-        console.log(text, "texttexttext");
-
         return (
           <>
-            <span className={styles["DesignationStyles"]}>
-              {convertToArabicNumerals(text, currentLanguage)}
-            </span>
+            <span className={styles["DesignationStyles"]}>{text}</span>
           </>
         );
       },
@@ -475,6 +468,21 @@ const Reports = () => {
   };
 
   const handleCloseSearcbBox = () => {
+    // setUserLoginHistorySearch({
+    //   ...userLoginHistorySearch,
+    //   userName: "",
+    //   userEmail: "",
+    //   DateFrom: "",
+    //   DateForView: "",
+    //   DateTo: "",
+    //   DateToView: "",
+    //   IpAddress: "",
+    //   InterFaceType: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   Title: "",
+    // });
     setSearchBoxExpand(false);
   };
 
@@ -487,7 +495,11 @@ const Reports = () => {
     if (
       !validateEmailEnglishAndArabicFormat(userLoginHistorySearch.userEmail)
     ) {
-      showMessage(t("Email-is-not-valid"), "error", setOpen);
+      setNotificationMessage({
+        ...notificationMessage,
+        message: t("Email-is-not-valid"),
+        show: true,
+      });
     } else {
     }
   };
@@ -536,7 +548,7 @@ const Reports = () => {
   return (
     <Fragment>
       <Container>
-        <Row className="my-3 d-flex align-items-center">
+        <Row className='my-3 d-flex align-items-center'>
           <Col sm={12} md={4} lg={4}>
             <h2 className={styles["user-login-history-heading"]}>
               {t("User-login-history")}
@@ -548,13 +560,11 @@ const Reports = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className="d-flex justify-content-end align-items-center gap-4"
-              >
+                className='d-flex justify-content-end align-items-center gap-4'>
                 <span
                   className={styles["export-to-excel-btn"]}
-                  onClick={handleClickExportExcel}
-                >
-                  <img src={XLSIcon} alt="" /> {t("Export-to-excel")}
+                  onClick={handleClickExportExcel}>
+                  <img src={XLSIcon} alt='' /> {t("Export-to-excel")}
                 </span>
               </Col>
               <Col sm={12} md={8} lg={8}>
@@ -571,9 +581,9 @@ const Reports = () => {
                     value={userLoginHistorySearch.Title}
                     inputicon={
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={searchicon}
-                        alt=""
+                        alt=''
                         className={styles["searchbox_icon_userhistoryLogin"]}
                         onClick={handleIputSearchIcon}
                       />
@@ -584,8 +594,7 @@ const Reports = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 flex-wrap"
-                    >
+                      className='d-flex gap-2 flex-wrap'>
                       {showsearchText &&
                       userLoginHistorySearch.userName !== "" ? (
                         <div className={styles["SearchablesItems"]}>
@@ -594,8 +603,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -614,8 +623,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -635,8 +644,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -656,8 +665,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -679,8 +688,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -702,8 +711,8 @@ const Reports = () => {
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -724,14 +733,13 @@ const Reports = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end"
-                        >
+                          className='d-flex justify-content-end'>
                           <img
                             src={CrossIcon}
                             width={14}
                             height={14}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             onClick={handleCloseSearcbBox}
                           />
                         </Col>
@@ -741,7 +749,7 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-name")}
                             name={"userName"}
-                            type="text"
+                            type='text'
                             value={userLoginHistorySearch.userName}
                             change={handleChangeSearchBoxValues}
                           />
@@ -750,14 +758,14 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-email")}
                             name={"userEmail"}
-                            type="email"
+                            type='email'
                             onBlur={() => handleValidateEmail()}
                             change={handleChangeSearchBoxValues}
                             value={userLoginHistorySearch.userEmail}
                           />
                         </Col>
                       </Row>
-                      <Row className="my-3">
+                      <Row className='my-3'>
                         <Col sm={12} md={6} lg={6}>
                           {/* <TextField /> */}
                           <DatePicker
@@ -773,10 +781,12 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
+                            // name="decision"
+                            // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeFromDate}
@@ -797,10 +807,12 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
+                            // name="decision"
+                            // value={decisionDateTime.dateValue}
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeToDate}
@@ -825,13 +837,12 @@ const Reports = () => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
+                          className='d-flex justify-content-end gap-2'>
                           <Button
                             className={styles["ResetBtn"]}
                             text={t("Reset")}
@@ -846,13 +857,15 @@ const Reports = () => {
                       </Row>
                     </section>
                   )}
+                  {/* {userLoginHistorySearch.userName !== "" &&
+                    userLoginHistorySearch.userName} */}
                 </section>
               </Col>
             </Row>
           </Col>
         </Row>
         <Row>
-          <span className={styles["user-login-history-table-paper"]}>
+          <Paper className={styles["user-login-history-table-paper"]}>
             <InfiniteScroll
               dataLength={loginHistoyRows.length}
               next={handleScroll}
@@ -866,16 +879,14 @@ const Reports = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center mt-2"
-                      >
+                        className='d-flex justify-content-center mt-2'>
                         <Spin />
                       </Col>
                     </Row>
                   </>
                 ) : null
               }
-              scrollableTarget="scrollableDiv"
-            >
+              scrollableTarget='scrollableDiv'>
               <Table
                 column={userloginColumns}
                 rows={loginHistoyRows}
@@ -888,10 +899,14 @@ const Reports = () => {
                 }}
               />
             </InfiniteScroll>
-          </span>
+          </Paper>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification
+        message={notificationMessage.message}
+        open={notificationMessage.show}
+        setOpen={setNotificationMessage}
+      />
     </Fragment>
   );
 };

@@ -1,17 +1,20 @@
 {
-  "ResolutionModel": {
-    "FK_ResolutionStatusID": 1,
-    "FK_ResolutionVotingMethodID": 2,
-    "Title": "Second Test ",
-    "NotesToVoter": "test ",
-    "CirculationDateTime": "20241026160000",
-    "DeadlineDateTime": "20241027160000",
-    "FK_ResolutionReminderFrequency_ID": 5,
-    "FK_ResolutionDecision_ID": 1,
-    "PK_ResolutionID": 439,
-    "DecisionAnnouncementDateTime": "20241028160000",
-    "IsResolutionPublic": true,
-    "FK_OrganizationID": 561,
-    "FK_UID": 1351
+  "ListOfEmailAddresses": ["saifEssential@yopmail.com"],
+  "Messege": "test",
+  "isNotify": true,
+  "sendViaDataRoom": false,
+  "BoarddeckFileParams": {
+    "PK_MDID": 3887,
+    "fetchOrganizers": true,
+    "fetchAgendaContributors": true,
+    "fetchParticipants": true,
+    "fetchMinutes": true,
+    "fetchTasks": true,
+    "fetchPolls": true,
+    "fetchAttendance": true,
+    "fetchVideo": true,
+    "fetchAgenda": true,
+    "fetchAgendaWithAttachments": true,
+    "fetchAdvanceMeetingDetails": true
   }
 }

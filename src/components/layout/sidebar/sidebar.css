@@ -9,8 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* z-index: 0; */
-  z-index: 101 !important;
+  z-index: 0;
 }
 
 .new_sidebar {
@@ -254,7 +253,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
   height: auto !important;
   left: 61px !important;
   background-color: #fff !important;
-  z-index: -1 !important;
+  z-index: 5 !important;
   display: flex;
   flex-wrap: wrap;
   border-radius: 4px !important;

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Notification } from "../../components/elements";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const VideoMeetingBoardDeck = () => {
   const dispatch = useDispatch();
@@ -19,12 +18,10 @@ const VideoMeetingBoardDeck = () => {
 
   const navigate = useNavigate();
 
-  const VideoURLdata = useSelector(
-    (state) => state.UserMangementReducer.videoURLData
-  );
-
-  const responseMessage = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage
+  const { UserMangementReducer } = useSelector((state) => state);
+  console.log(
+    UserMangementReducer.videoURLData,
+    "UserMangementReducerUserMangementReducer"
   );
 
   const currentUrl = window.location.href;
@@ -38,9 +35,8 @@ const VideoMeetingBoardDeck = () => {
   const [videoLink, setVideoLink] = useState(null);
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   console.log(videoLink, "videoLinkvideoLinkvideoLink");
@@ -66,13 +62,20 @@ const VideoMeetingBoardDeck = () => {
   //Extracting Data from the link
   useEffect(() => {
     try {
-      if (VideoURLdata !== undefined && VideoURLdata !== null) {
-        setVideoLink(VideoURLdata.filePath);
+      if (
+        UserMangementReducer.videoURLData !== undefined &&
+        UserMangementReducer.videoURLData !== null
+      ) {
+        console.log(
+          UserMangementReducer.videoURLData.filePath,
+          "videoURLDatavideoURLData"
+        );
+        setVideoLink(UserMangementReducer.videoURLData.filePath);
       }
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [VideoURLdata]);
+  }, [UserMangementReducer.videoURLData]);
 
   //DownLoad Options Disabled
   useEffect(() => {
@@ -103,16 +106,27 @@ const VideoMeetingBoardDeck = () => {
   //Response meesege
   useEffect(() => {
     if (
-      responseMessage !== "" &&
-      responseMessage !== t("No-data-available") &&
-      responseMessage !== t("Record-available")
+      UserMangementReducer.ResponseMessage !== "" &&
+      UserMangementReducer.ResponseMessage !== t("No-data-available") &&
+      UserMangementReducer.ResponseMessage !== t("Record-available")
     ) {
-      showMessage(responseMessage, "success", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: UserMangementReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(clearMessegesUserManagement());
     } else {
       dispatch(clearMessegesUserManagement());
     }
-  }, [responseMessage]);
+  }, [UserMangementReducer.ResponseMessage]);
 
   return (
     <>
@@ -139,7 +153,7 @@ const VideoMeetingBoardDeck = () => {
           </Col>
         </Row>
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

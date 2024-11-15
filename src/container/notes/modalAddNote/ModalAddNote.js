@@ -1,42 +1,43 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
+  TextField,
   Button,
   Modal,
   Notification,
   AttachmentViewer,
 } from "../../../components/elements";
-import { Row, Col, Container, Form } from "react-bootstrap";
+import { Row, Col, Container, Dropdown, Form } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   FileUploadToDo,
+  ResetAllFilesUpload,
   uploaddocumentloader,
 } from "../../../store/actions/Upload_action";
 import CustomUpload from "../../../components/elements/upload/Upload";
-import { SaveNotesAPI } from "../../../store/actions/Notes_actions";
+import moment from "moment";
+import {
+  SaveNotesAPI,
+  openAddNotesModal,
+} from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
 import { validateInput } from "../../../commen/functions/regex";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
-
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const NoteTitle = useRef(null);
-  const editorRef = useRef(null);
+  const Delta = Quill.import("delta");
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -44,15 +45,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const NoteTitle = useRef(null);
+  const editorRef = useRef(null);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   var Size = Quill.import("attributors/style/size");
@@ -173,7 +177,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let size = true;
 
     if (totalFiles > 5) {
-      showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Not-allowed-more-than-5-files"),
+      });
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -188,15 +195,28 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
-          "error",
-          setOpen
-        );
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
+        }, 3000);
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-zero"),
+          });
+        }, 3000);
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        console.log("iam in here");
+        setTimeout(() => {
+          console.log("iam in here");
+          setOpen({
+            flag: true,
+            message: t("File-already-exists"),
+          });
+        }, 3000);
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
@@ -227,16 +247,21 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const modules = {
     toolbar: {
       container: [
-        [{ header: [2, 3, 4, false] }],
-        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
-        ["bold", "italic", "underline", "blockquote"],
-        [{ color: [] }],
-        [{ list: "ordered" }, { list: "bullet" }],
+        {
+          size: ["14px", "16px", "18px"],
+        },
+        { font: ["impact", "courier", "comic", "Montserrat"] },
+        { bold: {} },
+        { italic: {} },
+        { underline: {} },
+
+        { color: [] },
+        { background: [] },
+        { align: [] },
+        { list: "ordered" },
+        { list: "bullet" },
       ],
       handlers: {},
-    },
-    clipboard: {
-      matchVisual: true,
     },
   };
 
@@ -500,6 +525,19 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
                                       (data, index) => {
+                                        var ext =
+                                          data.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
+
+                                        const first =
+                                          data.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
+
+                                        // let newext = JSON.parse(ext)
+                                        //
+
                                         return (
                                           <AttachmentViewer
                                             handleClickRemove={() =>
@@ -591,7 +629,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

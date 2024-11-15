@@ -1,8 +1,10 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import styles from "./ShowRenameNotification.module.css";
+import { useTranslation } from "react-i18next";
 import cross from "../../../assets/images/Group 71.png";
 const ShowRenameNotification = ({ ClosingNotificationRenameFolder }) => {
+  const { t } = useTranslation();
   return (
     <Row>
       <Col
@@ -24,7 +26,6 @@ const ShowRenameNotification = ({ ClosingNotificationRenameFolder }) => {
             <img
               draggable="false"
               src={cross}
-              alt=""
               height="15px"
               width="15px"
               onClick={ClosingNotificationRenameFolder}

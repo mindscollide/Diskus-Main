@@ -4,41 +4,36 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Modal } from "../../../../../components/elements";
+import { Loader, Modal } from "../../../../../components/elements";
 import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 
 const OpenPaymentForm = () => {
   const dispatch = useDispatch();
   const [sourceLink, setSourceLink] = useState(null);
-
-  const UserManagementModalspaymentProcessModalData = useSelector(
-    (state) => state.UserManagementModals.paymentProcessModal
-  );
-
-  const UserMangementReducerpaymentInitiateDataData = useSelector(
-    (state) => state.UserMangementReducer.paymentInitiateData
+  const { UserManagementModals, UserMangementReducer } = useSelector(
+    (state) => state
   );
 
   useEffect(() => {
     try {
-      if (UserMangementReducerpaymentInitiateDataData !== null) {
-        let apiResponse = UserMangementReducerpaymentInitiateDataData;
+      if (UserMangementReducer.paymentInitiateData !== null) {
+        let apiResponse = UserMangementReducer.paymentInitiateData;
         setSourceLink(apiResponse.paymentRedirectionLink);
       }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [UserMangementReducerpaymentInitiateDataData]);
+    } catch {}
+  }, [UserMangementReducer.paymentInitiateData]);
 
   const onCloseModal = () => {
     dispatch(openPaymentProcessModal(false));
   };
 
+  console.log(sourceLink, "sourceLinksourceLink");
+
   return (
     <>
       <Container>
         <Modal
-          show={UserManagementModalspaymentProcessModalData}
+          show={UserManagementModals.paymentProcessModal}
           setShow={dispatch(openPaymentProcessModal)}
           size="lg"
           onHide={onCloseModal}
@@ -51,12 +46,14 @@ const OpenPaymentForm = () => {
                   height="550px"
                   src={sourceLink}
                   sandbox="allow-scripts allow-same-origin allow-top-navigation allow-forms"
+                  // sandbox="allow-scripts allow-same-origin"
                 ></iframe>
               )}
             </>
           }
         />
       </Container>
+      {UserManagementModals.Loading ? <Loader /> : null}
     </>
   );
 };

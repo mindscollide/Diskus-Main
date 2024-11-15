@@ -1,5 +1,7 @@
 .CustomerInfo_div {
   max-height: 500px !important;
+  /* overflow-y: auto !important;
+  overflow-x   : hidden !important; */
 }
 
 .papercolor {
@@ -9,6 +11,16 @@
   color: #fff;
   border: #ccc 1px solid !important;
 }
+
+/* .countrydropdown {
+  margin-top: 40px !important;
+  width: 100% !important;
+  height: 33px !important;
+  border: 1px solid !important;
+  border-radius: 2px !important;
+  border-color: #e1e1e1 !important;
+  color: black !important;
+} */
 
 .btnUpdate {
   padding: 10px 40px;
@@ -77,6 +89,29 @@
   height: 50vh !important;
 }
 
+/* ::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+} */
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+  background: #888;
+} */
+
+/* .editLink { */
+/* margin-top: 25px !important;
+  margin-left: 10px; */
+
+/* } */
 .editLink {
   color: #6172d6;
   margin-left: 20px;
@@ -116,6 +151,9 @@
 }
 
 .modalUpdateted-2 {
+  /* align-items: center !important; */
+  /* width      : 450px !important; */
+  /* margin-top: 30px !important; */
   margin-top: -20px !important;
   margin-bottom: 10px !important;
   padding: 0px 5px;
@@ -168,6 +206,7 @@
 }
 
 .formcontrol-Name-field {
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 30px !important;
   border-radius: 4px !important;
@@ -186,6 +225,7 @@
 }
 
 .formcontrol-SelectCountry-field {
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 32px !important;
   border-radius: 4px !important;
@@ -343,6 +383,14 @@ select:disabled {
   border: none !important;
 }
 
+/* .formcontrol-Addressone-field:focus {
+  border: 1px solid #e1e1e1 !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: none !important;
+} */
+
 .formcontrol-PhoneNumber-Field {
   width: 140% !important;
   height: 30px !important;
@@ -387,6 +435,7 @@ select:disabled {
 .react-flag-Info button {
   cursor: pointer !important;
   max-width: 100% !important;
+  /* max-height: 120px !important; */
 
   min-height: 39px !important;
   display: flex !important;
@@ -450,14 +499,18 @@ select:disabled {
   font-size: 1em !important;
 }
 
+/* for country name drop down */
+
 .react-Country-Dropdown {
   height: 39px !important;
   padding: auto !important;
+  /* margin-top: 4px !important; */
 }
 
 .react-Country-Dropdown button {
   cursor: pointer !important;
   max-width: 100% !important;
+  /* max-height: 120px !important; */
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;

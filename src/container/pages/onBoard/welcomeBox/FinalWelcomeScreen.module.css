@@ -38,14 +38,3 @@
   text-align: justify !important;
   margin-top: 7px !important; 
 }
-
-.finalwelcomescreen {
-  padding: 20px 0;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* background-color: #2097d6 !important; */
-  width: 550px !important;
-}
-
-body[dir="rtl"] .finalwelcomescreen {
-  background-color: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
-}

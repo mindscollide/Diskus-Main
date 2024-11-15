@@ -21,10 +21,9 @@ import {
   SignatureandPendingApprovalDateTIme,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
+import { set } from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
-import { convertToArabicNumerals } from "../../../../commen/functions/regex";
-
+import ProgressStats from "../../../../components/elements/progressStats/ProgressStats";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,10 +46,9 @@ const ReviewSignature = () => {
   const [reviewSignature, setReviewSignature] = useState([]);
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [open, setOpen] = useState({
-    open: false,
+  const [isOpen, setIsOpen] = useState({
+    open: true,
     message: "",
-    severity: "error",
   });
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
@@ -120,9 +118,8 @@ const ReviewSignature = () => {
       ellipsis: true,
       render: (text, record) => (
         <p
-          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
-          onClick={() => handleClickOpenSigatureDoc(record)}
-        >
+          className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
+          onClick={() => handleClickOpenSigatureDoc(record)}>
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -133,9 +130,9 @@ const ReviewSignature = () => {
         <>
           {t("Requested-by")}{" "}
           {sortOrderRequestBy === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </>
       ),
@@ -159,14 +156,12 @@ const ReviewSignature = () => {
         <p
           className={
             "m-0 d-flex align-items-center gap-2 justify-content-start"
-          }
-        >
+          }>
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
-            className="rounded-circle "
-            alt=""
+            className='rounded-circle '
           />
           <span>{text}</span>
         </p>
@@ -177,9 +172,9 @@ const ReviewSignature = () => {
         <>
           {t("Date-and-time")}{" "}
           {sortOrderDateTime === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </>
       ),
@@ -214,7 +209,7 @@ const ReviewSignature = () => {
       defaultFilteredValue: defaultreviewAndSignatureStatus,
       onFilter: (value, record) => record.actorStatusID === value,
       filterIcon: () => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;
@@ -228,8 +223,7 @@ const ReviewSignature = () => {
                 : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }
-          >
+            }>
             {status}
           </p>
         );
@@ -316,11 +310,21 @@ const ReviewSignature = () => {
       ResponseMessage !== null &&
       ResponseMessage !== undefined
     ) {
-      showMessage(ResponseMessage, "error", setOpen);
+      setIsOpen({
+        message: ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        setIsOpen({
+          message: "",
+          open: false,
+        });
+      }, 4000);
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
 
+  const formatValue = (value) => (value < 9 ? `0${value}` : value);
   return (
     <>
       <Row>
@@ -328,68 +332,64 @@ const ReviewSignature = () => {
           <div className={styles["progressWrapper"]}>
             <Row>
               <Col lg={6} md={6} sm={12}>
-                <ProgressBar
-                  style={{
-                    height: "30px",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <ProgressBar
-                    style={{
-                      backgroundColor: "#55ce5c",
-                    }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.signedPercentage,
-                      currentLanguage
-                    )}%`}
-                    now={approvalStats.signedPercentage}
-                    key={1}
+                <div className='d-flex  position-relative'>
+                  {/* Progress bars with different colors and percentages */}
+                  <ProgressStats
+                    FirstColor='#55ce5c'
+                    firstValue={approvalStats.signedPercentage}
+                    thirdValue={approvalStats.declinedPercentage}
+                    thirdColor='#F16B6B'
+                    secondColor='#ffc300'
+                    secondValue={approvalStats.pendingPercentage}
                   />
-                  <ProgressBar
-                    style={{
-                      backgroundColor: "#ffc300",
-                    }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.pendingPercentage,
-                      currentLanguage
-                    )}%`}
-                    now={approvalStats.pendingPercentage}
-                    key={2}
-                  />
-                  <ProgressBar
-                    style={{
-                      backgroundColor: "#F16B6B",
-                    }}
-                    label={`${convertToArabicNumerals(
-                      approvalStats.declinedPercentage,
-                      currentLanguage
-                    )}%`}
-                    now={approvalStats.declinedPercentage}
-                    key={3}
-                  />
-                </ProgressBar>
+
+                  {/* {approvalStats.declined > 0 && (
+                    <ProgressBar
+                      width={approvalStats.declinedPercentage}
+                      color="#F16B6B"
+                      indexValue="0"
+                      percentageValue={`${approvalStats.declinedPercentage}%`}
+                    />
+                  )}
+                  {approvalStats.pending > 0 && (
+                    <ProgressBar
+                      width={approvalStats.pendingPercentage}
+                      color="#FFC300"
+                      indexValue="1"
+                      percentageValue={`${approvalStats.pendingPercentage}%`}
+                    />
+                  )}
+                  {approvalStats.signed > 0 && (
+                    <ProgressBar
+                      width={approvalStats.signedPercentage}
+                      color="#55CE5C"
+                      indexValue="2"
+                      percentageValue={`${approvalStats.signedPercentage}%`}
+                    />
+                  )} */}
+                </div>
               </Col>
-              <Col lg={6} md={6} sm={12} className="d-flex">
+              <Col lg={6} md={6} sm={12} className='d-flex'>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.signed, currentLanguage)}
+                    {formatValue(approvalStats.signed)}
                   </span>
-                  <span className={styles["value"]}>{t("Signed")}</span>
+                  <span className={styles["value"]}>Signed</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-pending"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.pending, currentLanguage)}
+                    {formatValue(approvalStats.pending)}
                   </span>
-                  <span className={styles["value"]}>{t("Pending")}</span>
+                  <span className={styles["value"]}>Pending</span>
                 </div>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-decline"]}>
                   <span className={styles["numeric-value"]}>
-                    {convertToArabicNumerals(approvalStats.declined, currentLanguage)}
+                    {formatValue(approvalStats.declined)}
                   </span>
-                  <span className={styles["value"]}>{t("Decline")}</span>
+                  <span className={styles["value"]}>Decline</span>
                 </div>
               </Col>
             </Row>
@@ -406,8 +406,7 @@ const ReviewSignature = () => {
             style={{
               overflowX: "hidden",
             }}
-            height={"50vh"}
-          >
+            height={"50vh"}>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}
@@ -424,10 +423,9 @@ const ReviewSignature = () => {
         </Col>
       </Row>{" "}
       <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
+        open={isOpen.open}
+        message={isOpen.message}
+        setOpen={setIsOpen}
       />
     </>
   );

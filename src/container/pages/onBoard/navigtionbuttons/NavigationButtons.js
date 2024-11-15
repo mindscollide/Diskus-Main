@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTour } from "@reactour/tour";
-import { ChevronLeft, ChevronRight } from "react-bootstrap-icons";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CurrencyBitcoin,
+} from "react-bootstrap-icons";
+import ScheduleUpArrow from "../../../../../src/assets/images/newElements/Schedule_Up_arrow.png";
 import "./NavigationButtons.css";
 import { Button } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
   showModalOnboard,
   showIsDetailOnboard,
+  showIsAgendaOnboard,
   showIsAttendeesOnboard,
   showModalStepsOnboard,
 } from "../../../../store/actions/OnBoardStates";
@@ -16,6 +22,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const NavigationButtons = () => {
+  //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
@@ -69,7 +76,7 @@ const NavigationButtons = () => {
 
   const goPrevStep = () => {
     setCurrentStep(currentStep - 1);
-    if (currentStep - 1 !== 3) {
+    if (currentStep - 1 != 3) {
       dispatch(showModalOnboard(false));
       dispatch(showModalStepsOnboard(false));
       dispatch(showIsDetailOnboard(true));
@@ -94,11 +101,11 @@ const NavigationButtons = () => {
                 <Button
                   text={t("Prev")}
                   icon={
-                    <ChevronLeft
-                      size={16}
-                      width={22}
-                      className="for-icon-prev-btn"
-                    />
+                      <ChevronLeft
+                        size={16}
+                        width={22}
+                        className="for-icon-prev-btn"
+                      />
                   }
                   className="skipButtons-onboard_forscreen1"
                   onClick={goPrevStep}
@@ -108,6 +115,7 @@ const NavigationButtons = () => {
               <Col className=""> </Col>
             )}
 
+            {/* {currentStep.length < -1 } */}
             <Col>
               {currentLanguage === "ar" ? (
                 <Button
@@ -139,7 +147,7 @@ const NavigationButtons = () => {
               onClick={() => navigate("/Diskus")}
               className="d-flex justify-content-center mt-2"
             >
-              <h3 className={`tour-skip_demo ${currentLanguage}`}>
+              <h3 className={"tour-skip_demo" + " " + currentLanguage}>
                 {t("Skip-demo")}
               </h3>
             </Col>

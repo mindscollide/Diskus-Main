@@ -22,9 +22,11 @@
 
 .meeting-schedulenewmeeting-btn {
   width: auto !important;
+  /* margin-left: -45px !important; */
 }
 
 .meeting-schedulenewmeeting-btn button::before {
+  /* content: "+"; */
   margin: 0 0px 0 0;
   font-size: 24px;
 }
@@ -68,6 +70,8 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   margin-bottom: 10px !important;
+  /* min-height: 48vh !important; */
+  /* height: auto; */
   height: 68vh !important;
 }
 
@@ -279,6 +283,7 @@ body[dir="rtl"] .ScheduleAMeeting:active {
   }
 
   .meeting-schedulenewmeeting-btn {
+    /* width: 100% !important; */
     font-size: 10px !important;
   }
 
@@ -296,6 +301,7 @@ body[dir="rtl"] .ScheduleAMeeting:active {
     width: 20px;
     height: 30px !important;
     z-index: 1 !important;
+    /* top     : -5px; */
     left: 50px;
     cursor: pointer;
   }
@@ -373,6 +379,9 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-bottom-color: #fff !important;
 }
 
+/* .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
+  border-bottom-color: #fff !important;
+} */
 .react-datepicker__navigation-icon {
   font-size: 10px;
 }
@@ -468,6 +477,12 @@ span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   height: 91vh !important;
 }
 
+/* .ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+  height: 65vh !important;
+}
+*/
 .pagination-meeting-table {
   width: auto;
 }
@@ -503,22 +518,4 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   display: flex;
   align-items: center !important;
   flex-direction: column;
-}
-
-.ResetOkBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
 }

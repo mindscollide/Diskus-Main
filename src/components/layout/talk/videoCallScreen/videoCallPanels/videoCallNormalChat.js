@@ -19,19 +19,19 @@ const VideoPanelNormalChat = () => {
         <Container>
           <Row className="mt-3">
             <Col lg={2} md={2} sm={2}>
-              <img src={GroupIcon} className="video-chat-group-icon" alt=""/>
+              <img src={GroupIcon} className="video-chat-group-icon" />
             </Col>
             <Col lg={6} md={6} sm={6}>
               <p className="video-chat-It-Heading">IT Departmental Meeting</p>
             </Col>
             <Col lg={1} md={1} sm={1}>
-              <img src={SecurityIconMessasgeBox} style={{ width: '17px' }} alt=""/>
+              <img src={SecurityIconMessasgeBox} style={{ width: '17px' }} />
             </Col>
             <Col lg={1} md={1} sm={1}>
-              <img src={SearchIcon} style={{ width: '17px' }} alt=""/>
+              <img src={SearchIcon} style={{ width: '17px' }} />
             </Col>
             <Col lg={1} md={1} sm={1}>
-              <img src={MinimizeIcon} style={{ width: '17px' }} alt=""/>
+              <img src={MinimizeIcon} style={{ width: '17px' }} />
             </Col>
             <Col lg={1} md={1} sm={1}>
               <X
@@ -55,7 +55,6 @@ const VideoPanelNormalChat = () => {
                       <img
                         src={SecurityIconMessasgeBox}
                         style={{ width: '17px' }}
-                        alt=""
                       />
                     </span>
                   </Col>
@@ -66,10 +65,10 @@ const VideoPanelNormalChat = () => {
 
           <Row className="bottom-video-chat-input-div">
             <Col lg={2} md={2} sm={2}>
-              <img src={EmojiIcon} alt=""/>
+              <img src={EmojiIcon} />
             </Col>
             <Col lg={2} md={2} sm={2}>
-              <img src={ChatPlus} className="chat-inside-video-plus-img" alt=""/>
+              <img src={ChatPlus} className="chat-inside-video-plus-img" />
             </Col>
             <Col lg={4} md={4} sm={4} className="chat-video-field">
               <Form.Control
@@ -79,7 +78,7 @@ const VideoPanelNormalChat = () => {
             </Col>
             <Col lg={2} md={2} sm={2}></Col>
             <Col lg={2} md={2} sm={2}>
-              <img src={SendIcon} className="chat-inside-video-sendIcon-img" alt=""/>
+              <img src={SendIcon} className="chat-inside-video-sendIcon-img" />
             </Col>
           </Row>
         </Container>

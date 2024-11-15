@@ -39,6 +39,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  let lang = localStorage.getItem("i18nextLng");
 
   const meetingDashboardCalendarEvent = (data) => {
     dispatch(dashboardCalendarEvent(data));
@@ -137,15 +138,13 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             ? `1px solid ${officeEventColor}`
                             : `1px solid #000`,
                       }}
-                      className={styles["eventBox"]}
-                    >
+                      className={styles["eventBox"]}>
                       <Row>
                         <Col
                           sm={12}
                           md={10}
                           lg={10}
-                          className="d-flex flex-column "
-                        >
+                          className='d-flex flex-column '>
                           <span className={styles["event__title"]}>
                             {eventData.title}
                           </span>
@@ -218,8 +217,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                           sm={12}
                           md={6}
                           lg={6}
-                          className="d-flex justify-content-end align-items-end"
-                        >
+                          className='d-flex justify-content-end align-items-end'>
                           <p className={styles["event__type"]}>
                             {eventData.calenderEventType}
                           </p>

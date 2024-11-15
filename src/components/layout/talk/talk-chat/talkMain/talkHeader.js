@@ -7,6 +7,7 @@ import SecurityEncryption from "./securityEncryption";
 import { Select } from "antd";
 import SearchIcon from "../../../../../assets/images/Search-Icon.png";
 import SecurityIcon from "../../../../../assets/images/Security-Icon.png";
+import FullScreenIcon from "../../../../../assets/images/Fullscreen-Icon.png";
 import {
   recentChatFlag,
   privateChatFlag,
@@ -18,6 +19,7 @@ import {
   securityEncryptionStatus,
   globalChatsSearchFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
+import { GetAllUserChats } from "../../../../../store/actions/Talk_action";
 
 const TalkHeader = () => {
   const { talkFeatureStates } = useSelector((state) => state);

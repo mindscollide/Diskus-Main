@@ -16,6 +16,12 @@ const SetLoaderFalse = () => {
   };
 };
 
+const postCommentsInit = () => {
+  return {
+    type: actions.POST_ASSIGNEEECOMMENTS_INIT,
+  };
+};
+
 const postCommentsSuccess = (response, message) => {
   return {
     type: actions.POST_ASSIGNEEECOMMENTS_SUCCESS,
@@ -33,6 +39,7 @@ const postCommentFail = (message) => {
 const postAssgineeComment = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
+    // dispatch(postCommentsInit());
     let form = new FormData();
     form.append("RequestMethod", postComment.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -50,6 +57,7 @@ const postAssgineeComment = (navigate, data, t) => {
           dispatch(postAssgineeComment(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            let userID = localStorage.getItem("userID");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

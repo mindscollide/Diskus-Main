@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PreviousModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import { showPreviousConfirmationModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  ShowNextConfirmationModal,
+  showPreviousConfirmationModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -27,9 +31,9 @@ const PreviousModal = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const ShowPreviousModal = useSelector(
-    (state) => state.NewMeetingreducer.ShowPreviousModal
-  );
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const handleYesFunctionality = () => {
     dispatch(showPreviousConfirmationModal(false));
     if (prevFlag === 3) {
@@ -78,7 +82,7 @@ const PreviousModal = ({
   return (
     <section>
       <Modal
-        show={ShowPreviousModal}
+        show={NewMeetingreducer.ShowPreviousModal}
         setShow={dispatch(showPreviousConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

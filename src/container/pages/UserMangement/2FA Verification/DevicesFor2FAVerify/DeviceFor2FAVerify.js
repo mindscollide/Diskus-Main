@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "../../../../../components/elements";
+import { Button, Paper, Loader } from "../../../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -26,18 +26,6 @@ const DeviceFor2FAVerify = () => {
 
   const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
-  const AuthreducerAuthenticateAFAResponse = useSelector(
-    (state) => state.Authreducer.AuthenticateAFAResponse
-  );
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
-
   const [xtrazoom, setXtrazoom] = useState(false);
   const [codeemail, setCodeemail] = useState(false);
   const [codesms, setCodesms] = useState(false);
@@ -57,6 +45,8 @@ const DeviceFor2FAVerify = () => {
   ];
 
   const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
 
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
@@ -113,6 +103,7 @@ const DeviceFor2FAVerify = () => {
       );
       localStorage.setItem("GobackSelection", 2);
       localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
+      // await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
@@ -138,11 +129,12 @@ const DeviceFor2FAVerify = () => {
 
   useEffect(() => {
     if (
-      AuthreducerAuthenticateAFAResponse !== null &&
-      AuthreducerAuthenticateAFAResponse !== undefined
+      Authreducer.AuthenticateAFAResponse !== null &&
+      Authreducer.AuthenticateAFAResponse !== undefined
     ) {
-      if (AuthreducerAuthenticateAFAResponse.userDevices.length > 0) {
-        let DeviceDetail = AuthreducerAuthenticateAFAResponse.userDevices;
+      if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
+        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
+        let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
         let data = {
           DeviceName: DeviceDetail[0].deviceName,
           UserDeviceID: DeviceDetail[0].pK_UDID,
@@ -158,8 +150,14 @@ const DeviceFor2FAVerify = () => {
     }
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
       let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
+      console.log(
+        " Authreducer.AuthenticateAFAResponse.userDevices",
+        currentDevice
+      );
 
       if (currentDevice != undefined && currentDevice != null) {
+        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
+
         setCurrentDevice({
           DeviceName: currentDevice.DeviceName,
           UserDeviceID: currentDevice.UserDeviceID,
@@ -167,11 +165,11 @@ const DeviceFor2FAVerify = () => {
         });
       }
     }
-  }, [AuthreducerAuthenticateAFAResponse]);
+  }, [Authreducer.AuthenticateAFAResponse]);
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient !== "" && newClient !== undefined) {
+    if (newClient != null && newClient != "" && newClient != undefined) {
     } else {
       let userID = localStorage.getItem("userID");
       if (userID !== null) {
@@ -183,7 +181,7 @@ const DeviceFor2FAVerify = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -195,46 +193,40 @@ const DeviceFor2FAVerify = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center align-items-center min-vh-100"
-              >
-                <span
-                  className={styles["Send_Email_Realme_sendmailwithdevice"]}
-                >
+                className='d-flex justify-content-center align-items-center min-vh-100'>
+                <Paper
+                  className={styles["Send_Email_Realme_sendmailwithdevice"]}>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className={styles["EmailVerifyBox_sendmailwithdevice"]}
-                  >
+                    className={styles["EmailVerifyBox_sendmailwithdevice"]}>
                     <Row>
                       <Col
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center "
-                      >
+                        className='d-flex justify-content-center '>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={img1}
                           width={220}
-                          alt="diskus_logo"
+                          alt='diskus_logo'
                         />
                       </Col>
                     </Row>
 
                     <Form>
-                      <Row className=" ">
+                      <Row className=' '>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
-                        >
+                          className='d-flex justify-content-center flex-column'>
                           <h3
                             className={
                               styles["VerifyHeading_sendmailwithdevice"]
-                            }
-                          >
+                            }>
                             {t("2fa-verification")}
                           </h3>
                           <span className={styles["SelectLine"]}>
@@ -243,12 +235,12 @@ const DeviceFor2FAVerify = () => {
                         </Col>
                       </Row>
 
-                      <Row className="">
-                        <Col sm={12} md={12} lg={12} className="mx-2">
+                      <Row className=''>
+                        <Col sm={12} md={12} lg={12} className='mx-2'>
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"15px"}
                                 className={
                                   !xtrazoom
@@ -256,7 +248,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img10}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -265,25 +257,24 @@ const DeviceFor2FAVerify = () => {
                                   !xtrazoom
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-notification-on-device")}{" "}
                                 {currentDevice?.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 onChange={onChangeHandlerSendRealmeXtra1}
                               />
                             </Col>
                           </Row>
 
-                          <Row className="my-2">
+                          <Row className='my-2'>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !codeemail
@@ -291,7 +282,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img5}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -300,15 +291,14 @@ const DeviceFor2FAVerify = () => {
                                   !codeemail
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 onChange={onChangeHandlerSendRealmeXtra2}
                               />
                             </Col>
@@ -317,7 +307,7 @@ const DeviceFor2FAVerify = () => {
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !codesms
@@ -325,7 +315,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img6}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -334,15 +324,14 @@ const DeviceFor2FAVerify = () => {
                                   !codesms
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-sms")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 value={"SEND CODE ON SMS"}
                                 onChange={onChangeHandlerSendRealmeXtra3}
                               />
@@ -350,7 +339,7 @@ const DeviceFor2FAVerify = () => {
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="d-flex justify-content-center mt-5 mb-1">
+                      <Row className='d-flex justify-content-center mt-5 mb-1'>
                         <Col sm={12} lg={12} md={12}>
                           <Button
                             text={t("Send-code")}
@@ -366,30 +355,32 @@ const DeviceFor2FAVerify = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="">
-                    <Col sm={12} md={12} lg={12} className="forogt_email_link">
+                  <Row className=''>
+                    <Col sm={12} md={12} lg={12} className='forogt_email_link'>
                       <Link onClick={handleGoBack}>{t("Go-back")}</Link>
                     </Col>
                   </Row>
-                </span>
+                </Paper>
               </Col>
             </Row>
           </Col>
-          <Col md={7} lg={7} sm={12} className="">
+          <Col md={7} lg={7} sm={12} className=''>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
+                  alt='auth_icon'
+                  // width="380px"
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
+                  alt='auth_icon'
+                  // width="600px"
                   className={styles["Auth_Icon1SendEmailRealme"]}
                 />
               </Col>
@@ -397,6 +388,7 @@ const DeviceFor2FAVerify = () => {
           </Col>
         </Row>
       </Container>{" "}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

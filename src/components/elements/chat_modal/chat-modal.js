@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./chat-modal.css";
 import { Modal, InputDatePicker, Button } from "./../../elements";
 import { Row, Col, Container } from "react-bootstrap";
@@ -17,18 +17,36 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
     setTodayCheckState(e.target.checked);
     setAllCheckState(false);
     setCustomCheckState(false);
+    console.log(
+      "checkState today",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
   }
 
   function onChangeAll(e) {
     setAllCheckState(e.target.checked);
     setTodayCheckState(false);
     setCustomCheckState(false);
+    console.log(
+      "checkState all",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
   }
 
   function onChangeCustom(e) {
     setCustomCheckState(e.target.checked);
     setTodayCheckState(false);
     setAllCheckState(false);
+    console.log(
+      "checkState custom",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
   }
 
   const handleCancel = () => {

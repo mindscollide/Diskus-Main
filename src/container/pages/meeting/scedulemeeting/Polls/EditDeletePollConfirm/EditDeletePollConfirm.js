@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../components/elements";
+
 import { deleteMeetingPollApi } from "../../../../../../store/actions/Polls_actions";
 import { editFlowDeleteSavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 
@@ -13,9 +14,7 @@ const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const editFlowDeletePollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.editFlowDeletePollsMeeting
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
     dispatch(editFlowDeleteSavedPollsMeeting(false));
@@ -31,7 +30,7 @@ const EditDeletePollConfirm = ({ currentMeeting, pollID }) => {
   };
   return (
     <Modal
-      show={editFlowDeletePollsMeeting}
+      show={NewMeetingreducer.editFlowDeletePollsMeeting}
       setShow={dispatch(editFlowDeleteSavedPollsMeeting)}
       modalHeaderClassName={"d-block"}
       modalFooterClassName={"d-block"}

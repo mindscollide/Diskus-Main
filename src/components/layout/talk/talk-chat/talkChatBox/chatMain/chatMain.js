@@ -94,8 +94,10 @@ import ChatSendIcon from "../../../../../../assets/images/Chat-Send-Icon.png";
 import DownloadIcon from "../../../../../../assets/images/Download-Icon.png";
 import DocumentIcon from "../../../../../../assets/images/Document-Icon.png";
 import DropDownIcon from "../../../../../../assets/images/dropdown-icon.png";
+import DropDownChatIcon from "../../../../../../assets/images/dropdown-icon-chatmessage.png";
 import UploadDocument from "../../../../../../assets/images/Upload-Document.png";
 import UploadPicVid from "../../../../../../assets/images/Upload-PicVid.png";
+import UploadSticker from "../../../../../../assets/images/Upload-Sticker.png";
 import SingleIcon from "../../../../../../assets/images/Single-Icon.png";
 import GroupIcon from "../../../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../../../assets/images/Shout-Icon.png";
@@ -104,6 +106,7 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
+import { clippingParents } from "@popperjs/core";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -546,7 +549,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ "TasksAttachments": file });
+      setTasksAttachments({ ["TasksAttachments"]: file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -601,14 +604,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ "TasksAttachments": file });
+      setTasksAttachments({ ["TasksAttachments"]: file });
     }
   };
 
   const deleteFilefromAttachments = (data, index) => {
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": [],
+      ["TasksAttachments"]: [],
     });
     setUploadFileTalk({});
     setFile("");
@@ -2203,7 +2206,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setFile("");
       setTasksAttachments({
         ...tasksAttachments,
-        "TasksAttachments": [],
+        ["TasksAttachments"]: [],
       });
       setUploadFileTalk({});
       if (inputRef.current) {
@@ -2803,7 +2806,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setUploadFileTalk({});
     setTasksAttachments({
       ...tasksAttachments,
-      "TasksAttachments": [],
+      ["TasksAttachments"]: [],
     });
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };

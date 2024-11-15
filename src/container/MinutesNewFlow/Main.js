@@ -1,63 +1,68 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch } from "react-redux"; // Importing Redux hook
+import { useNavigate } from "react-router-dom"; // Importing navigation hook
 import PendingApproval from "./pendingApprovals/PendingApprovals";
 import ReviewMinutes from "./reviewMinutes/ReviewMinutes";
 import { Notification } from "../../components/elements";
 import { CleareMessegeMinutes } from "../../store/actions/Minutes_action";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 // Functional component for Minutes Flow section
 const MinutesFlow = () => {
   const { t } = useTranslation(); // Translation hook
   const dispatch = useDispatch(); // Redux hook
+  const navigate = useNavigate(); // Navigation hook
 
-  const ResponseMessage = useSelector(
-    (state) => state.MinutesReducer.ResponseMessage
-  );
-  const showPendingApprovalsPage = useSelector(
-    (state) => state.MinutesReducer.showPendingApprovalsPage
-  );
-  const showReviewMinutesPage = useSelector(
-    (state) => state.MinutesReducer.showReviewMinutesPage
-  );
+  const { MinutesReducer } = useSelector((state) => state);
+
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
+
+  //Getting current Language
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   useEffect(() => {
     if (
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
+      MinutesReducer.ResponseMessage !== t("No-record-found") &&
+      MinutesReducer.ResponseMessage !== t("No-records-found") &&
+      MinutesReducer.ResponseMessage !== "" &&
+      MinutesReducer.ResponseMessage !== t("No-record-found") &&
+      MinutesReducer.ResponseMessage !== t("List-updated-successfully") &&
+      MinutesReducer.ResponseMessage !== t("No-data-available") 
     ) {
-      showMessage(ResponseMessage, "sucess", setOpen);
-      dispatch(CleareMessegeMinutes());
+      setOpen({
+        ...open,
+        flag: true,
+        message: MinutesReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+        dispatch(CleareMessegeMinutes());
+      }, 3000);
     } else {
       dispatch(CleareMessegeMinutes());
     }
-  }, [ResponseMessage]);
+  }, [MinutesReducer.ResponseMessage]);
 
   return (
     <>
-      {showPendingApprovalsPage === true ? (
+      {MinutesReducer.showPendingApprovalsPage === true ? (
         <PendingApproval />
-      ) : showReviewMinutesPage === true ? (
+      ) : MinutesReducer.showReviewMinutesPage === true ? (
         <ReviewMinutes />
       ) : null}
 
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

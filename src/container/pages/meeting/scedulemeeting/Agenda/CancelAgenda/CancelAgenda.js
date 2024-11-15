@@ -15,9 +15,8 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cancelAgenda = useSelector(
-    (state) => state.NewMeetingreducer.cancelAgenda
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -39,15 +38,15 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
     localStorage.setItem("folderDataRoomMeeting", 0);
   };
   return (
     <section>
       <Modal
-        show={cancelAgenda}
+        show={NewMeetingreducer.cancelAgenda}
         setShow={dispatch(showCancelModalAgenda)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ModalrequestingAccess.module.css";
 import { Modal } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,9 @@ const ModalrequestingAccess = ({
   setRequestingAccess,
 }) => {
   const { t } = useTranslation();
-
+  const closebtn = async () => {
+    setRequestingAccess(false);
+  };
   return (
     <Container>
       <Modal
@@ -28,6 +30,7 @@ const ModalrequestingAccess = ({
         modalFooterClassName="d-block"
         centered
         modalBodyClassName={styles["ModalBodyClass"]}
+        // size={requestingAccess === true ? "md" : "md"}
         ModalTitle={
           <>
             <Row>
@@ -47,7 +50,6 @@ const ModalrequestingAccess = ({
                     <img
                       draggable="false"
                       src={failed}
-                      alt=""
                       height="18px"
                       width="20px"
                       className={styles["Images"]}
@@ -77,12 +79,16 @@ const ModalrequestingAccess = ({
                   <img
                     draggable="false"
                     src={newprofile}
-                    alt=""
                     height="29px"
                     width="29px"
                   />
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className=""
+                    >
                       <span className={styles["Accessrequest"]}>
                         Saad Fudda {t("Is") + " "}
                         <span className={styles["Bold_heading"]}>
@@ -122,7 +128,6 @@ const ModalrequestingAccess = ({
                           <img
                             draggable="false"
                             src={folder}
-                            alt=""
                             height="12.46px"
                             width="14.95px"
                           />

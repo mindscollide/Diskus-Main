@@ -10,15 +10,12 @@ import { Col, Row } from "react-bootstrap";
 const InternetConnectivityModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const UserManagementModalsinternetDisconnectModalData = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
-  );
+  const { UserManagementModals } = useSelector((state) => state);
 
   return (
     <section>
       <Modal
-        show={UserManagementModalsinternetDisconnectModalData}
+        show={UserManagementModals.internetDisconnectModal}
         setShow={dispatch(InsternetDisconnectModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

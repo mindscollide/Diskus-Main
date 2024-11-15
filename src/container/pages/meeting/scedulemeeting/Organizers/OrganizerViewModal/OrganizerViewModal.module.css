@@ -8,14 +8,6 @@
   width: 100% !important;
   height: auto !important;
   padding: 40px 40px !important;
-  border-radius: 8px !important;
-  width: 100% !important;
-  border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: var(--Paper-shadow);
-  display: inline-block !important;
-  background: #fff !important;
 }
 
 .PersonName {
@@ -34,6 +26,8 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
+  /* color: #ffffff !important; */
+  /* background: #5f78d6 !important; */
   background: #ffffff !important;
   border: 1px solid #e1e1e1 !important;
   font-weight: 600 !important;

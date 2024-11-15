@@ -1,8 +1,9 @@
+import React from "react";
+import { Navigate } from "react-router-dom";
+
 const RouteWrapperUser = ({ name, children }) => {
-  const storedRoutes = JSON.parse(
-    localStorage.getItem("LocalUserRoutes") || "[]"
-  );
-  console.log("LocalUserRoutesLocalUserRoutes", storedRoutes);
+  const storedRoutes = JSON.parse(localStorage.getItem("LocalUserRoutes") || "[]");
+  console.log("LocalUserRoutesLocalUserRoutes",storedRoutes)
   const isAllowed = storedRoutes.some((route) => route.name === name);
   if (!isAllowed) {
     // This could be as simple as null, a plain message, or a dedicated component.

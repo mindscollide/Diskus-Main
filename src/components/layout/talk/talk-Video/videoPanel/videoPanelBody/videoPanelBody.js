@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import VideoPanelBodyRecent from "./videoPanelBodyRecent";
-import VideoPanelBodyContact from "./videoPanelBodyContact";
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import VideoPanelBodyRecent from './videoPanelBodyRecent'
+import VideoPanelBodyContact from './videoPanelBodyContact'
 
 const VideoPanelBody = () => {
-  const ContactVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.ContactVideoFlag
-  );
-  const RecentVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.RecentVideoFlag
-  );
+  const { videoFeatureReducer } = useSelector((state) => state)
+
   return (
     <>
-      {ContactVideoFlag === true ? <VideoPanelBodyContact /> : null}
-      {RecentVideoFlag === true ? <VideoPanelBodyRecent /> : null}
+      {videoFeatureReducer.ContactVideoFlag === true ? (
+        <VideoPanelBodyContact />
+      ) : null}
+      {videoFeatureReducer.RecentVideoFlag === true ? (
+        <VideoPanelBodyRecent />
+      ) : null}
     </>
-  );
-};
+  )
+}
 
-export default VideoPanelBody;
+export default VideoPanelBody

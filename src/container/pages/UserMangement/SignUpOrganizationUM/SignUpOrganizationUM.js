@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./SignUpOrganizationUM.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
+import SignInComponent from "../../UserMangement/SignInUserManagement/SignInUserManagement";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/DiskusWhiteGroupIcon.svg";
-import { Button, TextField } from "../../../../components/elements";
+import { Button, TextField, Loader } from "../../../../components/elements";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -24,30 +25,16 @@ import {
 } from "../../../../store/actions/Admin_Organization";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignUpOrganizationUM = () => {
   const { t } = useTranslation();
 
-  const countryNamesReducerCountryNamesData = useSelector(
-    (state) => state.countryNamesReducer.CountryNamesData
-  );
-
-  const adminReducerOrganisationCheckData = useSelector(
-    (state) => state.adminReducer.OrganisationCheck
-  );
-
-  const adminReducerEmailCheckData = useSelector(
-    (state) => state.adminReducer.EmailCheck
-  );
-
-  const adminReducerOrganizationCheckSpinnerData = useSelector(
-    (state) => state.adminReducer.OrganizationCheckSpinner
-  );
-
-  const adminReducerEmailCheckSpinnerData = useSelector(
-    (state) => state.adminReducer.EmailCheckSpinner
-  );
+  const {
+    countryNamesReducer,
+    adminReducer,
+    LanguageReducer,
+    UserMangementReducer,
+  } = useSelector((state) => state);
 
   const location = useLocation();
 
@@ -58,7 +45,10 @@ const SignUpOrganizationUM = () => {
   let packageSubscriptionDetail = JSON.parse(
     localStorage.getItem("packageSubscriptionDetail")
   );
-
+  console.log(
+    packageSubscriptionDetail,
+    "packageSubscriptionDetailpackageSubscriptionDetailpackageSubscriptionDetail"
+  );
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -117,7 +107,6 @@ const SignUpOrganizationUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
@@ -128,7 +117,6 @@ const SignUpOrganizationUM = () => {
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [againCall, setAgainCall] = useState(false);
-  let locale = localStorage.getItem("i18nextLng");
 
   const [selected, setSelected] = useState("US");
 
@@ -153,10 +141,12 @@ const SignUpOrganizationUM = () => {
   }, [location.state]);
 
   const countryOnSelect = (code) => {
+    console.log(code, "countryOnSelect");
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
+    console.log(a, "countryOnSelect");
     setSignUpDetails({
       ...signUpDetails,
       CountryName: {
@@ -170,7 +160,7 @@ const SignUpOrganizationUM = () => {
   const handleSelect = (country) => {
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary === country;
+      return obj.primary == country;
     });
     setSignUpDetails({
       ...signUpDetails,
@@ -442,8 +432,8 @@ const SignUpOrganizationUM = () => {
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
-            adminReducerOrganisationCheckData !== false &&
-            adminReducerEmailCheckData !== false
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
           ) {
             let PackageID = localStorage.getItem("PackageID");
             let tenureOfSuscriptionID = localStorage.getItem(
@@ -488,22 +478,26 @@ const SignUpOrganizationUM = () => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
         }
       } else {
         setSignUpDetails({
           ...signUpDetails,
-          // CompanyName: {
-          //   value: signUpDetails.CompanyName.value,
-          //   errorMessage:
-          //     signUpDetails.CompanyName.value === ""
-          //       ? `${(t("Company-name-is-required"), locale)}`
-          //       : signUpDetails.CompanyName.errorMessage,
-          //   errorStatus:
-          //     signUpDetails.CompanyName.value === ""
-          //       ? true
-          //       : signUpDetails.CompanyName.errorStatus,
-          // },
+          CompanyName: {
+            value: signUpDetails.CompanyName.value,
+            errorMessage:
+              signUpDetails.CompanyName.value === ""
+                ? t("Company-name-is-required")
+                : signUpDetails.CompanyName.errorMessage,
+            errorStatus:
+              signUpDetails.CompanyName.value === ""
+                ? true
+                : signUpDetails.CompanyName.errorStatus,
+          },
           CountryName: {
             value: signUpDetails.CountryName.value,
             errorMessage:
@@ -580,8 +574,11 @@ const SignUpOrganizationUM = () => {
                 : signUpDetails.PhoneNumber.errorStatus,
           },
         });
-
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
       }
     } else {
       //if its not a free trial in User Management
@@ -594,8 +591,8 @@ const SignUpOrganizationUM = () => {
       ) {
         if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
           if (
-            adminReducerOrganisationCheckData !== false &&
-            adminReducerEmailCheckData !== false
+            adminReducer.OrganisationCheck !== false &&
+            adminReducer.EmailCheck !== false
           ) {
             let data = {
               TenureOfSubscriptionID: Number(
@@ -637,7 +634,11 @@ const SignUpOrganizationUM = () => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Email-should-be-in-email-format"),
+          });
         }
       } else {
         setSignUpDetails({
@@ -729,7 +730,11 @@ const SignUpOrganizationUM = () => {
                 : signUpDetails.PhoneNumber.errorStatus,
           },
         });
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
       }
     }
   };
@@ -763,27 +768,47 @@ const SignUpOrganizationUM = () => {
   useEffect(() => {
     if (
       againCall &&
-      adminReducerOrganisationCheckData &&
-      adminReducerEmailCheckData
+      adminReducer.OrganisationCheck &&
+      adminReducer.EmailCheck
     ) {
+      let PackageID = localStorage.getItem("PackageID");
+      let tenureOfSuscriptionID = localStorage.getItem("TenureOfSuscriptionID");
+      let data = {
+        SelectedPackageID: JSON.parse(PackageID),
+        TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
+        Organization: {
+          OrganizationName: signUpDetails.CompanyName.value,
+          FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          ContactPersonName: signUpDetails.FullName.value,
+          ContactPersonEmail: signUpDetails.Email.value,
+          ContactPersonNumber: signUpDetails.PhoneNumber.value,
+          FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          CustomerReferenceNumber: "",
+          PersonalNumber: signUpDetails.PhoneNumber.value,
+          OrganizationAddress1: signUpDetails.Address1.value,
+          OrganizationAddress2: signUpDetails.Address2.value,
+          City: signUpDetails.City.value,
+          StateProvince: signUpDetails.State.value,
+          PostalCode: signUpDetails.PostalCode.value,
+          FK_SubscriptionStatusID: 0,
+          FK_CCID: signUpDetails.FK_CCID,
+        },
+      };
+      //   dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {
       setAgainCall(false);
     }
-  }, [
-    againCall,
-    adminReducerOrganisationCheckData,
-    adminReducerEmailCheckData,
-  ]);
+  }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
 
   useEffect(() => {
     if (
-      countryNamesReducerCountryNamesData !== null &&
-      countryNamesReducerCountryNamesData !== undefined
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
     ) {
-      setCountryNames(countryNamesReducerCountryNamesData);
+      setCountryNames(countryNamesReducer.CountryNamesData);
     }
-  }, [countryNamesReducerCountryNamesData]);
+  }, [countryNamesReducer.CountryNamesData]);
 
   const onClickLink = () => {
     if (isFreeTrail === true) {
@@ -861,6 +886,7 @@ const SignUpOrganizationUM = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
+                        // applyClass=""
                         maxLength={150}
                       />
                       <Row>
@@ -875,16 +901,14 @@ const SignUpOrganizationUM = () => {
                                   : `${styles["errorMessageCompany_hidden"]}`
                               }
                             >
-                              {signUpDetails.CompanyName.value === ""
-                                ? t("Company-name-is-required")
-                                : signUpDetails.CompanyName.errorMessage}
+                              {signUpDetails.CompanyName.errorMessage}
                             </p>
                           )}
                         </Col>
                       </Row>
                     </Col>
                     <Col sm={12} md={1} lg={1}>
-                      {adminReducerOrganizationCheckSpinnerData ? (
+                      {adminReducer.OrganizationCheckSpinner ? (
                         <Spinner
                           className={styles["checkOrganiationSpinner"]}
                         />
@@ -919,9 +943,7 @@ const SignUpOrganizationUM = () => {
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {signUpDetails.CountryName.value === ""
-                              ? t("Please-select-country")
-                              : signUpDetails.CountryName.errorMessage}
+                            {signUpDetails.CountryName.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -945,7 +967,19 @@ const SignUpOrganizationUM = () => {
                       />
                     </Col>
                   </Row>
-
+                  {/* <Row className="mb-3">
+                    <Col sm={12} md={12} lg={12}>
+                      <TextField
+                        labelclass="d-none"
+                        placeholder={t("Address-2")}
+                        maxLength={100}
+                        change={signupValuesChangeHandler}
+                        name="Address2"
+                        value={signUpDetails.Address2.value || ""}
+                        applyClass="form-control2 MontserratMedium"
+                      />
+                    </Col>
+                  </Row> */}
                   <Row className="mb-3">
                     <Col sm={12} md={4} lg={4}>
                       <Row>
@@ -964,7 +998,9 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}></p>
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.State.errorMessage} */}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -983,7 +1019,9 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}></p>
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.City.errorMessage} */}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -1004,7 +1042,9 @@ const SignUpOrganizationUM = () => {
                       />
                       <Row>
                         <Col>
-                          <p className={styles["errorMessage_hidden"]}></p>
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.PostalCode.errorMessage} */}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -1027,6 +1067,7 @@ const SignUpOrganizationUM = () => {
                         name="FullName"
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
+                        // applyClass="form-control2"
                         applyClass={
                           styles["SignUp_inputField MontserratMedium"]
                         }
@@ -1042,9 +1083,7 @@ const SignUpOrganizationUM = () => {
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {signUpDetails.FullName.value === ""
-                              ? t("Full-name-is-required")
-                              : signUpDetails.FullName.errorMessage}
+                            {signUpDetails.FullName.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -1079,20 +1118,22 @@ const SignUpOrganizationUM = () => {
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
                                 signUpDetails.Email.errorMessage !== ""
-                                  ? ` ${styles["errorMessage"]} `
+                                  ? // &&
+                                    //   signUpDetails.Email.errorMessage !==
+                                    //     t("User-email-doesnt-exists"))
+                                    ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
-                              {signUpDetails.Email.value === ""
-                                ? t("Email-address-is-required")
-                                : signUpDetails.Email.errorMessage}
+                              {signUpDetails.Email.errorMessage}
                             </p>
                           )}
                         </Col>
                       </Row>
+                      {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
                     </Col>
                     <Col sm={12} md={1} lg={1} className="position-relative">
-                      {adminReducerEmailCheckSpinnerData ? (
+                      {adminReducer.EmailCheckSpinner ? (
                         <Spinner className={styles["checkEmailSpinner"]} />
                       ) : null}
                       {isEmailUnique && (
@@ -1155,9 +1196,7 @@ const SignUpOrganizationUM = () => {
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
-                              {signUpDetails.PhoneNumber.value === ""
-                                ? t("Phone-number-is-required")
-                                : signUpDetails.PhoneNumber.errorMessage}
+                              {signUpDetails.PhoneNumber.errorMessage}
                             </p>
                           </Col>
                         </Row>
@@ -1204,7 +1243,10 @@ const SignUpOrganizationUM = () => {
               className={styles["rightsection_roundLogo"]}
             />
           </Col>
-        </Row>
+        </Row>{" "}
+        {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+          <Loader />
+        ) : null}{" "}
       </Container>
     </>
   );

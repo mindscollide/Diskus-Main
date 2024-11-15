@@ -3,7 +3,7 @@ import {
   CustomerInfoOrganization,
   updateCustomerOrganizationProfile,
 } from "../../commen/apis/Api_config";
-import { settingApi } from "../../commen/apis/Api_ends_points";
+import { settingApi, settingURL } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 

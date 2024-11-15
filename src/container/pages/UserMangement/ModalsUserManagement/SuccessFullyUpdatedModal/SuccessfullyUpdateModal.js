@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import { showSucessfullyUpdatedModal } from "../../../../../store/actions/UserMangementModalActions";
 import { Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 const SuccessfullyUpdateModal = () => {
   const { t } = useTranslation();
 
@@ -13,20 +14,16 @@ const SuccessfullyUpdateModal = () => {
 
   const { UserManagementModals } = useSelector((state) => state);
 
-  const UserManagementModalssuccessfullyUpdatedData = useSelector(
-    (state) => state.UserManagementModals.successfullyUpdated
-  );
-
   const handleOkButton = () => {
     dispatch(showSucessfullyUpdatedModal(false));
   };
   return (
     <section>
       <Modal
-        show={UserManagementModalssuccessfullyUpdatedData}
+        show={UserManagementModals.successfullyUpdated}
         setShow={dispatch(showSucessfullyUpdatedModal)}
-        modalFooterClassName={"d-block border-0"}
-        modalHeaderClassName={"d-block border-0"}
+        modalFooterClassName={"d-block"}
+        modalHeaderClassName={"d-block"}
         size={"sm"}
         onHide={() => {
           dispatch(showSucessfullyUpdatedModal(false));

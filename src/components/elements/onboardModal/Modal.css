@@ -1,6 +1,28 @@
 .modal-backdrop {
-  background-color: transparent;
+    background-color: transparent;
 }
 .newMeetingBtn {
-  background-color: #2097d6 !important;
+  background-color: #2097d6 !important
 }
+/* .label {
+    display: inline-block;
+    margin-top: -19px;
+    margin-right: 22px;
+  }
+  
+  .d-flex {
+    display: flex !important;
+    align-items: center;
+    height: 48px;
+  }
+  
+  .ant-picker {
+    height: 35px;
+  }
+  
+  .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon
+    .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+    padding-right: 88px;
+    height: 30px;
+    margin-top: 7px;
+  } */

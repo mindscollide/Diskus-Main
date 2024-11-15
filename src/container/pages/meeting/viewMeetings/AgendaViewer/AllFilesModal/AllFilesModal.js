@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   Button,
@@ -7,10 +7,14 @@ import {
 import styles from "./AllFilesModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
-import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
+import DownloadIcon from "./../AV-Images/Frame_Download.png";
 import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
 
 const AllFilesModal = ({
@@ -31,6 +35,8 @@ const AllFilesModal = ({
   const { t } = useTranslation();
 
   const downloadDocument = (record) => {
+    console.log("filesDatafilesData", record);
+
     let data = {
       FileID: Number(record.originalAttachmentName),
     };
@@ -61,19 +67,25 @@ const AllFilesModal = ({
       attachmentID: Number(record.originalAttachmentName),
     };
     let pdfDataJson = JSON.stringify(Data);
-    if (fileFormatforSignatureFlow.includes(ext)) {
+    if (
+      fileFormatforSignatureFlow.includes(ext)
+    ) {
       window.open(
         `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );
     }
+
   };
+
+  console.log("File Data", agendaName, fileDataAgenda);
 
   return (
     <section>
       <Modal
         show={true}
+        // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setShowMoreFilesView(false)}

@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ViewPollsCancelModal.module.css";
 import {
   searchNewUserMeeting,
+  showCancelPolls,
   showUnsavedViewPollsModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
@@ -15,9 +16,7 @@ const ViewPollsCancelModal = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const unsavedViewPollsModal = useSelector(
-    (state) => state.NewMeetingreducer.unsavedViewPollsModal
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -39,14 +38,14 @@ const ViewPollsCancelModal = ({ setSceduleMeeting }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (
     <section>
       <Modal
-        show={unsavedViewPollsModal}
+        show={NewMeetingreducer.unsavedViewPollsModal}
         setShow={dispatch(showUnsavedViewPollsModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

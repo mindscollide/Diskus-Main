@@ -5,6 +5,7 @@
 .selected_package_Container {
   background-color: #fff;
   margin: 0;
+  /* padding: 0; */
 }
 .payoutstandingBox {
   background-color: #fff !important;

@@ -3,26 +3,24 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 380px;
+  height: 370px;
   width: 350px;
+  background-color: #707070 !important;
   z-index: 9;
   padding-top: 25px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(15px);
+  border-radius: 4px;
 }
 
 .outgoing-call-text-max-call {
   font-size: 19px !important;
-  color: #232323 !important;
+  color: #fff !important;
   font-weight: 600;
   margin-top: 20px;
 }
 
 .calling-text-max-call {
-  font-size: 14px !important;
-  color: #232323 !important;
-  font-weight: 600;
+  font-size: 15px !important;
+  color: #fff !important;
 }
 
 .avatar-column-max-call {
@@ -35,10 +33,12 @@
 
 .someone-calling-title-max-call {
   text-align: center;
+
 }
 
 .calling-title-max-call {
   text-align: center;
+
 }
 
 .button-img-max-call {
@@ -52,22 +52,28 @@
 
 span.incoming-text {
   text-align: center;
-  color: #232323;
+  color: #fff;
   font-size: 13px;
   font-weight: 500;
 }
 
+
+
+
+
+
+
+
 .videoIncoming-active-call {
   position: fixed;
-  bottom: 15px;
-  right: 71px;
-  height: 190px;
+  top: 55%;
+  right: 0 !important;
+  transform: translate(-18%, 33%);
+  height: 230px;
   width: 260px;
-  background: rgba(255, 255, 255, 0.6);
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  z-index: 999 !important;
-  padding-top: 25px;
+  background-color: #707070 !important;
+  z-index: 9;
+  padding-top: 45px;
   border-radius: 4px;
 }
 
@@ -80,10 +86,9 @@ span.incoming-text {
 }
 
 .outgoing-call-text-active-call {
-  font-size: 15px !important;
-  color: #232323 !important;
+  font-size: 16px !important;
+  color: #fff !important;
   font-weight: 600;
-  margin: 0;
 }
 
 .button-active-img {
@@ -101,9 +106,7 @@ button.button-active-img.btn.btn-primary img {
 
 .incoming-active-text {
   text-align: center !important;
-  color: #232323;
-  font-size: 11px;
-  font-weight: 500;
+  color: #fff !important;
 }
 
 button.button-active-img.btn.btn-primary span {
@@ -112,17 +115,16 @@ button.button-active-img.btn.btn-primary span {
 }
 
 body[dir="rtl"] .videoIncoming-active-call {
+  right: auto !important;
   position: fixed;
-  bottom: 15px;
-  right: auto;
-  left: 71px;
-  height: 190px;
+  top: 50% !important;
+  left: 65px !important;
+  transform: translate(-18%, 33%);
+  height: 230px;
   width: 260px;
-  background: rgba(255, 255, 255, 0.6);
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  z-index: 999 !important;
-  padding-top: 25px;
+  background-color: #707070 !important;
+  z-index: 9;
+  padding-top: 45px;
   border-radius: 4px;
 }
 

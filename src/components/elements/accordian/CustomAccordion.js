@@ -11,7 +11,12 @@ const CustomAccordion = ({
   handleClickTitleNotes,
 }) => {
   return (
-    <div className={"accordion-custom"}>
+    <div
+      //       className={
+      //         isExpand === notesID ? "accordion-custom-extended" : "accordion-custom"
+      //       }
+      className={"accordion-custom"}
+    >
       <div className="FirstRow">
         <div className="title-cont" onClick={handleClickTitleNotes}>
           {StartField}

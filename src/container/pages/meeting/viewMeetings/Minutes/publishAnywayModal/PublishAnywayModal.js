@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button } from "../../../../../../components/elements"; // Importing necessary components
 import styles from "./PublishAnywayModal.module.css"; // Importing CSS styles
 import AllReviewed from "./../Images/All-reviewed.png";
-import { MeetingPublishedMinutesApi } from "../../../../../../store/actions/Minutes_action"; // Importing action creator
+import {
+  DeleteMinuteReducer,
+  MeetingPublishedMinutesApi,
+  deleteCommentModalGeneral,
+} from "../../../../../../store/actions/Minutes_action"; // Importing action creator
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch } from "react-redux"; // Importing Redux hooks
+import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import { DeleteGeneralMinuteDocumentsApiFunc } from "../../../../../../store/actions/NewMeetingActions";
 
 // Functional component for deleting a comment
 const PublishAnywayModal = ({
+  publishAnywayModal,
   setPublishAnywayModal,
   setApprovalModal,
   advanceMeetingModalID,
 }) => {
+  const { MinutesReducer } = useSelector((state) => state);
+
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
@@ -78,7 +86,7 @@ const PublishAnywayModal = ({
                   className={styles["Yes_Modal"]} // CSS class for "Yes" button
                 />
                 <Button
-                  onClick={publishMinutes}
+                 onClick={publishMinutes} 
                   text={t("Publish")} // Translation for "No" button
                   className={styles["No_Modal"]} // CSS class for "No" button
                 />

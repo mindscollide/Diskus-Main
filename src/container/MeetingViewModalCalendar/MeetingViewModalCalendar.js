@@ -11,7 +11,9 @@ import {
   Button,
   Modal,
   EmployeeCard,
+  Loader,
 } from "../../components/elements";
+
 import { Row, Col, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Check2 } from "react-bootstrap-icons";
@@ -32,6 +34,7 @@ const MeetingViewModalCalendar = ({
   ModalTitle,
   data,
 }) => {
+  console.log(data, "datadatadataModalView");
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -51,11 +54,14 @@ const MeetingViewModalCalendar = ({
     FK_MDID: 0,
   });
 
+  //Attendees States
+
   // for upload documents
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
     MeetingAgendaAttachments: [],
   });
-  // for Meeting  Attendees
+
+  // for meatings  Attendees
   const [meetingAttendees, setMeetingAttendees] = useState({
     User: {
       PK_UID: 0,
@@ -136,6 +142,21 @@ const MeetingViewModalCalendar = ({
     setIsAttachments(false);
   };
 
+  const navigateToAgenda = () => {
+    setIsDetails(false);
+    setIsAttendees(false);
+    setIsAgenda(true);
+    setIsMinutes(false);
+    setIsAttachments(false);
+  };
+
+  const navigateToAttendees = () => {
+    setIsDetails(false);
+    setIsAgenda(false);
+    setIsMinutes(false);
+    setIsAttendees(true);
+    setIsAttachments(false);
+  };
   const navigateToMinutes = () => {
     setIsDetails(false);
     setIsAgenda(false);
@@ -162,6 +183,41 @@ const MeetingViewModalCalendar = ({
     { label: "7 days before", id: 8 },
   ];
 
+  // for reinder options
+  const options = [
+    "On starting of meeting",
+    "10 minutes before",
+    "30 minutes before",
+    "1 hour before",
+    "5 hours before",
+    "1 day before",
+    "3 days before",
+    "7 days before",
+  ];
+
+  // for Participant id's
+  const participantOptionsWithIDs = [
+    { label: "Organizer", id: 1 },
+    { label: "Participant", id: 2 },
+  ];
+
+  // for Participant options
+  const participantOptions = ["Organizer", "Participant"];
+  // Selected Dropdown value of Approval
+  const reminderHandler = (e, value) => {
+    setMeetingReminderValue(value);
+    optionsWithIDs.map((data, index) => {
+      if (value === data.label) {
+        let id = data.id;
+        setMeetingReminderID([id]);
+        setCreateMeeting({
+          ...createMeeting,
+          ["MeetingReminderID"]: [id],
+        });
+      }
+    });
+  };
+
   // for all details handler
   const detailsHandler = (e) => {
     let name = e.target.name;
@@ -170,7 +226,7 @@ const MeetingViewModalCalendar = ({
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
-        "MeetingEndTime": RemoveTimeDashes(value),
+        ["MeetingEndTime"]: RemoveTimeDashes(value),
       });
     } else if (name === "MeetingDate") {
       setCreateMeeting({
@@ -251,12 +307,12 @@ const MeetingViewModalCalendar = ({
           setEndMeetingStatus(false);
           setStartMeetingStatus(false);
         }
-        viewData.meetingReminders.map((rdata) => {
+        viewData.meetingReminders.map((rdata, index) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
         let reminderoptionvalue = "";
-        optionsWithIDs.map((opData) => {
+        optionsWithIDs.map((opData, index) => {
           if (opData.id === reminder[0]) {
             reminderoptionvalue = opData.label;
           }
@@ -296,7 +352,7 @@ const MeetingViewModalCalendar = ({
           if (viewData.externalMeetingAttendees != undefined) {
             if (viewData.externalMeetingAttendees.length > 0) {
               viewData.externalMeetingAttendees.map(
-                (externalMeetingAttendeesMeetingdata) => {
+                (externalMeetingAttendeesMeetingdata, index) => {
                   List.push({
                     name: externalMeetingAttendeesMeetingdata.emailAddress,
                     designation: "Default",
@@ -314,7 +370,7 @@ const MeetingViewModalCalendar = ({
         }
 
         try {
-          viewData.meetingAgendas.map((atchmenData) => {
+          viewData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
               Title: atchmenData.objMeetingAgenda.title,
               PresenterName: atchmenData.objMeetingAgenda.presenterName,
@@ -323,22 +379,26 @@ const MeetingViewModalCalendar = ({
             };
             let file = [];
             if (atchmenData.meetingAgendaAttachments !== null) {
-              atchmenData.meetingAgendaAttachments.map((atchmenDataaa) => {
-                file.push({
-                  PK_MAAID: atchmenDataaa.pK_MAAID,
-                  DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                  OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                  CreationDateTime: atchmenDataaa.creationDateTime,
-                  FK_MAID: atchmenDataaa.fK_MAID,
-                });
-                meetingAgenAtclis.push({
-                  PK_MAAID: atchmenDataaa.pK_MAAID,
-                  DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                  OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                  CreationDateTime: atchmenDataaa.creationDateTime,
-                  FK_MAID: atchmenDataaa.fK_MAID,
-                });
-              });
+              atchmenData.meetingAgendaAttachments.map(
+                (atchmenDataaa, index) => {
+                  file.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                  meetingAgenAtclis.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                }
+              );
             }
             meetingAgenAtc.push({
               ObjMeetingAgenda: opData,
@@ -349,7 +409,7 @@ const MeetingViewModalCalendar = ({
           console.log("error", error);
         }
         try {
-          viewData.minutesOfMeeting.map((minutesOfMeetingData) => {
+          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
               PK_MOMID: minutesOfMeetingData.pK_MOMID,
               Description: minutesOfMeetingData.description,
@@ -364,7 +424,7 @@ const MeetingViewModalCalendar = ({
         }
         try {
           viewData.externalMeetingAttendees.map(
-            (externalMeetingAttendeesData) => {
+            (externalMeetingAttendeesData, index) => {
               externalMeetingAttendiesList.push({
                 PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
@@ -385,13 +445,16 @@ const MeetingViewModalCalendar = ({
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
           ),
+          // MeetingDate: "",
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               viewData.meetingEvent.meetingDate +
                 viewData.meetingEvent.startTime
             )
           ).format("HH:mm:ss"),
+          // MeetingStartTime: "",
           MeetingEndTime: viewData.meetingEvent.endTime,
+          // MeetingEndTime: "",
           MeetingLocation: viewData.meetingEvent.location,
           MeetingReminderID: reminder,
           MeetingAgendas: meetingAgenAtc,
@@ -504,6 +567,9 @@ const MeetingViewModalCalendar = ({
     }
   }, [addedParticipantNameList]);
 
+  let meetingDateTime =
+    createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+
   const startMeeting = async () => {
     await setViewFlag(false);
     let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
@@ -544,18 +610,19 @@ const MeetingViewModalCalendar = ({
             setViewFlag(false);
           }}
           show={viewFlag}
-          size="lg"
+          size='lg'
           setShow={setViewFlag}
-          modalParentClass="modaldialog MeetingView"
-          className="MeetingView"
+          modalParentClass='modaldialog MeetingView'
+          className='MeetingView'
           ButtonTitle={ModalTitle}
-          modalBodyClassName="modalMeetingViewBody"
-          modalFooterClassName="modalMeetingViewFooter"
-          modalHeaderClassName="modalMeetingViewHeader"
+          modalBodyClassName='modalMeetingViewBody'
+          modalFooterClassName='modalMeetingViewFooter'
+          modalHeaderClassName='modalMeetingViewHeader'
+          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
-                <Col lg={3} md={3} sm={2} xs={12} className="isDetailBtn">
+                <Col lg={3} md={3} sm={2} xs={12} className='isDetailBtn'>
                   <Button
                     className={
                       isDetails
@@ -573,6 +640,7 @@ const MeetingViewModalCalendar = ({
                   sm={2}
                   xs={12}
                   className={"AgendaShowBtn" + " " + currentLanguage}
+                  // className={"" + " " + currentLanguage}
                 >
                   <Button
                     className={
@@ -583,7 +651,7 @@ const MeetingViewModalCalendar = ({
                     variant={"Primary"}
                     text={t("Agendas")}
                     onClick={changeSelectAgenda}
-                    datatut="show-agenda"
+                    datatut='show-agenda'
                   />
                 </Col>
                 <Col
@@ -592,6 +660,7 @@ const MeetingViewModalCalendar = ({
                   sm={2}
                   xs={12}
                   className={" AttendeeShowBtn" + " " + currentLanguage}
+                  // className={"attendees-upper-btn" + " " + currentLanguage}
                 >
                   <Button
                     className={
@@ -601,9 +670,8 @@ const MeetingViewModalCalendar = ({
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
-                    datatut="show-meeting-attendees"
-                    onClick={changeSelectAttendees}
-                  ></Button>
+                    datatut='show-meeting-attendees'
+                    onClick={changeSelectAttendees}></Button>
                 </Col>
                 {minutesOftheMeatingStatus ? (
                   <Col
@@ -611,8 +679,7 @@ const MeetingViewModalCalendar = ({
                     md={2}
                     sm={2}
                     xs={12}
-                    className={" minutes-upper-btn" + " " + currentLanguage}
-                  >
+                    className={" minutes-upper-btn" + " " + currentLanguage}>
                     <Button
                       className={
                         isMinutes
@@ -621,9 +688,8 @@ const MeetingViewModalCalendar = ({
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
-                      datatut="show-minutes"
-                      onClick={navigateToMinutes}
-                    ></Button>
+                      datatut='show-minutes'
+                      onClick={navigateToMinutes}></Button>
                   </Col>
                 ) : null}
 
@@ -633,6 +699,9 @@ const MeetingViewModalCalendar = ({
                   sm={2}
                   xs={12}
                   className={" DataRoomShowBtn" + " " + currentLanguage}
+                  // className={
+                  //   "attachment-upper-btn view" + " " + currentLanguage
+                  // }
                 >
                   <Button
                     className={
@@ -653,17 +722,16 @@ const MeetingViewModalCalendar = ({
               </Row>
               {isDetails ? (
                 <>
-                  <Row className="my-4">
+                  <Row className='my-4'>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular d-flex flex-column lh-sm my-3"
-                    >
-                      <span className="MeetingViewDateTimeTextField">
+                      className='MontserratRegular d-flex flex-column lh-sm my-3'>
+                      <span className='MeetingViewDateTimeTextField'>
                         {createMeeting.MeetingDate}
                       </span>
-                      <span className="MeetingViewLocationText_Field">
+                      <span className='MeetingViewLocationText_Field'>
                         {createMeeting.MeetingLocation}
                       </span>
                     </Col>
@@ -673,9 +741,8 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" MeetingViewTitleTextField p-0"
-                    >
-                      <p className="viewModalTitle">
+                      className=' MeetingViewTitleTextField p-0'>
+                      <p className='viewModalTitle'>
                         {createMeeting.MeetingTitle.length < 100
                           ? `${createMeeting.MeetingTitle}`
                           : `${createMeeting.MeetingTitle.substring(
@@ -691,16 +758,17 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular textAreaDivView p-0"
-                    >
+                      className='MontserratRegular textAreaDivView p-0'>
                       <TextField
                         change={detailsHandler}
-                        name="MeetingDescription"
-                        applyClass="form-control2 textbox-height-details-view"
-                        type="text"
+                        name='MeetingDescription'
+                        applyClass='form-control2 textbox-height-details-view'
+                        type='text'
                         disable={true}
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
+                        // label={}
+                        // placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required
                       />
@@ -709,15 +777,15 @@ const MeetingViewModalCalendar = ({
                 </>
               ) : isAgenda ? (
                 <>
-                  <div className="agendaList">
+                  <div className='agendaList'>
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className="margin-top-20">
+                            <div className='margin-top-20'>
                               <>
-                                <Row className="mt-4">
+                                <Row className='mt-4'>
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className=" agendaIndex">
+                                    <span className=' agendaIndex'>
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -725,12 +793,18 @@ const MeetingViewModalCalendar = ({
                                     lg={7}
                                     md={7}
                                     xs={12}
-                                    className="MeetingAgendaView p-0"
-                                  >
-                                    <p className=" agendaTitle">
+                                    className='MeetingAgendaView p-0'>
+                                    <p className=' agendaTitle'>
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
-
+                                    {/* <TextField
+                                    disable={true}
+                                    name={"Title"}
+                                    value={data.ObjMeetingAgenda.Title}
+                                    applyClass="form-control2"
+                                    type="text"
+                                    placeholder={"Agenda Title"}
+                                  /> */}
                                     {data.MeetingAgendaAttachments.length > 0
                                       ? data.MeetingAgendaAttachments.map(
                                           (
@@ -750,14 +824,13 @@ const MeetingViewModalCalendar = ({
                                                 sm={12}
                                                 lg={3}
                                                 md={3}
-                                                className="meeting-view-file-icon"
+                                                className='meeting-view-file-icon'
                                                 onClick={(e) =>
                                                   downloadClick(
                                                     e,
                                                     MeetingAgendaAttachmentsData
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 {ext === "doc" ? (
                                                   <FileIcon
                                                     extension={"docx"}
@@ -849,7 +922,7 @@ const MeetingViewModalCalendar = ({
                                                     {...defaultStyles.ext}
                                                   />
                                                 )}
-                                                <p className="fileUploadLabel">
+                                                <p className='fileUploadLabel'>
                                                   {first}
                                                 </p>
                                               </Col>
@@ -862,19 +935,18 @@ const MeetingViewModalCalendar = ({
                                     lg={4}
                                     md={4}
                                     xs={12}
-                                    className="MeetingAgendaPresented MeetingAgendaURL"
-                                  >
+                                    className='MeetingAgendaPresented MeetingAgendaURL'>
                                     <TextField
                                       disable={true}
                                       name={"PresenterName"}
                                       value={
                                         data.ObjMeetingAgenda.PresenterName
                                       }
-                                      applyClass="form-control2"
-                                      type="text"
+                                      applyClass='form-control2'
+                                      type='text'
                                       label={t("Presented-by")}
                                     />
-                                    <p className="url">
+                                    <p className='url'>
                                       {data.ObjMeetingAgenda.URLs}
                                     </p>
                                   </Col>
@@ -893,8 +965,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-organizer-tab"
-                    >
+                      className=' meeting-view-attendee-organizer-tab'>
                       <label>{t("Organizer")}</label>
                     </Col>
                   </Row>
@@ -904,12 +975,15 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-organizer-list"
-                    >
+                      className='meeting-view-attendee-organizer-list'>
+                      {/* <EmployeeCard
+                        employeeName="Saad Fudda"
+                        employeeDesignation="Founder, Diara Studio"
+                      /> */}
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList) => {
+                            {addedParticipantNameList.map((atList, index) => {
                               if (atList.role === 1 || atList.role === 3) {
                                 return (
                                   <EmployeeCard
@@ -932,8 +1006,7 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" meeting-view-attendee-participant-tab"
-                    >
+                      className=' meeting-view-attendee-participant-tab'>
                       <label>{t("Participants")}</label>
                     </Col>
                   </Row>
@@ -942,12 +1015,11 @@ const MeetingViewModalCalendar = ({
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-participant-list"
-                    >
+                      className='meeting-view-attendee-participant-list'>
                       {addedParticipantNameList ? (
                         <>
                           <span>
-                            {addedParticipantNameList.map((atList) => {
+                            {addedParticipantNameList.map((atList, index) => {
                               if (atList.role === 2) {
                                 return (
                                   <EmployeeCard
@@ -969,27 +1041,26 @@ const MeetingViewModalCalendar = ({
                 <>
                   <Row>
                     <Col sm={12}>
-                      <Row className="my-3 minutes-view px-3 d-flex flex-row ">
+                      <Row className='my-3 minutes-view px-3 d-flex flex-row '>
                         {createMeeting.MinutesOfMeeting.length > 0 ? (
                           createMeeting.MinutesOfMeeting.map(
                             (minutesOfMeetingLdata, index) => {
                               return (
                                 <Col
-                                  className="border p-2 minutes-box rounded my-2"
+                                  className='border p-2 minutes-box rounded my-2'
                                   sm={12}
                                   md={12}
-                                  lg={12}
-                                >
+                                  lg={12}>
                                   <Row>
                                     <Col sm={12}>
                                       <Row>
                                         <Col sm={1}>
-                                          <span className="agendaIndex">
+                                          <span className='agendaIndex'>
                                             {index + 1}
                                           </span>
                                         </Col>
-                                        <Col sm={11} className="fs-6">
-                                          <p className="agendaTitle meeting-view-minutes-title">
+                                        <Col sm={11} className='fs-6'>
+                                          <p className='agendaTitle meeting-view-minutes-title'>
                                             {minutesOfMeetingLdata.Description}
                                           </p>
                                         </Col>
@@ -1001,13 +1072,12 @@ const MeetingViewModalCalendar = ({
                             }
                           )
                         ) : (
-                          <Row className="meeting-view-minutes-tab">
+                          <Row className='meeting-view-minutes-tab'>
                             <Col
                               lg={12}
                               md={12}
                               xs={12}
-                              className="d-flex justify-content-center align-items-center"
-                            >
+                              className='d-flex justify-content-center align-items-center'>
                               <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
@@ -1018,7 +1088,8 @@ const MeetingViewModalCalendar = ({
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className="mt-4">
+                  <Row className='mt-4'>
+                    {/* <Col lg={12} md={12} sm={12}> */}
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           var ext = data.DisplayAttachmentName.split(".").pop();
@@ -1029,14 +1100,13 @@ const MeetingViewModalCalendar = ({
                               sm={6}
                               lg={3}
                               md={3}
-                              className="meeting-view-dataroom-attachment"
-                              onClick={(e) => downloadClick(e, data)}
-                            >
+                              className='meeting-view-dataroom-attachment'
+                              onClick={(e) => downloadClick(e, data)}>
                               <FileIcon
                                 extension={ext}
                                 {...defaultStyles.ext}
                               />
-                              <p className="fileUploadLabel">{first}</p>
+                              <p className='fileUploadLabel'>{first}</p>
                             </Col>
                           );
                         })
@@ -1056,8 +1126,7 @@ const MeetingViewModalCalendar = ({
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <Button
                           onClick={startMeeting}
                           className={

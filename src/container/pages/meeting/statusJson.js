@@ -1,3 +1,4 @@
+import styles from "./meetingTwo.module.css";
 export const StatusValue = (t, statusValue) => {
   switch (statusValue) {
     case "1":

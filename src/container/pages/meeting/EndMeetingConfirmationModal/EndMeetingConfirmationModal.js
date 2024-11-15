@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./EndMeetingConfirmationModal.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import CustomModal from "../../../../components/elements/modal/Modal";
 import { MeetingContext } from "../../../../context/MeetingContext";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ const EndMeetingConfirmationModal = ({
               </span>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
@@ -47,8 +47,7 @@ const EndMeetingConfirmationModal = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               <Button
                 text={t("End-meeting")}
                 className={styles["EndMeetingBtn"]}

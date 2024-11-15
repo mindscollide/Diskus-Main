@@ -5,6 +5,7 @@ import emptyContributorState from "../../../../../assets/images/emptyStateContri
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
+import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import AwaitingResponse from "../../../../../assets/images/Awaiting-response.svg";
 import TentativelyAccepted from "../../../../../assets/images/Tentatively-accepted.svg";
@@ -48,12 +49,16 @@ const AgendaContributers = ({
   setAgendaContributors,
   setSceduleMeeting,
   currentMeeting,
+  setCurrentMeetingID,
   editorRole,
   setEdiorRole,
+  setEditMeeting,
   isEditMeeting,
   setorganizers,
   setPublishState,
   setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
 }) => {
@@ -61,12 +66,18 @@ const AgendaContributers = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [specificUser, setSpecifiUser] = useState(0);
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state
+  );
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);
+  const [disbaleIcon, setDisbaleIcon] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
+  const [notificationTable, setNotificationTable] = useState(false);
+  const [rspvTable, setrspvTable] = useState(false);
   const [flag, setFlag] = useState(3);
   const [prevFlag, setprevFlag] = useState(3);
   const [selectedOption, setSelectedOption] = useState({
@@ -87,6 +98,10 @@ const AgendaContributers = ({
   const [rowsData, setRowsData] = useState([]);
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
+
+  const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
+
+  const [inputValues, setInputValues] = useState({});
 
   const shownotifyAgendaContrubutors = (id) => {
     dispatch(showAgendaContributorsModals(true));
@@ -143,6 +158,7 @@ const AgendaContributers = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
+        // width: "80px",
         ellipsis: true,
       },
       {
@@ -150,6 +166,7 @@ const AgendaContributers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
+        // width: "80px",
         ellipsis: true,
       },
       {
@@ -378,6 +395,7 @@ const AgendaContributers = ({
         dataIndex: "userName",
         key: "userName",
         align: "left",
+        // width: "80px",
         ellipsis: true,
       },
       {
@@ -385,6 +403,7 @@ const AgendaContributers = ({
         dataIndex: "email",
         key: "email",
         align: "left",
+        // width: "80px",
         ellipsis: true,
       },
       {
@@ -557,6 +576,12 @@ const AgendaContributers = ({
     ];
   }
 
+  // Filter columns based on the RSVP Condition
+  // const finalColumns =
+  //   Number(editorRole.status) === 1
+  //     ? AgendaColoumns.filter((column) => column.key !== "rsvp")
+  //     : AgendaColoumns;
+
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
@@ -611,8 +636,10 @@ const AgendaContributers = ({
   ];
 
   const handleNextButton = () => {
+    // setAgendaContributors(false);
+    // setParticipants(true);
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek");
+    console.log("end meeting chaek")
     dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -636,8 +663,14 @@ const AgendaContributers = ({
   };
 
   const enableNotificatoinTable = () => {
+    // setNotificationTable(!notificationTable);
     dispatch(showCancelModalAgendaContributor(true));
   };
+
+  //You Can Enable Rspv Table From Here
+  // const anableRspvTable = () => {
+  //   setrspvTable(!rspvTable);
+  // };
 
   //Initiate the Add Flow with Empty stae
 
@@ -650,6 +683,7 @@ const AgendaContributers = ({
   };
 
   const nextTabOrganizer = () => {
+    // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(false);
     setParticipants(true);
     dispatch(meetingDetailsGlobalFlag(false));
@@ -665,7 +699,11 @@ const AgendaContributers = ({
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
   };
-
+  const previousTabOrganizer = () => {
+    // dispatch(showPreviousConfirmationModal(true));
+    setorganizers(true);
+    setAgendaContributors(false);
+  };
   const handleEditBtn = () => {
     setIsEditFlag(1);
     setRowsData((prevRowsData) => {
@@ -679,6 +717,35 @@ const AgendaContributers = ({
   };
 
   const handleCancelBtn = () => {
+    // if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
+    //   let agendaContributorData = [
+    //     ...NewMeetingreducer.getAllAgendaContributors,
+    //   ];
+
+    //   // Initial values
+    //   const initialValues = {};
+    //   agendaContributorData.forEach((organizer) => {
+    //     initialValues[organizer.userID] = organizer.contributorTitle;
+    //   });
+
+    //   setInputValues({ ...initialValues });
+
+    //   let newArr = [];
+    //   agendaContributorData.forEach((AgConData, index) => {
+    //     newArr.push({
+    //       userName: AgConData.userName,
+    //       userID: AgConData.userID,
+    //       displayPicture: "",
+    //       email: AgConData.emailAddress,
+    //       IsPrimaryOrganizer: false,
+    //       IsOrganizerNotified: false,
+    //       Title: AgConData.contributorTitle,
+    //       isRSVP: AgConData.rsvp,
+    //       isEdit: true,
+    //     });
+    //   });
+    //   setRowsData(newArr);
+    // }
     let removenewData = rowsData.filter((data, index) => data.isEdit === true);
     setRowsData(removenewData);
     let getAllData = {
@@ -728,6 +795,14 @@ const AgendaContributers = ({
         ...NewMeetingreducer.getAllAgendaContributors,
       ];
 
+      // // Initial values
+      // const initialValues = {};
+      // agendaContributorData.forEach((organizer) => {
+      //   initialValues[organizer.userID] = organizer.contributorTitle;
+      // });
+
+      // setInputValues({ ...initialValues });
+
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
         newArr.push({
@@ -758,6 +833,20 @@ const AgendaContributers = ({
       setIsEdit(false);
     }
   }, [rowsData]);
+
+  // useEffect(() => {
+  //   dispatch(getAgendaAndVotingInfo_success([], ""));
+  //   dispatch(GetCurrentAgendaDetails([]));
+  //   dispatch(getAgendaVotingDetails_success([], ""));
+  //   dispatch(saveFiles_success(null, ""));
+  //   dispatch(saveAgendaVoting_success([], ""));
+  //   dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+  //   dispatch(uploadDocument_success(null, ""));
+  //   dispatch(getAllVotingResultDisplay_success([], ""));
+  // }, []);
+
+  console.log("isPublishedStateisPublishedState", isPublishedState);
+  console.log("isPublishedStateisPublishedState", NewMeetingreducer);
 
   return (
     <>
@@ -813,6 +902,7 @@ const AgendaContributers = ({
                 />
               </>
             ) : (
+              // ) : Number(editorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}
@@ -911,13 +1001,29 @@ const AgendaContributers = ({
                     className={styles["Cancel_Organization"]}
                     onClick={enableNotificatoinTable}
                   />
-
+                  {/* <Button
+                text={t("Previous")}
+                className={styles["publish_button_AgendaContributor"]}
+                onClick={previousTabOrganizer}
+              /> */}
                   <Button
                     text={t("Next")}
                     className={styles["publish_button_AgendaContributor"]}
                     onClick={nextTabOrganizer}
                   />
-
+                  {/* {((Number(editorRole.status) === 9 ||
+                Number(editorRole.status) === 8 ||
+                Number(editorRole.status) === 10) &&
+                editorRole.role === "Organizer" &&
+                isEditMeeting === true) ||
+              (editorRole.role === "Agenda Contributor" &&
+                isEditMeeting === true) ? null : (
+                <Button
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              )} */}
                   {Number(editorRole.status) === 11 ||
                   Number(editorRole.status) === 12 ? (
                     <Button
@@ -944,6 +1050,14 @@ const AgendaContributers = ({
                       onClick={handleNextButton}
                     />
                   )}
+                  {/* {Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? (
+                <Button
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              ) : null} */}
                 </section>
               ) : (
                 <section className={styles["Footer_Class2"]}></section>

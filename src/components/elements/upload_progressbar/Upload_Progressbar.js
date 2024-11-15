@@ -6,11 +6,12 @@ const UploadProgressBar = () => {
     console.log(e.target.files);
     setFile(URL.createObjectURL(e.target.files[0]));
   }
+  const progressBar = () => {};
   return (
     <div className="App">
       <h2>Add Image:</h2>
       <input type="file" onChange={handleChange} />
-      <img src={file} draggable="false" alt="" />
+      <img src={file} draggable="false" />
     </div>
   );
 };

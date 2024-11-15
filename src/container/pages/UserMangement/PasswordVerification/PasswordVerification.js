@@ -10,7 +10,9 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 import {
   Button,
   Checkbox,
+  Paper,
   Notification,
+  Loader,
 } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import {
@@ -20,7 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+
 
 const PasswordVerification = () => {
   const { t } = useTranslation();
@@ -31,33 +33,7 @@ const PasswordVerification = () => {
 
   const passwordRef = useRef();
 
-  const AuthreducerVerifyOTPEmailResponseMessageData = useSelector(
-    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
-  );
-
-  const AuthreducerOrganizationCreateResponseMessageData = useSelector(
-    (state) => state.Authreducer.OrganizationCreateResponseMessage
-  );
-
-  const AuthreducerCreatePasswordResponseMessageData = useSelector(
-    (state) => state.Authreducer.CreatePasswordResponseMessage
-  );
-
-  const AuthreducerGetSelectedPackageResponseMessageData = useSelector(
-    (state) => state.Authreducer.GetSelectedPackageResponseMessage
-  );
-
-  const AuthreducerEmailValidationResponseMessageData = useSelector(
-    (state) => state.Authreducer.EmailValidationResponseMessage
-  );
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
 
   //States for Password Verification Screen
   const [password, setPassword] = useState("");
@@ -68,7 +44,6 @@ const PasswordVerification = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   //Eye Icon Condition
@@ -142,7 +117,11 @@ const PasswordVerification = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (password === "") {
-      showMessage(t("Enter-password"), "error", setOpen);
+      setOpen({
+        ...open,
+        open: true,
+        message: "Enter Password",
+      });
     } else {
       setErrorBar(false);
       dispatch(enterPasswordvalidation(password, navigate, t));
@@ -152,65 +131,97 @@ const PasswordVerification = () => {
   //Messeges UseEffect
   useEffect(() => {
     if (
-      AuthreducerVerifyOTPEmailResponseMessageData !== "" &&
-      AuthreducerVerifyOTPEmailResponseMessageData !== undefined
+      Authreducer.VerifyOTPEmailResponseMessage != "" &&
+      Authreducer.VerifyOTPEmailResponseMessage != undefined
     ) {
-      showMessage(
-        AuthreducerVerifyOTPEmailResponseMessageData,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else if (
-      AuthreducerOrganizationCreateResponseMessageData !== "" &&
-      AuthreducerOrganizationCreateResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerOrganizationCreateResponseMessageData !== undefined
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled") &&
+      Authreducer.OrganizationCreateResponseMessage != undefined
     ) {
-      showMessage(
-        AuthreducerOrganizationCreateResponseMessageData,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else if (
-      AuthreducerCreatePasswordResponseMessageData !== "" &&
-      AuthreducerCreatePasswordResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerCreatePasswordResponseMessageData !== undefined &&
-      AuthreducerCreatePasswordResponseMessageData !==
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage != t("2fa-enabled") &&
+      Authreducer.CreatePasswordResponseMessage != undefined &&
+      Authreducer.CreatePasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        AuthreducerCreatePasswordResponseMessageData,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else if (
-      AuthreducerGetSelectedPackageResponseMessageData !== "" &&
-      AuthreducerGetSelectedPackageResponseMessageData !== t("2fa-enabled") &&
-      AuthreducerGetSelectedPackageResponseMessageData !== undefined
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled") &&
+      Authreducer.GetSelectedPackageResponseMessage != undefined
     ) {
-      showMessage(
-        AuthreducerGetSelectedPackageResponseMessageData,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    AuthreducerVerifyOTPEmailResponseMessageData,
-    AuthreducerOrganizationCreateResponseMessageData,
-    AuthreducerCreatePasswordResponseMessageData,
-    AuthreducerEmailValidationResponseMessageData,
-    AuthreducerGetSelectedPackageResponseMessageData,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
   //Handle Goback functionality
 
   const handelForgotPassword = () => {
-    localStorage.setItem("LoginFlowPageRoute", 10);
+    //localStorage.setItem("LoginFlowPageRoute", 10);
     dispatch(LoginFlowRoutes(10));
   };
 
@@ -237,12 +248,15 @@ const PasswordVerification = () => {
   const handleGoback = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
+
+    // Reload the page
+    // window.location.reload();
   };
 
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -252,21 +266,19 @@ const PasswordVerification = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
-            <span className={styles["loginbox_auth"]}>
+            className='d-flex justify-content-center align-items-center min-vh-100'>
+            <Paper className={styles["loginbox_auth"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
+                    className='d-flex justify-content-center'>
+                    <img draggable='false' src={DiskusLogo} alt='diskus_logo' />
                   </Col>
                 </Row>
-                <Row className="text-center mt-3 mb-4">
+                <Row className='text-center mt-3 mb-4'>
                   <Col>
                     <span className={styles["signIn_heading"]}>
                       {t("Sign-in")}
@@ -279,33 +291,31 @@ const PasswordVerification = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="Enter-password-field position-relative d-flex justify-content-cente"
-                    >
+                      className='Enter-password-field position-relative d-flex justify-content-cente'>
                       <Form.Control
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
-                        name="MyUniquePasswordField"
+                        name='MyUniquePasswordField'
                         ref={passwordRef}
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
                         iconclassname={styles["IconStyle"]}
-                        labelclass="lightLabel"
-                        autoComplete="off"
+                        labelclass='lightLabel'
+                        autoComplete='off'
                         maxLength={200}
                       />
                       <span
                         className={styles["passwordIcon"]}
-                        onClick={showNewPassowrd}
-                      >
+                        onClick={showNewPassowrd}>
                         {showNewPasswordIcon ? (
                           <img
-                            draggable="false"
-                            alt=""
+                            draggable='false'
+                            alt=''
                             src={PasswordHideEyeIcon}
                           />
                         ) : (
-                          <img draggable="false" alt="" src={PasswordEyeIcon} />
+                          <img draggable='false' alt='' src={PasswordEyeIcon} />
                         )}
                       </span>
                     </Col>
@@ -317,16 +327,15 @@ const PasswordVerification = () => {
                           errorBar
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {errorMessage}
                       </p>
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="d-flex gap-2">
+                    <Col sm={12} md={12} lg={12} className='d-flex gap-2'>
                       <Checkbox
-                        classNameDiv=""
+                        classNameDiv=''
                         checked={remeberPassword}
                         onChange={rememberPasswordCheck}
                       />
@@ -336,13 +345,12 @@ const PasswordVerification = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className='mt-5 d-flex justify-content-center'>
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center "
-                    >
+                      className='d-flex justify-content-center '>
                       <Button
                         text={t("Sign-in")}
                         onClick={loginHandler}
@@ -351,45 +359,40 @@ const PasswordVerification = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["forogt_email_link"]}
-                  >
+                    className={styles["forogt_email_link"]}>
                     <Link
                       onClick={handelForgotPassword}
-                      className={styles["ForgotPassword"]}
-                    >
+                      className={styles["ForgotPassword"]}>
                       {t("Forgot-password")}
                     </Link>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["forogt_email_link"]}
-                  >
+                    className={styles["forogt_email_link"]}>
                     <Link
                       onClick={handleGoback}
-                      className={styles["ForgotPassword"]}
-                    >
+                      className={styles["ForgotPassword"]}>
                       {t("Go-back")}
                     </Link>
                   </Col>
                 </Row>
               </Col>
-            </span>
+            </Paper>
           </Col>
           <Col
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex  overflow-hidden"
-          >
+            className='position-relative d-flex  overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -397,19 +400,20 @@ const PasswordVerification = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Auth_Icon"]}
               />
             </Col>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

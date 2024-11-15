@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Row, Col, Container } from "react-bootstrap";
 import "./videoPanelHeader.css";
 import {
   recentVideoFlag,

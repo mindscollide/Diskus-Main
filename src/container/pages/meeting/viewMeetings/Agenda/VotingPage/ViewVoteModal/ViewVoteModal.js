@@ -4,9 +4,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Modal, Table } from "../../../../../../../components/elements";
+import {
+  Loader,
+  Button,
+  Modal,
+  Table,
+} from "../../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { Chart } from "react-google-charts";
+import profile from "../../../../../../../assets/images/newprofile.png";
+import down from "../../../../../../../assets/images/arrdown.png";
 import { showviewVotesAgenda } from "../../../../../../../store/actions/NewMeetingActions";
 import { ViewAgendaVotingResults } from "../../../../../../../store/actions/MeetingAgenda_action";
 import { Progress } from "antd";
@@ -17,15 +24,10 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
 
   const navigate = useNavigate();
 
-  const viewVotesAgenda = useSelector(
-    (state) => state.NewMeetingreducer.viewVotesAgenda
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
   );
-  const GetCurrentAgendaDetails = useSelector(
-    (state) => state.MeetingAgendaReducer.GetCurrentAgendaDetails
-  );
-  const ViewAgendaVotingResultData = useSelector(
-    (state) => state.MeetingAgendaReducer.ViewAgendaVotingResultData
-  );
+
   const [enablePieChart, setEnablePieChart] = useState(false);
 
   const [votingResults, setVotingResults] = useState(null);
@@ -81,7 +83,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
       dataIndex: "answer",
       key: "answer",
       width: "100px",
-      render: (text) => (
+      render: (text, record) => (
         <Row>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["YesPercentage"]}>{text}</span>
@@ -117,7 +119,6 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               {record.participantsVoted.map((participant, index) => (
                 <img
                   key={index}
-                  alt=""
                   src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
                   height="22px"
                   width="22px"
@@ -172,21 +173,24 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
     },
   ];
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (
-      GetCurrentAgendaDetails !== null &&
-      GetCurrentAgendaDetails !== undefined &&
-      GetCurrentAgendaDetails.length !== 0
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
     ) {
-      setCurrentAgendaDetails(GetCurrentAgendaDetails);
+      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
     } else {
       setCurrentAgendaDetails([]);
     }
-  }, [GetCurrentAgendaDetails]);
+  }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
   useEffect(() => {
     let Data = {
-      AgendaVotingID: GetCurrentAgendaDetails.agendaVotingID,
+      AgendaVotingID:
+        MeetingAgendaReducer.GetCurrentAgendaDetails.agendaVotingID,
       MeetingID: advanceMeetingModalID,
     };
     dispatch(ViewAgendaVotingResults(Data, navigate, t));
@@ -194,21 +198,23 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
 
   useEffect(() => {
     if (
-      ViewAgendaVotingResultData !== null &&
-      ViewAgendaVotingResultData !== undefined &&
-      ViewAgendaVotingResultData.length !== 0
+      MeetingAgendaReducer.ViewAgendaVotingResultData !== null &&
+      MeetingAgendaReducer.ViewAgendaVotingResultData !== undefined &&
+      MeetingAgendaReducer.ViewAgendaVotingResultData.length !== 0
     ) {
       setPieChartData(
-        ViewAgendaVotingResultData.votingResults.map((result) => [
-          result.answer,
-          result.votes,
-        ])
+        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults.map(
+          (result) => [result.answer, result.votes]
+        )
       );
-      setVotingResults(ViewAgendaVotingResultData.votingResults);
+      setLoading(false);
+      setVotingResults(
+        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
+      );
     } else {
       setVotingResults(null);
     }
-  }, [ViewAgendaVotingResultData]);
+  }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
 
   useEffect(() => {
     const chartDataArray = [["Category", "Votes", { role: "style" }]];
@@ -221,10 +227,34 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
     setBarChartData(chartDataArray);
   }, [pieChartData]);
 
+  // useEffect(() => {
+  //   if (votingResults !== undefined && votingResults !== null) {
+  //     let votingResultChart = votingResults;
+  //     setPieChartData(
+  //       votingResultChart.map((result) => [result.answer, result.votes])
+  //     );
+
+  //     const chartDataArray = [["Category", "Votes", { role: "style" }]];
+
+  //     pieChartData.forEach((dataPoint, index) => {
+  //       const color = colorCodes[index % colorCodes.length];
+  //       chartDataArray.push([dataPoint[0], dataPoint[1], color]);
+  //     });
+  //     setBarChartData(chartDataArray);
+  //     setLoading(false);
+  //   }
+  // }, [votingResults]);
+
+  console.log("VotingResults", votingResults, pieChartData, barChartData);
+
+  console.log("ViewVotingDetail Reducer", MeetingAgendaReducer);
+
+  console.log("New Meeting Reducer", NewMeetingreducer);
+
   return (
     <section>
       <Modal
-        show={viewVotesAgenda}
+        show={NewMeetingreducer.viewVotesAgenda}
         setShow={dispatch(showviewVotesAgenda)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
@@ -237,7 +267,10 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["HeadingViewVoteModal"]}>
-                  {ViewAgendaVotingResultData?.votingQuestion}
+                  {
+                    MeetingAgendaReducer?.ViewAgendaVotingResultData
+                      ?.votingQuestion
+                  }
                 </span>
               </Col>
             </Row>

@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   committeeStatusUpdate,
   getAllArcheivedCommittees,
+  getCommitteesbyCommitteeId,
 } from "../../store/actions/Committee_actions";
+import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import { Row, Col, Container } from "react-bootstrap";
+import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import styles from "./ModalArchivedCommittee.module.css";
 import CommitteeICon from "../../assets/images/CommitteeICon.svg";
@@ -16,8 +19,11 @@ import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const ModalArchivedCommittee = ({
+  ModalTitle,
   archivedCommittee,
   setArchivedCommittee,
+  setViewGroupPage,
+  setUpdateComponentpage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -65,7 +71,7 @@ const ModalArchivedCommittee = ({
       } else if (status === 3 || status === 1) {
         setGetCommitteeData((archGroupData) => {
           return archGroupData.filter(
-            (groupData) =>
+            (groupData, index) =>
               groupData.committeeID !==
               CommitteeReducer.realtimeCommitteeStatus.commmitteeID
           );
@@ -82,7 +88,7 @@ const ModalArchivedCommittee = ({
     ) {
       let newArr = [];
       setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
-      CommitteeReducer.ArcheivedCommittees.committees.map((data) => {
+      CommitteeReducer.ArcheivedCommittees.committees.map((data, index) => {
         newArr.push(data);
       });
       setGetCommitteeData(newArr);
@@ -112,7 +118,24 @@ const ModalArchivedCommittee = ({
     dispatch(committeeStatusUpdate(navigate, Data, t, setArchivedCommittee));
   };
 
-  const viewCommitteeModal = () => {};
+  const viewCommitteeModal = (committeeID, CommitteeStatusID) => {
+    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    // let Data = {
+    //   CommitteeID: JSON.parse(committeeID),
+    //   OrganizationId: OrganizationID,
+    // };
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID,
+    //     setArchivedCommittee
+    //   )
+    // );
+  };
 
   return (
     <>
@@ -124,6 +147,7 @@ const ModalArchivedCommittee = ({
             localStorage.removeItem("CoArcurrentPage");
           }}
           setShow={setArchivedCommittee}
+          // ButtonTitle={ModalTitle}
           closeButton={false}
           modalFooterClassName="d-block"
           modalHeaderClassName="d-block"
@@ -147,7 +171,6 @@ const ModalArchivedCommittee = ({
                           <img
                             draggable="false"
                             src={right}
-                            alt=""
                             width="16.5px"
                             height="33px"
                             className={
@@ -171,7 +194,7 @@ const ModalArchivedCommittee = ({
                 <Row className="text-center mt-4">
                   {getcommitteedata.length > 0 &&
                   Object.values(getcommitteedata).length > 0 ? (
-                    getcommitteedata.map((data) => {
+                    getcommitteedata.map((data, index) => {
                       return (
                         <Col lg={4} md={4} sm={12} className="mb-3">
                           <Card

@@ -8,19 +8,19 @@ import { Button, Modal } from "../../../../../../../components/elements";
 import { showCastVoteAgendaModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
-import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
+import {
+  CasteVoteForAgenda,
+  GetAgendaAndVotingInfo,
+} from "../../../../../../../store/actions/MeetingAgenda_action";
 
 const CastVoteAgendaModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
 
-  const castVoteAgendaPage = useSelector(
-    (state) => state.NewMeetingreducer.castVoteAgendaPage
-  );
-  const AgendaVotingInfoData = useSelector(
-    (state) => state.MeetingAgendaReducer.AgendaVotingInfoData
-  );
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [castVoteData, setCastVoteData] = useState([]);
@@ -29,15 +29,15 @@ const CastVoteAgendaModal = () => {
 
   useEffect(() => {
     if (
-      AgendaVotingInfoData !== undefined &&
-      AgendaVotingInfoData !== null &&
-      AgendaVotingInfoData.length !== 0
+      MeetingAgendaReducer.AgendaVotingInfoData !== undefined &&
+      MeetingAgendaReducer.AgendaVotingInfoData !== null &&
+      MeetingAgendaReducer.AgendaVotingInfoData.length !== 0
     ) {
-      setCastVoteData(AgendaVotingInfoData);
+      setCastVoteData(MeetingAgendaReducer.AgendaVotingInfoData);
     } else {
       setCastVoteData([]);
     }
-  }, [AgendaVotingInfoData]);
+  }, [MeetingAgendaReducer.AgendaVotingInfoData]);
 
   const handleRadioChange = (e) => {
     const selectedAnswerID = e.target.value;
@@ -64,12 +64,14 @@ const CastVoteAgendaModal = () => {
     dispatch(showCastVoteAgendaModal(false));
   };
 
+  console.log("Cast Vote Screen Reducer", MeetingAgendaReducer);
+
   console.log("Cast Vote Data", castVoteData);
 
   return (
     <section>
       <Modal
-        show={castVoteAgendaPage}
+        show={NewMeetingreducer.castVoteAgendaPage}
         setShow={dispatch(showCastVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

@@ -744,7 +744,7 @@ const TalkChat = () => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ TasksAttachments: file });
+      setTasksAttachments({ ["TasksAttachments"]: file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -810,7 +810,7 @@ const TalkChat = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      TasksAttachments: searchIndex,
+      ["TasksAttachments"]: searchIndex,
     });
     setUploadFileTalk({});
   };
@@ -3558,7 +3558,7 @@ const TalkChat = () => {
         notificationShow: false,
         message: "",
       });
-      dispatch(OTOMessageSendSuccess("", []));
+      dispatch(OTOMessageSendSuccess("", []))
     }, 3000);
   }, [talkStateData.MessageSendOTO]);
 
@@ -3897,7 +3897,7 @@ const TalkChat = () => {
     setFile("");
     setTasksAttachments({
       ...tasksAttachments,
-      TasksAttachments: [],
+      ["TasksAttachments"]: [],
     });
     setUploadFileTalk({});
     if (inputRef.current) {
@@ -4179,23 +4179,12 @@ const TalkChat = () => {
                             <img
                               draggable="false"
                               src={SingleIcon}
-                              alt=""
                               width={25}
                             />
                           ) : activeChat.messageType === "G" ? (
-                            <img
-                              draggable="false"
-                              src={GroupIcon}
-                              width={30}
-                              alt=""
-                            />
+                            <img draggable="false" src={GroupIcon} width={30} />
                           ) : activeChat.messageType === "B" ? (
-                            <img
-                              draggable="false"
-                              src={ShoutIcon}
-                              width={20}
-                              alt=""
-                            />
+                            <img draggable="false" src={ShoutIcon} width={20} />
                           ) : null}
                           {/* <span className="user-active-status"></span> */}
                         </div>
@@ -4208,7 +4197,7 @@ const TalkChat = () => {
                       <Col lg={1} md={1} sm={12}>
                         {" "}
                         <div className="chat-box-icons">
-                          <img draggable="false" src={SecurityIcon} alt="" />
+                          <img draggable="false" src={SecurityIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -4218,7 +4207,6 @@ const TalkChat = () => {
                             draggable="false"
                             onClick={showChatSearchHandler}
                             src={SearchChatIcon}
-                            alt=""
                           />
                         </div>
                       </Col>
@@ -4232,7 +4220,6 @@ const TalkChat = () => {
                             draggable="false"
                             src={MenuIcon}
                             onClick={activateChatMenu}
-                            alt=""
                           />
                           {chatMenuActive && (
                             <div className="dropdown-menus-chat">
@@ -4336,7 +4323,7 @@ const TalkChat = () => {
                       <Col lg={1} md={1} sm={12}>
                         {" "}
                         <div className="chat-box-icons">
-                          <img draggable="false" src={VideoCallIcon} alt="" />
+                          <img draggable="false" src={VideoCallIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -4345,7 +4332,6 @@ const TalkChat = () => {
                           <img
                             draggable="false"
                             src={CloseChatIcon}
-                            alt=""
                             // className="img-cover"
                             // style={{ width: "20px", marginTop: "16px" }}
                           />
@@ -4370,7 +4356,6 @@ const TalkChat = () => {
                             draggable="false"
                             src={SecurityIconMessasgeBox}
                             style={{ width: "17px" }}
-                            alt=""
                           />
                         </span>
                       </Col>
@@ -4448,7 +4433,6 @@ const TalkChat = () => {
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
-                                                alt=""
                                               />
                                               {chatFeatureActive ===
                                               messageData.messageID ? (
@@ -4834,7 +4818,6 @@ const TalkChat = () => {
                                             <img
                                               draggable="false"
                                               className="dropdown-icon"
-                                              alt=""
                                               src={DropDownChatIcon}
                                             />
                                             {chatFeatureActive ===

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { Button, Modal } from "../../../../../components/elements";
+import { Button, Loader, Modal } from "../../../../../components/elements";
 import { showUpgradeNowModal } from "../../../../../store/actions/UserMangementModalActions";
 import crossicon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import { getLocalStorageItemNonActiveCheck } from "../../../../../commen/functions/utils";
@@ -16,11 +16,7 @@ const UpgradeNowModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const UserManagementModalsUpgradeNowModalData = useSelector(
-    (state) => state.UserManagementModals.UpgradeNowModal
-  );
-
+  const { UserManagementModals, Authreducer } = useSelector((state) => state);
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
@@ -64,7 +60,7 @@ const UpgradeNowModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModalsUpgradeNowModalData}
+        show={UserManagementModals.UpgradeNowModal}
         setShow={dispatch(showUpgradeNowModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

@@ -391,6 +391,7 @@ export const OptionsOwner = (t) => [
   { value: 1, label: t("Anyone") },
   { value: 2, label: t("Owned-by-me") },
   { value: 3, label: t("Not-owned-by-me") },
+  // { value: 4, label: t("Specific-person") },
 ];
 
 export const optionsLastmodified = (t) => [
@@ -461,7 +462,10 @@ export const optionsforPDFandSignatureFlow = (t) => {
     { label: t("Analytics"), value: 7 },
   ];
 
-  if (checkFeatureIDAvailability(19) || checkFeatureIDAvailability(21)) {
+  if (
+    checkFeatureIDAvailability(19) ||
+    checkFeatureIDAvailability(21)
+  ) {
     options.push({ label: t("Signature"), value: 8 });
   }
 
@@ -568,17 +572,23 @@ export const getFileExtension = (fileName) => {
 
 // Viewer Permission will should be a 2
 export const optionShareTabForEditorRole = (t) => [
+  // { label: t("Open"), value: 1 },
   { label: t("Share"), value: 2 },
   { label: t("Rename"), value: 3 },
   { label: t("View-detail"), value: 4 },
   { label: t("Download"), value: 5 },
   { label: t("Remove"), value: 6 },
+  // { label: t("Analytics"), value: 7 },
 ];
 // Viewer Permission will should be a 1
 export const optionShareTabForViewerRole = (t) => [
+  // { label: t("Open"), value: 1 },
   { label: t("Share"), value: 2 },
+  // { label: t("Rename"), value: 3 },
   { label: t("View-detail"), value: 4 },
   { label: t("Download"), value: 5 },
+  // { label: t("Remove"), value: 6 },
+  // { label: t("Analytics"), value: 7 },
 ];
 
 export const optionMyDocumentsTab = (t) => [
@@ -602,7 +612,10 @@ export const optionMyDocumentsTabForSignature = (t) => {
     { label: t("Analytics"), value: 7 },
   ];
 
-  if (checkFeatureIDAvailability(19) || checkFeatureIDAvailability(21)) {
+  if (
+    checkFeatureIDAvailability(19) ||
+    checkFeatureIDAvailability(21)
+  ) {
     options.push({ label: t("Signature"), value: 8 });
   }
 

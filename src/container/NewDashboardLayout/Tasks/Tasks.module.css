@@ -20,6 +20,7 @@
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
+  /* background: #2299ea !important; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
@@ -31,8 +32,15 @@
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
+  /* background: #2299ea !important; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   border-radius: 4px !important;
   font-weight: 600;
 }
+
+/* .newDashboardTable__L1Rc2 tr th {
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  font-size: 12px !important;
+} */

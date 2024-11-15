@@ -11,7 +11,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import {
   Button,
   Switch,
@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import {
   SaveMeetingDetialsNewApiFunction,
   clearResponseNewMeetingReducerMessage,
+  showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,6 @@ import {
   getStartTimeWithCeilFunction,
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const MeetingDetails = ({
@@ -85,15 +85,19 @@ const MeetingDetails = ({
   const nextConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.nextConfirmModal
   );
-  // const cancelModalMeetingDetails = useSelector(
-  //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
-  // );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
   const getmeetingURL = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+
+  // let getALlMeetingTypes = JSON.parse(
+  //   localStorage.getItem("meetingTypesResult")
+  // );
 
   const getAllReminderFrequency = useSelector(
     (state) => state.NewMeetingreducer.getAllReminderFrequency
@@ -141,9 +145,8 @@ const MeetingDetails = ({
   );
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
@@ -289,13 +292,12 @@ const MeetingDetails = ({
           updatedRows[index].selectedOption
       ) {
         if (formattedTime <= updatedRows[index - 1].endDate) {
-          showMessage(
-            t(
+          setOpen({
+            flag: true,
+            message: t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
-            "error",
-            setOpen
-          );
+          });
           updatedRows[index].startDate = getStartTime?.formattedTime;
           updatedRows[index].startTime = getStartTime?.newFormatTime;
           setRows(updatedRows);
@@ -305,11 +307,12 @@ const MeetingDetails = ({
             updatedRows[index].endDate !== "" &&
             formattedTime >= updatedRows[index].endDate
           ) {
-            showMessage(
-              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-              "error",
-              setOpen
-            );
+            setOpen({
+              flag: true,
+              message: t(
+                "Selected-start-time-should-not-be-greater-than-the-endTime"
+              ),
+            });
             updatedRows[index].startDate = formattedTime;
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
@@ -325,11 +328,12 @@ const MeetingDetails = ({
           updatedRows[index].endDate !== "" &&
           formattedTime >= updatedRows[index].endDate
         ) {
-          showMessage(
-            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-            "error",
-            setOpen
-          );
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-greater-than-the-endTime"
+            ),
+          });
           updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
@@ -362,11 +366,12 @@ const MeetingDetails = ({
           updatedRows[index].selectedOption
       ) {
         if (formattedTime <= updatedRows[index].startDate) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
-            "error",
-            setOpen
-          );
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-end-time-should-not-be-less-than-the-previous-one"
+            ),
+          });
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
@@ -377,11 +382,10 @@ const MeetingDetails = ({
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-start-time"),
-            "error",
-            setOpen
-          );
+          setOpen({
+            flag: true,
+            message: t("Selected-end-time-should-not-be-less-than-start-time"),
+          });
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           return;
@@ -446,6 +450,7 @@ const MeetingDetails = ({
 
   const handlePublish = () => {
     //Enable the Error Handling From here
+    // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
     if (meetingDetails.ReminderFrequency.value !== 0) {
@@ -469,14 +474,18 @@ const MeetingDetails = ({
           14
         ),
         EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+        // EndTime: data.endDate,
       });
     });
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
+      // meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0
+      // &&
+      // meetingDetails.Notes !== ""
     ) {
       let recurringMeetingID =
         meetingDetails.RecurringOptions.value !== 0
@@ -526,6 +535,7 @@ const MeetingDetails = ({
 
   //Save Meeting
   const SaveMeeting = () => {
+    // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
     if (meetingDetails.ReminderFrequency.value !== 0) {
@@ -567,8 +577,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
+      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0
+      //  &&
+      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -862,9 +875,9 @@ const MeetingDetails = ({
   }, [getmeetingURL]);
 
   //funciton cancel button
-  // const handleCancelMeetingButton = () => {
-  //   dispatch(showCancelModalmeetingDeitals(true));
-  // };
+  const handleCancelMeetingButton = () => {
+    dispatch(showCancelModalmeetingDeitals(true));
+  };
 
   //Meeting Type Drop Down Data
   useEffect(() => {
@@ -928,7 +941,7 @@ const MeetingDetails = ({
         recurring.meetingRecurrances !== undefined
       ) {
         let Newdata = [];
-        recurring.meetingRecurrances.forEach((data, index) => {
+        recurring.meetingRecurrances.map((data, index) => {
           Newdata.push({
             value: data.recurranceID,
             label: data.recurrance,
@@ -964,7 +977,18 @@ const MeetingDetails = ({
       ResponseMessage !== undefined &&
       ResponseMessage !== null
     ) {
-      showMessage(ResponseMessage, "success", setOpen);
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: ResponseMessage,
+      // });
+      // setTimeout(() => {
+      setOpen({
+        ...open,
+        flag: true,
+        message: ResponseMessage,
+      });
+      // }, 3000);
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
@@ -977,6 +1001,7 @@ const MeetingDetails = ({
         getAllMeetingDetails !== null &&
         getAllMeetingDetails !== undefined
       ) {
+        // setEditMeeting(true);
         let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(MeetingData, "MeetingDataMeetingData");
@@ -1067,10 +1092,50 @@ const MeetingDetails = ({
         setRows(newDateTimeData);
         setPublishedFlag(PublishedMeetingStatus);
       } else {
-        setCurrentMeetingStatus(11);
+        setCurrentMeetingStatus(11)
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
+
+  function compareMeetings(meetingsArray1, meetingsArray2) {
+    if (meetingsArray1.length !== meetingsArray2.length) {
+      return false; // If the arrays have different lengths, they can't be equal
+    }
+
+    for (let i = 0; i < meetingsArray1.length; i++) {
+      const meeting1 = meetingsArray1[i];
+      const meeting2 = meetingsArray2[i];
+      console.log({ meeting1, meeting2 }, "meetingDataMeetingData");
+      if (
+        meeting1.MeetingDate !== meeting2.meetingDate ||
+        meeting1.StartTime !== meeting2.startTime ||
+        meeting1.EndTime !== meeting2.endTime
+      ) {
+        return false; // If any property is different, the meetings are not equal
+      }
+    }
+
+    return true; // If no differences were found, the arrays are equal
+  }
+  function comparePKMRID(meetingArray, idArray) {
+    // Check if the arrays have the same length
+    if (meetingArray.length !== idArray.length) {
+      return false;
+    }
+
+    // Iterate through the meetings in the first array
+    for (let i = 0; i < meetingArray.length; i++) {
+      const meeting = meetingArray[i];
+      const id = idArray[i];
+
+      // Compare the pK_MRID property with the corresponding value in the second array
+      if (meeting.pK_MRID !== id) {
+        return false;
+      }
+    }
+
+    return true; // If no differences were found, the arrays are considered equal
+  }
 
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));
@@ -1094,11 +1159,10 @@ const MeetingDetails = ({
           lg={12}
           md={12}
           sm={12}
-          className={styles["Scroller_meeting_detials"]}
-        >
+          className={styles["Scroller_meeting_detials"]}>
           <Row>
             {/* First Half */}
-            <Col lg={7} md={7} sm={12} className="mt-3">
+            <Col lg={7} md={7} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
@@ -1134,15 +1198,14 @@ const MeetingDetails = ({
                           error && meetingDetails.MeetingTitle === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {t("Please-enter-meeting-title")}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -1184,8 +1247,7 @@ const MeetingDetails = ({
                               error && meetingDetails.MeetingType === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
+                            }>
                             {t("Please-select-meeting-type")}
                           </p>
                         </Col>
@@ -1198,6 +1260,7 @@ const MeetingDetails = ({
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Location-Videourl")}
+                        {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
                   </Row>
@@ -1207,7 +1270,7 @@ const MeetingDetails = ({
                         placeholder={t("Location-Videourl")}
                         applyClass={"meetinInnerSearch"}
                         name={"Location"}
-                        labelclass="d-none"
+                        labelclass='d-none'
                         change={HandleChange}
                         value={meetingDetails.Location}
                         disable={
@@ -1224,29 +1287,41 @@ const MeetingDetails = ({
                         }
                         maxLength={245}
                       />
+                      {/* <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && meetingDetails.Location === ""
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-select-location")}
+                          </p>
+                        </Col>
+                      </Row> */}
                     </Col>
                   </Row>
                 </Col>
               </Row>
 
               <Row>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex flex-column flex-wrap"
-                  >
+                    className='d-flex flex-column flex-wrap'>
                     <TextField
                       label={
                         <span className={styles["Meeting_type_heading"]}>
                           {t("Add-notes")}
                         </span>
                       }
-                      applyClass="text-area-create-meeting"
-                      type="text"
+                      applyClass='text-area-create-meeting'
+                      type='text'
                       as={"textarea"}
-                      rows="5"
+                      rows='5'
                       name={"Notes"}
                       change={HandleChange}
                       placeholder={t("Note-for-this-meeting")}
@@ -1266,10 +1341,23 @@ const MeetingDetails = ({
                           : false
                       }
                     />
+                    {/* <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDetails.Description === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-enter-meeting-description")}
+                      </p>
+                    </Col>
+                  </Row> */}
                   </Col>
                 </Row>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={4} md={4} sm={12}>
                   <span className={styles["Scedule_heading"]}>
                     {t("Scheduled-on")}
@@ -1294,15 +1382,14 @@ const MeetingDetails = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["Scroller_meeting"]}
-                >
+                  className={styles["Scroller_meeting"]}>
                   {rows.length > 0
                     ? rows.map((data, index) => {
                         return (
                           <>
                             <Row key={index}>
                               <Col lg={12} md={12} sm={12} key={index}>
-                                <Row className="mt-2">
+                                <Row className='mt-2'>
                                   <Col lg={4} md={4} sm={12}>
                                     <DatePicker
                                       selected={data.selectedOption}
@@ -1313,17 +1400,17 @@ const MeetingDetails = ({
                                           ? rows[index - 1].selectedOption
                                           : moment().toDate()
                                       }
-                                      placeholder="DD/MM/YYYY"
+                                      placeholder='DD/MM/YYYY'
                                       render={
                                         <InputIcon
-                                          placeholder="DD/MM/YYYY"
-                                          className="datepicker_input"
+                                          placeholder='DD/MM/YYYY'
+                                          className='datepicker_input'
                                         />
                                       }
                                       editable={false}
-                                      className="datePickerTodoCreate2"
+                                      className='datePickerTodoCreate2'
                                       onOpenPickNewDate={true}
-                                      inputMode=""
+                                      inputMode=''
                                       calendar={calendarValue}
                                       locale={localValue}
                                       ref={calendRef}
@@ -1356,8 +1443,7 @@ const MeetingDetails = ({
                                         error && data.selectedOption === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("Scheduled-date-is-required")}
                                     </p>
                                   </Col>
@@ -1365,18 +1451,18 @@ const MeetingDetails = ({
                                     lg={3}
                                     md={3}
                                     sm={3}
-                                    className="timePicker"
-                                  >
+                                    className='timePicker'>
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
                                       selected={data.startDate}
+                                      // onOpen={() => handleOpenStartTime(index)}
                                       value={data.startTime}
                                       editable={false}
                                       plugins={[<TimePicker hideSeconds />]}
@@ -1409,8 +1495,7 @@ const MeetingDetails = ({
                                         error && data.startDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("start-time-is-required")}
                                     </p>
                                   </Col>
@@ -1418,26 +1503,32 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-center align-items-center"
-                                  >
+                                    className='d-flex justify-content-center align-items-center'>
                                     <img
                                       draggable={false}
                                       src={desh}
-                                      width="19.02px"
-                                      alt=""
+                                      width='19.02px'
+                                      alt=''
                                     />
                                   </Col>
-                                  <Col lg={3} md={3} sm={12}>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={12}
+                                    // className="d-flex justify-content-end"
+                                  >
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
                                       value={data.endTime}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
+                                      // onOpen={() => handleOpenEndTime(index)}
+                                      // onOpen={() => handleOpenStartTime()}
                                       selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       editable={false}
@@ -1470,8 +1561,7 @@ const MeetingDetails = ({
                                         error && data.endDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("end-time-is-required")}
                                     </p>
                                   </Col>
@@ -1479,8 +1569,7 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-end position-relative align-items-center"
-                                  >
+                                    className='d-flex justify-content-end position-relative align-items-center'>
                                     {index === 0 ? null : Number(
                                         editorRole.status
                                       ) === 9 &&
@@ -1491,9 +1580,9 @@ const MeetingDetails = ({
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
-                                        width="23px"
-                                        alt=""
-                                        height="23px"
+                                        width='23px'
+                                        alt=''
+                                        height='23px'
                                         className={styles["Cross_icon_class"]}
                                         onClick={() => {
                                           HandleCancelFunction(index);
@@ -1519,24 +1608,23 @@ const MeetingDetails = ({
                 <></>
               ) : editorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true ? null : (
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <Button
                       text={
                         <>
-                          <Row className="mt-1">
+                          <Row className='mt-1'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center gap-2 align-items-center"
-                            >
+                              className='d-flex justify-content-center gap-2 align-items-center'>
                               <img
                                 draggable={false}
                                 src={plusFaddes}
-                                width="15.87px"
-                                alt=""
-                                height="15.87px"
+                                width='15.87px'
+                                alt=''
+                                height='15.87px'
                               />
                               <span className={styles["Add_dates_label"]}>
                                 {t("Add-dates")}
@@ -1554,7 +1642,7 @@ const MeetingDetails = ({
               )}
             </Col>
             {/* Second Half */}
-            <Col lg={5} md={5} sm={12} className="mt-3">
+            <Col lg={5} md={5} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
@@ -1661,14 +1749,13 @@ const MeetingDetails = ({
                         error && meetingDetails.ReminderFrequency.value === 0
                           ? ` ${styles["errorMessage-inLogin"]} `
                           : `${styles["errorMessage-inLogin_hidden"]}`
-                      }
-                    >
+                      }>
                       {t("Please-select-reminder-frequency")}
                     </p>
                   </Col>
                 </Row>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     label={
@@ -1676,10 +1763,10 @@ const MeetingDetails = ({
                         {t("Add-description")}
                       </span>
                     }
-                    applyClass="text-area-create-resolution"
-                    type="text"
+                    applyClass='text-area-create-resolution'
+                    type='text'
                     as={"textarea"}
-                    rows="2"
+                    rows='2'
                     placeholder={t("Description")}
                     required={true}
                     name={"Description"}
@@ -1699,13 +1786,27 @@ const MeetingDetails = ({
                         : false
                     }
                   />
+
+                  {/* <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDetails.Notes === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-enter-meeting-notes")}
+                      </p>
+                    </Col>
+                  </Row> */}
                 </Col>
               </Row>
 
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleRSPV}
                         checkedValue={meetingDetails.AllowRSPV}
@@ -1734,8 +1835,7 @@ const MeetingDetails = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 justify-content-start"
-                    >
+                      className='d-flex gap-2 justify-content-start'>
                       <Switch
                         onChange={handleNotifyOrganizers}
                         checkedValue={meetingDetails.NotifyMeetingOrganizer}
@@ -1759,10 +1859,10 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleGroupChat}
                         checkedValue={meetingDetails.groupChat}
@@ -1786,8 +1886,8 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleVideoCameraButton}
                         checkedValue={meetingDetails.IsVideoCall}
@@ -1878,14 +1978,14 @@ const MeetingDetails = ({
                   </Row> */}
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["reccurring_heading"]}>
                     {t("Recurring")}
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12}>
                   <Select
                     onChange={handleRecurringSelectoptions}
@@ -1907,7 +2007,7 @@ const MeetingDetails = ({
                         : false
                     }
                     styles={customStyles}
-                    menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                    menuPlacement='top' // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
                     isSearchable={false}
                     // isDisabled={true} THIS IS TO BE DONE, When the build is to be done on production and comment the above isDisabled
@@ -1918,13 +2018,12 @@ const MeetingDetails = ({
           </Row>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex gap-3 justify-content-end"
-        >
+          className='d-flex gap-3 justify-content-end'>
           <Button
             text={t("Cancel")}
             className={styles["Published"]}
@@ -1982,7 +2081,7 @@ const MeetingDetails = ({
           flag={1}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

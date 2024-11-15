@@ -1,5 +1,6 @@
 .NewMeeting_container {
   width: 98% !important;
+  /* height: 80vh !important; */
   margin: 0 auto !important;
 }
 
@@ -125,6 +126,7 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .joining-Meeting {
+  /* width: 118px; */
   height: 28px;
   font-size: 12px;
   color: #fff;
@@ -137,6 +139,7 @@ body[dir="rtl"] .polling_searchinput {
 .joining-Meeting:hover,
 .joining-Meeting:focus,
 .joining-Meeting:focus-visible {
+  /* width: 118px !important; */
   height: 28px !important;
   font-size: 12px !important;
   color: #fff !important;
@@ -146,6 +149,7 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .Start-Meeting {
+  /* width: 118px; */
   height: 28px;
   font-size: 12px;
   color: #fff;
@@ -157,6 +161,7 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .Start-Meeting:is(:hover, :focus, :focus-visible:active) {
+  /* width: 118px !important; */
   height: 28px !important;
   font-size: 12px !important;
   color: #fff !important;
@@ -207,6 +212,19 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 12px 10px !important;
 }
 
+/* .PaginationStyle-Committee {
+  margin-top: 5px !important;
+  background-color: #fff !important;
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  position: absolute !important;
+} */
+
 body[dir="rtl"] .PaginationStyle-Committee {
   width: auto !important;
   padding: 8px 10px !important;
@@ -227,17 +245,10 @@ body[dir="rtl"] .PaginationStyle-Committee {
 
 .PaperStylesMeetingTwoPage {
   width: 100% !important;
+  /* min-height: 78vh !important;*/
   height: auto !important;
   position: relative;
   padding: 20px 20px !important;
-  border-radius: 8px !important;
-  width: 100% !important;
-  border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: var(--Paper-shadow);
-  display: inline-block !important;
-  background: #fff !important;
 }
 
 .UnpublishedMeetingButton {
@@ -259,6 +270,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .publishedMeetingButton-active {
+  /* border: 1px solid #e1e1e1 !important; */
   font-size: 12px !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
@@ -290,10 +302,99 @@ body[dir="rtl"] .PaginationStyle-Committee {
   color: #6172d6;
   font-size: 14px !important;
   cursor: pointer;
+  /* overflow: hidden !important; */
+  /* width: 180px !important; */
+  /* white-space: nowrap !important; */
+  /* text-overflow: ellipsis !important; */
+  /* display: block !important; */
 }
 
 .width-10 {
   width: 10px !important;
+}
+
+.Calendar_Meeting button {
+  width: 160px;
+  height: 31px;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+body[dir="rtl"] .Calendar_Meeting button {
+  font-weight: 600 !important;
+}
+
+.Calendar_Meeting .dropdown-toggle.btn.btn-primary {
+  height: 31px !important;
+  font-size: calc(14px - 20%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.Calendar_Meeting .dropdown-menu.show {
+  padding: 0 !important;
+  width: 140px;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translate(0px, 45px);
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show {
+  padding: 0 !important;
+  width: 160px;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  transform: translateY(0px, 45px) !important;
+  border-width: 0px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Calendar_Meeting .dropdown-menu.show .dropdown-item {
+  padding: 10px 10px;
+  font-weight: 600 !important;
+  text-align: center;
+  font-size: 11px !important;
+}
+
+body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
+  font-weight: 600 !important;
+}
+
+.Calendar_Meeting .dropdown-menu.show .dropdown-item:nth-child(1) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.Calendar_Meeting .dropdown-menu.show .dropdown-item:hover {
+  background: none !important;
+}
+
+.Calendar_Meeting .dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 5.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+.schedule_button {
+  font-size: calc(14px - 20%);
+  font-weight: 600 !important;
 }
 
 .DefineTableFixedheight {
@@ -301,6 +402,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 
 .meeting-expanded-row {
+  /* margin-left: 33px !important; */
   margin-left: 35px !important;
 }
 .orgaizer_value {
@@ -340,40 +442,4 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .isemptySpace {
   width: 15px;
   height: 15px;
-}
-
-.ResetOkBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
 }

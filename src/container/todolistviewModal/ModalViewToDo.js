@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ModalViewToDo.css";
+import { LoadingOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
@@ -13,7 +14,10 @@ import {
   Button,
   AttachmentViewer,
 } from "./../../components/elements";
-import { newTimeFormaterAsPerUTCFullDate } from "./../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  RemoveTimeDashes,
+} from "./../../commen/functions/date_formater";
 import { Row, Col } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
@@ -27,12 +31,12 @@ import {
   emptyCommentState,
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
+import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //For Localization
@@ -41,26 +45,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
-  const TodoListReducerData = useSelector(
-    (state) => state.toDoListReducer.ToDoDetails
-  );
-
-  const DeleteCommentSpinnerData = useSelector(
-    (state) => state.toDoListReducer.deleteCommentSpinner
-  );
-
-  const postAssigneeCommentsDeleteCommentIDsData = useSelector(
-    (state) => state.postAssigneeComments.DeleteCommentsId
-  );
-
-  const postAssigneeCommentsResponseMessege = useSelector(
-    (state) => state.postAssigneeComments.ResponseMessage
-  );
-
-  const CommentsData = useSelector(
-    (state) => state.postAssigneeComments.Comments
-  );
+  const state = useSelector((state) => state);
+  const { toDoListReducer, postAssigneeComments } = state;
+  const { Comments } = postAssigneeComments;
 
   //To Display Modal
   const dispatch = useDispatch();
@@ -68,9 +55,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   //Notification State
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   //task Object
@@ -97,9 +83,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
     useState("");
+  const [taskAssignedName, setTaskAssignedName] = useState([]);
+  const [assigeeDetails, setAssigneeDetails] = useState(null);
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
+  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedToTaskAssignedTo");
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -130,8 +119,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   }, [todoComments, taskAssigneeComments]);
 
   useEffect(() => {
-    if (Object.keys(TodoListReducerData).length > 0) {
-      let viewData = TodoListReducerData;
+    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      let viewData = toDoListReducer.ToDoDetails;
+      console.log(viewData, "viewDataviewDataviewData");
       setTask({
         ...task,
         PK_TID: viewData.pK_TID,
@@ -151,7 +141,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           }
         });
       }
-      let listOfAssignees = TodoListReducerData.taskAssignedTo;
+      let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo;
 
       if (listOfAssignees !== undefined) {
         let tem = [];
@@ -181,11 +171,13 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             assigneeinfo.push(data);
           }
         });
+        setAssigneeDetails(assigneeinfo);
         setTaskAssignedTo(assigneedetails);
+        setTaskAssignedName(tem);
       }
-      let todoCreator = TodoListReducerData.taskCreator;
+      let todoCreator = toDoListReducer.ToDoDetails.taskCreator;
       setTodoCreator(todoCreator);
-      let filesUploaded = TodoListReducerData.taskAttachments;
+      let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
         filesUploaded.forEach((data, index) => {
@@ -197,9 +189,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             FK_TID: data.fK_TID,
           });
         });
-        setTasksAttachments({ TasksAttachments: tem });
+        setTasksAttachments({ ["TasksAttachments"]: tem });
       }
-      let assgineeeComments = TodoListReducerData.taskComments;
+      let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
 
       if (assgineeeComments.length > 0) {
         let assigneescommentsArr = [];
@@ -228,18 +220,18 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       });
       setAssgieeComments([]);
     }
-  }, [TodoListReducerData]);
+  }, [toDoListReducer.ToDoDetails]);
 
   // for comment from socket
   useEffect(() => {
-    if (CommentsData !== null) {
+    if (Comments !== null) {
       // First Compare Random ID and replace with
       let commentIndex = taskAssigneeComments.findIndex((data, index) => {
-        return data?.CommentID === CommentsData.commentFrontEndID.toString();
+        return data?.CommentID === Comments.commentFrontEndID.toString();
       });
       // Update Comment ID
       let commentIndex2 = taskAssigneeComments.find(
-        (data, index) => data?.taskCommentID === Number(CommentsData.pK_TCID)
+        (data, index) => data?.taskCommentID === Number(Comments.pK_TCID)
       );
 
       // Update Comment ID
@@ -248,7 +240,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           if (index === commentIndex) {
             const newData = {
               ...comment,
-              taskCommentID: Number(CommentsData.pK_TCID),
+              taskCommentID: Number(Comments.pK_TCID),
             };
 
             return newData;
@@ -261,35 +253,35 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       } else if (commentIndex2 === undefined && commentIndex === -1) {
         // Comment does not exist, add it
         let newComment = {
-          userID: parseInt(CommentsData.fK_UID),
-          TaskID: parseInt(CommentsData.fK_TID),
-          CommentID: CommentsData.CommentFrontEndID,
-          Comment: CommentsData.comment,
-          taskCommentID: Number(CommentsData.pK_TCID),
-          taskCommentUserName: CommentsData.userName,
-          DateTime: CommentsData.dateTime,
+          userID: parseInt(Comments.fK_UID),
+          TaskID: parseInt(Comments.fK_TID),
+          CommentID: Comments.CommentFrontEndID,
+          Comment: Comments.comment,
+          taskCommentID: Number(Comments.pK_TCID),
+          taskCommentUserName: Comments.userName,
+          DateTime: Comments.dateTime,
         };
 
         setTaskAssigneeComments((prev) => [...prev, newComment]);
         dispatch(emptyCommentState());
       }
     }
-  }, [CommentsData]);
+  }, [Comments]);
 
   // for Comment delete from MQTT Notification
   useEffect(() => {
     if (
-      postAssigneeCommentsDeleteCommentIDsData !== null &&
-      postAssigneeCommentsDeleteCommentIDsData !== undefined
+      postAssigneeComments.DeleteCommentsId !== null &&
+      postAssigneeComments.DeleteCommentsId !== undefined
     ) {
       if (
-        postAssigneeCommentsDeleteCommentIDsData.commentID !== 0 &&
-        postAssigneeCommentsDeleteCommentIDsData.commentID !== null
+        postAssigneeComments.DeleteCommentsId.commentID !== 0 &&
+        postAssigneeComments.DeleteCommentsId.commentID !== null
       ) {
         let findNewIndex = taskAssigneeComments.findIndex(
           (data, index) =>
             data.taskCommentID ===
-            postAssigneeCommentsDeleteCommentIDsData.commentID
+            postAssigneeComments.DeleteCommentsId.commentID
         );
         if (findNewIndex !== -1) {
           let newData = [...taskAssigneeComments];
@@ -298,7 +290,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         }
       }
     }
-  }, [postAssigneeCommentsDeleteCommentIDsData]);
+  }, [postAssigneeComments.DeleteCommentsId]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -308,6 +300,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setViewFlagToDo(false);
+      // dispatch(clearState());
       setTask({
         ...task,
         PK_TID: 1,
@@ -318,8 +311,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         DeadLineTime: "",
         CreationDateTime: "",
       });
+      // setToDoTime("");
       setTaskAssignedTo([]);
-      setTasksAttachments({ TasksAttachments: [] });
+      setTasksAttachments({ ["TasksAttachments"]: [] });
+      setTaskAssignedName([]);
       setTaskAssigneeComments([]);
       setAssgieeComments("");
       setDeleteCommentsId([]);
@@ -376,13 +371,18 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   useEffect(() => {
     if (
-      postAssigneeCommentsResponseMessege !== "" &&
-      postAssigneeCommentsResponseMessege !== "Comment added successfully"
+      postAssigneeComments.ResponseMessage !== "" &&
+      postAssigneeComments !== undefined &&
+      postAssigneeComments.ResponseMessage !== "Comment added successfully"
     ) {
-      showMessage(postAssigneeCommentsResponseMessege, "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: postAssigneeComments.ResponseMessage,
+      });
     }
     dispatch(HideNotificationTodoComment());
-  }, [postAssigneeCommentsResponseMessege]);
+  }, [postAssigneeComments.ResponseMessage]);
 
   const handleClose = () => {
     dispatch(emptyCommentState());
@@ -412,9 +412,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
+                      console.log(assgineeData, "assgineeDataassgineeData");
                       if (
-                        Number(TodoListReducerData.taskCreator.pK_UID) ===
-                        Number(createrID)
+                        Number(
+                          toDoListReducer.ToDoDetails.taskCreator.pK_UID
+                        ) === Number(createrID)
                       ) {
                         return (
                           <Col sm={12} md={12} lg={12}>
@@ -488,7 +490,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                 formClassPosition="relative-position-form"
                               />
 
-                              {DeleteCommentSpinnerData &&
+                              {toDoListReducer.deleteCommentSpinner &&
                               deleteCommentsId === commentData.taskCommentID ? (
                                 <span className="deleteCommentSpinner">
                                   <Spin size="small" />
@@ -610,6 +612,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                           modalviewAttachmentFiles.DisplayAttachmentName.split(
                             "."
                           ).pop();
+                        const first =
+                          modalviewAttachmentFiles.DisplayAttachmentName.split(
+                            " "
+                          )[0];
 
                         const pdfData = {
                           taskId: modalviewAttachmentFiles.FK_TID,
@@ -665,7 +671,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           </>
         }
       />
-      <Notification open={open} setOpen={setOpen} />
+
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

@@ -56,6 +56,7 @@
 }
 
 .home-calendar-spinner {
+  /* height: 61vh !important; */
   min-height: auto !important;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -86,6 +87,7 @@
 .home-recentactivity-notification-description {
   overflow: hidden;
   text-overflow: ellipsis;
+  /* white-space: nowrap; */
   width: 310px;
   word-wrap: break-word;
   margin-left: 25px;
@@ -134,6 +136,9 @@ h1.recent-activity {
 
 .DashboardTodoTable {
   position: relative;
+  /* height: 61vh !important; */
+  /* overflow-y: auto;
+  overflow-x   : hidden; */
   margin-left: -5px;
   overflow: hidden;
 }
@@ -153,6 +158,8 @@ body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
 .DashboardTodoTable .ant-table-body {
   overflow-y: auto !important;
   height: calc(91vh - 13vh) !important;
+  /* max-height: 455px !important; */
+  /* margin-top: 7px !important; */
 }
 
 .DashboardTodoTable
@@ -177,6 +184,7 @@ body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
 
 .DashboardTodoTable td.ant-table-cell {
   padding: 6px !important;
+  /* border-bottom: 5px solid #ccc !important; */
 }
 
 .react-calendar {
@@ -238,6 +246,10 @@ button.react-calendar__navigation__arrow.react-calendar__navigation__next-button
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #757575 !important;
 }
+
+/* .react-calendar__tile--active {
+    border-radius: 50%;
+} */
 
 button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--range.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
   color: #fff !important;
@@ -378,6 +390,19 @@ span.rmdp-arrow-container.rmdp-right {
   margin-top: -6px !important;
 }
 
+/* .rmdp-day.rmdp-today span {
+    background: #000 !important;
+
+    color: #fff !important;
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+    background-color: #8d8d8d !important;
+    box-shadow: none !important;
+
+    color     : #fff !important;
+} */
+
 .rmdp-day.rmdp-selected span:not(.highlight) {
   background-color: #e1e1e1 !important;
   box-shadow: none !important;
@@ -431,6 +456,7 @@ body[dir="rtl"] .desc-notification-user {
 
 .Upcoming-Events-Box .ant-result.ant-result-info.notification-text {
   padding: 0px 41px !important;
+  /* margin-top: 20px; */
 }
 
 .Upcoming-Events-Box .ant-result-icon {
@@ -445,6 +471,7 @@ body[dir="rtl"] .desc-notification-user {
   right: 5px !important;
   font-weight: 600;
   top: 5px !important;
+  /* color: #232323; */
 }
 
 body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
@@ -483,6 +510,24 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   box-shadow: none !important;
 }
 
+/* .ant-table-pagination.ant-pagination li:nth-child(1) button {
+    border: none !important;
+    background: none !important;
+}
+.ant-table-pagination.ant-pagination li:nth-child(3) button {
+    border: none !important;
+    background: none !important;
+}
+.ant-table-pagination.ant-pagination li:nth-child(1) button svg {
+    border-top: 8px solid transparent !important;
+    border-right: 14px solid #505050 !important;
+    border-bottom: 8px solid transparent !important;
+}
+.ant-table-pagination.ant-pagination li:nth-child(3) button svg {
+    border-top: 8px solid transparent !important;
+    border-left: 14px solid #505050 !important;
+    border-bottom: 8px solid transparent !important;
+} */
 .ant-table-wrapper.dashboard-todo
   .ant-table
   .ant-table-container
@@ -506,9 +551,15 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-radius: 20px;
 }
 
+/* .ant-table-wrapper.dashboard-todo .ant-table-tbody>tr {
+    border: 2px solid #ccc !important;
+} */
+
 .dashboard-todo .ant-table table {
   border-spacing: 0 7px !important;
   border-radius: 50px !important;
+  /* table-layout     : auto !important; */
+  /* border           : none !important; */
 }
 
 .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
@@ -519,6 +570,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   font-size: calc(17px - 25%) !important;
 }
 
+/* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
+    border: 5px solid #ccc !important;
+} */
 .dashboard-todo {
   padding-right: 8px;
 }
@@ -538,6 +592,14 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 .RecentBoxScrollBar {
   height: 90% !important;
 }
+
+/* .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+    display: none !important;
+} */
+
+/* .DashboardTodoTable ul.ant-pagination {
+    text-align: right;
+} */
 
 .DashboardTodoTable li.ant-pagination-item {
   display: none !important;
@@ -601,6 +663,15 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   display: none;
 }
 
+/* .DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link:disabled {
+    background   : none !important;
+    border       : none;
+    border-top   : 16px solid transparent !important;
+    border-right : 20px solid #ccc !important;
+    border-bottom: 17px solid transparent !important;
+    overflow     : hidden;
+} */
+
 .DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link {
   background-color: transparent !important;
   border: none;
@@ -654,6 +725,8 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 }
 
 .DashboardTodoTable li.ant-pagination-total-text {
+  /* position: absolute;
+    right   : 15px; */
   width: 150px;
   text-align: center !important;
 }
@@ -713,6 +786,10 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 }
 
 @media screen and (max-width: 1200px) {
+  /* .home-recentactivity-scrollbar-container {
+    width: 130% !important;
+  } */
+
   /* for changing recent activity heading */
   h1.upcoming-events {
     background: white !important;
@@ -726,6 +803,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 
 @media screen and (max-width: 770px) {
   .home-recentactivity-scrollbar-container {
+    /* height: 87vh !important; */
     width: 100% !important;
   }
 }
@@ -828,12 +906,18 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     font-size: 9px !important;
   }
 
+  /* .progressbar-count {
+    font-size: 26px !important;
+  } */
+
   .home-meetingcount-text {
     font-size: 8px !important;
+    /* margin-top: -10px; */
   }
 
   .home-todocount-text {
     font-size: 8px !important;
+    /* margin-top: 0px; */
   }
 }
 
@@ -849,6 +933,12 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   }
 }
 
+/* .sidebar-container {
+    width: 67px;
+}
+.talk_nav {
+    width: 67px;
+} */
 .Ok-Successfull-btn {
   width: 119px !important;
   height: 46px !important;
@@ -867,7 +957,9 @@ body[dir="rtl"] .Ok-Successfull-btn {
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
+  /* border          : 1px solid #707070; */
   background-color: #f2f2f2;
+  /* margin-left     : -5px; */
 }
 
 .home-recentactivity-scrollbar-container::-webkit-scrollbar-thumb {
@@ -880,6 +972,8 @@ body[dir="rtl"] .Ok-Successfull-btn {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
+  /* background-color: #fff; */
+  /* margin-left     : -5px; */
 }
 
 .Upcoming-Events-Box::-webkit-scrollbar-thumb {
@@ -986,6 +1080,10 @@ img.recent-activity-icon {
   background: #fff !important;
   border-radius: 5px;
 }
+
+/* .notes-box{
+  padding: 10px !important;
+} */
 
 .Notes-scrollbar::-webkit-scrollbar {
   width: 0.5rem;
@@ -1159,6 +1257,7 @@ body[dir="rtl"] h1.noteheading {
 
 .dashboard-col-1 {
   height: 61vh !important;
+  /* background-color: #fff !important; */
 }
 
 .ViewMoreLink_notes {
@@ -1236,6 +1335,7 @@ body[dir="rtl"] h1.noteheading {
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
+  /* background: #2299ea !important; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
@@ -1247,6 +1347,7 @@ body[dir="rtl"] h1.noteheading {
   font-size: 12px !important;
   border-radius: 4px !important;
   color: #ffffff !important;
+  /* background: #2299ea !important; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   border-radius: 4px !important;

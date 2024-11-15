@@ -20,9 +20,7 @@ const ModalCancelAttendance = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const attendanceConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.attendanceConfirmationModal
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -52,7 +50,7 @@ const ModalCancelAttendance = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+        console.log("chek search meeting")
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
@@ -60,7 +58,7 @@ const ModalCancelAttendance = ({
   return (
     <section>
       <Modal
-        show={attendanceConfirmationModal}
+        show={NewMeetingreducer.attendanceConfirmationModal}
         setShow={dispatch(showAttendanceConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

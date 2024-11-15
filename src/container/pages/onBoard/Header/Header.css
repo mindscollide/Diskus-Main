@@ -85,14 +85,22 @@
 }
 
 .nav-item {
+  /* margin-bottom: 15px; */
   text-align: none;
   list-style: none;
 }
+
+/* .header-icon {
+    transform: translate(-5px, 15px);
+  } */
 
 .user-dropdown .dropdown-toggle .user-name {
   margin: 0 2px;
 }
 
+/* .user-name {
+      transform: translate(5px , 0px);
+  } */
 .dropright .dropdown-menu.show {
   right: 0px;
   left: inherit;
@@ -112,6 +120,7 @@
 .dropdown-item {
   white-space: nowrap !important;
   font-size: 0.8rem;
+  /* margin  : 0 0 0 0; */
 }
 
 .dropdown-item:hover {
@@ -129,7 +138,7 @@
   overflow: auto;
 }
 
-.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
+.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -149,14 +158,21 @@
   height: 20px;
   background: #e1e1e1;
   border-radius: 50%;
+  /* overflow  : hidden; */
 }
 
 .desc-notification-user {
   width: 40px;
   height: 40px;
+
+  /* background-color: #9a9a9a; */
   border-radius: 50%;
 }
 
+/* .desc-item-text {
+    font-size: 0.8rem !important;
+  
+  } */
 .desc-item-time {
   text-align: right;
   color: #9a9a9a;
@@ -288,9 +304,12 @@
 }
 
 .header-navbar-show {
+  /* z-index: 99999999 !important; */
   padding: 0 !important;
   margin: 0 !important;
+  /* width: 120% !important; */
 }
+
 
 .sidebar-for-onboard {
   z-index: 99999999 !important;
@@ -299,6 +318,7 @@
   justify-content: start !important;
   justify-items: start !important;
 }
+
 
 .header-schedule-meeting-btn {
   display: none !important;

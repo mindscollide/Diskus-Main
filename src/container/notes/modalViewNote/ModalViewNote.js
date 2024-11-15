@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, AttachmentViewer } from "../../../components/elements";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
+import {
+  Button,
+  Modal,
+  Notification,
+  AttachmentViewer,
+} from "../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
 import { useSelector } from "react-redux";
@@ -10,6 +13,7 @@ import {
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -37,47 +41,65 @@ const ModalViewNote = ({
     username: "",
   });
   //For Localization
-  const GetNotesByNotesId = useSelector(
-    (state) => state.NotesReducer.GetNotesByNotesId
-  );
-
+  const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+  const [isDeleteNote, setIsDeleteNote] = useState(false);
   const { t } = useTranslation();
-
+  const deleteNoteModalHandler = async () => {
+    setIsUpdateNote(false);
+    setIsDeleteNote(true);
+  };
   useEffect(() => {
-    if (GetNotesByNotesId !== null && GetNotesByNotesId !== undefined) {
-      try {
-        setNotesData({
-          date: GetNotesByNotesId.date,
-          description: GetNotesByNotesId.description,
-          fK_NotesStatus: GetNotesByNotesId.fK_NotesStatus,
-          fK_OrganizationID: GetNotesByNotesId.fK_OrganizationID,
-          fK_UserID: GetNotesByNotesId.fK_UserID,
-          isAttachment: GetNotesByNotesId.isAttachment,
-          isStarred: GetNotesByNotesId.isStarred,
-          modifiedDate: GetNotesByNotesId.modifiedDate,
-          modifiedTime: GetNotesByNotesId.modifiedTime,
-          notesAttachments: GetNotesByNotesId.notesAttachments,
-          notesStatus: GetNotesByNotesId.notesStatus,
-          organizationName: GetNotesByNotesId.organizationName,
-          pK_NotesID: GetNotesByNotesId.pK_NotesID,
-          time: GetNotesByNotesId.time,
-          title: GetNotesByNotesId.title,
-          username: GetNotesByNotesId.username,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    if (
+      NotesReducer.GetNotesByNotesId !== null &&
+      NotesReducer.GetNotesByNotesId !== undefined
+    ) {
+      var html = NotesReducer.GetNotesByNotesId.description.outerHTML;
+      console.log("NotesReducer", html);
+      var data = { html: html };
+      console.log("NotesReducer", data);
+      var newdescription = JSON.stringify(data);
+      console.log("NotesReducer", newdescription);
+      setNotesData({
+        date: NotesReducer.GetNotesByNotesId.date,
+        description: NotesReducer.GetNotesByNotesId.description,
+        fK_NotesStatus: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
+        fK_OrganizationID: NotesReducer.GetNotesByNotesId.fK_OrganizationID,
+        fK_UserID: NotesReducer.GetNotesByNotesId.fK_UserID,
+        isAttachment: NotesReducer.GetNotesByNotesId.isAttachment,
+        isStarred: NotesReducer.GetNotesByNotesId.isStarred,
+        modifiedDate: NotesReducer.GetNotesByNotesId.modifiedDate,
+        modifiedTime: NotesReducer.GetNotesByNotesId.modifiedTime,
+        notesAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
+        notesStatus: NotesReducer.GetNotesByNotesId.notesStatus,
+        organizationName: NotesReducer.GetNotesByNotesId.organizationName,
+        pK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
+        time: NotesReducer.GetNotesByNotesId.time,
+        title: NotesReducer.GetNotesByNotesId.title,
+        username: NotesReducer.GetNotesByNotesId.username,
+      });
     }
-  }, [GetNotesByNotesId]);
-
+  }, [NotesReducer.GetNotesByNotesId]);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const handleCloseViewModal = () => {
     if (flag) {
       setGetNoteID(0);
     }
     setViewNotes(false);
   };
-
+  const handleViewIcon = (data, ext) => {
+    // let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
+    if (fileFormatforSignatureFlow.includes(ext)) {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   return (
     <>
       <Container>
@@ -93,6 +115,7 @@ const ModalViewNote = ({
           ButtonTitle={ModalTitle}
           centered
           modalFooterClassName={styles["modalViewNoteClass"]}
+          //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={isUpdateNote === true ? "md" : "md"}
           ModalBody={
             <>
@@ -109,7 +132,6 @@ const ModalViewNote = ({
                     <img
                       draggable="false"
                       src={hollowstar}
-                      alt=""
                       width={17}
                       height={17}
                       className={styles["star-addnote"]}
@@ -118,7 +140,6 @@ const ModalViewNote = ({
                     <img
                       draggable="false"
                       className={styles["star-addnote"]}
-                      alt=""
                       width={17}
                       height={17}
                       src={StarIcon}
@@ -158,7 +179,9 @@ const ModalViewNote = ({
                     dangerouslySetInnerHTML={{
                       __html: notesData.description,
                     }}
-                  ></p>
+                  >
+                    {/* {notesData.description} */}
+                  </p>
                 </Col>
               </Row>
 
@@ -179,10 +202,24 @@ const ModalViewNote = ({
                 <Row>
                   {notesData.notesAttachments.length > 0
                     ? notesData.notesAttachments.map((data, index) => {
+                        console.log("tasksAttachments", data);
+                        let ext = data.displayAttachmentName.split(".").pop();
+
+                        const first = data.displayAttachmentName.split(" ")[0];
+                        const pdfData = {
+                          taskId: data.fK_NotesID,
+                          attachmentID: data.pK_NAID,
+                          fileName: data.displayAttachmentName,
+                          commingFrom: 2,
+                        };
+                        const pdfDataJson = JSON.stringify(pdfData);
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
                               data={data}
+                              // handleEyeIcon={() =>
+                              //   handleViewIcon(pdfDataJson, ext)
+                              // }
                               id={0}
                               name={data.displayAttachmentName}
                             />
@@ -214,6 +251,7 @@ const ModalViewNote = ({
           }
         />
       </Container>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

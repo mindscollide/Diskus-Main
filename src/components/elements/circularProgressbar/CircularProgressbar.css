@@ -8,10 +8,30 @@
   justify-content: center;
 }
 
+/* .dashboard_progress_bar {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.1;
+} */
+
 body[dir="rtl"] .dashboard_progress_bar {
   font-weight: 600;
 }
-
+/* @media screen and (min-width: 1600px) and (min-height: 900px) {
+  .circular_progressbar_div {
+    position: relative;
+    width: 180px !important;
+    display: flex;
+    height: 25vh;
+    align-items: center;
+    justify-content: center;
+  }
+} */
 .circular_progress_counter {
   width: 100% !important;
   height: 100%;

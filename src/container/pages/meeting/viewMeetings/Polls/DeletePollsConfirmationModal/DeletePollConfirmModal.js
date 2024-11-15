@@ -12,9 +12,8 @@ const DeletePollConfirmModal = ({ currentMeeting, pollID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const deletPollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.deletPollsMeeting
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const handleNOFunctionality = () => {
     dispatch(deleteSavedPollsMeeting(false));
   };
@@ -30,7 +29,7 @@ const DeletePollConfirmModal = ({ currentMeeting, pollID }) => {
 
   return (
     <Modal
-      show={deletPollsMeeting}
+      show={NewMeetingreducer.deletPollsMeeting}
       setShow={dispatch(deleteSavedPollsMeeting)}
       modalHeaderClassName={"d-block"}
       modalFooterClassName={"d-block"}

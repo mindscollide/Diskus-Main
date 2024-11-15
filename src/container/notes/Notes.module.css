@@ -44,6 +44,10 @@ body[dir="rtl"] .create-note-btn {
   font-weight: 600 !important;
 }
 
+/* .create-note-btn:focus-visible {
+  box-shadow: none !important;
+} */
+
 .notescontainer {
   height: 91vh;
   width: 98% !important;
@@ -91,6 +95,7 @@ body[dir="rtl"] .create-note-btn {
   }
 
   .collapse-text-attached {
+    /* right: 120px !important; */
     margin-right: 20px !important;
   }
 
@@ -157,16 +162,22 @@ body[dir="rtl"] .collapse-text-attached-material {
 }
 
 .MinusIcon {
+  /* margin-right: 40px !important; */
   color: #6172d6 !important;
   cursor: pointer;
+  /* margin-bottom: 16px !important; */
 }
-
+/* body[dir="rtl"] .MinusIcon {
+  margin-right: 60px !important;
+} */
 .PlusIcon {
+  /* margin-right: 30px !important; */
   color: #6172d6 !important;
   cursor: pointer;
 }
 
 .editIcon-In-Collapse-material {
+  /* z-index: 1 !important; */
   cursor: pointer !important;
 }
 

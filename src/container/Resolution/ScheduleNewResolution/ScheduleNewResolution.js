@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { Paper } from "@material-ui/core";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -20,6 +21,7 @@ import {
   TextField,
   Button,
   Checkbox,
+  InputSearchFilter,
   Notification,
   AttachmentViewer,
 } from "./../../../components/elements";
@@ -45,7 +47,9 @@ import {
   RemoveTimeDashes,
 } from "../../../commen/functions/date_formater";
 import moment from "moment";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
+
 import "react-datepicker/dist/react-datepicker.css";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
@@ -55,7 +59,6 @@ import {
   timeforSend,
   timeforViewScheduleResolution,
 } from "../../../commen/functions/time_formatter";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../commen/functions/utils";
 
 const ScheduleNewResolution = () => {
@@ -65,19 +68,9 @@ const ScheduleNewResolution = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const ResolutionReducergetAllCommitteesAndGroups = useSelector(
-    (state) => state.ResolutionReducer.getAllCommitteesAndGroups
-  );
-  const ResolutionReducerupdateResolutionDataroom = useSelector(
-    (state) => state.ResolutionReducer.updateResolutionDataroom
-  );
-  const ResolutionReducerResponseMessage = useSelector(
-    (state) => state.ResolutionReducer.ResponseMessage
-  );
-  const ResolutionReducerGetAllVotingMethods = useSelector(
-    (state) => state.ResolutionReducer.GetAllVotingMethods
-  );
+  const { ResolutionReducer, assignees } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  console.log(meetingAttendeesList, "meetingAttendeesListmeetingAttendeesList");
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [votingMethods, setVotingMethods] = useState([]);
@@ -86,9 +79,8 @@ const ScheduleNewResolution = () => {
     value: 1,
   });
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
   const [sendStatus, setsendStatus] = useState(0);
   const [folderID, setFolderID] = useState(0);
@@ -97,6 +89,11 @@ const ScheduleNewResolution = () => {
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
+  console.log(
+    nonVoterForView,
+    votersForView,
+    "votersForViewvotersForViewvotersForView"
+  );
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
@@ -192,6 +189,7 @@ const ScheduleNewResolution = () => {
     }
   }, [currentLanguage]);
   useEffect(() => {
+    // setMinDate(moment(min_date).format("YYYY-MM-DD"));
     dispatch(getAllVotingMethods(navigate, t, true));
     dispatch(getAllResolutionStatus(navigate, t, true));
     dispatch(getAllGroupsandCommitteesforResolution(navigate, t));
@@ -228,6 +226,7 @@ const ScheduleNewResolution = () => {
   };
 
   const removeUserForVoter = (id, name) => {
+    console.log(id, name, "removeUserForVoterremoveUserForVoter");
     setVoterModalRemove(true);
     setVoterID(id);
     setVoterName(name);
@@ -245,6 +244,12 @@ const ScheduleNewResolution = () => {
     );
     setVoters((prevVoter) =>
       prevVoter.filter((data, index) => data.FK_UID !== VoterID)
+    );
+    console.log(
+      VoterID,
+      voters,
+      votersForView,
+      "removeUserForVoterremoveUserForVoter"
     );
 
     setVoterID(0);
@@ -284,9 +289,9 @@ const ScheduleNewResolution = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
-
   const addVoters = () => {
-    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
+
     let voters_Data = [...voters];
     let voters_DataView = [...votersForView];
     if (newOrganizersData !== null) {
@@ -311,6 +316,11 @@ const ScheduleNewResolution = () => {
               }
             );
 
+            console.log(
+              checkIfExistInNonVoters,
+              "checkIfExistInNonVoterscheckIfExistInNonVoters"
+            );
+
             if (checkIfExistInNonVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInVoters = checkIfExistInNonVoters.filter(
@@ -324,8 +334,14 @@ const ScheduleNewResolution = () => {
                 }
               );
 
+              console.log(
+                checkIfExistInVoters,
+                "checkIfExistInNonVoterscheckIfExistInNonVoters"
+              );
+
               if (checkIfExistInVoters.length > 0) {
-                checkIfExistInVoters.forEach((userData) => {
+                checkIfExistInVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
                   voters_Data.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -335,14 +351,18 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(t("This-voter-already-exist"), "error", setOpen);
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-already-exist"),
+                });
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
+              });
             }
           }
         } else if (voterInfo.type === 2) {
@@ -389,34 +409,34 @@ const ScheduleNewResolution = () => {
                   voters_DataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("User-already-exist-voter-list"),
-                  "error",
-                  setOpen
-                );
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("User-already-exist-voter-list"),
+                });
               }
             } else {
-              showMessage(
-                t("User-already-exist-non-voter-list"),
-                "error",
-                setOpen
-              );
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("User-already-exist-non-voter-list"),
+              });
             }
           }
         } else if (voterInfo.type === 3) {
           let { organizationUsers } = newOrganizersData;
 
           let isAlreadyExistInNonVoters = nonVoter.findIndex(
-            (data) => data.FK_UID === voterInfo.value
+            (data, index) => data.FK_UID === voterInfo.value
           );
           let isAlreadyExistInVoters = voters.findIndex(
-            (data) => data.FK_UID === voterInfo.value
+            (data, index) => data.FK_UID === voterInfo.value
           );
 
           if (isAlreadyExistInNonVoters === -1) {
             if (isAlreadyExistInVoters === -1) {
               if (organizationUsers.length > 0) {
-                organizationUsers.forEach((voeterdata) => {
+                organizationUsers.forEach((voeterdata, index) => {
                   if (voeterdata.userID === voterInfo.value) {
                     voters_Data.push({
                       FK_UID: voeterdata.userID,
@@ -429,18 +449,17 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-user-already-exist-in-voter-list"),
-                "error",
-                setOpen
-              );
+              setOpen({
+                flag: true,
+                message: t("This-user-already-exist-in-voter-list"),
+              });
             }
           } else {
-            showMessage(
-              t("This-voter-is-already-exist-in-non-voter-list"),
-              "error",
-              setOpen
-            );
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("This-voter-is-already-exist-in-non-voter-list"),
+            });
           }
         }
       } catch (error) {
@@ -459,7 +478,7 @@ const ScheduleNewResolution = () => {
   };
 
   const addNonVoter = () => {
-    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
 
     let nonVotersData = [...nonVoter];
     let nonVotersDataView = [...nonVoterForView];
@@ -484,7 +503,10 @@ const ScheduleNewResolution = () => {
                 return !userExists;
               }
             );
-
+            console.log(
+              checkIfExistInVoters,
+              "checkIfExistInVoterscheckIfExistInVoters"
+            );
             if (checkIfExistInVoters.length > 0) {
               // Filter out voters who do not exist in the findGroupData.groupUsers
               let checkIfExistInNonVoters = checkIfExistInVoters.filter(
@@ -497,9 +519,13 @@ const ScheduleNewResolution = () => {
                   return !userExists;
                 }
               );
-
+              console.log(
+                checkIfExistInNonVoters,
+                "checkIfExistInVoterscheckIfExistInVoters"
+              );
               if (checkIfExistInNonVoters.length > 0) {
                 checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -509,15 +535,19 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("This-voter-is-already-exist-in-non-voter-list"),
-                  "error",
-                  setOpen
-                );
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
                 console.log("user Already Non Voter List");
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
+              });
             }
           }
         } else if (nonVoterInfo.type === 2) {
@@ -552,8 +582,10 @@ const ScheduleNewResolution = () => {
                   return !userExists;
                 }
               );
+              console.log(checkIfExistInVoters, "Users not in voters list");
               if (checkIfExistInNonVoters.length > 0) {
-                checkIfExistInNonVoters.forEach((userData) => {
+                checkIfExistInNonVoters.forEach((userData, index) => {
+                  console.log(userData, "userDatauserDatauserData");
                   nonVotersData.push({
                     FK_UID: userData.userID,
                     FK_VotingStatus_ID: 3,
@@ -563,29 +595,33 @@ const ScheduleNewResolution = () => {
                   nonVotersDataView.push(userData);
                 });
               } else {
-                showMessage(
-                  t("This-voter-is-already-exist-in-non-voter-list"),
-                  "error",
-                  setOpen
-                );
+                setOpen({
+                  ...open,
+                  flag: true,
+                  message: t("This-voter-is-already-exist-in-non-voter-list"),
+                });
               }
             } else {
-              showMessage(t("This-voter-already-exist"), "error", setOpen);
+              setOpen({
+                ...open,
+                flag: true,
+                message: t("This-voter-already-exist"),
+              });
             }
           }
         } else if (nonVoterInfo.type === 3) {
           let { organizationUsers } = newOrganizersData;
 
           let findVoter = nonVoter.findIndex(
-            (data) => data.FK_UID === nonVoterInfo.value
+            (data, index) => data.FK_UID === nonVoterInfo.value
           );
           let findisAlreadyExist = voters.findIndex(
-            (data) => data.FK_UID === nonVoterInfo.value
+            (data, index) => data.FK_UID === nonVoterInfo.value
           );
           if (findisAlreadyExist === -1) {
             if (findVoter === -1) {
               if (organizationUsers.length > 0) {
-                organizationUsers.forEach((voeterdata) => {
+                organizationUsers.forEach((voeterdata, index) => {
                   if (voeterdata.userID === nonVoterInfo.value) {
                     nonVotersData.push({
                       FK_UID: voeterdata.userID,
@@ -598,14 +634,16 @@ const ScheduleNewResolution = () => {
                 });
               }
             } else {
-              showMessage(
-                t("This-voter-is-already-exist-in-non-voter-list"),
-                "error",
-                setOpen
-              );
+              setOpen({
+                flag: true,
+                message: t("This-voter-is-already-exist-in-non-voter-list"),
+              });
             }
           } else {
-            showMessage(t("This-voter-already-exist"), "error", setOpen);
+            setOpen({
+              flag: true,
+              message: t("This-voter-already-exist"),
+            });
           }
         }
       } catch (error) {
@@ -621,10 +659,12 @@ const ScheduleNewResolution = () => {
       type: 0,
     });
     setEmailValue("");
+    console.log(nonVotersData, nonVotersDataView, "addNonVoteraddNonVoter");
   };
 
   const handleChangeVoter = (event) => {
-    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
+    console.log(event, "handleChangeVoterhandleChangeVoterhandleChangeVoter");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -654,7 +694,8 @@ const ScheduleNewResolution = () => {
   };
 
   const handleChangeNonVoter = (event) => {
-    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
+    console.log(event, "eventeventeventevent");
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null) {
       if (event.type === 3) {
         let { organizationUsers } = newOrganizersData;
@@ -698,6 +739,8 @@ const ScheduleNewResolution = () => {
     ) {
       setsendStatus(1);
       if (fileForSend.length > 0) {
+        // let folderID = [];
+        // let tasksAttachments;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 1,
@@ -763,7 +806,10 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
+      });
     }
   };
 
@@ -779,6 +825,7 @@ const ScheduleNewResolution = () => {
       createResolutionData.NotesToVoter !== "" &&
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
+      // voters.length > 0
     ) {
       setsendStatus(2);
       if (fileForSend.length > 0) {
@@ -859,7 +906,10 @@ const ScheduleNewResolution = () => {
       }
     } else {
       setError(true);
-      showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
+      });
     }
   };
 
@@ -880,7 +930,10 @@ const ScheduleNewResolution = () => {
       let size = true;
 
       if (totalFiles > 10) {
-        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
         return;
       }
 
@@ -896,15 +949,26 @@ const ScheduleNewResolution = () => {
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
-            "error",
-            setOpen
-          );
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
+            });
+          }, 3000);
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            });
+          }, 3000);
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            });
+          }, 3000);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -961,6 +1025,7 @@ const ScheduleNewResolution = () => {
       }
     }
     if (name === "ResolutionDescription") {
+      // let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
       if (value !== "") {
         setCreateResolutionData({
           ...createResolutionData,
@@ -976,12 +1041,13 @@ const ScheduleNewResolution = () => {
   };
 
   useEffect(() => {
-    let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
+    let newOrganizersData = ResolutionReducer.getAllCommitteesAndGroups;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
+      console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.groups).length > 0) {
-          newOrganizersData.groups.forEach((a) => {
+          newOrganizersData.groups.map((a, index) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -996,7 +1062,6 @@ const ScheduleNewResolution = () => {
                     >
                       <img
                         src={GroupIcon}
-                        alt=""
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
@@ -1014,7 +1079,7 @@ const ScheduleNewResolution = () => {
           });
         }
         if (Object.keys(newOrganizersData.committees).length > 0) {
-          newOrganizersData.committees.forEach((a) => {
+          newOrganizersData.committees.map((a, index) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -1029,7 +1094,6 @@ const ScheduleNewResolution = () => {
                     >
                       <img
                         src={committeeicon}
-                        alt=""
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
@@ -1047,7 +1111,7 @@ const ScheduleNewResolution = () => {
           });
         }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.forEach((a) => {
+          newOrganizersData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -1062,6 +1126,7 @@ const ScheduleNewResolution = () => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -1085,7 +1150,7 @@ const ScheduleNewResolution = () => {
         setMeetingAttendeesList([]);
       }
     }
-  }, [ResolutionReducergetAllCommitteesAndGroups]);
+  }, [ResolutionReducer.getAllCommitteesAndGroups]);
 
   const documentsUploadCall = async (folderID) => {
     let newFolder = [];
@@ -1119,29 +1184,38 @@ const ScheduleNewResolution = () => {
   };
 
   useEffect(() => {
-    if (ResolutionReducerupdateResolutionDataroom !== 0) {
-      setFolderID(ResolutionReducerupdateResolutionDataroom);
-      let folderIDCreated = ResolutionReducerupdateResolutionDataroom;
+    if (ResolutionReducer.updateResolutionDataroom !== 0) {
+      setFolderID(ResolutionReducer.updateResolutionDataroom);
+      let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
       documentsUploadCall(folderIDCreated);
     }
-  }, [ResolutionReducerupdateResolutionDataroom]);
+  }, [ResolutionReducer.updateResolutionDataroom]);
 
   useEffect(() => {
     if (
-      ResolutionReducerResponseMessage !== "" &&
-      ResolutionReducerResponseMessage !== undefined &&
-      ResolutionReducerResponseMessage !== t("No-data-available")
+      ResolutionReducer.ResponseMessage !== "" &&
+      ResolutionReducer.ResponseMessage !== undefined &&
+      ResolutionReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
+      setOpen({
+        flag: true,
+        message: ResolutionReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          flag: false,
+          message: "",
+        });
+      }, 4000);
       dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducerResponseMessage]);
+  }, [ResolutionReducer.ResponseMessage]);
 
   // Get Voting Methods
   useEffect(() => {
-    if (ResolutionReducerGetAllVotingMethods !== null) {
+    if (ResolutionReducer.GetAllVotingMethods !== null) {
       let newArr = [];
-      ResolutionReducerGetAllVotingMethods.forEach((data) => {
+      ResolutionReducer.GetAllVotingMethods.map((data, index) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
@@ -1149,7 +1223,7 @@ const ScheduleNewResolution = () => {
       });
       setVotingMethods(newArr);
     }
-  }, [ResolutionReducerGetAllVotingMethods]);
+  }, [ResolutionReducer.GetAllVotingMethods]);
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
@@ -1160,6 +1234,7 @@ const ScheduleNewResolution = () => {
 
       // Format the time as HH:mm:ss
       const formattedTime = `${hours}:${minutes}`;
+      // setCirculationDateTime(date);
       setCirculationDateTime({
         ...circulationDateTime,
         time: formattedTime,
@@ -1246,9 +1321,7 @@ const ScheduleNewResolution = () => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className={
-          currentLanguage === "en" ? "input-with-icon" : "input-with-icon_ar"
-        }
+        className="input-with-icon"
       />
     );
   }
@@ -1279,7 +1352,18 @@ const ScheduleNewResolution = () => {
                 </span>
               </Col>
             </Row>
-            <span className={styles["Create_new_resolution_paper"]}>
+            <Paper className={styles["Create_new_resolution_paper"]}>
+              {/* <Row>
+                <Col lg={12} md={12} sm={12} className={styles["IN_draft_Box"]}>
+                  <Row className="mt-1">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Draft_messege"]}>
+                        {t("In-draft")}
+                      </span>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row> */}
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -1453,6 +1537,15 @@ const ScheduleNewResolution = () => {
                               onFocusedDateChange={circulationDateChangeHandler}
                             />
                           </div>
+                          {/* <TextFieldDateTime
+                            min={minDate}
+                            labelclass="d-none"
+                            name={"circulation"}
+                            applyClass={"search_voterInput"}
+                            change={(e) => {
+                              handleChangeDateSelection(e);
+                            }}
+                          /> */}
                           <Row>
                             <Col>
                               <p
@@ -1490,6 +1583,9 @@ const ScheduleNewResolution = () => {
                               <TimePicker hideSeconds position="bottom" />,
                             ]}
                             render={<CustomInput />}
+                            // selected={
+                            //   circulationDateTime.timeCirculationforView
+                            // }
                             value={circulationDateTime.timeCirculationforView}
                             onChange={(date) =>
                               handleCirculationTimeChange(date)
@@ -1581,6 +1677,24 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <TextFieldTime
+                            type="time"
+                            applyClass={"search_voterInput"}
+                            labelclass="d-none"
+                            value={votingDateTime.time}
+                            name="voting"
+                            onKeyDown={(e) => e.preventDefault()}
+                            change={(e) => {
+                              handleChangeTimeSelection(e);
+                            }}
+                            onClick={() => {
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                time: getcurrentTime,
+                              });
+                            }}
+                          /> */}
+
                           <DatePicker
                             arrowClassName="arrowClass"
                             containerClassName="containerResolutionTimePicker"
@@ -1593,6 +1707,7 @@ const ScheduleNewResolution = () => {
                             editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
+                            // selected={votingDateTime.timeVotingforView}
                             value={votingDateTime.timeVotingforView}
                             onChange={(date) => handleVotingTimeChange(date)}
                           />
@@ -1682,6 +1797,23 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <TextFieldTime
+                            applyClass={"search_voterInput"}
+                            type="time"
+                            onKeyDown={(e) => e.preventDefault()}
+                            value={decisionDateTime.time}
+                            name="decision"
+                            labelclass="d-none"
+                            change={(e) => {
+                              handleChangeTimeSelection(e);
+                            }}
+                            onClick={() => {
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                time: getcurrentTime,
+                              });
+                            }}
+                          /> */}
                           <DatePicker
                             arrowClassName="arrowClass"
                             containerClassName="containerResolutionTimePicker"
@@ -1691,9 +1823,11 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            // shouldCloseOnSelect={true}
                             editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
+                            // selected={decisionDateTime.timeDecisionforView}
                             value={decisionDateTime.timeDecisionforView}
                             onChange={(date) => handleDecisionTimeChange(date)}
                           />
@@ -2004,6 +2138,7 @@ const ScheduleNewResolution = () => {
                                                 md={6}
                                                 sm={6}
                                                 key={data.pK_UID}
+                                                // className="mt-2"
                                               >
                                                 <EmployeeinfoCard
                                                   Employeename={data?.name}
@@ -2123,7 +2258,6 @@ const ScheduleNewResolution = () => {
                                   >
                                     <img
                                       src={featherupload}
-                                      alt=""
                                       width="18.87px"
                                       height="18.87px"
                                       draggable="false"
@@ -2180,7 +2314,7 @@ const ScheduleNewResolution = () => {
                   </Row>
                 </Col>
               </Row>
-            </span>
+            </Paper>
           </Col>
         </Row>
       </section>
@@ -2206,6 +2340,12 @@ const ScheduleNewResolution = () => {
           setCancelresolution={setResolutioncancel}
         />
       ) : null}
+      {/* {resolutionupdate ? (
+        <ModalUpdateresolution
+          updateresolution={resolutionupdate}
+          setUpdateresolution={setResolutionupdate}
+        />
+      ) : null} */}
 
       {discardresolution ? (
         <ModalDiscardResolution
@@ -2213,7 +2353,7 @@ const ScheduleNewResolution = () => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );
 };

@@ -398,10 +398,6 @@ body[dir="rtl"] p.chat-username {
   margin-right: 25px;
 }
 
-body[dir="rtl"] p.chat-username.chathead {
-  right: 18px !important;
-}
-
 .chat-box-icons img {
   width: 18px;
   cursor: pointer;
@@ -727,7 +723,7 @@ body[dir="rtl"] .chatBox.height {
   bottom: 0;
   right: auto;
   width: 325px;
-  height: 37vh;
+  height: 35vh;
   background: #fff;
   border: 1px solid #4cd7de;
   overflow: hidden auto;
@@ -2129,6 +2125,15 @@ body[dir="rtl"] img.image-close {
 button.talk-dropdown-toggle.dropdown-toggle {
   border: none !important;
 }
+
+/* .chat-box-icons.cursor-pointer.positionRelative.show.dropdown .dropdown-menu.show {
+background: #fff;
+border: 1px solid #b6b6b6;
+border-radius: 5px;
+text-align: center;
+width: 105px;
+min-width: 105px;
+} */
 
 .chat-box-icons.cursor-pointer.positionRelative.show.dropdown a.dropdown-item {
   font-size: 12px;

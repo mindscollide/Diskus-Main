@@ -26,7 +26,6 @@ import {
   GetAllMeetingOrganizers,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Organizers = ({
   setmeetingDetails,
@@ -55,8 +54,14 @@ const Organizers = ({
 
   const [cancelModalView, setCancelModalView] = useState(false);
 
-  const { MeetingOrganizersReducer } = useSelector((state) => state);
-
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state
+  );
+  console.log(
+    MeetingOrganizersReducer,
+    NewMeetingreducer,
+    "MeetingOrganizersReducerMeetingOrganizersReducer"
+  );
   const currentOrganizerData = {
     displayPicture: "",
     email: currentUserEmail,
@@ -75,7 +80,6 @@ const Organizers = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   useEffect(() => {
@@ -129,7 +133,7 @@ const Organizers = ({
         key: "isPrimaryOrganizer",
         align: "left",
         ellipsis: true,
-        render: (text) => (
+        render: (text, record, rowIndex) => (
           <Row>
             <Col
               lg={12}
@@ -149,6 +153,7 @@ const Organizers = ({
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",
+        // width: "120px",
         ellipsis: true,
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
@@ -281,7 +286,7 @@ const Organizers = ({
         key: "isPrimaryOrganizer",
         align: "left",
         ellipsis: true,
-        render: (text) => (
+        render: (text, record, rowIndex) => (
           <Row>
             <Col
               lg={12}
@@ -301,7 +306,7 @@ const Organizers = ({
         dataIndex: "isOrganizerNotified",
         key: "isOrganizerNotified",
         ellipsis: true,
-        render: (record) => {
+        render: (text, record) => {
           if (record.isOrganizerNotified === true) {
             return (
               <Row>
@@ -491,7 +496,18 @@ const Organizers = ({
       MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
       MeetingOrganizersReducer.ResponseMessage !== ""
     ) {
-      showMessage(MeetingOrganizersReducer.ResponseMessage, "success", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: MeetingOrganizersReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(clearResponseMessage(""));
     } else {
       dispatch(clearResponseMessage(""));
@@ -535,7 +551,7 @@ const Organizers = ({
         </Row>
       </section>
 
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {cancelModalView && (
         <CancelButtonModal

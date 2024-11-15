@@ -29,9 +29,10 @@
   padding: 10px !important;
   position: relative !important;
   overflow: auto !important;
+  /* background: #fff !important; */
   border-radius: 4px;
 }
-.start-meeting-btn {
+.start-meeting-btn  {
   font-weight: 600 !important;
   color: #fff !important;
   font-size: 14px !important;

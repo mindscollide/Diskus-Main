@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./SubscriptionDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { render } from "@testing-library/react";
 import {
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
@@ -22,14 +23,7 @@ const SubscriptionDetailsUserManagement = () => {
 
   const dispatch = useDispatch();
 
-  let Locale = localStorage.getItem("i18nextLng");
-
-  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
-    useSelector(
-      (state) =>
-        state.UserMangementReducer
-          .organizationSelectedPakagesByOrganizationIDData
-    );
+  const { UserMangementReducer } = useSelector((state) => state);
 
   //Subscription Details Table Data
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
@@ -53,102 +47,86 @@ const SubscriptionDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const data =
-        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
       if (data) {
         setSubscriptionDetails(data.organizationSubscriptions);
       }
     } catch (error) {
       console.log("error", error);
     }
-  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   // Calculate total essential licenses count
   const totalEssentialLicenses = subscriptionDetails.reduce((total, record) => {
-    try {
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Essential"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
+      }
+    }
+    return total;
+  }, 0);
+
+  // Calculate total essential licenses count
+  const totalProfessionalLicenses = subscriptionDetails.reduce(
+    (total, record) => {
       if (!record.IsDefaultRow) {
         const essentialPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Essential"
+          (pkg) => pkg.name === "Professional"
         );
         if (essentialPackage) {
           return total + essentialPackage.headCount;
         }
       }
       return total;
-    } catch (error) {
-      console.error("totalEssentialLicenses", error);
-    }
-  }, 0);
-
-  // Calculate total essential licenses count
-  const totalProfessionalLicenses = subscriptionDetails.reduce(
-    (total, record) => {
-      try {
-        if (!record.IsDefaultRow) {
-          const essentialPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Professional"
-          );
-          if (essentialPackage) {
-            return total + essentialPackage.headCount;
-          }
-        }
-        return total;
-      } catch (error) {
-        console.error("totalProfessionalLicenses", error);
-      }
     },
     0
   );
 
   // Calculate total essential licenses count
   const totalPremiumLicenses = subscriptionDetails.reduce((total, record) => {
-    try {
-      if (!record.IsDefaultRow) {
-        const essentialPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Premium"
-        );
-        if (essentialPackage) {
-          return total + essentialPackage.headCount;
-        }
+    if (!record.IsDefaultRow) {
+      const essentialPackage = record.organizationSelectedPackages?.find(
+        (pkg) => pkg.name === "Premium"
+      );
+      if (essentialPackage) {
+        return total + essentialPackage.headCount;
       }
-      return total;
-    } catch (error) {
-      console.error("totalPremiumLicenses", error);
     }
+    return total;
   }, 0);
 
   //Calculating the total of total charges
   const calculateTotalCharges = (dataSource) => {
     let totalCharges = dataSource.reduce((total, record) => {
-      try {
-        if (!record.IsDefaultRow) {
-          const essentialPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Essential"
-          );
-          const ProfessionalPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Professional"
-          );
-          const PremiumPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Premium"
-          );
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Essential"
+        );
+        const ProfessionalPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Professional"
+        );
+        const PremiumPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Premium"
+        );
 
-          const EssentialTotal = essentialPackage
-            ? essentialPackage.headCount * essentialPackage.price
-            : 0;
+        const EssentialTotal = essentialPackage
+          ? essentialPackage.headCount * essentialPackage.price
+          : 0;
 
-          const ProfessionalTotal = ProfessionalPackage
-            ? ProfessionalPackage.headCount * ProfessionalPackage.price
-            : 0;
+        const ProfessionalTotal = ProfessionalPackage
+          ? ProfessionalPackage.headCount * ProfessionalPackage.price
+          : 0;
 
-          const PremiumTotal = PremiumPackage
-            ? PremiumPackage.headCount * PremiumPackage.price
-            : 0;
+        const PremiumTotal = PremiumPackage
+          ? PremiumPackage.headCount * PremiumPackage.price
+          : 0;
 
-          return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
-        }
-        return total;
-      } catch (error) {
-        console.error("calculateTotalCharges", error);
+        return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
       }
+      return total;
     }, 0);
 
     return totalCharges;
@@ -167,31 +145,25 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return (
-              <>
-                <span className={styles["TableheadingTotal_Main_Heading"]}>
-                  {t("Total")}
-                </span>
-              </>
-            );
-          } else {
-            let startdate = record.subscriptionStartDate;
-            let orgnizationID = record.fK_OrganizationsID;
-            let organizationSubscriptionID = record.fK_SubscriptionStatusID;
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {`${formatDateToDDMMYYYYDownGradeSubscription(
-                    startdate
-                  )}-${orgnizationID}-${organizationSubscriptionID}`}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
+            </>
+          );
+        } else {
+          let startdate = record.subscriptionStartDate;
+          let orgnizationID = record.fK_OrganizationsID;
+          let organizationSubscriptionID = record.fK_SubscriptionStatusID;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {`${formatDateToDDMMYYYYDownGradeSubscription(
+                  startdate
+                )}-${orgnizationID}-${organizationSubscriptionID}`}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -207,27 +179,23 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return <></>;
-          } else {
-            return (
-              <>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="text-center">
-                    <span className={styles["SubscritionNumber_Styles"]}>
-                      {formatDateDownGradeSubscription(
-                        record.subscriptionStartDate,
-                        Locale
-                      )}
-                    </span>
-                  </Col>
-                </Row>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        console.log(record.organizationSelectedPackages, "recordrecord");
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <span className={styles["SubscritionNumber_Styles"]}>
+                    {formatDateDownGradeSubscription(
+                      record.subscriptionStartDate
+                    )}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          );
         }
       },
     },
@@ -243,23 +211,16 @@ const SubscriptionDetailsUserManagement = () => {
       key: "ExpiryDate",
       align: "center",
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return <></>;
-          } else {
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {formatDateDownGradeSubscription(
-                    record.subscriptionExpiryDate,
-                    Locale
-                  )}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {formatDateDownGradeSubscription(record.subscriptionExpiryDate)}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -275,20 +236,16 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return <></>;
-          } else {
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {record.tenure}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {record.tenure}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -307,30 +264,27 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return (
-              <>
-                <span className={styles["TableheadingTotal"]}>
-                  {totalEssentialLicenses}
-                </span>
-              </>
-            );
-          } else {
-            const essentialPackage = record.organizationSelectedPackages?.find(
-              (pkg) => pkg.name === "Essential"
-            );
-            const headCount = essentialPackage ? essentialPackage.headCount : 0;
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        console.log(record, "recordrecordrecord");
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalEssentialLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const headCount = essentialPackage ? essentialPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -349,33 +303,28 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return (
-              <>
-                <span className={styles["TableheadingTotal"]}>
-                  {totalProfessionalLicenses}
-                </span>
-              </>
-            );
-          } else {
-            const professionalPackage =
-              record.organizationSelectedPackages?.find(
-                (pkg) => pkg.name === "Professional"
-              );
-            const headCount = professionalPackage
-              ? professionalPackage.headCount
-              : 0;
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalProfessionalLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const professionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const headCount = professionalPackage
+            ? professionalPackage.headCount
+            : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -394,30 +343,26 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return (
-              <>
-                <span className={styles["TableheadingTotal"]}>
-                  {totalPremiumLicenses}
-                </span>
-              </>
-            );
-          } else {
-            const premiumPackage = record.organizationSelectedPackages?.find(
-              (pkg) => pkg.name === "Premium"
-            );
-            const headCount = premiumPackage ? premiumPackage.headCount : 0;
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {headCount}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return (
+            <>
+              <span className={styles["TableheadingTotal"]}>
+                {totalPremiumLicenses}
+              </span>
+            </>
+          );
+        } else {
+          const premiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const headCount = premiumPackage ? premiumPackage.headCount : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {headCount}
+              </span>
+            </>
+          );
         }
       },
     },
@@ -436,46 +381,40 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            const totalCharges = calculateTotalCharges(subscriptionDetails);
+        console.log(record, "recordrecordrecord");
+        if (record.IsDefaultRow) {
+          const totalCharges = calculateTotalCharges(subscriptionDetails);
 
-            return (
-              <span className={styles["TableheadingTotal"]}>
-                {totalCharges}
+          return (
+            <span className={styles["TableheadingTotal"]}>{totalCharges}</span>
+          );
+        } else {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const ProfessionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const PremiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
+          const EssentialTotal = essentialPackage
+            ? essentialPackage.headCount * essentialPackage.price
+            : 0;
+
+          const ProfessionalTotal = ProfessionalPackage
+            ? ProfessionalPackage.headCount * ProfessionalPackage.price
+            : 0;
+          const PremiumTotal = PremiumPackage
+            ? PremiumPackage.headCount * PremiumPackage.price
+            : 0;
+          return (
+            <>
+              <span className={styles["SubscritionNumber_Styles"]}>
+                {EssentialTotal + ProfessionalTotal + PremiumTotal}
               </span>
-            );
-          } else {
-            const essentialPackage = record.organizationSelectedPackages?.find(
-              (pkg) => pkg.name === "Essential"
-            );
-            const ProfessionalPackage =
-              record.organizationSelectedPackages?.find(
-                (pkg) => pkg.name === "Professional"
-              );
-            const PremiumPackage = record.organizationSelectedPackages?.find(
-              (pkg) => pkg.name === "Premium"
-            );
-            const EssentialTotal = essentialPackage
-              ? essentialPackage.headCount * essentialPackage.price
-              : 0;
-
-            const ProfessionalTotal = ProfessionalPackage
-              ? ProfessionalPackage.headCount * ProfessionalPackage.price
-              : 0;
-            const PremiumTotal = PremiumPackage
-              ? PremiumPackage.headCount * PremiumPackage.price
-              : 0;
-            return (
-              <>
-                <span className={styles["SubscritionNumber_Styles"]}>
-                  {EssentialTotal + ProfessionalTotal + PremiumTotal}
-                </span>
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+            </>
+          );
         }
       },
     },
@@ -494,22 +433,18 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        try {
-          if (record.IsDefaultRow) {
-            return <></>;
-          } else {
-            return (
-              <>
-                <Button
-                  text={"Downgrade"}
-                  className={styles["DowngradeButton_styles"]}
-                  onClick={() => handleDowngradeOption(record)}
-                />
-              </>
-            );
-          }
-        } catch (error) {
-          console.error(error);
+        if (record.IsDefaultRow) {
+          return <></>;
+        } else {
+          return (
+            <>
+              <Button
+                text={"Downgrade"}
+                className={styles["DowngradeButton_styles"]}
+                onClick={() => handleDowngradeOption(record)}
+              />
+            </>
+          );
         }
       },
     },
@@ -564,6 +499,7 @@ const SubscriptionDetailsUserManagement = () => {
           />
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

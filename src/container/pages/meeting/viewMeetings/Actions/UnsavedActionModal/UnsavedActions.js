@@ -13,9 +13,7 @@ const UnsavedActions = ({ setCreateaTask, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const unsavedActions = useSelector(
-    (state) => state.NewMeetingreducer.unsavedActions
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -41,7 +39,7 @@ const UnsavedActions = ({ setCreateaTask, currentMeeting }) => {
   return (
     <section>
       <Modal
-        show={unsavedActions}
+        show={NewMeetingreducer.unsavedActions}
         setShow={dispatch(showUnsavedActionsModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

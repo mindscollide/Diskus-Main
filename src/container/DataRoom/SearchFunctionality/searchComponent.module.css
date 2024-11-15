@@ -60,6 +60,10 @@
   color: #5a5a5a;
 }
 
+/* .select-dropdowns-height-search {
+    width: 50% !important;
+  
+  } */
 .datepicker_input {
   height: 39px !important;
   width: 100% !important;
@@ -67,8 +71,10 @@
   border-radius: 4px !important;
   outline: none !important;
   padding: 0 10px !important;
+
 }
 
 .datePickerTodoCreate2 .rmdp-container {
   width: 100% !important;
+
 }

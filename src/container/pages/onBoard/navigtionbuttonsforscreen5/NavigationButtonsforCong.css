@@ -1,3 +1,14 @@
+/* .skipButtons-onboard {
+  width: 100%;
+  padding: 10px 30px;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: fixed !important;
+  bottom: 0px !important;
+  flex-direction: column;
+  z-index: 999999999999999 !important;
+} */
 .skipButtons-onboardFinal_screen5 {
   width: 200px !important;
   position: fixed;
@@ -5,15 +16,49 @@
   right: 20px;
   z-index: 9999999;
 }
+/* .tour-skip {
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  color: #036AB2 !important;
+  font-weight: 600 !important;
+  align-items: center !important;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px !important;
+  font-size: 22px !important;
+} */
 
 .skipButtons-onboard_screen5 {
   width: 95px !important;
   height: 46px !important;
   border: none !important;
-  background: #6172d6 !important;
+  background: #6172D6 !important;
   border-radius: 2px !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   font-size: 13px !important;
 }
+/* 
+.prev-button_onboard {
+  height: 46px !important;
+  width: 100%;
+  border: none !important;
+  background: #6172D6 !important;
+  border-radius: 2px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 15px !important;
+}
+.skip-button_onboard1 {
+  width: 100% !important;
+  height: 46px !important;
+  border: none !important;
+  background: #6172D6 !important;
+  border-radius: 2px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 15px !important;
+} */

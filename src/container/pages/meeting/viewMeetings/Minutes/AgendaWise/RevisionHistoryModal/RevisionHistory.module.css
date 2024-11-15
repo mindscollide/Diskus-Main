@@ -12,6 +12,11 @@
   color: #6172d6;
 }
 
+/* .main-wrapper {
+    padding-right: 50px;
+    padding-left: 50px;
+  } */
+
 .Accept-all {
   width: 123px;
   height: 39px;
@@ -175,6 +180,7 @@ p.agendaCreater {
 
 .version-control-wrapper-with-more {
   width: 35px;
+  /* height: 100%; */
   background: #fff;
   border-radius: 9px;
   display: block;
@@ -186,6 +192,7 @@ p.agendaCreater {
 
 body[dir="rtl"] .version-control-wrapper-with-more {
   width: 35px;
+  /* height: 100%; */
   background: #fff;
   border-radius: 9px;
   display: block;
@@ -209,6 +216,16 @@ body[dir="rtl"] .version-control-wrapper-with-more {
   border: 1px solid #e1e1e1 !important;
   border-radius: 9px !important;
 }
+
+/* .version-control-wrapper-with-more::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 17px;
+  height: 100%;
+} */
 
 .version-control-wrapper {
   width: 18px;
@@ -243,6 +260,16 @@ body[dir="rtl"] .version-control-wrapper {
   top: 60px;
   left: 30px;
 }
+
+/* .version-control-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 18px;
+  height: 184px;
+} */
 
 p.uploadedbyuser {
   font-size: 12px;
@@ -400,6 +427,7 @@ p.time-uploader {
 
 body[dir="rtl"] p.time-uploader {
   margin: 0;
+  /* position: absolute; */
   bottom: 20px;
   margin-left: auto !important;
   margin-right: 20px !important;
@@ -462,6 +490,7 @@ body[dir="rtl"] .review-minutes-wrapper-scroll {
 .review-minutes-wrapper {
   height: 57vh;
   overflow: hidden auto;
+  /* padding-right: 15px; */
   margin-bottom: 15px;
 }
 
@@ -610,6 +639,15 @@ span.Review-pending {
   transition: transform 0.5s ease;
   transform: rotate(180deg);
 }
+
+/* span.barlinespan {
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 27px;
+  top: 17px;
+  height: 100%;
+} */
 
 img.edit-icon {
   position: absolute;
