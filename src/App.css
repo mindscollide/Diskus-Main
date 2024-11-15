@@ -1048,13 +1048,9 @@ body[dir="rtl"] svg.DatePickerIcon {
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {
   color: #6172d6 !important;
-  /* font-weight     : 16px !important; */
   font-weight: 600;
   font-size: 14px !important;
-  /* width           : 158px !important;
-  height             : 21px !important; */
-  /* border-bottom   : 1px solid !important;
-  padding            : 0.5rem 0.5rem !important; */
+  margin-right: 10px !important;
 }
 
 .ParticipantAV .ant-table-thead > tr * {
@@ -1065,7 +1061,8 @@ body[dir="rtl"] svg.DatePickerIcon {
 }
 
 body[dir="rtl"] .ant-table-thead > tr * {
-  font-weight: 600;
+  font-weight: 600 !important;
+  margin-left: 10px !important;
 }
 
 /* .ant-table-row {
@@ -8141,5 +8138,10 @@ td.ant-table-column-sort {
 }
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background: none !important;
+}
+
+/* Antd Table Filter Hover Class  */
+.ant-table-filter-trigger:hover {
   background: none !important;
 }
