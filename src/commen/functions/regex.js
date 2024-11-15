@@ -60,6 +60,7 @@ export const formatValue = (value, locale) => {
 
   return formattedValue;
 };
+
 export const convertToArabicNumerals = (input, locale) => {
   console.log(input, "inputinputinputinput");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -67,7 +68,7 @@ export const convertToArabicNumerals = (input, locale) => {
   if (input == null) {
     return ""; // Return an empty string if input is null or undefined
   }
-  if (input == undefined) {
+  if (input === undefined) {
     return ""; // Return an empty string if input is null or undefined
   }
   // Convert input to a string if it's a number or if it's not already a string

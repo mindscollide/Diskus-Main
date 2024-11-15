@@ -16,7 +16,6 @@ import {
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-
 import { calculateTotals } from "../../../../commen/functions/TableDataCalculation";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
