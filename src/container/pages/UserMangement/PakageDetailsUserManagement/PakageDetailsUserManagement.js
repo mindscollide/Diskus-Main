@@ -3,7 +3,6 @@ import styles from "./PakageDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import Loader from "../../../../components/elements/loader/Loader";
 import Card from "react-bootstrap/Card";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -40,14 +39,6 @@ const PakageDetailsUserManagement = () => {
 
   const UserMangementReducergetAllSelectedPakagesData = useSelector(
     (state) => state.UserMangementReducer.getAllSelectedPakagesData
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
   );
 
   //States
@@ -491,87 +482,85 @@ const PakageDetailsUserManagement = () => {
         </Col>
       </Row>
       <Row className="mt-3 ">
-        {packageDetail.length > 0 ? (
-          packageDetail.map((data, index) => {
-            return (
-              <Col
-                sm={12}
-                lg={4}
-                md={4}
-                className={index === 1 && index === 3 ? "p-0" : "my-2"}
-              >
-                <Row className="g-4">
-                  <Col sm={12} className={styles["packageCardBox"]}>
-                    <Card className={styles["packagecard"]}>
-                      <Row className="mt-3">
-                        <Col sm={12}>
-                          <>
-                            <span className={styles["package_title"]}>
-                              <p title={data.name}>{data.name}</p>
-                            </span>{" "}
-                          </>
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col sm={false} md={2} lg={2}></Col>
-                        <Col sm={12} md={8} lg={8}>
-                          <div className={styles["packagecard_pricebox"]}>
-                            <span className={styles["package_actualPrice"]}>
-                              ${convertToArabicNumerals(data?.price, locale)}/
-                              <p className={styles["package_actualPrice_p"]}>
-                                {t("Month")}
-                              </p>
+        {packageDetail.length > 0
+          ? packageDetail.map((data, index) => {
+              return (
+                <Col
+                  sm={12}
+                  lg={4}
+                  md={4}
+                  className={index === 1 && index === 3 ? "p-0" : "my-2"}
+                >
+                  <Row className="g-4">
+                    <Col sm={12} className={styles["packageCardBox"]}>
+                      <Card className={styles["packagecard"]}>
+                        <Row className="mt-3">
+                          <Col sm={12}>
+                            <>
+                              <span className={styles["package_title"]}>
+                                <p title={data.name}>{data.name}</p>
+                              </span>{" "}
+                            </>
+                          </Col>
+                        </Row>
+                        <Row className="mt-3">
+                          <Col sm={false} md={2} lg={2}></Col>
+                          <Col sm={12} md={8} lg={8}>
+                            <div className={styles["packagecard_pricebox"]}>
+                              <span className={styles["package_actualPrice"]}>
+                                ${convertToArabicNumerals(data?.price, locale)}/
+                                <p className={styles["package_actualPrice_p"]}>
+                                  {t("Month")}
+                                </p>
+                              </span>
+                            </div>
+                          </Col>
+                          <Col sm={false} md={2} lg={2}></Col>
+                        </Row>{" "}
+                        <Row className="mt-3">
+                          {" "}
+                          <Col lg={1} md={1} sm={1}></Col>
+                          <Col lg={11} md={11} sm={11} xs={12}>
+                            <span className={styles["MeetingHeading"]}>
+                              {t("Meeting")}
                             </span>
-                          </div>
-                        </Col>
-                        <Col sm={false} md={2} lg={2}></Col>
-                      </Row>{" "}
-                      <Row className="mt-3">
-                        {" "}
-                        <Col lg={1} md={1} sm={1}></Col>
-                        <Col lg={11} md={11} sm={11} xs={12}>
-                          <span className={styles["MeetingHeading"]}>
-                            {t("Meeting")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <section
-                          className={styles["Scroller_PakagesSelectionCard"]}
-                        >
-                          {data.packageFeatures !== null &&
-                          data.packageFeatures !== undefined
-                            ? data.packageFeatures.map((features, index) => {
-                                return (
-                                  <>
-                                    <Row>
-                                      <Col lg={1} md={1} sm={1}></Col>
-                                      <Col
-                                        lg={11}
-                                        md={11}
-                                        sm={11}
-                                        className="d-flex flex-column flex-wrap gap-3 mt-1"
-                                      >
-                                        <span className={styles["keypoints"]}>
-                                          {features.name}
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  </>
-                                );
-                              })
-                            : null}
-                        </section>
-                      </Row>
-                    </Card>
-                  </Col>
-                </Row>
-              </Col>
-            );
-          })
-        ) : (
-          <Loader />
-        )}
+                          </Col>
+                        </Row>
+                        <Row className="mt-2">
+                          <section
+                            className={styles["Scroller_PakagesSelectionCard"]}
+                          >
+                            {data.packageFeatures !== null &&
+                            data.packageFeatures !== undefined
+                              ? data.packageFeatures.map((features, index) => {
+                                  return (
+                                    <>
+                                      <Row>
+                                        <Col lg={1} md={1} sm={1}></Col>
+                                        <Col
+                                          lg={11}
+                                          md={11}
+                                          sm={11}
+                                          className="d-flex flex-column flex-wrap gap-3 mt-1"
+                                        >
+                                          <span className={styles["keypoints"]}>
+                                            {features.name}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </>
+                                  );
+                                })
+                              : null}
+                          </section>
+                        </Row>
+                      </Card>
+                    </Col>
+                  </Row>
+                </Col>
+              );
+            })
+          : null}
       </Row>
       <Row className="mt-4">
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
