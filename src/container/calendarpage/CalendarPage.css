@@ -380,32 +380,22 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
 }
 
 .Calendar_CreateBtn button {
-    height: 31px !important;
-    font-size: calc(14px - 20%) !important;
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    color: #fff !important;
-    border-radius: 4px !important;
-    font-weight: 600;
-    border: none !important;
-    display: flex;
-    justify-content: center;
-    width: 100% !important;
-}
-
-body[dir="rtl"] .Calendar_CreateBtn button {
-  font-weight: 600;
-}
-
-/* .Calendar_CreateBtn .dropdown-toggle.btn.btn-primary {
   height: 31px !important;
   font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600;
-
   border: none !important;
-} */
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+}
+
+body[dir="rtl"] .Calendar_CreateBtn button {
+  font-weight: 600;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
 
 .Calendar_CreateBtn .dropdown-menu.show {
   padding: 0 !important;
