@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, ProgressBar } from "react-bootstrap";
 import styles from "./ReviewSignature.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
 import { ChevronDown } from "react-bootstrap-icons";
+import ReviewSignatureEmptyImage from "../../../../assets/images/Review&Sign_EmptyState.png";
 import {
   Button,
   Notification,
@@ -49,7 +50,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-
+  console.log(approvalStats, "approvalStatsapprovalStats");
   const [reviewSignature, setReviewSignature] = useState([]);
   const [originalData, setOriginalData] = useState([]);
 
@@ -81,30 +82,6 @@ const ReviewSignature = () => {
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
-  // ProgressBar component for visualizing progress
-  const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
-    const barStyle = {
-      background: color,
-      height: "35px",
-      width: `${width}%`,
-      borderRadius: "25px",
-      zIndex: indexValue,
-      position: "absolute",
-      textAlign: currentLanguage === "en" ? "right" : "left",
-      fontFamily: "Montserrat",
-      fontStyle: "normal",
-      fontWeight: "800",
-      fontSize: "16px",
-      textTransform: "uppercase",
-      color: "#FFFFFF",
-      paddingTop: "5px",
-      paddingRight: currentLanguage === "en" ? "10px" : "auto",
-      paddingLeft: currentLanguage === "en" ? "auto" : "10px",
-      minWidth: `${indexValue === "0" ? "100%" : "auto"}`,
-    };
-
-    return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
-  };
 
   const handleClickOpenSigatureDoc = (record) => {
     console.log(record, "signeddocumentsigneddocument");
@@ -164,15 +141,14 @@ const ReviewSignature = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center justify-content-center">
+      <div className='d-flex gap-3 align-items-center justify-content-center'>
         <Button
           text={"Reset"}
           className={styles["FilterResetBtn"]}
@@ -196,12 +172,12 @@ const ReviewSignature = () => {
       key: "fileName",
       className: "nameParticipant",
       width: "300px",
+      align: currentLanguage === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => (
         <p
-          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
-          onClick={() => handleClickOpenSigatureDoc(record)}
-        >
+          className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
+          onClick={() => handleClickOpenSigatureDoc(record)}>
           <img src={getIconSource(getFileExtension(text))} />
           <span>{text}</span>
         </p>
@@ -210,18 +186,21 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          {t("Requested-by")}{" "}
-          {sortOrderRequestBy === "descend" ? (
-            <img src={DescendIcon} alt="" />
-          ) : (
-            <img src={AscendIcon} alt="" />
-          )}
+          <span className='d-flex justify-content-center'>
+            {t("Requested-by")}{" "}
+            {sortOrderRequestBy === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
         </>
       ),
       dataIndex: "creatorName",
       key: "creatorName",
       className: "emailParticipant",
       width: "180px",
+      align: "center",
       ellipsis: true,
       sorter: (a, b) =>
         a.creatorName.toLowerCase().localeCompare(b.creatorName.toLowerCase()),
@@ -236,16 +215,13 @@ const ReviewSignature = () => {
       }),
       render: (text, record) => (
         <p
-          className={
-            "m-0 d-flex align-items-center gap-2 justify-content-start"
-          }
-        >
+          className={" d-flex align-items-center gap-2 justify-content-center"}>
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
-            className="rounded-circle "
-            alt=""
+            className='rounded-circle '
+            alt=''
           />
           <span>{text}</span>
         </p>
@@ -254,12 +230,14 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          {t("Date-and-time")}{" "}
-          {sortOrderDateTime === "descend" ? (
-            <img src={DescendIcon} alt="" />
-          ) : (
-            <img src={AscendIcon} alt="" />
-          )}
+          <span className='d-flex justify-content-center'>
+            {t("Date-and-time")}{" "}
+            {sortOrderDateTime === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
         </>
       ),
       dataIndex: "createdOn",
@@ -294,7 +272,7 @@ const ReviewSignature = () => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -302,8 +280,7 @@ const ReviewSignature = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -319,8 +296,7 @@ const ReviewSignature = () => {
                 : actorStatusID === 4
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }
-          >
+            }>
             {status}
           </p>
         );
@@ -425,8 +401,7 @@ const ReviewSignature = () => {
                   style={{
                     height: "30px",
                     borderRadius: "20px",
-                  }}
-                >
+                  }}>
                   <ProgressBar
                     style={{
                       backgroundColor: "#55ce5c",
@@ -462,7 +437,7 @@ const ReviewSignature = () => {
                   />
                 </ProgressBar>
               </Col>
-              <Col lg={6} md={6} sm={12} className="d-flex">
+              <Col lg={6} md={6} sm={12} className='d-flex'>
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
@@ -508,12 +483,30 @@ const ReviewSignature = () => {
             style={{
               overflowX: "hidden",
             }}
-            height={"50vh"}
-          >
+            height={"50vh"}>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}
               className={"PendingApprovalsTable"}
+              locale={{
+                emptyText: (
+                  <>
+                    <section className='d-flex flex-column align-items-center justify-content-center mt-3'>
+                      <img
+                        src={ReviewSignatureEmptyImage}
+                        width={"250px"}
+                        alt=''
+                      />
+                      <span className={styles["ReviewMinutes_emptyTitle"]}>
+                        {t("Review-minutes")}
+                      </span>
+                      <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
+                        {t("No-document-at-the-moment-to-review")}
+                      </span>
+                    </section>
+                  </>
+                ), 
+              }}
               rows={reviewSignature}
               // scroll={scroll}
               pagination={false}

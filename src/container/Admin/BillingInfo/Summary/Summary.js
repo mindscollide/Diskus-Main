@@ -21,6 +21,7 @@ import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
 import {
   newTimeFormaterAsPerUTCFullDate,
+  _justShowDateformat,
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
@@ -215,7 +216,7 @@ const Summary = () => {
       render: (text, Record) => {
         return (
           <span className="text-truncate d-block">
-            {newTimeFormaterAsPerUTCFullDate(text)}
+            {_justShowDateformat(text)}
           </span>
         );
       },

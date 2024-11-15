@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import CallingAssistant from "../../../../assets/images/CallingAssistant.svg";
 import crossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { getPayoutStandingInformation } from "../../../../store/actions/OrganizationBillings_actions";
-import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import {
+  _justShowDateformat,
+  _justShowDateformatBilling,
+} from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import {
   DownlaodInvoiceLApi,
@@ -155,9 +158,8 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {_justShowDateformatBilling(
-                            payOutStanding.DueDate
-                          ) !== "Invalid date" || "--"}
+                          {_justShowDateformat(payOutStanding.DueDate) !==
+                            "Invalid date" || "--"}
                         </p>
                       </Col>
                     </Row>

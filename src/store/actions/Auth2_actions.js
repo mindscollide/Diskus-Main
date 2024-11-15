@@ -35,6 +35,7 @@ import {
   USERPASSWORDVERIFICATION,
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
+import { changeNewLanguage } from "./Language_actions";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -273,7 +274,7 @@ const validationEmailAction = (email, navigate, t) => {
         _token: token,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -317,6 +318,15 @@ const validationEmailAction = (email, navigate, t) => {
                 "organizationID",
                 response.data.responseResult.organizationID
               );
+              let getLanguageSelected = localStorage.getItem("i18nextLng");
+              let selectedLanguageID = getLanguageSelected === "en" ? 1 : 2;
+              let newData = {
+                UserID: Number(response.data.responseResult.userID),
+                SystemSupportedLanguageID: selectedLanguageID,
+              };
+
+              await dispatch(changeNewLanguage(newData, navigate, t));
+
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,

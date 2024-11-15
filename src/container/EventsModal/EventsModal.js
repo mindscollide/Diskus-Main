@@ -221,7 +221,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                           className="d-flex justify-content-end align-items-end"
                         >
                           <p className={styles["event__type"]}>
-                            {eventData.calenderEventType}
+                            {t(eventData.calenderEventType)}
                           </p>
                         </Col>
                       </Row>
@@ -230,7 +230,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                 })}
             </Col>
           </Row>
-          <section></section>
         </>
       }
     />

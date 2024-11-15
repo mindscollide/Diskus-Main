@@ -2292,6 +2292,7 @@
   "Duration": "Duration",
   "Downgrade": "Downgrade",
   "this-committee": "this committee?",
-  "Proposed": "Proposed",
-  "Unpublished": "Unpublished"
+  "Unpublished": "Unpublished",
+  "No-document-at-the-moment-to-review": "No document at the moment to review",
+  "Proposed": "Proposed"
 }
