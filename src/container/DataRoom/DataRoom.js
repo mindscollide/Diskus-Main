@@ -1109,7 +1109,7 @@ const DataRoom = () => {
       key: "name",
       sorter: true,
       width: "100px",
-
+      align: "start",
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
@@ -1139,7 +1139,6 @@ const DataRoom = () => {
                 alt=""
                 width={"25px"}
                 height={"25px"}
-                className="me-2"
               />
               <abbr title={text}>
                 <span
@@ -1176,7 +1175,6 @@ const DataRoom = () => {
                   alt=""
                   width={"25px"}
                   height={"25px"}
-                  className="me-2"
                 />
                 <abbr title={text}>
                   <span
@@ -1707,6 +1705,7 @@ const DataRoom = () => {
       key: "name",
       sorter: true,
       width: "200px",
+      align: "start",
       ellipsis: true,
       sortDirections: ["ascend", "descend"],
       sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
@@ -1736,7 +1735,6 @@ const DataRoom = () => {
                   alt=""
                   width={"25px"}
                   height={"25px"}
-                  className="me-2"
                 />
                 <abbr title={text}>
                   <span
@@ -1775,7 +1773,6 @@ const DataRoom = () => {
                   alt=""
                   width={"25px"}
                   height={"25px"}
-                  className="me-2"
                 />
                 <abbr title={text}>
                   <span
@@ -2287,6 +2284,7 @@ const DataRoom = () => {
       title: t("Name"),
       dataIndex: "name",
       key: "name",
+      align: "start",
       width: "250px",
       render: (text, record) => {
         let ext = record.name.split(".").pop();

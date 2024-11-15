@@ -762,7 +762,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .dataFolderRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   justify-content: flex-start;
   height: 22px !important;
   cursor: pointer;
@@ -973,6 +973,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: 300px !important;
+  gap: 5px;
 }
 
 .Dataroom__mydocument_location {
@@ -1207,6 +1208,9 @@ body[dir="rtl"] .dataroom_searchinput2 {
 
 body[dir="rtl"] .DataRoom_DropDown button {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+body[dir="rtl"] .dropdown_menu_dataroom {
+  top: 0 !important;
 }
 
 .DataRoom_DropDown button:hover {
