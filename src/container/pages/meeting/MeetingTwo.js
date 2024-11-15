@@ -328,6 +328,44 @@ const NewMeeting = () => {
     talkGroupID: 0,
   });
 
+  //Filteration States Meeting Types
+  const [selectedMeetingTypes, setSelectedMeetingTypes] = useState(
+    isMeetingTypeFilter.map((filter) => filter.value)
+  );
+  const [visibleMeetingType, setVisibleMeetingType] = useState(false);
+  //Filteration Work Meeting Status States
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "10",
+    "1",
+    "9",
+    "4",
+    "8",
+  ]);
+
+  const filters = [
+    {
+      value: "10",
+      text: t("Active"),
+    },
+    {
+      value: "1",
+      text: t("Upcoming"),
+    },
+    {
+      value: "9",
+      text: t("Ended"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+    {
+      value: "8",
+      text: t("Not-conducted"),
+    },
+  ];
+
   useEffect(() => {
     return () => {
       setBoarddeckOptions({
@@ -1299,39 +1337,7 @@ const NewMeeting = () => {
     );
   };
 
-  //Filteration Work Meeting
-
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "10",
-    "1",
-    "9",
-    "4",
-    "8",
-  ]);
-
-  const filters = [
-    {
-      value: "10",
-      text: t("Active"),
-    },
-    {
-      value: "1",
-      text: t("Upcoming"),
-    },
-    {
-      value: "9",
-      text: t("Ended"),
-    },
-    {
-      value: "4",
-      text: t("Cancelled"),
-    },
-    {
-      value: "8",
-      text: t("Not-conducted"),
-    },
-  ];
+  //Filteration Work Meeting Status Starts
 
   // Menu click handler for selecting filters
   const handleMenuClick = (filterValue) => {
@@ -1346,7 +1352,6 @@ const NewMeeting = () => {
     const filteredData = dublicatedrows.filter((item) =>
       selectedValues.includes(item.status.toString())
     );
-    console.log(filteredData, "dublicatedrowsdublicatedrowsdublicatedrows");
 
     setRow(filteredData);
     setVisible(false);
@@ -1390,16 +1395,15 @@ const NewMeeting = () => {
       </div>
     </Menu>
   );
-
-  //For meeting Type
-  const [selectedMeetingTypes, setSelectedMeetingTypes] = useState(
-    isMeetingTypeFilter.map((filter) => filter.value)
-  );
-
-  console.log(selectedMeetingTypes, "selectedMeetingTypes");
-  console.log(isMeetingTypeFilter, "selectedMeetingTypes");
-
-  const [visibleMeetingType, setVisibleMeetingType] = useState(false);
+  //Filteration Work Meeting Status Ends
+  //Filteration Work Meeting Type Starts
+  useEffect(() => {
+    if (isMeetingTypeFilter.length > 0) {
+      setSelectedMeetingTypes(
+        isMeetingTypeFilter.map((filter) => filter.value)
+      );
+    }
+  }, [isMeetingTypeFilter]);
 
   // Toggle checkbox selection for each filter item
   const handleMenuClickMeetingType = (filterValue) => {
@@ -1455,6 +1459,7 @@ const NewMeeting = () => {
       </div>
     </Menu>
   );
+  //Filteration Work Meeting Type Ends
 
   const MeetingColoumns = [
     {
@@ -1641,6 +1646,7 @@ const NewMeeting = () => {
         <ChevronDown
           className="filter-chevron-icon-todolist"
           onClick={() => setVisibleMeetingType(!visibleMeetingType)}
+          defaultChecked
         />
       ),
       filterDropdown: () => (
