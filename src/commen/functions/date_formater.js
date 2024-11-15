@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import moment from "moment";
-import { formatDistanceToNow, format, parse } from "date-fns";
+import { formatDistanceToNow, format, parse, isSameDay } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
@@ -1516,8 +1516,9 @@ export const timePassed = (dateString, locale) => {
 
   // If the locale is Arabic, replace Western digits with Arabic-Indic digits
   if (locale === "ar") {
-    formattedTime = formattedTime.replace(/\d/g, (digit) =>
-      "٠١٢٣٤٥٦٧٨٩"[digit]
+    formattedTime = formattedTime.replace(
+      /\d/g,
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
     );
   }
 
@@ -1569,4 +1570,34 @@ export const formatToLocalTimezone = (dateString) => {
   }
 
   return formattedDate;
+};
+
+export const isSameAsToday = (utcDateString) => {
+  let locale = localStorage.getItem("i18nextLng") || "en";
+  // Select locale: 'ar' for Arabic, default to English
+  const selectedLocale = locale === "ar" ? arSA : enUS;
+
+  // Parse the input date string in UTC
+  const utcDate = parse(utcDateString, "yyyyMMddHHmmss", new Date());
+
+  // Convert UTC date to local time
+  const localDate = new Date(
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+  );
+
+  // Get today's date in local timezone
+  const today = new Date();
+
+  // Compare if the localDate and today are the same
+  const isSame = isSameDay(localDate, today);
+
+  // Format the local date with the selected locale
+  const formattedDate = format(localDate, "dd MMMM, yyyy | EEEE", {
+    locale: selectedLocale,
+  });
+
+  return {
+    isSame,
+    formattedDate,
+  };
 };

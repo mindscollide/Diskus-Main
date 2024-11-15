@@ -335,7 +335,7 @@ const Actions = ({
         <p
           className="todolist-title-col"
           title={text}
-          onClick={(e) => viewActionModal(record.pK_TID)}
+          onClick={(e) => viewActionModal(record)}
         >
           {text}
         </p>
