@@ -14,7 +14,6 @@ import {
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
 import { useLocation, useNavigate } from "react-router-dom";
-import { locale } from "moment";
 import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();

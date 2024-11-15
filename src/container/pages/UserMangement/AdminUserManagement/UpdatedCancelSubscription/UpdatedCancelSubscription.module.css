@@ -42,7 +42,7 @@ body[dir="rtl"] .Create_New_subscription_styles {
 body[dir="rtl"] .TableheadingTotal {
   font-weight: 600 !important;
   display: flex !important;
-  justify-content: start !important;
+  justify-content: center !important;
 }
 
 .TableheadingTotal_Main_Total_heading {
