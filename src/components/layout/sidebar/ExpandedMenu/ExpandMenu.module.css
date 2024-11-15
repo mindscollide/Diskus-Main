@@ -24,11 +24,20 @@
   color: #fff;
   min-width: 85px;
 }
+
+body[dir="rtl"] .iconItem:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .iconItem_active {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px;
   color: #fff;
   min-width: 85px;
+}
+
+body[dir="rtl"] .iconItem_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .iconItem_active img {
@@ -52,7 +61,6 @@
   font-weight: 600;
   color: #fff !important;
   white-space: nowrap;
-
 }
 
 .iconItem p {

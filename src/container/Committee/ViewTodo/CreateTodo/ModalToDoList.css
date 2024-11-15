@@ -196,6 +196,10 @@ body[dir="rtl"] .ArabicFontSemiBold {
   color: #fff;
 }
 
+body[dir="rtl"] .Create_TodoBtn_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Create_TodoBtn_Button:is(:hover, :focus, :focus-visible, :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;

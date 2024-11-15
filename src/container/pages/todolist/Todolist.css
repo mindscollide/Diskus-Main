@@ -377,16 +377,20 @@ td.ant-table-column-sort {
 .ResetOkBtn {
   padding: 8px 10px !important;
   border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;
 }
 
+body[dir="rtl"] .ResetOkBtn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
   padding: 8px 10px !important;
   border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;

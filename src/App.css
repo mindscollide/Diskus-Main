@@ -6109,6 +6109,10 @@ body[dir="rtl"] .input-with-icon {
   padding: 5px 10px;
 }
 
+body[dir="rtl"] .ant-pagination-item-active .todolist-pagination-current {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .todolist-pagination-current {
   border-radius: 10px !important;
   border: none !important;
@@ -7927,6 +7931,10 @@ body[dir="rtl"] .SceduleMeetingButton button {
   border: none !important;
   display: flex;
   justify-content: center;
+}
+
+body[dir="rtl"] .SceduleMeetingButton .dropdown-toggle.btn.btn-primary {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .SceduleMeetingButton .dropdown-menu.show {

@@ -1502,15 +1502,27 @@ export const DateFormatForPolls = (date) => {
 // };
 export const timePassed = (dateString, locale) => {
   const givenDate = new Date(dateString);
+  console.log("forRecentActivity", givenDate);
 
   // Choose the locale based on the input (`en` for English, `ar` for Arabic)
   const selectedLocale = locale === "ar" ? arSA : enUS;
 
-  // Calculate and format the relative time distance to now, with localization
-  return formatDistanceToNow(givenDate, {
+  // Calculate the relative time distance to now, with localization
+  let formattedTime = formatDistanceToNow(givenDate, {
     addSuffix: true,
     locale: selectedLocale,
   });
+  console.log("forRecentActivity", formattedTime);
+
+  // If the locale is Arabic, replace Western digits with Arabic-Indic digits
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace(/\d/g, (digit) =>
+      "٠١٢٣٤٥٦٧٨٩"[digit]
+    );
+  }
+
+  console.log("forRecentActivity", formattedTime);
+  return formattedTime;
 };
 
 export const convertIntoDateObject = (dateTime) => {
@@ -1530,19 +1542,31 @@ export const convertIntoDateObject = (dateTime) => {
   let _dateTime = new Date(fullDateYear);
   return _dateTime;
 };
+
 export const formatToLocalTimezone = (dateString) => {
   let currentLang = localStorage.getItem("i18nextLng") || "en";
-  // Use `arSA` for Arabic Saudi Arabia locale, otherwise default to `enUS`
   const selectedLocale = currentLang === "ar" ? arSA : enUS;
 
   // Parse the input date string as a UTC date
   const utcDate = parse(dateString, "yyyyMMddHHmmss", new Date());
 
-  // Convert to local time by creating a new Date object with the UTC timestamp
+  // Convert to local time by adjusting for the timezone offset
   const localDate = new Date(
     utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
   );
 
   // Format the local date as "dd MMMM, yyyy | EEEE" with the specified locale
-  return format(localDate, "dd MMMM, yyyy | EEEE", { locale: selectedLocale });
+  let formattedDate = format(localDate, "dd MMMM, yyyy | EEEE", {
+    locale: selectedLocale,
+  });
+
+  // If the current language is Arabic, convert numbers to Arabic digits
+  if (currentLang === "ar") {
+    formattedDate = formattedDate.replace(
+      /\d/g,
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+    );
+  }
+
+  return formattedDate;
 };
