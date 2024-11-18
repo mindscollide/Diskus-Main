@@ -299,7 +299,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Essential")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -341,7 +341,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Professional")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -386,7 +386,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Premium")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -428,7 +428,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Total-charges")}
           <span className="pakageselectionSpanUsermanagement">
             {t("in-US$")}
@@ -495,7 +495,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Cancel")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Subscription")}
