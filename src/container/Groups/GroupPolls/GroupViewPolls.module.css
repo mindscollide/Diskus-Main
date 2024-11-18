@@ -204,6 +204,7 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
+
 }
 .Background-nonvoted-Button {
   max-width: 109px !important;

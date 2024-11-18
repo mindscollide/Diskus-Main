@@ -505,7 +505,7 @@ const Resolution = () => {
       title: t("Resolution-title"),
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
-      align: "left",
+      align: "start",
       width: "365px",
       render: (table, data) => {
         return (
@@ -676,7 +676,7 @@ const Resolution = () => {
       title: t("Resolution-title"),
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
-      align: "left",
+      align: "start",
       width: "365px",
       render: (table, data) => {
         return (
@@ -802,6 +802,7 @@ const Resolution = () => {
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
       width: "365px",
+      align: "start",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
         return (
@@ -818,7 +819,7 @@ const Resolution = () => {
       title: t("Voting-deadline"),
       dataIndex: "votingDeadline",
       key: "votingDeadline",
-      align: "left",
+      align: "center",
       width: "153px",
       render: (table) => {
         return (
@@ -832,7 +833,7 @@ const Resolution = () => {
       title: t("Decision-date"),
       dataIndex: "decisionDate",
       key: "decisionDate",
-      align: "left",
+      align: "center",
       width: "153px",
       render: (table) => {
         return (
@@ -946,6 +947,7 @@ const Resolution = () => {
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
       width: "350px",
+      align: "start",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
         return (
@@ -962,7 +964,7 @@ const Resolution = () => {
       title: t("Voting-deadline"),
       dataIndex: "votingDeadline",
       key: "votingDeadline",
-      align: "left",
+      align: "center",
       width: "155px",
       render: (text) => {
         return (
@@ -976,7 +978,7 @@ const Resolution = () => {
       title: t("Decision-date"),
       dataIndex: "decisionDate",
       key: "decisionDate",
-      align: "left",
+      align: "center",
       width: "153px",
       render: (text) => {
         return (
@@ -1749,6 +1751,7 @@ const Resolution = () => {
                       ),
                       spinning: ResolutionReducerLoading,
                     }}
+                    
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (

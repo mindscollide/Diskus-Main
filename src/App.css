@@ -1062,7 +1062,7 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 body[dir="rtl"] .ant-table-thead > tr * {
   font-weight: 600 !important;
-  margin-left: 14px !important;
+  /* margin-left: 14px !important; */
 }
 
 /* .ant-table-row {
@@ -6250,6 +6250,9 @@ textarea {
   height: calc(91vh - 30vh) !important;
 }
 .Polling_main_table .ant-table-column-sorters .ant-table-column-sorter {
+  display: none !important;
+}
+.Polling_table .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
 .ToDo .ant-table-column-sorters .ant-table-column-sorter {
