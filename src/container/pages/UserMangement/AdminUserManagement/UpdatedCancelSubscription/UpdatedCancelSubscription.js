@@ -277,7 +277,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "Duration",
       key: "Duration",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -299,7 +299,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Essential")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -309,7 +309,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "EssentialLisences",
       key: "EssentialLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -341,7 +341,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Professional")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -351,7 +351,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "ProfessionalLisences",
       key: "ProfessionalLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -386,7 +386,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Premium")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Licenses")}
@@ -396,7 +396,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "PremiumLisences",
       key: "PremiumLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -428,7 +428,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Total-charges")}
           <span className="pakageselectionSpanUsermanagement">
             {t("in-US$")}
@@ -438,7 +438,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "TotalCharges",
       key: "TotalCharges",
       width: 100,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => {
         try {
@@ -495,7 +495,7 @@ const UpdatedCancelSubscription = () => {
     },
     {
       title: (
-        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
+        <span className="pakageselectionSpanUsermanagement">
           {t("Cancel")}
           <span className="pakageselectionSpanUsermanagement">
             {t("Subscription")}
@@ -505,7 +505,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "CancelSubscription",
       key: "CancelSubscription",
       width: 100,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => {
         try {

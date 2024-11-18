@@ -108,8 +108,9 @@ body[dir="rtl"] .Tableheading {
 }
 
 body[dir="rtl"] .subcriptionkey_1 {
-  background: #6172d6 !important;
+  background: #fff !important;
   border-top-left-radius: 0px;
+  color: #6172d6;
   border-top-right-radius: 4px;
   font-weight: 600 !important;
 }

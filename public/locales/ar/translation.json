@@ -2229,6 +2229,16 @@
   "No-document-at-the-moment-to-review": "No document at the moment to review",
   "Unpublished": "Unpublished",
   "File-size": "File Size",
+  "Notes-you-add-appear-here": "Notes you add appear here",
+  "Failed-to-cancel-resolution": "Failed to cancel Resolution",
+  "Resolution-closed-successfully": "Resolution Closed Successfully",
+  "Resolution-updated-successfully": "Resolution Updated Successfully",
+  "Organization-role-is-required": "Organization role is required",
+  "User-role-is-required": "User role is required",
+  "Failed-to-close-resolution": "Failed to close resolution",
+  "Committee-type-committee": "Committee Type *",
+  "Committee-participants-is-required": "Committee participants is required",
+  "You-dont-have-any-notes": "You dont have any notes",
   "No-document-to-review": "No document to review",
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature"
 }

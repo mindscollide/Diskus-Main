@@ -414,6 +414,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                   <>
                     {TaskAssignedTo.map((assgineeData, index) => {
+                      console.log(assgineeData, "assgineeDataassgineeData");
                       if (
                         Number(TodoListReducerData.taskCreator.pK_UID) ===
                         Number(createrID)
@@ -435,7 +436,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             <Col sm={12} md={12} lg={12}>
                               <TodoAssgineeEmployeeCard
                                 employeeName={assgineeData.name}
-                                employeeDesignation={"assgineeData.designation"}
+                                employeeDesignation={assgineeData.designation}
                                 cardText={assgineeData.datetimeFormating}
                                 cardTextIconStyle='DateTimeViewTodo'
                                 userImage={assgineeData.displayProfilePicture}

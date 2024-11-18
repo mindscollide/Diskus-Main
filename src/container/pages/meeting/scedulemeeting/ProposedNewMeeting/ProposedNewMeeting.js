@@ -453,6 +453,10 @@ const ProposedNewMeeting = ({
 
   //Adding the Dates Rows
   const addRow = () => {
+    if (rows.length >= 5) {
+      showMessage(t("Not-more-than-5-dates-are-allowed"), "error", setOpen);
+      return;
+    }
     const lastRow = rows[rows.length - 1];
     if (isValidRow(lastRow)) {
       let { DateGMT } = incrementDateforPropsedMeeting(lastRow.dateSelect);
@@ -1533,7 +1537,7 @@ const ProposedNewMeeting = ({
                       }
                       className={styles["Add_Dates_Btn_Class"]}
                       onClick={addRow}
-                      disabled={!isValidRow(rows[rows.length - 1])}
+                      disabled={rows.length >= 5}
                     />
                   </Col>
                   <Row>

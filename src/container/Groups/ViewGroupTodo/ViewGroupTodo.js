@@ -173,7 +173,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
             const deadlineB = taskB?.deadlineDateTime;
 
             // Compare the deadlineDateTime values as numbers for sorting
-            return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+            return parseInt(deadlineB, 10) - parseInt(deadlineA, 10);
           });
 
           setRowToDo(sortedTasks);

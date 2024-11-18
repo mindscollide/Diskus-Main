@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
@@ -9,16 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import CallingAssistant from "../../../../assets/images/CallingAssistant.svg";
 import crossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { getPayoutStandingInformation } from "../../../../store/actions/OrganizationBillings_actions";
-import {
-  _justShowDateformat,
-  _justShowDateformatBilling,
-} from "../../../../commen/functions/date_formater";
+import { _justShowDateformat } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import {
   DownlaodInvoiceLApi,
   getInvocieHTMLApi,
 } from "../../../../store/actions/Auth2_actions";
 import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const PayOutstanding = () => {
   const getPayoutStanding = useSelector(
@@ -28,6 +26,7 @@ const PayOutstanding = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let lang = localStorage.getItem("i18nextLng");
   const [payOutStanding, setPayOutStanding] = useState({
     Invoice: "",
     DueDate: "",
@@ -146,7 +145,10 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {payOutStanding.Invoice || 0}
+                          {convertToArabicNumerals(
+                            payOutStanding.Invoice,
+                            lang
+                          ) || convertToArabicNumerals(0, lang)}
                         </p>
                       </Col>
                     </Row>
@@ -172,9 +174,20 @@ const PayOutstanding = () => {
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
                           {payOutStanding.InvoiceAmount !== 0 ? (
-                            <>$ {payOutStanding.InvoiceAmount}</>
+                            <>
+                              ${" "}
+                              {convertToArabicNumerals(
+                                payOutStanding.InvoiceAmount,
+                                lang
+                              )}
+                            </>
                           ) : (
-                            <>{payOutStanding.InvoiceAmount}</>
+                            <>
+                              {convertToArabicNumerals(
+                                payOutStanding.InvoiceAmount,
+                                lang
+                              )}
+                            </>
                           )}
                         </p>
                       </Col>
@@ -188,9 +201,20 @@ const PayOutstanding = () => {
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
                           {payOutStanding.LateCharges !== 0 ? (
-                            <>$ {payOutStanding.LateCharges}</>
+                            <>
+                              ${" "}
+                              {convertToArabicNumerals(
+                                payOutStanding.LateCharges,
+                                lang
+                              )}
+                            </>
                           ) : (
-                            <>{payOutStanding.LateCharges}</>
+                            <>
+                              {convertToArabicNumerals(
+                                payOutStanding.LateCharges,
+                                lang
+                              )}
+                            </>
                           )}
                         </p>
                       </Col>
@@ -204,9 +228,20 @@ const PayOutstanding = () => {
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
                           {payOutStanding.BalanceDue !== 0 ? (
-                            <>$ {payOutStanding.BalanceDue}</>
+                            <>
+                              ${" "}
+                              {convertToArabicNumerals(
+                                payOutStanding.BalanceDue,
+                                lang
+                              )}
+                            </>
                           ) : (
-                            <>{payOutStanding.BalanceDue}</>
+                            <>
+                              {convertToArabicNumerals(
+                                payOutStanding.BalanceDue,
+                                lang
+                              )}
+                            </>
                           )}
                         </p>
                       </Col>

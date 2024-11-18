@@ -14,6 +14,7 @@ import {
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
 import { useLocation, useNavigate } from "react-router-dom";
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
@@ -22,6 +23,8 @@ const CancelSubscriptionAdmin = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  let lang = localStorage.getItem("i18nextLng");
 
   const { CancellationDetials } = location.state;
 
@@ -164,17 +167,20 @@ const CancelSubscriptionAdmin = () => {
         ),
         Chargesperlicense: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.price}
+            {convertToArabicNumerals(packages.price, lang)}
           </span>
         ),
         Numberoflicenses: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.headCount}
+            {convertToArabicNumerals(packages.headCount, lang)}
           </span>
         ),
         Yearlycharges: (
           <span className={styles["ChargesPerLicesense"]}>
-            {packages.price * packages.headCount * 12}
+            {convertToArabicNumerals(
+              packages.price * packages.headCount * 12,
+              lang
+            )}
           </span>
         ),
       }));
@@ -202,20 +208,18 @@ const CancelSubscriptionAdmin = () => {
       (SubsID) => SubsID.pK_OrganizationsSubscriptionID
     );
 
-  console.log(subscriptionID, "subscriptionIDsubscriptionID");
-
   const defaultRow = {
     Pakagedetails: (
       <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
     ),
     Numberoflicenses: (
       <span className={styles["ChargesPerLicesensetotal"]}>
-        {totalLicenses}
+        {convertToArabicNumerals(totalLicenses, lang)}
       </span>
     ),
     Yearlycharges: (
       <span className={styles["ChargesPerLicesensetotal"]}>
-        {totalYearlyCharges}
+        {convertToArabicNumerals(totalYearlyCharges, lang)}
       </span>
     ),
   };
@@ -228,6 +232,15 @@ const CancelSubscriptionAdmin = () => {
   const handleCompletionofContract = () => {
     dispatch(showCancelSubscriptionModal(true));
     setCompletionContract(true);
+  };
+
+  //Scroll for table
+  const scroll = {
+    y: "39vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
   };
 
   return (
@@ -265,7 +278,8 @@ const CancelSubscriptionAdmin = () => {
                 </p>
                 <p className={styles["subcriptionvalue_1"]}>
                   {formatDateDownGradeSubscription(
-                    cancelSubscriptionDetails.subscriptionStartDate
+                    cancelSubscriptionDetails.subscriptionStartDate,
+                    lang
                   )}
                 </p>
               </Col>
@@ -275,7 +289,8 @@ const CancelSubscriptionAdmin = () => {
                 <p className={styles["subcriptionkey_1"]}>{t("Expiry-date")}</p>
                 <p className={styles["subcriptionvalue_1"]}>
                   {formatDateDownGradeSubscription(
-                    cancelSubscriptionDetails.ExpiryDate
+                    cancelSubscriptionDetails.ExpiryDate,
+                    lang
                   )}
                 </p>
               </Col>
@@ -316,7 +331,7 @@ const CancelSubscriptionAdmin = () => {
                     className={"package-TablePakageSelection"}
                     rows={[...Data, defaultRow]}
                     pagination={false}
-                    scroll={{ x: "max-content" }}
+                    scroll={scroll}
                     id="UpgradePakageDetails"
                     rowHoverBg="none"
                   />

@@ -302,12 +302,11 @@ const ReviewSignature = () => {
       ),
       filterDropdown: () => (
         <Dropdown
-          menu={menu}
-          open={visible}
-          onOpenChange={(open) => setVisible(open)}
-        />
-
-        // </Dropdown>
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}>
+          <div />
+        </Dropdown>
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;

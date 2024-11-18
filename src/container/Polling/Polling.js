@@ -562,13 +562,10 @@ const Polling = () => {
       dataIndex: "pollStatus",
       key: "pollStatus",
       width: "78px",
-      align: "left",
+      align: currentLanguage === "en" ? "left" : "right",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown
@@ -622,7 +619,7 @@ const Polling = () => {
       dataIndex: "dueDate",
       key: "dueDate",
       width: "89px",
-
+      align: currentLanguage === "en" ? "left" : "right",
       sorter: (a, b) =>
         utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
       onHeaderCell: () => ({
@@ -655,6 +652,7 @@ const Polling = () => {
       dataIndex: "pollCreator",
       key: "pollCreator",
       width: "97px",
+      align: currentLanguage === "en" ? "left" : "right",
       sorter: (a, b) =>
         a.pollCreator.toLowerCase().localeCompare(b.pollCreator.toLowerCase()),
       sortOrderCreatedBy,
@@ -684,7 +682,7 @@ const Polling = () => {
       dataIndex: "vote",
       key: "vote",
       width: "69px",
-      align: "center",
+      align: currentLanguage === "en" ? "left" : "right",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {

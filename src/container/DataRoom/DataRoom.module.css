@@ -456,6 +456,10 @@ body[dir="rtl"] .Search_Icon {
   border-bottom-right-radius: 4px !important;
 }
 
+body[dir="rtl"] .grid_view_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .List_view_btn {
   height: 100% !important;
   width: 39px !important;
@@ -488,6 +492,10 @@ body[dir="rtl"] .Search_Icon {
   align-items: center;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+}
+
+body[dir="rtl"] .List_view_btn_active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .new_folder {

@@ -26,6 +26,10 @@ body[dir="rtl"] .notes-heading-size {
   border: none !important;
 }
 
+body[dir="rtl"] .create-note-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .create-note-btn:hover,
 .create-note-btn:active,
 .create-note-btn:focus,
