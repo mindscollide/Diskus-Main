@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Modal, Button } from "../../../components/elements";
 import styles from "./ModalShareDocument.module.css";
@@ -9,6 +9,7 @@ import pdf from "../../../assets/images/222.svg";
 import { useTranslation } from "react-i18next";
 const ModalShareDocument = ({ setInviteModal, inviteModal }) => {
   const { t } = useTranslation();
+  // const [invitDocument, setInviteDocument] = useState(true)
   return (
     <>
       <Modal
@@ -35,7 +36,6 @@ const ModalShareDocument = ({ setInviteModal, inviteModal }) => {
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <img
                   draggable="false"
-                  alt=""
                   src={newprofile}
                   height="40px"
                   width="41px"
@@ -84,7 +84,6 @@ const ModalShareDocument = ({ setInviteModal, inviteModal }) => {
                       >
                         <img
                           draggable="false"
-                          alt=""
                           src={pdf}
                           height="16px"
                           width="14.23px"
@@ -102,14 +101,12 @@ const ModalShareDocument = ({ setInviteModal, inviteModal }) => {
                         <img
                           draggable="false"
                           src={download}
-                          alt=""
                           height="11px"
                           width="12.15px"
                         />
                         <img
                           draggable="false"
                           src={star}
-                          alt=""
                           height="10.22px"
                           width="12.07px"
                         />

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
+  Paper,
   Checkbox,
   Notification,
   Loader,
@@ -12,6 +13,7 @@ import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_new
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { useNavigate } from "react-router-dom";
+// import SignupProcessUserManagement from "../../SignUpProcessUserManagement/SignupProcessUserManagement";
 import { validationEmail } from "../../../../commen/functions/validations";
 import {
   cleareMessage,
@@ -20,12 +22,12 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
+  LoginFlowRoutes,
   paymentStatusApi,
   signUpFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -36,25 +38,13 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const UserMangementReducerLoading = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const adminReducerDeleteOrganizationResponseMessageData = useSelector(
-    (state) => state.adminReducer.DeleteOrganizationResponseMessage
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
-
-  const UserManagementModalsmobileAppPopUpData = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
-  );
-
+  const {
+    Authreducer,
+    adminReducer,
+    LanguageReducer,
+    UserMangementReducer,
+    UserManagementModals,
+  } = useSelector((state) => state);
   const currentUrl = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
@@ -70,10 +60,7 @@ const SignInUserManagement = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
-
-  console.log(open.message, "messagemessage");
 
   //OnChange For Email
   const emailChangeHandler = (e) => {
@@ -99,7 +86,11 @@ const SignInUserManagement = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email === "") {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      setOpen({
+        ...open,
+        open: true,
+        message: t("Please-enter-email"),
+      });
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
       setErrorMessage(t("Error-should-be-in-email-format"));
@@ -168,19 +159,20 @@ const SignInUserManagement = () => {
   }, []);
 
   useEffect(() => {
-    if (adminReducerDeleteOrganizationResponseMessageData !== "") {
-      console.log(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "DeleteOrganizationResponseMessage"
-      );
-      showMessage(
-        adminReducerDeleteOrganizationResponseMessageData,
-        "error",
-        setOpen
-      );
+    if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: adminReducer.DeleteOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 4000);
       dispatch(cleareMessage());
     }
-  }, [adminReducerDeleteOrganizationResponseMessageData, setOpen]);
+  }, [adminReducer.DeleteOrganizationResponseMessage]);
 
   return (
     <>
@@ -213,7 +205,7 @@ const SignInUserManagement = () => {
             </Row>
             <Row>
               <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
-                <span className={styles["EmailVerifyBox"]}>
+                <Paper className={styles["EmailVerifyBox"]}>
                   <Col sm={12} lg={12} md={12}>
                     <Row>
                       <Col
@@ -314,7 +306,7 @@ const SignInUserManagement = () => {
                       </Col>
                     </Row>
                   </Col>
-                </span>
+                </Paper>
               </Col>
               <Col
                 lg={8}
@@ -345,12 +337,19 @@ const SignInUserManagement = () => {
                 </Col>
               </Col>
             </Row>
-            <Notification open={open} setOpen={setOpen} />
+            <Notification
+              setOpen={setOpen}
+              open={open.open}
+              message={open.message}
+            />
+            {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
           </>
         )}
       </Container>
-      {getpayemntString && getpayemntString !== "" && <Loader />}
-      {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
+      {getpayemntString && getpayemntString !== "" && UserMangementReducer && (
+        <Loader />
+      )}
+      {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
     </>
   );
 };

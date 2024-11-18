@@ -49,6 +49,7 @@ const ExpandedMenu = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [dataroomNavigation, setDataroomNavigation] = useState("dataroom");
   const [groupNavigation, setGroupNavigation] = useState("groups");
   const [committeeNavigation, setCommitteeNavigation] = useState("committee");
@@ -61,39 +62,19 @@ const ExpandedMenu = () => {
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
-  const scheduleMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
-  );
-  const viewProposeDateMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
-  );
-  const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
-  );
-  const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
-  );
-  const viewProposeOrganizerMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
-  );
-  const proposeNewMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
-  );
-  const viewMeetingsFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
-  );
+
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
     console.log("Test Dataroom");
     try {
       if (
-        (scheduleMeetingsPageFlag === true ||
-          viewProposeDateMeetingsPageFlag === true ||
-          viewAdvanceMeetingsPublishPageFlag === true ||
-          viewAdvanceMeetingsUnpublishPageFlag === true ||
-          viewProposeOrganizerMeetingsPageFlag === true ||
-          proposeNewMeetingsPageFlag === true) &&
-        viewMeetingsFlag === false
+        (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+          NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+          NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+          NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+          NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+        NewMeetingreducer.viewMeetingFlag === false
       ) {
         console.log("Test Dataroom");
 
@@ -133,13 +114,13 @@ const ExpandedMenu = () => {
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
       setGroupNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -173,13 +154,13 @@ const ExpandedMenu = () => {
   //Committees Sidebar Click
   const handleMeetingSidebarCommittees = () => {
     if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
       setCommitteeNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -213,13 +194,13 @@ const ExpandedMenu = () => {
   //Resolutions Sidebar Click
   const handleMeetingSidebarResolutions = () => {
     if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
       setResolutionNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -255,13 +236,13 @@ const ExpandedMenu = () => {
   //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
     if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
       setPollNavigation("Meeting");
       dispatch(showCancelModalmeetingDeitals(true));
@@ -295,13 +276,13 @@ const ExpandedMenu = () => {
         <Nav.Link
           as={Link}
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
               ? "/DisKus/Meeting"
               : "/DisKus/dataroom"
           }
@@ -325,13 +306,13 @@ const ExpandedMenu = () => {
           as={Link}
           // to="groups"
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
               ? "/DisKus/Meeting"
               : "/DisKus/groups"
           }
@@ -358,13 +339,13 @@ const ExpandedMenu = () => {
           as={Link}
           // to="committee"
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
               ? "/DisKus/Meeting"
               : "/DisKus/committee"
           }
@@ -391,13 +372,13 @@ const ExpandedMenu = () => {
           as={Link}
           // to="resolution"
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
               ? "/DisKus/Meeting"
               : "/DisKus/resolution"
           }
@@ -423,13 +404,13 @@ const ExpandedMenu = () => {
           as={Link}
           // to="polling"
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+              NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+              NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+              NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+              NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+            NewMeetingreducer.viewMeetingFlag === false
               ? "/DisKus/Meeting"
               : "/DisKus/polling"
           }

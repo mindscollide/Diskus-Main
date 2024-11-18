@@ -7,7 +7,10 @@ import {
 } from "../../../../components/elements"; // Importing necessary components
 import styles from "./RejectCommentModal.module.css"; // Importing CSS module for styling
 import { useNavigate } from "react-router-dom";
-import { rejectCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
+import {
+  RejectMinute,
+  rejectCommentModal,
+} from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
@@ -85,6 +88,8 @@ const RejectCommentModal = ({
 
     // Optional: Update local state if needed
     setMinuteDataToReject(updatedMinuteData);
+
+    // dispatch(RejectMinute(updatedMinuteData));
     dispatch(rejectCommentModal(false));
     setMinutesToReview(minutesToReview - 1);
     console.log("Updated Minute Data to Reject:", MinutesReducer);

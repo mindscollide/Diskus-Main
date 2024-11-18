@@ -17,9 +17,7 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cancelPolls = useSelector(
-    (state) => state.NewMeetingreducer.cancelPolls
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -44,14 +42,14 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (
     <section>
       <Modal
-        show={cancelPolls}
+        show={NewMeetingreducer.cancelPolls}
         setShow={dispatch(showCancelPolls)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

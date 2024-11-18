@@ -1,5 +1,6 @@
 .gridViewFile__name {
   background-color: #fff;
+  /* border: 1px solid #e1e1e1 !important; */
   border-top: 1px solid #e1e1e1 !important;
   border-radius: 4px;
   display: flex;
@@ -61,6 +62,7 @@
 .folderContainer {
   min-height: 55vh !important;
   height: auto !important;
+  /* overflow-y: auto; */
   overflow-x: hidden;
 }
 

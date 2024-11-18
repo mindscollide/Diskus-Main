@@ -1,10 +1,12 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import LanguageIcon from "../../../assets/images/Language.svg";
 import LanguageArrowDown from "../../../assets/images/New folder/LanguaugeSelector_Down.svg";
 import LanguageArrowUp from "../../../assets/images/New folder/LanguaugeSelector_Up.svg";
 import LanguageArrowDownBlack from "../../../assets/images/New folder/Language_ArrowDown.svg";
 import LanguageArrowUpBlack from "../../../assets/images/New folder/Language_ArrowUp.svg";
+import LanguageBlack from "../../../assets/images/Language_Black.svg";
 import styles from "./Language-selector.module.css";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,12 +19,8 @@ import {
 import moment from "moment";
 
 const LanguageSelector = () => {
-  const AllLanguagesData = useSelector(
-    (state) => state.LanguageReducer.AllLanguagesData
-  );
-  const SetLanguageData = useSelector(
-    (state) => state.LanguageReducer.SetLanguageData
-  );
+  const { LanguageReducer } = useSelector((state) => state);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -46,9 +44,9 @@ const LanguageSelector = () => {
   useEffect(() => {
     try {
       if (
-        AllLanguagesData === null ||
-        AllLanguagesData === undefined ||
-        AllLanguagesData.length === 0
+        LanguageReducer.AllLanguagesData === null ||
+        LanguageReducer.AllLanguagesData === undefined ||
+        LanguageReducer.AllLanguagesData.length === 0
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
@@ -61,11 +59,11 @@ const LanguageSelector = () => {
 
   useEffect(() => {
     if (
-      AllLanguagesData !== null &&
-      AllLanguagesData !== undefined &&
-      AllLanguagesData.length !== 0
+      LanguageReducer.AllLanguagesData !== null &&
+      LanguageReducer.AllLanguagesData !== undefined &&
+      LanguageReducer.AllLanguagesData.length !== 0
     ) {
-      const newValues = AllLanguagesData.map((langValues) => ({
+      const newValues = LanguageReducer.AllLanguagesData.map((langValues) => ({
         languageTitle:
           langValues.systemSupportedLanguageID === 1
             ? t("English")
@@ -83,27 +81,28 @@ const LanguageSelector = () => {
 
       setLanguages(newValues);
     }
-  }, [AllLanguagesData]);
+  }, [LanguageReducer.AllLanguagesData]);
 
   useEffect(() => {
     if (
-      SetLanguageData !== null &&
-      SetLanguageData !== undefined &&
-      SetLanguageData.length !== 0
+      LanguageReducer.SetLanguageData !== null &&
+      LanguageReducer.SetLanguageData !== undefined &&
+      LanguageReducer.SetLanguageData.length !== 0
     ) {
       setSelectedLanguage({
         ...selectedLanguage,
-        systemSupportedLanguageID: SetLanguageData.systemSupportedLanguageID,
-        languageTitle: SetLanguageData.languageTitle,
+        systemSupportedLanguageID:
+          LanguageReducer.SetLanguageData.systemSupportedLanguageID,
+        languageTitle: LanguageReducer.SetLanguageData.languageTitle,
         code:
-          SetLanguageData.systemSupportedLanguageID === 1
+          LanguageReducer.SetLanguageData.systemSupportedLanguageID === 1
             ? "en"
-            : SetLanguageData.systemSupportedLanguageID === 2
+            : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 2
             ? "ar"
             : "",
       });
     }
-  }, [SetLanguageData]);
+  }, [LanguageReducer.SetLanguageData]);
 
   const handleChangeLocale = (lang) => {
     setLanguageDropdown(false);
@@ -136,9 +135,23 @@ const LanguageSelector = () => {
       localStorage.setItem("i18nextLng", "ar");
       moment.locale("ar");
       setTimeout(() => {
+        // window.location.reload()
         i18n.changeLanguage("ar");
       }, 100);
     }
+    //  else {
+    //   setSelectedLanguage({
+    //     languageTitle: "French",
+    //     systemSupportedLanguageID: 3,
+    //     code: "fr",
+    //   });
+    //   localStorage.setItem("i18nextLng", "fr");
+    //   moment.locale("fr");
+    //   setTimeout(() => {
+    //     // window.location.reload()
+    //     i18n.changeLanguage("fr");
+    //   }, 1000);
+    // }
   };
 
   const handleOutsideClick = (event) => {
@@ -169,10 +182,9 @@ const LanguageSelector = () => {
 
   return (
     <section
-      className="position-relative"
+      className='position-relative'
       ref={languageref}
-      onClick={() => setLanguageDropdown(!languageDropdown)}
-    >
+      onClick={() => setLanguageDropdown(!languageDropdown)}>
       <span
         className={
           location.pathname.includes("/DisKus/") ||
@@ -183,8 +195,7 @@ const LanguageSelector = () => {
           location.pathname.includes("/Admin")
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
-        }
-      >
+        }>
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
@@ -204,8 +215,8 @@ const LanguageSelector = () => {
                 : LanguageArrowUpBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         ) : (
           <img
@@ -220,8 +231,8 @@ const LanguageSelector = () => {
                 : LanguageArrowDownBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         )}
       </span>
@@ -230,18 +241,16 @@ const LanguageSelector = () => {
           !languageDropdown
             ? styles["language_options"]
             : styles["language_options_active"]
-        }
-      >
+        }>
         {languages.length > 0 &&
           languages.map((data, index) => {
             return (
               <span
-                className="cursor-pointer"
+                className='cursor-pointer'
                 onClick={() =>
                   handleChangeLocale(data.systemSupportedLanguageID)
                 }
-                key={index}
-              >
+                key={index}>
                 {data.languageTitle}
               </span>
             );

@@ -196,6 +196,7 @@ body[dir="rtl"] .Card_border2 {
   overflow-y: auto;
   margin: 0;
   padding: 0;
+  /* padding-right: 10px !important; */
 }
 .scroll-height::-webkit-scrollbar {
   width: 0.5rem;

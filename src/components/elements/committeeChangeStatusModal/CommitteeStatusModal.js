@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../modal/Modal";
 import styles from "./CommitteeStatusModa..module.css";
 import { Row, Col } from "react-bootstrap";

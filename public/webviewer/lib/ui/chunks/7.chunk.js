@@ -2,7 +2,7 @@
   [7],
   {
     1455: function (t, e, n) {
-      
+      "use strict";
       var r = n(47),
         o = n(428);
       r(
@@ -15,7 +15,7 @@
       );
     },
     1456: function (t, e, n) {
-      
+      "use strict";
       var r,
         o =
           (this && this.__extends) ||
@@ -449,7 +449,7 @@
               );
             })([
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = n(17),
                   o = n(18),
@@ -488,7 +488,7 @@
                 e.default = g;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -960,7 +960,7 @@
                   (t.exports = l);
               },
               function (t, e) {
-                
+                "use strict";
                 var n = Object.prototype.hasOwnProperty,
                   r = Object.prototype.toString,
                   o = Object.defineProperty,
@@ -1033,7 +1033,7 @@
                 };
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.BlockEmbed = e.bubbleFormats = void 0);
                 var r = (function () {
@@ -1414,7 +1414,7 @@
                   (e.default = g);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.overload = e.expandConfig = void 0);
                 var r =
@@ -2322,7 +2322,7 @@
                   (e.default = x);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                     function t(t, e) {
@@ -2481,7 +2481,7 @@
                   (e.default = c);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = n(0);
@@ -2537,7 +2537,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                     function t(t, e) {
@@ -2687,7 +2687,7 @@
                   (e.default = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 function r(t, e) {
                   if (!(t instanceof e))
                     throw new TypeError("Cannot call a class as a function");
@@ -2703,7 +2703,7 @@
                 (o.DEFAULTS = {}), (e.default = o);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = ["error", "warn", "log", "info"],
                   o = "warn";
@@ -2798,7 +2798,7 @@
                 }
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = n(1),
                   o = (function () {
@@ -2851,7 +2851,7 @@
                 e.default = o;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.Code = void 0);
                 var r = function (t, e) {
@@ -3148,7 +3148,7 @@
                   (e.default = g);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r =
                     "function" == typeof Symbol &&
@@ -3611,7 +3611,7 @@
                 e.default = b;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.Range = void 0);
                 var r = function (t, e) {
@@ -4194,7 +4194,7 @@
                 (e.Range = p), (e.default = d);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -4307,7 +4307,7 @@
                 (l.blotName = "break"), (l.tagName = "BR"), (e.default = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -4566,7 +4566,7 @@
                 e.default = l;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -4652,7 +4652,7 @@
                 e.default = u;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -4834,7 +4834,7 @@
               },
               function (t, n) {
                 var r = (function () {
-                  
+                  "use strict";
                   function t(t, e) {
                     return null != e && t instanceof e;
                   }
@@ -4990,7 +4990,7 @@
                 "object" == typeof t && t.exports && (t.exports = r);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = function (t, e) {
                     if (Array.isArray(t)) return t;
@@ -5366,7 +5366,7 @@
                   (e.default = y);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.SHORTKEY = e.default = void 0);
                 var r =
@@ -6177,7 +6177,7 @@
                   (e.SHORTKEY = v);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = function (t, e) {
                     if (Array.isArray(t)) return t;
@@ -6461,7 +6461,7 @@
                   (e.default = u);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = a(n(0)),
                   o = n(4),
@@ -6522,7 +6522,7 @@
                   (e.default = u);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.ColorStyle = e.ColorClass = e.ColorAttributor = void 0);
                 var r,
@@ -6637,7 +6637,7 @@
                 (e.ColorAttributor = u), (e.ColorClass = c), (e.ColorStyle = f);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.sanitize = e.default = void 0);
                 var r,
@@ -6782,7 +6782,7 @@
                   (e.sanitize = c);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r =
                     "function" == typeof Symbol &&
@@ -7038,7 +7038,7 @@
                 e.default = c;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = m(n(0)),
                   o = m(n(5)),
@@ -7082,7 +7082,7 @@
                   (e.default = o.default);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = n(1),
                   o = (function () {
@@ -7216,7 +7216,7 @@
                 e.default = o;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = n(12),
                   o = n(32),
@@ -7281,7 +7281,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -7351,7 +7351,7 @@
                 e.default = a;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -7418,7 +7418,7 @@
                 e.default = a;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                     function t(t, e) {
@@ -7483,7 +7483,7 @@
                   (e.default = o);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                     function t(t, e) {
@@ -7649,7 +7649,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.AlignStyle = e.AlignClass = e.AlignAttribute = void 0);
                 var r,
@@ -7665,7 +7665,7 @@
                 (e.AlignAttribute = s), (e.AlignClass = l), (e.AlignStyle = u);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.BackgroundStyle = e.BackgroundClass = void 0);
                 var r,
@@ -7681,7 +7681,7 @@
                 (e.BackgroundClass = s), (e.BackgroundStyle = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.DirectionStyle =
                     e.DirectionClass =
@@ -7707,7 +7707,7 @@
                   (e.DirectionStyle = u);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.FontClass = e.FontStyle = void 0);
                 var r,
@@ -7809,7 +7809,7 @@
                 (e.FontStyle = f), (e.FontClass = c);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.SizeStyle = e.SizeClass = void 0);
                 var r,
@@ -7826,7 +7826,7 @@
                 (e.SizeClass = a), (e.SizeStyle = s);
               },
               function (t, e, n) {
-                
+                "use strict";
                 t.exports = {
                   align: {
                     "": n(76),
@@ -7862,7 +7862,7 @@
                 };
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.getLastChangeIndex = e.default = void 0);
                 var r = (function () {
@@ -8065,7 +8065,7 @@
                   (e.getLastChangeIndex = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.BaseTooltip = void 0);
                 var r = (function () {
@@ -8525,7 +8525,7 @@
                 (e.BaseTooltip = A), (e.default = w);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                   function t() {
@@ -8633,7 +8633,7 @@
                 e.default = r;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -8808,7 +8808,7 @@
                 e.default = l;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -8885,7 +8885,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -8955,7 +8955,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -9003,7 +9003,7 @@
                 e.default = i;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r,
                   o =
                     (this && this.__extends) ||
@@ -9104,7 +9104,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 var r = document.createElement("div");
                 if (
                   (r.classList.toggle("test-class", !1),
@@ -9572,7 +9572,7 @@
                   (e.unsupported = o);
               },
               function (t, e) {
-                
+                "use strict";
                 var n = Object.prototype.hasOwnProperty,
                   r = "~";
                 function o() {}
@@ -9742,7 +9742,7 @@
                   void 0 !== t && (t.exports = a);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.matchText =
                     e.matchSpacing =
@@ -10296,7 +10296,7 @@
                   (e.matchText = B);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -10416,7 +10416,7 @@
                   (e.default = u);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.addControls = e.default = void 0);
                 var r = function (t, e) {
@@ -10821,7 +10821,7 @@
                   '<svg viewbox="0 0 18 18"> <polyline class="ql-even ql-stroke" points="5 7 3 9 5 11"></polyline> <polyline class="ql-even ql-stroke" points="13 7 15 9 13 11"></polyline> <line class=ql-stroke x1=10 x2=8 y1=5 y2=13></line> </svg>';
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -10947,7 +10947,7 @@
                 e.default = s;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -11051,7 +11051,7 @@
                 e.default = a;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = (function () {
                     function t(t, e) {
@@ -11144,7 +11144,7 @@
                 e.default = o;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = function (t, e) {
                     if (Array.isArray(t)) return t;
@@ -11430,7 +11430,7 @@
                   (e.default = v);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r = D(n(29)),
                   o = n(36),
@@ -11524,7 +11524,7 @@
                   (e.default = r.default);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.IndentClass = void 0);
                 var r,
@@ -11663,7 +11663,7 @@
                 e.IndentClass = c;
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = n(4);
@@ -11721,7 +11721,7 @@
                   (e.default = s);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -11801,7 +11801,7 @@
                   (e.default = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.ListItem = void 0);
                 var r = (function () {
@@ -12101,7 +12101,7 @@
                   (e.default = p);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = n(56);
@@ -12159,7 +12159,7 @@
                   (e.default = s);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -12267,7 +12267,7 @@
                   (e.default = l);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = n(6);
@@ -12323,7 +12323,7 @@
                 (s.blotName = "strike"), (s.tagName = "S"), (e.default = s);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = n(6);
@@ -12379,7 +12379,7 @@
                 (s.blotName = "underline"), (s.tagName = "U"), (e.default = s);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -12539,7 +12539,7 @@
                 (h.blotName = "image"), (h.tagName = "IMG"), (e.default = h);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 });
                 var r,
                   o = (function () {
@@ -12688,7 +12688,7 @@
                   (e.default = h);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.FormulaBlot = void 0);
                 var r = (function () {
@@ -12828,7 +12828,7 @@
                 (e.FormulaBlot = f), (e.default = h);
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.CodeToken = e.CodeBlock = void 0);
                 var r = (function () {
@@ -13151,7 +13151,7 @@
                   '<svg viewbox="0 0 18 18"> <polygon class=ql-stroke points="7 11 9 13 11 11 7 11"></polygon> <polygon class=ql-stroke points="7 7 9 5 11 7 7 7"></polygon> </svg>';
               },
               function (t, e, n) {
-                
+                "use strict";
                 Object.defineProperty(e, "__esModule", { value: !0 }),
                   (e.default = e.BubbleTooltip = void 0);
                 var r = function t(e, n, r) {
@@ -13402,7 +13402,7 @@
       }).call(this, n(250).Buffer);
     },
     1462: function (t, e, n) {
-      
+      "use strict";
       var r = n(1461),
         o = n.n(r);
       function i(t, e) {
@@ -14445,7 +14445,7 @@
     1463: function (t, e, n) {
       /*! @license DOMPurify 3.0.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.0.3/LICENSE */
       t.exports = (function () {
-        
+        "use strict";
         const {
           entries: t,
           setPrototypeOf: e,
@@ -15881,7 +15881,7 @@
       })();
     },
     1472: function (t, e, n) {
-      
+      "use strict";
       function r(t, e) {
         if (Array.prototype.indexOf) return t.indexOf(e);
         for (var n = 0, r = t.length; n < r; n++) if (t[n] === e) return n;

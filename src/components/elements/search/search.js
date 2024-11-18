@@ -18,6 +18,7 @@ const SearchInput = ({
       <div className={inputBox}>
         <div className={searchIconStyle} onClick={onclick}>
           {icon}
+          {/* <Search /> */}
         </div>
         <div className={inputClass}>
           <input

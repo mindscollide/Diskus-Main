@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ParticpantInfoShareFolder.module.css";
-import { Col, Row } from "react-bootstrap";
+import newprofile from "../../../assets/images/Mask Group 67.svg";
+import { Col, Container, Row } from "react-bootstrap";
 const ParticipantInfoShareFolder = ({
   participantname,
   particiapantdesignation,
@@ -35,6 +36,9 @@ const ParticipantInfoShareFolder = ({
           </Col>
         </Row>
       </Col>
+      {/* <Col lg={1} md={1} sm={1} className="d-flex align-items-center">
+        {icon}
+      </Col> */}
     </Row>
   );
 };

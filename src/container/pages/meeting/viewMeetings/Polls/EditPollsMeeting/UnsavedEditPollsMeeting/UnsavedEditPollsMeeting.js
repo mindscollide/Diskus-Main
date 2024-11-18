@@ -3,6 +3,7 @@ import styles from "./UnsavedEditPollsMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../../components/elements";
 import { showunsavedEditPollsMeetings } from "../../../../../../../store/actions/NewMeetingActions";
@@ -10,10 +11,8 @@ import { showunsavedEditPollsMeetings } from "../../../../../../../store/actions
 const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const NewMeetingreducerunsavedEditPollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.unsavedEditPollsMeeting
-  );
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
     dispatch(showunsavedEditPollsMeetings(false));
@@ -26,7 +25,7 @@ const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducerunsavedEditPollsMeeting}
+        show={NewMeetingreducer.unsavedEditPollsMeeting}
         setShow={dispatch(showunsavedEditPollsMeetings)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

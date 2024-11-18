@@ -1,8 +1,10 @@
 import React from "react";
 import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./ViewUnsaved.module.css";
+import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import {
   searchNewUserMeeting,
+  showUnsaveMinutesFileUpload,
   showUnsavedViewMinutesModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";

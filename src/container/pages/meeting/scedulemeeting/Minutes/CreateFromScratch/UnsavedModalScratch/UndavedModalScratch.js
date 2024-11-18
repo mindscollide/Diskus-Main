@@ -12,9 +12,8 @@ const UndavedModalScratch = ({ setEditable }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const unsavedModalScratch = useSelector(
-    (state) => state.NewMeetingreducer.unsavedModalScratch
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const handleYesFunctionality = () => {
     dispatch(showUnsavedCreateFromScratch(false));
     setEditable(false);
@@ -23,7 +22,7 @@ const UndavedModalScratch = ({ setEditable }) => {
   return (
     <section>
       <Modal
-        show={unsavedModalScratch}
+        show={NewMeetingreducer.unsavedModalScratch}
         setShow={dispatch(showUnsavedCreateFromScratch)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

@@ -1,31 +1,57 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Button, Notification } from "./../../../components/elements";
-import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Paper,
+  TextField,
+  Checkbox,
+  Notification,
+  Loader,
+  VerificationInputField,
+} from "./../../../components/elements";
+import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
+import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UpdatePasswordSuccessfully = () => {
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // const languages = [
+  //   { name: "English", code: "en" },
+  //   { name: "Français", code: "fr" },
+  //   { name: "العربية", code: "ar", dir: "rtl" },
+  // ];
+  // const currentLocale = Cookies.get("i18next") || "en";
+  // const [language, setLanguage] = useSta/te(currentLocale);
+  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  // const handleChangeLocale = (e) => {
+  //   const lang = e.target.value;
+  //   setLanguage(lang);
+  //   localStorage.setItem("i18nextLng", lang);
+  //   i18n.changeLanguage(lang);
+  // };
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const handlechange = (e) => {
     e.preventDefault();
     navigate("/");
   };
+
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  // }, [currentLangObj, t]);
 
   useEffect(() => {
     if (
@@ -33,11 +59,18 @@ const UpdatePasswordSuccessfully = () => {
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
         t("Password-updated-successfully")
     ) {
-      showMessage(
-        Authreducer.passwordUpdateOnForgotPasswordMessege,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
       dispatch(cleareMessage());
     }
@@ -59,7 +92,7 @@ const UpdatePasswordSuccessfully = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <span className={styles["Update_password_loginbox_auth_paper"]}>
+            <Paper className={styles["Update_password_loginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -73,12 +106,7 @@ const UpdatePasswordSuccessfully = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img
-                      draggable="false"
-                      src={DiskusLogo}
-                      width={220}
-                      alt="diskus_logo"
-                    />
+                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Form>
@@ -128,7 +156,7 @@ const UpdatePasswordSuccessfully = () => {
                   </Row>
                 </Form>
               </Col>
-            </span>
+            </Paper>
           </Col>
           <Col
             lg={8}
@@ -144,8 +172,7 @@ const UpdatePasswordSuccessfully = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img
-                draggable="false"
+              <img draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
@@ -155,7 +182,8 @@ const UpdatePasswordSuccessfully = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

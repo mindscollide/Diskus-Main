@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+
 import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
+import Logo from "../../../assets/images/sidebar-menu-icon.png";
 import { Link, useLocation } from "react-router-dom";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
+
 import "./Navbar.css";
 import {
   checkFeatureIDAvailability,
@@ -10,8 +13,9 @@ import {
 } from "../../../commen/functions/utils";
 
 const NavbarAdmin = () => {
-  const { t } = useTranslation();
+  const location = useLocation();
   const [activateBlur, setActivateBlur] = useState(false);
+
   let Blur = localStorage.getItem("blur");
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
@@ -20,11 +24,17 @@ const NavbarAdmin = () => {
 
   useEffect(() => {
     if (Blur != undefined) {
+      console.log("Blur", Blur);
+
       setActivateBlur(true);
     } else {
+      console.log("Blur", Blur);
+
       setActivateBlur(false);
     }
   }, [Blur]);
+  //for translation
+  const { t } = useTranslation();
 
   return (
     <>
@@ -46,6 +56,8 @@ const NavbarAdmin = () => {
                           title={t("Manage-users")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
+                          // as={Link}
+                          // to="AllUserPage"
                         >
                           <NavDropdown.Item
                             as={Link}
@@ -111,6 +123,16 @@ const NavbarAdmin = () => {
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                         >
+                          {/* <NavDropdown.Item
+                            as={Link}
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
+                            eventKey="link-8"
+                            className="text-black border-none  bg-white"
+                          >
+                            {t("Package-detail")}
+                          </NavDropdown.Item> */}
+
                           <NavDropdown.Item
                             as={Link}
                             to="subscriptionDetailsUserManagement"
@@ -122,6 +144,7 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
+                            // to="CancelSub"
                             to="CancelSubscriptionUserManagement"
                             eventKey="link-8"
                             className="text-black border-none "
@@ -243,6 +266,14 @@ const NavbarAdmin = () => {
                                     {t("Billing-subscription")}
                                   </Nav.Link>
                                 ) : null}
+                                {/* <Nav.Link
+                            title={t("Billing-Subscription")}
+                            id="collasible-nav-dropdown"
+                            className="DiskusAdminNavBar"
+                            as={Link}
+                            // to="PackageDetail"
+                            to="PackageDetailsUserManagement"
+                          /> */}
                               </>
                             ) : (
                               <>
@@ -252,6 +283,15 @@ const NavbarAdmin = () => {
                                   id="collasible-nav-dropdown"
                                   className="DiskusAdminNavBar"
                                 >
+                                  {/* <NavDropdown.Item
+                                    as={Link}
+                                    // to="PackageDetail"
+                                    to="PackageDetailsUserManagement"
+                                    eventKey="link-8"
+                                    className="text-black border-none  bg-white"
+                                  >
+                                    {t("Package-detail")}
+                                  </NavDropdown.Item> */}
                                   <NavDropdown.Item
                                     as={Link}
                                     to="subscriptionDetailsUserManagement"
@@ -263,6 +303,7 @@ const NavbarAdmin = () => {
                                   {checkFeatureIDAvailability(29) ? (
                                     <NavDropdown.Item
                                       as={Link}
+                                      // to="CancelSubscriptionUserManagement"
                                       to="updatedCancelSubscription"
                                       eventKey="link-8"
                                       className="text-black border-none "

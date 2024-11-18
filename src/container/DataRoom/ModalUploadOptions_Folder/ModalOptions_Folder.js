@@ -3,7 +3,10 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions_Folder.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
-import { createFolderApi } from "../../../store/actions/DataRoom_actions";
+import {
+  createFolderApi,
+  uploadDocumentsApi,
+} from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +32,7 @@ const ModalOptionsFolder = ({
         setIsExistFolder
       )
     );
+    // setUploadOptions(false)
   };
   return (
     <>
@@ -39,8 +43,10 @@ const ModalOptionsFolder = ({
             setIsExistFolder(false);
           }}
           setShow={setIsExistFolder}
+          // ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
+          // size={UploadOptions === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -119,6 +125,7 @@ const ModalOptionsFolder = ({
                   <Button
                     text={t("Upload")}
                     onClick={handleUploadFolder}
+                    // onClick={uploadOptionsonClickBtn}
                     className={styles["Create_button_UploadFile"]}
                   />
                 </Col>

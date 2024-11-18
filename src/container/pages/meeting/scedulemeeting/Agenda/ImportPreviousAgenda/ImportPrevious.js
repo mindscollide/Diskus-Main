@@ -3,6 +3,7 @@ import styles from "./ImportPrevious.module.css";
 import {
   Modal,
   Button,
+  InputSearchFilter,
   Table,
   CustomRadio2,
 } from "../../../../../../components/elements";
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import { current } from "@reduxjs/toolkit";
 const ImportPrevious = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -182,7 +184,7 @@ const ImportPrevious = () => {
         onHide={() => {
           dispatch(showImportPreviousAgendaModal(false));
         }}
-        size={"xl"}
+        size={"xl"}  
         ModalTitle={
           <>
             <Row>
@@ -208,7 +210,6 @@ const ImportPrevious = () => {
                       src={BlackCrossIcon}
                       height="16px"
                       width="16px"
-                      alt=""
                       className="cursor-pointer"
                       onClick={() => {
                         dispatch(showImportPreviousAgendaModal(false));

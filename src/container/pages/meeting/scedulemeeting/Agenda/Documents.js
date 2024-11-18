@@ -1,6 +1,13 @@
-import { Draggable } from "react-beautiful-dnd";
+import { useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
+import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 import { AttachmentViewer } from "../../../../../components/elements";
 
 const Documents = ({
@@ -13,6 +20,8 @@ const Documents = ({
   fileForSend,
   editorRole,
 }) => {
+  const [files, setfiles] = useState([]);
+
   const CrossDocument = (fileIndex, fileDataProp) => {
     console.log(fileDataProp, "fileDataPropfileDataProp");
     let optionscross = [...rows];

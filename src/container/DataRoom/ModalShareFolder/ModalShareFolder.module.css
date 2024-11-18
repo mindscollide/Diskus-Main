@@ -4,6 +4,9 @@
   font-weight: 600;
 }
 
+/* .profile_image_shareFolder_modal {
+} */
+
 .Scroller_particiapnt_shared_folder {
   height: 28vh !important;
   overflow-x: hidden !important;
@@ -116,6 +119,7 @@
 
 .select-timezone {
   width: 100px !important;
+  /* border-radius: none !important; */
   height: 10px !important;
 }
 
@@ -176,6 +180,7 @@
 .ModalRequestHeader {
   margin: 0 !important;
   padding: 5px 12px !important;
+
   width: 100%;
 }
 

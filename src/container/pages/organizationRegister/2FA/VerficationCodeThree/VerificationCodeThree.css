@@ -12,47 +12,7 @@
   transform: rotate(-66deg);
 }
 .VerificationCodeThree {
-  position: relative;
   overflow: hidden;
-}
-
-.languageSelectors {
-  position: absolute;
-  right: 100px;
-  z-index: 99999 !important;
-  margin-top: 50px;
-  margin-right: 0;
-  display: flex;
-  justify-content: flex-end;
-}
-
-body[dir="rtl"] .languageSelectors {
-  position: absolute;
-  right: -100px;
-  z-index: 99999 !important;
-  margin-top: 50px;
-  margin-right: 0 !important;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.phone-image {
-  position: absolute;
-  top: 130px;
-  right: -200px;
-  z-index: 1;
-  user-select: none;
-  width: 22.125rem;
-}
-
-body[dir="rtl"] .phone-image {
-  position: absolute;
-  top: 19%;
-  right: 255px;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .SubHeadingVerificationCodeThree {
@@ -118,6 +78,7 @@ body[dir="rtl"] .phone-image {
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
+  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }
@@ -147,6 +108,8 @@ body[dir="rtl"] .phone-image {
 
 .Next_button_EmailVerify_For_openyourrealmextra {
   width: 100%;
+  /* width: 368px !important; */
+  /* height: 50px !important; */
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -171,13 +134,6 @@ body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
   border-radius: 4px;
   height: 469px !important;
   width: 330px !important;
-  border-radius: 8px !important;
-  border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: var(--Paper-shadow);
-  display: inline-block !important;
-  background: #fff !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -279,9 +235,15 @@ body[dir="rtl"] .mobile_image {
 }
 
 .mobile_image_two {
+  /* position: absolute;
+  top: 19%;
+  right: -80px; */
   z-index: 1;
 }
 body[dir="rtl"] .mobile_image_two {
+  /* position: absolute; */
+  /* top: 19%;
+  right: 260px; */
   z-index: 1;
 }
 .MainHeading_For_TwoFactorOpenRealmextra {
@@ -296,6 +258,13 @@ body[dir="rtl"] .mobile_image_two {
   font-weight: 700 !important;
   font-size: 30px !important;
   margin-left: 5px !important;
+}
+
+body[dir="rtl"] .MainHeading_InnerHeading {
+}
+
+.Un_Ordered_List {
+  /* margin-left:/ 20px !important; */
 }
 
 .List_Components-verification {
@@ -363,11 +332,14 @@ body[dir="rtl"] .Heading-Style {
 }
 
 .roundspinner-image {
+  /* background-image: url("../../../../../assets/images/3.png"); */
   background-repeat: no-repeat;
   background-position: right -622px top 330px !important;
 }
 body[dir="rtl"] .roundspinner-image {
+  /* background-image: url("../../../../../assets/images/3.png"); */
   background-position: left -632px top 330px !important;
+  /* -webkit-transform: rotate(120deg); */
 }
 .deviceName {
   font-weight: 700 !important;

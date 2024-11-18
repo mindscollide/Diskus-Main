@@ -58,6 +58,7 @@
 
 .upgradePackageAmoutnandList h4 {
   margin: 10px 0 0 0;
+  /* font-weight: 900; */
   text-transform: capitalize;
   color: #5a5a5a;
   font-weight: 700 !important;
@@ -98,6 +99,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
 }
 
 .packagecard_priceBox_container {
+  /* width: 50%; */
   margin: 20px auto;
 }
 
@@ -138,6 +140,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   padding: 12px 0;
   color: #fff;
   margin: 10px 0;
+  /* margin-bottom: 20px; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
@@ -257,6 +260,7 @@ body[dir="rtl"] .backgroundcolor_title {
   border: none !important;
   width: 70%;
   color: #fff;
+  /* margin      : 40px auto; */
   border-radius: 4px;
   padding: 10px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);

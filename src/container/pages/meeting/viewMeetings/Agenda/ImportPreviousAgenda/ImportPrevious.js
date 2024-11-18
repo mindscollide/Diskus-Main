@@ -10,10 +10,12 @@ import { showImportPreviousAgendaModal } from "../../../../../../store/actions/N
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 const ImportPrevious = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [importAgendaData, setImportAgendaData] = useState({
     InputSearchVal: "",
@@ -118,7 +120,6 @@ const ImportPrevious = () => {
                   >
                     <img
                       src={BlackCrossIcon}
-                      alt=""
                       height="16px"
                       width="16px"
                       className="cursor-pointer"

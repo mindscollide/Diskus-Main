@@ -10,15 +10,10 @@ const PaymentFailedModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { UserManagementModals } = useSelector((state) => state);
-
-  const UserManagementModalspaymentProceedFailedData = useSelector(
-    (state) => state.UserManagementModals.paymentProceedFailed
-  );
-
   return (
     <section>
       <Modal
-        show={UserManagementModalspaymentProceedFailedData}
+        show={UserManagementModals.paymentProceedFailed}
         setShow={dispatch(showFailedPaymentModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

@@ -6,6 +6,7 @@ import {
   resendOTPForgotPassword,
 } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
+import { message } from "antd";
 
 const verifyoptinit = () => {
   return {
@@ -105,48 +106,33 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
             dispatch(
               resendOTPSuccess(response.data.responseResult, newMessage)
             );
-            return () => {
-              setSeconds(60);
-              setMinutes(4);
-            };
+            return setSeconds(60), setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_02"
           ) {
             let newMessage = t("User-otp-not-generated-successfully");
             dispatch(resendOTPFail(newMessage));
-            return () => {
-              setSeconds(0);
-              setMinutes(0);
-            };
+            return setSeconds(0), setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_03"
           ) {
             let newMessage = t("The-user-email-is-not-active");
             dispatch(resendOTPFail(newMessage));
-            return () => {
-              setSeconds(0);
-              setMinutes(0);
-            };
+            return setSeconds(0), setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_04"
           ) {
             let newMessage = t("Something-went-wrong");
             dispatch(resendOTPFail(newMessage));
-            return () => {
-              setSeconds(0);
-              setMinutes(0);
-            };
+            return setSeconds(0), setMinutes(0);
           }
         } else {
           let newMessage = t("Something-went-wrong");
           dispatch(resendOTPFail(newMessage));
-          return () => {
-            setSeconds(0);
-            setMinutes(0);
-          };
+          return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {

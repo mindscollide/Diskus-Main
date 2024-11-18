@@ -4,13 +4,16 @@ import { Col, Row } from "react-bootstrap";
 import dropmdownblack from "../../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../../assets/images/whiteupper.png";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
 import SubAgendaView from "./SubAgendaView/SubAgendaView";
 import { Button } from "../../../../../../components/elements";
 const AgendaView = () => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [expandMainAgenda, setExpandMainAgenda] = useState(false);
   const [viewDataAgenda, setViewDataAgenda] = useState([
     {
@@ -95,7 +98,6 @@ const AgendaView = () => {
                                 >
                                   <img
                                     draggable={false}
-                                    alt=""
                                     src={
                                       expandMainAgenda
                                         ? blackArrowUpper
@@ -161,7 +163,6 @@ const AgendaView = () => {
                                               <img
                                                 src={profile}
                                                 height="27px"
-                                                alt=""
                                                 width="27px"
                                                 className={
                                                   styles["Profile_Class"]
@@ -265,7 +266,6 @@ const AgendaView = () => {
                                                               >
                                                                 <img
                                                                   src={PDFIcon}
-                                                                  alt=""
                                                                   height="31.57px"
                                                                   width="31.57px"
                                                                 />

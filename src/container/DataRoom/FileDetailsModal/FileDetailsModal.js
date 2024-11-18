@@ -10,11 +10,11 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [analyticsCountData, setAnalyticsCountData] = useState([]);
-  const fileDetials = useSelector((state) => state.DataRoomReducer.fileDetials);
-  const getDataAnalyticsCountDetails = useSelector(
-    (state) =>
-      state.DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails
+  console.log(analyticsCountData, "analyticsCountDataanalyticsCountData");
+  const { DataRoomReducer, DataRoomFileAndFoldersDetailsReducer } = useSelector(
+    (state) => state
   );
+
   const FileDetails = [
     {
       title: (
@@ -87,14 +87,16 @@ const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
   ];
 
   useEffect(() => {
-    if (getDataAnalyticsCountDetails) {
-      setAnalyticsCountData(getDataAnalyticsCountDetails);
+    if (DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails) {
+      setAnalyticsCountData(
+        DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails
+      );
     }
-  }, [getDataAnalyticsCountDetails]);
+  }, [DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails]);
   return (
     <section>
       <Modal
-        show={fileDetials}
+        show={DataRoomReducer.fileDetials}
         setShow={dispatch(showFileDetailsModal)}
         modalFooterClassName={"d-block"}
         onHide={() => {

@@ -4,16 +4,23 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { cleareChangePasswordMessage } from "../../../../store/actions/Auth_Forgot_Password";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import {
+  Paper,
   Button,
   Notification,
+  Loader,
   VerificationInputField,
 } from "../../../../components/elements";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
+import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
+import {
+  cleareMessage,
+  verificationEmailOTP,
+} from "../../../../store/actions/Auth2_actions";
 import {
   LoginFlowRoutes,
   ResendForgotPasswordCodeApi,
@@ -25,11 +32,12 @@ const ForgotPasswordVerificationUM = () => {
 
   const { t } = useTranslation();
 
+  const { auth, Authreducer, LanguageReducer, UserMangementReducer } =
+    useSelector((state) => state);
   const [key, setKey] = useState(1);
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   // Constants for timer
@@ -63,6 +71,7 @@ const ForgotPasswordVerificationUM = () => {
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
+    // dispatch(ResendOTP(t, data, setSeconds, setMinutes));
     dispatch(ResendForgotPasswordCodeApi(t, data, setSeconds, setMinutes));
   };
 
@@ -108,6 +117,49 @@ const ForgotPasswordVerificationUM = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   if (auth.ResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: auth.ResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
+
+  //     dispatch(cleareChangePasswordMessage());
+  //   } else {
+  //     dispatch(cleareChangePasswordMessage());
+  //   }
+  // }, [auth.ResponseMessage]);
+
+  //for showing the responses in the snackbar
+  // useEffect(() => {
+  //   if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: Authreducer.VerifyOTPEmailResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
+
+  //     dispatch(cleareMessage());
+  //   } else {
+  //     dispatch(cleareMessage());
+  //   }
+  // }, [Authreducer.VerifyOTPEmailResponseMessage]);
+
   useEffect(() => {
     // if value was cleared, set key to re-render the element
     if (verifyOTP.length === 0) {
@@ -126,6 +178,7 @@ const ForgotPasswordVerificationUM = () => {
   //Submission Of OTP
   const SubmitOTP = (e) => {
     e.preventDefault();
+    console.log("changeHandler", verifyOTP);
 
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
@@ -150,7 +203,7 @@ const ForgotPasswordVerificationUM = () => {
 
   const handleBacktoSignIn = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
   };
 
   return (
@@ -169,7 +222,7 @@ const ForgotPasswordVerificationUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <span
+            <Paper
               className={
                 styles["Forgot_password_Verification_loginbox_auth_paper"]
               }
@@ -276,6 +329,7 @@ const ForgotPasswordVerificationUM = () => {
                             "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
+                        // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>
@@ -293,7 +347,7 @@ const ForgotPasswordVerificationUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </span>
+            </Paper>
           </Col>
           <Col
             lg={8}
@@ -320,7 +374,14 @@ const ForgotPasswordVerificationUM = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {auth.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : Authreducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

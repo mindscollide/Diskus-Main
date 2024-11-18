@@ -1,0 +1,21 @@
+.attachment-popover{
+    padding: 10px 5px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 2px;
+    width: 550px !important;
+    position: absolute !important;
+    top: 380px;
+    left: 70px;
+}
+.meetingAttachments {
+    max-width: 500px;
+    max-height: 120px;
+    display: flex;
+    overflow-y: auto;
+}
+.fileicon-attachmentVideoChat {
+    height: 100px;
+    margin-top: 10px;
+    width: 80px;
+}

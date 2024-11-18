@@ -7,10 +7,12 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Table,
+  Loader,
   Notification,
 } from "../../../../../components/elements";
 import {
   clearAttendanceResponse,
+  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -27,11 +29,10 @@ import {
   showAttendanceConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-
 const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
+  setDataroomMapFolderId,
   setEdiorRole,
   setPolls,
   setAttendance,
@@ -41,27 +42,32 @@ const Attendence = ({
   const navigate = useNavigate();
 
   //reducer call from Attendance_Reducers
+  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
+    (state) => state
+  );
+
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage
   );
-  const attendanceMeetings = useSelector(
-    (state) => state.attendanceMeetingReducer.attendanceMeetings
-  );
-  const attendanceConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.attendanceConfirmationModal
-  );
+
+  console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
   const [useCase, setUseCase] = useState(0);
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
+  console.log(open, "setOpensetOpen");
 
   const [attendenceRows, setAttendenceRows] = useState([]);
+  console.log(attendenceRows, "attendenceRowsattendenceRows");
+
+  console.log(meetingID, ResponseMessage, "meetingIDmeetingID");
 
   const enablePresent = (record, status) => {
     const updatedRows = attendenceRows.map((row) => {
@@ -258,15 +264,20 @@ const Attendence = ({
   // for rendering data in table
   useEffect(() => {
     if (
-      attendanceMeetings !== null &&
-      attendanceMeetings !== undefined &&
-      attendanceMeetings.length > 0
+      attendanceMeetingReducer.attendanceMeetings !== null &&
+      attendanceMeetingReducer.attendanceMeetings !== undefined &&
+      attendanceMeetingReducer.attendanceMeetings.length > 0
     ) {
-      setAttendenceRows(attendanceMeetings);
+      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
-  }, [attendanceMeetings]);
+  }, [attendanceMeetingReducer.attendanceMeetings]);
+
+  console.log(
+    attendanceMeetingReducer.attendanceMeetings,
+    "attendanceMeetingReducerattendanceMeetings"
+  );
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -276,9 +287,27 @@ const Attendence = ({
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
 
+  // for save the meeting
+  // const saveHandler = () => {
+  //   let newData = [];
+  //   attendenceRows.forEach((data, index) => {
+  //     newData.push({
+  //       AttendanceStatusID: data.meetingAttendancestatus.attendanceStatusID,
+  //       UserID: data.userID,
+  //     });
+  //   });
+  //   let Data = {
+  //     MeetingAttendance: newData,
+  //     MeetingID: Number(currentMeeting),
+  //   };
+  //   console.log(Data, "DataData");
+  //   dispatch(saveMeetingAttendanceApi(navigate, t, Data));
+  // };
+
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      showMessage(ResponseMessage, "success", setOpen);
+      setOpen({ open: true, message: ResponseMessage });
+
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
     }
@@ -321,18 +350,35 @@ const Attendence = ({
   // This is how I can revert Data without Hitting an API
   const revertHandler = () => {
     if (
-      attendanceMeetings !== null &&
-      attendanceMeetings !== undefined &&
-      attendanceMeetings.length > 0
+      attendanceMeetingReducer.attendanceMeetings !== null &&
+      attendanceMeetingReducer.attendanceMeetings !== undefined &&
+      attendanceMeetingReducer.attendanceMeetings.length > 0
     ) {
-      setAttendenceRows(attendanceMeetings);
+      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
   };
 
+  const navigatePrevHandler = () => {
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+    if (ReducerAttendeceData) {
+      setPolls(true);
+      setAttendance(false);
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(1);
+    }
+  };
+
   const handleCancelBtn = () => {
-    let ReducerAttendeceData = deepEqual(attendanceMeetings, attendenceRows);
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
     if (ReducerAttendeceData) {
       setSceduleMeeting(false);
       setPolls(false);
@@ -347,8 +393,8 @@ const Attendence = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
     } else {
@@ -384,7 +430,11 @@ const Attendence = ({
             className={styles["CloneMeetingStyles"]}
             onClick={handleCancelBtn}
           />
-
+          {/* <Button
+            text={t("Previous")}
+            onClick={navigatePrevHandler}
+            className={styles["CloneMeetingStyles"]}
+          /> */}
           <Button
             text={t("Save")}
             onClick={() => saveHandler()}
@@ -398,7 +448,7 @@ const Attendence = ({
         </Col>
       </Row>
 
-      {attendanceConfirmationModal && (
+      {NewMeetingreducer.attendanceConfirmationModal && (
         <CancelModal
           setAttendance={setAttendance}
           setPolls={setPolls}
@@ -407,7 +457,7 @@ const Attendence = ({
         />
       )}
 
-      <Notification open={open} setOpen={setOpen} />
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>
   );
 };

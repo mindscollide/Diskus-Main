@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import result from "../../assets/images/result.svg";
+import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
+import line from "../../assets/images/line.png";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
 import Tie from "../../assets/images/Tie.svg";
+
 import { Chart } from "react-google-charts";
-import { Button } from "./../../components/elements";
+import { Button, Notification } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
@@ -16,14 +19,9 @@ import SeceretBallotingIcon from "../../assets/images/resolutions/Secret_Balloti
 import { useSelector, useDispatch } from "react-redux";
 import { updateVoteApi } from "../../store/actions/Resolution_actions";
 import { useNavigate } from "react-router-dom";
-import { convertToArabicNumerals } from "../../commen/functions/regex";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
-  const VoteDetails = useSelector(
-    (state) => state.ResolutionReducer.getVoteDetailsByID
-  );
-
+  const { ResolutionReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [approved, setApproved] = useState(0);
@@ -39,9 +37,14 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
+    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -110,9 +113,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   };
   useEffect(() => {
     try {
-      if (VoteDetails !== null) {
+      if (ResolutionReducer.getVoteDetailsByID !== null) {
         try {
-          let getVoteresult = VoteDetails;
+          let getVoteresult = ResolutionReducer.getVoteDetailsByID;
           setResolutionTitle(getVoteresult.resolutionTite);
           setVotingMethod(getVoteresult.votingMethod);
           setVotingMethodId(getVoteresult.votingMethodID);
@@ -138,7 +141,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [VoteDetails]);
+  }, [ResolutionReducer.getVoteDetailsByID]);
   return (
     <>
       <section>
@@ -150,7 +153,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
 
         <Row className="mt-4">
           <Col lg={12} md={12} sm={12}>
-            <span className={styles["VotingPage_paper"]}>
+            <Paper className={styles["VotingPage_paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -169,7 +172,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             src={SeceretBallotingIcon}
                             height="23.19px"
                             width="23.19px"
-                            alt=""
                           />
                         ) : (
                           <img
@@ -180,6 +182,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             alt=""
                           />
                         )}
+                        {/* <img src={result} height="23.19px" width="23.19px" /> */}
                       </span>
                     </Col>
                   </Row>
@@ -371,6 +374,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                                   alt=""
                                                   width="20px"
                                                   height="20px"
+                                                  // onClick={() =>
+                                                  //   setVoterID(data.pK_RV_ID)
+                                                  // }
                                                 />
                                               }
                                             />
@@ -444,7 +450,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                           ? Tie
                                           : null
                                       }
-                                      alt=""
                                       height="37px"
                                       width="36.98px"
                                     />
@@ -509,10 +514,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <span
                               className={styles["No_of_Votes_voteResolution"]}
                             >
-                              {convertToArabicNumerals(
-                                totalVoters,
-                                CurrentLanguage
-                              ) || 0}
+                              {totalVoters || 0}
                             </span>
                           </span>
                         </Col>
@@ -542,10 +544,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                   </Row>
                 </Col>
               </Row>
-            </span>
+            </Paper>
           </Col>
         </Row>
       </section>
+      <Notification message={open.message} open={open.flag} setOpen={setOpen} />
     </>
   );
 };

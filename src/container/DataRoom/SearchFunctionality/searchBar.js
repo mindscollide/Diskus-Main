@@ -21,7 +21,10 @@ import {
   OptionsOwner,
   optionsLastmodified,
 } from "./option";
-import { formatDateToUTC } from "../../../commen/functions/date_formater";
+import {
+  formatDateToMMDDYY,
+  formatDateToUTC,
+} from "../../../commen/functions/date_formater";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useSelector } from "react-redux";
 import { Tooltip } from "antd";
@@ -38,7 +41,7 @@ const SearchBarComponent = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const user = useSelector((state) => state.assignees.user);
+  const { assignees } = useSelector((state) => state);
   const searchBarRef = useRef();
   const calendRef = useRef();
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
@@ -114,18 +117,18 @@ const SearchBarComponent = ({
   //this is user list
   useEffect(() => {
     try {
-      if (user) {
-        const filteredApiResponse = user.filter(
+      if (assignees.user) {
+        const filteredApiResponse = assignees.user.filter(
           (user) => !userID.includes(user.pK_UID)
         );
         setAssignessList(filteredApiResponse);
       }
     } catch {}
-  }, [user]);
+  }, [assignees.user]);
 
   // this is used for input title
   const handleTitleSearch = (e) => {
-    setSearchDataFields({ ...searchDataFields, Title: e.target.value });
+    setSearchDataFields({ ...searchDataFields, ["Title"]: e.target.value });
   };
 
   //   this handler for title enter seacrh
@@ -152,6 +155,7 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
@@ -177,6 +181,7 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
@@ -220,6 +225,7 @@ const SearchBarComponent = ({
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
       isOwnedByMe: 2,
+      // isNotOwnedByMe: false,
       isSpecificUser: false,
       sRow: 0,
       Length: 10,
@@ -298,6 +304,7 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
@@ -338,9 +345,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -378,9 +387,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -418,9 +429,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -458,9 +471,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -498,9 +513,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -538,9 +555,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -578,9 +597,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -618,9 +639,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -658,9 +681,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -698,9 +723,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -725,9 +752,11 @@ const SearchBarComponent = ({
         LastModifiedEndDate: "",
         UserIDToSearch: 0,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
+
         SortBy: 1,
         isDescending: false,
       };
@@ -790,9 +819,11 @@ const SearchBarComponent = ({
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
       isOwnedByMe: 2,
+      // isNotOwnedByMe: false,
       isSpecificUser: false,
       sRow: 0,
       Length: 10,
+
       SortBy: 0,
       isDescending: false,
     });
@@ -1008,6 +1039,7 @@ const SearchBarComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 1,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -1015,6 +1047,7 @@ const SearchBarComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 2,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -1022,6 +1055,7 @@ const SearchBarComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 3,
+        // isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -1029,6 +1063,7 @@ const SearchBarComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 3,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         UserIDToSearch: parseInt(event.value),
       });
@@ -1203,6 +1238,7 @@ const SearchBarComponent = ({
         : "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      // isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1218,6 +1254,63 @@ const SearchBarComponent = ({
     setIsStartOpen(false);
     setIsEndOpen(false);
     setCustomRangeVisible(false);
+    //Back To intial State of Search As Defined
+    // setSearchDataFields({
+    //   UserID: userID ? parseInt(userID) : 0,
+    //   OrganizationID: organizationID
+    //     ? parseInt(organizationID)
+    //     : organizationID,
+    //   StatusID: 3,
+    //   Title: "",
+    //   isDocument: false,
+    //   isSpreadSheet: false,
+    //   isPresentation: false,
+    //   isForms: false,
+    //   isPDF: false,
+    //   isFolders: false,
+    //   isVideos: false,
+    //   isImages: false,
+    //   isAudios: false,
+    //   isSites: false,
+    //   LastModifiedStartDate: "",
+    //   LastModifiedEndDate: "",
+    //   UserIDToSearch: 0,
+    //   isOwnedByMe: 2,
+    //   // isNotOwnedByMe: false,
+    //   isSpecificUser: false,
+    //   sRow: 0,
+    //   Length: 10,
+
+    //   SortBy: 0,
+    //   isDescending: false,
+    // });
+    // setSearchResultFields({
+    //   Date: null,
+    //   Type: null,
+    //   Location: null,
+    //   People: null,
+    // });
+    // setSearchResultBoxFields({
+    //   documentType: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   lastModifedDate: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   documetLocation: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   itemname: "",
+    //   haswords: "",
+    //   owner: {
+    //     value: 0,
+    //     label: "",
+    //   },
+    //   specifiPeople: "",
+    // });
   };
 
   const handleOutsideClick = (event) => {
@@ -1281,6 +1374,7 @@ const SearchBarComponent = ({
             </Tooltip>
           )
         }
+        // clickIcon={SearchiconClickOptions}
         iconclassname={
           searchTabOpen
             ? styles["dataroom_searchinput"]

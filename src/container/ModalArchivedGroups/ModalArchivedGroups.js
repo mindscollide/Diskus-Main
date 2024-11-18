@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
+import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import styles from "./ModalArchivedGroups.module.css";
 import GroupIcon from "../../assets/images/Path 636.png";
 import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Carousel from "react-bootstrap/Carousel";
 import {
   getArcheivedGroups,
+  getbyGroupID,
+  getGroups,
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const ModalArchivedCommittee = ({
+  ModalTitle,
   archivedCommittee,
   setArchivedCommittee,
+  setViewGroupPage,
   setUpdateComponentpage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const GroupsReducerrealtimeGroupStatus = useSelector(
-    (state) => state.GroupsReducer.realtimeGroupStatus
-  );
-
-  const GroupsReducergetAllGroupsResponse = useSelector(
-    (state) => state.GroupsReducer.getAllGroupsResponse
-  );
-
-  const GroupsReducerArcheivedGroups = useSelector(
-    (state) => state.GroupsReducer.ArcheivedGroups
-  );
-
+  const { GroupsReducer } = useSelector((state) => state);
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
   const [totalRecords, setTotalrecord] = useState(0);
   let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
@@ -48,20 +42,22 @@ const ModalArchivedCommittee = ({
       dispatch(getArcheivedGroups(navigate, t, 1));
     }
   }, []);
-
+  console.log(
+    GroupsReducer.getAllGroupsResponse,
+    "GroupsReducerGroupsReducerGroupsReducer"
+  );
   useEffect(() => {
     // try{}catch{}
-    if (GroupsReducerrealtimeGroupStatus !== null) {
-      let status = GroupsReducerrealtimeGroupStatus.groupStatusID;
+    if (GroupsReducer.realtimeGroupStatus !== null) {
+      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
 
       if (status === 2) {
-        let findGroupIndex = GroupsReducergetAllGroupsResponse.groups.findIndex(
-          (data, index) => {
-            return data.groupID === GroupsReducerrealtimeGroupStatus.groupID;
-          }
-        );
+        let findGroupIndex =
+          GroupsReducer.getAllGroupsResponse.groups.findIndex((data, index) => {
+            return data.groupID === GroupsReducer.realtimeGroupStatus.groupID;
+          });
         if (findGroupIndex !== -1) {
-          let allgroupData = GroupsReducergetAllGroupsResponse.groups;
+          let allgroupData = GroupsReducer.getAllGroupsResponse.groups;
           let copygroupData = [...allgroupData];
           copygroupData.unshift({
             groupDescription: allgroupData[findGroupIndex].groupDescription,
@@ -77,27 +73,29 @@ const ModalArchivedCommittee = ({
         setGroupsArheivedData((archGroupData) => {
           return archGroupData.filter(
             (groupData, index) =>
-              groupData.groupID !== GroupsReducerrealtimeGroupStatus.groupID
+              groupData.groupID !== GroupsReducer.realtimeGroupStatus.groupID
           );
         });
       }
     }
-  }, [GroupsReducerrealtimeGroupStatus]);
+  }, [GroupsReducer.realtimeGroupStatus]);
 
   useEffect(() => {
     if (
-      GroupsReducerArcheivedGroups !== null &&
-      GroupsReducerArcheivedGroups !== undefined
+      GroupsReducer.ArcheivedGroups !== null &&
+      GroupsReducer.ArcheivedGroups !== undefined
     ) {
       try {
-        if (GroupsReducerArcheivedGroups.groups.length > 0) {
-          setTotalrecord(GroupsReducerArcheivedGroups.totalRecords);
-          let copyData = [...GroupsReducerArcheivedGroups.groups];
+        if (GroupsReducer.ArcheivedGroups.groups.length > 0) {
+          setTotalrecord(GroupsReducer.ArcheivedGroups.totalRecords);
+          let copyData = [...GroupsReducer.ArcheivedGroups.groups];
           // Create a new copy of committeeMembers array for each committee
           const updateGroups = copyData.map((groups) => ({
             ...groups,
             groupMembers: [...groups.groupMembers],
           }));
+
+          //  setgroupsData(updateGroups);
 
           setGroupsArheivedData(updateGroups);
         } else {
@@ -105,13 +103,26 @@ const ModalArchivedCommittee = ({
         }
       } catch (error) {}
     }
-  }, [GroupsReducerArcheivedGroups]);
+  }, [GroupsReducer.ArcheivedGroups]);
 
   const updateModal = async (e) => {
     setUpdateComponentpage(true);
   };
 
-  const ViewGroupmodal = () => {};
+  const ViewGroupmodal = (groupID, statusID) => {
+    // dispatch(
+    //   getbyGroupID(
+    //     navigate,
+    //     groupID,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1,
+    //     setArchivedGroups
+    //   )
+    // );
+    // setArchivedCommittee(false);
+  };
 
   const handlechange = (value) => {
     localStorage.setItem("groupsArCurrent", value);
@@ -119,7 +130,7 @@ const ModalArchivedCommittee = ({
   };
 
   const handleArrow = () => {
-    if (GroupsReducerArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
+    if (GroupsReducer.ArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
       let currentPage = currentGroupPage + 1;
       localStorage.setItem("groupsArCurrent", currentPage);
       dispatch(getArcheivedGroups(navigate, t, currentPage));
@@ -147,11 +158,12 @@ const ModalArchivedCommittee = ({
               setArchivedCommittee(false);
             }}
             setShow={setArchivedCommittee}
+            // ButtonTitle={ModalTitle}
             closeButton={false}
             modalFooterClassName="d-block"
             modalHeaderClassName="d-block"
             centered
-            size={"xl"}
+            size={archivedCommittee === true ? "xl" : "xl"}
             ModalTitle={
               <>
                 <Row>
@@ -165,9 +177,9 @@ const ModalArchivedCommittee = ({
                       {t("Archived-groups")}
                     </p>
                   </Col>
-                  {GroupsReducerArcheivedGroups !== null &&
-                  GroupsReducerArcheivedGroups !== undefined ? (
-                    GroupsReducerArcheivedGroups.pageNumbers >=
+                  {GroupsReducer.ArcheivedGroups !== null &&
+                  GroupsReducer.ArcheivedGroups !== undefined ? (
+                    GroupsReducer.ArcheivedGroups.pageNumbers >=
                     currentGroupPage + 1 ? (
                       <Col
                         lg={1}
@@ -202,6 +214,7 @@ const ModalArchivedCommittee = ({
                     {groupsArheivedData.length > 0 &&
                     Object.values(groupsArheivedData).length > 0 ? (
                       groupsArheivedData.map((data, index) => {
+                        // if(index+1===Lastpostindex||index+1>=)
                         return (
                           <Col sm={12} md={4} lg={4} className="mb-3">
                             <Card
@@ -272,6 +285,7 @@ const ModalArchivedCommittee = ({
                                 className={"pagination-groups-table"}
                               >
                                 <CustomPagination
+                                  // defaultCurrent={currentposts}
                                   total={totalRecords}
                                   pageSize={8}
                                   current={currentGroupPage}

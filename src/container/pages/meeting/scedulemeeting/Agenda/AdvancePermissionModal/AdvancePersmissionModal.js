@@ -12,11 +12,19 @@ import {
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
+import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
+import PDF from "../../../../../../assets/images/pdf_icon.svg";
+import Minus from "../../../../../../assets/images/SVGMINUS.svg";
+import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
+import { style } from "@mui/system";
 const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { SubMenu } = Menu;
+  const { Sider } = Layout;
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );

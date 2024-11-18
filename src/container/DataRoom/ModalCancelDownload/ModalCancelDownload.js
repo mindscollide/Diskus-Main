@@ -1,5 +1,5 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalCancelDownload.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
@@ -10,7 +10,9 @@ const ModalCancelDownload = ({
   setCancelDownload,
 }) => {
   const { t } = useTranslation();
-
+  const closebtn = async () => {
+    setCancelDownload(false);
+  };
   return (
     <>
       <Container>

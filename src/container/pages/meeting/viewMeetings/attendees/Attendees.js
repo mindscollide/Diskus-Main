@@ -31,6 +31,7 @@ const Attendees = ({
   const [mayBe, setMayBe] = useState(0);
   const [notAttending, setNotAttending] = useState(0);
   const [notResponded, setNotResponded] = useState(0);
+  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -100,8 +101,8 @@ const Attendees = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
-      dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
       setViewAdvanceMeetingModal(false);
@@ -164,6 +165,7 @@ const Attendees = ({
       >
         <section className={styles["Members_Area"]}>
           <p className={styles["AttendeesAreaHeading"]}>Organizers</p>
+          {/* Organizers Data */}
           <div className={styles["Cards"]}>
             {organizersData.length > 0 &&
               organizersData.map((data) => {

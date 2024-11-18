@@ -311,14 +311,14 @@ const Card = ({
                           className="d-flex justify-content-start gap-2  ms-1 "
                         >
                           <div className={discussionMenuClass}>
-                          <span>
-                            <img
-                              src={img3}
-                              width={15}
-                              draggable="false"
-                              alt=""
-                            />
-                          </span>
+                            <span>
+                              <img
+                                src={img3}
+                                width={15}
+                                draggable="false"
+                                alt=""
+                              />
+                            </span>
                             <span className={styles["dropdown-text"]}>
                               {t("Discussion")}
                             </span>

@@ -1,28 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Scrollbars } from "react-custom-scrollbars";
+import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
+// import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import TodoMessageIcon1 from "../../../../assets/images/Todomsg-1.png";
+import NoRecentActivity from "../../../../assets/images/No-Recent-Activity.png";
+import CancelMeetingSvg from "../../../../assets/images/cancel_meeting_icon.svg";
+import MeetingChangesSvg from "../../../../assets/images/meeting_changes-icon.svg";
+import TalkIcon from "../../../../assets/images/newElements/Diskus_TalkIcon.svg";
+import Diskus_TimerIcon from "../../../../assets/images/newElements/Diskus_TimerIcon.svg";
+import Diskus_VideoIcon from "../../../../assets/images/newElements/Diskus_VideoIcon.svg";
+import Diskus_ChatIcon from "../../../../assets/images/newElements/Diskus_ChatIcon.svg";
 import styles from "./OnboardDashboard.module.css";
+// import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
   CustomTextProgressbar,
+  ResultMessage,
+  Paper,
   Notification,
   Modal,
   Button,
 } from "../../../../components/elements";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+// import Calendar from "react-calendar";
+// Branch number 3;
+// Branch number 3;
+// Branch number 3;
 
 import {
   getCalendarDataResponse,
   HideNotificationCalendarData,
 } from "../../../../store/actions/GetDataForCalendar";
 import { useTranslation } from "react-i18next";
+// import "react-calendar/dist/Calendar.css";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import ModalMeeting from "../../../modalmeeting/ModalMeeting";
-import { ExclamationTriangleFill } from "react-bootstrap-icons";
-
+import {
+  Bell,
+  Search,
+  Mailbox,
+  Paperclip,
+  X,
+  ChatSquareText,
+  Paragraph,
+  ExclamationTriangleFill,
+} from "react-bootstrap-icons";
+import { dateTime } from "../../../../commen/functions/date_formater";
+import TimeAgo from "timeago-react";
 import {
   GetTodoListByUser,
   GetWeeklyToDoCount,
@@ -38,33 +68,51 @@ import {
   getNotifications,
   HideNotificationUserNotificationData,
 } from "../../../../store/actions/GetUserNotification";
-import { HideNotification } from "../../../../store/actions/Get_List_Of_Assignees";
+import {
+  HideNotification,
+  ViewMeeting,
+} from "../../../../store/actions/Get_List_Of_Assignees";
+import { Sidebar } from "../../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import {
   cleareMessage,
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
   console.log("dCheck", dCheck);
   //For Localization
   const { t } = useTranslation();
+  const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
-  const { settingReducer, calendarReducer, auth, Authreducer } = state;
+  const {
+    settingReducer,
+    calendarReducer,
+    toDoListReducer,
+    meetingIdReducer,
+    auth,
+    Authreducer,
+  } = state;
   const { RecentActivityData } = settingReducer;
+
+  console.log("RecentActivityData", settingReducer);
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
+  // for sub menus Icons
+  const [subIcons, setSubIcons] = useState(false);
+  //For Calendar
   const dispatch = useDispatch();
+
+  const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
   const [recentActivityData, setRecentActivityData] = useState([]);
-
+  // const [open, setOpen] = useState(false);
+  // get new date
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
   console.log("date", getCurrentDate);
@@ -76,9 +124,13 @@ const OnboardDashboard = () => {
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
-    if (Blur !== null) {
+    if (Blur != undefined) {
+      console.log("Blur", Blur);
+
       setActivateBlur(true);
     } else {
+      console.log("Blur", Blur);
+
       setActivateBlur(false);
     }
   }, [Blur]);
@@ -88,18 +140,20 @@ const OnboardDashboard = () => {
     console.log("Data", Data);
     let newList = [];
     if (Object.keys(Data).length > 0) {
-      Data.forEach((cData) => {
+      Data.map((cData, index) => {
+        console.log("cData", cData);
         newList.push({
           meetingDate: cData.meetingDate,
         });
       });
       setCalenderData(newList);
+      console.log("newListnewListnewList", calenderData);
     }
   }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
     var temp = [];
-    calenderData.forEach((cal) => {
+    calenderData.map((cal, index) => {
       var year = moment(cal.meetingDate).format("YYYY");
       var month = moment(cal.meetingDate).format("MM");
       var day = moment(cal.meetingDate).format("DD");
@@ -121,6 +175,7 @@ const OnboardDashboard = () => {
   }, []);
 
   //ToDo Table Data
+  const [rowsToDo, setRowToDo] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -130,7 +185,7 @@ const OnboardDashboard = () => {
   let lang = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (lang !== undefined) {
+    if (lang != undefined) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -147,6 +202,36 @@ const OnboardDashboard = () => {
     dispatch(GetTodoListByUser(navigate, data, t));
   }, []);
 
+  // for view modal  handler
+  const viewModalHandler = (id) => {
+    console.log("viewID", id);
+    // setViewFlag(true);
+    // let Data = { MeetingID: id };
+    // console.log("viewModalHandler", Data);
+    // dispatch(ViewMeeting(Data));
+  };
+
+  //get todolist reducer
+  useEffect(() => {
+    if (
+      Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
+      toDoListReducer.AllTodolistData !== undefined
+    ) {
+      console.log(
+        "todolistreducer.AllTodolistData",
+        toDoListReducer,
+        toDoListReducer.AllTodolistData
+      );
+      setRowToDo(toDoListReducer.AllTodolistData);
+    } else {
+      console.log(
+        "todolistreducer.AllTodolistData",
+        toDoListReducer.AllTodolistData
+      );
+      setRowToDo([]);
+    }
+  }, [toDoListReducer.AllTodolistData]);
+
   const columnsToDo = [
     {
       title: t("Task"),
@@ -155,6 +240,7 @@ const OnboardDashboard = () => {
       width: "35%",
       className: "titleDashboard",
       ellipsis: true,
+      // render: (text) => <span className="fw-bold">{text}</span>,
     },
     {
       title: t("Deadline"),
@@ -169,6 +255,49 @@ const OnboardDashboard = () => {
       key: "status",
       width: "25%",
       className: "statusDashboard",
+      //   render: (text) => {
+      //     return toDoListReducer.AllTodolistData.map((data, index) => {
+      //       if (index === 0) {
+      //         if (text.status === "In progress") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-D8A709">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         } else if (text.status === "On hold") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-F68732">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         } else if (text.status === "Pending") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-5F78D6">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         } else if (text.status === "Cancelled") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-F16B6B">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         } else if (text.status === "Completed") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-81DB86">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         } else if (text.status === "Reopen") {
+      //           return (
+      //             <span className="MontserratMedium-500 color-F68732">
+      //               {text.status}
+      //             </span>
+      //           );
+      //         }
+      //       }
+      //     });
+      //   },
     },
   ];
 
@@ -233,6 +362,9 @@ const OnboardDashboard = () => {
 
   // Api Hit Meeting Count
   useEffect(() => {
+    let Data = {
+      UserId: parseInt(createrID),
+    };
     let Data2 = {
       UserID: parseInt(createrID),
     };
@@ -243,14 +375,43 @@ const OnboardDashboard = () => {
   useEffect(() => {
     dispatch(getNotifications(navigate, createrID, t));
   }, []);
+  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
+  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
+    useState(0);
+
+  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
+  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
+
+  useEffect(() => {
+    setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
+    setUpcomingMeetingCountThisWeek(
+      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
+    );
+  }, [meetingIdReducer]);
+
+  useEffect(() => {
+    setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
+    setTodoListAssignedThisWeek(
+      toDoListReducer.TotalNumberOfUpcommingTodoInWeek
+    );
+  }, [toDoListReducer]);
 
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
       setRecentActivityData(RecentActivityData);
     }
   }, [RecentActivityData]);
-
+  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
+  let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   useEffect(() => {
+    // if (auth.ResponseMessage !== "") {
+    //   // setSignInErrorField(true);
+    //   setOpen({
+    //     ...open,
+    //     open: true,
+    //     message: auth.ResponseMessage,
+    //   });
+    // }
     dispatch(HideNotificationAuth());
     dispatch(HideNotificationCalendarData());
     dispatch(HideNotificationTodo());
@@ -258,14 +419,23 @@ const OnboardDashboard = () => {
     dispatch(HideNotificationMeetings());
     dispatch(HideNotification());
   }, [auth.ResponseMessage]);
-
+  const showsubTalkIcons = () => {
+    setSubIcons(!subIcons);
+  };
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
       dispatch(cleareMessage());
     } else if (
@@ -273,13 +443,33 @@ const OnboardDashboard = () => {
       Authreducer.EnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
+      setOpen({
+        ...open,
+        open: false,
+        message: "",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
       dispatch(cleareMessage());
     } else if (
@@ -287,26 +477,49 @@ const OnboardDashboard = () => {
       Authreducer.CreatePasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
       dispatch(cleareMessage());
     } else {
     }
@@ -320,6 +533,13 @@ const OnboardDashboard = () => {
   ]);
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
+
+  const calendarClickFunction = async (e) => {
+    console.log("Calendar Clicked");
+    // await setShow(true);
+  };
+
+  const trackRtlStyle = lang === "ar" ? { left: "2px", right: "auto" } : {};
 
   useEffect(() => {
     if (lang === "ar") {
@@ -338,6 +558,113 @@ const OnboardDashboard = () => {
     setActivateBlur(false);
     setLoader(false);
     navigate("/");
+  };
+
+  const upcomingEventsHandler = (meetingIdReducer) => {
+    let flag = false;
+    let indexforUndeline = null;
+    meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+      if (
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !=
+        getCurrentDate
+      ) {
+        if (indexforUndeline === null && flag === false) {
+          if (index - 1 >= 0) {
+            flag = true;
+            indexforUndeline = index;
+            console.log("upcomingEventsupcomingEvents2323", index);
+          }
+        }
+      }
+    });
+
+    return meetingIdReducer.UpcomingEventsData.map(
+      (upcomingEventsData, index) => {
+        console.log("upcomingEvents index", index);
+        return (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <div className="event-details upcoming_events border-0">
+                  <p className="events-description MontserratSemiBold-600">
+                    Board Meeting
+                  </p>
+                  <p className="events-dateTime MontserratSemiBold-600">
+                    {moment(
+                      upcomingEventsData.meetingEvent.startTime,
+                      "HH:mm:ss"
+                    ).format("h:mm A") +
+                      ", " +
+                      moment(
+                        upcomingEventsData.meetingEvent.meetingDate
+                      ).format("Do MMM, YYYY")}
+                  </p>
+                </div>
+              </Col>
+            </Row>
+            <>
+              {console.log(
+                "upcomingEventsupcomingEventsupcomingEventsupcomingEvents",
+                indexforUndeline,
+                index,
+                indexforUndeline === index
+              )}
+              <span className="bordertop" />
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div
+                    className="event-details"
+                    onClick={() =>
+                      viewModalHandler(
+                        upcomingEventsData.meetingDetails.pK_MDID
+                      )
+                    }
+                  >
+                    <p className="events-description">
+                      {upcomingEventsData.meetingDetails.title}
+                    </p>
+                    <p className="events-dateTime">
+                      {moment(
+                        upcomingEventsData.meetingEvent.startTime,
+                        "HH:mm:ss"
+                      ).format("h:mm A") +
+                        ", " +
+                        moment(
+                          upcomingEventsData.meetingEvent.meetingDate
+                        ).format("Do MMM, YYYY")}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+            </>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <div
+                  className="event-details"
+                  onClick={() =>
+                    viewModalHandler(upcomingEventsData.meetingDetails.pK_MDID)
+                  }
+                >
+                  <p className="events-description">
+                    {upcomingEventsData.meetingDetails.title}
+                  </p>
+                  <p className="events-dateTime">
+                    {moment(
+                      upcomingEventsData.meetingEvent.startTime,
+                      "HH:mm:ss"
+                    ).format("h:mm A") +
+                      ", " +
+                      moment(
+                        upcomingEventsData.meetingEvent.meetingDate
+                      ).format("Do MMM, YYYY")}
+                  </p>
+                </div>
+              </Col>
+            </Row>
+          </>
+        );
+      }
+    );
   };
 
   return (
@@ -438,6 +765,10 @@ const OnboardDashboard = () => {
             <Row>
               <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
                 <CustomTableToDoDashboard
+                  //   loading={{
+                  //     spinning: toDoListReducer.TableSpinner,
+                  //     indicator: <Spin />,
+                  //   }}
                   column={columnsToDo}
                   className="dashboard-todo_onboard"
                   rows={todoRow}
@@ -452,6 +783,7 @@ const OnboardDashboard = () => {
               {t("Recent-activity")}
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
+              {/* <h1 className="recent-activity">Recent Activity</h1> */}
               <div className="Recent-Activity-Box ">
                 <>
                   <Row>
@@ -510,6 +842,19 @@ const OnboardDashboard = () => {
                           {t("2-days-ago")}
                         </p>
                       </Col>
+                      {/* <Col
+                        sm={12}
+                        className="desc-item-time d-flex justify-content-end"
+                      >
+                        {
+                          <TimeAgo
+                            datetime={dateTime(
+                              recentActivityData.creationDateTime
+                            )}
+                            locale="en"
+                          />
+                        }
+                      </Col> */}
                     </Row>
                   </Row>
 
@@ -821,12 +1166,7 @@ const OnboardDashboard = () => {
           </Col>
         </Row>
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       <ModalMeeting
         show={show}
         setShow={setShow}

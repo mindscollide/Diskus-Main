@@ -8,16 +8,25 @@ import {
   newTimeFormaterAsPerUTCTalkDate,
 } from "../../../../../commen/functions/date_formater";
 import { ResultMessage, TextField } from "../../../../elements";
-import { chatBoxActiveFlag } from "../../../../../store/actions/Talk_Feature_actions";
+import {
+  chatBoxActiveFlag,
+  shoutallChatFlag,
+  privateGroupChatFlag,
+  recentChatFlag,
+} from "../../../../../store/actions/Talk_Feature_actions";
 import {
   GetBroadcastMessages,
   activeChat,
 } from "../../../../../store/actions/Talk_action";
+import { Spin } from "antd";
+import SingleIcon from "../../../../../assets/images/Single-Icon.png";
+import GroupIcon from "../../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../../assets/images/Shout-Icon.png";
 import DoubleTickIcon from "../../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../../assets/images/SingleTick-Icon.png";
 import TimerIcon from "../../../../../assets/images/Timer-Icon.png";
+import DropDownIcon from "../../../../../assets/images/dropdown-icon.png";
 import ShoutAllIcon from "../../../../../assets/images/ShoutAll.png";
 import { useTranslation } from "react-i18next";
 
@@ -34,7 +43,9 @@ const ShoutAll = () => {
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
   let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
+  const date = new Date();
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date();
   let changeDateFormatCurrent = moment(currentDateTime).utc();

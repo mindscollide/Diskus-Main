@@ -53,6 +53,7 @@
   margin-left: 10px !important;
   filter: opacity(0.5);
   position: relative;
+  /* pointer-events: none !important; */
 }
 
 .Agenda_Heading {
@@ -343,6 +344,8 @@ body[dir="rtl"] .BackGroundNewImplemented {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
+  /* margin-top: 58px !important;
+  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .SubAgendaArrow {
@@ -354,6 +357,8 @@ body[dir="rtl"] .SubAgendaArrow {
   display: flex !important;
   align-items: center !important;
   justify-content: center;
+  /* margin-top: 150px !important;
+/* } */
 }
 
 .subAgendaArrowExpand {
@@ -361,6 +366,8 @@ body[dir="rtl"] .SubAgendaArrow {
   display: flex !important;
   align-items: center !important;
   justify-content: center;
+  /* margin-top: 150px !important;
+  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .subAgendaArrowExpand {
@@ -445,6 +452,10 @@ body[dir="rtl"] .SubAgendaSection {
   font-weight: 600 !important;
   cursor: pointer !important;
 }
+
+/* .Padding_SubAgenda {
+  padding: 0px 20px !important;
+} */
 
 .AgendaTitle_Heading {
   font-weight: 600 !important;

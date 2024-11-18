@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewVoteScreen.module.css";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
+import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button } from "../../../../../../components/elements";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
-  const PollsReducerviewVotes = useSelector(
-    (state) => state.PollsReducer.viewVotes
-  );
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
+  const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
@@ -16,8 +23,11 @@ const ViewVotesScreen = ({ setviewVotes }) => {
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
-    if (PollsReducerviewVotes !== null && PollsReducerviewVotes !== undefined) {
-      let vieVotePollDetails = PollsReducerviewVotes;
+    if (
+      PollsReducer.viewVotes !== null &&
+      PollsReducer.viewVotes !== undefined
+    ) {
+      let vieVotePollDetails = PollsReducer.viewVotes;
       let pollOptions = vieVotePollDetails.pollOptions;
       let pollAttendies = vieVotePollDetails.pollParticipants;
       let Options = [];
@@ -25,6 +35,9 @@ const ViewVotesScreen = ({ setviewVotes }) => {
 
       if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
         if (Object.keys(vieVotePollDetails).length > 0) {
+          // for poll ID
+          setPollId(vieVotePollDetails.pollDetails.pollID);
+
           // for poll Title
           setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
 
@@ -45,7 +58,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
       setPollAttendiesOpptionsVise([]);
       setVotePollDetailsOptions([]);
     }
-  }, [PollsReducerviewVotes]);
+  }, [PollsReducer.viewVotes]);
 
   const handleViewVotesScreen = () => {
     setviewVotes(false);
@@ -71,7 +84,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
             >
               <Row>
                 {votePollDetailsOptions.length > 0
-                  ? votePollDetailsOptions.map((data) => {
+                  ? votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -130,38 +143,42 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                         </Col>
                       </Row>
                       <Row>
-                        {data?.pollParticipants?.map((participantData) => {
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} className="mt-2">
-                                <section className={styles["Partipants_box"]}>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex align-items-center gap-2"
-                                    >
-                                      <img
-                                        draggable={false}
-                                        src={`data:image/jpeg;base64,${participantData?.profilePicture?.displayProfilePictureName}`}
-                                        height="33px"
-                                        alt=""
-                                        width="33px"
-                                        className={styles["Profile_Style"]}
-                                      />
-                                      <span
-                                        className={styles["Participants_name"]}
+                        {data?.pollParticipants?.map(
+                          (participantData, index) => {
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} className="mt-2">
+                                  <section className={styles["Partipants_box"]}>
+                                    <Row>
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="d-flex align-items-center gap-2"
                                       >
-                                        {participantData?.userName}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </section>
-                              </Col>
-                            </>
-                          );
-                        })}
+                                        <img
+                                          draggable={false}
+                                          src={`data:image/jpeg;base64,${participantData?.profilePicture?.displayProfilePictureName}`}
+                                          height="33px"
+                                          alt=""
+                                          width="33px"
+                                          className={styles["Profile_Style"]}
+                                        />
+                                        <span
+                                          className={
+                                            styles["Participants_name"]
+                                          }
+                                        >
+                                          {participantData?.userName}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </section>
+                                </Col>
+                              </>
+                            );
+                          }
+                        )}
                       </Row>
                     </Col>
                   );

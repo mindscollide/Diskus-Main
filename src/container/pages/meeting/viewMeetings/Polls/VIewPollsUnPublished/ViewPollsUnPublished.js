@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewPollsUnPublished.module.css";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import Profile from "../../../../../../assets/images/newprofile.png";
+import { style } from "@mui/system";
 import { Button } from "../../../../../../components/elements";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 const ViewPollsUnPublished = ({ setUnPublished }) => {
   const { t } = useTranslation();
+  const { PollsReducer } = useSelector((state) => state);
 
-  const PollsReducerAllpolls = useSelector(
-    (state) => state.PollsReducer.Allpolls
-  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
@@ -29,8 +34,11 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
   };
   useEffect(() => {
     try {
-      if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
-        let pollData = PollsReducerAllpolls.poll;
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollData = PollsReducer.Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -52,7 +60,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
         }
       }
     } catch {}
-  }, [PollsReducerAllpolls]);
+  }, [PollsReducer.Allpolls]);
   return (
     <section>
       <Row>
@@ -73,7 +81,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
             >
               <Row>
                 {pollsOption.length > 0
-                  ? pollsOption.map((data) => {
+                  ? pollsOption.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -151,7 +159,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
             >
               <Row>
                 {pollParticipants.length > 0
-                  ? pollParticipants.map((data) => {
+                  ? pollParticipants.map((data, index) => {
                       return (
                         <>
                           <Col lg={6} md={6} sm={6} className="mt-2">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Result } from "antd";
+import { Meeting } from "../../../container/pages/onBoard/Meeting/Meeting";
 import { Row } from "react-bootstrap";
 
 const CustomResultMessage = ({
@@ -13,6 +14,7 @@ const CustomResultMessage = ({
 }) => {
   return (
     <Row>
+      {/* <Meeting /> */}
       <Result
         status={status}
         title={title}

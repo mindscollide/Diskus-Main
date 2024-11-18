@@ -6,6 +6,7 @@ const CustomButton = ({
   icon,
   onClick,
   className,
+  // endIcon,
   icon2,
   disableBtn,
   variant,
@@ -21,7 +22,7 @@ const CustomButton = ({
   iconClass,
   iconClass2,
   textClass,
-  buttonValue,
+  buttonValue
 }) => {
   return (
     <>
@@ -29,11 +30,14 @@ const CustomButton = ({
         type={type}
         color={color}
         size={size}
+        // startIcon={icon ? icon : null}
+        // className={styles[applyClass] + " " + styles[disableClass]}
         className={className}
         variant={variant}
         disabled={disableBtn}
         onClick={onClick}
         onChange={onChange}
+        // endIcon={endIcon ? endIcon : null}
         align={align}
         data-tut={datatut}
         style={style}
@@ -42,6 +46,7 @@ const CustomButton = ({
         <span className={iconClass}>{icon}</span>
         <span className={textClass}>{text}</span>
         <span className={iconClass2}>{icon2}</span>
+        <img className={pdfIconClass} src={pdfIcon} draggable="false" />
       </Button>
     </>
   );

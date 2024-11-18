@@ -73,12 +73,22 @@ body[dir="rtl"] .todolist-create-btn button {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
+.todolist-search-row {
+  /* margin-left: -25px !important; */
+}
+
 .ToDo {
+  /* min-height: 79vh !important; */
   overflow-y: auto;
 }
 
+/* .ToDo .ant-table table {
+  margin-bottom: 10px !important;
+} */
+
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
+  /* border-radius: 4px !important; */
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   color: #505050 !important;
@@ -128,13 +138,30 @@ body[dir="rtl"]
   background-color: #e9e9e9 !important;
   font-size: 14px;
   font-weight: bold;
+  /* display      : contents !important; */
 }
+
+/* .Status-Todo .rc-virtual-list-holder-inner {
+  width: 100px !important;
+  overflow: hidden !important;
+  display:flex !important;
+  text-align: center !important; 
+  grid-template-columns: 150px 150px;
+} */
 
 .Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width: 100px !important;
   min-width: 100px !important;
 }
 
+/* .Status-Todo_todo .ant-select-dropdown span.ant-select-arrow {
+  display: none !important;
+} */
+
+/* .ant-tooltip-inner {
+    display: none !important;
+    opacity: 0 !important;
+} */
 .ant-tooltip.ant-tooltip-placement-top {
   display: none !important;
 }
@@ -161,8 +188,16 @@ body[dir="rtl"]
   width: 100% !important;
 }
 
+/* .ant-table-wrapper.ToDo .ant-table-thead > tr > th {
+  padding: 5px 16px !important;
+} */
+/* .ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
+  padding: 0 0 0 0;
+} */
+
 .ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
   text-align: center !important;
+  /* padding: 0 0 0 80px; */
 }
 
 .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
@@ -262,6 +297,36 @@ body[dir="rtl"] .ArabicStatus {
   font-weight: 600 !important;
 }
 
+/* 
+.react-datepicker__navigation-icon::before {
+  border-top: 55px solid transparent !important;
+  border-left: 100px solid #6172d6 !important;
+  border-bottom: 55px solid transparent !important;
+}
+
+.react-datepicker__navigation--previous {
+  border-top: 16px solid transparent;
+  border-right: 16px solid #6172d6;
+  border-bottom: 16px solid transparent;
+
+} */
+
+/* .react-datepicker__navigation:has(.react-datepicker__navigation--previous) {
+  transform: rotate(45deg) !important;
+} */
+
+/* .react-datepicker__navigation-icon::after {
+  border-top: 55px solid transparent !important;
+  border-left: 100px solid #6172d6 !important;
+  border-bottom: 55px solid transparent !important;
+} */
+/* .react-datepicker__navigation {
+  transform: rotate(314deg) !important;
+}
+
+.react-datepicker__navigation--next {
+  right: 18px !important;
+} */
 .InProgress {
   color: #d8a709;
 }
@@ -302,6 +367,16 @@ body[dir="rtl"] .Completed {
   font-weight: 600 !important;
 }
 
+/* .Status-Todo .rc-virtual-list-holder-inner {
+  width: 300px !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: none !important;
+}
+
+.Status-Todo:focus-visible {
+  outline: none !important;
+} */
 .filterValues-dropdown
   div
   .rc-virtual-list
@@ -321,6 +396,8 @@ body[dir="rtl"] .Completed {
   height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
+  /* position: absolute; */
+  /* bottom: 25px; */
   align-items: center;
 }
 
@@ -340,22 +417,4 @@ td.ant-table-column-sort {
 }
 .ToDo .ant-table .ant-table-body {
   padding-right: 10px;
-}
-
-.FilterResetBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
 }

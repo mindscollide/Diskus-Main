@@ -9,6 +9,9 @@
   text-overflow: ellipsis;
 }
 
+/* .profile_image_shareFolder_modal {
+} */
+
 .Scroller_particiapnt_shared_folder {
   height: 28vh !important;
   overflow-x: hidden !important;
@@ -113,6 +116,7 @@
 
 .select-timezone {
   width: 100px !important;
+  /* border-radius: none !important; */
   height: 10px !important;
 }
 

@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  formatDateToMMDDYY,
   formatDateToUTC,
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
@@ -240,9 +241,11 @@ const SearchComponent = ({
         if (DataRoomReducer.dataBehaviour) {
           dispatch(dataBehaviour(false));
           let copyData = [...searchAllData];
-          DataRoomReducer.SearchFilesAndFoldersResponse.forEach((data) => {
-            copyData.push(data);
-          });
+          DataRoomReducer.SearchFilesAndFoldersResponse.forEach(
+            (data, index) => {
+              copyData.push(data);
+            }
+          );
           setSearchAllData(copyData);
           setTotalRecords(DataRoomReducer.SearchFileListCount);
           setSRowsData(
@@ -265,6 +268,7 @@ const SearchComponent = ({
         setSearchAllData([]);
         setTotalRecords(0);
         setSRowsData(0);
+        // setSearchAllData([]);
       }
     } catch (error) {}
   }, [
@@ -328,6 +332,7 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: sRowsData,
         Length: 10,
@@ -377,6 +382,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -417,6 +424,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -457,6 +466,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -497,6 +508,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -537,6 +550,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -577,6 +592,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -617,6 +634,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -657,6 +676,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -697,6 +718,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -737,6 +760,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -777,6 +802,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
         isOwnedByMe: searchDataFields.isOwnedByMe,
+        //  isNotOwnedByMe: false,
+
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
         Length: 10,
@@ -816,6 +843,8 @@ const SearchComponent = ({
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: 0,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      //  isNotOwnedByMe: false,
+
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -835,6 +864,8 @@ const SearchComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 1,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -857,6 +888,8 @@ const SearchComponent = ({
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
         isOwnedByMe: 1,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: false,
         sRow: 0,
         Length: 10,
@@ -868,6 +901,8 @@ const SearchComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 2,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -889,6 +924,8 @@ const SearchComponent = ({
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         isOwnedByMe: 2,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: false,
         UserIDToSearch: 0,
         sRow: 0,
@@ -936,6 +973,8 @@ const SearchComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 3,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: 3,
         UserIDToSearch: parseInt(event.value),
       });
@@ -957,6 +996,8 @@ const SearchComponent = ({
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         isOwnedByMe: 3,
+        //     isNotOwnedByMe: false,
+
         isSpecificUser: true,
         UserIDToSearch: parseInt(event.value),
         sRow: 0,
@@ -1007,6 +1048,8 @@ const SearchComponent = ({
           LastModifiedEndDate: "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1047,6 +1090,8 @@ const SearchComponent = ({
             : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1089,6 +1134,8 @@ const SearchComponent = ({
             : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1130,6 +1177,8 @@ const SearchComponent = ({
             : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1170,6 +1219,8 @@ const SearchComponent = ({
             : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1210,6 +1261,8 @@ const SearchComponent = ({
             : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
+          //  isNotOwnedByMe: false,
+
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
           Length: 10,
@@ -1253,6 +1306,8 @@ const SearchComponent = ({
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
       isOwnedByMe: 2,
+      //     isNotOwnedByMe: false,
+
       isSpecificUser: false,
       sRow: 0,
       Length: 10,
@@ -1280,6 +1335,8 @@ const SearchComponent = ({
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
       isOwnedByMe: 2,
+      //     isNotOwnedByMe: false,
+
       isSpecificUser: false,
       sRow: 0,
       Length: 10,
@@ -1352,6 +1409,8 @@ const SearchComponent = ({
         : "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      //  isNotOwnedByMe: false,
+
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1387,6 +1446,8 @@ const SearchComponent = ({
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      //  isNotOwnedByMe: false,
+
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1437,6 +1498,8 @@ const SearchComponent = ({
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      //  isNotOwnedByMe: false,
+
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1512,6 +1575,8 @@ const SearchComponent = ({
       LastModifiedStartDate: "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
+      //  isNotOwnedByMe: false,
+
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1862,6 +1927,7 @@ const SearchComponent = ({
           setCustomRangeVisible(false);
         }}
         setShow={setCustomRangeVisible}
+        // modalFooterClassName="modalMeetingCreateFooter"
         centered
         ModalTitle={
           <>
@@ -1895,6 +1961,7 @@ const SearchComponent = ({
                   onOpenPickNewDate={true}
                   editable={false}
                   className="datePickerTodoCreate2"
+                  // value={searchDataFields.LastModifiedStartDate}
                   onChange={handleStartDatePickerChange}
                   inputMode=""
                   calendar={calendarValue}
@@ -1925,6 +1992,7 @@ const SearchComponent = ({
                   inputMode=""
                   onChange={handleEndDatePickerChange}
                   calendar={calendarValue}
+                  // value={searchDataFields.LastModifiedEndDate}
                   locale={localValue}
                   ref={calendRef}
                   minDate={selectedStartDate}

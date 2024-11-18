@@ -7,11 +7,11 @@ import {
   TextField,
   Notification,
 } from "../../components/elements";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { ChevronDown } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import BinIcon from "../../assets/images/bin.svg";
@@ -26,7 +26,6 @@ import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
-import Tick from "../../assets/images/Tick-Icon.png";
 import PollsEmpty from "../../assets/images/Poll_emptyState.svg";
 import {
   LoaderState,
@@ -54,8 +53,6 @@ import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
-
 import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
 import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
@@ -65,52 +62,18 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  const PollsReducerSearchPolls = useSelector(
-    (state) => state.PollsReducer.SearchPolls
-  );
-  const PollsReducerpollingSocket = useSelector(
-    (state) => state.PollsReducer.pollingSocket
-  );
-  const PollsReducernewPollDelete = useSelector(
-    (state) => state.PollsReducer.newPollDelete
-  );
-  const PollsReducerResponseMessage = useSelector(
-    (state) => state.PollsReducer.ResponseMessage
-  );
-  const PollsReducereditpollmodal = useSelector(
-    (state) => state.PollsReducer.editpollmodal
-  );
-  const PollsReducerviewPollModal = useSelector(
-    (state) => state.PollsReducer.viewPollModal
-  );
-  const PollsReducerviewPollProgress = useSelector(
-    (state) => state.PollsReducer.viewPollProgress
-  );
-  const PollsReducerisVotePollModal = useSelector(
-    (state) => state.PollsReducer.isVotePollModal
-  );
-  const PollsReducercreatePollmodal = useSelector(
-    (state) => state.PollsReducer.createPollmodal
-  );
-  const PollsReducerviewVotesDetails = useSelector(
-    (state) => state.PollsReducer.viewVotesDetails
-  );
-  const PollsReducerdeletePollsModal = useSelector(
-    (state) => state.PollsReducer.deletePollsModal
-  );
+  const { PollsReducer } = useSelector((state) => state);
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
   const [rows, setRows] = useState([]);
-  const [dublicatedrows, setDublicatedrows] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -136,6 +99,7 @@ const Polling = () => {
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
+  console.log(pollPub, "pollPubpollPubpollPub");
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -255,23 +219,20 @@ const Polling = () => {
   useEffect(() => {
     try {
       if (
-        PollsReducerSearchPolls !== null &&
-        PollsReducerSearchPolls !== undefined
+        PollsReducer.SearchPolls !== null &&
+        PollsReducer.SearchPolls !== undefined
       ) {
-        if (PollsReducerSearchPolls.polls.length > 0) {
-          setTotalRecords(PollsReducerSearchPolls.totalRecords);
-          setRows(PollsReducerSearchPolls.polls);
-          setDublicatedrows(PollsReducerSearchPolls.polls);
+        if (PollsReducer.SearchPolls.polls.length > 0) {
+          setTotalRecords(PollsReducer.SearchPolls.totalRecords);
+          setRows(PollsReducer.SearchPolls.polls);
         } else {
           setRows([]);
-          setDublicatedrows([]);
         }
       } else {
         setRows([]);
-        setDublicatedrows([]);
       }
     } catch (error) {}
-  }, [PollsReducerSearchPolls]);
+  }, [PollsReducer.SearchPolls]);
 
   useEffect(() => {
     if (currentLanguage === "ar") {
@@ -286,12 +247,12 @@ const Polling = () => {
   // MQTT for Polls Add , Update & Delete
   useEffect(() => {
     if (
-      PollsReducerpollingSocket &&
-      Object.keys(PollsReducerpollingSocket).length > 0
+      PollsReducer.pollingSocket &&
+      Object.keys(PollsReducer.pollingSocket).length > 0
     ) {
       try {
         const { committeeID, groupID, meetingID, polls } =
-          PollsReducerpollingSocket;
+          PollsReducer.pollingSocket;
 
         if (committeeID === -1 && groupID === -1 && meetingID === -1) {
           setRows((prevRows) => {
@@ -318,16 +279,18 @@ const Polling = () => {
         console.error("Error in useEffect:", error);
       }
     }
-  }, [PollsReducerpollingSocket]);
+  }, [PollsReducer.pollingSocket]);
 
+  console.log({ rows }, "rowsrowsrowsrowsrows");
   useEffect(() => {
     try {
-      if (PollsReducernewPollDelete !== null) {
-        const polls = PollsReducernewPollDelete;
+      if (PollsReducer.newPollDelete !== null) {
+        const polls = PollsReducer.newPollDelete;
 
         setRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2, index) =>
+              Number(newData2.pollID) !== Number(polls?.pollID)
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -335,7 +298,7 @@ const Polling = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducernewPollDelete]);
+  }, [PollsReducer.newPollDelete]);
 
   const handleEditpollModal = (record) => {
     let check = 0;
@@ -392,6 +355,8 @@ const Polling = () => {
   const deletePollingModal = (record) => {
     setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
+
+    // setIdForDelete
   };
 
   const handleSearchEvent = () => {
@@ -413,102 +378,6 @@ const Polling = () => {
     };
     dispatch(searchPollsApi(navigate, t, data));
   };
-
-  //Filteration Work polls
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "Published",
-    "UnPublished",
-    "Expired",
-  ]);
-
-  const filters = [
-    {
-      text: t("Published"),
-      value: "Published", // Use the actual status value
-    },
-    {
-      text: t("UnPublished"),
-      value: "UnPublished", // Use the actual status value
-    },
-    {
-      text: t("Expired"),
-      value: "Expired", // Use the actual status value
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
-    );
-  };
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.pollStatus.status.toString())
-    );
-    setRows(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(["Published", "UnPublished", "Expired"]);
-    setRows(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => {
-            console.log(filter, "filterfilterfilter");
-            handleMenuClick(filter.value);
-          }}
-          className="d-flex align-items-center justify-content-between"
-        >
-          <div className="Polls_Menu_items">
-            <span
-              className={
-                filter.value === "Published"
-                  ? "userstatus-signal-PublishedPolls_Menu"
-                  : filter.value === "UnPublished"
-                  ? "userstatus-signal-Unpublished_Menu"
-                  : "userstatus-signal-disabled_Menu"
-              }
-            ></span>
-            <span className="menu-text">{filter.text}</span>
-            {selectedValues.includes(filter.value) && (
-              <span className="checkmark">
-                <img src={Tick} alt="" />
-              </span>
-            )}
-          </div>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-2">
-        <Button
-          text={"Reset"}
-          className={styles["FilterResetBtn"]}
-          onClick={resetFilter}
-        />
-        <Button
-          text="Ok"
-          disableBtn={selectedValues.length === 0}
-          className={styles["ResetOkBtn"]}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
 
   const PollTableColumns = [
     {
@@ -562,47 +431,35 @@ const Polling = () => {
       dataIndex: "pollStatus",
       key: "pollStatus",
       width: "78px",
-      align: "left",
-      filterResetToDefaultFilteredValue: true,
+      filters: [
+        {
+          text: t("Published"),
+          value: "Published", // Use the actual status value
+        },
+        {
+          text: t("UnPublished"),
+          value: "UnPublished", // Use the actual status value
+        },
+        {
+          text: t("Expired"),
+          value: "Expired", // Use the actual status value
+        },
+      ],
+      defaultFilteredValue: ["Published", "UnPublished", "Expired"],
+      filterResetToDefaultFilteredValue: true, // Use the actual status values here
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
+
+      onFilter: (value, record) =>
+        record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
-          return (
-            <div className="d-flex">
-              <span className="userstatus-signal-PublishedPolls"></span>
-              <p className="m-0 userName FontArabicRegular">{t("Published")}</p>
-            </div>
-          );
+          return <span className="text-success">{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return (
-            <div className="d-flex">
-              <span className="userstatus-signal-Unpublished"></span>
-              <p className="m-0 userName FontArabicRegular">
-                {t("Unpublished")}
-              </p>
-            </div>
-          );
+          return <span className="text-success">{t("Unpublished")}</span>;
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return (
-            <div className="d-flex">
-              <span className="userstatus-signal-disabled"></span>
-              <p className="m-0 userName FontArabicRegular">{t("Expired")}</p>
-            </div>
-          );
+          return <span className="text-success">{t("Expired")}</span>;
         }
       },
     },
@@ -635,7 +492,7 @@ const Polling = () => {
         },
       }),
       render: (text, record) => {
-        return _justShowDateformatBilling(text, currentLanguage);
+        return _justShowDateformatBilling(text);
       },
     },
     {
@@ -838,6 +695,7 @@ const Polling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "SearchVal") {
+      // let UpdateValue = regexOnlyForNumberNCharacters(value);
       if (value !== "") {
         setPollsState({
           ...pollsState,
@@ -934,17 +792,28 @@ const Polling = () => {
 
   useEffect(() => {
     if (
-      PollsReducerResponseMessage !== "" &&
-      PollsReducerResponseMessage !== "" &&
-      PollsReducerResponseMessage !== t("No-records-found") &&
-      PollsReducerResponseMessage !== t("No-data-available")
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== t("No-records-found") &&
+      PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
-      showMessage(PollsReducerResponseMessage, "Success", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: PollsReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
     }
-  }, [PollsReducerResponseMessage]);
+  }, [PollsReducer.ResponseMessage]);
 
   const handleVotePolls = (record) => {
     if (Object.keys(record).length > 0) {
@@ -1009,7 +878,16 @@ const Polling = () => {
             <Button
               text={t("New")}
               className={styles["new_Poll_Button"]}
-              icon={<Plus width={20} height={20} fontWeight={800} />}
+              icon={
+                <img
+                  src={plusbutton}
+                  height="7.6px"
+                  width="7.6px"
+                  alt=""
+                  className="align-items-center"
+                  draggable="false"
+                />
+              }
               onClick={() =>
                 dispatch(setCreatePollModal(true), dispatch(LoaderState(true)))
               }
@@ -1233,13 +1111,13 @@ const Polling = () => {
           </Col>
         </Row>
       </section>
-      {PollsReducercreatePollmodal && <CreatePolling />}
-      {PollsReducereditpollmodal && <UpdatePolls />}
-      {PollsReducerviewPollModal && <ViewPoll />}
-      {PollsReducerviewPollProgress && <ViewPollProgress />}
-      {PollsReducerisVotePollModal && <Votepoll />}
-      {PollsReducerviewVotesDetails && <PollDetails />}
-      {PollsReducerdeletePollsModal && <DeletePoll id={idForDelete} />}
+      {PollsReducer.createPollmodal && <CreatePolling />}
+      {PollsReducer.editpollmodal && <UpdatePolls />}
+      {PollsReducer.viewPollModal && <ViewPoll />}
+      {PollsReducer.viewPollProgress && <ViewPollProgress />}
+      {PollsReducer.isVotePollModal && <Votepoll />}
+      {PollsReducer.viewVotesDetails && <PollDetails />}
+      {PollsReducer.deletePollsModal && <DeletePoll id={idForDelete} />}
 
       {updatePublished ? (
         <>
@@ -1249,7 +1127,7 @@ const Polling = () => {
           />
         </>
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

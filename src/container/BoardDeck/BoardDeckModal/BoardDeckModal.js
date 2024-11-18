@@ -29,12 +29,10 @@ const BoardDeckModal = ({
 
   const navigate = useNavigate();
 
-  const boardDeckModalData = useSelector(
-    (state) => state.NewMeetingreducer.boardDeckModalData
+  const { NewMeetingreducer, UserMangementReducer } = useSelector(
+    (state) => state
   );
-  const getMinutesPublishedData = useSelector(
-    (state) => state.UserMangementReducer.getMinutesPublishedData
-  );
+
   const [radioValue, setRadioValue] = useState(1);
   const [publishedMinutes, setPublishedMinutes] = useState(false);
 
@@ -52,17 +50,18 @@ const BoardDeckModal = ({
   useEffect(() => {
     try {
       if (
-        getMinutesPublishedData !== null &&
-        getMinutesPublishedData !== undefined
+        UserMangementReducer.getMinutesPublishedData !== null &&
+        UserMangementReducer.getMinutesPublishedData !== undefined
       ) {
         setPublishedMinutes(
-          getMinutesPublishedData.minutesStatus.isMinutesPublished
+          UserMangementReducer.getMinutesPublishedData.minutesStatus
+            .isMinutesPublished
         );
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getMinutesPublishedData]);
+  }, [UserMangementReducer.getMinutesPublishedData]);
 
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
@@ -201,7 +200,7 @@ const BoardDeckModal = ({
     <>
       <Container>
         <Modal
-          show={boardDeckModalData}
+          show={NewMeetingreducer.boardDeckModalData}
           setShow={dispatch(boardDeckModal)}
           modalFooterClassName={"d-block"}
           modalHeaderClassName={"d-block"}

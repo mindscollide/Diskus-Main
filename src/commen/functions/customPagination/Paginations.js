@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pagination } from "antd";
+import { Pagination, Select } from "antd";
 
 const CustomPagination = ({
   current,
@@ -27,16 +27,24 @@ const CustomPagination = ({
     if (type === "page") {
       if (currentLanguage === "ar") {
         return (
-          <span className="todolist-pagination-current">
+          <span className='todolist-pagination-current'>
             {convertNumberToLetter(current)}
           </span>
         );
       } else {
-        return <span className="todolist-pagination-current">{current}</span>;
+        return <span className='todolist-pagination-current'>{current}</span>;
       }
     }
     return originalElement;
   }
+
+  // const renderPageSizeOptions = () => {
+  //   return pageSizeOptions.map((option) => (
+  //     <Select.Option key={option} value={parseInt(option)}>
+  //       {i18n.language === "ar" ? convertToArabicNumber(option) : option}
+  //     </Select.Option>
+  //   ));
+  // };
 
   return (
     <>
@@ -49,7 +57,9 @@ const CustomPagination = ({
         className={className}
         itemRender={itemRender}
         showSizeChanger={showSizer}
+        // showSizeChanger={false} // Show the page size dropdown
         locale={{
+          // items_per_page: t("items_per_page"),
           page: ` ${"/"}${t("page")}`,
         }}
       />

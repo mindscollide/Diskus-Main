@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
+import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,
@@ -17,19 +18,15 @@ import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 import { getFileExtension } from "../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
-import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const currentLanguage = localStorage.getItem("i18nextLng");
-
-  const getResolutionByIdData = useSelector(
-    (state) => state.ResolutionReducer.getResolutionbyID
-  );
-
+  const { ResolutionReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
   const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [resolutionData, setResolutionData] = useState(null);
 
   const voterButtonForViewResolution = () => {
@@ -51,13 +48,13 @@ const ViewResolution = ({ setViewresolution }) => {
 
   useEffect(() => {
     try {
-      if (getResolutionByIdData !== null) {
-        setResolutionData(getResolutionByIdData);
+      if (ResolutionReducer.getResolutionbyID !== null) {
+        setResolutionData(ResolutionReducer.getResolutionbyID);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getResolutionByIdData]);
+  }, [ResolutionReducer.getResolutionbyID]);
 
   const handleLinkClick = (data, extension) => {
     if (fileFormatforSignatureFlow.includes(extension)) {
@@ -78,7 +75,7 @@ const ViewResolution = ({ setViewresolution }) => {
         </Col>
       </Row>
 
-      <span className={styles["View_resolution_paper"]}>
+      <Paper className={styles["View_resolution_paper"]}>
         <Row>
           <Col
             lg={12}
@@ -136,8 +133,7 @@ const ViewResolution = ({ setViewresolution }) => {
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Datetime_view_resolution"]}>
                           {newTimeFormaterAsPerUTCFullDate(
-                            resolutionData?.resolution.circulationDateTime,
-                            currentLanguage
+                            resolutionData?.resolution.circulationDateTime
                           )}
                         </span>
                       </Col>
@@ -154,10 +150,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Frequency_Viewresolution"]}>
-                          {convertToArabicNumerals(
-                            resolutionData?.resolution?.reminderDescription,
-                            currentLanguage
-                          )}
+                          {resolutionData?.resolution?.reminderDescription}
                         </span>
                       </Col>
                     </Row>
@@ -174,8 +167,7 @@ const ViewResolution = ({ setViewresolution }) => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
                       {newTimeFormaterAsPerUTCFullDate(
-                        resolutionData?.resolution?.votingDeadline,
-                        currentLanguage
+                        resolutionData?.resolution?.votingDeadline
                       )}
                     </span>
                   </Col>
@@ -191,9 +183,7 @@ const ViewResolution = ({ setViewresolution }) => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
                       {newTimeFormaterAsPerUTCFullDate(
-                        resolutionData?.resolution
-                          ?.decisionAnnouncementDateTime,
-                        currentLanguage
+                        resolutionData?.resolution?.decisionAnnouncementDateTime
                       )}
                     </span>
                   </Col>
@@ -361,7 +351,12 @@ const ViewResolution = ({ setViewresolution }) => {
                             const pdfDataJson = JSON.stringify(pdfData);
                             return (
                               <>
-                                <Col sm={4} lg={4} md={4}>
+                                <Col
+                                  sm={4}
+                                  lg={4}
+                                  md={4}
+                                  // className="file-icon-viewResolution text-center"
+                                >
                                   <AttachmentViewer
                                     handleClickDownload={() => {
                                       handleClickDownloadFile(
@@ -394,6 +389,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     sm={12}
                     className="d-flex justify-content-end"
                   >
+                    {/* ArrowRight */}
                     <Button
                       text={
                         currentLanguage === "ar" ? (
@@ -411,7 +407,7 @@ const ViewResolution = ({ setViewresolution }) => {
             </Row>
           </Col>
         </Row>
-      </span>
+      </Paper>
     </section>
   );
 };

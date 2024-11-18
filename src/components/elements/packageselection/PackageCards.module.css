@@ -3,6 +3,8 @@
   background-color: #fff !important;
   padding: 30px 45px;
   position: relative;
+  /* box-shadow: 1px 2px 5px #ccc; */
+  /* border: 1px solid transparent !important; */
 }
 .packagecard::before {
   content: "";
@@ -136,6 +138,7 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 .packagecard_usersallows {
   width: 80%;
   margin: 0 auto;
+  /* width: 100%; */
   text-align: center;
 }
 

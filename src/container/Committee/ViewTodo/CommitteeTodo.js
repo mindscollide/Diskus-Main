@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Select } from "antd";
 import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
@@ -11,7 +12,7 @@ import {
   saveTaskDocumentsApi,
   createTaskCommitteeMQTT,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.min.css";
+import "antd/dist/antd.css";
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import {
@@ -21,61 +22,35 @@ import {
 } from "../../../store/actions/GetTodos";
 import "../../pages/todolist/Todolist.css";
 import { useTranslation } from "react-i18next";
+import { ar } from "date-fns/locale";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { getTaskCommitteeIDApi } from "../../../store/actions/Polls_actions";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { Select, Checkbox, Dropdown, Menu } from "antd";
 import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 const CreateTodoCommittee = ({ committeeStatus }) => {
+  //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const { todoStatus } = state;
-
-  const toDoListReducersocketTodoStatusData = useSelector(
-    (state) => state.toDoListReducer.socketTodoStatusData
-  );
-
-  const toDoListReducercreateTaskCommittee = useSelector(
-    (state) => state.toDoListReducer.createTaskCommittee
-  );
-
-  const assigneesResponseMessage = useSelector(
-    (state) => state.assignees.ResponseMessage
-  );
-
-  const getTodosStatusUpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage
-  );
-
-  const getTodosStatusResponseMessage = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage
-  );
-
-  const getTodosStatusUpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus
-  );
-
-  const PollsReducergetTodoCommitteeTask = useSelector(
-    (state) => state.PollsReducer.getTodoCommitteeTask
-  );
-
-  const PollsReducerResponseMessage = useSelector(
-    (state) => state.PollsReducer.ResponseMessage
-  );
-
-  const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
+  const {
+    toDoListReducer,
+    todoStatus,
+    assignees,
+    getTodosStatus,
+    socketTodoStatusData,
+    PollsReducer,
+  } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
+  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
@@ -95,17 +70,18 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
+  const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  console.log("socketTodoStatusData", PollsReducer);
 
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatusResponse?.length > 0) {
+      if (!todoStatus.Response?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
 
@@ -123,8 +99,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   // Remove task from mqtt response
   useEffect(() => {
     try {
-      if (toDoListReducersocketTodoStatusData !== null) {
-        let payloadData = toDoListReducersocketTodoStatusData;
+      if (toDoListReducer.socketTodoStatusData !== null) {
+        let payloadData = toDoListReducer.socketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -150,17 +126,17 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         }
       }
     } catch {}
-  }, [toDoListReducersocketTodoStatusData]);
+  }, [toDoListReducer.socketTodoStatusData]);
 
   //get todolist reducer
   useEffect(() => {
     try {
       if (
-        PollsReducergetTodoCommitteeTask !== null &&
-        PollsReducergetTodoCommitteeTask !== undefined
+        PollsReducer.getTodoCommitteeTask !== null &&
+        PollsReducer.getTodoCommitteeTask !== undefined
       ) {
-        if (PollsReducergetTodoCommitteeTask.toDoLists.length > 0) {
-          let dataToSort = [...PollsReducergetTodoCommitteeTask.toDoLists];
+        if (PollsReducer.getTodoCommitteeTask.toDoLists.length > 0) {
+          let dataToSort = [...PollsReducer.getTodoCommitteeTask.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -170,24 +146,21 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           });
           console.log(dataToSort, "dataToSortdataToSort");
           setRowToDo(sortedTasks);
-          setOriginalData(sortedTasks);
         } else {
           setRowToDo([]);
-          setOriginalData([]);
         }
       } else {
         setRowToDo([]);
-        setOriginalData([]);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducergetTodoCommitteeTask]);
+  }, [PollsReducer.getTodoCommitteeTask]);
 
   useEffect(() => {
     try {
-      if (toDoListReducercreateTaskCommittee !== null) {
-        let taskData = toDoListReducercreateTaskCommittee;
+      if (toDoListReducer.createTaskCommittee !== null) {
+        let taskData = toDoListReducer.createTaskCommittee;
         if (Number(taskData.comitteeID) === Number(ViewCommitteeID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
@@ -196,7 +169,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
-  }, [toDoListReducercreateTaskCommittee]);
+  }, [toDoListReducer.createTaskCommittee]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -206,11 +179,11 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       let newArrStatus = [""];
 
       if (
-        todoStatusResponse !== null &&
-        todoStatusResponse !== "" &&
-        todoStatusResponse?.length > 0
+        todoStatus.Response !== null &&
+        todoStatus.Response !== "" &&
+        todoStatus.Response?.length > 0
       ) {
-        todoStatusResponse.forEach((data, index) => {
+        todoStatus.Response.forEach((data, index) => {
           optionsArr.push({
             id: data.pK_TSID,
             status: data.status,
@@ -226,6 +199,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       setStatusValues(newArrStatus);
 
       setStatusOptions(optionsArr);
+      setTableFilterOptions(newOptionsFilter);
     } catch (error) {
       console.log(error, "error");
     }
@@ -252,110 +226,16 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     };
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 6, setShow));
   };
-
-  //Filter table work
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-  ]);
-
-  const filters = [
-    {
-      value: "1",
-      text: t("In-progress"),
-    },
-    {
-      value: "2",
-      text: t("Pending"),
-    },
-    {
-      value: "3",
-      text: t("Upcoming"),
-    },
-    {
-      value: "4",
-      text: t("Cancelled"),
-    },
-    {
-      value: "5",
-      text: t("Completed"),
-    },
-    {
-      value: "6",
-      text: t("Deleted"),
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
-    );
-  };
-
-  const handleApplyFilter = () => {
-    const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.pK_TSID.toString())
-    );
-    setRowToDo(filteredData);
-    setVisible(false);
-  };
-  const resetFilter = () => {
-    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
-    setRowToDo(originalData);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center justify-content-center">
-        <Button
-          text={"Reset"}
-          className="FilterResetBtn"
-          onClick={resetFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedValues.length === 0}
-          className="ResetOkBtn"
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
-
   const columnsToDo = [
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -378,10 +258,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
+          className='todolist-title-col'
           title={text}
-          onClick={(e) => viewModalHandler(record.pK_TID)}
-        >
+          onClick={(e) => viewModalHandler(record.pK_TID)}>
           {text}
         </p>
       ),
@@ -389,12 +268,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -423,13 +302,13 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       },
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=""
+              alt=''
             />
             {record?.name}
           </p>
@@ -439,12 +318,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -471,15 +350,15 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
+              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
 
                     {text[0].name}
@@ -487,10 +366,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
                     {text[0].name}
                   </>
@@ -504,12 +383,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center justify-content-center">
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             ) : (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             )}
           </span>
         </>
@@ -536,11 +415,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
       render: (text, record) => {
         return (
-          <span className="text-nowrap text-center">
-            {newTimeFormaterAsPerUTCFullDate(
-              record.deadlineDateTime,
-              currentLanguage
-            )}
+          <span className='text-nowrap text-center'>
+            {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
           </span>
         );
       },
@@ -551,22 +427,41 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       key: "status",
       align: "center",
       width: "220px",
+      filters: [
+        {
+          text: t("In-progress"),
+          value: "In Progress",
+          // className: currentLanguage,
+        },
+        {
+          text: t("Pending"),
+          value: "Pending",
+        },
+
+        {
+          text: t("Cancelled"),
+          value: "Cancelled",
+        },
+        {
+          text: t("Completed"),
+          value: "Completed",
+        },
+      ],
+      defaultFilteredValue: [
+        "In Progress",
+        "Pending",
+        "Cancelled",
+        "Completed",
+      ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className='filter-chevron-icon-todolist' />
       ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
+      onFilter: (value, record) => {
+        return record?.status?.status
+          ?.toLowerCase()
+          .includes(value.toLowerCase());
+      },
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
@@ -574,7 +469,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                dropdownClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -588,8 +483,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -615,8 +509,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
@@ -634,11 +527,10 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
+              className='meeting-editbutton cursor-pointer'
               title={t("Delete")}
-              onClick={(e) => deleteTodolist(record)}
-            >
-              <img draggable="false" src={del} alt="" />
+              onClick={(e) => deleteTodolist(record)}>
+              <img draggable='false' src={del} alt='' />
             </i>
           );
         } else {
@@ -647,6 +539,231 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       },
     },
   ];
+  // const columnsToDo = [
+  //   {
+  //     title: t("Task"),
+  //     dataIndex: "title",
+  //     key: "title",
+  //     width: "260px",
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+  //     render: (text, record) => (
+  //       <p
+  //         className="todolist-title-col"
+  //         onClick={(e) => viewModalHandler(record.pK_TID)}
+  //       >
+  //         {text}
+  //       </p>
+  //     ),
+  //   },
+  //   {
+  //     title: t("Assigned-by"),
+  //     dataIndex: "taskCreator",
+  //     key: "taskCreator",
+  //     width: "220px",
+  //     sortDirections: ["descend", "ascend"],
+  //     render: (record, index) => {
+  //       return (
+  //         <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+  //           {" "}
+  //           <img
+  //             draggable="false"
+  //             className="data-img"
+  //             src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+  //             alt="userimage"
+  //           />
+  //           {record?.name}
+  //         </p>
+  //       );
+  //     },
+  //     sorter: (a, b) => {
+  //       return a?.taskCreator?.name
+  //         .toLowerCase()
+  //         .localeCompare(b?.taskCreator?.name.toLowerCase());
+  //     },
+  //   },
+  //   {
+  //     title: t("Assigned-to"),
+  //     width: "220px",
+  //     dataIndex: "taskAssignedTo",
+  //     key: "taskAssignedTo",
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       a.taskAssignedTo[0].name
+  //         .toLowerCase()
+  //         .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+  //     render: (text, record) => {
+  //       if (text !== undefined && text !== null && text.length > 0) {
+  //         return (
+  //           <>
+  //             <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+  //               {" "}
+  //               {currentLanguage === "ar" ? (
+  //                 <>
+  //                   <img
+  //                     draggable="false"
+  //                     className="data-img"
+  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+  //                     alt="userimage"
+  //                   />
+
+  //                   {text[0].name}
+  //                 </>
+  //               ) : (
+  //                 <>
+  //                   <img
+  //                     draggable="false"
+  //                     className="data-img"
+  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
+  //                     alt="userimage"
+  //                   />
+  //                   {text[0].name}
+  //                 </>
+  //               )}
+  //             </p>
+  //           </>
+  //         );
+  //       }
+  //     },
+  //   },
+  //   {
+  //     title: t("Deadline"),
+  //     dataIndex: "deadlineDateTime",
+  //     key: "deadlineDateTime",
+  //     className: "deadLineTodo",
+  //     width: "220px",
+  //     sortDirections: ["descend", "ascend"],
+  //     sorter: (a, b) =>
+  //       utcConvertintoGMT(a.deadlineDateTime) -
+  //       utcConvertintoGMT(b.deadlineDateTime),
+  //     render: (text, record) => {
+  //       return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
+  //     },
+  //   },
+  //   {
+  //     title: t("Status"),
+  //     dataIndex: "status",
+  //     key: "status",
+  //     align: "center",
+  //     width: "220px",
+  //     filters: [
+  //       {
+  //         text: t("In-progress"),
+  //         value: "In Progress",
+  //       },
+  //       {
+  //         text: t("Pending"),
+  //         value: "Pending",
+  //       },
+  //       {
+  //         text: t("Upcoming"),
+  //         value: "Upcoming",
+  //       },
+  //       {
+  //         text: t("Cancelled"),
+  //         value: "Cancelled",
+  //       },
+  //       {
+  //         text: t("Completed"),
+  //         value: "Completed",
+  //       },
+  //     ],
+  //     defaultFilteredValue: [
+  //       "In Progress",
+  //       "Pending",
+  //       "Upcoming",
+  //       "Cancelled",
+  //       "Completed",
+  //     ],
+  //     filterResetToDefaultFilteredValue: true,
+  //     filterIcon: (filtered) => (
+  //       <ChevronDown className="filter-chevron-icon-todolist" />
+  //     ),
+  //     onFilter: (value, record) => {
+  //       return record.status.status.toLowerCase().includes(value.toLowerCase());
+  //     },
+  //     render: (text, record) => {
+  //       if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
+  //         return (
+  //           <>
+  //             <Select
+  //               defaultValue={text.status}
+  //               bordered={false}
+  //               dropdownClassName="Status-Todo"
+  //               className={
+  //                 text.pK_TSID === 1
+  //                   ? "InProgress  custom-class "
+  //                   : text.pK_TSID === 2
+  //                   ? "Pending  custom-class "
+  //                   : text.pK_TSID === 3
+  //                   ? "Upcoming  custom-class "
+  //                   : text.pK_TSID === 4
+  //                   ? "Cancelled  custom-class "
+  //                   : text.pK_TSID === 5
+  //                   ? "Completed  custom-class "
+  //                   : null
+  //               }
+  //               onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+  //             >
+  //               {statusOptions.map((optValue, index) => {
+  //                 return (
+  //                   <option key={optValue.id} value={optValue.id}>
+  //                     {optValue.status}
+  //                   </option>
+  //                 );
+  //               })}
+  //             </Select>
+  //           </>
+  //         );
+  //       } else {
+  //         return (
+  //           <p
+  //             className={
+  //               text.pK_TSID === 1
+  //                 ? "InProgress custom-class   color-5a5a5a text-center  my-1"
+  //                 : text.pK_TSID === 2
+  //                 ? "Pending  custom-class color-5a5a5a text-center my-1"
+  //                 : text.pK_TSID === 3
+  //                 ? "Upcoming custom-class color-5a5a5a text-center  my-1"
+  //                 : text.pK_TSID === 4
+  //                 ? "Cancelled custom-class   color-5a5a5a text-center my-1"
+  //                 : text.pK_TSID === 5
+  //                 ? "Completed custom-class  color-5a5a5a  text-center my-1"
+  //                 : null
+  //             }
+  //           >
+  //             {text.status}
+  //           </p>
+  //         );
+  //       }
+  //     },
+  //     filterMultiple: true,
+  //   },
+  //   {
+  //     title: t("Delete"),
+  //     dataIndex: "taskCreator",
+  //     key: "taskCreator",
+  //     width: "120px",
+  //     render: (record, index) => {
+  //       if (
+  //         parseInt(record?.pK_UID) === parseInt(createrID) &&
+  //         committeeStatus === 3
+  //       ) {
+  //         return (
+  //           <i
+  //             className="meeting-editbutton cursor-pointer"
+  //             onClick={(e) => deleteTodolist(index)}
+  //           >
+  //             <img draggable="false" src={del} alt="" />
+  //           </i>
+  //         );
+  //       } else {
+  //         <></>;
+  //       }
+  //     },
+  //   },
+  // ];
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -659,24 +776,36 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   useEffect(() => {
     try {
       if (
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== undefined &&
-        PollsReducerResponseMessage !== "" &&
-        PollsReducerResponseMessage !== t("No-records-found")
+        PollsReducer.ResponseMessage !== "" &&
+        PollsReducer.ResponseMessage !== undefined &&
+        PollsReducer.ResponseMessage !== "" &&
+        PollsReducer.ResponseMessage !== t("No-records-found")
       ) {
-        showMessage(PollsReducerResponseMessage, "success", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: PollsReducer.ResponseMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
         dispatch(clearResponce());
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducerResponseMessage, assigneesResponseMessage]);
+  }, [PollsReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatusUpdateTodoStatusMessage ===
+          getTodosStatus.UpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -690,33 +819,69 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
+  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     try {
       if (
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== undefined &&
-        getTodosStatusResponseMessage !== "" &&
-        getTodosStatusResponseMessage !== t("No-records-found")
+        getTodosStatus.ResponseMessage !== "" &&
+        getTodosStatus.ResponseMessage !== undefined &&
+        getTodosStatus.ResponseMessage !== "" &&
+        getTodosStatus.ResponseMessage !== t("No-records-found")
       ) {
-        showMessage(getTodosStatusResponseMessage, "success", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: getTodosStatus.ResponseMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
         dispatch(cleareMessage());
       } else if (
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== undefined &&
-        getTodosStatusUpdateTodoStatusMessage !== "" &&
-        getTodosStatusUpdateTodoStatusMessage !== t("No-records-found")
+        getTodosStatus.UpdateTodoStatusMessage !== "" &&
+        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
+        getTodosStatus.UpdateTodoStatusMessage !== "" &&
+        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
       ) {
-        showMessage(getTodosStatusUpdateTodoStatusMessage, "success", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: getTodosStatus.UpdateTodoStatusMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
         dispatch(cleareMessage());
       } else if (
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== undefined &&
-        getTodosStatusUpdateTodoStatus !== "" &&
-        getTodosStatusUpdateTodoStatus !== t("No-records-found")
+        getTodosStatus.UpdateTodoStatus !== "" &&
+        getTodosStatus.UpdateTodoStatus !== undefined &&
+        getTodosStatus.UpdateTodoStatus !== "" &&
+        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
       ) {
-        showMessage(getTodosStatusUpdateTodoStatus, "success", setOpen);
+        setOpen({
+          ...open,
+          open: true,
+          message: getTodosStatus.UpdateTodoStatus,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
         dispatch(cleareMessage());
       } else {
         dispatch(cleareMessage());
@@ -725,9 +890,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       console.log(error, "error");
     }
   }, [
-    getTodosStatusResponseMessage,
-    getTodosStatusUpdateTodoStatusMessage,
-    getTodosStatusUpdateTodoStatus,
+    getTodosStatus.ResponseMessage,
+    getTodosStatus.UpdateTodoStatusMessage,
+    getTodosStatus.UpdateTodoStatus,
   ]);
 
   const scroll = {
@@ -746,10 +911,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           sm={12}
           md={12}
           lg={12}
-          className="d-flex flex-column align-items-center"
-        >
-          <img src={TodoMessageIcon1} alt="" />
-          <span className="mt-4"> {t("No-Task")}</span>
+          className='d-flex flex-column align-items-center'>
+          <img src={TodoMessageIcon1} alt='' />
+          <span className='mt-4'> {t("No-Task")}</span>
         </Col>
       </Row>
     );
@@ -757,9 +921,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
   return (
     <>
-      <div className="todolistContainer_Committee">
-        <Row className="my-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
+      <div className='todolistContainer_Committee'>
+        <Row className='my-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end '>
             {committeeStatus === 3 && (
               <Button
                 text={t("Create-a-Task")}
@@ -772,19 +936,63 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         </Row>
         <Row>
           <Col>
-            <Row className="row-scroll-todolist">
-              <Col className="">
+            <Row className='row-scroll-todolist'>
+              <Col className=''>
                 <TableToDo
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
                   className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
+                  // onChange={tableTodoChange}
                   pagination={false}
                   locale={{
                     emptyText: emptyText(), // Set your custom empty text here
                   }}
                 />
+
+                {/* {rowsToDo.length > 0 && (
+                  <Row className="">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            "  d-flex justify-content-center"
+                          }
+                        >
+                          <span className="PaginationStyle-TodoList">
+                            <CustomPagination
+                              onChange={paginationChangeHandlerTodo}
+                              current={
+                                todoListCurrentPage !== null &&
+                                todoListCurrentPage !== undefined
+                                  ? todoListCurrentPage
+                                  : 1
+                              }
+                              showSizer={true}
+                              total={totalRecords}
+                              pageSizeOptionsValues={["30", "50", "100", "200"]}
+                              pageSize={
+                                todoListPageSize !== null &&
+                                todoListPageSize !== undefined
+                                  ? todoListPageSize
+                                  : 50
+                              }
+                            />
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                )} */}
               </Col>
             </Row>
           </Col>
@@ -796,7 +1004,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className="toDoViewModal"
+          className='toDoViewModal'
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo
@@ -804,6 +1012,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setViewFlagToDo={setViewFlagToDo}
         />
       ) : null}
+      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
     </>
   );
 };

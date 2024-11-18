@@ -3,15 +3,15 @@ import styles from "./CancelActions.module.css";
 import { showCancelActions } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const cancelActions = useSelector(
-    (state) => state.NewMeetingreducer.cancelActions
-  );
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
     dispatch(showCancelActions(false));
@@ -24,7 +24,7 @@ const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   return (
     <section>
       <Modal
-        show={cancelActions}
+        show={NewMeetingreducer.cancelActions}
         setShow={dispatch(showCancelActions)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

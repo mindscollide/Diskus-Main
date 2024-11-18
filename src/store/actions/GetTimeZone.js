@@ -4,6 +4,11 @@ import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getTimeZOne } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 
+const timeZoneInit = () => {
+  return {
+    type: actions.GET_TIMEZONE_INIT,
+  };
+};
 const timeZoneSuccess = (response, message) => {
   return {
     type: actions.GET_TIMEZONE_SUCCESS,
@@ -22,6 +27,7 @@ const getTimeZone = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
+    // dispatch(timeZoneInit())
     let form = new FormData();
     form.append("RequestMethod", getTimeZOne.RequestMethod);
 

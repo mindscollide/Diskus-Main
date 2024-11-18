@@ -120,18 +120,18 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     "December",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -153,7 +153,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
   const formattedDate = `${formattedTime}, ${formattedDay} ${formattedMonth} ${formattedYear}`;
 
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    ? formattedDate.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]) // Replace digits with Arabic numerals
     : formattedDate;
 };
 
@@ -214,18 +214,18 @@ export const _justShowDateformat = (dateTime) => {
     "December",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -240,7 +240,7 @@ export const _justShowDateformat = (dateTime) => {
   return locale === "ar"
     ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
         /[0-9]/g,
-        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+        (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]
       )
     : `${formattedDay} ${formattedMonth}, ${formattedYear}`;
 };
@@ -284,18 +284,18 @@ export const _justShowDateformatBilling = (dateTime, locale) => {
     "Dec",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -311,7 +311,7 @@ export const _justShowDateformatBilling = (dateTime, locale) => {
 
   // Return formatted date with Arabic or English numerals based on locale
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    ? formattedDate.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]) // Replace digits with Arabic numerals
     : formattedDate;
 };
 
@@ -558,8 +558,11 @@ export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
 
   // Adjust AM/PM to Arabic if needed
   if (locale === "ar") {
-    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
-    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+    formattedTime = formattedTime.replace("AM", "Øµ").replace("PM", "Ù…");
+    formattedTime = formattedTime.replace(
+      /[0-9]/g,
+      (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]
+    ); // Convert digits to Arabic numerals
   }
 
   return formattedTime;
@@ -603,18 +606,18 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
     "Dec",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -629,7 +632,7 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
   const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
 
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    ? formattedDate.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d])
     : formattedDate;
 };
 
@@ -671,18 +674,18 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
     "Dec",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -702,8 +705,11 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
 
   // Adjust AM/PM to Arabic if needed
   if (locale === "ar") {
-    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
-    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+    formattedTime = formattedTime.replace("AM", "Øµ").replace("PM", "Ù…");
+    formattedTime = formattedTime.replace(
+      /[0-9]/g,
+      (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]
+    ); // Convert digits to Arabic numerals
   }
 
   // Format date as "h:mm A, Do MMM, YYYY"
@@ -711,7 +717,7 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
 
   // Convert English digits to Arabic if locale is "ar"
   return locale === "ar"
-    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d])
     : formattedDateTime;
 };
 
@@ -753,18 +759,18 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
     "Dec",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -785,8 +791,11 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
 
   // Adjust AM/PM to Arabic if needed
   if (locale === "ar") {
-    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
-    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+    formattedTime = formattedTime.replace("AM", "Øµ").replace("PM", "Ù…");
+    formattedTime = formattedTime.replace(
+      /[0-9]/g,
+      (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]
+    ); // Convert digits to Arabic numerals
   }
 
   // Format date as "DD-MMM-YYYY h:mm:ss"
@@ -794,7 +803,7 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
 
   // Convert English digits to Arabic if locale is "ar"
   return locale === "ar"
-    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d])
     : formattedDateTime;
 };
 
@@ -1252,18 +1261,18 @@ export const newDateFormatterForMinutesPendingApproval = (dateTime, locale) => {
     "Dec",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -1286,7 +1295,7 @@ export const newDateFormatterForMinutesPendingApproval = (dateTime, locale) => {
 
   // Return formatted date with Arabic or English numerals based on locale
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    ? formattedDate.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]) // Replace digits with Arabic numerals
     : formattedDate;
 };
 
@@ -1328,18 +1337,18 @@ export const SignatureandPendingApprovalDateTIme = (dateTime, locale) => {
     "December",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select month names based on locale
@@ -1354,7 +1363,7 @@ export const SignatureandPendingApprovalDateTIme = (dateTime, locale) => {
   const formattedDate = `${formattedDay} - ${formattedMonth} - ${formattedYear}`;
 
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    ? formattedDate.replace(/[0-9]/g, (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d])
     : formattedDate;
 };
 
@@ -1410,18 +1419,18 @@ export function formatDateDownGradeSubscription(dateString, locale) {
     "December",
   ];
   const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
+    "ÙŠÙ†Ø§ÙŠØ±",
+    "ÙØ¨Ø±Ø§ÙŠØ±",
+    "Ù…Ø§Ø±Ø³",
+    "Ø£Ø¨Ø±ÙŠÙ„",
+    "Ù…Ø§ÙŠÙˆ",
+    "ÙŠÙˆÙ†ÙŠÙˆ",
+    "ÙŠÙˆÙ„ÙŠÙˆ",
+    "Ø£ØºØ³Ø·Ø³",
+    "Ø³Ø¨ØªÙ…Ø¨Ø±",
+    "Ø£ÙƒØªÙˆØ¨Ø±",
+    "Ù†ÙˆÙÙ…Ø¨Ø±",
+    "Ø¯ÙŠØ³Ù…Ø¨Ø±",
   ];
 
   // Select the appropriate month names based on locale
@@ -1436,7 +1445,7 @@ export function formatDateDownGradeSubscription(dateString, locale) {
   return locale === "ar"
     ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
         /[0-9]/g,
-        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+        (d) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[d]
       ) // Convert to Arabic numerals
     : `${formattedDay} ${formattedMonth} ${formattedYear}`;
 }
@@ -1518,7 +1527,7 @@ export const timePassed = (dateString, locale) => {
   if (locale === "ar") {
     formattedTime = formattedTime.replace(
       /\d/g,
-      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+      (digit) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[digit]
     );
   }
 
@@ -1565,7 +1574,7 @@ export const formatToLocalTimezone = (dateString) => {
   if (currentLang === "ar") {
     formattedDate = formattedDate.replace(
       /\d/g,
-      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+      (digit) => "Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©"[digit]
     );
   }
 

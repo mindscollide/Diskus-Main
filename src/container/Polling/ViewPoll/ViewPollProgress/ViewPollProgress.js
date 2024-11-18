@@ -5,9 +5,11 @@ import {
   Button,
   Checkbox,
   CustomRadio2,
+  TextField,
 } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
+import profile from "../../../../assets/images/profile_polls.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
@@ -18,52 +20,49 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const PollsReducerAllpolls = useSelector(
-    (state) => state.PollsReducer.Allpolls
-  );
-  const PollsReducerviewPollProgress = useSelector(
-    (state) => state.PollsReducer.viewPollProgress
-  );
+  const { PollsReducer } = useSelector((state) => state);
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
     Date: "",
     AllowMultipleAnswers: false,
   });
-
+  const [checkboxesState, setCheckboxesState] = useState({
+    checkedYes: true,
+  });
   const [viewpollMembers, setViewPollmembers] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
 
   useEffect(() => {
-    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
-      let pollData = PollsReducerAllpolls.poll;
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let pollData = PollsReducer.Allpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollParticipants = pollData.pollParticipants;
       let pollOptions = pollData.pollOptions;
       let pollSelectedAnswers = pollData.selectedAnswers;
 
+      console.log(pollDetails, "pollDetailspollDetails");
+
       let memberpollsprogressView = [];
       let newOption = [];
 
       if (Object.keys(pollParticipants).length > 0) {
-        pollParticipants.forEach((data, index) => {
+        pollParticipants.map((data, index) => {
           memberpollsprogressView.push(data);
         });
       }
 
       if (pollSelectedAnswers.length > 0) {
-        pollOptions.forEach((newdata, index) => {
+        pollOptions.map((newdata, index) => {
           let find = pollSelectedAnswers.find(
             (data, index) => data.pollAnswerID === newdata.pollAnswerID
           );
-          if (find !== undefined) {
+          if (find != undefined) {
             let changeOptionData = {
               answer: newdata.answer,
               pollAnswerID: newdata.pollAnswerID,
@@ -85,7 +84,7 @@ const ViewPollProgress = () => {
         });
         setPollsOption(newOption);
       } else {
-        pollOptions.forEach((newdata, index) => {
+        pollOptions.map((newdata, index) => {
           let changeOptionData = {
             answer: newdata.answer,
             pollAnswerID: newdata.pollAnswerID,
@@ -106,7 +105,9 @@ const ViewPollProgress = () => {
         PollID: pollDetails.pollID,
       });
     }
-  }, [PollsReducerAllpolls]);
+  }, [PollsReducer.Allpolls]);
+
+  console.log(viewProgressPollsDetails.Date, "viewProgressPollsDetails");
 
   const changeDateStartHandler2 = (date) => {
     console.log(date, "viewProgressPollsDetails");
@@ -125,7 +126,7 @@ const ViewPollProgress = () => {
   return (
     <Container>
       <Modal
-        show={PollsReducerviewPollProgress}
+        show={PollsReducer.viewPollProgress}
         setShow={dispatch(setviewpollProgressModal)}
         modalTitleClassName={styles["ModalHeader_View_poll_progress"]}
         modalHeaderClassName={
@@ -182,7 +183,6 @@ const ViewPollProgress = () => {
                 <img
                   draggable="false"
                   src={BlackCrossIcon}
-                  alt=""
                   width="16px"
                   height="16px"
                   className={styles["View_cross_icon"]}
@@ -243,14 +243,7 @@ const ViewPollProgress = () => {
                                       className={styles["Yes_ViewProgress"]}
                                     >
                                       {data.answer}{" "}
-                                      <span>
-                                        {"(" +
-                                          convertToArabicNumerals(
-                                            data.totalVotes,
-                                            currentLanguage
-                                          ) +
-                                          ")"}
-                                      </span>
+                                      <span>{"(" + data.totalVotes + ")"}</span>
                                     </span>
                                   </Col>
                                 </Row>
@@ -309,7 +302,7 @@ const ViewPollProgress = () => {
                   <Row className={styles["Scroller_View_Poll_Published"]}>
                     <Col lg={12} ms={12} sm={12}>
                       {pollsOption.length > 0
-                        ? pollsOption.map((data) => {
+                        ? pollsOption.map((data, index) => {
                             return (
                               <>
                                 <Row>
@@ -327,12 +320,7 @@ const ViewPollProgress = () => {
                                         >
                                           {data.answer}
                                           <span>
-                                            {"(" +
-                                              convertToArabicNumerals(
-                                                data.totalVotes,
-                                                currentLanguage
-                                              ) +
-                                              ")"}
+                                            {"(" + data.totalVotes + ")"}
                                           </span>
                                         </span>
                                       </Col>

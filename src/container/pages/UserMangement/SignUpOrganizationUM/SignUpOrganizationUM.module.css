@@ -91,6 +91,7 @@ body[dir="rtl"] .signUp_goBack {
 
 .signUpform_bg {
   padding: 30px 30px;
+  /* background-color: #f6f9fc; */
   background-color: #ffffff !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -182,6 +183,7 @@ body[dir="rtl"] .errorMessageCompany {
 .errorMessageCompany_hidden {
   visibility: hidden;
   margin: 0;
+  /* height: 7px; */
   color: #f16b6b !important;
   font-weight: 600 !important;
 }
@@ -247,6 +249,7 @@ body[dir="rtl"] .errorMessageCompany_hidden {
   width: 30px;
   height: 30px;
   top: 105px;
+  /* margin: 4px; */
 }
 
 .isCompanyNameUnique {
@@ -257,15 +260,6 @@ body[dir="rtl"] .errorMessageCompany_hidden {
   color: green;
 }
 
-body[dir="rtl"] .isCompanyNameUnique {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  top: 15px;
-  color: green;
-  transform: rotate3d(10, 70, 15, 190deg);
-}
-
 .isEmailUnique {
   position: absolute;
   right: 35px;
@@ -273,16 +267,6 @@ body[dir="rtl"] .isCompanyNameUnique {
   height: 30px;
   bottom: 15px;
   color: green;
-}
-
-body[dir="rtl"] .isEmailUnique {
-  position: absolute;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  bottom: 15px;
-  color: green;
-  transform: rotate3d(10, 70, 15, 190deg);
 }
 
 .checkEmailSpinner {
@@ -307,6 +291,10 @@ body[dir="rtl"] .isEmailUnique {
   height: 39px !important;
   cursor: pointer !important;
   width: 100% !important;
+  /* display        : flex !important; */
+  /* margin-left    : 12px; */
+  /* justify-content: space-between !important; */
+  /* align-items    : center !important; */
   padding: 2px 5px !important;
   font-family: inherit !important;
   font-size: 11px !important;
@@ -417,6 +405,7 @@ body[dir="rtl"] .languageIcon {
 }
 
 .countrydropdown .form-select {
+  /* font-size: 13px !important; */
   height: 30px !important;
   color: rgba(23, 29, 45, 0.7) !important;
   font-weight: 500 !important;
@@ -494,6 +483,7 @@ body[dir="rtl"] .languageIcon {
 .react-flag-Info-Signup button {
   cursor: pointer !important;
   max-width: 100% !important;
+  /* max-height: 120px !important; */
   min-height: 39px !important;
   display: flex !important;
   justify-content: space-between !important;

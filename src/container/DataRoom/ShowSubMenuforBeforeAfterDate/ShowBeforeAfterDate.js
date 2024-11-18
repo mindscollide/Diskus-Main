@@ -32,7 +32,7 @@ const ShowBeforeAfterDate = ({ showsubmenu, setShowsubmenu }) => {
           >
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["Line_down"]}>
-                <img draggable="false" src={line} width="151px" alt="" />
+                <img draggable="false" src={line} width="151px" />
               </Col>
             </Row>
           </Col>

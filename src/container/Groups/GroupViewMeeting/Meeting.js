@@ -6,6 +6,7 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
+import { truncateString } from "../../../commen/functions/regex";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
@@ -15,21 +16,26 @@ import addmore from "../../../assets/images/addmore.png";
 import CreateModal from "../../modalmeeting/ModalMeeting";
 import ViewModal from "../../modalView/ModalView";
 import EditModal from "../../modalUpdate/ModalUpdate";
-import { Col, Row } from "react-bootstrap";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Col, Row, Tooltip } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
+
 import {
   JoinCurrentMeeting,
+  getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
   meetingNotConductedMQTT,
+  searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees";
+import {
+  ViewMeeting,
+  allAssignessList,
+} from "../../../store/actions/Get_List_Of_Assignees";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
@@ -37,10 +43,10 @@ import {
   createGroupMeeting,
   getMeetingStatusfromSocket,
 } from "../../../store/actions/GetMeetingUserId";
+import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingbyGroupID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingbyGroupID
   );
@@ -53,13 +59,18 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     allMeetingsSocketData,
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
+  console.log(
+    allMeetingsSocketData,
+    "allMeetingsSocketDataallMeetingsSocketData"
+  );
+  const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
-  const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   let userID = localStorage.getItem("userID");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentUserId = localStorage.getItem("userID");
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
@@ -203,11 +214,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             } catch {}
           });
           setRow(newRowData);
-          setDublicatedrows(newRowData);
         }
       } else {
         setRow([]);
-        setDublicatedrows([]);
       }
     } catch {}
   }, [getMeetingbyGroupID]);
@@ -219,101 +228,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     };
     dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
   };
-
-  //Filteration Work Meeting
-
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "10",
-    "1",
-    "9",
-    "8",
-    "4",
-  ]);
-
-  const filters = [
-    {
-      value: "10",
-      text: t("Active"),
-    },
-
-    {
-      value: "1",
-      text: t("Upcoming"),
-    },
-    {
-      value: "9",
-      text: t("Ended"),
-    },
-    {
-      value: "8",
-      text: t("Not-conducted"),
-    },
-    {
-      value: "4",
-      text: t("Cancelled"),
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
-    );
-  };
-
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.status.toString())
-    );
-    setRow(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(["10", "1", "9", "8", "4"]);
-    setRow(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
-        <Button
-          text={"Reset"}
-          className={"FilterResetBtn"}
-          onClick={resetFilter}
-        />
-        <Button
-          text={"Ok"}
-          disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
-
   const MeetingColoumns = [
     {
-      title: <span className={styles["TitleArabic"]}>{t("Title")}</span>,
+      title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
       width: "120px",
@@ -351,7 +268,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           text: t("Active"),
           value: "10",
         },
-
+        // {
+        //   text: t("Start"),
+        //   value: "2",
+        // },
         {
           text: t("Upcoming"),
           value: "1",
@@ -372,20 +292,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
+      onFilter: (value, record) =>
+        record.status.toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
         return StatusValue(t, record.status);
       },
@@ -415,8 +325,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           return (
             <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime,
-                CurrentLanguage
+                record.dateOfMeeting + record.meetingStartTime
               )}
             </span>
           );
@@ -469,6 +378,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                     <img
                       src={CommentIcon}
                       className="cursor-pointer"
+                      // width="20.06px"
+                      // height="15.95px"
                       alt=""
                       draggable="false"
                     />
@@ -564,6 +475,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               (record.isQuickMeeting === true &&
                 record.pK_MDID === startMeetingData.meetingID &&
                 startMeetingData.showButton)
+              // &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -705,6 +618,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   <>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
+                        {/* <Tooltip placement="topRight" title={t("Edit")}> */}
                         {groupStatus === 3 && (
                           <img
                             src={EditIcon}
@@ -723,6 +637,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                             }
                           />
                         )}
+
+                        {/* </Tooltip> */}
                       </Col>
                     </Row>
                   </>
@@ -849,6 +765,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         MeetingStatusSocket,
         "MeetingStatusSocketMeetingStatusSocket"
       );
+      let meetingStatusID = MeetingStatusSocket.meetingStatusID;
       if (
         MeetingStatusSocket.message
           .toLowerCase()
@@ -890,6 +807,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
+      // if (meetingStatusID === 4) {
+      //   updateCalendarData(true, meetingID);
+      // }
     }
   }, [MeetingStatusSocket]);
 
@@ -922,14 +842,6 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       }
     }
   }, [MeetingStatusEnded]);
-
-  const scroll = {
-    y: "39vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
-  };
 
   return (
     <>
@@ -971,7 +883,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={scroll}
+            scroll={{ y: "39vh", x: "max-content" }}
             rows={rows}
             pagination={false}
             size="small"

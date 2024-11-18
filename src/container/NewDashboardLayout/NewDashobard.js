@@ -2,22 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./NewDashboard.module.css";
 import "./NewDashbaord.css";
-import { Col, Row } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import Stats from "./Stats/Stats";
 import NewCalendar from "./Calendar/Calendar";
 import Events from "./Events/Events";
 import Task from "./Tasks/Task";
 import RecentActivity from "./RecentActivity/RecentActivity";
 import Notes from "./Notes/Notes";
-import moment from "moment";
+import moment, { locale } from "moment";
 import { Button, Modal } from "../../components/elements";
 import VerificationFailedIcon from "../../assets/images/failed.png";
 import { useTranslation } from "react-i18next";
-import { setLoader } from "../../store/actions/Auth2_actions";
+import { cleareMessage, setLoader } from "../../store/actions/Auth2_actions";
 import { useNavigate } from "react-router-dom";
 import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
 
 const NewDashobard = () => {
+
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
@@ -42,7 +43,7 @@ const NewDashobard = () => {
   }, [lang]);
 
   useEffect(() => {
-    if (Blur !== null) {
+    if (Blur != undefined) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);

@@ -1,10 +1,11 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import styles from "./WarningMessageBox.module.css";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 const WarningMessageBox = ({ text, textClass }) => {
+  // for translation
   const { t } = useTranslation();
   return (
     <Row>
@@ -18,6 +19,7 @@ const WarningMessageBox = ({ text, textClass }) => {
           </Col>
           <Col sm={12} lg={12} md={12} className="text-justify">
             <p className={textClass}>{text}</p>
+            {/* {t("This-is-warning-message")} */}
           </Col>
         </Row>
       </Col>

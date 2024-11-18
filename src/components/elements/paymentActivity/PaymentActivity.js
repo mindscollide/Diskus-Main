@@ -1,4 +1,4 @@
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import styles from "./PaymentActivity.module.css";
 import React from "react";
 
@@ -18,7 +18,9 @@ const PaymentActivity = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${" fs-4 mt-3 mb-2"} ${styles["paymentActivityTitle"]}`}
+        className={`${" fs-4 mt-3 mb-2"} ${
+          styles["paymentActivityTitle"]
+        }`}
       >
         {PaymentActivityBoxTitle}
       </Col>

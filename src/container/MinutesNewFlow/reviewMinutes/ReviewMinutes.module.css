@@ -12,6 +12,11 @@
   color: #6172d6;
 }
 
+/* .main-wrapper {
+  padding-right: 50px;
+  padding-left: 50px;
+} */
+
 .Accept-all {
   width: 123px;
   height: 39px;
@@ -70,14 +75,6 @@ body[dir="rtl"] span.No-of-reviews {
   height: auto !important;
   min-height: 78vh !important;
   width: 100% !important;
-  border-radius: 8px !important;
-  width: 100% !important;
-  border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  box-shadow: var(--Paper-shadow);
-  display: inline-block !important;
-  background: #fff !important;
 }
 
 p.Parent-title-heading {
@@ -227,6 +224,16 @@ body[dir="rtl"] .version-control-wrapper-with-more {
   border-radius: 9px !important;
 }
 
+/* .version-control-wrapper-with-more::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 16px;
+  height: 100%;
+} */
+
 .version-control-wrapper {
   width: 18px;
   height: 18px;
@@ -286,6 +293,16 @@ body[dir="rtl"] .version-control-wrapper-last {
   border: 1px solid #e1e1e1 !important;
   border-radius: 9px !important;
 }
+
+/* .version-control-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 10px;
+  height: 184px;
+} */
 
 p.uploadedbyuser {
   font-size: 12px;
@@ -515,6 +532,7 @@ body[dir="rtl"] .review-minutes-wrapper-scroll {
 .review-minutes-wrapper {
   height: 57vh;
   overflow: hidden auto;
+  /* padding-right: 15px; */
   margin-bottom: 15px;
 }
 

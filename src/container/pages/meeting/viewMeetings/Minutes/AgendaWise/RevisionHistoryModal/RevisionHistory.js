@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./RevisionHistory.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import {
   Modal,
+  Button,
   AttachmentViewer,
 } from "../../../../../../../components/elements";
 import DropdownPurple from "./../../Images/Dropdown-Purple.png";
 import EditIcon from "./../../Images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
+import DefaultAvatar from "./../../../../../../MinutesNewFlow/Images/avatar.png";
 import EditCommentModal from "./EditCommentModal/EditComment";
 import ConfirmationEditData from "./ConfirmationEdit/ConfirmationEdit";
 import ResendMinuteReviewModal from "./ResendForReview/ResendReview";
-import { newDateFormatForMinutes } from "../../../../../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  newDateFormatForMinutes,
+  newTimeFormaterAsPerUTCTalkDate,
+  newTimeFormaterAsPerUTCTalkTime,
+  utcConvertintoGMT,
+} from "../../../../../../../commen/functions/date_formater";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -122,6 +130,11 @@ const RevisionHistory = ({
     };
     dispatch(GetDataForResendMinuteReview(Data, navigate, t, setEditMinute));
     dispatch(currentMeetingMinutesToReview(data));
+    // if (editMinute === false) {
+    //   setEditMinute(true);
+    // } else {
+    //   setEditMinute(false);
+    // }
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -135,6 +148,7 @@ const RevisionHistory = ({
   useEffect(() => {
     if (GetMinuteReviewDetailsForOrganizerbyMinuteId !== null) {
       try {
+        // if(GetMinuteReviewDetailsForOrganizerbyMinuteId.)
         setRevisionHistoryData({
           mainMinute: GetMinuteReviewDetailsForOrganizerbyMinuteId.mainMinute,
           minuteVersionHistory:
@@ -341,6 +355,12 @@ const RevisionHistory = ({
                                               ? `${userName}`
                                               : `${userName}, `
                                         )}
+                                      {/* {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.pendingUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.pendingUsers.map(
+                                          (userName) => `${userName} ,`
+                                        )} */}
                                     </p>
                                     <p
                                       className={`${styles["text-wrapper-review"]}`}
@@ -350,6 +370,12 @@ const RevisionHistory = ({
                                       >
                                         Review Accepted:
                                       </span>{" "}
+                                      {/* {revisionHistoryData?.mainMinute
+                                        .reviewStats?.acceptedByUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.acceptedByUsers?.map(
+                                          (userName) => `${userName}  ,`
+                                        )} */}
                                       {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.acceptedByUsers?.length >
                                         0 &&
@@ -385,6 +411,12 @@ const RevisionHistory = ({
                                               ? `${userName}`
                                               : `${userName}, `
                                         )}
+                                      {/* {revisionHistoryData?.mainMinute
+                                        ?.reviewStats?.rejectedByUsers.length >
+                                        0 &&
+                                        revisionHistoryData?.mainMinute?.reviewStats?.rejectedByUsers.map(
+                                          (userName) => `${userName} ,`
+                                        )} */}
                                     </p>
                                   </Col>
                                 </Row>
@@ -437,6 +469,7 @@ const RevisionHistory = ({
                                                     id={data.pK_FileID}
                                                     name={data.displayFileName}
                                                     fk_UID={data.fK_UserID}
+                                                    // handleClickRemove={() => handleRemoveFile(data)}
                                                   />
                                                 </Col>
                                               </>
@@ -465,6 +498,7 @@ const RevisionHistory = ({
                                       <p className={styles["uploadedbyuser"]}>
                                         {t("Uploaded-by")}
                                       </p>{" "}
+                                      {/* {index === 0 && ( */}
                                       <img
                                         className={styles["edit-icon"]}
                                         src={EditIcon}
@@ -478,6 +512,7 @@ const RevisionHistory = ({
                                       {/* )} */}
                                       <div className={styles["gap-ti"]}>
                                         <img
+                                          // src={DefaultAvatar}
                                           src={`data:image/jpeg;base64,${revisionHistoryData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                           className={styles["Image"]}
                                           alt=""
@@ -582,6 +617,7 @@ const RevisionHistory = ({
                                               </p>
                                               <div className={styles["gap-ti"]}>
                                                 <img
+                                                  // src={DefaultAvatar}
                                                   src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                   className={styles["Image"]}
                                                   alt=""
@@ -644,6 +680,7 @@ const RevisionHistory = ({
                       revisionHistoryData.minuteVersionHistory
                         ?.sort((a, b) => b.versionNumber - a.versionNumber)
                         .map((reviewData, index) => {
+                          console.log(reviewData, "reviewDatareviewData");
                           return (
                             <>
                               <Row>
@@ -795,6 +832,29 @@ const RevisionHistory = ({
                                             __html: reviewData.minutesDetails,
                                           }}
                                         ></p>
+                                        {/* <Row className="mt-1">
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              id={0}
+                                              name={"DummyFile.pdf"}
+                                              fk_UID={"1233"}
+                                            />
+                                          </Col>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              id={0}
+                                              name={"DummyFile.xls"}
+                                              fk_UID={"1233"}
+                                            />
+                                          </Col>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <AttachmentViewer
+                                              id={0}
+                                              name={"DummyFile.doc"}
+                                              fk_UID={"1233"}
+                                            />
+                                          </Col>
+                                        </Row> */}
                                       </Col>
                                       <Col
                                         lg={3}
@@ -831,6 +891,7 @@ const RevisionHistory = ({
                                             )}
                                             <div className={styles["gap-ti"]}>
                                               <img
+                                                // src={DefaultAvatar}
                                                 src={`data:image/jpeg;base64,${reviewData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}
                                                 className={styles["Image"]}
                                                 alt=""
@@ -887,7 +948,7 @@ const RevisionHistory = ({
                               </Row>
                               {reviewData.declinedReviews.length > 0 &&
                                 reviewData.declinedReviews.map(
-                                  (declineReviewData) => {
+                                  (declineReviewData, index) => {
                                     return (
                                       <Row>
                                         <Col
@@ -957,6 +1018,7 @@ const RevisionHistory = ({
                                                       }
                                                     >
                                                       <img
+                                                        // src={DefaultAvatar}
                                                         src={`data:image/jpeg;base64,${declineReviewData?.userProfilePicture?.displayProfilePictureName}`}
                                                         className={
                                                           styles["Image"]

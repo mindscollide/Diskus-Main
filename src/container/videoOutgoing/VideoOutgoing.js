@@ -1,15 +1,25 @@
+import React, { useState } from "react";
 import styles from "./VideoOutgoing.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { Button } from "../../components/elements";
+import { ChevronRight, CameraVideo } from "react-bootstrap-icons";
+import { useSelector } from "react-redux";
+import { TextField, Button } from "../../components/elements";
 import videoEndIcon from "../../assets/images/newElements/VideoEndIcon.png";
 import videoAvatar from "../../assets/images/newElements/VideoAvatar.png";
+import videoAttendIcon from "../../assets/images/newElements/VideoAttendIcon.png";
+
+import avatar from "../../assets/images/avatar.png";
+
+import MeetingVideoChatIcon from "../../assets/images/newElements/Icon feather-video1.png";
 
 const VideoOutgoing = () => {
+  const { VideoChatReducer } = useSelector((state) => state);
+  const [minutes, setMinutes] = useState("");
   return (
     <Container className={styles["videoOutgoing"]}>
       <Row className="mt-5">
         <Col sm={12} md={12} lg={12} className={styles["avatar-column"]}>
-          <img src={videoAvatar} width={150} alt="" />
+          <img src={videoAvatar} width={150} />
         </Col>
       </Row>
 
@@ -31,7 +41,7 @@ const VideoOutgoing = () => {
             className={styles["button-img"]}
             icon={
               <>
-                <img src={videoEndIcon} width={50} alt="" />
+                <img src={videoEndIcon} width={50} />
               </>
             }
           ></Button>

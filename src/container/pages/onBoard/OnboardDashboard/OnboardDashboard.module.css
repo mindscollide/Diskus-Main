@@ -22,6 +22,7 @@
   justify-content: center !important;
   align-items: center !important;
   height: 25vh !important;
+  /* overflow    : auto !important; */
 }
 
 .home-todolistcount {
@@ -29,6 +30,7 @@
   justify-content: center !important;
   align-items: center !important;
   height: 25vh !important;
+  /* overflow    : auto !important; */
 }
 
 .home-meetingcount-text {
@@ -72,6 +74,7 @@
 .home-recentactivity-notification-description {
   overflow: hidden;
   text-overflow: ellipsis;
+  /* white-space: nowrap; */
   width: 310px;
   word-wrap: break-word;
   margin-left: 25px;
@@ -104,11 +107,16 @@ h1.recent-activity {
 
 .Recent-Activity-Box {
   height: 69vh !important;
+  /* overflow-y    : auto;
+      overflow-x     : hidden; */
   padding-left: 5px;
 }
 
 .DashboardTodoTable {
   position: relative;
+  /* height       : 59.4vh !important; */
+  /* overflow-y: auto;
+    overflow-x   : hidden; */
   margin-left: -5px;
 }
 
@@ -147,6 +155,7 @@ h1.recent-activity {
 
 .DashboardTodoTable td.ant-table-cell {
   padding: 6px !important;
+  /* border-bottom: 5px solid #ccc !important; */
 }
 
 .react-calendar {
@@ -209,6 +218,10 @@ button.react-calendar__navigation__arrow.react-calendar__navigation__next-button
   color: #757575 !important;
 }
 
+/* .react-calendar__tile--active {
+      border-radius: 50%;
+  } */
+
 button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--range.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
   color: #fff !important;
 }
@@ -218,6 +231,7 @@ h1.upcoming-events {
   font-size: calc(23px - 35%) !important;
   text-align: left;
   margin: 10px 0px;
+  /* padding-left: 20px; */
   padding-bottom: 5px;
   margin: 0;
   font-weight: 600 !important;
@@ -340,6 +354,19 @@ span.rmdp-arrow-container.rmdp-right {
   margin-top: -6px !important;
 }
 
+/* .rmdp-day.rmdp-today span {
+      background: #000 !important;
+  
+      color: #fff !important;
+  }
+  
+  .rmdp-day.rmdp-selected span:not(.highlight) {
+      background-color: #8d8d8d !important;
+      box-shadow: none !important;
+  
+      color     : #fff !important;
+  } */
+
 .rmdp-day.rmdp-selected span:not(.highlight) {
   background-color: #e1e1e1 !important;
   box-shadow: none !important;
@@ -408,6 +435,7 @@ body[dir="rtl"] .desc-notification-user {
   right: 5px !important;
   font-weight: 600 !important;
   top: 5px !important;
+  /* color: #232323; */
 }
 
 .rmdp-arrow {
@@ -442,6 +470,24 @@ body[dir="rtl"] .desc-notification-user {
   box-shadow: none !important;
 }
 
+/* .ant-table-pagination.ant-pagination li:nth-child(1) button {
+      border: none !important;
+      background: none !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(3) button {
+      border: none !important;
+      background: none !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(1) button svg {
+      border-top: 8px solid transparent !important;
+      border-right: 14px solid #505050 !important;
+      border-bottom: 8px solid transparent !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(3) button svg {
+      border-top: 8px solid transparent !important;
+      border-left: 14px solid #505050 !important;
+      border-bottom: 8px solid transparent !important;
+  } */
 .ant-table-wrapper.dashboard-todo_onboard
   .ant-table
   .ant-table-container
@@ -458,9 +504,15 @@ body[dir="rtl"] .desc-notification-user {
   background: #fff !important;
 }
 
+/* .ant-table-wrapper.dashboard-todo_onboard .ant-table-tbody>tr {
+      border: 2px solid #ccc !important;
+  } */
+
 .dashboard-todo_onboard .ant-table table {
   border-spacing: 0 7px !important;
   border-radius: 50px !important;
+  /* table-layout     : auto !important; */
+  /* border           : none !important; */
 }
 
 .ant-table-wrapper.dashboard-todo_onboard
@@ -475,6 +527,9 @@ body[dir="rtl"] .desc-notification-user {
   font-size: calc(17px - 25%) !important;
 }
 
+/* .ant-table-wrapper.dashboard-todo_onboard .ant-table .ant-table-body>tr {
+      border: 5px solid #ccc !important;
+  } */
 .dashboard-todo_onboard {
   max-height: 56.4vh !important;
   overflow-x: hidden;
@@ -498,6 +553,14 @@ body[dir="rtl"] .desc-notification-user {
 .RecentBoxScrollBar {
   height: 90% !important;
 }
+
+/* .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+      display: none !important;
+  } */
+
+/* .DashboardTodoTable ul.ant-pagination {
+      text-align: right;
+  } */
 
 .DashboardTodoTable li.ant-pagination-item {
   display: none !important;
@@ -557,6 +620,15 @@ body[dir="rtl"] .desc-notification-user {
   display: none;
 }
 
+/* .DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link:disabled {
+      background   : none !important;
+      border       : none;
+      border-top   : 16px solid transparent !important;
+      border-right : 20px solid #ccc !important;
+      border-bottom: 17px solid transparent !important;
+      overflow     : hidden;
+  } */
+
 .DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link {
   background-color: transparent !important;
   border: none;
@@ -610,6 +682,8 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 .DashboardTodoTable li.ant-pagination-total-text {
+  /* position: absolute;
+      right   : 15px; */
   width: 150px;
   text-align: center !important;
 }
@@ -673,6 +747,10 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 @media screen and (max-width: 1200px) {
+  /* .home-recentactivity-scrollbar-container {
+      width: 130% !important;
+    } */
+
   /* for changing recent activity heading */
   h1.upcoming-events {
     background: white !important;
@@ -686,6 +764,7 @@ body[dir="rtl"] .desc-notification-user {
 
 @media screen and (max-width: 770px) {
   .home-recentactivity-scrollbar-container {
+    /* height: 87vh !important; */
     width: 100% !important;
   }
 }
@@ -794,10 +873,12 @@ body[dir="rtl"] .desc-notification-user {
 
   .home-meetingcount-text {
     font-size: 8px !important;
+    /* margin-top: -10px; */
   }
 
   .home-todocount-text {
     font-size: 8px !important;
+    /* margin-top: 0px; */
   }
 }
 
@@ -813,6 +894,12 @@ body[dir="rtl"] .desc-notification-user {
   }
 }
 
+/* .sidebar-container {
+      width: 67px;
+  }
+  .talk_nav {
+      width: 67px;
+  } */
 .Ok-Successfull-btn {
   width: 119px !important;
   height: 46px !important;
@@ -839,7 +926,9 @@ body[dir="rtl"] .desc-notification-user {
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
+  /* border          : 1px solid #707070; */
   background-color: #f2f2f2;
+  /* margin-left     : -5px; */
 }
 
 .home-recentactivity-scrollbar-container::-webkit-scrollbar-thumb {
@@ -853,6 +942,7 @@ body[dir="rtl"] .desc-notification-user {
   border-radius: 20px;
   border: 1px solid #ddd;
   background-color: #fff;
+  /* margin-left     : -5px; */
 }
 
 .Upcoming-Events-Box::-webkit-scrollbar-thumb {

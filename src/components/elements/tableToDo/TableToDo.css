@@ -23,6 +23,7 @@
 .ant-table-thead > tr > th {
   background-color: none !important;
   white-space: nowrap !important;
+  /* border-bottom   : 2px solid blue !important; */
 }
 
 .ant-table-thead tr {
@@ -79,6 +80,15 @@
   text-align: center !important;
 }
 
+/* .ant-table-wrapper.ToDo
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+  display: none !important;
+} */
+
+/* .ant-table table {
+  margin-bottom: 50px;
+} */
+
 .ant-table-wrapper.ToDo
   .ant-table
   .ant-table-container
@@ -91,11 +101,12 @@
   clear: both;
   max-width: 100%;
 }
-
+/* .PendingApprovalsTable table  */
 .ant-table-wrapper.PendingApprovalsTable .ant-table .ant-table-tbody > tr > td {
   padding: 8px 16px !important;
 }
 
+/* .PendingApprovalsTable table  */
 .ant-table-wrapper.ApprovalsTable .ant-table .ant-table-tbody > tr > td {
   padding: 12px 0px !important;
 }

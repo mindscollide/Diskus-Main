@@ -12,6 +12,11 @@
   color: #6172d6;
 }
 
+/* .main-wrapper {
+  padding-right: 50px;
+  padding-left: 50px;
+} */
+
 .Accept-all {
   width: 123px;
   height: 39px;
@@ -186,6 +191,16 @@ body[dir="rtl"] .version-control-wrapper-with-more {
   border-radius: 9px !important;
 }
 
+/* .version-control-wrapper-with-more::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 17px;
+  height: 100%;
+} */
+
 .version-control-wrapper {
   width: 18px;
   height: 18px;
@@ -212,6 +227,7 @@ body[dir="rtl"] .version-control-wrapper {
 .version-control-wrapper-last {
   width: 18px;
   height: 18px;
+  /* background: #e1e1e1; */
   border-radius: 9px;
   display: block;
   position: absolute;
@@ -244,6 +260,16 @@ body[dir="rtl"] .version-control-wrapper {
   border: 1px solid #e1e1e1 !important;
   border-radius: 9px !important;
 }
+
+/* .version-control-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  background: #e1e1e1;
+  left: 50%;
+  top: 20px;
+  height: 184px;
+} */
 
 p.uploadedbyuser {
   font-size: 12px;
@@ -391,6 +417,7 @@ body[dir="rtl"] .gap-ti {
 
 p.time-uploader {
   margin: 0;
+  /* position: absolute; */
   bottom: 20px;
   margin-left: 10px;
   color: #5f78d6 !important;
@@ -400,6 +427,7 @@ p.time-uploader {
 
 body[dir="rtl"] p.time-uploader {
   margin: 0;
+  /* position: absolute; */
   bottom: 20px;
   margin-left: auto !important;
   margin-right: 20px !important;
@@ -462,6 +490,7 @@ body[dir="rtl"] .review-minutes-wrapper-scroll {
 .review-minutes-wrapper {
   height: 57vh;
   overflow: hidden auto;
+  /* padding-right: 15px; */
   margin-bottom: 15px;
 }
 

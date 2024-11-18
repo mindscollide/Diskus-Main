@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ViewAttachments.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { Paper } from "@material-ui/core";
 import Button from "../../../components/elements/button/Button";
 import { useNavigate } from "react-router-dom";
 import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
@@ -31,7 +32,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     <Container fluid>
       <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
-          <span className={styles["ViewAttachment_paper"]}>
+          <Paper className={styles["ViewAttachment_paper"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["View_attachment_heading"]}>
@@ -50,6 +51,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                   {resolutionAttachments &&
                     resolutionAttachments.map((data, index) => {
                       let ext = data.displayAttachmentName.split(".").pop();
+                      const first = data.displayAttachmentName.split(" ")[0];
                       const pdfData = {
                         taskId: data.fK_ResolutionID,
                         attachmentID: Number(data.originalAttachmentName),
@@ -88,7 +90,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                 />
               </Col>
             </Row>
-          </span>
+          </Paper>
         </Col>
       </Row>
     </Container>

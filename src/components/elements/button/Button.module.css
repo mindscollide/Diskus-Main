@@ -1,6 +1,7 @@
 .defaultButton {
   background-color: #2197d7 !important;
   font-size: 18px !important;
+  /* text-transform: uppercase !important; */
   font-weight: 500 !important;
   padding-left: 3rem !important;
   padding-right: 3rem !important;
@@ -17,6 +18,7 @@
 .defaultButton:hover {
   background-color: #076db7 !important;
   font-size: 18px !important;
+  /* text-transform: uppercase !important; */
   font-weight: 500 !important;
   padding-left: 3rem !important;
   padding-right: 3rem !important;

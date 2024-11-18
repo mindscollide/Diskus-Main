@@ -1,16 +1,32 @@
-import React from "react";
-import { Button } from "../../../../../../../../components/elements/index.js"; // Importing necessary components
+import React, { useState } from "react";
+import {
+  Modal,
+  Button,
+  TextArea,
+  SelectComment,
+  TextField,
+} from "../../../../../../../../components/elements/index.js"; // Importing necessary components
 import styles from "./ConfirmationEdit.module.css"; // Importing CSS styles
 import { useTranslation } from "react-i18next"; // Importing translation hook
+import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import CrossIcon from "./../../../../../../../MinutesNewFlow/Images/Cross_Icon.png";
 
 // Functional component for editing a comment
 const ConfirmationEditData = ({
+  editMinute,
   setEditMinute,
+  confirmationEdit,
   setConfirmationEdit,
+  resendMinuteForReview,
   setResendMinuteForReview,
+  editMinuteData,
+  updateMinuteData,
+  setUpdateMinutedata,
 }) => {
   const { t } = useTranslation(); // Translation hook
+
+  const dispatch = useDispatch(); // Redux dispatch hook
 
   return (
     <>

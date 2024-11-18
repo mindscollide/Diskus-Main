@@ -19,7 +19,7 @@ import {
   Button,
   Notification,
 } from "../../components/elements";
-import { Tooltip } from "antd";
+import { Tooltip } from "@material-ui/core";
 import {
   ClearNotesResponseMessage,
   GetNotes,
@@ -32,7 +32,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 const Notes = () => {
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
@@ -51,7 +50,6 @@ const Notes = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
@@ -111,7 +109,7 @@ const Notes = () => {
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -137,7 +135,7 @@ const Notes = () => {
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data) => {
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
               date: data.date,
               description: data.description,
@@ -228,8 +226,19 @@ const Notes = () => {
         NotesReducer.ResponseMessage !== "" &&
         NotesReducer.ResponseMessage !== t("No-data-available")
       ) {
-        showMessage(NotesReducer.ResponseMessage, "success", setOpen);
-        dispatch(ClearNotesResponseMessage());
+        setOpen({
+          open: true,
+          message: NotesReducer.ResponseMessage,
+        });
+
+        setTimeout(() => {
+          dispatch(ClearNotesResponseMessage());
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 4000);
       }
     } catch (error) {
       console.log(error, "error");
@@ -256,7 +265,6 @@ const Notes = () => {
             {/* Test Accordian Body Starts  */}
             {notes.length > 0 && notes !== null && notes !== undefined ? (
               notes.map((data, index) => {
-                console.log(data, "datdayaminyamin");
                 return (
                   <CustomAccordion
                     StartField={data.title}
@@ -388,7 +396,7 @@ const Notes = () => {
                               className={styles["NotesAttachments"]}
                             >
                               {data?.notesAttachments.length > 0
-                                ? data?.notesAttachments.map((file) => {
+                                ? data?.notesAttachments.map((file, index) => {
                                     return (
                                       <AttachmentViewer
                                         data={file}
@@ -467,7 +475,7 @@ const Notes = () => {
           setViewNotes={setViewModalShow}
         />
       ) : null}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>
   );
 };

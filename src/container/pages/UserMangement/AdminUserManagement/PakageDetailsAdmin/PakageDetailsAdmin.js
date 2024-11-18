@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./PakageDetailsAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo } from "../../../../../components/elements";
+import { Button, Loader, TableToDo } from "../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
@@ -14,18 +14,11 @@ const PakageDetailsAdmin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
-    useSelector(
-      (state) =>
-        state.UserMangementReducer
-          .organizationSelectedPakagesByOrganizationIDData
-    );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
+  const { UserMangementReducer } = useSelector((state) => state);
+  console.log(
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
+    "organizationSelectedPakagesByOrganizationIDData"
   );
-
   // organizationSubscriptions
   const [packageDetails, setPackageDetails] = useState({
     PackageSubscriptionDate: "",
@@ -34,6 +27,7 @@ const PakageDetailsAdmin = () => {
   });
 
   // get organizationID from localStorage
+  const organizationID = localStorage.getItem("organizationID");
 
   const ColumnsPakageSelection = [
     {
@@ -92,7 +86,7 @@ const PakageDetailsAdmin = () => {
 
   useEffect(() => {
     let detailPackages =
-      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
+      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
     if (detailPackages !== null && detailPackages !== undefined) {
       detailPackages.organizationSubscriptions?.map((subscription) => {
         console.log(subscription, "subscriptionsubscription");
@@ -106,11 +100,13 @@ const PakageDetailsAdmin = () => {
         }));
       });
     }
-  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
 
   // table data in which Package details should be shown
   const organizationPackages =
-    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions;
+    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+      ?.organizationSubscriptions;
+  console.log(organizationPackages, "organizationSelectedPackages");
 
   let Data = [];
 
@@ -143,7 +139,7 @@ const PakageDetailsAdmin = () => {
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
     (packageses) => {
       packageses.organizationSelectedPackages.map((totals) => {
         let totalofLicences = totals.headCount;
@@ -171,9 +167,10 @@ const PakageDetailsAdmin = () => {
   };
 
   const upgradeOnclickHandler = () => {
-    if (UserMangementReducerorganizationSelectedPakagesByOrganizationIDData) {
+    if (UserMangementReducer.organizationSelectedPakagesByOrganizationIDData) {
+      console.log(UserMangementReducer.organizationSelectedPakagesByOrganizationIDData, "UserMangementReducerUserMangementReducer")
       const organizationSelectedVariable =
-        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
           (subscription) => subscription.organizationSelectedPackages
         );
       console.log(organizationSelectedVariable, "organizationSelectedVariable");
@@ -208,7 +205,25 @@ const PakageDetailsAdmin = () => {
         <Col xl={4} lg={4} md={4} sm={12} xs={12}>
           <Card className={styles["packagecard"]}>
             <Row className="mt-3">
-              <Col sm={12}></Col>
+              <Col sm={12}>
+                {/* <span class="icon-star package-icon-style">
+                  <span
+                    class="path1"
+                    style={{ color: packageColorPath1 }}
+                  ></span>
+                  <span
+                    class="path2"
+                    style={{ color: packageColorPath2 }}
+                  ></span>
+                  <span
+                    class="path3"
+                    style={{ color: packageColorPath2 }}
+                  ></span>
+                </span>
+                <h3 className={styles["packageCard_title"]}>
+                  {isPackageDetail.PackageTitle}
+                </h3>{" "} */}
+              </Col>
             </Row>
             <div className={styles["side-card-packagedetail"]}>
               <Row className="mt-5">
@@ -310,6 +325,7 @@ const PakageDetailsAdmin = () => {
           </Card>
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

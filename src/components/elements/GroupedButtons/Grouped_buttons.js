@@ -1,5 +1,6 @@
 import React from "react";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+
 import Button from "../button/Button";
 const GroupedButtons = ({ data }) => {
   return (

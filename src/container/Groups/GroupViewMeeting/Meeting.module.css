@@ -4,13 +4,10 @@
   font-size: 14px !important;
   cursor: pointer;
   overflow: hidden !important;
+  /* width: 180px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
   display: block !important;
-}
-
-body[dir="rtl"] .meetingTitle {
-  margin-right: 20px !important;
 }
 
 .Start-Meeting {
@@ -171,44 +168,4 @@ body[dir="rtl"] .Create_Meeting_Button {
   border: 1px solid #e1e1e1;
   background: #fff !important;
   color: #5a5a5a !important;
-}
-
-.ResetOkBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 6px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-body[dir="rtl"] .TitleArabic {
-  margin-right: 20px !important;
 }

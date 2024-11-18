@@ -109,7 +109,7 @@
 }
 
 .HeightDefined {
-  height: 54vh !important;
+  height: 49vh !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -164,40 +164,4 @@
   position: absolute;
   bottom: 65px;
   align-items: center;
-}
-
-.FilterResetBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
 }

@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewPollsUnPublished.module.css";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import Profile from "../../../../../assets/images/newprofile.png";
+import { style } from "@mui/system";
 import { Button } from "../../../../../components/elements";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../commen/functions/date_formater";
 const ViewPollsUnPublished = ({ setUnPublished }) => {
   const { t } = useTranslation();
-  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const { PollsReducer } = useSelector((state) => state);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
+
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -22,11 +32,13 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
   const handleClosedButton = () => {
     setUnPublished(false);
   };
-
   useEffect(() => {
     try {
-      if (Allpolls !== null && Allpolls !== undefined) {
-        let pollData = Allpolls.poll;
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollData = PollsReducer.Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -48,7 +60,7 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
         }
       }
     } catch {}
-  }, [Allpolls]);
+  }, [PollsReducer.Allpolls]);
   return (
     <section>
       <Row>

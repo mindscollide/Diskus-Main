@@ -33,7 +33,6 @@ import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
-  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
@@ -169,7 +168,7 @@ const ApprovalSend = () => {
         } else {
           return (
             <span className={styles["date_vale"]}>
-              {SignatureandPendingApprovalDateTIme(text, CurrentLanguage)}
+              {SignatureandPendingApprovalDateTIme(text)}
             </span>
           );
         }

@@ -3,9 +3,12 @@ import styles from "./AfterSaveViewTable.module.css";
 import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const AfterSaveViewTable = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const notificationData = [
     {

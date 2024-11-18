@@ -1,0 +1,114 @@
+.Box_Minutes {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  margin-left: 0px !important;
+}
+
+.Box_Minutes_For_main_agenda {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  margin-left: 12px !important;
+  padding: 0px 8px !important;
+}
+
+.Title_File {
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Show_more_Styles {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+.Date_Minutes_And_time {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Uploaded_heading {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Name {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Heading_View_Minutes {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.SubAgendaSection {
+  width: 100% !important;
+}
+
+.SubAgendaSubTitleHeaeding {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Main_scroller_View {
+  height: 63vh !important;
+  overflow-x: hidden !important;
+}
+
+.Main_scroller_View::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Main_scroller_View::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.OverAll_padding {
+  padding: 0px 30px !important;
+}
+
+.Scroller_SubAgendaView {
+  height: 25vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_SubAgendaView::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_SubAgendaView::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Scroller_SubAgendaView_when_No {
+  height: 0vh !important;
+}

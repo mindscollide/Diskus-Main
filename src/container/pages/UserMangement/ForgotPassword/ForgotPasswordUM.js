@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ForgotPasswordUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -6,21 +6,29 @@ import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_n
 import LanguageSelector from "./../../../../components/elements/languageSelector/Language-selector";
 import {
   Button,
+  Paper,
   Notification,
+  Loader,
 } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { changePasswordRequest } from "../../../../store/actions/Auth_Forgot_Password";
+import {
+  changePasswordRequest,
+  cleareChangePasswordMessage,
+} from "../../../../store/actions/Auth_Forgot_Password";
 import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+  const state = useSelector((state) => state);
+
+  const { auth, LanguageReducer } = state;
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -29,7 +37,6 @@ const ForgotPasswordUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   //Form Submission of Forgot Password
@@ -43,7 +50,18 @@ const ForgotPasswordUM = () => {
         setMessege(t("Please-enter-a-valid-email"));
       }
     } else {
-      showMessage(t("Please-enter-email"), "error", setOpen);
+      setOpen({
+        ...open,
+        open: true,
+        message: t("Please-enter-email"),
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
       setMessege("");
     }
   };
@@ -52,7 +70,7 @@ const ForgotPasswordUM = () => {
 
   const handleGoBackFunction = () => {
     localStorage.setItem("LoginFlowPageRoute", 1);
-    dispatch(LoginFlowRoutes(1));
+   dispatch(LoginFlowRoutes(1));
   };
 
   //onChange for the Field
@@ -66,6 +84,28 @@ const ForgotPasswordUM = () => {
       setEmail("");
     }
   };
+
+  //For Response messeges
+  // useEffect(() => {
+  //   if (auth.ResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: auth.ResponseMessage,
+  //     });
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: false,
+  //         message: "",
+  //       });
+  //     }, 3000);
+
+  //     dispatch(cleareChangePasswordMessage());
+  //   } else {
+  //     dispatch(cleareChangePasswordMessage());
+  //   }
+  // }, [auth.ResponseMessage]);
 
   return (
     <>
@@ -82,7 +122,7 @@ const ForgotPasswordUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <span className={styles["Forgotpasswordloginbox_auth_paper"]}>
+            <Paper className={styles["Forgotpasswordloginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -178,7 +218,7 @@ const ForgotPasswordUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </span>
+            </Paper>
           </Col>
           <Col
             lg={8}
@@ -205,7 +245,8 @@ const ForgotPasswordUM = () => {
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {auth.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

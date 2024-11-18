@@ -1,23 +1,38 @@
 import React, { useState } from "react";
 import styles from "./ViewVoteScreen.module.css";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
+import Profile from "../../../../../assets/images/newprofile.png";
 import { Button } from "../../../../../components/elements";
 import { useEffect } from "react";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
-  const viewVotes = useSelector((state) => state.PollsReducer.viewVotes);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
   const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
   );
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
-
+  console.log(
+    votePollDetailsOptions,
+    pollAttendiesOpptionsVise,
+    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
+  );
   useEffect(() => {
-    if (viewVotes !== null && viewVotes !== undefined) {
-      let vieVotePollDetails = viewVotes;
+    if (
+      PollsReducer.viewVotes !== null &&
+      PollsReducer.viewVotes !== undefined
+    ) {
+      let vieVotePollDetails = PollsReducer.viewVotes;
       let pollOptions = vieVotePollDetails.pollOptions;
       let pollAttendies = vieVotePollDetails.pollParticipants;
       let Options = [];
@@ -45,7 +60,33 @@ const ViewVotesScreen = ({ setviewVotes }) => {
         }
       }
     }
-  }, [viewVotes]);
+  }, [PollsReducer.viewVotes]);
+  const [messeges, setMesseges] = useState([
+    {
+      text: "In-person meetings",
+    },
+    {
+      text: "Video conferences",
+    },
+    {
+      text: "Email communication",
+    },
+  ]);
+
+  const [participant, setparticipant] = useState([
+    {
+      name: "Saif Ul Islam",
+    },
+    {
+      name: "Saif Ul Islam",
+    },
+    {
+      name: "Saif Ul Islam",
+    },
+    {
+      name: "Saif Ul Islam",
+    },
+  ]);
 
   const handleViewVotesScreen = () => {
     setviewVotes(false);
@@ -128,7 +169,12 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                   return (
                     <>
                       <Row className="mt-3">
-                        <Col lg={12} md={12} sm={12}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          // className={styles["Scroller_View_Published_Polls"]}
+                        >
                           <Row className="mt-1">
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Participant_Count"]}>

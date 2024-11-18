@@ -1,5 +1,8 @@
 import { getPackageExpiryDetail } from "../../store/actions/GetPackageExpirtyDetails";
-import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  signUpFlowRoutes,
+} from "../../store/actions/UserManagementActions";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 import { validateExtensionsforHTMLPage } from "./validations";
 
@@ -101,6 +104,14 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     { id: 45, name: "subscriptionDetailsUserManagement" },
     { id: 45, name: "downgradeSubscription" },
     { id: 46, name: "updatedCancelSubscription" },
+
+    // not in use
+    // { id: 19, name: "Invoice" },
+    // { id: 19, name: "PaymentHistoryusermanagement" },
+    // { id: 19, name: "UpgradePackage" },
+    // { id: 19, name: "paymentForm" },
+    // { id: 19, name: "UpgradePackageDetail" },
+    // { id: 19, name: "UpgradePackageSelect" },
   ];
   try {
     // Iterate through each feature from the API response
@@ -391,13 +402,8 @@ export const xorEncryptDecrypt = (input, key) => {
 };
 
 // Encrypt Function
-export const encrypt = (data, key) => {
-  try {
-    xorEncryptDecrypt(JSON.stringify(data), key);
-  } catch (e) {
-    console.log("ErrorError", e);
-  }
-};
+export const encrypt = (data, key) =>
+  xorEncryptDecrypt(JSON.stringify(data), key);
 
 // Decrypt Function
 export const decrypt = (data, key) => {
@@ -465,20 +471,6 @@ export const fileFormatforSignatureFlow = [
   // Web Formats
   "svg",
 ];
-
-export const extractActionFromUrl = (url) => {
-  const params = new URLSearchParams(url.split("?")[1]); // Extract query params
-  let actionString = params.get("validateguest_action"); // Get 'validateguest_action' param
-
-  if (actionString) {
-    // Replace spaces with '+' to restore the original value
-    actionString = actionString.replace(/ /g, "+");
-    return decodeURIComponent(actionString.replace(/$/, "")); // Decode the value and remove trailing '='
-  }
-
-  return ""; // Return empty if no valid 'validateguest_action' is found
-};
-
 const NewfileFormatforSignatureFlow = [
   // PDF Formats
   "pdf",

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,6 +13,7 @@ import {
   Button,
   Notification,
 } from "../../../../../components/elements";
+import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -25,20 +30,26 @@ import styles from "./Agenda.module.css";
 import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
+import dropmdownblack from "../../../../../assets/images/whitedown.png";
+import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import ViewVoteModal from "../../viewMeetings/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
 import CastVoteAgendaModal from "../../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
+import DownloadIcon from "./AV-Images/Download-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const ParentAgenda = ({
   data,
   index,
   rows,
   setRows,
+  setMainAgendaRemovalIndex,
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
@@ -54,6 +65,8 @@ const ParentAgenda = ({
   setSubAgendaIndex,
   subAgendaIndex,
 }) => {
+  console.log(data, "datadatadatadata");
+  console.log("EditorRoleEditorRole", editorRole);
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -66,7 +79,6 @@ const ParentAgenda = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
 
   const dispatch = useDispatch();
@@ -76,6 +88,11 @@ const ParentAgenda = ({
   // const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
+
+  console.log("rowsrows", rows);
+  //Timepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
 
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index, divFlag) => {
@@ -174,7 +191,26 @@ const ParentAgenda = ({
     setAgendaIndex(index);
     setSubAgendaIndex(-1);
     setShowMoreFilesView(true);
+    console.log(
+      "Show More Files",
+      fileDataAgenda,
+      agendaName,
+      agendaIndex,
+      subAgendaIndex
+    );
   };
+
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   const downloadDocument = (record) => {
     console.log("filesDatafilesData", record);
@@ -194,16 +230,19 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "error",
-        setOpen
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Thank-you-for-participanting-in-voting"),
+        }),
+        3000
       );
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
 
   const pdfData = (record, ext) => {
+    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: Number(record.originalAttachmentName),
       commingFrom: 4,
@@ -229,10 +268,18 @@ const ParentAgenda = ({
             editorRole.role === "Participant")
             ? "d-none"
             : ""
-        }
-      >
-        <span className="position-relative">
-          <Row key={data.id} className="mt-4 m-0 p-0">
+        }>
+        {/* <Draggable
+          key={data.id}
+          draggableId={data.id}
+          index={index}
+          isDragDisabled={true}
+        > */}
+        {/* {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.draggableProps}> */}
+        {/* Main Agenda Items Mapping */}
+        <span className='position-relative'>
+          <Row key={data.id} className='mt-4 m-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}
@@ -266,14 +313,17 @@ const ParentAgenda = ({
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
                       </span>
+                      {/* {findIDInArray(data.id) ? ( */}
                       {expandIndex === index && expand ? (
                         <span className={styles["ParaGraph_SavedMeeting"]}>
                           {data.description}
                         </span>
                       ) : null}
+                      {/* ) : null} */}
                     </Col>
-                    <Col lg={3} md={3} sm={12} className="p-0">
-                      <Row className="m-0">
+                    <Col lg={3} md={3} sm={12} className='p-0'>
+                      {/* <div className={styles["agendaCreationDetail"]}> */}
+                      <Row className='m-0'>
                         <Col
                           lg={12}
                           md={12}
@@ -301,8 +351,11 @@ const ParentAgenda = ({
                               : "p-0 text-end"
                           }>
                           <p
-                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
-                          >
+                            className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}>
+                            {/* {moment(
+                                    data?.startDate,
+                                    "HHmmss"
+                                  ).toISOString()} */}
                             {moment(timeFormatFunction(data.startDate)).format(
                               "hh:mm a"
                             )}
@@ -310,6 +363,9 @@ const ParentAgenda = ({
                             {moment(timeFormatFunction(data.endDate)).format(
                               "hh:mm a"
                             )}
+                            {/* {moment(data?.endDate, "HHmmss").format(
+                                    "hh:mm a"
+                                  )} */}
                           </p>
                           {printFlag === true || exportFlag === true ? null : (
                             <>
@@ -380,6 +436,7 @@ const ParentAgenda = ({
                           )}
                         </Col>
                       </Row>
+                      {/* </div> */}
                     </Col>
                     <Col lg={1} md={1} sm={12} className='p-0'></Col>
                   </Row>
@@ -473,6 +530,195 @@ const ParentAgenda = ({
                       </div>
                     </>
                   ) : null}
+                  {/* {expandIndex !== index && expand ? (
+                    <>
+                      {
+                        data.selectedRadio === 1 &&
+                        Object.keys(data.files).length > 0 ? (
+                          <div className={styles["filesParentClass"]}>
+                            {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => (
+                                <AttachmentViewer
+                                  handleClickDownload={() =>
+                                    downloadDocument(filesData)
+                                  }
+                                  data={filesData}
+                                  name={filesData?.displayAttachmentName}
+                                  id={Number(filesData.originalAttachmentName)}
+                                  handleEyeIcon={() =>
+                                    pdfData(
+                                      filesData,
+                                      getFileExtension(
+                                        filesData?.displayAttachmentName
+                                      )
+                                    )
+                                  }
+                                />
+                              ))}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={t("More")}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                          </div>
+                        ) : data.selectedRadio === 1 &&
+                          Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                      }
+
+                      {data.selectedRadio === 2 && (
+                        <Urls
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      {data.selectedRadio === 3 && (
+                        <RequestContributor
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      <div className={styles["borderDesigningSubAgenda"]}>
+                        <SubAgendaMappingDragging
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                          subExpand={subExpand}
+                          apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+                          subLockArry={subLockArry}
+                          setSubLockArray={setSubLockArray}
+                          agendaItemRemovedIndex={agendaItemRemovedIndex}
+                          setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
+                          setSubajendaRemoval={setSubajendaRemoval}
+                          setSubExpand={setSubExpand}
+                          openAdvancePermissionModal={
+                            openAdvancePermissionModal
+                          }
+                          openVoteMOdal={openVoteMOdal}
+                          advanceMeetingModalID={advanceMeetingModalID}
+                          editorRole={editorRole}
+                          setFileDataAgenda={setFileDataAgenda}
+                          fileDataAgenda={fileDataAgenda}
+                          setAgendaName={setAgendaName}
+                          agendaName={agendaName}
+                          setAgendaIndex={setAgendaIndex}
+                          agendaIndex={agendaIndex}
+                          setSubAgendaIndex={setSubAgendaIndex}
+                          subAgendaIndex={subAgendaIndex}
+                          setShowMoreFilesView={setShowMoreFilesView}
+                        />
+                      </div>
+                    </>
+                  ) : null} */}
+                  {/* {findIDInArray(data.id) ? ( */}
+
+                  {/* ) : null} */}
+                  {/* </Droppable> */}
+                  {/* {findIDInArray(data.id) ? (
+                    <>
+                      {
+                        data.selectedRadio === 1 &&
+                        Object.keys(data.files).length > 0 ? (
+                          <div className={styles["filesParentClass"]}>
+                            {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => (
+                                <AttachmentViewer
+                                  handleClickDownload={() =>
+                                    downloadDocument(filesData)
+                                  }
+                                  data={filesData}
+                                  name={filesData?.displayAttachmentName}
+                                  id={Number(filesData.originalAttachmentName)}
+                                  handleEyeIcon={() =>
+                                    pdfData(
+                                      filesData,
+                                      getFileExtension(
+                                        filesData?.displayAttachmentName
+                                      )
+                                    )
+                                  }
+                                />
+                              ))}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={t("More")}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                          </div>
+                        ) : data.selectedRadio === 1 &&
+                          Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
+                      }
+
+                      {data.selectedRadio === 2 && (
+                        <Urls
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+
+                      {data.selectedRadio === 3 && (
+                        <RequestContributor
+                          data={data}
+                          index={index}
+                          setRows={setRows}
+                          rows={rows}
+                        />
+                      )}
+                      {findIDInArray(data.id) ? (
+                        <div className={styles["borderDesigningSubAgenda"]}>
+                          <SubAgendaMappingDragging
+                            data={data}
+                            index={index}
+                            setRows={setRows}
+                            rows={rows}
+                            subExpand={subExpand}
+                            apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+                            subLockArry={subLockArry}
+                            setSubLockArray={setSubLockArray}
+                            agendaItemRemovedIndex={agendaItemRemovedIndex}
+                            setAgendaItemRemovedIndex={
+                              setAgendaItemRemovedIndex
+                            }
+                            setSubajendaRemoval={setSubajendaRemoval}
+                            setSubExpand={setSubExpand}
+                            openAdvancePermissionModal={
+                              openAdvancePermissionModal
+                            }
+                            openVoteMOdal={openVoteMOdal}
+                            advanceMeetingModalID={advanceMeetingModalID}
+                            editorRole={editorRole}
+                            setFileDataAgenda={setFileDataAgenda}
+                            fileDataAgenda={fileDataAgenda}
+                            setAgendaName={setAgendaName}
+                            agendaName={agendaName}
+                            setAgendaIndex={setAgendaIndex}
+                            agendaIndex={agendaIndex}
+                            setSubAgendaIndex={setSubAgendaIndex}
+                            subAgendaIndex={subAgendaIndex}
+                            setShowMoreFilesView={setShowMoreFilesView}
+                          />
+                        </div>
+                      ) : null}
+                    </>
+                  ) : null} */}
                 </Col>
               </Row>
             </Col>
@@ -482,8 +728,11 @@ const ParentAgenda = ({
         {NewMeetingreducer.castVoteAgendaPage && (
           <CastVoteAgendaModal setRows={setRows} rows={rows} />
         )}
+        {/* </div>
+          )} */}
+        {/* </Draggable> */}
       </div>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

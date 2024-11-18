@@ -34,12 +34,12 @@ import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
-import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+  const Delta = Quill.import("delta");
   const editorRef = useRef(null);
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
@@ -108,16 +108,21 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const modules = {
     toolbar: {
       container: [
-        [{ header: [2, 3, 4, false] }],
-        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
-        ["bold", "italic", "underline", "blockquote"],
-        [{ color: [] }],
-        [{ list: "ordered" }, { list: "bullet" }],
+        {
+          size: ["14px", "16px", "18px"],
+        },
+        { font: ["impact", "courier", "comic", "Montserrat"] },
+        { bold: {} },
+        { italic: {} },
+        { underline: {} },
+
+        { color: [] },
+        { background: [] },
+        { align: [] },
+        { list: "ordered" },
+        { list: "bullet" },
       ],
       handlers: {},
-    },
-    clipboard: {
-      matchVisual: true,
     },
   };
 
@@ -148,14 +153,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     setAttachments(copyattachments);
     setTasksAttachments({
       ...tasksAttachments,
-      TasksAttachments: searchIndex,
+      ["TasksAttachments"]: searchIndex,
     });
   };
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   const addNotesFieldHandler = (e) => {
@@ -360,7 +364,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let size = true;
 
     if (totalFiles > 5) {
-      showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Not-allowed-more-than-5-files"),
+      });
       return;
     }
     filesArray.forEach((fileData, index) => {
@@ -375,21 +382,34 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       );
 
       if (!size) {
-        showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
-          "error",
-          setOpen
-        );
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-greater-then-1-5GB"),
+          });
+        }, 3000);
       } else if (!sizezero) {
-        showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-size-should-not-be-zero"),
+          });
+        }, 3000);
       } else if (fileExists) {
-        showMessage(t("File-already-exists"), "error", setOpen);
+        setTimeout(() => {
+          setOpen({
+            flag: true,
+            message: t("File-already-exists"),
+          });
+        }, 3000);
       } else {
         let file = {
           DisplayAttachmentName: fileData.name,
           OriginalAttachmentName: fileData.name,
           fileSize: fileData.size,
         };
+
+        console.log(file, "filefilefilefile");
         setAttachments((prevAttachments) => [...prevAttachments, file]);
         fileSizeArr += fileData.size;
         setFileForSend((prevFiles) => [...prevFiles, fileData]);
@@ -418,7 +438,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
-          newfiles.forEach((data) => {
+          newfiles.map((data, index) => {
+            console.log(data, "newfilesnewfiles");
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -455,7 +476,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
           let copData = [...tasksAttachments.TasksAttachments];
-          copData.forEach((data, index) => {
+          console.log(copData, "DataDataData");
+          copData.map((data, index) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
@@ -490,7 +512,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         }
       } else {
         setErrorBar(true);
-        showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
+        setOpen({
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
       }
     } catch (error) {
       console.log(error, "error");
@@ -724,6 +749,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         >
                           {attachments.length > 0
                             ? attachments.map((data, index) => {
+                                var ext =
+                                  data.DisplayAttachmentName.split(".").pop();
+
+                                const first =
+                                  data.DisplayAttachmentName.split(" ")[0];
                                 return (
                                   <AttachmentViewer
                                     handleClickRemove={() =>
@@ -919,7 +949,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

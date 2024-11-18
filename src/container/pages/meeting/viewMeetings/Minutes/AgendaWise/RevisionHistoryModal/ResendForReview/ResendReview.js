@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "../../../../../../../../components/elements"; // Importing necessary components
+import {
+  Modal,
+  Button,
+  TextArea,
+  SelectComment,
+  TextField,
+} from "../../../../../../../../components/elements"; // Importing necessary components
 import styles from "./ResendReview.module.css"; // Importing CSS styles
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch } from "react-redux"; // Importing Redux hooks
+import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
+import CrossIcon from "./../../../../../../../MinutesNewFlow/Images/avatar.png";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   multiDatePickerDateChangIntoUTC,
@@ -22,15 +29,20 @@ import {
 
 // Functional component for editing a comment
 const ResendMinuteReviewModal = ({
+  editMinute,
   setEditMinute,
+  confirmationEdit,
   setConfirmationEdit,
+  resendMinuteForReview,
   setResendMinuteForReview,
   editMinuteData,
   updateMinuteData,
+  setUpdateMinutedata,
   minuteDate,
   setMinuteDate,
   advanceMeetingModalID,
   isAgenda,
+  showRevisionHistory,
   setShowRevisionHistory,
 }) => {
   const { t } = useTranslation(); // Translation hook
@@ -113,7 +125,8 @@ const ResendMinuteReviewModal = ({
       updateMinuteData,
       resendReviewData
     );
-
+    // setEditMinute(false);
+    // setConfirmationEdit(false);
     setResendMinuteForReview(false);
   };
 
@@ -130,6 +143,7 @@ const ResendMinuteReviewModal = ({
   }, [currentLanguage]);
 
   useEffect(() => {
+    // let date = utcConvertintoGMT(editMinuteData.bundleDeadline, 1);
     let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "235959");
     setMinuteDate(date);
   }, []);
@@ -196,7 +210,51 @@ const ResendMinuteReviewModal = ({
                 );
               })}
             </div>
+            {/* <Col lg={6} md={6} sm={12}>
+              <div className={styles["profile-wrapper"]}>
+                <div className={styles["image-profile-wrapper"]}>
+                  <img
+                    height={32}
+                    width={32}
+                    className={styles["image-style"]}
+                    src={CrossIcon}
+                    alt=""
+                  />
+                  <span>Alexandar Johnson</span>
+                </div>
+              </div>
+            </Col> */}
           </Row>
+          {/* <Row>
+            <Col lg={6} md={6} sm={12}>
+              <div className={styles["profile-wrapper"]}>
+                <div className={styles["image-profile-wrapper"]}>
+                  <img
+                    height={32}
+                    width={32}
+                    className={styles["image-style"]}
+                    src={CrossIcon}
+                    alt=""
+                  />
+                  <span>Kibutsuji Muzan</span>
+                </div>
+              </div>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <div className={styles["profile-wrapper"]}>
+                <div className={styles["image-profile-wrapper"]}>
+                  <img
+                    height={32}
+                    width={32}
+                    className={styles["image-style"]}
+                    src={CrossIcon}
+                    alt=""
+                  />
+                  <span>Kamado Tanjiro</span>
+                </div>
+              </div>
+            </Col>
+          </Row> */}
           <Row className="mt-3">
             <label className={styles["label-style"]}>{t("Deadline")}</label>
             <Col lg={6} md={6} sm={12} className="datepickerlength mt-2">

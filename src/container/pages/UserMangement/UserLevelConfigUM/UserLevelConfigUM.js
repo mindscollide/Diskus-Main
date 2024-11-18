@@ -22,16 +22,14 @@ import { useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+// import { useMsal } from "@azure/msal-react";
+// import { loginRequest } from "../../../../";
 import { Button } from "../../../../components/elements";
 const UserLevelConfigUM = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const settingReducerUserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
-  );
-
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -41,7 +39,10 @@ const UserLevelConfigUM = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
-
+  const { loaded, clientId } = useGoogleLogin({
+    clientId:
+      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
+  });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
@@ -139,6 +140,143 @@ const UserLevelConfigUM = () => {
     responseType: "code",
     prompt: "consent",
   });
+
+  //   useEffect(() => {
+  //     if (
+  //       settingReducer.UserProfileData !== null &&
+  //       settingReducer.UserProfileData !== undefined
+  //     ) {
+  //       if (Object.keys(settingReducer.UserProfileData).length > 0) {
+  //         setUserOptionsSettings({
+  //           Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
+  //           EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
+  //           EmailEditMeeting: settingReducer.UserProfileData.emailOnEditMeeting,
+  //           EmailCancelOrDeleteMeeting:
+  //             settingReducer.UserProfileData.emailOnCancelledORDeleteMeeting,
+  //           PushNotificationonNewMeeting:
+  //             settingReducer.UserProfileData.pushNotificationOnNewMeeting,
+  //           PushNotificationEditMeeting:
+  //             settingReducer.UserProfileData.pushNotificationOnEditMeeting,
+  //           PushNotificationCancelledOrDeleteMeeting:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationonCancelledORDeleteMeeting,
+  //           ShowNotificationOnParticipantJoining:
+  //             settingReducer.UserProfileData.showNotificationOnParticipantJoining,
+  //           AllowGoogleCalenderSync:
+  //             settingReducer.UserProfileData.userAllowGoogleCalendarSynch,
+  //           AllowMicrosoftCalenderSync:
+  //             settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch,
+  //           EmailWhenAddedToCommittee:
+  //             settingReducer.UserProfileData.emailWhenAddedToCommittee,
+  //           EmailWhenRemovedFromCommittee:
+  //             settingReducer.UserProfileData.emailWhenRemovedFromCommittee,
+  //           EmailWhenCommitteeIsDissolvedOrArchived:
+  //             settingReducer.UserProfileData
+  //               .emailWhenCommitteeIsDissolvedorArchived,
+  //           EmailWhenCommitteeIsSetInactive:
+  //             settingReducer.UserProfileData.emailWhenCommitteeIsInActive,
+  //           EmailWhenCommitteeIsActive:
+  //             settingReducer.UserProfileData.emailWhenCommitteeIsActive,
+  //           PushNotificationWhenAddedToCommittee:
+  //             settingReducer.UserProfileData.pushNotificationWhenAddedToCommittee,
+  //           PushNotificationWhenRemovedFromCommittee:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenRemovedFromCommittee,
+  //           PushNotificationWhenCommitteeIsDissolvedOrArchived:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenCommitteeIsDissolvedorArchived,
+  //           PushNotificationWhenCommitteeIsInActive:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenCommitteeIsInActive,
+  //           PushNotificationwhenCommitteeissetActive:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationwhenCommitteeissetActive,
+  //           EmailWhenAddedToGroup:
+  //             settingReducer.UserProfileData.emailWhenAddedToGroup,
+  //           EmailWhenRemovedFromGroup:
+  //             settingReducer.UserProfileData.emailWhenRemovedFromGroup,
+  //           EmailWhenGroupIsDissolvedOrArchived:
+  //             settingReducer.UserProfileData.emailWhenGroupIsClosedorArchived,
+  //           EmailWhenGroupisSetInactive:
+  //             settingReducer.UserProfileData.emailWhenGroupIsInActive,
+  //           PushNotificationwhenGroupissetActive:
+  //             settingReducer.UserProfileData.pushNotificationwhenGroupissetActive,
+  //           EmailWhenGroupIsActive:
+  //             settingReducer.UserProfileData.emailWhenGroupIsActive,
+  //           PushNotificationWhenAddedToGroup:
+  //             settingReducer.UserProfileData.pushNotificationWhenAddedToGroup,
+  //           PushNotificationWhenRemovedFromGroup:
+  //             settingReducer.UserProfileData.pushNotificationWhenRemoveFromGroup,
+  //           PushNotificationWhenGroupIsDissolvedOrArchived:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenGroupIsClosedORArchived,
+  //           PushNotificationWhenGroupIsInActive:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenGroupisSetInactive,
+  //           EmailWhenResolutionIsCirculated:
+  //             settingReducer.UserProfileData.emailWhenNewResolutionIsCirculated,
+  //           EmailWhenNewResolutionIsCancelledAfterCirculation:
+  //             settingReducer.UserProfileData
+  //               .emailWhenResolutionIsCancelledAfterCirculation,
+  //           EmailWhenResolutionIsClosed:
+  //             settingReducer.UserProfileData.emailWhenResolutionIsClosed,
+  //           PushNotificationWhenNewResolutionIsCirculated:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenNewResolutionIsCirculated,
+  //           PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+  //           PushNotificationWhenResolutionISClosed:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenResolutionIsClosed,
+  //           DiskusCalenderColor: settingReducer.UserProfileData.diskusEventColor,
+  //           GoogleCalenderColor: settingReducer.UserProfileData.googleEventColor,
+  //           MicrosoftCalenderColor:
+  //             settingReducer.UserProfileData.officeEventColor,
+  //           EmailWhenNewPollIsPublished:
+  //             settingReducer.UserProfileData.emailWhenNewPollIsPublished,
+  //           EmailWhenPollDueDateIsPassed:
+  //             settingReducer.UserProfileData.emailWhenPollDueDateIsPassed,
+  //           EmailWhenPublishedPollIsDeleted:
+  //             settingReducer.UserProfileData.emailWhenPublishedPollIsDeleted,
+  //           EmailWhenPublishedPollIsUpdated:
+  //             settingReducer.UserProfileData.emailWhenPublishedPollIsUpdated,
+  //           PushNotificationWhenNewPollIsPublished:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenNewPollIsPublished,
+  //           PushNotificationWhenPollDueDateIsPassed:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenPollDueDateIsPassed,
+  //           PushNotificationWhenPublishedPollIsDeleted:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenPublishedPollIsDeleted,
+  //           PushNotificationWhenPublishedPollIsUpdated:
+  //             settingReducer.UserProfileData
+  //               .pushNotificationWhenPublishedPollIsUpdated,
+  //           PushNotificationWhenNewTODOAssigned:
+  //             settingReducer.UserProfileData.pushNotificationWhenNewTODOAssigned,
+  //           PushNotificationWhenNewTODODeleted:
+  //             settingReducer.UserProfileData.pushNotificationWhenNewTODODeleted,
+  //           PushNotificationWhenNewTODOEdited:
+  //             settingReducer.UserProfileData.pushNotificationWhenNewTODOEdited,
+  //           PushNotificationWhenNewCommentAdded:
+  //             settingReducer.UserProfileData.pushNotificationWhenNewCommentAdded,
+  //           PushNotificationWhenCommentDeleted:
+  //             settingReducer.UserProfileData.pushNotificationWhenCommentDeleted,
+  //           EmailWhenCommentDeleted:
+  //             settingReducer.UserProfileData.emailWhenCommentDeleted,
+  //           EmailWhenNewCommentAdded:
+  //             settingReducer.UserProfileData.emailWhenNewCommentAdded,
+  //           EmailWhenNewTODOAssigned:
+  //             settingReducer.UserProfileData.emailWhenNewTODOAssigned,
+  //           EmailWhenNewTODODeleted:
+  //             settingReducer.UserProfileData.emailWhenNewTODODeleted,
+  //           EmailWhenNewTODOEdited:
+  //             settingReducer.UserProfileData.emailWhenNewTODOEdited,
+  //         });
+  //       }
+  //     }
+  //   }, [settingReducer.UserProfileData]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -329,18 +467,21 @@ const UserLevelConfigUM = () => {
   // };
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
-    // const value = e.target.checked;
+    const value = e.target.checked;
     // if (value) {
     //   // signInMicrowSoft(value);
     // } else {
     //   try {
     //     // Initiate the logout process
     //     await instance.logoutPopup();
+
     //     // Check if the user is still authenticated after logout
     //     const isAuthenticated = !!instance.getAllAccounts().length;
+
     //     if (!isAuthenticated) {
     //       setAuthMicrosoftAccessToken("");
     //       setAuthMicrosoftRefreshToken("");
+
     //       setUserOptionsSettings({
     //         ...userOptionsSettings,
     //         AllowMicrosoftCalenderSync: value,
@@ -703,7 +844,7 @@ const UserLevelConfigUM = () => {
       }
       setSignUpCodeToken("");
     } else {
-      if (settingReducerUserProfileData.userAllowGoogleCalendarSynch) {
+      if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
         if (userOptionsSettings.AllowGoogleCalenderSync) {
           await dispatch(
             updateUserSettingFunc(
@@ -1942,7 +2083,6 @@ const UserLevelConfigUM = () => {
             <Col lg={1} md={1} sm={1} className="d-flex justify-content-center">
               <img
                 draggable="false"
-                alt=""
                 src={line}
                 className={styles["user-setting-row"]}
               />

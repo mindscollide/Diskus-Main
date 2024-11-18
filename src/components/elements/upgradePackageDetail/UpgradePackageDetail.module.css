@@ -150,6 +150,7 @@ body[dir="rtl"] .UpgradePackageCard::after {
   padding: 12px 0;
   color: #fff;
   margin: 10px 0;
+  /* margin-bottom: 20px; */
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 

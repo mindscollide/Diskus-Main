@@ -1,40 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Row, Col, Dropdown } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
-import { Button, Checkbox, Notification } from "./../../../../elements";
+import { Button } from "./../../../../elements";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
-import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
-import Shade from "./../../talk-Video/video-images/Shade.png";
-import AddParticipantWhite from "./../../talk-Video/video-images/Add Participant White.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
-import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
-import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
-import videoEndIcon from "./../../talk-Video/video-images/Call End White.svg";
-import TileView from "./../../talk-Video/video-images/Tile View 1 Purple.svg";
-import SidebarView from "./../../talk-Video/video-images/Tile View 3 Purple.svg";
-import MicOn from "./../../talk-Video/video-images/Mic Enabled Purple.svg";
-import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
-import MicOff from "./../../talk-Video/video-images/Mic Disabled White.svg";
-import VideoOff from "./../../talk-Video/video-images/Video Disabled White.svg";
-import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.svg";
-import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
-import CallEndRedIcon from "./../../talk-Video/video-images/Call End Red.svg";
+import MinimizeIcon from "./../../talk-Video/video-images/Minimize.svg";
+import NonActiveScreenShare from "./../../talk-Video/video-images/Screen share.svg";
+import videoEndIcon from "./../../talk-Video/video-images/Leave call Selected.svg";
+import LayoutIconPurple from "./../../talk-Video/video-images/Tile View 3.svg";
+import MicOn from "./../../talk-Video/video-images/Mic ON.svg";
+import VideoOn from "./../../talk-Video/video-images/Video ON.svg";
+import MicOff from "./../../talk-Video/video-images/Mic OFF.svg";
+import VideoOff from "./../../talk-Video/video-images/Video OFF.svg";
+import ChatIcon from "../../../../../assets/images/Chat-Icon.png";
+import CallEndRedIcon from "./../../talk-Video/video-images/Leave call.svg";
 import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
-import RaiseHand from "./../../talk-Video/video-images/Raise Hand Purple.svg";
-import LowerHand from "./../../talk-Video/video-images/Raise Hand White.svg";
-import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
 import CloseNotification from "../../../../../assets/images/Close-Notification.png";
-import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
-import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
-import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
-import GoldenHandRaised from "./../../talk-Video/video-images/GoldenHandRaised.png";
-import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
-import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
-
-import Menu from "./../../talk-Video/video-images/Menu.png";
+import ActiveParticipantIcon from "./../../talk-Video/video-images/User Selected.svg";
+import ParticipantsIcon from "./../../talk-Video/video-images/Users.svg";
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
   maximizeVideoPanelFlag,
@@ -44,20 +30,11 @@ import {
   leaveCallModal,
   participantPopup,
   videoChatMessagesFlag,
-  muteUnMuteParticipantMainApi,
-  hideUnHideParticipantGuestMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
-import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
-import {
-  removeParticipantFromVideo,
-  removeParticipantMeetingMainApi,
-  transferMeetingHostMainApi,
-  getMeetingGuestVideoMainApi,
-} from "../../../../../store/actions/Guest_Video";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -67,7 +44,6 @@ const VideoCallNormalHeader = ({
   disableVideo,
   isMicActive,
   isVideoActive,
-  showTile,
 }) => {
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state
@@ -76,25 +52,6 @@ const VideoCallNormalHeader = ({
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
-
-  const participantAcceptedName = useSelector(
-    (state) => state.videoFeatureReducer.participantNameDataAccept
-  );
-
-  console.log(
-    participantAcceptedName,
-    "participantAcceptedNameparticipantAcceptedName"
-  );
-
-  const [participantData, setParticipantData] = useState([]);
-
-  const participantWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.participantWaitingList
-  );
-
-  console.log(participantWaitingList, "participantWaitingList");
-
-  const participantCounter = participantData?.length;
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -116,7 +73,6 @@ const VideoCallNormalHeader = ({
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let isCallerFlag = JSON.parse(localStorage.getItem("isCaller"));
-  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
   let userGUID = localStorage.getItem("userGUID");
 
   const dispatch = useDispatch();
@@ -134,25 +90,13 @@ const VideoCallNormalHeader = ({
 
   const [isActiveIcon, setIsActiveIcon] = useState(false);
 
+  // const [isParticipantActive, setIsParticipantActive] = useState(false)
+
   const [currentParticipants, setCurrentParticipants] = useState([]);
-  console.log(currentParticipants, "currentParticipantscurrentParticipants");
 
   const [participantStatus, setParticipantStatus] = useState([]);
 
-  const [handStatus, setHandStatus] = useState(false);
-
-  const [addParticipantPopup, setAddParticipantPopup] = useState(false);
-
-  const [selectedParticipants, setSelectedParticipants] = useState([]);
-
-  // state for mute and UnMute from Host side
-  const [muteGuest, setMuteGuest] = useState(false);
-
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-
+  const participantPopupDisable = useRef(null);
   const leaveModalPopupRef = useRef(null);
 
   useEffect(() => {
@@ -172,15 +116,6 @@ const VideoCallNormalHeader = ({
     setShowNotification(true);
   };
 
-  const handleCheckboxChange = (userID) => (e) => {
-    const { checked } = e.target;
-    if (checked) {
-      setSelectedParticipants((prev) => [...prev, userID]);
-    } else {
-      setSelectedParticipants((prev) => prev.filter((id) => id !== userID));
-    }
-  };
-
   const minimizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       dispatch(maximizeVideoPanelFlag(false));
@@ -190,12 +125,19 @@ const VideoCallNormalHeader = ({
   };
 
   const closeVideoPanel = () => {
+    // dispatch(normalizeVideoPanelFlag(false))
+    // dispatch(maximizeVideoPanelFlag(false))
+    // dispatch(minimizeVideoPanelFlag(false))
     dispatch(leaveCallModal(false));
     localStorage.setItem("activeCall", false);
   };
 
   const openVideoPanel = () => {
+    // dispatch(normalizeVideoPanelFlag(false))
+    // dispatch(maximizeVideoPanelFlag(false))
+    // dispatch(minimizeVideoPanelFlag(false))
     dispatch(leaveCallModal(true));
+    // localStorage.setItem('activeCall', false)
   };
 
   const endCallParticipant = () => {
@@ -225,7 +167,7 @@ const VideoCallNormalHeader = ({
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeeting", false);
-      // localStorage.setItem("meetingTitle", "");
+      localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -297,6 +239,8 @@ const VideoCallNormalHeader = ({
           callerID !== currentUserID ? callerID : recipentCalledID
         );
       } else {
+        // dispatch(chatEnableNormalFlag(false))
+        // setIsActiveIcon(false)
         dispatch(videoChatMessagesFlag(false));
       }
     }
@@ -306,10 +250,8 @@ const VideoCallNormalHeader = ({
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
         dispatch(participantPopup(true));
-        setAddParticipantPopup(false);
       } else {
         dispatch(participantPopup(false));
-        setAddParticipantPopup(false);
       }
     }
   };
@@ -356,33 +298,21 @@ const VideoCallNormalHeader = ({
     setShowNotification(false);
   };
 
-  const raiseHandFunction = () => {
-    setHandStatus(!handStatus);
-    dispatch(participantPopup(false));
-  };
-
-  const addMoreParticipants = () => {
-    setAddParticipantPopup(!addParticipantPopup);
-    dispatch(participantPopup(false));
-  };
-
-  const copyToClipboardd = () => {
-    let data = {
-      MeetingId: Number(currentMeetingID),
-    };
-    dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Generating-meeting-link"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+  const handleOutsideClick = (event) => {
+    if (
+      participantPopupDisable.current &&
+      !participantPopupDisable.current.contains(event.target) &&
+      videoFeatureReducer.ParticipantPopupFlag
+    ) {
+      // dispatch(participantPopup(false));
+    }
+    // if (
+    //   leaveModalPopupRef.current &&
+    //   !leaveModalPopupRef.current.contains(event.target) &&
+    //   videoFeatureReducer.LeaveCallModalFlag
+    // ) {
+    //   dispatch(leaveCallModal(false))
+    // }
   };
 
   useEffect(() => {}, [
@@ -421,106 +351,32 @@ const VideoCallNormalHeader = ({
     }
   }, [callerObject]);
 
-  console.log("Video Feature Reducer", videoFeatureReducer);
-
   useEffect(() => {
-    if (
-      participantAcceptedName !== null &&
-      participantAcceptedName !== undefined &&
-      participantAcceptedName.length > 0
-    ) {
-      // Filter out duplicates based on UID
-      const uniqueParticipants = participantAcceptedName.reduce(
-        (acc, current) => {
-          console.log(acc, "datadatdtad");
-          // Only add the current participant if its UID is not already in acc
-          if (!acc.find((participant) => participant.UID === current.UID)) {
-            acc.push(current);
-          }
-          return acc;
-        },
-        []
-      );
-
-      setParticipantData(uniqueParticipants);
-      console.log(uniqueParticipants, "uniqueParticipants");
-    } else {
-      setParticipantData([]);
-    }
-  }, [participantAcceptedName]);
-
-  // makeLeave or transfer Meeting Host API
-  const makeLeaveOnClick = (usersData) => {
-    console.log(usersData.UID, "usersDatausersData");
-    let data = {
-      RoomID: roomID,
-      UID: usersData.UID,
-      UserID: Number(currentUserID),
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
     };
+  }, [
+    videoFeatureReducer.ParticipantPopupFlag,
+    // videoFeatureReducer.LeaveCallModalFlag,
+  ]);
 
-    dispatch(transferMeetingHostMainApi(navigate, t, data));
-  };
-
-  // make Host mute for guest or participant
-  const muteUnmuteByHost = (usersData, flag) => {
-    setMuteGuest(flag);
-    let data = {
-      RoomID: roomID,
-      IsMuted: flag,
-      MuteUnMuteList: [
-        {
-          UID: usersData.UID, // The participant's UID
-        },
-      ],
-    };
-    dispatch(
-      muteUnMuteParticipantMainApi(navigate, t, data, setParticipantData, flag)
-    );
-  };
-
-  const hideUnHideVideoParticipantByHost = (usersData, flag) => {
-    let data = {
-      RoomID: roomID,
-      HideVideo: flag,
-      UIDList: [usersData.UID],
-    };
-    dispatch(
-      hideUnHideParticipantGuestMainApi(
-        navigate,
-        t,
-        data,
-        setParticipantData,
-        flag
-      )
-    );
-  };
-
-  const removeParticipantMeetingOnClick = (usersData) => {
-    console.log(usersData, "usersData");
-    dispatch(removeParticipantFromVideo(usersData.UID));
-    let data = {
-      RoomID: roomID,
-      UID: usersData.UID,
-      Name: usersData.Name,
-    };
-
-    dispatch(removeParticipantMeetingMainApi(navigate, t, data));
-  };
+  console.log("Video Feature Reducer", videoFeatureReducer);
 
   return (
     <>
       <Row className="mb-4">
         {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">{t("Group-call")}</p>
           </Col>
         ) : (currentCallType === 2 || callTypeID === 2) &&
           meetingTitle !== "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">{meetingTitle}</p>
           </Col>
         ) : (
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          <Col lg={5} md={5} sm={12} className="mt-1">
             <p className="title-heading">
               {currentUserName !==
                 VideoMainReducer.VideoRecipentData.userName &&
@@ -557,28 +413,153 @@ const VideoCallNormalHeader = ({
                 className="cursor-pointer"
                 src={CloseNotification}
                 onClick={closeNotification}
-                alt="Close Notification"
+                alt=""
               />
             </div>
           ) : null}
         </Col>
         <>
-          <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+          <Col lg={4} md={4} sm={12} className="normal-screen-top-icons">
+            {videoFeatureReducer.MaximizeVideoFlag === true ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Layout")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={layoutCurrentChange}
+                    src={LayoutIconPurple}
+                    alt=""
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
+            {callerID === currentUserID && currentCallType === 2 ? (
+              <div
+                className="positionRelative flipHorizontal"
+                ref={participantPopupDisable}
+              >
+                {videoFeatureReducer.ParticipantPopupFlag === true ? (
+                  <>
+                    <img
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "grayScaleImage"
+                          : "cursor-pointer"
+                      }
+                      src={ActiveParticipantIcon}
+                      onClick={closeParticipantHandler}
+                      height={30}
+                      width={30}
+                      alt=""
+                    />
+                    <div className="participants-list" key={Math.random()}>
+                      {currentParticipants !== undefined &&
+                      currentParticipants !== null &&
+                      currentParticipants.length > 0
+                        ? currentParticipants.map((participantData, index) => {
+                            console.log(
+                              "participantStatus",
+                              participantStatus[0]
+                            );
+                            const matchingStatus = participantStatus[0].find(
+                              (status) =>
+                                status.RecipientID === participantData.userID &&
+                                status.RoomID === initiateRoomID
+                            );
+                            return (
+                              <Row className="m-0" key={index}>
+                                <Col className="p-0" lg={7} md={7} sm={12}>
+                                  <p className="participant-name">
+                                    {participantData.userName}
+                                  </p>
+                                </Col>
+                                <Col className="p-0" lg={5} md={5} sm={12}>
+                                  <p className="participant-state">
+                                    {matchingStatus
+                                      ? matchingStatus.CallStatus
+                                      : "Calling..."}
+                                  </p>
+                                </Col>
+                              </Row>
+                            );
+                          })
+                        : null}
+                      <Row className="hostBorder m-0">
+                        <Col className="p-0" lg={7} md={7} sm={12}>
+                          <p className="participant-name">{currentUserName}</p>
+                        </Col>
+                        <Col className="p-0" lg={5} md={5} sm={12}>
+                          <p className="participant-state">Host</p>
+                        </Col>
+                      </Row>
+                    </div>
+                  </>
+                ) : (
+                  <Tooltip placement="topRight" title={t("Participants")}>
+                    <img
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "grayScaleImage"
+                          : "cursor-pointer"
+                      }
+                      src={ParticipantsIcon}
+                      onClick={closeParticipantHandler}
+                      height={20}
+                      width={25}
+                      alt=""
+                    />
+                  </Tooltip>
+                )}
+              </div>
+            ) : null}
+            {checkFeatureIDAvailability(5) ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Screen-share")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={screenShareButton}
+                    src={NonActiveScreenShare}
+                    alt=""
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
+            {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <Tooltip placement="topRight" title={t("Chat")}>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    onClick={onClickCloseChatHandler}
+                    src={ChatIcon}
+                    alt=""
+                  />
+                </Tooltip>
+              </div>
+            ) : null}
             <div
               onClick={disableMic}
               className={
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage"
-                  : !isMicActive
-                  ? "cursor-pointer active-state"
-                  : "inactive-state"
+                  : "cursor-pointer"
               }
             >
               <Tooltip
                 placement="topRight"
                 title={isMicActive ? t("Disable-mic") : t("Enable-mic")}
               >
-                <img src={isMicActive ? MicOn : MicOff} alt="Mic" />
+                <img src={isMicActive ? MicOn : MicOff} alt="" />
               </Tooltip>
             </div>
             <div
@@ -586,567 +567,94 @@ const VideoCallNormalHeader = ({
               className={
                 videoFeatureReducer.LeaveCallModalFlag === true
                   ? "grayScaleImage"
-                  : !isVideoActive
-                  ? "cursor-pointer active-state"
-                  : "inactive-state"
+                  : "cursor-pointer"
               }
             >
               <Tooltip
                 placement="topRight"
                 title={isVideoActive ? t("Disable-video") : t("Enable-video")}
               >
-                <img src={isVideoActive ? VideoOn : VideoOff} alt="Video" />
+                <img src={isVideoActive ? VideoOn : VideoOff} alt="" />
               </Tooltip>
             </div>
-            {checkFeatureIDAvailability(5) ? (
-              <div
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle inactive-state"
-                }
-              >
-                <Tooltip placement="topRight" title={t("Screen-share")}>
-                  <img
-                    onClick={screenShareButton}
-                    src={NonActiveScreenShare}
-                    alt="Screen Share"
-                  />
-                </Tooltip>
-              </div>
-            ) : null}
-
-            <div
-              onClick={raiseHandFunction}
-              className={
-                videoFeatureReducer.LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : !handStatus
-                  ? "inactive-state"
-                  : "cursor-pointer active-state"
-              }
-            >
-              <Tooltip
-                placement="topRight"
-                title={handStatus ? t("Lower-hand") : t("Raise-hand")}
-              >
+            {videoFeatureReducer.LeaveCallModalFlag === true &&
+            callerID === currentUserID ? (
+              <Tooltip placement="topRight" title={t("Cancel")}>
                 <img
-                  src={handStatus ? LowerHand : RaiseHand}
-                  alt="Raise Hand"
-                />
-              </Tooltip>
-            </div>
-
-            <div
-              className={
-                videoFeatureReducer.LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : "screenShare-Toggle inactive-state"
-              }
-            >
-              <Tooltip placement="topRight" title={t("Copy-link")}>
-                <img
-                  onClick={() => copyToClipboardd()}
-                  src={CopyLink}
-                  alt="Copy Link"
-                />
-              </Tooltip>
-            </div>
-
-            {videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <div
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle"
-                }
-              >
-                <Tooltip placement="topRight" title={t("Layout")}>
-                  <img
-                    className={"cursor-pointer"}
-                    onClick={layoutCurrentChange}
-                    src={showTile ? TileView : SidebarView}
-                    alt="Layout Change"
-                  />
-                </Tooltip>
-              </div>
-            ) : null}
-
-            {
-              // callerID === currentUserID &&
-              currentCallType === 2 || currentCallType === 3 ? (
-                <div className={"position-relative"}>
-                  {videoFeatureReducer.ParticipantPopupFlag === true ? (
-                    <>
-                      <div className="cursor-pointer active-state">
-                        <img
-                          src={ActiveParticipantIcon}
-                          onClick={closeParticipantHandler}
-                          alt="Active participants"
-                        />
-                      </div>
-                      <div className="participants-list">
-                        {currentParticipants !== undefined &&
-                        currentParticipants !== null &&
-                        currentParticipants.length > 0
-                          ? currentParticipants.map(
-                              (participantData, index) => {
-                                console.log(
-                                  "participantStatus",
-                                  participantStatus[0]
-                                );
-                                const matchingStatus =
-                                  participantStatus[0].find(
-                                    (status) =>
-                                      status.RecipientID ===
-                                        participantData.userID &&
-                                      status.RoomID === initiateRoomID
-                                  );
-                                return (
-                                  <Row className="m-0" key={index}>
-                                    <Col className="p-0" lg={7} md={7} sm={12}>
-                                      <p className="participant-name">
-                                        {participantData.userName}
-                                      </p>
-                                    </Col>
-                                    <Col
-                                      className="d-flex justify-content-end align-items-canter gap-3 p-0"
-                                      lg={5}
-                                      md={5}
-                                      sm={12}
-                                    >
-                                      <img src={MenuRaiseHand} alt="" />
-
-                                      <Dropdown>
-                                        <Dropdown.Toggle className="participant-toggle">
-                                          <img src={Menu} alt="" />
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                          <Dropdown.Item
-                                            className="participant-dropdown-item"
-                                            // onClick={() => makeLeaveOnClick()}
-                                          >
-                                            {t("Make-host")}
-                                          </Dropdown.Item>
-                                          <Dropdown.Item className="participant-dropdown-item">
-                                            {t("Remove")}
-                                          </Dropdown.Item>
-                                          <Dropdown.Item className="participant-dropdown-item">
-                                            {t("Mute")}
-                                          </Dropdown.Item>
-                                          <Dropdown.Item className="participant-dropdown-item">
-                                            {t("Hide-video")}
-                                          </Dropdown.Item>
-                                        </Dropdown.Menu>
-                                      </Dropdown>
-
-                                      {/* <p className="participant-state">
-                                    {matchingStatus
-                                      ? matchingStatus.CallStatus
-                                      : "Calling..."}
-                                  </p> */}
-                                    </Col>
-                                  </Row>
-                                );
-                              }
-                            )
-                          : null}
-                        {participantData.length > 0 ? (
-                          participantData.map((usersData, index) => {
-                            console.log(usersData, "usersDatausersData");
-                            return (
-                              <>
-                                <Row className="hostBorder m-0">
-                                  <Col
-                                    className="p-0 d-flex align-items-center"
-                                    lg={7}
-                                    md={7}
-                                    sm={12}
-                                  >
-                                    <p className="participant-name">
-                                      {/* {currentUserName} */}
-                                      {usersData.Name}
-                                    </p>
-                                    {usersData.isHandRaise === true ? (
-                                      <>
-                                        <img
-                                          src={GoldenHandRaised}
-                                          alt=""
-                                          width={"22px"}
-                                          height={"22px"}
-                                          className="handraised-participant"
-                                        />
-                                      </>
-                                    ) : (
-                                      <img
-                                        src={MenuRaiseHand}
-                                        alt=""
-                                        className="handraised-participant"
-                                      />
-                                    )}
-                                    {usersData.hideVideo ? (
-                                      <img
-                                        src={VideoDisable}
-                                        width="18px"
-                                        height="18px"
-                                        alt=""
-                                        className="handraised-participant"
-                                      />
-                                    ) : (
-                                      <img
-                                        src={VideoOn}
-                                        width="18px"
-                                        height="18px"
-                                        alt=""
-                                        className="handraised-participant"
-                                      />
-                                    )}
-                                  </Col>
-
-                                  <Col
-                                    className="
-                        d-flex
-                        justify-content-end
-                        align-items-baseline
-                        gap-2
-                        p-0"
-                                    lg={5}
-                                    md={5}
-                                    sm={12}
-                                  >
-                                    {usersData.isMute ? (
-                                      <img
-                                        src={MicDisabled}
-                                        width={"22px"}
-                                        height={"22px"}
-                                      />
-                                    ) : (
-                                      <img src={MicOnEnabled} />
-                                    )}
-
-                                    {/* {participantWaitingList.map((user) => (
-                                      <div key={user.userID}>
-                                        {user.mute === false ? (
-                                          <img
-                                            src={MicDisabled}
-                                            alt="Mic Disabled"
-                                            width="22px"
-                                            height="22px"
-                                          />
-                                        ) : (
-                                          <img
-                                            src={MicOnEnabled}
-                                            alt="Mic Enabled"
-                                            width="22px"
-                                            height="22px"
-                                          />
-                                        )}
-                                        <span>{user.name}</span>
-                                      </div>
-                                    ))} */}
-                                    <Dropdown>
-                                      <Dropdown.Toggle className="participant-toggle">
-                                        <img src={Menu} alt="" />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu>
-                                        <Dropdown.Item
-                                          className="participant-dropdown-item"
-                                          onClick={() =>
-                                            makeLeaveOnClick(usersData)
-                                          }
-                                        >
-                                          {t("Make-host")}
-                                        </Dropdown.Item>
-                                        <Dropdown.Item
-                                          className="participant-dropdown-item"
-                                          onClick={() =>
-                                            removeParticipantMeetingOnClick(
-                                              usersData
-                                            )
-                                          }
-                                        >
-                                          {t("Remove")}
-                                        </Dropdown.Item>
-                                        {usersData.isMute === false ? (
-                                          <>
-                                            <Dropdown.Item
-                                              className="participant-dropdown-item"
-                                              onClick={() =>
-                                                muteUnmuteByHost(
-                                                  usersData,
-                                                  true
-                                                )
-                                              }
-                                            >
-                                              {t("Mute")}
-                                            </Dropdown.Item>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <Dropdown.Item
-                                              className="participant-dropdown-item"
-                                              onClick={() =>
-                                                muteUnmuteByHost(
-                                                  usersData,
-                                                  false
-                                                )
-                                              }
-                                            >
-                                              {t("UnMute")}
-                                            </Dropdown.Item>
-                                          </>
-                                        )}
-                                        {usersData.hideVideo === false ? (
-                                          <>
-                                            <Dropdown.Item
-                                              className="participant-dropdown-item"
-                                              onClick={() => {
-                                                hideUnHideVideoParticipantByHost(
-                                                  usersData,
-                                                  true
-                                                );
-                                              }}
-                                            >
-                                              {t("Hide-video")}
-                                            </Dropdown.Item>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <Dropdown.Item
-                                              className="participant-dropdown-item"
-                                              onClick={() => {
-                                                hideUnHideVideoParticipantByHost(
-                                                  usersData,
-                                                  false
-                                                );
-                                              }}
-                                            >
-                                              {t("UnHide-video")}
-                                            </Dropdown.Item>
-                                          </>
-                                        )}
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </Col>
-                                </Row>
-                              </>
-                            );
-                          })
-                        ) : (
-                          <>
-                            <Row>
-                              <Col className="d-flex justify-content-center align-item-center">
-                                <p>{t("No-participant")}</p>
-                              </Col>
-                            </Row>
-                          </>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <Tooltip placement="topRight" title={t("Participants")}>
-                      <div
-                        className={
-                          videoFeatureReducer.LeaveCallModalFlag === true
-                            ? "grayScaleImage"
-                            : "inactive-state"
-                        }
-                      >
-                        <img
-                          src={ParticipantsIcon}
-                          onClick={closeParticipantHandler}
-                          alt="Participants"
-                        />
-                      </div>
-                    </Tooltip>
-                  )}
-                  <span className="participants-counter">
-                    {participantCounter}
-                  </span>
-                </div>
-              ) : null
-            }
-
-            <div
-              className={
-                videoFeatureReducer.LeaveCallModalFlag === true
-                  ? "grayScaleImage position-relative"
-                  : videoFeatureReducer.LeaveCallModalFlag === false &&
-                    addParticipantPopup === true
-                  ? "active-state position-relative"
-                  : "inactive-state position-relative"
-              }
-            >
-              <Tooltip placement="topRight" title={t("Participants")}>
-                <img
-                  onClick={addMoreParticipants}
+                  width={25}
+                  onClick={cancelLeaveCallOption}
+                  src={videoEndIcon}
                   className="cursor-pointer"
-                  src={
-                    addParticipantPopup ? AddParticipantWhite : AddParticipant
-                  }
-                  alt="Add Participants"
+                  alt=""
                 />
               </Tooltip>
-              {addParticipantPopup ? (
-                <div className="add-participants-list">
-                  <div className="participants-section">
-                    {currentParticipants !== undefined &&
-                    currentParticipants !== null &&
-                    currentParticipants.length > 0
-                      ? currentParticipants.map((participantData, index) => {
-                          console.log(
-                            "participantStatus",
-                            participantStatus[0]
-                          );
-                          const matchingStatus = participantStatus[0]?.find(
-                            (status) =>
-                              status.RecipientID === participantData.userID &&
-                              status.RoomID === initiateRoomID
-                          );
-                          return (
-                            <>
-                              <Row className="text-start" key={index}>
-                                <Col lg={12} md={12} sm={12}>
-                                  <Checkbox
-                                    onChange={handleCheckboxChange(
-                                      participantData.userID
-                                    )}
-                                    checked={selectedParticipants.includes(
-                                      participantData.userID
-                                    )}
-                                    label2Class={"SelectAll"}
-                                    label2={
-                                      <>
-                                        <div
-                                          className={"image-profile-wrapper"}
-                                        >
-                                          <img
-                                            height={40}
-                                            width={40}
-                                            className={"image-style"}
-                                            src={`data:image/jpeg;base64,${participantData.profilePicture.displayProfilePictureName}`}
-                                            alt=""
-                                          />
-                                          <span>
-                                            {participantData.userName}
-                                          </span>
-                                        </div>
-                                      </>
-                                    }
-                                    className="SearchCheckbox "
-                                    name="IsChat"
-                                    classNameDiv={"addParticipantCheckbox"}
-                                  />
-                                </Col>
-                              </Row>
-                            </>
-                          );
-                        })
-                      : null}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
-              <div
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle inactive-state"
-                }
-              >
-                <Tooltip placement="topRight" title={t("Chat")}>
-                  <img
-                    onClick={onClickCloseChatHandler}
-                    src={ChatIcon}
-                    alt="Chat"
-                  />
-                </Tooltip>
-              </div>
+            ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
+                callerID === currentUserID) ||
+              callerID === 0 ? (
+              <Tooltip placement="topRight" title={t("End-call")}>
+                <img
+                  className="cursor-pointer"
+                  width={25}
+                  src={CallEndRedIcon}
+                  onClick={openVideoPanel}
+                  alt=""
+                />
+              </Tooltip>
+            ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+              callerID !== currentUserID ? (
+              <Tooltip placement="topRight" title={t("End-call")}>
+                <img
+                  className="cursor-pointer"
+                  width={35}
+                  src={CallEndRedIcon}
+                  onClick={endCallParticipant}
+                  alt=""
+                />
+              </Tooltip>
             ) : null}
-
             <Tooltip placement="topRight" title={t("Minimize")}>
               <div
                 onClick={minimizeVideoPanel}
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
                     ? "grayScaleImage"
-                    : "inactive-state"
+                    : "cursor-pointer"
                 }
               >
-                <img src={MinimizeIcon} alt="Minimize" />
+                <img src={MinimizeIcon} alt="" />
               </div>
             </Tooltip>
-
-            {videoFeatureReducer.LeaveCallModalFlag === true &&
-            callerID === currentUserID ? (
-              <div className="active-state-end">
-                <Tooltip placement="topRight" title={t("Cancel")}>
-                  <img
-                    onClick={cancelLeaveCallOption}
-                    src={videoEndIcon}
-                    alt="End Call"
-                  />
-                </Tooltip>
-              </div>
-            ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
-                callerID === currentUserID) ||
-              callerID === 0 ? (
-              <Tooltip placement="topRight" title={t("End-call")}>
-                <div className="inactive-state">
-                  <img
-                    className="cursor-pointer"
-                    src={CallEndRedIcon}
-                    onClick={openVideoPanel}
-                    alt="End Call"
-                  />
-                </div>
-              </Tooltip>
-            ) : videoFeatureReducer.LeaveCallModalFlag === false &&
-              callerID !== currentUserID ? (
-              <Tooltip placement="topRight" title={t("End-call")}>
-                <img
-                  className="inactive-state"
-                  src={CallEndRedIcon}
-                  onClick={endCallParticipant}
-                  alt="End Call"
-                />
-              </Tooltip>
-            ) : null}
-
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (
               <Tooltip placement="topRight" title={t("Expand")}>
-                <div
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : "inactive-state"
-                  }
-                >
+                <div className="video_maximize_icon">
                   <img
                     src={ExpandIcon}
                     onClick={otoMaximizeVideoPanel}
-                    alt="Expand"
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
+                    }
+                    alt=""
                   />
                 </div>
               </Tooltip>
             ) : videoFeatureReducer.NormalizeVideoFlag === false &&
               videoFeatureReducer.MinimizeVideoFlag === false &&
               videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <div
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "inactive-state"
-                }
-              >
+              <div className="normalize_video_icon">
                 <Tooltip placement="topRight" title={t("Collapse")}>
                   <img
+                    width={17}
                     src={NormalizeIcon}
-                    alt="Maximize"
+                    alt="Maximize Icon"
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "normalize-Icon-Large grayScaleImage"
+                        : "normalize-Icon-Large cursor-pointer"
+                    }
                     onClick={normalizeScreen}
                   />
                 </Tooltip>
@@ -1162,12 +670,6 @@ const VideoCallNormalHeader = ({
             <div className="leave-meeting-options__inner">
               <Button
                 className="leave-meeting-options__btn leave-meeting-red-button"
-                text={t("Leave-call")}
-                onClick={leaveCall}
-              />
-
-              <Button
-                className="leave-meeting-options__btn leave-meeting-gray-button"
                 text={
                   currentCallType === 1
                     ? t("End-call")
@@ -1184,12 +686,6 @@ const VideoCallNormalHeader = ({
             </div>
           </div>
         ) : null}
-
-        <Notification
-          setOpen={setOpen}
-          open={open.flag}
-          message={open.message}
-        />
       </div>
     </>
   );

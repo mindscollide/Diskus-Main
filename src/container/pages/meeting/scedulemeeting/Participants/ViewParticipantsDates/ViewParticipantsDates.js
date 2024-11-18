@@ -9,6 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
@@ -19,9 +20,12 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  EditmeetingDateFormat,
+  newTimeFormaterAsPerUTCTalkDate,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const ViewParticipantsDates = ({
   setViewProposeDatePoll,
@@ -36,23 +40,32 @@ const ViewParticipantsDates = ({
 
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
+  const getAllProposedDates = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
 
+  const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
+  console.log(prposedData, "prposedDataprposedDataprposedData");
+  const [sendProposedData, setSendProposedData] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
+  const [apiUserID, setApiUserID] = useState("");
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
     MeetingType: "",
@@ -73,6 +86,7 @@ const ViewParticipantsDates = ({
     let Data = {
       MeetingID: Number(currentMeetingID),
     };
+    // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
     await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
     await dispatch(
       GetAllMeetingDetailsApiFunc(
@@ -97,6 +111,7 @@ const ViewParticipantsDates = ({
   }, []);
 
   //Previous API for D ates that have to be Inserted new
+  console.log(selectAll, "selectAllselectAllselectAllselectAll");
   useEffect(() => {
     try {
       if (
@@ -107,6 +122,8 @@ const ViewParticipantsDates = ({
         let uniqueDates = new Set();
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
+          console.log(datesData, "datesDatadatesDatadatesData");
+          setApiUserID(datesData.userID);
           if (Number(datesData.userID) === Number(currentUserId)) {
             console.log(datesData, "newDatanewDatanewData");
             datesData.selectedProposedDates.forEach((newData, index) => {
@@ -154,6 +171,8 @@ const ViewParticipantsDates = ({
             });
           }
 
+          console.log(datesarry, "datesarrydatesarrydatesarry");
+
           //now For Sending Data
           let SenddataObject = [];
           datesData.selectedProposedDates.forEach((data, index) => {
@@ -186,6 +205,7 @@ const ViewParticipantsDates = ({
           });
           setNoneOfAbove(DefaultDate);
           setPrposedData(datesarry);
+          setSendProposedData(SenddataObject);
         });
       } else {
       }
@@ -209,6 +229,16 @@ const ViewParticipantsDates = ({
       }
     } catch (error) {}
   }, [getAllMeetingDetails]);
+
+  //Previous API for Dates that have to be Removed
+  useEffect(() => {
+    try {
+      if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
+        let deadline = getAllProposedDates.deadLineDate;
+        setDeadline(deadline);
+      }
+    } catch (error) {}
+  }, [getAllProposedDates]);
 
   // onChange function for CheckBoxes
   const handleCheckboxChange = (clickedData) => {
@@ -236,6 +266,7 @@ const ViewParticipantsDates = ({
 
   const handleSelectAllChange = (event) => {
     if (event.target.checked) {
+      // setCheckedObjects([]);
       setPrposedData((prev) => {
         return prev.map((data, index) => {
           return {
@@ -299,7 +330,10 @@ const ViewParticipantsDates = ({
         SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
       );
     } else if (!selectAll) {
-      showMessage("Please-select-any-of-the-given-options", "error", setOpen);
+      setOpen({
+        flag: true,
+        message: t("Please-select-any-of-the-given-options"),
+      });
     }
   };
 
@@ -313,8 +347,8 @@ const ViewParticipantsDates = ({
       Length: 50,
       PublishedMeetings: false,
     };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     setViewProposeDatePoll(false);
     dispatch(viewProposeDateMeetingPageFlag(false));
@@ -336,7 +370,7 @@ const ViewParticipantsDates = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <span className={styles["Paper_styling"]}>
+          <Paper className={styles["Paper_styling"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_prposed_meeting"]}>
@@ -382,9 +416,19 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
+                          console.log(data, "datadatadata");
+
                           const isChecked =
                             data.isSelected &&
                             Number(data.userID) === Number(currentUserId);
+                          console.log(isChecked, "isCheckedisChecked2");
+                          console.log(
+                            currentUserId,
+                            data.userID,
+                            typeof currentUserId,
+                            typeof data.userID,
+                            "isCheckedisChecked1"
+                          );
 
                           return (
                             <Row className="m-0 p-0 mt-2" key={index}>
@@ -428,6 +472,7 @@ const ViewParticipantsDates = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Prposed_On_Heading"]}>
                       {t("Send-response-by")}{" "}
+                      {/* <span className={styles["Steric_Color"]}>*</span> */}
                     </span>
                   </Col>
                 </Row>
@@ -498,10 +543,10 @@ const ViewParticipantsDates = ({
                 />
               </Col>
             </Row>
-          </span>
+          </Paper>
         </Col>
       </Row>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

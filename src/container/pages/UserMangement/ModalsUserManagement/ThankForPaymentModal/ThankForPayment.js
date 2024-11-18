@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ThankForPayment.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import { showThankYouPaymentModal } from "../../../../../store/actions/UserMangementModalActions";
@@ -10,14 +11,10 @@ const ThankForPayment = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { UserManagementModals } = useSelector((state) => state);
-
-  const UserManagementModalsthanksForPaymentModalData = useSelector(
-    (state) => state.UserManagementModals.thanksForPaymentModal
-  );
   return (
     <section>
       <Modal
-        show={UserManagementModalsthanksForPaymentModalData}
+        show={UserManagementModals.thanksForPaymentModal}
         setShow={dispatch(showThankYouPaymentModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

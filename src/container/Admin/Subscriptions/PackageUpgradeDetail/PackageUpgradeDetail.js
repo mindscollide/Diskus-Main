@@ -4,19 +4,25 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
+import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
 import { Button, Loader, Notification } from "../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
-import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
+import {
+  updateSubscribePackage,
+  cleareMessage,
+} from "../../../../store/actions/Admin_PackageUpgrade";
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/Admin_PackageDetail";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage } = Data;
+  const { GetSubscriptionPackage, Authreducer, LanguageReducer } = Data;
+  console.log("GetSubscriptionPackage", GetSubscriptionPackage);
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,11 +56,19 @@ const PackageUpgradeDetail = () => {
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
         t("Organization-subscription-update")
     ) {
-      showMessage(
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        ...open,
+        open: true,
+        message:
+          GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
@@ -81,6 +95,11 @@ const PackageUpgradeDetail = () => {
                 <Col sm={12} md={12} lg={12}>
                   {state !== null && state !== undefined ? (
                     <>
+                      {/* <img
+                        className={styles["package-icon"]}
+                        src={GoldPackage}
+                        alt=""
+                      /> */}
                       <span class="icon-star package-icon-style">
                         <span
                           class="path1"
@@ -155,7 +174,12 @@ const PackageUpgradeDetail = () => {
                       className={styles["upgradePackageAmoutnandList"]}
                     >
                       <h4>{t("Included-features")}</h4>
-                      <p>{t("Get-more-features-by-upgrading-your-plan")}</p>
+                      <p>
+                        {t("Get-more-features-by-upgrading-your-plan")}
+                        {/* Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s */}
+                      </p>
                       <ul>
                         <li>{t("Get-more-users")}</li>
                         <li>{t("Theme-customization")}</li>
@@ -186,13 +210,21 @@ const PackageUpgradeDetail = () => {
             lg={12}
             className="d-flex justify-content-center text-decoration-underline"
           >
-            <Link className={styles["goBackLink"]} to="/Admin/UpgradePackage">
+            <Link
+              className={styles["goBackLink"]}
+              to="/Admin/UpgradePackage"
+            >
               {t("Go-back")}
             </Link>
           </Col>
         </Row>
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {GetSubscriptionPackage.Loading ||
+      Authreducer.Loading ||
+      LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

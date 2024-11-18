@@ -12,6 +12,9 @@ import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import {
+  searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
   FetchMeetingURLApi,
   LeaveCurrentMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -38,14 +41,16 @@ import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Mee
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ParentAgenda from "./ParentAgenda";
 import AllFilesModal from "./AllFilesModal/AllFilesModal";
-// import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
+import ExportAgendaModal from "./ExportAgendaModal/ExportAgendaModal";
 import FullScreenAgendaModal from "./FullScreenAgendaModal/FullScreenAgendaModal";
 import ParticipantInfoModal from "./ParticipantInfoModal/ParticipantInfoModal";
 import PrintExportAgendaModal from "./PrintExportAgendaModal/PrintExportAgendaModal";
 import SelectAgendaModal from "./SelectAgendaModal/SelectAgendaModal";
 import ShareEmailModal from "./ShareEmailModal/ShareEmailModal";
 import { onDragEnd } from "./drageFunction";
+import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import ExpandAgendaIcon from "./AV-Images/Expand-Agenda-Icon.png";
+import CollapseAgendaIcon from "./AV-Images/Collapse-Agenda-Icon.png";
 import MenuIcon from "./AV-Images/Menu-Icon.png";
 import ParticipantsInfo from "./AV-Images/Participants-Icon.png";
 import ParticipantsInfoDisabled from "./AV-Images/Participants-Icon-disabled.png";
@@ -73,7 +78,6 @@ import {
   headerShowHideStatus,
   recentChatFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -110,6 +114,8 @@ const AgendaViewer = ({
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
 
+  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
       state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
@@ -132,18 +138,22 @@ const AgendaViewer = ({
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
+
   const [fullScreenView, setFullScreenView] = useState(true);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
-  // const [exportAgendaView, setExportAgendaView] = useState(false);
+  const [exportAgendaView, setExportAgendaView] = useState(false);
   const [printAgendaView, setPrintAgendaView] = useState(false);
   const [shareEmailView, setShareEmailView] = useState(false);
   const [showMoreFilesView, setShowMoreFilesView] = useState(false);
@@ -153,8 +163,13 @@ const AgendaViewer = ({
   const [agendaName, setAgendaName] = useState("");
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   useEffect(() => {
+    console.log(
+      "advanceMeetingModalIDadvanceMeetingModalID",
+      advanceMeetingModalID
+    );
     let Data = {
       MeetingID:
         advanceMeetingModalID === "0" ||
@@ -171,12 +186,45 @@ const AgendaViewer = ({
     };
   }, []);
 
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+        console.log("chek search meeting")
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
+    setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    setactionsPage(false);
+  };
+
+  const handleClickSave = () => {
+    setMinutes(true);
+    setMeetingMaterial(false);
+  };
+
   useEffect(() => {
+    console.log(
+      "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+      GetAdvanceMeetingAgendabyMeetingIDForViewData
+    );
     if (
       GetAdvanceMeetingAgendabyMeetingIDForViewData !== null &&
       GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
       GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
+      console.log(
+        "AgendaDataAgendaDataAgendaDataAgendaDataAgendaDataAgendaData",
+        GetAdvanceMeetingAgendabyMeetingIDForViewData
+      );
       setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
@@ -259,6 +307,8 @@ const AgendaViewer = ({
         1,
         meetingTitle,
         advanceMeetingModalID
+
+
       )
     );
     localStorage.setItem("meetingTitle", meetingTitle);
@@ -410,11 +460,23 @@ const AgendaViewer = ({
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent-successfully"), "error", setOpen);
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("Email-sent-successfully"),
+        }),
+        3000
+      );
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
-      showMessage(t("Invalid-data"), "error", setOpen);
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("Invalid-data"),
+        }),
+        3000
+      );
       dispatch(clearResponseMessage(""));
     }
   }, [agendaResponseMessage]);
@@ -444,6 +506,7 @@ const AgendaViewer = ({
                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
             )
           ) {
+            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -451,6 +514,7 @@ const AgendaViewer = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
                 ) {
+                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -466,6 +530,7 @@ const AgendaViewer = ({
           return item;
         });
 
+        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -481,6 +546,7 @@ const AgendaViewer = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
           ) {
+            console.log("Updating main item:", item);
             return {
               ...item,
               voteOwner: {
@@ -495,6 +561,7 @@ const AgendaViewer = ({
                 MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
             )
           ) {
+            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -502,6 +569,7 @@ const AgendaViewer = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
                 ) {
+                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -517,6 +585,7 @@ const AgendaViewer = ({
           return item;
         });
 
+        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -541,6 +610,8 @@ const AgendaViewer = ({
       }
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
+
+  console.log("AgendaDataAgendaDataAgendaData", rows);
 
   return (
     <>
@@ -823,6 +894,33 @@ const AgendaViewer = ({
               </DragDropContext>
             </>
           )}
+          {/* <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2 mt-2"
+            >
+              <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Meeting_Details"]}
+                onClick={handleCancelMeetingNoPopup}
+              />
+
+              <Button
+                text={t("Next")}
+                onClick={handleClickSave}
+                className={styles["Save_Classname"]}
+                disableBtn={
+                  Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ||
+                  Number(editorRole.status) === 1
+                    ? true
+                    : false
+                }
+              />
+            </Col>
+          </Row> */}
         </section>
       </>
       {cancelMeetingMaterial && (
@@ -832,7 +930,7 @@ const AgendaViewer = ({
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
 
       {fullScreenView ? (
         <FullScreenAgendaModal
@@ -863,9 +961,9 @@ const AgendaViewer = ({
           setPrintAgendaView={setPrintAgendaView}
         />
       ) : null}
-      {/* {exportAgendaView ? (
+      {exportAgendaView ? (
         <ExportAgendaModal setExportAgendaView={setExportAgendaView} />
-      ) : null} */}
+      ) : null}
       {printAgendaView ? (
         <PrintExportAgendaModal
           setPrintAgendaView={setPrintAgendaView}

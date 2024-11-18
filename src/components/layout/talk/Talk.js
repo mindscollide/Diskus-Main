@@ -61,59 +61,19 @@ import {
 const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { NotesReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
 
   //Getting api result from the reducer
-  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-  const talkSocketUnreadMessageCount = useSelector(
-    (state) => state.talkStateData.talkSocketUnreadMessageCount
-  );
-
-  const VideoChatPanelReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatPanel
-  );
-  const MissedCallCountData = useSelector(
-    (state) => state.VideoMainReducer.MissedCallCountData
-  );
-  const MissedCallCountMqttData = useSelector(
-    (state) => state.VideoMainReducer.MissedCallCountMqttData
-  );
-  const ActiveChatBoxGS = useSelector(
-    (state) => state.talkFeatureStates.ActiveChatBoxGS
-  );
-
-  const scheduleMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
-  );
-  const viewProposeDateMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
-  );
-  const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
-  );
-  const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
-  );
-  const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
-  );
-  const proposeNewMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
-  );
-  const viewMeetingFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
-  );
-
-  const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
-  );
-
-  const PendingApprovalCountData = useSelector(
-    (state) => state.MinutesReducer.PendingApprovalCountData
-  );
-
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+  const {
+    talkStateData,
+    videoFeatureReducer,
+    VideoMainReducer,
+    talkFeatureStates,
+    NewMeetingreducer,
+    MinutesReducer,
+  } = useSelector((state) => state);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -133,7 +93,7 @@ const Talk = () => {
 
   // for video Icon Click
   const videoIconClick = () => {
-    if (VideoChatPanelReducer === false) {
+    if (videoFeatureReducer.VideoChatPanel === false) {
       dispatch(videoChatPanel(true));
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(true));
@@ -141,7 +101,7 @@ const Talk = () => {
       dispatch(activeChatBoxGS(false));
       dispatch(globalChatsSearchFlag(false));
       dispatch(videoChatSearchFlag(false));
-    } else if (ActiveChatBoxGS === true) {
+    } else if (talkFeatureStates.ActiveChatBoxGS === true) {
       setActiveVideoIcon(true);
       dispatch(privateGroupChatFlag(false));
       dispatch(privateChatFlag(false));
@@ -162,15 +122,21 @@ const Talk = () => {
     }
   };
 
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+
   const handleMeetingPendingApprovals = async () => {
     if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
+      (NewMeetingreducer.scheduleMeetingPageFlag === true ||
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+        NewMeetingreducer.proposeNewMeetingPageFlag === true) &&
+      NewMeetingreducer.viewMeetingFlag === false
     ) {
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "pendingApprovals");
@@ -225,7 +191,7 @@ const Talk = () => {
 
   const iconClick = () => {
     setActiveVideoIcon(false);
-    if (ActiveChatBoxGS === false) {
+    if (talkFeatureStates.ActiveChatBoxGS === false) {
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -282,75 +248,83 @@ const Talk = () => {
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
     if (
-      AllUserChats.AllUserChatsData !== undefined &&
-      AllUserChats.AllUserChatsData !== null &&
-      AllUserChats.AllUserChatsData.length !== 0
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
       setUnreadMessageCount(
-        AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount
+        talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
+          ?.totalCount
       );
     }
-  }, [AllUserChats?.AllUserChatsData?.unreadMessageCount]);
+  }, [talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount]);
 
   //MQTT Unread Message Count
   useEffect(() => {
     if (
-      talkSocketUnreadMessageCount.unreadMessageData !== undefined &&
-      talkSocketUnreadMessageCount.unreadMessageData !== null &&
-      talkSocketUnreadMessageCount.unreadMessageData.length !== 0
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
+        undefined &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
     ) {
       let mqttUnreadMessageCount =
-        talkSocketUnreadMessageCount.unreadMessageData;
+        talkStateData.talkSocketUnreadMessageCount.unreadMessageData;
       if (Object.keys(mqttUnreadMessageCount) !== null) {
         setUnreadMessageCount(mqttUnreadMessageCount.data[0].totalCount);
       } else {
         setUnreadMessageCount(
-          AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount
+          talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
+            ?.totalCount
         );
       }
     }
   }, [
-    talkSocketUnreadMessageCount.unreadMessageData,
-    AllUserChats?.AllUserChatsData?.unreadMessageCount,
+    talkStateData.talkSocketUnreadMessageCount.unreadMessageData,
+    talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount,
   ]);
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
     if (
-      MissedCallCountData !== undefined &&
-      MissedCallCountData !== null &&
-      Object.keys(MissedCallCountData).length !== 0
+      VideoMainReducer.MissedCallCountData !== undefined &&
+      VideoMainReducer.MissedCallCountData !== null &&
+      Object.keys(VideoMainReducer.MissedCallCountData).length !== 0
     ) {
-      setMissedCallCount(MissedCallCountData?.missedCallCount);
+      setMissedCallCount(
+        VideoMainReducer?.MissedCallCountData?.missedCallCount
+      );
     }
-  }, [MissedCallCountData?.missedCallCount]);
+  }, [VideoMainReducer?.MissedCallCountData?.missedCallCount]);
 
   useEffect(() => {
     if (
-      PendingApprovalCountData !== null &&
-      PendingApprovalCountData !== undefined
+      MinutesReducer.PendingApprovalCountData !== null &&
+      MinutesReducer.PendingApprovalCountData !== undefined
     ) {
-      setPendingApprovalCount(PendingApprovalCountData);
+      setPendingApprovalCount(MinutesReducer.PendingApprovalCountData);
     } else {
       setPendingApprovalCount(0);
     }
-  }, [PendingApprovalCountData]);
+  }, [MinutesReducer.PendingApprovalCountData]);
 
   //MQTT Unread Message Count
   useEffect(() => {
     if (
-      MissedCallCountMqttData !== undefined &&
-      MissedCallCountMqttData !== null &&
-      Object.keys(MissedCallCountMqttData).length !== 0
+      VideoMainReducer.MissedCallCountMqttData !== undefined &&
+      VideoMainReducer.MissedCallCountMqttData !== null &&
+      Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0
     ) {
-      let missedCallCountMqtt = MissedCallCountMqttData.missedCallCount;
+      let missedCallCountMqtt =
+        VideoMainReducer.MissedCallCountMqttData.missedCallCount;
       if (Object.keys(missedCallCountMqtt) !== null) {
         setMissedCallCount(missedCallCountMqtt);
       } else {
-        setMissedCallCount(MissedCallCountData.missedCallCount);
+        setMissedCallCount(
+          VideoMainReducer.MissedCallCountData.missedCallCount
+        );
       }
     }
-  }, [MissedCallCountMqttData.missedCallCount]);
+  }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount]);
 
   let totalValue;
   useEffect(() => {
@@ -368,12 +342,12 @@ const Talk = () => {
   console.log("totalValueTotalValue", totalValue);
 
   useEffect(() => {
-    if (VideoChatPanelReducer === false) {
+    if (videoFeatureReducer.VideoChatPanel === false) {
       setActiveVideoIcon(false);
     } else {
       setActiveVideoIcon(true);
     }
-  }, [VideoChatPanelReducer]);
+  }, [videoFeatureReducer.VideoChatPanel]);
 
   const videoPanelRef = useRef(null);
 
@@ -403,15 +377,15 @@ const Talk = () => {
   }, [activeCall]);
 
   // useEffect(() => {
-  //   if (ActiveChatBoxGS === true) {
+  //   if (talkFeatureStates.ActiveChatBoxGS === true) {
   //     setSubIcons(true)
   //   }
-  // }, [ActiveChatBoxGS])
+  // }, [talkFeatureStates.ActiveChatBoxGS])
 
   return (
     <>
       <div ref={videoPanelRef} className={"talk_nav" + " " + currentLang}>
-        {ActiveChatBoxGS === true ? (
+        {talkFeatureStates.ActiveChatBoxGS === true ? (
           <TalkNew />
         ) : activeVideoIcon === true ? (
           <TalkVideo />
@@ -619,9 +593,9 @@ const Talk = () => {
             <Tooltip placement="leftTop" title={t("Chat")}>
               <div
                 className={
-                  ActiveChatBoxGS && subIcons
+                  talkFeatureStates.ActiveChatBoxGS && subIcons
                     ? "talk_subIcon with-hover"
-                    : !ActiveChatBoxGS && subIcons
+                    : !talkFeatureStates.ActiveChatBoxGS && subIcons
                     ? "talk_subIcon"
                     : "talk_subIcon_hidden"
                 }

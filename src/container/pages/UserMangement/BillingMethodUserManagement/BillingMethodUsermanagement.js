@@ -4,14 +4,16 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
 import { Step, Stepper } from "react-form-stepper";
-import { Button } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import BillProcessStepOne from "./BillProcessStepOne/BillProcessStepOne";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import BillProcessStepTwo from "./BillProcessStepTwo/BillProcessStepTwo";
 import BillProcessStepThree from "./BillProcessStepThree/BillProcessStepThree";
 import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
+import { showFailedPaymentModal } from "../../../../store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
+import PaymentFailedModal from "../ModalsUserManagement/PaymentFailedModal/PaymentFailedModal";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
 import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
@@ -21,13 +23,12 @@ const BillingMethodUsermanagement = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const UserManagementModalsthanksForPaymentModalData = useSelector(
-    (state) => state.UserManagementModals.thanksForPaymentModal
-  );
-
-  const countryNamesReducerCountryNamesDataData = useSelector(
-    (state) => state.countryNamesReducer.CountryNamesData
-  );
+  const {
+    UserManagementModals,
+    countryNamesReducer,
+    UserMangementReducer,
+    LanguageReducer,
+  } = useSelector((state) => state);
 
   let OrganizationSubscriptionID = localStorage.getItem(
     "organizationSubscriptionID"
@@ -268,12 +269,13 @@ const BillingMethodUsermanagement = () => {
   // to get country Names from Billing Step Two
   useEffect(() => {
     if (
-      countryNamesReducerCountryNamesDataData !== null &&
-      countryNamesReducerCountryNamesDataData !== undefined
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
     ) {
-      setCountryNames(countryNamesReducerCountryNamesDataData);
+      console.log(countryNamesReducer.CountryNamesData, "countryOnSelect");
+      setCountryNames(countryNamesReducer.CountryNamesData);
     }
-  }, [countryNamesReducerCountryNamesDataData]);
+  }, [countryNamesReducer.CountryNamesData]);
 
   //Flag Selector
   const countryOnSelect = (code) => {
@@ -295,9 +297,9 @@ const BillingMethodUsermanagement = () => {
 
   //React Stepper Numbers manuipulation
   useEffect(() => {
-    const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
-    const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
-    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
+    const firstvaue = document.querySelector(".StepButtonContent-d1-0-3-7");
+    const secondvaue = document.querySelector(".StepButtonContent-d3-0-3-13");
+    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-3-21");
 
     const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
 
@@ -439,7 +441,10 @@ const BillingMethodUsermanagement = () => {
         </Col>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
       </Row>
-      {UserManagementModalsthanksForPaymentModalData && <ThankForPayment />}
+      {UserManagementModals.thanksForPaymentModal && <ThankForPayment />}
+      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </Container>
   );
 };

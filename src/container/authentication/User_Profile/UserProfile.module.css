@@ -1,4 +1,7 @@
 body[dir="rtl"] .label-Edit-user-mobile {
+  /* position: fixed !important;
+  right: 883px !important; */
+
   margin-left: 19px !important;
 }
 
@@ -64,6 +67,7 @@ body[dir="rtl"] .reset-User-btn {
   border-radius: 4px !important;
   float: right;
   margin-right: 25px;
+  /* margin-left: 20px ; */
 }
 
 body[dir="rtl"] .save-User-btn {
@@ -98,6 +102,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-name {
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 39px !important;
   border-radius: 4px !important;
@@ -122,6 +127,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-name:focus {
+  /* border: 1px solid rgb(16, 16, 16) !important; */
   border: 1px solid #e1e1e1 !important;
   border-radius: 2px !important;
   box-shadow: none !important;
@@ -132,6 +138,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-designation {
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 39px !important;
   border-radius: 4px !important;
@@ -156,6 +163,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-designation:focus {
+  /* border: 1px solid rgb(16, 16, 16) !important; */
   border: 1px solid #e1e1e1 !important;
   border-radius: 2px !important;
   box-shadow: none !important;
@@ -166,6 +174,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-Mobile {
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 39px !important;
   border-radius: 4px !important;
@@ -181,6 +190,7 @@ body[dir="rtl"] .save-User-btn {
   margin-left: 1px !important;
   height: 30px !important;
   padding: auto !important;
+  /* margin-top: 4px !important; */
 }
 
 .text-fields-Mobile-disabled {
@@ -192,6 +202,7 @@ body[dir="rtl"] .save-User-btn {
 }
 
 .text-fields-Mobile:focus {
+  /* border: 1px solid rgb(16, 16, 16) !important; */
   border: 1px solid #e1e1e1 !important;
   border-radius: 2px !important;
   box-shadow: none !important;
@@ -204,13 +215,16 @@ body[dir="rtl"] .save-User-btn {
 .modal-userprofile-footer {
   width: 100% !important;
   display: contents;
+  /* justify-content: /space-around; */
   margin: 20px 0px !important;
   padding: 0 40px !important;
 }
 
+/* For phoneInput number */
 .react-User-Profile {
   height: 30px !important;
   padding: auto !important;
+  /* margin-top: 4px !important; */
 }
 .react-User-Profile .ReactFlagsSelect-module_flagsSelectInline__cUnnz button {
   margin-top: 0px !important;
@@ -380,5 +394,6 @@ body[dir="rtl"] .errorMessage-Designation-user {
   visibility: hidden;
   margin: 0;
   height: 0px !important;
+  /* height: 25px; */
   color: #f16b6b !important;
 }

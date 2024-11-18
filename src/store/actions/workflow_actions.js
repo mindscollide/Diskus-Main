@@ -16,6 +16,7 @@ import {
   DeleteSignatureDocumentRM,
   GetAllSignatoriesStatusRM,
   updateActorBundleStatusRM,
+  getDashboardTaskStatsRM,
   getDashboardPendingApprovalStatsRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";

@@ -24,7 +24,9 @@
 .card-employee-desgination {
   margin: 0px 0px 10px 25px;
   font-size: 12px;
+  /* margin-top: -15px !important; */
   line-height: 15px !important;
+  
 }
 .card-employee-checkIcon {
   font-size: 40px;

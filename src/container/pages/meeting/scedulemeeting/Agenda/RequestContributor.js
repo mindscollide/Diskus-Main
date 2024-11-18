@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Agenda.module.css";
+import { useNavigate } from "react-router-dom";
+import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -17,9 +19,8 @@ const RequestContributor = ({
 }) => {
   const { t } = useTranslation();
 
-  const getAllAgendaContributors = useSelector(
-    (state) => state.NewMeetingreducer.getAllAgendaContributors
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
+
   const [agendaContributors, setAgendaContributors] = useState([]);
 
   // Function to handle changes in main agenda additional text field Main Request Contributor Note
@@ -57,15 +58,15 @@ const RequestContributor = ({
 
   useEffect(() => {
     if (
-      getAllAgendaContributors !== undefined &&
-      getAllAgendaContributors !== null &&
-      getAllAgendaContributors.length !== 0
+      NewMeetingreducer.getAllAgendaContributors !== undefined &&
+      NewMeetingreducer.getAllAgendaContributors !== null &&
+      NewMeetingreducer.getAllAgendaContributors.length !== 0
     ) {
-      setAgendaContributors(getAllAgendaContributors);
+      setAgendaContributors(NewMeetingreducer.getAllAgendaContributors);
     } else {
       setAgendaContributors([]);
     }
-  }, [getAllAgendaContributors]);
+  }, [NewMeetingreducer.getAllAgendaContributors]);
 
   const handleSelectChange = (index, value) => {
     console.log(value, "valuevaluevalue");
@@ -131,6 +132,8 @@ const RequestContributor = ({
   //     </>
   //   ),
   // }));
+
+  console.log("New Meeting Reducer", NewMeetingreducer);
 
   return (
     <>

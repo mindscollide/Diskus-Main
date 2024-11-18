@@ -36,7 +36,6 @@ import {
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../../commen/functions/utils";
 const CreateTask = ({
   setCreateaTask,
@@ -47,21 +46,13 @@ const CreateTask = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
-
-  const getMeetingusers = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingusers
-  );
-  const unsavedActions = useSelector(
-    (state) => state.NewMeetingreducer.unsavedActions
-  );
-  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
   );
   //Notification State
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
   let currentLanguage = localStorage.getItem("i18nextLng");
   // state for date handler
@@ -99,17 +90,14 @@ const CreateTask = ({
   });
 
   useEffect(() => {
-    const callApi = async () => {
-      let Data = {
-        MeetingID: Number(currentMeeting),
-      };
-      let getMeetingData = {
-        MeetingID: Number(currentMeeting),
-      };
-      dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-      dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+    let Data = {
+      MeetingID: Number(currentMeeting),
     };
-    callApi();
+    let getMeetingData = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
   }, []);
 
   useEffect(() => {
@@ -164,6 +152,7 @@ const CreateTask = ({
     showUploadList: false,
     onChange(data) {
       const { fileList } = data;
+      console.log(fileList, "fileListfileListfileList");
       // Check if the fileList is the same as the previous one
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
@@ -174,7 +163,10 @@ const CreateTask = ({
       let size = true;
 
       if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-15-files"),
+        });
         return;
       }
 
@@ -190,15 +182,26 @@ const CreateTask = ({
         );
 
         if (!size) {
-          showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
-            "error",
-            setOpen
-          );
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-1-5GB"),
+            });
+          }, 3000);
         } else if (!sizezero) {
-          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            });
+          }, 3000);
         } else if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
+          setTimeout(() => {
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            });
+          }, 3000);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -341,12 +344,12 @@ const CreateTask = ({
   }, [createTaskID]);
 
   useEffect(() => {
-    let createMeetingTaskData = getMeetingusers;
+    let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
     if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
       let newmembersArray = [];
       if (Object.keys(createMeetingTaskData).length > 0) {
         if (createMeetingTaskData.meetingOrganizers.length > 0) {
-          createMeetingTaskData.meetingOrganizers.forEach(
+          createMeetingTaskData.meetingOrganizers.map(
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
                 value: MorganizerData.userID,
@@ -421,7 +424,7 @@ const CreateTask = ({
           );
         }
         if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
-          createMeetingTaskData.meetingAgendaContributors.forEach(
+          createMeetingTaskData.meetingAgendaContributors.map(
             (meetAgendaContributor, meetAgendaContributorIndex) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
@@ -496,7 +499,7 @@ const CreateTask = ({
           );
         }
         if (createMeetingTaskData.meetingParticipants.length > 0) {
-          createMeetingTaskData.meetingParticipants.forEach(
+          createMeetingTaskData.meetingParticipants.map(
             (meetParticipants, meetParticipantsIndex) => {
               let MeetingParticipantsData = {
                 value: meetParticipants.userID,
@@ -576,35 +579,37 @@ const CreateTask = ({
     } else {
       setTaskMemberSelect([]);
     }
-  }, [getMeetingusers]);
+  }, [NewMeetingreducer.getMeetingusers]);
 
   // useEffect for agenda Dropdown
   useEffect(() => {
     if (
-      GetAdvanceMeetingAgendabyMeetingIDData &&
-      GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
     ) {
       let tempAgenda = [];
-      GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach((agenda) => {
-        // Adding main agenda from agendaList
-        tempAgenda.push({
-          label: agenda.title,
-          value: agenda.id,
-        });
-
-        // Adding subAgenda titles
-        if (agenda.subAgenda && agenda.subAgenda.length > 0) {
-          agenda.subAgenda.forEach((subAgenda) => {
-            tempAgenda.push({
-              label: subAgenda.subTitle,
-              value: subAgenda.subAgendaID,
-            });
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach(
+        (agenda) => {
+          // Adding main agenda from agendaList
+          tempAgenda.push({
+            label: agenda.title,
+            value: agenda.id,
           });
+
+          // Adding subAgenda titles
+          if (agenda.subAgenda && agenda.subAgenda.length > 0) {
+            agenda.subAgenda.forEach((subAgenda) => {
+              tempAgenda.push({
+                label: subAgenda.subTitle,
+                value: subAgenda.subAgendaID,
+              });
+            });
+          }
         }
-      });
+      );
       setAgendaValue(tempAgenda);
     }
-  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
 
   const onChangeSelectAgenda = (e) => {
     setcreateTaskDetails({
@@ -616,6 +621,7 @@ const CreateTask = ({
 
   // for selecting Data
   const handleSelectMemberValue = (e) => {
+    console.log(e, "valuevaluevaluevaluevalue");
     setcreateTaskDetails({
       ...createTaskDetails,
       AssignedTo: [e.value],
@@ -637,6 +643,21 @@ const CreateTask = ({
             sm={12}
             className={styles["Create_Task_main_Scroller"]}
           >
+            {/* <Row className="mt-4">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["MainHeading_Create_Action"]}>
+                      ext ever since the 1500s, when an unknown printer took a
+                      galley of type and scrambled it to make a type specimen
+                      book. It has survived not only five centuries, but also
+                      the leap into electronic typesetting, remaining
+                      essentially unchanged. It was popularised in the 1960s
+                      with the release of Letraset sheets containing Lorem Ipsum
+                      passages, and more recently with desktop publishing
+                      software like Aldus PageMaker including versions of Lorem
+                      Ipsum.
+                    </span>
+                  </Col>
+                </Row> */}
             <Row className="mt-1">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["SubHeading"]}>
@@ -781,6 +802,7 @@ const CreateTask = ({
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["SubHeading"]}>
                   {t("Description")}{" "}
+                  {/* <span className={styles["Steric"]}>*</span> */}
                 </span>
               </Col>
             </Row>
@@ -796,7 +818,21 @@ const CreateTask = ({
                   maxLength={2000}
                   rows="4"
                   placeholder={t("Description")}
+                  // required={true}
                 />
+                {/* <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && createTaskDetails.Description === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Description-is-required-action")}
+                      </p>
+                    </Col>
+                  </Row> */}
               </Col>
             </Row>
             <Row className="mt-2">
@@ -824,6 +860,55 @@ const CreateTask = ({
                                         removeFileFunction(data)
                                       }
                                     />
+                                    {/* <section className={styles["box_For_File"]}>
+                                      <Row>
+                                        <Col lg={10} md={10} sm={10}>
+                                          <Row className="mt-2">
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                alt="File Format"
+                                                draggable={false}
+                                                src={getIconSource(
+                                                  getFileExtension(data.name)
+                                                )}
+                                                height="31.57px"
+                                                width="31.57px"
+                                              />
+                                              <span
+                                                className={styles["FileName"]}
+                                                title={data.name}
+                                              >
+                                                {data.name}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={2}
+                                          className="d-flex align-items-center justify-content-start mt-1"
+                                        >
+                                          <img
+                                            alt="dragger"
+                                            draggable={false}
+                                            src={RedCrossIcon}
+                                            height="20.76px"
+                                            width="20.76px"
+                                            className={styles["CrossIconClass"]}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              removeFileFunction(index);
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </section> */}
                                   </Col>
                                 </>
                               );
@@ -909,6 +994,21 @@ const CreateTask = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
+            {/* <Button
+                  text={t("Clone-meeting")}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                />
+
+                <Button
+                  text={t("Delete-meeting")}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                />
+
+                <Button
+                  text={t("Publish-the-meeting")}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                /> */}
+
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Button_Polls_meeting"]}
@@ -923,14 +1023,14 @@ const CreateTask = ({
             />
           </Col>
         </Row>
-        {unsavedActions && (
+        {NewMeetingreducer.unsavedActions && (
           <UnsavedActions
             setCreateaTask={setCreateaTask}
             currentMeeting={currentMeeting}
           />
         )}
       </section>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

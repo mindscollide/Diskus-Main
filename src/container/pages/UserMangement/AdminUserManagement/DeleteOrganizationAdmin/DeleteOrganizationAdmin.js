@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./DeleteOrganizationAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import FailedIcon from "../../../../../assets/images/failed.png";
-import { Button } from "../../../../../components/elements";
+import { Button, Loader } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+// import { deleteOrganizationUserMainApi } from "../../../../../store/actions/UserManagementActions";
+import { useSelector } from "react-redux";
 const DeleteOrganizationAdmin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const organizationName = localStorage.getItem("organizatioName");
+  const organizationID = localStorage.getItem("organizationID");
+
+  const { UserMangementReducer } = useSelector((state) => state);
+
+  // const onClickDelete = () => {
+  //   let data = { OrganizationID: 464, RequestingUserID: 1096, UserID: 1097 };
+
+  //   dispatch(deleteOrganizationUserMainApi(navigate, t, data));
+  // };
 
   return (
     <Container>
@@ -96,6 +112,7 @@ const DeleteOrganizationAdmin = () => {
                     <Button
                       className={styles["deleteOrganization_btn"]}
                       text={t("Proceed-to-deletion")}
+                      // onClick={onClickDelete}
                     />
                   </Col>
                 </Row>
@@ -104,6 +121,7 @@ const DeleteOrganizationAdmin = () => {
           </Row>
         </Col>
       </Row>
+      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

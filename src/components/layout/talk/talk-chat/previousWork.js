@@ -6392,7 +6392,7 @@ const TalkChat = () => {
                               sm={12}
                               className="positionRelative"
                             >
-                              <p className="level">NIAP + PQC</p>
+                              <p className="level">NIAP +Â PQC</p>
                               <span className="securityicon-box">
                                 {" "}
                                 <img
@@ -6414,7 +6414,7 @@ const TalkChat = () => {
                                 importance that data flowing between the end
                                 user device and the Talk Server is immune to
                                 data breaches, data exposure & data leakages.
-                                That’s why at Diskus we practice protecting
+                                Thatâ€™s why at Diskus we practice protecting
                                 digital information throughout its lifecycle by
                                 utilizing multilayered security approach.
                               </p>
@@ -6427,11 +6427,11 @@ const TalkChat = () => {
                                 that the data in motion is protected to the
                                 classification level of Official Top Secret.
                                 Securing the communicating endpoints only is not
-                                sufficient and doesn’t guarantee end-to-end
-                                privacy and authentication and that’s where we
+                                sufficient and doesnâ€™t guarantee end-to-end
+                                privacy and authentication and thatâ€™s where we
                                 utilize Post Quantum Cryptography (PQC)
-                                “Crystals - Kyber” for end-to-end encryption of
-                                data.
+                                â€œCrystals - Kyberâ€ for end-to-end encryption
+                                of data.
                               </p>{" "}
                               <p>
                                 PQC are the advanced form of encryption &
@@ -6442,8 +6442,8 @@ const TalkChat = () => {
                                 agreement generates a unique once per session
                                 key and ensures data encrypted using these keys
                                 can only be decrypted by intended recipient thus
-                                ensuring mutual authentication of a
-                                per session basis.
+                                ensuring mutual authentication of a perÂ
+                                sessionÂ basis.
                               </p>
                             </div>
                           </Col>
@@ -6912,7 +6912,7 @@ const TalkChat = () => {
                         <p className="level-heading">Crypto Level:</p>
                       </Col>
                       <Col lg={5} md={5} sm={12} className="positionRelative">
-                        <p className="level">NIAP + PQC</p>
+                        <p className="level">NIAP +Â PQC</p>
 
                         <span className="securityicon-box">
                           <img

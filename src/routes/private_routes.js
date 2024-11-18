@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
@@ -16,7 +16,7 @@ const PrivateRoutes = () => {
         )
     ) {
       // Extract action parameter from URL
-      const parts = currentUrl.split("?action=".toLowerCase());
+      const parts = currentUrl.split("?action=");
       if (parts.length === 2) {
         const remainingString = parts[1];
         // Save RSVP data to local storage

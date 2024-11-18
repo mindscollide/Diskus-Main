@@ -41,7 +41,9 @@
 
 .View_Title {
   font-weight: 500;
+  /* width: 100%; */
   display: flex;
+  /* padding: 3px 3px !important; */
   align-items: center !important;
   font-size: 12px !important;
 }

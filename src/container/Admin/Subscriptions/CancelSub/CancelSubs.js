@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form, ProgressBar } from "react-bootstrap";
 import styles from "./CancelSub.module.css";
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
+import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
 import { Loader, Modal, Notification } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Button, WarningMessageBox } from "../../../../components/elements";
-import { Link, useNavigate } from "react-router-dom";
+import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
+import { json, Link, useNavigate } from "react-router-dom";
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,11 +18,11 @@ import {
   CancelSubscriptionPackage,
   revokeprocess,
 } from "../../../../store/actions/Admin_CancelSub";
+import moment from "moment";
 import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 import { _justShowDateformat } from "../../../../commen/functions/date_formater";
 import { isHTML } from "../../../../commen/functions/html_formater";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -32,12 +37,11 @@ const CancelSubs = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
-    severity: "error",
   });
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
-  const { GetSubscriptionPackage, adminReducer } = useSelector(
+  const { GetSubscriptionPackage, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
 
@@ -139,7 +143,18 @@ const CancelSubs = () => {
 
   useEffect(() => {
     if (adminReducer.revokeResponseMessege !== "") {
-      showMessage(adminReducer.revokeResponseMessege, "success", setOpen);
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.revokeResponseMessege,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(adminClearMessege());
     } else {
       dispatch(adminClearMessege());
@@ -147,11 +162,17 @@ const CancelSubs = () => {
   }, [adminReducer.revokeResponseMessege]);
   useEffect(() => {
     if (GetSubscriptionPackage.getCancelSubscriptionResponseMessage !== "") {
-      showMessage(
-        GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
-        "success",
-        setOpen
-      );
+      setOpen({
+        open: true,
+        message: GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
       dispatch(cleareMessageSubsPac());
     } else {
       dispatch(cleareMessageSubsPac());
@@ -368,6 +389,7 @@ const CancelSubs = () => {
                 <Col sm={12} md={12} lg={12}>
                   <Button
                     text={t("Revoke-cancellation")}
+                    // onClick={handleClickCancelNowBtn}
                     className={styles["CancelNowBtn"]}
                     onClick={handleChangeForRevoke}
                   />
@@ -528,7 +550,9 @@ const CancelSubs = () => {
                       {maxOtherUsers} {t("Other-users")}
                     </Col>
                   </Row>
-                  <Col sm={12} md={12} lg={12}></Col>
+                  <Col sm={12} md={12} lg={12}>
+                    {/* <span className={styles["lineBar_cancelSub"]}></span> */}
+                  </Col>
                   <span className={styles["lineBar"]}></span>
                 </Col>
 
@@ -696,7 +720,12 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : adminReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

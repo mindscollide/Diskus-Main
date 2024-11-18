@@ -22,33 +22,19 @@ import { useTranslation } from "react-i18next";
 import { DownloadFile } from "../../store/actions/Download_action";
 import "./ModalUpdateToDo.css";
 import { useNavigate } from "react-router-dom";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
   const state = useSelector((state) => state);
-  const { toDoListReducer } = state;
-
-  const toDoListReducerData = useSelector(
-    (state) => state.toDoListReducer.ToDoDetails
-  );
-
-  const allAssigneesData = useSelector(
-    (state) => state.toDoListReducer.AllAssigneesData
-  );
-
-  const toDoListReducerResponseMessageData = useSelector(
-    (state) => state.toDoListReducer.Message
-  );
-
+  const { toDoListReducer, LanguageReducer } = state;
   //To Display Modal
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   //Notification State
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
-    severity: "error",
   });
 
   //task Object
@@ -116,13 +102,13 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       CreationDateTime: "",
       FK_TID: 0,
     });
-    setTasksAttachments({ TasksAttachments: file });
+    setTasksAttachments({ ["TasksAttachments"]: file });
   };
 
   // To View To-Do List Data
   useEffect(() => {
-    if (Object.keys(toDoListReducerData).length > 0) {
-      let viewData = toDoListReducerData;
+    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      let viewData = toDoListReducer.ToDoDetails;
       setTask({
         ...task,
         Title: viewData.title,
@@ -134,16 +120,16 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         PK_TID: viewData.pK_TID,
       });
       if (viewData.taskAssignedTo !== undefined) {
-        viewData.taskAssignedTo.forEach((data, index) => {
+        viewData.taskAssignedTo.map((data, index) => {
           if (data.pK_UID === TaskAssignedTo) {
           }
         });
       }
-      let listOfAssignees = toDoListReducerData.taskAssignedTo;
+      let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo;
       if (listOfAssignees !== undefined) {
         let tem = [];
         let temid = [];
-        listOfAssignees.forEach((data, index) => {
+        listOfAssignees.map((data, index) => {
           tem.push(data.name);
           temid.push(data.pK_UID);
         });
@@ -152,10 +138,10 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         setTaskAssignedTo(temid);
         setTaskAssignedName(tem);
       }
-      let filesUploaded = toDoListReducerData.taskAttachments;
+      let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
-        filesUploaded.forEach((data, index) => {
+        filesUploaded.map((data, index) => {
           tem.push({
             PK_TAID: data.pK_TAID,
             DisplayAttachmentName: data.displayAttachmentName,
@@ -165,10 +151,10 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           });
         });
 
-        setTasksAttachments({ TasksAttachments: tem });
+        setTasksAttachments({ ["TasksAttachments"]: tem });
       }
     }
-  }, [toDoListReducerData]);
+  }, [toDoListReducer.ToDoDetails]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -176,6 +162,18 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setUpdateFlagToDo(false);
+      // setTask({
+      //   ...task,
+      //   PK_TID: 1,
+      //   Title: "",
+      //   Description: "",
+      //   IsMainTask: true,
+      //   DeadLine: "",
+      //   CreationDateTime: "",
+      // });
+      // setTaskAssignedTo([]);
+      // setTasksAttachments({ ["TasksAttachments"]: [] });
+      // setTaskAssignedName([]);
     }
   }, [updateFlagToDo]);
 
@@ -198,12 +196,12 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = allAssigneesData;
+    let allAssignees = toDoListReducer.AllAssigneesData;
 
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      Object.keys(allAssignees).length > 0
+      allAssignees !== []
     ) {
       return allAssignees
         .filter((item) => {
@@ -238,6 +236,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   //Save To-Do List Function
   const updateToDoList = () => {
+    let TasksAttachments = tasksAttachments.TasksAttachments;
+
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -248,14 +248,33 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     };
 
     if (Task.DeadLineDate === "") {
-      showMessage(t("Date-missing"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "Date Missing",
+      });
     } else if (Task.DeadLineTime === "") {
-      showMessage(t("Time-missing"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "Time missing",
+      });
     } else if (Task.Title === "") {
-      showMessage(t("Title-missing"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "Title missing",
+      });
     } else if (Task.Description === "") {
-      showMessage(t("Description-missing"), "error", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "Description missing",
+      });
     } else {
+      // let Data = {
+      //   Task,
+      // };
       dispatch(UpdateToDoList(navigate, Task, t));
       setUpdateFlagToDo(false);
       setTask({
@@ -268,7 +287,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         CreationDateTime: "",
       });
       setTaskAssignedTo([]);
-      setTasksAttachments({ TasksAttachments: [] });
+      setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
     }
   };
@@ -283,13 +302,16 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
 
   useEffect(() => {
     if (
-      toDoListReducerResponseMessageData ===
-      "The Record has been Updated successfully"
+      toDoListReducer.Message === "The Record has been Updated successfully"
     ) {
-      showMessage(toDoListReducerResponseMessageData, "success", setOpen);
+      setOpen({
+        ...open,
+        flag: true,
+        message: toDoListReducer.Message,
+      });
       //
     }
-  }, [toDoListReducerResponseMessageData]);
+  }, [toDoListReducer.Message]);
 
   return (
     <>
@@ -298,6 +320,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           show={updateFlagToDo}
           setShow={setUpdateFlagToDo}
           className="modaldialog"
+          // ButtonTitle={ModalTitle}
+          // ModalTitle={"Modal Header"}
           ModalBody={
             <>
               <Row>
@@ -504,7 +528,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
           }
         />
       </Container>
-      <Notification open={open} setOpen={setOpen} />
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

@@ -8,21 +8,19 @@ import { Button, Modal } from "../../../../../../../components/elements";
 import { showCastVoteAgendaModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
-import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
+import {
+  CasteVoteForAgenda,
+  GetAgendaAndVotingInfo,
+} from "../../../../../../../store/actions/MeetingAgenda_action";
 
 const CastVoteAgendaModal = ({ rows,setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const castVoteAgendaPage = useSelector(
-    (state) => state.NewMeetingreducer.castVoteAgendaPage
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
   );
-  const AgendaVotingInfoData = useSelector(
-    (state) => state.MeetingAgendaReducer.AgendaVotingInfoData
-  );
-  const GetCurrentAgendaDetails = useSelector(
-    (state) => state.MeetingAgendaReducer.GetCurrentAgendaDetails
-  );
+
   let currentUserID = Number(localStorage.getItem("userID"));
 
   const [castVoteData, setCastVoteData] = useState([]);
@@ -33,15 +31,17 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
   console.log(currentAgendaDetails, "currentAgendaDetailscurrentAgendaDetails");
   useEffect(() => {
     if (
-      AgendaVotingInfoData !== undefined &&
-      AgendaVotingInfoData !== null &&
-      AgendaVotingInfoData.length !== 0
+      MeetingAgendaReducer.AgendaVotingInfoData !== undefined &&
+      MeetingAgendaReducer.AgendaVotingInfoData !== null &&
+      MeetingAgendaReducer.AgendaVotingInfoData.length !== 0
     ) {
-      setCastVoteData(AgendaVotingInfoData);
-      const selectedAnswerObject = AgendaVotingInfoData.votingAnswers.find(
-        (answer) =>
-          answer.votingAnswerID === AgendaVotingInfoData.selectedAnswerID
-      );
+      setCastVoteData(MeetingAgendaReducer.AgendaVotingInfoData);
+      const selectedAnswerObject =
+        MeetingAgendaReducer.AgendaVotingInfoData.votingAnswers.find(
+          (answer) =>
+            answer.votingAnswerID ===
+            MeetingAgendaReducer.AgendaVotingInfoData.selectedAnswerID
+        );
       if (selectedAnswerObject) {
         setSelectedAnswer(selectedAnswerObject);
       } else {
@@ -50,19 +50,23 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
     } else {
       setCastVoteData([]);
     }
-  }, [AgendaVotingInfoData]);
+  }, [MeetingAgendaReducer.AgendaVotingInfoData]);
 
   useEffect(() => {
     if (
-      GetCurrentAgendaDetails !== null &&
-      GetCurrentAgendaDetails !== undefined &&
-      GetCurrentAgendaDetails.length !== 0
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
     ) {
-      setCurrentAgendaDetails(GetCurrentAgendaDetails);
+      console.log(
+        MeetingAgendaReducer.GetCurrentAgendaDetails,
+        "GetCurrentAgendaDetailsGetCurrentAgendaDetails"
+      );
+      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
     } else {
       setCurrentAgendaDetails([]);
     }
-  }, [GetCurrentAgendaDetails]);
+  }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
   const handleRadioChange = (e) => {
     const selectedAnswerID = e.target.value;
@@ -70,6 +74,8 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
       (votingAnswer) => votingAnswer.votingAnswerID === selectedAnswerID
     );
     setSelectedAnswer(selectedObject);
+
+    console.log("selectedAnswer", selectedAnswer);
   };
 
   const castVoteHandler = () => {
@@ -89,13 +95,22 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
       ],
     };
     let isMainAgenda =  currentAgendaDetails && "id" in currentAgendaDetails  ;
+ 
+      
     dispatch(CasteVoteForAgenda(Data, navigate, t,isMainAgenda, setRows));
   };
+
+  console.log("Cast Vote Screen Reducer", MeetingAgendaReducer);
+
+  console.log("Cast Vote Data", castVoteData);
+
+  console.log("selectedAnswer", selectedAnswer);
+  console.log("Cast Vote Data rows", rows)
 
   return (
     <section>
       <Modal
-        show={castVoteAgendaPage}
+        show={NewMeetingreducer.castVoteAgendaPage}
         setShow={dispatch(showCastVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
