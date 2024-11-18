@@ -1537,7 +1537,7 @@ const NewMeeting = () => {
       key: "status",
       width: "90px",
       ellipsis: true,
-      align: "center",
+      align: currentLanguage === "en" ? "center" : "right",
 
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (

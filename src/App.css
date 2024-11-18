@@ -1050,7 +1050,7 @@ body[dir="rtl"] svg.DatePickerIcon {
   color: #6172d6 !important;
   font-weight: 600;
   font-size: 14px !important;
-  margin-right: 10px !important;
+  margin-right: 0px !important;
 }
 
 .ParticipantAV .ant-table-thead > tr * {
@@ -1062,7 +1062,7 @@ body[dir="rtl"] svg.DatePickerIcon {
 
 body[dir="rtl"] .ant-table-thead > tr * {
   font-weight: 600 !important;
-  margin-left: 10px !important;
+  margin-left: 14px !important;
 }
 
 /* .ant-table-row {
@@ -6342,6 +6342,10 @@ th.ant-table-cell.notification-class-table {
   line-height: 15px !important;
   font-size: 16px !important;
   font-weight: 700 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
 }
 
 body[dir="rtl"] .Tableheading {

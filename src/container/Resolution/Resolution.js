@@ -1454,7 +1454,7 @@ const Resolution = () => {
                                   <>
                                     <img
                                       src={BlackCrossIcon}
-                                      className="cursor-pointer"
+                                      className={styles["BlackCrossiconClass"]}
                                       draggable="false"
                                       alt=""
                                       onClick={handleResettingPage}
