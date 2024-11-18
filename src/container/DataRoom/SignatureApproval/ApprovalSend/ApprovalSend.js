@@ -76,10 +76,9 @@ const ApprovalSend = () => {
       className: "nameParticipant",
       align: "start",
       ellipsis: true,
-      width: 200,
+      width: "30%",
       sortDirections: ["ascend", "descend"],
-      sortOrder: "ascend",
-      sorter: (a, b) => b.name - a.name, // Custom sorter function for sorting by name
+      sorter: (a, b) => a.fileName - b.fileName, // Custom sorter function for sorting by name
       onHeaderCell: () => ({
         onClick: () => {
           setFileNameSort((order) => {
@@ -90,6 +89,7 @@ const ApprovalSend = () => {
         },
       }),
       render: (text, record) => {
+        console.log(record, "texttexttext")
         return (
           <span
             className='d-flex gap-2 align-items-center cursor-pointer'
@@ -106,7 +106,7 @@ const ApprovalSend = () => {
         <>
           <span>
             {t("Signatories")}
-            {fileNameSort === "descend" ? (
+            {signatoriesSort === "descend" ? (
               <img src={DescendIcon} alt='' />
             ) : (
               <img src={AscendIcon} alt='' />
@@ -119,7 +119,7 @@ const ApprovalSend = () => {
       className: "signatories",
       ellipsis: true,
       sortOrder: "ascend",
-      width: 150,
+      width: "20%",
       align: "center",
       sortDirections: ["ascend", "descend"],
       sorter: (a, b) => b.name - a.name,
@@ -160,7 +160,7 @@ const ApprovalSend = () => {
       key: "sentOn",
       className: "leaveTimeParticipant",
 
-      width: 100,
+      width: "15%",
 
       ellipsis: true,
       render: (text, record) => {
@@ -181,7 +181,7 @@ const ApprovalSend = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: 150,
+      width: "30%",
 
       className: "statusParticipant",
       filters: reviewAndSignatureStatus,
@@ -213,7 +213,7 @@ const ApprovalSend = () => {
       dataIndex: "delete",
       key: "delete",
       align: "center",
-      width: 50,
+      width: "5%",
       render: (text, record) => {
         // Render status text with appropriate styles
         if (Number(record?.workFlowStatusID) === 4) {

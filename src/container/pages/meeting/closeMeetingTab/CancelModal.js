@@ -123,7 +123,7 @@ const CancelButtonModal = () => {
             Length: 50,
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
-          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
@@ -198,7 +198,7 @@ const CancelButtonModal = () => {
             Length: 50,
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
-          localStorage.setItem("MeetingPageRows", 50);
+          localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }

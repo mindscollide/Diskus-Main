@@ -423,23 +423,18 @@ const SearchMeeting_Fail = (message) => {
 const searchUserMeeting = (navigate, searchData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
-  let meetingPageCurrent = JSON.parse(
-    localStorage.getItem("MeetingPageCurrent")
-  );
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let Data = {
     Date: searchData?.Date !== "" ? searchData?.Date : "",
     Title: searchData?.Title !== "" ? searchData?.Title : "",
     HostName: searchData?.HostName !== "" ? searchData?.HostName : "",
     UserID: userID,
-    PageNumber:
-      meetingPageCurrent !== null && meetingPageCurrent !== undefined
-        ? meetingPageCurrent
-        : 1,
+    PageNumber: meetingPageCurrent !== null ? meetingPageCurrent : 1,
     Length:
-      meetingpageRow !== null && meetingpageRow !== undefined
+      meetingpageRow !== null
         ? meetingpageRow
-        : 50,
+        : 30,
   };
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
@@ -455,7 +450,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchUserMeeting(navigate, searchData, t));
