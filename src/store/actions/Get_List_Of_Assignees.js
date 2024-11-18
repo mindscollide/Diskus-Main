@@ -193,10 +193,9 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
               if (checkFlag === 2) {
                 await dispatch(getCalendarDataResponse(navigate, t, createrID));
               } else if (checkFlag === 4) {
-                let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent = parseInt(
-                  localStorage.getItem("MeetingPageCurrent")
-                );
+                let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent") || 1;
                 let currentView = localStorage.getItem("MeetingCurrentView");
 
                 let searchData = {
@@ -205,7 +204,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
+                  Length:  Number(meetingpageRow),
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
@@ -295,9 +294,8 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
             ) {
               if (checkFlag === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent = parseInt(
-                  localStorage.getItem("MeetingPageCurrent")
-                );
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent") || 1;
                 let searchData = {
                   Date: "",
                   Title: "",
@@ -453,7 +451,7 @@ const ViewMeeting = (
                   dispatch(GetAllReminders(navigate, t));
                   setEditFlag(true);
                 } else if (no === 3 || no === 10) {
-                  setViewFlag(true)
+                  setViewFlag(true);
                   setCalendarViewModal(true);
                 } else if (no === 4) {
                   setViewMeetingModal(true);
@@ -588,9 +586,8 @@ const CancelMeeting = (navigate, object, t, value) => {
                 dispatch(getMeetingbyGroupApi(navigate, t, Data));
               } else if (value === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent = parseInt(
-                  localStorage.getItem("MeetingPageCurrent")
-                );
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent") || 1;
                 let currentView = localStorage.getItem("MeetingCurrentView");
                 let searchData = {
                   Date: "",

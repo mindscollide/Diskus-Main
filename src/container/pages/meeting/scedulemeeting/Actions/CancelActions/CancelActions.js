@@ -32,7 +32,7 @@ const CancelActions = ({ setSceduleMeeting, currentMeeting }) => {
       AssignedToName: "",
       UserID: Number(userID),
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
     };
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   };

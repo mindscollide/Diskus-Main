@@ -56,6 +56,7 @@ const ReviewSignature = () => {
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
+  console.log(currentLanguage, "currentLanguagecurrentLanguage");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -68,6 +69,8 @@ const ReviewSignature = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalDataLnegth, setTotalDataLength] = useState(0);
   const [isScrollling, setIsScrolling] = useState(false);
+  const [sortFileNameBy, setSortFileNameBy] = useState(null);
+
   const [sortOrderRequestBy, setSortOrderRequestBy] = useState(null);
   const [sortOrderDateTime, setSortOrderDateTime] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -167,13 +170,35 @@ const ReviewSignature = () => {
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
-      title: t("Document-name"),
+      title: (
+        <>
+          <span className='d-flex  gap-2 align-items-center'>
+            {t("Document-name")}
+            {sortFileNameBy === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "fileName",
       key: "fileName",
       className: "nameParticipant",
       width: "300px",
-      align: currentLanguage === "en" ? "left" : "right",
+      align: "start",
       ellipsis: true,
+      sorter: (a, b) =>
+        a.fileName.toLowerCase().localeCompare(b.fileName.toLowerCase()),
+      onHeaderCell: () => ({
+        onClick: () => {
+          setSortFileNameBy((order) => {
+            if (order === "descend") return "ascend";
+            if (order === "ascend") return null;
+            return "descend";
+          });
+        },
+      }),
       render: (text, record) => (
         <p
           className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
@@ -186,7 +211,7 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center'>
+          <span className='d-flex justify-content-center gap-2 align-items-center'>
             {t("Requested-by")}{" "}
             {sortOrderRequestBy === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -200,7 +225,6 @@ const ReviewSignature = () => {
       key: "creatorName",
       className: "emailParticipant",
       width: "180px",
-      align: "center",
       ellipsis: true,
       sorter: (a, b) =>
         a.creatorName.toLowerCase().localeCompare(b.creatorName.toLowerCase()),
@@ -230,7 +254,7 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center'>
+          <span className='d-flex justify-content-center gap-2 align-items-center'>
             {t("Date-and-time")}{" "}
             {sortOrderDateTime === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -278,11 +302,12 @@ const ReviewSignature = () => {
       ),
       filterDropdown: () => (
         <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
-          <div />
-        </Dropdown>
+          menu={menu}
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}
+        />
+
+        // </Dropdown>
       ),
       render: (text, record) => {
         const { actorStatusID, status } = record;
@@ -505,7 +530,7 @@ const ReviewSignature = () => {
                       </span>
                     </section>
                   </>
-                ), 
+                ),
               }}
               rows={reviewSignature}
               // scroll={scroll}

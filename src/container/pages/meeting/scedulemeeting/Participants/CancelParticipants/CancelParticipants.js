@@ -36,7 +36,7 @@ export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
       HostName: "",
       UserID: Number(userID),
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };

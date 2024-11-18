@@ -22,7 +22,7 @@ import {
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Events = () => {
-  const UpcomingEventsData = useSelector(
+  const UpcomingEventsDataReducerData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
 
@@ -51,22 +51,20 @@ const Events = () => {
   //  Set Upcoming Events
   useEffect(() => {
     try {
-      if (
-        UpcomingEventsData.length > 0 &&
-        UpcomingEventsData !== null &&
-        UpcomingEventsData !== undefined
-      ) {
+      if (UpcomingEventsDataReducerData?.length > 0) {
         // Create a new array with updated objects without mutating the original state
-        const updatedUpcomingEvents = UpcomingEventsData.map((event) => {
-          // Assuming statusID is within each event object
-          return {
-            ...event, // Spread the properties of the original event object
-            meetingDetails: {
-              ...event.meetingDetails, // Spread the properties of meetingDetails
-              statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
-            },
-          };
-        });
+        const updatedUpcomingEvents = UpcomingEventsDataReducerData.map(
+          (event) => {
+            // Assuming statusID is within each event object
+            return {
+              ...event, // Spread the properties of the original event object
+              meetingDetails: {
+                ...event.meetingDetails, // Spread the properties of meetingDetails
+                statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
+              },
+            };
+          }
+        );
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
@@ -76,7 +74,7 @@ const Events = () => {
     } catch (error) {
       // Log any errors for debugging
     }
-  }, [UpcomingEventsData]);
+  }, [UpcomingEventsDataReducerData]);
 
   useEffect(() => {
     if (MeetingStatusSocket !== null) {
@@ -158,24 +156,24 @@ const Events = () => {
 
   const upcomingEventsHandler = (upComingEvents) => {
     console.log("upComingEvents", upComingEvents);
-    // let flag = false;
-    // let indexforUndeline = null;
-    // try {
-    //   upComingEvents.map((upcomingEventsData, index) => {
-    //     let { isSame } = isSameAsToday(
-    //       `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
-    //     );
-    //     console.log(isSame,"isSameisSame")
-    //     if (isSame) {
-    //       if (indexforUndeline === null && flag === false) {
-    //         flag = true;
-    //         indexforUndeline = index;
-    //       }
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    let flag = false;
+    let indexforUndeline = null;
+    try {
+      upComingEvents.map((upcomingEventsData, index) => {
+        let { isSame } = isSameAsToday(
+          `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
+        );
+        console.log(isSame, "isSameisSame");
+        if (isSame) {
+          if (indexforUndeline === null && flag === false) {
+            flag = true;
+            indexforUndeline = index;
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return upComingEvents.map((upcomingEventsData, index) => {
       let meetingDateTime =
@@ -212,18 +210,13 @@ const Events = () => {
       let checkisTodayorActive =
         upcomingEventsData?.meetingDetails?.statusID === 1 ||
         upcomingEventsData?.meetingDetails?.statusID === 10;
-      console.log(
-        upcomingEventsData.meetingDetails.statusID === 1,
-        minutesDifference < 60,
-        upcomingEventsData.meetingDetails.statusID === 10,
-        checkisTodayorActive,
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8),
-        getCurrentDate,
-        minutesDifference,
-        "upcomingEventsDataupcomingEventsData"
-      );
+
       let { isSame } = isSameAsToday(
         `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
+      );
+      console.log(
+        { isSame, checkisTodayorActive, flag, indexforUndeline },
+        "isSameisSameisSameisSame"
       );
       return (
         <>
@@ -240,7 +233,7 @@ const Events = () => {
                     minutesDifference < 60) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
-                    : ""
+                    : `${styles["event-details-block"]}`
                 }>
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
@@ -326,7 +319,10 @@ const Events = () => {
             </div>
           ) : (
             <>
-              <span className={styles["bordertop"]} />
+              {flag && indexforUndeline !== null ? (
+                <span className={styles["bordertop"]} />
+              ) : null}
+
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&

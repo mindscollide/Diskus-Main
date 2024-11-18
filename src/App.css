@@ -7088,7 +7088,7 @@ a.pendingApprovalsNav.nav-link {
 
 .PendingApprovalsTable .ant-table-thead > tr * {
   font-weight: 700 !important;
-  padding-bottom: 5px !important;
+  /* padding-bottom: 5px !important; */
   font-size: 16px !important;
   color: #5f78d6 !important;
 }

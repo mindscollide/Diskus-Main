@@ -587,9 +587,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   dispatch(uploadGlobalFlag(false));
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                  let meetingPageCurrent = parseInt(
-                    localStorage.getItem("MeetingPageCurrent")
-                  );
+                  let meetingPageCurrent =
+                    localStorage.getItem("MeetingPageCurrent");
                   let userID = localStorage.getItem("userID");
                   let searchData = {
                     Date: "",
@@ -601,7 +600,7 @@ const SaveMeetingDetialsNewApiFunction = (
                         ? Number(meetingPageCurrent)
                         : 1,
                     Length:
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                      meetingpageRow !== null ? Number(meetingpageRow) : 30,
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
                   };
@@ -2865,8 +2864,8 @@ const setProposedMeetingDateApiFunc = (
                 setProposedNewMeeting(false);
                 let userID = localStorage.getItem("userID");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent = parseInt(
-                  localStorage.getItem("MeetingPageCurrent")
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent"
                 );
                 localStorage.setItem("MeetingCurrentView", 2);
 
@@ -2879,7 +2878,7 @@ const setProposedMeetingDateApiFunc = (
                     meetingPageCurrent !== null
                       ? Number(meetingPageCurrent)
                       : 1,
-                  Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                  Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
                   PublishedMeetings: false,
                 };
                 console.log("chek search meeting");
@@ -3002,8 +3001,8 @@ const SetMeetingResponseApiFunc = (
               );
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = parseInt(
-                localStorage.getItem("MeetingPageCurrent")
+              let meetingPageCurrent = 
+                localStorage.getItem("MeetingPageCurrent"
               );
               localStorage.setItem("MeetingCurrentView", 2);
               setViewProposeDatePoll(false);
@@ -3014,7 +3013,7 @@ const SetMeetingResponseApiFunc = (
                 UserID: Number(userID),
                 PageNumber:
                   meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
                 PublishedMeetings: false,
               };
               console.log("chek search meeting");

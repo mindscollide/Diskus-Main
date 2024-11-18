@@ -654,8 +654,8 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
 
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = parseInt(
-                localStorage.getItem("MeetingPageCurrent")
+              let meetingPageCurrent = 
+                localStorage.getItem("MeetingPageCurrent"
               );
               let meetingTaskData = {
                 MeetingID: Number(dataDelete.MeetingID),
@@ -665,7 +665,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
                 UserID: Number(userID),
                 PageNumber:
                   meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
               };
               dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
             } else if (

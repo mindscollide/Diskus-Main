@@ -615,8 +615,8 @@ const Minutes = ({
     // dispatch(showUnsaveMinutesFileUpload(true));
     let userID = localStorage.getItem("userID");
     let meetingpageRow = localStorage.getItem("MeetingPageRows");
-    let meetingPageCurrent = parseInt(
-      localStorage.getItem("MeetingPageCurrent")
+    let meetingPageCurrent = 
+      localStorage.getItem("MeetingPageCurrent"
     );
     let currentView = localStorage.getItem("MeetingCurrentView");
     if (agenda) {
@@ -639,7 +639,7 @@ const Minutes = ({
           UserID: Number(userID),
           PageNumber:
             meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };

@@ -28,6 +28,7 @@ section.emptyScreen-height {
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;
+  padding: 0 20px;
 }
 
 .pendingApprovalPaper::-webkit-scrollbar {
@@ -57,8 +58,7 @@ section.emptyScreen-height {
 .activeMinutes:focus-visible,
 .activeMinutes:focus-within {
   background: #6172d6 !important;
-  width: 125px;
-  height: 28px;
+  padding: 8px 20px;
   font-weight: 600;
   font-size: 12px;
   border-color: #6172d6 !important;
@@ -75,8 +75,7 @@ section.emptyScreen-height {
 .inActiveMinutes:focus-visible,
 .inActiveMinutes:focus-within {
   background: #fff !important;
-  width: 125px;
-  height: 28px;
+  padding: 8px 20px;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
