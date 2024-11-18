@@ -329,6 +329,16 @@ body[dir="rtl"] .Resolution-Current-btn_Active {
   height: 20px;
 }
 
+body[dir="rtl"] .Search_IconWithCrossIcon {
+  cursor: pointer !important;
+  display: block;
+  top: 6px !important;
+  position: absolute;
+  left: 6%;
+  width: 20px;
+  height: 20px;
+}
+
 body[dir="rtl"] .Search_Icon {
   right: 93% !important;
   cursor: pointer !important;
