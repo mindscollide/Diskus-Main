@@ -1,5 +1,4 @@
 import Paho from "paho-mqtt";
-import { useEffect } from "react";
 import { setClient } from "../../store/actions/Auth2_actions";
 import Helper from "./history_logout";
 
@@ -22,8 +21,6 @@ export const mqttConnection = (subscribeID, dispatch) => {
     console.log("Connection lost:", responseObject.errorMessage);
     setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Reconnect after 3 seconds
   };
-
-  // newClient.onMessageArrived = onMessageArrived;
 
   const options = {
     onSuccess: () => {

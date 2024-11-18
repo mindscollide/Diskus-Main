@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./NewDashboard.module.css";
 import "./NewDashbaord.css";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Stats from "./Stats/Stats";
 import NewCalendar from "./Calendar/Calendar";
 import Events from "./Events/Events";
 import Task from "./Tasks/Task";
 import RecentActivity from "./RecentActivity/RecentActivity";
 import Notes from "./Notes/Notes";
-import moment, { locale } from "moment";
+import moment from "moment";
 import { Button, Modal } from "../../components/elements";
 import VerificationFailedIcon from "../../assets/images/failed.png";
 import { useTranslation } from "react-i18next";
-import { cleareMessage, setLoader } from "../../store/actions/Auth2_actions";
+import { setLoader } from "../../store/actions/Auth2_actions";
 import { useNavigate } from "react-router-dom";
 import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
 
 const NewDashobard = () => {
-
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
@@ -43,7 +42,7 @@ const NewDashobard = () => {
   }, [lang]);
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
@@ -82,7 +81,7 @@ const NewDashobard = () => {
                 <NewCalendar />
               </section>
               <section className={styles["EventBox"]}>
-                <span className={styles["EventBox_heading"]}>Events</span>
+                <span className={styles["EventBox_heading"]}>{t("Events")}</span>
                 <section className={styles["Events_content"]}>
                   <Events />
                 </section>

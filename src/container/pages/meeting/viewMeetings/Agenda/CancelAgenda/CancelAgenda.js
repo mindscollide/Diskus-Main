@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./CancelAgenda.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -11,9 +10,9 @@ import { Button, Modal } from "../../../../../../components/elements";
 const CancelAgenda = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const cancelAgenda = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgenda
+  );
   const handleNOFunctionality = () => {
     dispatch(showCancelModalAgenda(false));
   };
@@ -25,7 +24,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelAgenda}
+        show={cancelAgenda}
         setShow={dispatch(showCancelModalAgenda)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

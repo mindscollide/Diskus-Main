@@ -1,10 +1,8 @@
 import React from "react";
 import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./ViewUnsaved.module.css";
-import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import {
   searchNewUserMeeting,
-  showUnsaveMinutesFileUpload,
   showUnsavedViewMinutesModal,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
@@ -19,7 +17,7 @@ const ViewUnsavedModal = ({ setMinutes, setSceduleMeeting }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNoFunctionality = () => {

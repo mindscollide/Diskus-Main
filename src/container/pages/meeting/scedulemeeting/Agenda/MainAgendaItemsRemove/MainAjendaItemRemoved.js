@@ -1,27 +1,25 @@
 import React from "react";
-import {
-  Modal,
-  Button,
-  TextField,
-  Checkbox,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./MainAjendaItemItemRemoved.module.css";
 import { showMainAgendaItemRemovedModal } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-const MainAjendaItemRemoved = ({ setRows, rows, mainAgendaRemovalIndex,setMainAgendaRemovalIndex }) => {
+const MainAjendaItemRemoved = ({
+  setRows,
+  rows,
+  mainAgendaRemovalIndex,
+  setMainAgendaRemovalIndex,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleProceesBtn = () => {
-    let mainRemoveAgenda=[...rows]
+    let mainRemoveAgenda = [...rows];
     mainRemoveAgenda.splice(mainAgendaRemovalIndex, 1);
     setRows(mainRemoveAgenda);
-    setMainAgendaRemovalIndex(0)
+    setMainAgendaRemovalIndex(0);
     dispatch(showMainAgendaItemRemovedModal(false));
   };
   return (

@@ -6,7 +6,7 @@ import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
-import { Button, Paper } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 const TapOptions = () => {
@@ -25,7 +25,7 @@ const TapOptions = () => {
           sm={12}
           className="d-flex justify-content-center align-items-center min-vh-100"
         >
-          <Paper
+          <span
             className={styles["loginbox_auth_paper_for_openyourrealmextra"]}
           >
             <Col
@@ -134,7 +134,7 @@ const TapOptions = () => {
                 </Col>
               </Row>
             </Col>
-          </Paper>
+          </span>
         </Col>
 
         <Col md={7} lg={7} sm={12} className="">
@@ -145,7 +145,6 @@ const TapOptions = () => {
                 src={img9}
                 alt="auth_icon"
                 className={styles["phone-image"]}
-                // width="320px"
                 height="417px"
               />
             </Col>
@@ -154,7 +153,6 @@ const TapOptions = () => {
                 draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
-                // width="600px"
                 className={styles["Verification_Code_Three_Auth_Icon"]}
               />
             </Col>

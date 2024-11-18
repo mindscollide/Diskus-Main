@@ -10,8 +10,6 @@
   opacity: 100% !important;
 }
 
-
-
 .ModalHeader {
   width: 100% !important;
   margin: 0;
@@ -37,10 +35,9 @@
 
 .Share_a_folder {
   font-size: 20px !important;
-  color: #6172D6;
+  color: #6172d6;
   font-weight: 600;
 }
-
 
 .exclaimation_mark {
   position: absolute !important;
@@ -55,13 +52,13 @@
 
 .Bold_heading {
   font-size: 12px !important;
-  color: #6172D6;
+  color: #6172d6;
   font-weight: 700;
 }
 
 .Email {
   font-size: 8px !important;
-  color: #6172D6;
+  color: #6172d6;
   font-weight: 600;
 }
 
@@ -78,7 +75,6 @@
 .Box_Folder {
   width: 134px !important;
   padding: 12px 0px;
-  /* height: 39px !important; */
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
   margin-left: 10px !important;
@@ -98,7 +94,7 @@
 .Open_sharing_button {
   padding: 12px 30px !important;
   color: #ffffff;
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
   font-weight: 600;
@@ -108,7 +104,7 @@
 .Open_sharing_button:is(:hover, :active, :visited, :focus, :focus-visible) {
   padding: 12px 30px !important;
   color: #ffffff;
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
   font-weight: 600;

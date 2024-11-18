@@ -19,9 +19,8 @@ import {
   SendAgendaPDFAsEmail,
   clearResponseMessage,
 } from "../../../../../../store/actions/MeetingAgenda_action";
-import committeeicon from "./../../../../../../assets/images/committeedropdown.svg";
-import GroupIcon from "./../../../../../../assets/images/groupdropdown.svg";
 import CrossEmail from "./../AV-Images/Cross-Email.png";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const ShareEmailModal = ({ setShareEmailView }) => {
   const { t } = useTranslation();
@@ -40,13 +39,10 @@ const ShareEmailModal = ({ setShareEmailView }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleCancelButton = () => {
-    setShareEmailView(false);
-  };
 
   const [selectedsearch, setSelectedsearch] = useState([]);
 
@@ -78,79 +74,8 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
-        // if (Object.keys(newOrganizersData.groups).length > 0) {
-        //   newOrganizersData.groups.map((a, index) => {
-        //     let newData = {
-        //       value: a.groupID,
-        //       name: a.groupName,
-        //       label: (
-        //         <>
-        //           <Row>
-        //             <Col
-        //               lg={12}
-        //               md={12}
-        //               sm={12}
-        //               className="d-flex gap-2 align-items-center"
-        //             >
-        //               <img
-        //                 src={GroupIcon}
-        //                 height="16.45px"
-        //                 width="18.32px"
-        //                 draggable="false"
-        //                 alt=""
-        //               />
-        //               <span className={styles["NameDropDown"]}>
-        //                 {a.groupName}
-        //               </span>
-        //             </Col>
-        //           </Row>
-        //         </>
-        //       ),
-        //       type: 1,
-        //     };
-        //     temp.push(newData);
-        //   });
-        // }
-        // if (Object.keys(newOrganizersData.committees).length > 0) {
-        //   newOrganizersData.committees.map((a, index) => {
-        //     let newData = {
-        //       value: a.committeeID,
-        //       name: a.committeeName,
-
-        //       label: (
-        //         <>
-        //           <Row>
-        //             <Col
-        //               lg={12}
-        //               md={12}
-        //               sm={12}
-        //               className="d-flex gap-2 align-items-center"
-        //             >
-        //               <img
-        //                 src={committeeicon}
-        //                 width="21.71px"
-        //                 height="18.61px"
-        //                 draggable="false"
-        //                 alt=""
-        //               />
-        //               <span className={styles["NameDropDown"]}>
-        //                 {a.committeeName}
-        //               </span>
-        //             </Col>
-        //           </Row>
-        //         </>
-        //       ),
-        //       type: 2,
-        //     };
-        //     temp.push(newData);
-        //   });
-        // }
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          console.log(
-            newOrganizersData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
-          newOrganizersData.organizationUsers.map((a, index) => {
+          newOrganizersData.organizationUsers.map((a) => {
             let newData = {
               value: a.emailAddress,
               name: a.userName,
@@ -165,7 +90,6 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -201,13 +125,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(value)) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Invalid-email-format"),
-        }),
-        3000
-      );
+      showMessage(t("Invalid-email-format"), "error", setOpen);
       return;
     }
 
@@ -248,26 +166,13 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
       dispatch(SendAgendaPDFAsEmail(Data, navigate, t, setShareEmailView));
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Atleast-add-one-user"),
-        }),
-        3000
-      );
+      showMessage(t("Atleast-add-one-user"), "error", setOpen);
     }
-
   };
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Invalid-data")) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Invalid-data"),
-        }),
-        3000
-      );
+      showMessage(t("Invalid-data"), "error", setOpen);
       dispatch(clearResponseMessage(""));
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -415,7 +320,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
         }
       />
 
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

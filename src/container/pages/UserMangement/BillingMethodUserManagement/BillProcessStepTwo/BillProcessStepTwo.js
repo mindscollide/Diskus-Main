@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./BillProcessStepTwo.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
@@ -9,11 +9,7 @@ import {
   regexOnlyCharacters,
   regexOnlyNumbers,
 } from "../../../../../commen/functions/regex";
-import { getCountryNamesAction } from "../../../../../store/actions/GetCountryNames";
 
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 const BillProcessStepTwo = ({
   billingAddress,
   setBillingAddress,
@@ -21,8 +17,6 @@ const BillProcessStepTwo = ({
   countryOnSelect,
 }) => {
   const { t } = useTranslation();
-  const { countryNamesReducer } = useSelector((state) => state);
-  console.log(countryNamesReducer, "countryNamesReducer");
 
   //onChange Method For Text Field
   const billingAddressDetailsHandler = (e) => {

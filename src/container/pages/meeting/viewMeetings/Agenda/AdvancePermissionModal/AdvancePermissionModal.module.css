@@ -107,11 +107,6 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   border-top-right-radius: 10px !important;
 }
 
-/* :where(.css-dev-only-do-not-override-1e3x2xa).ant-layout
-  .ant-layout-sider-children {
-  width: 250px !important;
-} */
-
 :where(
     .css-dev-only-do-not-override-1e3x2xa
   ).ant-menu-light.ant-menu-root.ant-menu-inline,
@@ -282,10 +277,7 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   background: #f6f6f6 !important;
 }
 .SubAgendaBackground {
-  /* background: #f6f6f6 !important; */
   display: flex !important;
-}
-.SubAgendaBox {
 }
 
 .SidebarSection_expanded {

@@ -9,7 +9,6 @@ import { UploadTextField } from "../../../../components/elements";
 import {
   searchNewUserMeeting,
   showCancelModalmeetingDeitals,
-  showGetAllMeetingDetialsFailed,
   scheduleMeetingPageFlag,
   viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
@@ -30,7 +29,6 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
 } from "../../../../store/actions/NewMeetingActions";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import { Col, Row } from "react-bootstrap";
 
 const CancelButtonModal = () => {
@@ -38,10 +36,15 @@ const CancelButtonModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let navigateLocation = localStorage.getItem("navigateLocation");
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const UploadGlobalFlags = useSelector(
+    (state) => state.NewMeetingreducer.uploadGlobalFlag
+  );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
@@ -49,7 +52,7 @@ const CancelButtonModal = () => {
   };
 
   const handleYesFunctionality = async (event) => {
-    if (NewMeetingreducer.uploadGlobalFlag === true) {
+    if (UploadGlobalFlags === true) {
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
@@ -109,9 +112,7 @@ const CancelButtonModal = () => {
             Length: Number(meetingpageRow),
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
           let searchData = {
             Date: "",
@@ -124,21 +125,14 @@ const CancelButtonModal = () => {
           };
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
-          // localStorage.setItem("MeetingCurrentView", 1);
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     }
   };
 
   const handleUploadFile = async ({ file }) => {
-    // console.log(event.target, "handleUploadFilehandleUploadFile");
-    // const file = event.target.files[0]; // Extract the file from the event
-    // console.log(file, "handleUploadFilehandleUploadFile");
-    // navigate("/Diskus/dataroom", { state: file });
-    if (NewMeetingreducer.uploadGlobalFlag === true) {
+    if (UploadGlobalFlags === true) {
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
@@ -159,8 +153,6 @@ const CancelButtonModal = () => {
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
       dispatch(uploadGlobalFlag(false));
-      // navigate(`/DisKus/Meeting`);
-      console.log(file, "handleUploadFilehandleUploadFile");
       navigate("/Diskus/dataroom", { state: file });
     } else {
       dispatch(showCancelModalmeetingDeitals(false));
@@ -195,9 +187,7 @@ const CancelButtonModal = () => {
             Length: Number(meetingpageRow),
             PublishedMeetings: Number(currentView) === 1 ? true : false,
           };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
           let searchData = {
             Date: "",
@@ -210,10 +200,7 @@ const CancelButtonModal = () => {
           };
           localStorage.setItem("MeetingPageRows", 50);
           localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-          // dispatch(allAssignessList(navigate, t, false));
-          // localStorage.setItem("MeetingCurrentView", 1);
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       }
     }
@@ -223,18 +210,8 @@ const CancelButtonModal = () => {
     <section>
       {" "}
       <section>
-        {/* {
-          <div className="d-none">
-            {" "}
-            <UploadTextField
-              title={t("Upload-document")}
-              handleFileUploadRequest={handleUploadFile}
-              // setProgress={setProgress}
-            />
-          </div>
-        } */}
         <Modal
-          show={NewMeetingreducer.cancelModalMeetingDetails}
+          show={cancelModalMeetingDetails}
           setShow={dispatch(showCancelModalmeetingDeitals)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
@@ -248,7 +225,8 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Any-unsaved-changes-will-be")}
                   </span>
@@ -259,7 +237,8 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Lost-continue")}
                   </span>
@@ -274,18 +253,18 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center gap-2'>
+                  className="d-flex justify-content-center gap-2"
+                >
                   <Button
                     text={t("No")}
                     className={styles["Yes_unsave_File_Upload"]}
                     onClick={handleNOFunctionality}
                   />
-                  {NewMeetingreducer.uploadGlobalFlag === true ? (
+                  {UploadGlobalFlags === true ? (
                     <UploadTextField
                       title={t("Yes")}
                       handleFileUploadRequest={handleUploadFile}
                       className={styles["No_unsave_File_Upload"]}
-                      // setProgress={setProgress}
                     />
                   ) : (
                     <Button

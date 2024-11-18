@@ -127,7 +127,6 @@ body[dir="rtl"] .packagecard_pricebox_Active {
 
 .packagecard_one {
   border: 1px solid #ccc;
-  /* width: 155px !important; */
 }
 
 .selectedPackage_priceDetails {
@@ -315,7 +314,6 @@ body[dir="rtl"] img.package-icon {
   right: 140px;
   padding: 8px 40px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }
@@ -377,7 +375,6 @@ body[dir="rtl"] .languageIcon {
   background-color: none;
   text-align: center;
   cursor: pointer;
-  /* opacity: 0.7; */
   border-right: 1px solid #e1e1e1;
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
@@ -552,4 +549,24 @@ body[dir="rtl"] .signUp_goBack {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.languageSelector-Signup {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector-Signup {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
 }

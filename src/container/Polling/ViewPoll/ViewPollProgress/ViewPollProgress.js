@@ -5,11 +5,9 @@ import {
   Button,
   Checkbox,
   CustomRadio2,
-  TextField,
 } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
-import profile from "../../../../assets/images/profile_polls.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
@@ -20,49 +18,52 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerviewPollProgress = useSelector(
+    (state) => state.PollsReducer.viewPollProgress
+  );
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
     Date: "",
     AllowMultipleAnswers: false,
   });
-  const [checkboxesState, setCheckboxesState] = useState({
-    checkedYes: true,
-  });
+
   const [viewpollMembers, setViewPollmembers] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll;
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      let pollData = PollsReducerAllpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollParticipants = pollData.pollParticipants;
       let pollOptions = pollData.pollOptions;
       let pollSelectedAnswers = pollData.selectedAnswers;
 
-      console.log(pollDetails, "pollDetailspollDetails");
-
       let memberpollsprogressView = [];
       let newOption = [];
 
       if (Object.keys(pollParticipants).length > 0) {
-        pollParticipants.map((data, index) => {
+        pollParticipants.forEach((data, index) => {
           memberpollsprogressView.push(data);
         });
       }
 
       if (pollSelectedAnswers.length > 0) {
-        pollOptions.map((newdata, index) => {
+        pollOptions.forEach((newdata, index) => {
           let find = pollSelectedAnswers.find(
             (data, index) => data.pollAnswerID === newdata.pollAnswerID
           );
-          if (find != undefined) {
+          if (find !== undefined) {
             let changeOptionData = {
               answer: newdata.answer,
               pollAnswerID: newdata.pollAnswerID,
@@ -84,7 +85,7 @@ const ViewPollProgress = () => {
         });
         setPollsOption(newOption);
       } else {
-        pollOptions.map((newdata, index) => {
+        pollOptions.forEach((newdata, index) => {
           let changeOptionData = {
             answer: newdata.answer,
             pollAnswerID: newdata.pollAnswerID,
@@ -105,9 +106,7 @@ const ViewPollProgress = () => {
         PollID: pollDetails.pollID,
       });
     }
-  }, [PollsReducer.Allpolls]);
-
-  console.log(viewProgressPollsDetails.Date, "viewProgressPollsDetails");
+  }, [PollsReducerAllpolls]);
 
   const changeDateStartHandler2 = (date) => {
     console.log(date, "viewProgressPollsDetails");
@@ -126,7 +125,7 @@ const ViewPollProgress = () => {
   return (
     <Container>
       <Modal
-        show={PollsReducer.viewPollProgress}
+        show={PollsReducerviewPollProgress}
         setShow={dispatch(setviewpollProgressModal)}
         modalTitleClassName={styles["ModalHeader_View_poll_progress"]}
         modalHeaderClassName={
@@ -183,6 +182,7 @@ const ViewPollProgress = () => {
                 <img
                   draggable="false"
                   src={BlackCrossIcon}
+                  alt=""
                   width="16px"
                   height="16px"
                   className={styles["View_cross_icon"]}
@@ -243,7 +243,14 @@ const ViewPollProgress = () => {
                                       className={styles["Yes_ViewProgress"]}
                                     >
                                       {data.answer}{" "}
-                                      <span>{"(" + data.totalVotes + ")"}</span>
+                                      <span>
+                                        {"(" +
+                                          convertToArabicNumerals(
+                                            data.totalVotes,
+                                            currentLanguage
+                                          ) +
+                                          ")"}
+                                      </span>
                                     </span>
                                   </Col>
                                 </Row>
@@ -302,7 +309,7 @@ const ViewPollProgress = () => {
                   <Row className={styles["Scroller_View_Poll_Published"]}>
                     <Col lg={12} ms={12} sm={12}>
                       {pollsOption.length > 0
-                        ? pollsOption.map((data, index) => {
+                        ? pollsOption.map((data) => {
                             return (
                               <>
                                 <Row>
@@ -320,7 +327,12 @@ const ViewPollProgress = () => {
                                         >
                                           {data.answer}
                                           <span>
-                                            {"(" + data.totalVotes + ")"}
+                                            {"(" +
+                                              convertToArabicNumerals(
+                                                data.totalVotes,
+                                                currentLanguage
+                                              ) +
+                                              ")"}
                                           </span>
                                         </span>
                                       </Col>

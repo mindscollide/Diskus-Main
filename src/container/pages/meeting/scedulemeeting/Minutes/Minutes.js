@@ -13,14 +13,11 @@ import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
-import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
-import file_image from "../../../../../assets/images/file_image.svg";
-import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+
 import {
   ADDGeneralMinutesApiFunc,
   CleareMessegeNewMeeting,
@@ -51,10 +48,6 @@ import {
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../DataRoom/SearchFunctionality/option";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
 
 const Minutes = ({
@@ -71,7 +64,6 @@ const Minutes = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const Delta = Quill.import("delta");
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -115,8 +107,9 @@ const Minutes = ({
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
@@ -150,21 +143,16 @@ const Minutes = ({
   const modules = {
     toolbar: {
       container: [
-        {
-          size: ["14px", "16px", "18px"],
-        },
-        { font: ["impact", "courier", "comic"] },
-        { bold: {} },
-        { italic: {} },
-        { underline: {} },
-        { color: [] },
-        { background: [] },
-        { align: [] },
-        { list: "ordered" },
-        { list: "bullet" },
+        [{ header: [2, 3, 4, false] }],
+        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
+        ["bold", "italic", "underline", "blockquote"],
+        [{ color: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
       ],
       handlers: {},
-      clipboard: { matchVisual: false },
+    },
+    clipboard: {
+      matchVisual: true,
     },
   };
 
@@ -276,10 +264,7 @@ const Minutes = ({
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -295,26 +280,15 @@ const Minutes = ({
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -336,17 +310,6 @@ const Minutes = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  //Sliders For Attachments
-  //Sliders For Attachments
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   //Edit Button Function
   const handleEditFunc = async (data) => {
@@ -383,7 +346,7 @@ const Minutes = ({
       ) {
         let files = [];
         let prevData = [];
-        generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -680,7 +643,7 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     } else if (general) {
@@ -706,41 +669,10 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
-  };
-
-  // Pervious Button
-  const handlePreviousButton = () => {
-    if (agenda) {
-      if (
-        addAgendaWiseFields.Description.value.trimStart() !== "" ||
-        addAgendaWiseFiles.length !== 0 ||
-        agendaOptionvalue.value !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    } else if (general) {
-      if (
-        addNoteFields.Description.value.trimStart() !== "" ||
-        fileAttachments.length !== 0
-      ) {
-        dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(1);
-      } else {
-        setMinutes(false);
-        setMeetingMaterial(true);
-      }
-    }
-    // setMinutes(false);
-    // setMeetingMaterial(true);
-    // dispatch(showPreviousConfirmationModal(true));
   };
 
   const handleNextButton = () => {
@@ -797,35 +729,24 @@ const Minutes = ({
   };
   console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
-    if (
-      ResponseMessage.trim() !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      console.log(ResponseMessage, "ResponseMessageResponseMessage");
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: ResponseMessage,
-      // });
-      // setTimeout(() => {
-      //   setOpen({
-      //     ...open,
-      //     flag: false,
-      //     message: "",
-      //   });
-      //   dispatch(CleareMessegeNewMeeting());
-      // }, 3000);
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
+    try{
+      if (
+        ResponseMessage.trim() !== "" &&
+        ResponseMessage !== t("No-record-found") &&
+        ResponseMessage !== t("No-records-found") &&
+        ResponseMessage !== "" &&
+        ResponseMessage !== t("No-record-found") &&
+        ResponseMessage !== t("List-updated-successfully") &&
+        ResponseMessage !== t("No-data-available")
+      ) {
+        // showMessage(ResponseMessage, "success", setOpen);
+        //   dispatch(CleareMessegeNewMeeting());
+      } else {
+        dispatch(CleareMessegeNewMeeting());
+      }
+    }catch{}
+    
   }, [ResponseMessage]);
-
-  console.log("editorRoleeditorRole", editorRole);
 
   return (
     <section>
@@ -1077,7 +998,7 @@ const Minutes = ({
                                       >
                                         {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
-                                            data.lastUpdatedTime
+                                            data.lastUpdatedTime,currentLanguage
                                         )}
                                       </span>
                                     </Col>
@@ -1285,18 +1206,7 @@ const Minutes = ({
               md={12}
               sm={12}
               className="d-flex justify-content-end gap-2"
-            >
-              {/* <Button
-                text={t("Previous")}
-                className={styles["Previous_Button"]}
-                onClick={handlePreviousButton}
-              />
-              <Button
-                text={t("Next")}
-                onClick={handleNextButton}
-                className={styles["Button_General"]}
-              /> */}
-            </Col>
+            ></Col>
           </Row>
         </>
       ) : null}
@@ -1320,12 +1230,6 @@ const Minutes = ({
               onClick={handleInvitetoCollaborate}
             />
           ) : null}
-          {/* <Button
-            text={t("Previous")}
-            className={styles["Previous_button_Minutes"]}
-            onClick={handlePreviousButton}
-            // onClick={handleUNsaveChangesModal}
-          /> */}
           <Button
             text={t("Next")}
             className={styles["Next_button_Minutes"]}
@@ -1352,7 +1256,7 @@ const Minutes = ({
           prevFlag={prevFlag}
         />
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

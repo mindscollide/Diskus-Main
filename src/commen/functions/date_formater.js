@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import moment from "moment";
-import { DateObject } from "react-multi-date-picker";
-
+import { formatDistanceToNow, format, parse, isSameDay } from "date-fns";
+import { enUS, arSA } from "date-fns/locale";
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
   return `${value[0]}${value[1]}${value[2]}`;
@@ -21,29 +21,11 @@ export const TimeDisplayFormat = (data) =>
 export const TimeHHMMFormat = (data) =>
   data.slice(0, 2) + ":" + data.slice(2, 4);
 
-// Time Format
-export const TimeAndDisplayFormat = (data) =>
-  data.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, "$4:$5:$6");
-
 export const DateSendingFormat = (data) => {
   if (data.length > 0) {
     let value = data.split("-");
     return `${value[2]}${value[1]}${value[0]}`;
   }
-};
-
-export const currentToOneYearBackDate = (format) => {
-  let _moment = moment();
-  let toDate = _moment.format(format);
-  let fromDate = _moment.subtract(1, "years").format(format);
-  return { toThisDate: toDate, fromThisDate: fromDate };
-};
-
-export const NumberFormater = (value) => {
-  return parseFloat(parseFloat(value).toFixed(2));
-};
-export const CommaFormter = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export const dateforCalendar = (date) => {
@@ -66,17 +48,9 @@ export const dateTime = (data) => {
   return newtime;
 };
 
-export const CardNumberFormatter = (num) => {
-  return num.match(/.{1,4}/g).join(" ");
-};
-
 export const newDateFormaterAsPerUTC = (date) => {
   let dateConvert = moment(date, "YYYYMMDD").format();
-  const englishFormat = moment(dateConvert).format(
-    "MMMM Do, YYYY [at] HH:mm:ss"
-  );
   let newDate = moment(dateConvert).toDate().toISOString();
-  let formattedDate = newDate.slice(0, 10).replace(/-/g, "");
 
   return newDate.slice(0, 10).replace(/-/g, "");
 };
@@ -108,22 +82,79 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
   return moment(_dateTime).format("h:mm A");
 };
 
-export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the time components (12-hour format with AM/PM)
+  const formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format the full date as "h:mm A, Do MMM, YYYY"
+  const formattedDate = `${formattedTime}, ${formattedDay} ${formattedMonth} ${formattedYear}`;
+
+  return locale === "ar"
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    : formattedDate;
 };
 
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
@@ -144,35 +175,14 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   return moment(_dateTime).format("h:mm A, D MMM, YYYY");
 };
 
-//Included  New One
-
-export const newTimeFormaterForMeetingAsPerUTCFullDate = (dateTime) => {
-  const fullDateyear =
-    dateTime?.slice(0, 4) +
-    "-" +
-    dateTime?.slice(4, 6) +
-    "-" +
-    dateTime?.slice(6, 8) +
-    "T" +
-    dateTime?.slice(8, 10) +
-    ":" +
-    dateTime?.slice(10, 12) +
-    ":" +
-    dateTime?.slice(12, 14) +
-    ".000Z";
-
-  const _dateTime = new Date(fullDateyear);
-
-  // Get the start time, end time, and date
-  const startTime = moment(_dateTime).format("h:mm A");
-  const endTime = moment(_dateTime).add(1, "hour").format("h:mm A"); // Assuming end time is 1 hour after start time
-  const date = moment(_dateTime).format("D MMM, YYYY");
-
-  return `${startTime}, ${endTime}, ${date}`;
-};
-
 export const _justShowDateformat = (dateTime) => {
-  let fullDateyear =
+  let locale = localStorage.getItem("i18nextLng") || "en";
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
     dateTime.slice(0, 4) +
     "-" +
     dateTime.slice(4, 6) +
@@ -185,12 +195,64 @@ export const _justShowDateformat = (dateTime) => {
     ":" +
     dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("Do MMM, YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = date.getDate();
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Return formatted date with Arabic or English numerals based on locale
+  return locale === "ar"
+    ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
+        /[0-9]/g,
+        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+      )
+    : `${formattedDay} ${formattedMonth}, ${formattedYear}`;
 };
 
-export const _justShowDateformatBilling = (dateTime) => {
-  let fullDateyear =
+export const _justShowDateformatBilling = (dateTime, locale) => {
+  console.log(dateTime, "localelocalelocale");
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
     dateTime.slice(0, 4) +
     "-" +
     dateTime.slice(4, 6) +
@@ -203,8 +265,54 @@ export const _justShowDateformatBilling = (dateTime) => {
     ":" +
     dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("D-MMM-YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format the date as "D-MMM-YYYY"
+  const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
+
+  // Return formatted date with Arabic or English numerals based on locale
+  return locale === "ar"
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    : formattedDate;
 };
 
 export const _justShowDay = (dateTime) => {
@@ -266,26 +374,6 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
   return _dateTime;
 };
 
-export const forSetstartDateTimeMeetingCalendar = (dateTime) => {
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  // let _dateTime = moment(fullDateYear, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYYMMDD');
-
-  return _dateTime;
-};
-
 export const forHomeCalendar = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -321,50 +409,6 @@ export const forMainCalendar = (dateTime) => {
     ".000Z";
 
   let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  let _dateTime2 = new Date(fullDateYear);
-
-  // let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
-  //   "YYYYMMDD"
-  // );
-
-  return _dateTime;
-};
-
-export const endDateTimeMeetingCalender = (dateTime) => {
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
-  return _dateTime;
-};
-
-export const createResolutionDateTime = (dateTime) => {
-  // let convertUTC = new Date(dateTime,"YYYYMMDDHHmmss").toISOString()
-  let fullDateYear =
-    dateTime.slice(0, 4) +
-    "-" +
-    dateTime.slice(4, 6) +
-    "-" +
-    dateTime.slice(6, 8) +
-    "T" +
-    dateTime.slice(8, 10) +
-    ":" +
-    dateTime.slice(10, 12) +
-    ":" +
-    dateTime.slice(12, 14) +
-    ".000Z";
-  let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
-  let convertGMT = new Date(_dateTime).toString();
 
   return _dateTime;
 };
@@ -421,7 +465,6 @@ export const editResolutionTimeView = (dateTime) => {
     dateTime.slice(12, 14) +
     ".000Z";
   let convertGMT = new Date(fullDateYear);
-  // let convertTime = moment(convertGMT).format("HH:mm");
   return convertGMT;
 };
 
@@ -441,7 +484,6 @@ export const resolutionResultTable = (dateTime) => {
     ".000Z";
 
   let convertTime = new Date(fullDateYear);
-
 
   return convertTime;
 };
@@ -485,76 +527,275 @@ export const EditmeetingDateFormat = (dateTime) => {
   return _dateTime;
 };
 
-export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCTalkTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("hh:mm a");
+
+  const date = new Date(fullDateyear);
+
+  // Format the time based on 12-hour format with AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  return formattedTime;
 };
 
-export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCTalkDate = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("DD-MMM-YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format the date and apply Arabic numerals if locale is "ar"
+  const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
+
+  return locale === "ar"
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDate;
 };
 
-export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = date.getDate();
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format time in 12-hour format with AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  // Format date as "h:mm A, Do MMM, YYYY"
+  const formattedDateTime = `${formattedTime}, ${formattedDay} ${formattedMonth}, ${formattedYear}`;
+
+  // Convert English digits to Arabic if locale is "ar"
+  return locale === "ar"
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDateTime;
 };
 
-export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("DD-MMM-YYYY h:mm:ss");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format time in 12-hour format with seconds and AM/PM
+  let formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  // Adjust AM/PM to Arabic if needed
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace("AM", "ص").replace("PM", "م");
+    formattedTime = formattedTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]); // Convert digits to Arabic numerals
+  }
+
+  // Format date as "DD-MMM-YYYY h:mm:ss"
+  const formattedDateTime = `${formattedDay}-${formattedMonth}-${formattedYear} ${formattedTime}`;
+
+  // Convert English digits to Arabic if locale is "ar"
+  return locale === "ar"
+    ? formattedDateTime.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDateTime;
 };
 
 // h:mm:ss
@@ -584,7 +825,7 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   const seconds = String(date.getUTCSeconds()).padStart(2, "0");
   const utcFormatted = `${year}${month}${day}${hour}${minutes}${seconds}`;
-
+  console.log(utcFormatted, "utcFormattedutcFormattedutcFormatted");
   return utcFormatted;
 };
 
@@ -973,41 +1214,148 @@ export const formattedString = (dateString) => {
   return dateString.replace("T", "").replace(/:/g, "").replace(/-/g, "");
 };
 
-export const newDateFormatterForMinutesPendingApproval = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const newDateFormatterForMinutesPendingApproval = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  return moment(_dateTime).format("D - MM -YYYY | h:mm A");
+
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the time components (12-hour format with AM/PM)
+  const formattedTime = date.toLocaleString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = monthNames[date.getMonth()];
+  const formattedYear = date.getFullYear();
+
+  // Format the date as "D - MM - YYYY | h:mm A"
+  const formattedDate = `${formattedDay} - ${formattedMonth} - ${formattedYear} | ${formattedTime}`;
+
+  // Return formatted date with Arabic or English numerals based on locale
+  return locale === "ar"
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    : formattedDate;
 };
 
-export const SignatureandPendingApprovalDateTIme = (dateTime) => {
-  let fullDateyear =
-    dateTime?.slice(0, 4) +
+export const SignatureandPendingApprovalDateTIme = (dateTime, locale) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Format date string into ISO format
+  const fullDateyear =
+    dateTime.slice(0, 4) +
     "-" +
-    dateTime?.slice(4, 6) +
+    dateTime.slice(4, 6) +
     "-" +
-    dateTime?.slice(6, 8) +
+    dateTime.slice(6, 8) +
     "T" +
-    dateTime?.slice(8, 10) +
+    dateTime.slice(8, 10) +
     ":" +
-    dateTime?.slice(10, 12) +
+    dateTime.slice(10, 12) +
     ":" +
-    dateTime?.slice(12, 14) +
+    dateTime.slice(12, 14) +
     ".000Z";
 
-  let _dateTime = new Date(fullDateyear);
-  return moment(_dateTime).format("DD - MM - YYYY");
+  const date = new Date(fullDateyear);
+
+  // Define month names in English and Arabic
+  const monthNamesEn = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
+
+  // Format the date components
+  const formattedDay = String(date.getDate()).padStart(2, "0");
+  const formattedMonth = String(date.getMonth() + 1).padStart(2, "0");
+  const formattedYear = date.getFullYear();
+
+  // Return formatted date with Arabic or English numerals based on locale
+  const formattedDate = `${formattedDay} - ${formattedMonth} - ${formattedYear}`;
+
+  return locale === "ar"
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
+    : formattedDate;
 };
 
 export const newDateFormatForMinutes = (dateTime) => {
@@ -1032,8 +1380,8 @@ export const newDateFormatForMinutes = (dateTime) => {
   return { DateVal, TimeVal };
 };
 
-//Date formatter Subscription DownGrade
-export function formatDateDownGradeSubscription(dateString) {
+//Date formatter Subscription DownGrade for both english and arabic
+export function formatDateDownGradeSubscription(dateString, locale) {
   if (!dateString || dateString.length < 8) {
     return "Invalid date";
   }
@@ -1046,8 +1394,8 @@ export function formatDateDownGradeSubscription(dateString) {
   // Create a new Date object
   const date = new Date(`${year}-${month}-${day}`);
 
-  // Define an array of month names
-  const monthNames = [
+  // Define arrays of month names in English and Arabic
+  const monthNamesEn = [
     "January",
     "February",
     "March",
@@ -1061,14 +1409,36 @@ export function formatDateDownGradeSubscription(dateString) {
     "November",
     "December",
   ];
+  const monthNamesAr = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
+
+  // Select the appropriate month names based on locale
+  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
 
   // Get the formatted day, month, and year
   const formattedDay = date.getDate();
   const formattedMonth = monthNames[date.getMonth()];
   const formattedYear = date.getFullYear();
 
-  // Return the formatted date string
-  return `${formattedDay} ${formattedMonth} ${formattedYear}`;
+  // Format and return the date string
+  return locale === "ar"
+    ? `${formattedDay} ${formattedMonth} ${formattedYear}`.replace(
+        /[0-9]/g,
+        (d) => "٠١٢٣٤٥٦٧٨٩"[d]
+      ) // Convert to Arabic numerals
+    : `${formattedDay} ${formattedMonth} ${formattedYear}`;
 }
 
 export function formatDateToDDMMYYYYDownGradeSubscription(dateString) {
@@ -1100,19 +1470,6 @@ export const newTimeFormaterViewPoll = (dateTime) => {
 
 export const DateFormatForPolls = (date) => {
   let dateFormatted = `${date}235900`;
-  let fullDateyear =
-    dateFormatted?.slice(0, 4) +
-    "-" +
-    dateFormatted?.slice(4, 6) +
-    "-" +
-    dateFormatted?.slice(6, 8) +
-    "T" +
-    dateFormatted?.slice(8, 10) +
-    ":" +
-    dateFormatted?.slice(10, 12) +
-    ":" +
-    dateFormatted?.slice(12, 14) +
-    ".000Z";
   const now = new Date(dateFormatted);
   const year = now.getUTCFullYear();
   const month = String(now.getUTCMonth() + 1).padStart(2, "0");
@@ -1121,4 +1478,126 @@ export const DateFormatForPolls = (date) => {
   const minutes = String(now.getUTCMinutes()).padStart(2, "0");
   const seconds = String(now.getUTCSeconds()).padStart(2, "0");
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
+};
+
+// export const timePassed = (dateString, locale) => {
+//   const givenDate = new Date(dateString);
+//   const currentDate = new Date();
+
+//   const diffInMs = currentDate - givenDate; // Difference in milliseconds
+//   const diffInSeconds = Math.floor(diffInMs / 1000);
+//   const diffInMinutes = Math.floor(diffInSeconds / 60);
+//   const diffInHours = Math.floor(diffInMinutes / 60);
+//   const diffInDays = Math.floor(diffInHours / 24);
+
+//   if (diffInDays > 0) {
+//     return `${diffInDays} day(s) ago`;
+//   } else if (diffInHours > 0) {
+//     return `${diffInHours} hour(s) ago`;
+//   } else if (diffInMinutes > 0) {
+//     return `${diffInMinutes} minute(s) ago`;
+//   } else {
+//     return `${diffInSeconds} second(s) ago`;
+//   }
+// };
+export const timePassed = (dateString, locale) => {
+  const givenDate = new Date(dateString);
+  console.log("forRecentActivity", givenDate);
+
+  // Choose the locale based on the input (`en` for English, `ar` for Arabic)
+  const selectedLocale = locale === "ar" ? arSA : enUS;
+
+  // Calculate the relative time distance to now, with localization
+  let formattedTime = formatDistanceToNow(givenDate, {
+    addSuffix: true,
+    locale: selectedLocale,
+  });
+  console.log("forRecentActivity", formattedTime);
+
+  // If the locale is Arabic, replace Western digits with Arabic-Indic digits
+  if (locale === "ar") {
+    formattedTime = formattedTime.replace(
+      /\d/g,
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+    );
+  }
+
+  console.log("forRecentActivity", formattedTime);
+  return formattedTime;
+};
+
+export const convertIntoDateObject = (dateTime) => {
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    "-" +
+    dateTime.slice(4, 6) +
+    "-" +
+    dateTime.slice(6, 8) +
+    "T" +
+    dateTime.slice(8, 10) +
+    ":" +
+    dateTime.slice(10, 12) +
+    ":" +
+    dateTime.slice(12, 14) +
+    ".000Z";
+  let _dateTime = new Date(fullDateYear);
+  return _dateTime;
+};
+
+export const formatToLocalTimezone = (dateString) => {
+  let currentLang = localStorage.getItem("i18nextLng") || "en";
+  const selectedLocale = currentLang === "ar" ? arSA : enUS;
+
+  // Parse the input date string as a UTC date
+  const utcDate = parse(dateString, "yyyyMMddHHmmss", new Date());
+
+  // Convert to local time by adjusting for the timezone offset
+  const localDate = new Date(
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+  );
+
+  // Format the local date as "dd MMMM, yyyy | EEEE" with the specified locale
+  let formattedDate = format(localDate, "dd MMMM, yyyy | EEEE", {
+    locale: selectedLocale,
+  });
+
+  // If the current language is Arabic, convert numbers to Arabic digits
+  if (currentLang === "ar") {
+    formattedDate = formattedDate.replace(
+      /\d/g,
+      (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]
+    );
+  }
+
+  return formattedDate;
+};
+
+export const isSameAsToday = (utcDateString) => {
+  let locale = localStorage.getItem("i18nextLng") || "en";
+  // Select locale: 'ar' for Arabic, default to English
+  const selectedLocale = locale === "ar" ? arSA : enUS;
+
+  // Parse the input date string in UTC
+  const utcDate = parse(utcDateString, "yyyyMMddHHmmss", new Date());
+
+  // Convert UTC date to local time
+  const localDate = new Date(
+    utcDate.getTime() - utcDate.getTimezoneOffset() * 60000
+  );
+
+  // Get today's date in local timezone
+  const today = new Date();
+
+  // Compare if the localDate and today are the same
+  const isSame = isSameDay(localDate, today);
+
+  // Format the local date with the selected locale
+  const formattedDate = format(localDate, "dd MMMM, yyyy | EEEE", {
+    locale: selectedLocale,
+  });
+
+  return {
+    isSame,
+    formattedDate,
+  };
 };

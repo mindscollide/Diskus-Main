@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  TextArea,
-  SelectComment,
-} from "../../../../components/elements"; // Importing necessary components
+import React from "react";
+import { Modal, Button, TextArea } from "../../../../components/elements"; // Importing necessary components
 import styles from "./EditCommentModa.module.css"; // Importing CSS styles
 import { editCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
@@ -21,7 +16,6 @@ const EditCommentModal = ({
   editCommentLocal,
   setEditCommentLocal,
   parentMinuteID,
-  setParentMinuteID,
   currentUserID,
   currentUserName,
   isAgenda,
@@ -29,8 +23,6 @@ const EditCommentModal = ({
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
-
-  // const [editComment, setEditComment] = useState("")
 
   const { MinutesReducer } = useSelector((state) => state);
 
@@ -244,14 +236,12 @@ const EditCommentModal = ({
   };
 
   const editComment = () => {
-    console.log("editCommentLocaleditCommentLocal", editCommentLocal);
     if (isAgenda === false) {
       const updatedMinutesData = updateCommentMinutesGeneral(
         minutesGeneral,
         editCommentLocal,
         parentMinuteID
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesGeneral(updatedMinutesData);
       dispatch(editCommentModal(false));
     } else {
@@ -260,13 +250,10 @@ const EditCommentModal = ({
         editCommentLocal,
         parentMinuteID
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesAgenda(updatedMinutesData);
       dispatch(editCommentModal(false));
     }
   };
-
-  console.log("editCommentLocaleditCommentLocal", editCommentLocal);
 
   return (
     <section>
@@ -314,7 +301,6 @@ const EditCommentModal = ({
               labelClassName={"d-none"} // CSS class for label
               timeClass={"d-none"} // CSS class for time
               onChange={handleCommentChange}
-              // onChange={(e) => setCommentText(e.target.value)}
             />
           </>
         }

@@ -28,15 +28,10 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import {
-  DateFormatForPolls,
-  multiDatePickerDateChangIntoUTC,
-} from "../../../commen/functions/date_formater";
+import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import {
-  regexOnlyForNumberNCharacters,
-  validateInput,
-} from "../../../commen/functions/regex";
+import { validateInput } from "../../../commen/functions/regex";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const CreatePolling = () => {
   const datePickerRef = useRef();
@@ -46,20 +41,25 @@ const CreatePolling = () => {
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   //For Custom language datepicker
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducergellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+  const PollsReducercreatePollmodal = useSelector(
+    (state) => state.PollsReducer.createPollmodal
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [isCalendarOpen, setCalendarOpen] = useState(false);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [selectedsearch, setSelectedsearch] = useState([]);
 
@@ -107,13 +107,6 @@ const CreatePolling = () => {
   };
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
-  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
-    if (index === options.length - 1) {
-      return true; // Allow the last object's value to be empty
-    }
-    return item.value !== "";
-  });
-
   useEffect(() => {
     if (currentLanguage === "ar") {
       moment.locale(currentLanguage);
@@ -141,12 +134,12 @@ const CreatePolling = () => {
   }, []);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a, index) => {
+          pollsData.groups.forEach((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -179,7 +172,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a, index) => {
+          pollsData.committees.forEach((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -213,11 +206,7 @@ const CreatePolling = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          console.log(
-            pollsData.organizationUsers,
-            "organizationUsersorganizationUsersorganizationUsers"
-          );
-          pollsData.organizationUsers.map((a, index) => {
+          pollsData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -232,7 +221,6 @@ const CreatePolling = () => {
                     >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        // src={}
                         alt=""
                         className={styles["UserProfilepic"]}
                         width="18px"
@@ -256,7 +244,7 @@ const CreatePolling = () => {
         setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups]);
+  }, [PollsReducergellAllCommittesandGroups]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -265,25 +253,21 @@ const CreatePolling = () => {
 
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
-          console.log(
-            seledtedData,
-            "seledtedDataseledtedDataseledtedDataseledtedData"
-          );
+        selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value
             );
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.forEach((gUser) => {
                   let check2 = members.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
                   if (check2 !== undefined) {
                   } else {
@@ -299,16 +283,16 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.forEach((cUser) => {
                   let check2 = members.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
@@ -322,12 +306,12 @@ const CreatePolling = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = members.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
 
               if (check2 !== undefined) {
@@ -367,7 +351,7 @@ const CreatePolling = () => {
       date: DateDate,
     });
   };
-  console.log(createPollData, "createPollDatacreatePollData");
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
@@ -413,46 +397,22 @@ const CreatePolling = () => {
       setError(true);
 
       if (createPollData.TypingTitle === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (createPollData.date === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(members).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 1) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
 
-  const HandleChange = (e, index) => {
+  const HandleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "TypingTitle") {
@@ -474,7 +434,6 @@ const CreatePolling = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -492,16 +451,10 @@ const CreatePolling = () => {
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -512,6 +465,7 @@ const CreatePolling = () => {
   };
 
   const cancellAnyUser = (index) => {
+    console.log(index, "indexindexindexindex");
     let removeData = [...members];
     removeData.splice(index, 1);
     setMembers(removeData);
@@ -540,14 +494,13 @@ const CreatePolling = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.createPollmodal}
+          show={PollsReducercreatePollmodal}
           setShow={dispatch(setCreatePollModal)}
           modalTitleClassName={styles["ModalHeader_create_poll"]}
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
           modalFooterClassName={"d-block"}
           onHide={() => {
             setDefineUnsaveModal(true);
-            // dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
             <>
@@ -806,21 +759,27 @@ const CreatePolling = () => {
                               <Button
                                 text={
                                   <>
-                                    <Row>
+                                    <Row className="mt-1">
                                       <Col
                                         lg={12}
                                         md={12}
                                         sm={12}
-                                        className={styles["ClassAddButton"]}
+                                        className="d-flex gap-2"
                                       >
                                         <img
+                                          draggable={false}
                                           src={plusFaddes}
+                                          alt=""
                                           width="15.87px"
                                           height="15.87px"
-                                          alt=""
-                                          draggable="false"
                                         />
-                                        <span>{t("Add-another-field")}</span>
+                                        <span
+                                          className={
+                                            styles["Add_Button_Heading"]
+                                          }
+                                        >
+                                          {t("Add-another-field")}
+                                        </span>
                                       </Col>
                                     </Row>
                                   </>
@@ -872,7 +831,7 @@ const CreatePolling = () => {
                           <Select
                             onChange={handleSelectValue}
                             isDisabled={
-                              PollsReducer.gellAllCommittesandGroups === null
+                              PollsReducergellAllCommittesandGroups === null
                                 ? true
                                 : false
                             }
@@ -950,7 +909,9 @@ const CreatePolling = () => {
                                             src={CrossIcon}
                                             width="14px"
                                             height="14px"
-                                            onClick={cancellAnyUser}
+                                            onClick={() =>
+                                              cancellAnyUser(index)
+                                            }
                                             alt=""
                                             draggable="false"
                                             style={{ cursor: "pointer" }}
@@ -1042,7 +1003,7 @@ const CreatePolling = () => {
           size={"md"}
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

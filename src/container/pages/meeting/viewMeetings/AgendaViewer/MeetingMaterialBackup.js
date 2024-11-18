@@ -45,7 +45,7 @@ const MeetingMaterialPrev = ({
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   // row state for meeting Material
@@ -63,24 +63,6 @@ const MeetingMaterialPrev = ({
       setRows([]);
     };
   }, []);
-
-  //onClick of handlerFor View PDF
-  const viewHandlerOnclick = (e, data) => {
-    e.preventDefault();
-
-    window.open(
-      `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-      "_blank",
-      "noopener noreferrer"
-    );
-  };
-
-  const downloadAgendaViewer = (fileID, fileName) => {
-    let data = {
-      FileID: Number(fileID),
-    };
-    dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, fileName));
-  };
 
   const handleDoubeClick = (record) => {
     const ext = getFileExtension(record.displayFileName);
@@ -260,14 +242,12 @@ const MeetingMaterialPrev = ({
                   pointerEvents={ext === "pdf" ? "auto" : "none"}
                   onClick={() => handleDoubeClick(record)}
                 />
-                {/* {ext !== "pdf" && ( */}
                 <Button
                   disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}
                   className={styles["downloadButton"]}
                   onClick={() => handleDoubeClick(record)}
                 />
-                {/* )} */}
               </Col>
             </Row>
           </>
@@ -309,26 +289,9 @@ const MeetingMaterialPrev = ({
     }
   }, [meetingMaterialData]);
 
-  const handleCancelButton = () => {
-    dispatch(showCancelMeetingMaterial(true));
-  };
   const handleClickSave = () => {
     setMinutes(true);
     setMeetingMaterial(false);
-  };
-
-  const prevHandlerClick = () => {
-    console.log(
-      { editorRole },
-      "handleClickSavehandleClickSavehandleClickSave"
-    );
-    setMeetingMaterial(false);
-    setAgenda(true);
-  };
-
-  const handleSaveAndNext = () => {
-    setMeetingMaterial(false);
-    setMinutes(true);
   };
 
   return (
@@ -356,11 +319,7 @@ const MeetingMaterialPrev = ({
             className={styles["Cancel_Meeting_Details"]}
             onClick={handleCancelMeetingNoPopup}
           />
-          {/* <Button
-            text={t("Previous")}
-            className={styles["Save_Classname"]}
-            onClick={prevHandlerClick}
-          /> */}
+
           <Button
             text={t("Next")}
             onClick={handleClickSave}

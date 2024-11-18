@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
-  Paper,
-  TextField,
-  Checkbox,
   Notification,
-  Loader,
   VerificationInputField,
 } from "./../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,8 +10,6 @@ import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg"
 import styles from "./ForgotPasswordVerificaiton.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
-import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { ResendOTP } from "../../../../src/store/actions/Auth_Verify_Opt";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
@@ -24,24 +18,19 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const ForgotPasswordVerification = () => {
-  const { auth, Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { auth, Authreducer } = useSelector((state) => state);
   const [key, setKey] = useState(1);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-  const currentLocale = Cookies.get("i18next") || "en";
-  const [language, setLanguage] = useState(currentLocale);
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   // Constants for timer
   const timerDurationMinutes = 5;
@@ -75,7 +64,6 @@ const ForgotPasswordVerification = () => {
     localStorage.removeItem("minutes");
     setVerifyOTP("");
     dispatch(ResendOTP(t, data, setSeconds, setMinutes));
-    // setStartTimer(true)
   };
 
   // Start the timer when the component mounts
@@ -120,25 +108,10 @@ const ForgotPasswordVerification = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  // }, [currentLangObj, t]);
-
   //for messeges shown in the snack-bar
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: auth.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(auth.ResponseMessage, "success", setOpen);
 
       dispatch(cleareChangePasswordMessage());
     } else {
@@ -149,18 +122,11 @@ const ForgotPasswordVerification = () => {
   //for showing the responses in the snackbar
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        Authreducer.VerifyOTPEmailResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
@@ -222,7 +188,7 @@ const ForgotPasswordVerification = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper
+            <span
               className={
                 styles["Forgot_password_Verification_loginbox_auth_paper"]
               }
@@ -240,7 +206,12 @@ const ForgotPasswordVerification = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      width={220}
+                      alt="diskus_logo"
+                    />
                   </Col>
                 </Row>
                 <Form onSubmit={SubmitOTP}>
@@ -324,7 +295,6 @@ const ForgotPasswordVerification = () => {
                             "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
-                        // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>
@@ -342,7 +312,7 @@ const ForgotPasswordVerification = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}
@@ -358,7 +328,8 @@ const ForgotPasswordVerification = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img draggable="false"
+              <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
@@ -368,12 +339,7 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      {auth.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : Authreducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

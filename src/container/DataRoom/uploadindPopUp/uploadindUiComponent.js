@@ -5,19 +5,9 @@ import chevdown from "../../../assets/images/chevron_down_white.svg";
 import chevronUp from "../../../assets/images/chevron_up.svg";
 import { CircularProgressbar } from "react-circular-progressbar";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import PDFICON from "../../../assets/images/pdf_icon.svg";
 import Greentick from "../../../assets/images/Greentick.svg";
 import ErrorIcon from "../../../assets/images/ErrorIcon.svg";
-import audioIcon from "../../../assets/images/audioICon.svg";
-import ShareIcon from "../../../assets/images/ShareIcon.svg";
-import sitesIcon from "../../../assets/images/sitesIcon.svg";
-import documentIcon from "../../../assets/images/color document.svg";
-import pdf from "../../../assets/images/color pdf.svg";
-import video from "../../../assets/images/color video.svg";
-import spreadsheet from "../../../assets/images/color spreadsheet.svg";
-import forms from "../../../assets/images/color forms.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
-import images from "../../../assets/images/Imagesandphotos.svg";
 import { useTranslation } from "react-i18next";
 import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
 
@@ -131,9 +121,6 @@ const UploadindUiComponent = ({
                           ? 0 + " %"
                           : percentageUploaded + " %"}
                       </Space>
-                      {/* <Space className={styles["Progress_bar"]}>
-                    {`${remainingTime} ${t("Sec-remaining")}`}
-                  </Space> */}
                     </>
                   )}
                 </Col>
@@ -226,9 +213,7 @@ const UploadindUiComponent = ({
                                     <CircularProgressbar
                                       value={data.UploadedAttachments}
                                       maxValue={data.FileList.length}
-                                      // text={`${percentage}%`}
                                       className={styles["folderProgress"]}
-                                      // value={progress}
                                     />
                                     <img
                                       draggable="false"
@@ -397,7 +382,6 @@ const UploadindUiComponent = ({
                             md={12}
                             sm={12}
                             key={index}
-                            // showUploadBarUploaded
                             className={`${"d-flex justify-content-between"} ${
                               styles["showUploadBarUploaded"]
                             }`}

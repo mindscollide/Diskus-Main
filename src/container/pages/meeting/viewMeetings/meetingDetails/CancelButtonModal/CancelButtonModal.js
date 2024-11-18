@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
@@ -16,7 +15,6 @@ const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
   setViewAdvanceMeetingModal,
-  setMeetingDetails,
   setAgenda,
   setPolls,
   setMinutes,
@@ -29,7 +27,7 @@ const CancelButtonModal = ({
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
@@ -51,9 +49,7 @@ const CancelButtonModal = ({
     setEdiorRole({ status: null, role: null });
     localStorage.removeItem("folderDataRoomMeeting");
     setAdvanceMeetingModalID(null);
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-    // setMeetingDetails(false);
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));

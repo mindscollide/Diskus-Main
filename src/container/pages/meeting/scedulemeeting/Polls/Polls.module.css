@@ -11,6 +11,10 @@
   color: #fff;
 }
 
+body[dir="rtl"] .Create_polls_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Create_polls_Button:is(:hover, :focus, :focus-visible, :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -91,7 +95,7 @@
 
 .EmptyState_subHeading {
   color: #5a5a5a !important;
- font-weight: 500;
+  font-weight: 500;
   font-size: 16px !important;
 }
 

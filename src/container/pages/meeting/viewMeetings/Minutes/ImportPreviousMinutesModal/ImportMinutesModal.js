@@ -4,7 +4,6 @@ import {
   Modal,
   InputSearchFilter,
   Table,
-  TextField,
   Button,
 } from "../../../../../../components/elements";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
@@ -12,7 +11,6 @@ import {
   showAfterImportState,
   showImportPreviousMinutes,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
@@ -20,7 +18,6 @@ import { Col, Row } from "react-bootstrap";
 const ImportMinutesModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const data = [
     {
@@ -126,6 +123,7 @@ const ImportMinutesModal = () => {
                   >
                     <img
                       src={BlackCrossIcon}
+                      alt=""
                       height="16px"
                       width="16px"
                       className="cursor-pointer"

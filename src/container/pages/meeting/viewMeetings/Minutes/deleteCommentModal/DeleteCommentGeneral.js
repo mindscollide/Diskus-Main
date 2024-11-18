@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "../../../../../../components/elements"; // Importing necessary components
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
 import {
@@ -12,12 +12,7 @@ import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import { DeleteGeneralMinuteDocumentsApiFunc } from "../../../../../../store/actions/NewMeetingActions";
 
 // Functional component for deleting a comment
-const DeleteCommentGeneral = ({
-  advanceMeetingModalID,
-  setAddNoteFields,
-  setFileAttachments,
-  addNoteFields,
-}) => {
+const DeleteCommentGeneral = ({ advanceMeetingModalID }) => {
   const { MinutesReducer } = useSelector((state) => state);
 
   const { t } = useTranslation(); // Translation hook

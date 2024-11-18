@@ -3,7 +3,6 @@ import styles from "./NewEndMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "../../../../components/elements";
 import { showEndMeetingModal } from "../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -11,12 +10,13 @@ import { Col, Row } from "react-bootstrap";
 const NewEndMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const endMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.endMeetingModal
+  );
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.endMeetingModal}
+        show={endMeetingModal}
         setShow={dispatch(showEndMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

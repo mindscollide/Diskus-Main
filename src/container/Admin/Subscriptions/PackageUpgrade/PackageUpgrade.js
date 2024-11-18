@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Col, Row, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {
-  UpgradePackageCard,
-  Button,
-  Loader,
-} from "../../../../components/elements";
-import SilverPackage from "./../../../../assets/images/Silver-Package.png";
-import GoldPackage from "./../../../../assets/images/Gold-Package.png";
-import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
+import { Button, Loader } from "../../../../components/elements";
 import "./../../../../i18n";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -16,9 +9,7 @@ import styles from "../PackageUpgrade/PackageUpgrade.module.css";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageUpgrade = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { GetSubscriptionPackage } = useSelector((state) => state);
 
   const [currentPackageId, setCurrentPackageId] = useState(0);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
@@ -101,7 +92,7 @@ const PackageUpgrade = () => {
     ) {
       let data = [];
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.map(
-        (packagedetails, index) => {
+        (packagedetails) => {
           data.push({
             PackageTitle: packagedetails.packageName,
             PackageExpiryDate: "",
@@ -165,11 +156,6 @@ const PackageUpgrade = () => {
                           <Col sm={12} md={12} lg={12}>
                             {data !== null && data !== undefined ? (
                               <>
-                                {/* <img
-                              className={styles["package-icon"]}
-                              src={GoldPackage}
-                              alt=""
-                            /> */}
                                 <span class="icon-star package-icon-style">
                                   <span
                                     class="path1"
@@ -353,9 +339,6 @@ const PackageUpgrade = () => {
           )}
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </>
   );
 };

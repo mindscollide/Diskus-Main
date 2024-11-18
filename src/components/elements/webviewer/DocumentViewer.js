@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ClearMessageAnnotations,
-  GetAnnotationsOfToDoAttachementMessageCleare,
   addAnnotationsOnDataroomAttachement,
   addAnnotationsOnNotesAttachement,
   addAnnotationsOnResolutionAttachement,
@@ -16,7 +15,8 @@ import {
   getAnnotationsOfToDoAttachement,
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../index";
+import { Notification } from "../index";
+import { showMessage } from "../snack_bar/utill";
 const DocumentViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ const DocumentViewer = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const { webViewer, DataRoomReducer } = useSelector((state) => state);
   const viewer = useRef(null);
@@ -99,7 +100,6 @@ const DocumentViewer = () => {
         if (Number(attachmentID) === fileID) {
           window.close();
         }
-  
       } catch (error) {
         console.log(error, "datadatadata");
       }
@@ -252,33 +252,24 @@ const DocumentViewer = () => {
       });
     }
   }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer")
+  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer");
   useEffect(() => {
     if (
       webViewer.ResponseMessage !== "" &&
       webViewer.ResponseMessage !== undefined
     ) {
-      setOpen({
-        ...open,
-        message: webViewer.ResponseMessage,
-        open: true,
-      });
+      showMessage(webViewer.ResponseMessage, "success", setOpen);
       setTimeout(() => {
         dispatch(ClearMessageAnnotations());
-        setOpen({
-          ...open,
-          message: "",
-          open: false,
-        });
       }, 4000);
     }
   }, [webViewer.ResponseMessage]);
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

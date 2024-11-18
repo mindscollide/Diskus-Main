@@ -1,10 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
-import { File, FilePdf, FilePdfFill } from "react-bootstrap-icons";
 import { Button, Loader } from "../../../../components/elements";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
 import "./../../../../i18n";
-import PDFIcon from "../../../../assets/images/newElements/pdf.png";
 import { useTranslation } from "react-i18next";
 import styles from "./PayOutstanding.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +21,9 @@ import {
 import InvoiceHtml from "./InvoiceHtml/InvoiceHtml";
 
 const PayOutstanding = () => {
-  const { OrganizationBillingReducer, LanguageReducer, Authreducer } =
-    useSelector((state) => state);
-  console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
+  const getPayoutStanding = useSelector(
+    (state) => state.OrganizationBillingReducer.getPayoutStanding
+  );
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -38,11 +36,12 @@ const PayOutstanding = () => {
     BalanceDue: 0,
     InvoiceID: 0,
   });
+  console.log(payOutStanding, "payOutStandingpayOutStanding");
+
   const [invoiceModal, setInvoiceModal] = useState(false);
-  console.log(payOutStanding, "payOutStandingpayOutStandingpayOutStanding");
   useEffect(() => {
-    if (OrganizationBillingReducer.getPayoutStanding !== null) {
-      let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
+    if (getPayoutStanding !== null) {
+      let payOutStandingData = getPayoutStanding;
       setPayOutStanding({
         Invoice: payOutStandingData.invoiceCustomerNumber,
         DueDate:
@@ -74,28 +73,13 @@ const PayOutstanding = () => {
         InvoiceID: 0,
       });
     }
-  }, [OrganizationBillingReducer.getPayoutStanding]);
+  }, [getPayoutStanding]);
 
   useEffect(() => {
     dispatch(getPayoutStandingInformation(navigate, t));
   }, []);
 
-  const hadlePayInvoiceButton = () => {
-    // let newData = {
-    //   FirstName: billingContactDetails.Name.value,
-    //   LastName: billingContactDetails.LastName.value,
-    //   Email: billingContactDetails.Email.value,
-    //   Phone: billingContactDetails.Contact.value,
-    //   Address: billingAddress.Address.value,
-    //   Country: billingAddress.Country.value,
-    //   City: billingAddress.City.value,
-    //   Zip: billingAddress.PostalCode.value,
-    //   OrderAmount: Number(totalYearlyCharges),
-    //   OrderCurrency: "USD",
-    //   OrderDescription: "An Order On Diskus",
-    // };
-    // dispatch(paymentInitiateMainApi(navigate, t, newData));
-  };
+  const hadlePayInvoiceButton = () => {};
 
   const handleViewInvoice = () => {
     let Data = {
@@ -162,7 +146,7 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {payOutStanding.Invoice}
+                          {payOutStanding.Invoice || 0}
                         </p>
                       </Col>
                     </Row>
@@ -174,7 +158,8 @@ const PayOutstanding = () => {
                       </Col>
                       <Col sm={6}>
                         <p className={styles["selected_package_details_p2"]}>
-                          {_justShowDateformatBilling(payOutStanding.DueDate)}
+                          {_justShowDateformat(payOutStanding.DueDate) !==
+                            "Invalid date" || "--"}
                         </p>
                       </Col>
                     </Row>
@@ -323,9 +308,6 @@ const PayOutstanding = () => {
         InvoiceModal={invoiceModal}
         setInvoiceModal={setInvoiceModal}
       />
-      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </>
   );
 };

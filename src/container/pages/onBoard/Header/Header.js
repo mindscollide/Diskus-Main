@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import "./Header.css";
+import "./onBoardHeader.css";
 import { useTour } from "@reactour/tour";
 import TextField from "../../../../components/elements/input_field/Input_field";
 import { Search } from "react-bootstrap-icons";
@@ -10,8 +10,7 @@ import ModalMeeting from "../modalmeeting/ModalMeeting";
 import { useTranslation } from "react-i18next";
 import Header2 from "../../../../components/layout/header2/Header2";
 
-const Header = ({ heading, user, currentUserImage, searchVisible }) => {
-  //For Localization
+const Header = ({ searchVisible }) => {
   const { t } = useTranslation();
   const location = useLocation();
   useEffect(() => {
@@ -20,9 +19,9 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, []);
+  }, [location.pathname]);
 
-  const { setCurrentStep, currentStep } = useTour();
+  const { currentStep } = useTour();
   const [isExpand, setExpand] = useState(false);
   const [isMeeting, setMeeting] = useState(false);
   const { setIsOpen } = useTour();
@@ -32,7 +31,7 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
   useEffect(() => {
     console.log(location);
     console.log(isMeeting);
-    location.pathname == "/onboard" ? setMeeting(true) : setMeeting(false);
+    location.pathname === "/onboard" ? setMeeting(true) : setMeeting(false);
     setIsOpen(true);
   }, [location]);
 
@@ -55,7 +54,6 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
             sm={5}
             className="d-flex justify-content-start align-items-center mt-3"
           >
-            {/* <div className="heading  color-primary fw-600">{heading}</div> */}
             {isMeeting && (
               <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />
             )}

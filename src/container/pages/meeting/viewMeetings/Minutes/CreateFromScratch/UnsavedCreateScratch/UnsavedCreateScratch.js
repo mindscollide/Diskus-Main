@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./UnsavedCreateScratch.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { showUnsavedForButonCreateFromScratch } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -11,9 +10,9 @@ import { Modal, Button } from "../../../../../../../components/elements";
 const UnsavedCreateScratch = ({ setCreateFromSratch }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const UnsavedButtonCreateScratch = useSelector(
+    (state) => state.NewMeetingreducer.UnsavedButtonCreateScratch
+  );
   const handleYesFunctionality = () => {
     dispatch(showUnsavedForButonCreateFromScratch(false));
     setCreateFromSratch(false);
@@ -22,7 +21,7 @@ const UnsavedCreateScratch = ({ setCreateFromSratch }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.UnsavedButtonCreateScratch}
+        show={UnsavedButtonCreateScratch}
         setShow={dispatch(showUnsavedForButonCreateFromScratch)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

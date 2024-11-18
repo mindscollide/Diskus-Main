@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BillProcessStepThree.module.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, TableToDo, Loader } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import ellipses from "../../../../../assets/images/ellipses.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,10 +11,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
-import {
-  calculateTotals,
-  calculateTotalsBillingStepper,
-} from "../../../../../commen/functions/TableDataCalculation";
+import { calculateTotalsBillingStepper } from "../../../../../commen/functions/TableDataCalculation";
 const BillProcessStepThree = () => {
   const { t } = useTranslation();
 
@@ -25,9 +22,7 @@ const BillProcessStepThree = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
-  const { UserMangementReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const { UserMangementReducer } = useSelector((state) => state);
 
   const organizationName = localStorage.getItem("organizatioName");
   const organizationSubscriptionID = localStorage.getItem(
@@ -37,7 +32,7 @@ const BillProcessStepThree = () => {
   const [getAllPakagesData, setGetAllPakagesData] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null);
   const [tenureID, setTenureID] = useState(0);
-
+  console.log("check error k");
   //UseEffect For Get All Organziation Selected Pakages
 
   useEffect(() => {
@@ -80,11 +75,6 @@ const BillProcessStepThree = () => {
           UserMangementReducer.getAllSelectedPakagesData
             .organizationSubscription.organizationSelectedPackages.length > 0
         ) {
-          console.log(
-            UserMangementReducer.getAllSelectedPakagesData
-              .organizationSubscription.fK_TenureOfSubscriptionID,
-            "setGetAllPakagesData"
-          );
           setTenureID(
             UserMangementReducer.getAllSelectedPakagesData
               .organizationSubscription.fK_TenureOfSubscriptionID
@@ -124,12 +114,12 @@ const BillProcessStepThree = () => {
       render: (text, record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
 
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{record.name}</span>;
+              <span className={styles["Tableheading"]}>{record?.name}</span>;
             </>
           );
         }
@@ -150,7 +140,7 @@ const BillProcessStepThree = () => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record.price}
+              {record?.price}
             </span>
           </>
         );
@@ -171,7 +161,7 @@ const BillProcessStepThree = () => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record.headCount}
+              {record?.headCount}
             </span>
           </>
         );
@@ -195,7 +185,7 @@ const BillProcessStepThree = () => {
       render: (text, record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           // For the total row, directly use the calculated value
           return (
             <span className={styles["ChargesPerLicesense"]}>
@@ -204,7 +194,7 @@ const BillProcessStepThree = () => {
           );
         } else {
           // For regular rows, calculate the yearly charges
-          const yearlyCharge = (record.price * record.headCount || 0) * 12;
+          const yearlyCharge = (record?.price * record?.headCount || 0) * 12;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {yearlyCharge.toLocaleString()}
@@ -228,7 +218,7 @@ const BillProcessStepThree = () => {
       render: (text, record) => {
         const { Monthlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {Monthlycharges}
@@ -236,7 +226,7 @@ const BillProcessStepThree = () => {
           );
         } else {
           // For regular rows, calculate the yearly charges
-          const MonthlyCharge = record.price * record.headCount || 0;
+          const MonthlyCharge = record?.price * record?.headCount || 0;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {MonthlyCharge.toLocaleString()}
@@ -260,14 +250,14 @@ const BillProcessStepThree = () => {
       render: (text, record) => {
         const { Quaterlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
-        if (record.isTotalRow) {
+        if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {Quaterlycharges}
             </span>
           );
         } else {
-          const QuaterlyCharge = (record.price * record.headCount || 0) * 3;
+          const QuaterlyCharge = (record?.price * record?.headCount || 0) * 3;
           return (
             <span className={styles["ChargesPerLicesense"]}>
               {QuaterlyCharge.toLocaleString()}
@@ -368,9 +358,6 @@ const BillProcessStepThree = () => {
           </Col>
         </Row>
       </section>
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </>
   );
 };

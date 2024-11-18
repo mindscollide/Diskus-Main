@@ -5,21 +5,19 @@ import { Button } from "../../../../../../components/elements";
 import dropmdownblack from "../../../../../../assets/images/whitedown.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import ViewVoteModal from "./ViewVoteModal/ViewVoteModal";
 import { useSelector } from "react-redux";
 import {
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../../store/actions/NewMeetingActions";
-// import CastVoteAgendaModal from "./CastVoteAgendaModal/CastVoteAgendaModal";
 
 const VotingPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const viewVotesAgenda = useSelector(
+    (state) => state.NewMeetingreducer.viewVotesAgenda
+  );
   const EnableViewVoteModal = () => {
     dispatch(showviewVotesAgenda(true));
   };
@@ -48,27 +46,23 @@ const VotingPage = () => {
                     sm={3}
                     className="d-flex gap-2 align-items-center"
                   >
-                    {/* <Button
-                      text={t("End-voting")}
-                      className={styles["EndVotingButton"]}
-                    /> */}
-
                     <Button
                       text={t("Cast-your-vote")}
                       className={styles["CastYourVoteButton"]}
                       onClick={EnableCastVoteModal}
                     />
 
-                    {/* <Button
-                      text={t("Start-voting")}
-                      className={styles["startVotingButton"]}
-                    /> */}
                     <Button
                       text={t("View-votes")}
                       className={styles["ViewVoteButton"]}
                       onClick={EnableViewVoteModal}
                     />
-                    <img src={dropmdownblack} width="18.4px" height="9.2px" />
+                    <img
+                      src={dropmdownblack}
+                      width="18.4px"
+                      height="9.2px"
+                      alt=""
+                    />
                   </Col>
                 </Row>
               </section>
@@ -87,7 +81,7 @@ const VotingPage = () => {
           <Button text={t("Next")} className={styles["Next_button"]} />
         </Col>
       </Row>
-      {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
+      {viewVotesAgenda && <ViewVoteModal />}
     </section>
   );
 };

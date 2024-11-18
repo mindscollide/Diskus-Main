@@ -11,47 +11,40 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
   Button,
-  Notification,
   TableToDo,
   TextField,
 } from "../../../../../components/elements";
 import {
   cancelisTrailandSubscriptionApi,
   getAllUserTypePackagesApi,
-  LoginFlowRoutes,
 } from "../../../../../store/actions/UserManagementActions";
-import { openPaymentProcessModal } from "../../../../../store/actions/UserMangementModalActions";
 const PakageDetailsUMUpgrade = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
   const { t } = useTranslation();
-
   const { UserMangementReducer, LanguageReducer } = useSelector(
     (state) => state
   );
 
+  const UserMangementReducergetAllUserTypePackagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllUserTypePackagesData
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
+  );
   //States
   const [tableData, setTableData] = useState([]);
   const [packageTableData, setPackageTableData] = useState([]);
   let isTrial = localStorage.getItem("isTrial");
-
-  const [lisence, setlisence] = useState({
-    TotalLisence: "",
-  });
   const [packageDetail, setPackageDetail] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
-  console.log(
-    organizationPackagePrice,
-    packageDetail,
-    "organizationPackagePriceorganizationPackagePrice"
-  );
+  console.log("check error k");
 
   //get All user pakages Api call
   useEffect(() => {
@@ -64,10 +57,6 @@ const PakageDetailsUMUpgrade = () => {
 
   useEffect(() => {
     if (location.state && location.state.organizationSelectedPackages) {
-      console.log(
-        location.state.organizationSelectedPackages,
-        "selectedPackagesselectedPackages"
-      );
       const selectedPackages = location.state.organizationSelectedPackages[0];
       if (selectedPackages) {
         console.log(selectedPackages, "selectedPackagesselectedPackages");
@@ -99,26 +88,24 @@ const PakageDetailsUMUpgrade = () => {
     }
   }, [location.state]);
 
-  console.log(organizationPackagePrice, "organizationSelectedPackages");
-
   //Fetching the data for pakage selection
   useEffect(() => {
     try {
-      const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
+      const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
       if (
         pakageDetails &&
         pakageDetails.packages &&
         pakageDetails.packages.length > 0
       ) {
         setPackageDetail(
-          UserMangementReducer.getAllUserTypePackagesData.packages
+          UserMangementReducergetAllUserTypePackagesData.packages
         );
-        setTableData(UserMangementReducer.getAllUserTypePackagesData.packages);
+        setTableData(UserMangementReducergetAllUserTypePackagesData.packages);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [UserMangementReducer.getAllUserTypePackagesData]);
+  }, [UserMangementReducergetAllUserTypePackagesData]);
 
   // translate Languages start
   const languages = [
@@ -157,8 +144,6 @@ const PakageDetailsUMUpgrade = () => {
       dispatch(cancelisTrailandSubscriptionApi(navigate, t, data));
     } else {
     }
-
-    // navigate("/Admin/PaymentFormUserManagement");
   };
 
   const ColumnsPakageSelection = [
@@ -173,6 +158,10 @@ const PakageDetailsUMUpgrade = () => {
       key: "name",
       align: "center",
       render: (text, response) => {
+        {
+          console.log("check error k", response);
+        }
+
         return (
           <>
             <span className={styles["Tableheading"]}>{response.name}</span>
@@ -194,14 +183,15 @@ const PakageDetailsUMUpgrade = () => {
       width: 100,
       align: "center",
       render: (text, response) => {
+        console.log("check error k", response);
         // Check if 'price' is available and greater than zero before rendering it
-        if (response.isTotalRow) {
+        if (response?.isTotalRow) {
           return;
         } else {
           return (
             <>
               <span className={styles["ChargesPerLicesense"]}>
-                {response.price}
+                {response?.price}
               </span>
             </>
           );
@@ -222,14 +212,14 @@ const PakageDetailsUMUpgrade = () => {
       key: "Numberoflicenses",
       align: "center",
       render: (text, row, index) => {
-        console.log({ row, text }, "pricepriceprice");
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return;
         } else {
-          if (row.isTotalRow) {
+          console.log("check error k", row);
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
-                {row.Numberoflicenses}
+                {row?.Numberoflicenses}
               </span>
             );
           } else {
@@ -241,7 +231,6 @@ const PakageDetailsUMUpgrade = () => {
                   }
                   return item;
                 });
-                console.log(newData, "newData");
                 setPackageTableData(newData);
               }
             };
@@ -252,7 +241,6 @@ const PakageDetailsUMUpgrade = () => {
             const priceValue = matchedPackage
               ? matchedPackage.licenseCount
               : "";
-            console.log(priceValue, "priceValuepriceValuepriceValue");
             return (
               <Row>
                 <Col className="d-flex justify-content-center">
@@ -288,15 +276,13 @@ const PakageDetailsUMUpgrade = () => {
         let monthlyCharges = 0;
         if (row?.name) {
           const matchedPackage = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (matchedPackage) {
-            monthlyCharges = row.price * matchedPackage.licenseCount;
+            monthlyCharges = row?.price * matchedPackage.licenseCount;
           }
         }
-
-        console.log(monthlyCharges, "shouldDisplayTextFieldprice");
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -309,7 +295,7 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -344,14 +330,14 @@ const PakageDetailsUMUpgrade = () => {
         let quarterlyCharges = 0;
         if (row?.name) {
           const findName = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (findName) {
-            quarterlyCharges = row.price * (findName.licenseCount * 3);
+            quarterlyCharges = row?.price * (findName.licenseCount * 3);
           }
         }
 
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -364,7 +350,8 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          console.log("check error k", row);
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -393,18 +380,18 @@ const PakageDetailsUMUpgrade = () => {
       key: "YearlychargesTotal",
       align: "center",
       width: 100,
-      render: (text, row, index) => {
+      render: (text, row) => {
         let YearlyCharges = 0;
         if (row?.name) {
           const findName = organizationPackagePrice.find(
-            (pkg) => pkg.name === row.name
+            (pkg) => pkg.name === row?.name
           );
           if (findName) {
-            YearlyCharges = row.price * (findName.licenseCount * 12);
+            YearlyCharges = row?.price * (findName.licenseCount * 12);
           }
         }
 
-        if (row.shouldDisplayTextField) {
+        if (row?.shouldDisplayTextField) {
           return (
             <>
               <span className={styles["ButtonsArabicStylesSpan"]}>
@@ -417,7 +404,7 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
+          if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
             );
@@ -435,12 +422,6 @@ const PakageDetailsUMUpgrade = () => {
     },
   ];
 
-  //Pay Now B Button On Click
-  const handlePayNowClick = () => {
-    localStorage.setItem("signupCurrentPage", 2);
-    navigate("/Signup");
-  };
-
   //For buttons default row flag
   const defaultRowWithButtons = {
     shouldDisplayTextField: true,
@@ -456,14 +437,14 @@ const PakageDetailsUMUpgrade = () => {
     // Calculate total monthly charges
     const totalMonthlyCharges = packageTableData.reduce((total, row) => {
       const matchedPackage = organizationPackagePrice.find(
-        (pkg) => pkg.name === row.name
+        (pkg) => pkg.name === row?.name
       );
       const monthlyCharges =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount
+          ? row?.price * matchedPackage.licenseCount
           : 0; // Multiply by 3 for quarterly
 
       return total + monthlyCharges;
@@ -474,11 +455,11 @@ const PakageDetailsUMUpgrade = () => {
         (pkg) => pkg.name === row.name
       );
       const quarterlyCharge =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount * 3
+          ? row?.price * matchedPackage.licenseCount * 3
           : 0; // Multiply by 3 for quarterly
 
       return total + quarterlyCharge;
@@ -487,14 +468,14 @@ const PakageDetailsUMUpgrade = () => {
     console.log(totalQuarterlyCharges, "totalMonthlyCharges");
     const totalYearlyCharges = packageTableData.reduce((total, row) => {
       const matchedPackage = organizationPackagePrice.find(
-        (pkg) => pkg.name === row.name
+        (pkg) => pkg.name === row?.name
       );
       const yearlyCharge =
-        row.price &&
+        row?.price &&
         matchedPackage &&
-        !isNaN(row.price) &&
+        !isNaN(row?.price) &&
         !isNaN(matchedPackage.price)
-          ? row.price * matchedPackage.licenseCount * 12
+          ? row?.price * matchedPackage.licenseCount * 12
           : 0; // Multiply by 3 for quarterly
 
       return total + yearlyCharge;
@@ -562,23 +543,7 @@ const PakageDetailsUMUpgrade = () => {
                       <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            {/* <span className="icon-star package-icon-style">
-                              <span
-                                className="path1"
-                                // style={{ color: packageColorPath1 }}
-                              ></span>
-                              <span
-                                className="path2"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                              <span
-                                className="path3"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                            </span> */}
                             <span className={styles["package_title"]}>
-                              {/* {t("Gold")} */}
-                              {/* {data.PackageName} */}
                               {data.name}
                             </span>{" "}
                           </>
@@ -589,7 +554,7 @@ const PakageDetailsUMUpgrade = () => {
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
-                              ${data.price}/
+                              ${data?.price}/
                               <p className={styles["package_actualPrice_p"]}>
                                 {t("Month")}
                               </p>
@@ -671,10 +636,6 @@ const PakageDetailsUMUpgrade = () => {
           </span>
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </Container>
   );
 };

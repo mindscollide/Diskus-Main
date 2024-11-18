@@ -4,12 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ClearMessageAnnotations } from "../../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
-import { Notification, Loader } from "../../../../components/elements/index";
+import { Notification } from "../../../../components/elements/index";
 import {
   declineReasonApi,
   getWorkFlowByWorkFlowIdwApi,
 } from "../../../../store/actions/workflow_actions";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 import DeclineReasonModal from "../SignatureModals/DeclineReasonModal/DeclineReasonModal";
 import DeclineReasonCloseModal from "../SignatureModals/DeclineReasonCloseModal/DeclineReasonCloseModal";
 import {
@@ -17,6 +16,7 @@ import {
   processXmlForReadOnly,
   readOnlyFreetextElements,
 } from "../pendingSignature/pendingSIgnatureFunctions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ViewSignatureDocument = () => {
   const location = useLocation();
@@ -27,7 +27,6 @@ const ViewSignatureDocument = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
-    Loading,
     getDataroomAnnotation,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
@@ -43,11 +42,11 @@ const ViewSignatureDocument = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
-  const [removeXmlAfterHideDAta, setRemoveXmlAfterHideDAta] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
@@ -444,7 +443,7 @@ const ViewSignatureDocument = () => {
           "leftPanelButton",
           "zoomOverlayButton",
           "toolbarGroup-Forms",
-          "header"
+          "header",
         ]);
       });
     }
@@ -455,19 +454,8 @@ const ViewSignatureDocument = () => {
   // === this is for Response Message===//
   useEffect(() => {
     if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      setOpen({
-        ...open,
-        message: ResponseMessage,
-        open: true,
-      });
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-        setOpen({
-          ...open,
-          message: "",
-          open: false,
-        });
-      }, 4000);
+      showMessage(ResponseMessage, "success", setOpen);
+      dispatch(ClearMessageAnnotations());
     }
   }, [ResponseMessage]);
   // === End ===//
@@ -524,8 +512,12 @@ const ViewSignatureDocument = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {/* {Loading && <Loader />} */}
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
+        severity={open.severity}
+      />
     </>
   );
 };

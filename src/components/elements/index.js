@@ -6,8 +6,7 @@ import Table from "./table/Table";
 import TableToDo from "./tableToDo/table-to-do";
 import CustomTableToDoDashboard from "./tableTodoDashboard/table-todo-dashboard";
 import uploadButton from "./upload/uploadButton";
-import { Notification, Message } from "./snack_bar";
-import SelectBox from "./select_dropdown/Select_dropdown";
+import Notification from "./snack_bar";
 import Modal from "./modal/Modal";
 import ButtonGroup from "./GroupedButtons/Grouped_buttons";
 import Accordian from "./accordian/Accordian";
@@ -15,7 +14,6 @@ import Radio from "./radio/Radio";
 import Checkbox from "./check_box/Checkbox";
 import TimePickers from "./time_picker/Time_picker";
 import Collapse from "./collapse/Collapse";
-import Paper from "./paper/Paper";
 import SearchInput from "./search/search";
 import Welcome from "./welcomescreen/Welcome";
 import Switch from "./switch_button/Switch";
@@ -25,7 +23,6 @@ import LoaderPanel from "../elements/loader/LoaderPanel";
 import LoaderPanelVideoScreen from "../elements/loader/LoaderScreenPanel";
 import Calendar from "../elements/calendar/Calendar";
 import ResultMessage from "./resultmessage/ResultMessage";
-import SelectDropdownforObject from "./select_dropdown_for_Object/Select_Dropdown_for_Object";
 import InputSearchFilter from "./input_search_filter/input-search-filter";
 import EmployeeCard from "./cardsEmployees/cards-employees";
 import CustomOnboardModal from "./onboardModal/onboardModal";
@@ -51,13 +48,12 @@ import AddtionalUserCard from "./AddtionalUsersCard/AddtionalUsersCard";
 import AttachmentViewer from "./fileAttachment/attachment";
 import ProgressLine from "./progressBarPending/ProgressBarPending";
 import SelectComment from "./select-comment/SelectComment";
-
+import GuestJoinRequest from "./guestJoinRequest/GuestJoinRequest";
 import DocumentViewer from "../elements/webviewer/DocumentViewer";
 export {
   SelectComment,
   AttachmentViewer,
   CustomOnboardModal,
-  // UploadButton,
   Welcome,
   Button,
   Calendar,
@@ -70,20 +66,16 @@ export {
   Table,
   uploadButton,
   Notification,
-  Message,
   Loader,
   ResultMessage,
   NotificationBar,
-  SelectBox,
   Checkbox,
   Accordian,
   TimePickers,
   Radio,
   Collapse,
   ButtonGroup,
-  Paper,
   SearchInput,
-  SelectDropdownforObject,
   InputSearchFilter,
   EmployeeCard,
   TableToDo,
@@ -110,4 +102,5 @@ export {
   ProgressLine,
   AddtionalUserCard,
   DocumentViewer,
+  GuestJoinRequest,
 };

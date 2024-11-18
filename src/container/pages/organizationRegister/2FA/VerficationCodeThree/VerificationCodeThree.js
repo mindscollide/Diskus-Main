@@ -1,32 +1,25 @@
-import { Button, Paper, Loader } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Col, Container, Row } from "react-bootstrap";
 import "./VerificationCodeThree.css";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useTranslation } from "react-i18next";
-import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 const VerificationCodeThree = () => {
-  const { t, i18n } = useTranslation();
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [verifyOTP, setVerifyOTP] = useState(null);
-  let GobackSelection = localStorage.getItem("GobackSelection");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
+
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -36,24 +29,12 @@ const VerificationCodeThree = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
-
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
-
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
   console.log("currentLocale", currentLocale);
-  let currentLanguage = localStorage.getItem("i18nextLng");
-
-  // translate Languages end
 
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
@@ -74,7 +55,6 @@ const VerificationCodeThree = () => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
-    setVerifyOTP("");
     let Data = {
       UserID: JSON.parse(userID),
       Device: "Browser",
@@ -142,7 +122,7 @@ const VerificationCodeThree = () => {
   let newClient = Helper.socket;
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
@@ -153,14 +133,6 @@ const VerificationCodeThree = () => {
   }, [Helper.socket]);
 
   useEffect(() => {
-    if (Authreducer.SendTwoFacOTPResponse !== null) {
-      let OTPValue = Authreducer.SendTwoFacOTPResponse;
-      setVerifyOTP(OTPValue?.otpCode);
-    }
-  }, [Authreducer.SendTwoFacOTPResponse]);
-
-  useEffect(() => {
-    // if (startTimer) {
     const interval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -170,7 +142,6 @@ const VerificationCodeThree = () => {
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(interval);
-          // setStartTimer(false)
           localStorage.removeItem("seconds");
           localStorage.removeItem("minutes");
         } else {
@@ -191,9 +162,8 @@ const VerificationCodeThree = () => {
     let s = localStorage.getItem("seconds");
     let m = localStorage.getItem("minutes");
     window.addEventListener("beforeunload ", (e) => {
-      console.log("ttt");
       e.preventDefault();
-      if (m != undefined && s != undefined) {
+      if (m !== undefined && s !== undefined) {
         if (s === 1) {
           setSeconds(59);
           setMinutes(m - 1);
@@ -214,28 +184,9 @@ const VerificationCodeThree = () => {
   };
   return (
     <>
-      {/* <Row>
-        <Col className="languageselect-box">
-          <select
-            className="select-language-signin_2FAverificationdevieotp"
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options">
-                {name}
-              </option>
-            ))}
-          </select>
-          <img draggable="false"
-            src={LanguageChangeIcon}
-            className="languageIcon_2FAverificationdevieotp"
-          />
-        </Col>
-      </Row> */}
       <Container fluid className="VerificationCodeThree">
         <Row className="position-relative">
-          <Col className="languageSelector">
+          <Col className="languageSelectors">
             <LanguageSelector />
           </Col>
         </Row>
@@ -246,7 +197,7 @@ const VerificationCodeThree = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className="loginbox_auth_paper_for_openyourrealmextra">
+            <span className="loginbox_auth_paper_for_openyourrealmextra">
               <Col
                 sm={12}
                 lg={12}
@@ -266,9 +217,6 @@ const VerificationCodeThree = () => {
                       alt=""
                       width="220px"
                       height="69px"
-                      // width="229.58px"
-                      // height="72.03px"
-                      // alt="diskus_logo"
                     />
                   </Col>
                 </Row>
@@ -354,7 +302,7 @@ const VerificationCodeThree = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
 
           <Col md={7} lg={7} sm={12} className="">
@@ -365,8 +313,7 @@ const VerificationCodeThree = () => {
                   src={img9}
                   alt="auth_icon"
                   className="phone-image"
-                  width="320px"
-                  height="417px"
+                  height="500px"
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
@@ -380,25 +327,7 @@ const VerificationCodeThree = () => {
               </Col>
             </Row>
           </Col>
-          {/* <Col
-            md={7}
-            lg={7}
-            sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100 roundspinner-image"
-          >
-            <img draggable="false"
-              src={img9}
-              alt="auth_icon"
-              className="mobile_image_two"
-              width="360.81px"
-              height="530.4px"
-            />
-          </Col> */}
         </Row>
-        {(Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null) ||
-        LanguageReducer.Loading ? (
-          <Loader />
-        ) : null}
       </Container>
     </>
   );

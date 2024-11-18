@@ -1,7 +1,6 @@
 import React from "react";
 import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./UnsavedMinutes.module.css";
-import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import {
   searchNewUserMeeting,
   showUnsaveMinutesFileUpload,
@@ -25,7 +24,7 @@ const UnsavedMinutes = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
@@ -57,7 +56,7 @@ const UnsavedMinutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting")
+        console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         setFileAttachments([]);
       }

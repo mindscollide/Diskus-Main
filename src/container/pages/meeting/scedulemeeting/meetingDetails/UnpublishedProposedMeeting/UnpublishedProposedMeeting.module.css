@@ -24,16 +24,11 @@
   cursor: pointer !important;
   overflow: hidden !important;
   display: block !important;
-  /* width: 200px !important; */
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  margin: 0 5px;
 }
 
-/* .newMeetingProgressbar {
-  background: #6172d6 !important;
-  margin: 3px !important;
-  border-radius: 5px !important;
-} */
 .meeting_date {
   white-space: nowrap;
   text-align: center;
@@ -78,4 +73,44 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.FilterResetBtn {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+body[dir="rtl"] .ResetOkBtn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
 }

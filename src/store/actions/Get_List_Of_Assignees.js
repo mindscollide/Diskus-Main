@@ -11,7 +11,6 @@ import {
   endMeeting,
   getAllReminders,
 } from "../../commen/apis/Api_config";
-import { getMeetingUserId, searchUserMeeting } from "./GetMeetingUserId";
 import { RefreshToken } from "../actions/Auth_action";
 import { getCalendarDataResponse } from "../actions/GetDataForCalendar";
 import {
@@ -23,12 +22,6 @@ import {
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
 
-const ShowNotification = (message) => {
-  return {
-    type: actions.SHOW,
-    message: message,
-  };
-};
 const meetingLoaderDashboard = (payload) => {
   return {
     type: actions.LOADER_CREATEMEETING_DASHBOARD,
@@ -167,21 +160,7 @@ const ScheduleMeetingFail = (message) => {
 const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
-  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
-  let meetingPageCurrent = JSON.parse(
-    localStorage.getItem("MeetingPageCurrent")
-  );
 
-  let Data = {
-    Date: "",
-    Title: "",
-    HostName: "",
-    UserID: createrID,
-    PageNumber: meetingPageCurrent,
-    Length: meetingpageRow,
-    PublishedMeetings: true,
-  };
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
     dispatch(meetingLoaderDashboard(true));
@@ -211,10 +190,6 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
             ) {
               await dispatch(SetLoaderFalse(false));
               dispatch(meetingLoaderDashboard(false));
-              // await dispatch(
-              //   ShowNotification(t("The-record-has-been-saved-successfully"))
-              // );
-
               if (checkFlag === 2) {
                 await dispatch(getCalendarDataResponse(navigate, t, createrID));
               } else if (checkFlag === 4) {
@@ -292,20 +267,6 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
 const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
-  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
-  let meetingPageCurrent = JSON.parse(
-    localStorage.getItem("MeetingPageCurrent")
-  );
-
-  let Data = {
-    Date: "",
-    Title: "",
-    HostName: "",
-    UserID: JSON.parse(createrID),
-    PageNumber: meetingPageCurrent,
-    Length: meetingpageRow,
-  };
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
     let form = new FormData();
@@ -375,26 +336,6 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                 };
                 dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
               }
-              // if (value === 1) {
-              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-              //   let Data = {
-              //     CommitteeID: Number(ViewCommitteeID),
-              //     Date: "",
-              //     Title: "",
-              //     HostName: "",
-              //     UserID: Number(createrID),
-              //     PageNumber: 1,
-              //     Length: 50,
-              //     PublishedMeetings: true,
-              //   };
-              //   dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
-              // } else if (value === 2) {
-              // } else {
-              // }
-
-              // await dispatch(
-              //   ShowNotification(t("The-record-has-been-updated-successfully"))
-              // );
               await dispatch(meetingLoaderDashboard(false));
               await dispatch(SetLoaderFalse(false));
             } else if (
@@ -407,7 +348,6 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
               await dispatch(
                 ScheduleMeetingFail(t("No-record-has-been-updated"))
               );
-              await dispatch(searchUserMeeting(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -416,15 +356,12 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-              await dispatch(searchUserMeeting(navigate, Data, t));
             }
           } else {
             dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-            await dispatch(searchUserMeeting(navigate, Data, t));
           }
         } else {
           dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-          await dispatch(searchUserMeeting(navigate, Data, t));
         }
       })
       .catch(async (response) => {
@@ -591,7 +528,6 @@ const CancelMeeting = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
 
-  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
   return (dispatch) => {
     dispatch(CancelMeetingInit());
     let form = new FormData();
@@ -730,8 +666,6 @@ const StartMeetingFail = (message) => {
 //START Meeting
 const StartMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
     dispatch(StartMeetingInit());
     let form = new FormData();
@@ -765,7 +699,6 @@ const StartMeeting = (navigate, object, t, searchData) => {
                   t("The-meeting-has-been-started")
                 )
               );
-              await dispatch(searchUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -841,8 +774,6 @@ const EndMeetingFail = (message) => {
 //START Meeting
 const EndMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
     dispatch(EndMeetingInit());
     let form = new FormData();

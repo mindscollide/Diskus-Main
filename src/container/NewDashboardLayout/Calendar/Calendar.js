@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./Calendar.module.css";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -26,25 +25,23 @@ import {
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
+import styles from "./Calendar.module.css";
 const NewCalendar = () => {
-  const calendarReducer = useSelector((state) => state.calendarReducer);
-  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
-  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [dates, setDates] = useState([]);
   let currentDate = new Date(); // Get the current date
-
   let currentDateObject = new DateObject(currentDate);
   let lang = localStorage.getItem("i18nextLng");
-
-  const calendarRef = useRef();
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  console.log({ calendarEvents }, "calendarEventscalendarEvents");
   let userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
+  const calendarReducer = useSelector((state) => state.calendarReducer);
+  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const calendarRef = useRef();
+  const [calendarEvents, setCalendarEvents] = useState([]);
   const [calenderData, setCalenderData] = useState([]);
 
   //For Custom language datepicker
@@ -57,6 +54,7 @@ const NewCalendar = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") !== undefined &&
@@ -71,7 +69,7 @@ const NewCalendar = () => {
   useEffect(() => {
     if (Object.keys(calenderData).length > 0) {
       let temp = [];
-      calenderData.map((cal, index) => {
+      calenderData.map((cal) => {
         let formattedDate = forHomeCalendar(cal.meetingDate);
         let d = new DateObject(formattedDate);
 
@@ -135,8 +133,49 @@ const NewCalendar = () => {
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
-      console.log({Data}, "DataDataDataupdateCalendarData")
-      setCalendarEvents(Data);
+      let newCalendarData = [];
+      Data.forEach((calenderData, index) => {
+        newCalendarData.push({
+          pK_MDID: calenderData.pK_MDID,
+          pK_CEID: calenderData.pK_CEID,
+          fK_TZID: calenderData.fK_TZID,
+          fK_CETID: calenderData.fK_CETID,
+          fK_CESID: calenderData.fK_CESID,
+          location: calenderData.location,
+          eventDate: calenderData.eventDate,
+          startTime: calenderData.startTime,
+          endTime: calenderData.endTime,
+          title: calenderData.title,
+          description: calenderData.description,
+          calenderEventSource:
+            calenderData.fK_CESID === 1
+              ? t("Google")
+              : calenderData.fK_CESID === 2
+              ? t("Office")
+              : calenderData.fK_CESID === 3
+              ? t("Diskus")
+              : calenderData.fK_CESID === 4
+              ? t("Microsoft")
+              : "",
+          calenderEventType:
+            calenderData.fK_CETID === 1
+              ? t("None")
+              : calenderData.fK_CETID === 2
+              ? t("Meeting")
+              : calenderData.fK_CETID === 3
+              ? t("Task")
+              : calenderData.fK_CETID === 4
+              ? t("Resolution")
+              : calenderData.fK_CETID === 5
+              ? t("Polls")
+              : "",
+          timeZone: calenderData.timeZone,
+          statusID: calenderData.statusID,
+          participantRoleID: calenderData.participantRoleID,
+          isQuickMeeting: calenderData.isQuickMeeting,
+        });
+      });
+      setCalendarEvents(newCalendarData);
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
         Data.map((cData, index) => {
@@ -171,11 +210,6 @@ const NewCalendar = () => {
         Data.map((cData, index) => {
           if (flag) {
             if (cData.pK_MDID === meetingID) {
-              console.log(
-                "Delete MeetingMeetingMeetingMeeting",
-                cData,
-                meetingID
-              );
               return;
             } else {
               let date = moment(
@@ -200,7 +234,7 @@ const NewCalendar = () => {
   };
 
   useEffect(() => {
-    if (lang !== undefined) {
+    if (lang !== null) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -213,35 +247,35 @@ const NewCalendar = () => {
 
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
-    if (calendarEvents.length > 0) {
-      const findData = calendarEvents.filter(
-        (data) =>
-          startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
-          selectDate
-      );
-      console.log({ findData, calendarEvents }, "findDatafindDatafindData");
-      if (findData.length > 0) {
-        setEvents(findData); // Assuming findData is already an array
-        setEventsModal(true);
-        // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
-        // findData.forEach((event) => {
-        //   if (
-        //     event.pK_MDID ===
-        //     meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
-        //   ) {
-        //     // Update the statusID to 10
-        //     event.statusID = 10;
-        //     // Dispatch an action to update the global state if needed
-        //     // dispatch(updateEventStatus(event)); // Assuming you have a proper action
-        //   }
-        // });
-      } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: t("No-events-available-on-this-date"),
-        });
+    try {
+      if (calendarEvents.length > 0) {
+        const findData = calendarEvents.filter(
+          (data) =>
+            startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
+            selectDate
+        );
+        console.log({ findData, calendarEvents }, "findDatafindDatafindData");
+        if (findData.length > 0) {
+          setEvents(findData); // Assuming findData is already an array
+          setEventsModal(true);
+          // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
+          // findData.forEach((event) => {
+          //   if (
+          //     event.pK_MDID ===
+          //     meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
+          //   ) {
+          //     // Update the statusID to 10
+          //     event.statusID = 10;
+          //     // Dispatch an action to update the global state if needed
+          //     // dispatch(updateEventStatus(event)); // Assuming you have a proper action
+          //   }
+          // });
+        } else {
+          showMessage("No-events-available-on-this-date", "error", setOpen);
+        }
       }
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
   };
 
@@ -379,25 +413,25 @@ const NewCalendar = () => {
           description: "",
           calenderEventSource:
             meetingData.fK_CESID === 1
-              ? "Google"
+              ? t("Google")
               : meetingData.fK_CESID === 2
-              ? "Office"
+              ? t("Office")
               : meetingData.fK_CESID === 3
-              ? "Diskus"
+              ? t("Diskus")
               : meetingData.fK_CESID === 4
-              ? "Microsoft"
+              ? t("Microsoft")
               : "",
           calenderEventType:
             meetingData.fK_CETID === 1
-              ? "None"
+              ? t("None")
               : meetingData.fK_CETID === 2
-              ? "Meeting"
+              ? t("Meeting")
               : meetingData.fK_CETID === 3
-              ? "Task"
+              ? t("Task")
               : meetingData.fK_CETID === 4
-              ? "Resolution"
+              ? t("Resolution")
               : meetingData.fK_CETID === 5
-              ? "Polls"
+              ? t("Polls")
               : "",
           timeZone: meetingData.timeZone,
           statusID: meetingData.status,
@@ -457,7 +491,7 @@ const NewCalendar = () => {
             )
           );
         let findPartcipantRoleID = meetingData.meetingAttendees.find(
-          (attendeeData, index) => {
+          (attendeeData) => {
             if (attendeeData.user.pK_UID === parseInt(userID)) {
               return attendeeData.meetingAttendeeRole.pK_MARID;
             }
@@ -479,25 +513,25 @@ const NewCalendar = () => {
           description: "",
           calenderEventSource:
             meetingData.fK_CESID === 1
-              ? "Google"
+              ? t("Google")
               : meetingData.fK_CESID === 2
-              ? "Office"
+              ? t("Office")
               : meetingData.fK_CESID === 3
-              ? "Diskus"
+              ? t("Diskus")
               : meetingData.fK_CESID === 4
-              ? "Microsoft"
+              ? t("Microsoft")
               : "",
           calenderEventType:
             meetingData.fK_CETID === 1
-              ? "None"
+              ? t("None")
               : meetingData.fK_CETID === 2
-              ? "Meeting"
+              ? t("Meeting")
               : meetingData.fK_CETID === 3
-              ? "Task"
+              ? t("Task")
               : meetingData.fK_CETID === 4
-              ? "Resolution"
+              ? t("Resolution")
               : meetingData.fK_CETID === 5
-              ? "Polls"
+              ? t("Polls")
               : "",
           timeZone: meetingData.timeZone,
           statusID: meetingData.status,
@@ -615,16 +649,16 @@ const NewCalendar = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
   return (
     <>
+      {/* <section className={styles["dashboard_calendar_empty"]}>
+          <Spin />
+        </section> */}
       {calendarReducer.Spinner === true ? (
-        <section className='bg-white'>
+        <section className={styles["dashboard_calendar_empty"]}>
           <Spin />
         </section>
       ) : (
@@ -642,14 +676,18 @@ const NewCalendar = () => {
             }}
             multiple={false}
             onChange={calendarClickFunction}
-            className='custom-multi-date-picker'
+            className={styles["custom-multi-date-picker"]}
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
-            // format="YYYY-MM-DD"
           />
         </>
       )}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={(status) => setOpen({ ...open, open: status.open })}
+        severity={open.severity}
+      />
       {eventModal && (
         <EventsModal
           events={events}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "../modal/Modal";
 import styles from "./CommitteeStatusModa..module.css";
 import { Row, Col } from "react-bootstrap";
@@ -35,7 +35,7 @@ const CommitteeStatusModal = ({ isActive, setIsActive, statusUpdateData }) => {
                     ? t("Active")
                     : ""
                 }
-                                ${t("this committee?")}`}
+                                ${t("this-committee")}`}
               </Col>
             </Row>
           </>

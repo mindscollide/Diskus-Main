@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Agenda.module.css";
-import { useNavigate } from "react-router-dom";
-import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -20,31 +18,10 @@ const SubRequestContributor = ({
 }) => {
   const { t } = useTranslation();
 
-  const { NewMeetingreducer } = useSelector((state) => state);
-
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-
+  const getAllAgendaContributors = useSelector(
+    (state) => state.NewMeetingreducer.getAllAgendaContributors
+  );
   const [agendaContributors, setAgendaContributors] = useState([]);
-
-  // Function to handle changes in sub-agenda additional Request Contributor Enter URl Radio text field
-  const handleSubAgendaRequestContributorEnterUrl = (index, subIndex, e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log(value, name, "valuevaluevalue");
-
-    const updatedRows = [...rows];
-
-    if (name === "SubAgendaRequestContributorUrlField") {
-      updatedRows[index].subAgenda[subIndex].subAgendarequestContributorUrl =
-        value;
-    }
-    console.log(updatedRows, "SubAgendaRequestContributorUrlField");
-    setRows(updatedRows);
-  };
 
   // Function to handle changes in sub-agenda additional Request Contributor Enter Note Radio text field
   const handleSubAgendaRequestContributorEnterNote = (index, subIndex, e) => {
@@ -72,15 +49,15 @@ const SubRequestContributor = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.getAllAgendaContributors !== undefined &&
-      NewMeetingreducer.getAllAgendaContributors !== null &&
-      NewMeetingreducer.getAllAgendaContributors.length !== 0
+      getAllAgendaContributors !== undefined &&
+      getAllAgendaContributors !== null &&
+      getAllAgendaContributors.length !== 0
     ) {
-      setAgendaContributors(NewMeetingreducer.getAllAgendaContributors);
+      setAgendaContributors(getAllAgendaContributors);
     } else {
       setAgendaContributors([]);
     }
-  }, [NewMeetingreducer.getAllAgendaContributors]);
+  }, [getAllAgendaContributors]);
 
   const handleSelectChange = (index, subIndex, value) => {
     console.log(value, "valuevaluevalue");
@@ -150,8 +127,6 @@ const SubRequestContributor = ({
   //     </>
   //   ),
   // }));
-
-  console.log("New Meeting Reducer", NewMeetingreducer);
 
   return (
     <>

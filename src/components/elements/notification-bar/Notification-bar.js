@@ -1,14 +1,5 @@
-import React, { useMemo, useState, useEffect } from "react";
-import {
-  RadiusBottomleftOutlined,
-  RadiusBottomrightOutlined,
-  RadiusUpleftOutlined,
-  RadiusUprightOutlined,
-} from "@ant-design/icons";
-import DiskusLogo from "../../../assets/images/newElements/Diskus_newLogo.svg";
-
-import { Button, Divider, notification, Space } from "antd";
-
+import React, { useEffect } from "react";
+import { notification } from "antd";
 const Context = React.createContext({
   name: "Default",
 });
@@ -22,7 +13,6 @@ const NotificationBar = ({
 }) => {
   const [api, contextHolder] = notification.useNotification();
 
-  // const [notificationTrue, setNotificationTrue] = useState(notificationState);
   const close = () => {
     console.log(
       "Notification was closed. Either the close button was clicked or duration time elapsed."
@@ -41,7 +31,7 @@ const NotificationBar = ({
       description: (
         <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
       ),
-      classname: "custom-notification-antdesign",
+      className: "MQTT_Notification",
       placement: "bottomLeft",
       duration: 4,
       icon: iconName,
@@ -50,10 +40,6 @@ const NotificationBar = ({
   };
 
   useEffect(() => {
-    // if(notificationMessage !== "") {
-    //   openNotification();
-    // }
-
     if (notificationState === true) {
       openNotification();
     } else {
@@ -64,13 +50,7 @@ const NotificationBar = ({
     }
   }, [id]);
 
-  return (
-    // <Context.Provider value={contextValue}>
-    <>
-      {contextHolder}
-      {/* <RadiusBottomleftOutlined /> */}
-    </>
-  );
+  return <>{contextHolder}</>;
 };
 
 export default NotificationBar;

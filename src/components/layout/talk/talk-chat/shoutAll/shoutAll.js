@@ -8,25 +8,16 @@ import {
   newTimeFormaterAsPerUTCTalkDate,
 } from "../../../../../commen/functions/date_formater";
 import { ResultMessage, TextField } from "../../../../elements";
-import {
-  chatBoxActiveFlag,
-  shoutallChatFlag,
-  privateGroupChatFlag,
-  recentChatFlag,
-} from "../../../../../store/actions/Talk_Feature_actions";
+import { chatBoxActiveFlag } from "../../../../../store/actions/Talk_Feature_actions";
 import {
   GetBroadcastMessages,
   activeChat,
 } from "../../../../../store/actions/Talk_action";
-import { Spin } from "antd";
-import SingleIcon from "../../../../../assets/images/Single-Icon.png";
-import GroupIcon from "../../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../../assets/images/Shout-Icon.png";
 import DoubleTickIcon from "../../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../../assets/images/SingleTick-Icon.png";
 import TimerIcon from "../../../../../assets/images/Timer-Icon.png";
-import DropDownIcon from "../../../../../assets/images/dropdown-icon.png";
 import ShoutAllIcon from "../../../../../assets/images/ShoutAll.png";
 import { useTranslation } from "react-i18next";
 
@@ -37,12 +28,13 @@ const ShoutAll = () => {
 
   const { t } = useTranslation();
 
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
+
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
   let currentUserId = localStorage.getItem("userID");
-  let currentOrganizationId = localStorage.getItem("organizationID");
 
-  const date = new Date();
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date();
   let changeDateFormatCurrent = moment(currentDateTime).utc();
@@ -159,7 +151,12 @@ const ShoutAll = () => {
                 <div className="chat-profile-icon">
                   {dataItem.messageType === "B" ? (
                     <>
-                      <img draggable="false" src={ShoutIcon} width={25} />
+                      <img
+                        draggable="false"
+                        src={ShoutIcon}
+                        width={25}
+                        alt=""
+                      />
                     </>
                   ) : null}
                 </div>
@@ -186,6 +183,7 @@ const ShoutAll = () => {
                           draggable="false"
                           src={TimerIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -195,6 +193,7 @@ const ShoutAll = () => {
                           draggable="false"
                           src={SingleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -204,6 +203,7 @@ const ShoutAll = () => {
                           draggable="false"
                           src={DoubleTickDeliveredIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : dataItem.senderID === currentUserId &&
                         dataItem.sentDate !== "" &&
@@ -213,6 +213,7 @@ const ShoutAll = () => {
                           draggable="false"
                           src={DoubleTickIcon}
                           className="img-cover"
+                          alt=""
                         />
                       ) : null}
                     </span>
@@ -221,18 +222,26 @@ const ShoutAll = () => {
                   <p className="chat-date m-0">
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkTime(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkTime(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     ) : dataItem.messageDate.slice(0, 8) ===
                       yesterdayDateUtc ? (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
-                          " "}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        ) + " "}
                         | {t("Yesterday")}
                       </>
                     ) : (
                       <>
-                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate)}
+                        {newTimeFormaterAsPerUTCTalkDate(
+                          dataItem.messageDate,
+                          lang
+                        )}
                       </>
                     )}
                   </p>

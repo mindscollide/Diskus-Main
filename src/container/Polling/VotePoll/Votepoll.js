@@ -6,10 +6,9 @@ import {
   Checkbox,
   Notification,
   CustomRadio2,
-  TextField,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import { useSSR, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Progress } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,17 +17,25 @@ import {
   castVoteApi,
   setVotePollModal,
 } from "../../../store/actions/Polls_actions";
-import CustomRadio from "../../../components/elements/radio/Radio";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerisVotePollModal = useSelector(
+    (state) => state.PollsReducer.isVotePollModal
+  );
   let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
@@ -39,8 +46,8 @@ const Votepoll = () => {
   });
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll;
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      let pollData = PollsReducerAllpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollOptions = pollData.pollOptions;
 
@@ -58,7 +65,7 @@ const Votepoll = () => {
         });
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
@@ -73,7 +80,7 @@ const Votepoll = () => {
       });
     } else {
       const findID = viewProgressPollsDetails.answer.indexOf(name);
-      if (findID != -1) {
+      if (findID !== -1) {
         array.splice(findID, 1);
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -93,10 +100,8 @@ const Votepoll = () => {
   };
 
   const handleForCheck = (value) => {
-    let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value
-    );
-    if (findID != undefined) {
+    let findID = viewProgressPollsDetails.answer.find((data) => data === value);
+    if (findID !== undefined) {
       return true;
     } else {
       return false;
@@ -114,10 +119,7 @@ const Votepoll = () => {
       dispatch(castVoteApi(navigate, data, t));
     } else {
       // open sncak bar for atleast select one option
-      setOpen({
-        flag: true,
-        message: t("Required-atleast-one-vote"),
-      });
+      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
     }
   };
 
@@ -125,7 +127,7 @@ const Votepoll = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.isVotePollModal}
+          show={PollsReducerisVotePollModal}
           setShow={dispatch(setVotePollModal)}
           onHide={() => {
             dispatch(setVotePollModal(false));
@@ -142,6 +144,7 @@ const Votepoll = () => {
                   <img
                     draggable="false"
                     src={BlackCrossIcon}
+                    alt=""
                     className={styles["Vote_Poll_cross_ICon"]}
                     height="16px"
                     width="16px"
@@ -206,7 +209,14 @@ const Votepoll = () => {
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}{" "}
-                                        <span>({data.totalVotes})</span>
+                                        <span>
+                                          (
+                                          {convertToArabicNumerals(
+                                            data.totalVotes,
+                                            CurrentLanguage
+                                          )}
+                                          )
+                                        </span>
                                       </span>
                                     </Col>
                                   </Row>
@@ -236,10 +246,6 @@ const Votepoll = () => {
                                           }
                                           Optios={data.pollAnswerID}
                                           onChange={handleCheckBoxForOneOnly}
-
-                                          // className={
-                                          //   styles["Custom_radio_button"]
-                                          // }
                                         />
                                       )}
                                     </Col>
@@ -285,7 +291,14 @@ const Votepoll = () => {
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
                                         {data.answer}
-                                        <span>({data.totalVotes})</span>
+                                        <span>
+                                          (
+                                          {convertToArabicNumerals(
+                                            data.totalVotes,
+                                            CurrentLanguage
+                                          )}
+                                          )
+                                        </span>
                                       </span>
                                     </Col>
                                   </Row>
@@ -309,13 +322,6 @@ const Votepoll = () => {
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
-                                        // <CustomRadio
-                                        //   checked={data.voted}
-                                        //   change={handleCheckBoxForOneOnly}
-                                        //   className={
-                                        //     styles["Custom_radio_button"]
-                                        //   }
-                                        // />
                                         <CustomRadio2
                                           value={
                                             viewProgressPollsDetails.answer
@@ -323,9 +329,6 @@ const Votepoll = () => {
                                           Optios={data.pollAnswerID}
                                           className="custom-radio"
                                           onChange={handleCheckBoxForOneOnly}
-                                          // className={
-                                          //   styles["Custom_radio_button"]
-                                          // }
                                         />
                                       )}
                                     </Col>
@@ -412,7 +415,7 @@ const Votepoll = () => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

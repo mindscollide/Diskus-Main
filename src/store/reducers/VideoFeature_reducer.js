@@ -31,10 +31,67 @@ const initialState = {
   ParticipantPopupFlag: false,
   MinimizeParticipantPopupFlag: false,
   VideoChatMessagesFlag: false,
+  ShowGuestPopup: false,
+  participantWaitinglistBox: false,
+  participantWaitingList: [],
+  guestLeaveMeetingList: [],
+  participantNameDataAccept: [],
+  muteUnmuteSelf: [],
+  raiseUnRaisedParticipant: [],
+  hideUndieParticipantList: [],
+  muteUnMuteParticipant: [],
+  hideUnHideParticipantorGuest: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {
+      const { payload } = action; // payload is expected to be an array of uids
+      console.log(payload, state.participantWaitingList, "payloadpayload");
+
+      // Filter out participants whose UID is included in the payload array
+      const filteredParticipants = state.participantWaitingList.filter(
+        (participant) => !payload.includes(participant.guid)
+      );
+      console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
+
+      return {
+        ...state,
+        participantWaitingList: filteredParticipants,
+      };
+    }
+
+    case actions.PARTICIPANT_JOINT_REQUESTS: {
+      return {
+        ...state,
+        participantWaitingList: [
+          ...state.participantWaitingList,
+          action.response,
+        ],
+      };
+    }
+
+    case actions.SET_PARTICIPANT_NAME: {
+      console.log(action, "datdtatdatdtatddatdtatdatdtatd");
+      return {
+        ...state,
+        participantNameDataAccept: [
+          ...state.participantNameDataAccept,
+          ...action.response,
+        ],
+      };
+    }
+    case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
+      let { payload } = action;
+      let filterRemoveWhoLeaveMeeting = state.participantNameDataAccept.filter(
+        (participantData, index) => !payload.includes(participantData.UID)
+      );
+      return {
+        ...state,
+        participantNameDataAccept: filterRemoveWhoLeaveMeeting,
+      };
+    }
+
     case actions.VIDEO_CHAT_FLAG: {
       return {
         ...state,
@@ -242,6 +299,157 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         VideoChatMessagesFlag: action.response,
+      };
+    }
+
+    case actions.GUEST_JOIN_POPUP: {
+      return {
+        ...state,
+        ShowGuestPopup: action.response,
+      };
+    }
+
+    case actions.PARTICIPANT_LIST_USERS: {
+      console.log(
+        action,
+        "PARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERSPARTICIPANT_LIST_USERS"
+      );
+      return {
+        ...state,
+        participantWaitinglistBox: action.response,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteParticipant: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        muteUnMuteParticipant: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_PARTICIPANT_GUEST_VIDEO_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_PARTICIPANT_GUEST_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        hideUnHideParticipantorGuest: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_PARTICIPANT_GUEST_VIDEO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        hideUnHideParticipantorGuest: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
+      let { payload } = action;
+      console.log(
+        payload,
+        state.participantNameDataAccept,
+        "responseresponseresponse"
+      );
+      let updatedParticipantList = state.participantNameDataAccept.map(
+        (participantData) => {
+          // Find the corresponding participant in the payload using UID
+          let correspondingPayload = payload.find(
+            (payloadData) => payloadData.uid === participantData.UID
+          );
+          // If a corresponding participant is found in the payload, update the isMute value
+          if (correspondingPayload) {
+            return {
+              ...participantData,
+              isMute: correspondingPayload.isMuted, // Update isMute with the value from the payload
+            };
+          }
+          // If no match is found, return the original participant data
+          return participantData;
+        }
+      );
+      console.log(updatedParticipantList, "updatedParticipantList");
+
+      return {
+        ...state,
+        participantNameDataAccept: updatedParticipantList,
+      };
+    }
+
+    case actions.PARTICIPANT_RAISEDUNRAISEDHAND_VIDEO: {
+      let { payload } = action;
+      let updatedRaisedParticipant = state.participantNameDataAccept.map(
+        (participantData) => {
+          let handraisedPayload = payload.find(
+            (payloadData) => payloadData.participantGuid === participantData.UID
+          );
+          if (handraisedPayload) {
+            return {
+              ...participantData,
+              isHandRaise: handraisedPayload.isHandRaised,
+            };
+          }
+          return participantData;
+        }
+      );
+
+      return {
+        ...state,
+        participantNameDataAccept: updatedRaisedParticipant,
+      };
+    }
+
+    case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
+      let { payload } = action;
+      console.log(
+        payload,
+        state.participantNameDataAccept,
+        " hidehidehidheVideoDataa"
+      );
+      let updateHideVideo = state.participantNameDataAccept.map(
+        (hideUnhideData) => {
+          let hideUnHideVideoPayload = payload.find(
+            (payloadData) => payloadData.uid === hideUnhideData.UID
+          );
+          if (hideUnHideVideoPayload) {
+            return {
+              ...hideUnhideData,
+              hideVideo: hideUnHideVideoPayload.isVideoHidden,
+            };
+          }
+          return hideUnhideData;
+        }
+      );
+
+      return {
+        ...state,
+        participantNameDataAccept: updateHideVideo,
       };
     }
 

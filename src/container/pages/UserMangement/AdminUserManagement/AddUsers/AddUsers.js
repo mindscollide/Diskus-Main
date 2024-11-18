@@ -7,7 +7,6 @@ import {
   Button,
   Checkbox,
   TextField,
-  Loader,
 } from "../../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
@@ -28,7 +27,16 @@ const AddUsers = () => {
 
   const dispatch = useDispatch();
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+  );
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
 
   let organizationID = localStorage.getItem("organizationID");
   let organizationNames = localStorage.getItem("organizatioName");
@@ -107,14 +115,13 @@ const AddUsers = () => {
   useEffect(() => {
     try {
       if (
-        UserMangementReducer.getOrganizationUserStatsGraph &&
-        Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length >
+        UserMangementReducergetOrganizationUserStatsGraph &&
+        Object.keys(UserMangementReducergetOrganizationUserStatsGraph).length >
           0
       ) {
         let UserCount = 0;
         const userStats =
-          UserMangementReducer.getOrganizationUserStatsGraph
-            .selectedPackageDetails;
+          UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails;
 
         userStats.forEach((data) => {
           console.log(data, "UserCountUserCount");
@@ -126,26 +133,22 @@ const AddUsers = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+  }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
   //Data from  GetOrganizationSelectedPackagesByOrganizationID
   useEffect(() => {
     if (
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData &&
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData &&
       Object.keys(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
       ).length > 0
     ) {
-      console.log(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData,
-        "UserMangementReducerUserMangementReducer"
-      );
       setWorldCountryID(
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData
           .organization.fK_NumberWorldCountryID
       );
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
-        (data, index) => {
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
+        (data) => {
           data.organizationSelectedPackages?.map((packageData) => {
             console.log(
               packageData.pK_OrganizationsSelectedPackageID,
@@ -156,7 +159,7 @@ const AddUsers = () => {
         }
       );
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Handle Change For TextFields
   const handleAddUsersFreeTrial = (e) => {
@@ -327,18 +330,36 @@ const AddUsers = () => {
 
         Name: {
           value: addUserFreeTrial.Name.value,
-          errorMessage: t("Please-enter-full-name"),
-          errorStatus: addUserFreeTrial.Name.errorStatus,
+          errorMessage:
+            addUserFreeTrial.Name.value === ""
+              ? t("Please-enter-full-name")
+              : addUserFreeTrial.Name.errorMessage,
+          errorStatus:
+            addUserFreeTrial.Name.value === ""
+              ? true
+              : addUserFreeTrial.Name.errorStatus,
         },
         Desgination: {
           value: addUserFreeTrial.Desgination.value,
-          errorMessage: t("Please-enter-designation"),
-          errorStatus: addUserFreeTrial.Desgination.errorStatus,
+          errorMessage:
+            addUserFreeTrial.Desgination.value === ""
+              ? t("Please-enter-designation")
+              : addUserFreeTrial.Desgination.errorMessage,
+          errorStatus:
+            addUserFreeTrial.Desgination.value === ""
+              ? true
+              : addUserFreeTrial.Desgination.errorStatus,
         },
         Email: {
           value: addUserFreeTrial.Email.value,
-          errorMessage: t("Please-enter-email"),
-          errorStatus: addUserFreeTrial.Email.errorStatus,
+          errorMessage:
+            addUserFreeTrial.Email.value === ""
+              ? t("Please-enter-email")
+              : addUserFreeTrial.Email.errorMessage,
+          errorStatus:
+            addUserFreeTrial.Email.value === ""
+              ? true
+              : addUserFreeTrial.Email.errorStatus,
         },
       });
     }
@@ -357,7 +378,7 @@ const AddUsers = () => {
             <Col lg={12} md={12} sm={12} xs={12}>
               <TextField
                 placeholder={t("Full-name")}
-                value={addUserFreeTrial.Name.value}
+                value={addUserFreeTrial.Name.value || ""}
                 name={"Name"}
                 change={handleAddUsersFreeTrial}
                 label={
@@ -378,12 +399,15 @@ const AddUsers = () => {
             <Col>
               <p
                 className={
+                  addUserFreeTrial.Name.errorStatus &&
                   addUserFreeTrial.Name.value === ""
                     ? ` ${styles["errorMessage"]}`
                     : `${styles["errorMessage_hidden"]}`
                 }
               >
-                {addUserFreeTrial.Name.errorMessage}
+                {addUserFreeTrial.Name.value === ""
+                  ? t("Please-enter-full-name")
+                  : addUserFreeTrial.Name.errorMessage}
               </p>
             </Col>
           </Row>
@@ -446,12 +470,15 @@ const AddUsers = () => {
             <Col>
               <p
                 className={
+                  addUserFreeTrial.Desgination.errorStatus &&
                   addUserFreeTrial.Desgination.value === ""
                     ? ` ${styles["errorMessage"]}`
                     : `${styles["errorMessage_hidden"]}`
                 }
               >
-                {addUserFreeTrial.Desgination.errorMessage}
+                {addUserFreeTrial.Desgination.value === ""
+                  ? t("Please-enter-designation")
+                  : addUserFreeTrial.Desgination.errorMessage}
               </p>
             </Col>
           </Row>
@@ -491,14 +518,13 @@ const AddUsers = () => {
                         (addUserFreeTrial.Email.errorStatus &&
                           addUserFreeTrial.Email.value === "") ||
                         addUserFreeTrial.Email.errorMessage !== ""
-                          ? // &&
-                            //   signUpDetails.Email.errorMessage !==
-                            //     t("User-email-doesnt-exists"))
-                            ` ${styles["errorMessage"]} `
+                          ? ` ${styles["errorMessage"]} `
                           : `${styles["errorMessage_hidden"]}`
                       }
                     >
-                      {addUserFreeTrial.Email.errorMessage}
+                      {addUserFreeTrial.Email.value === ""
+                        ? t("Please-enter-email")
+                        : addUserFreeTrial.Email.errorMessage}
                     </p>
                   )}
                 </Col>
@@ -544,7 +570,6 @@ const AddUsers = () => {
           )}
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

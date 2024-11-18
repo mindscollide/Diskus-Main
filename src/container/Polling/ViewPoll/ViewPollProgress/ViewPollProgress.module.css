@@ -118,6 +118,10 @@ body[dir="rtl"] .Card_border2 {
   margin-left: 5px !important;
 }
 
+body[dir="rtl"] .Name_cards {
+  margin-right: 5px !important;
+}
+
 .CheckBox_ViewProgressPolls {
   margin: 0;
   padding: 0;
@@ -133,7 +137,6 @@ body[dir="rtl"] .Card_border2 {
   height: 28vh !important;
   overflow-x: hidden !important;
   margin-top: 6px !important;
-  /* width: 100%; */
 }
 
 .Scroller_View_Poll_Published::-webkit-scrollbar {

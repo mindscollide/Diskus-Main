@@ -255,7 +255,6 @@ body[dir="rtl"] .errorMessage {
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
-  /* height: 7px; */
 }
 
 body[dir="rtl"] .errorMessage_hidden {

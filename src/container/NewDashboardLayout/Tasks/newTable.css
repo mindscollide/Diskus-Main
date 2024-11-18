@@ -81,6 +81,7 @@
 
 .status_value {
   font-weight: 500 !important;
+  text-align: center;
 }
 
 .newDashboardTable .ant-table-tbody > tr.AssignedToMe.ant-table-row:hover > td,
@@ -109,11 +110,30 @@
   .ant-table-tbody
   > tr
   > td.ant-table-cell-row-hover.titleDashboard {
-  /* background: #d3f4f6 !important; */
   transition: none !important;
   border: 1px solid #000 !important;
   border-right: none !important;
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+body[dir="rtl"]
+  .newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.titleDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.titleDashboard {
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-left: none !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 
 .newDashboardTable
@@ -124,7 +144,6 @@
   .ant-table-tbody
   > tr
   > td.ant-table-cell-row-hover.deadlineDashboard {
-  /* background: #d3f4f6 !important; */
   transition: none !important;
   border: 1px solid #000 !important;
   border-left: none !important;
@@ -139,9 +158,33 @@
   .ant-table-tbody
   > tr
   > td.ant-table-cell-row-hover.statusDashboard {
-  /* background: #d3f4f6 !important; */
   transition: none !important;
   border: 1px solid #000 !important;
   border-left: none !important;
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+body[dir="rtl"]
+  .newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.statusDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.statusDashboard {
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-right: none !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+.task-title {
+  color: #5a5a5a !important;
+  font-weight: 700;
+  font-size: 20px !important;
 }

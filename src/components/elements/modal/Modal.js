@@ -1,4 +1,3 @@
-// import { keyboard } from "@testing-library/user-event/dist/types/keyboard";
 import Modal from "react-bootstrap/Modal";
 import "./Modal.css";
 
@@ -35,12 +34,10 @@ const CustomModal = ({
           className={className}
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
-          
         >
           <Modal.Header
-            className={modalHeaderClassName}
+            className={`${modalHeaderClassName} ${"border-0"}`}
             closeButton={closeButton}
-            // onClick={() => setShow(false)}
           >
             <Modal.Title className={modalTitleClassName}>
               {ModalTitle}
@@ -59,7 +56,7 @@ const CustomModal = ({
             <Modal.Body className={modalBodyClassName}>{ModalBody}</Modal.Body>
           )}
 
-          <Modal.Footer className={modalFooterClassName}>
+          <Modal.Footer className={`${modalFooterClassName} ${"border-0"}`}>
             {ModalFooter}
           </Modal.Footer>
         </Modal>

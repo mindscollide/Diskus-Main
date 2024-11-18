@@ -11,6 +11,10 @@
   color: #fff;
 }
 
+body[dir="rtl"] .Create_polls_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Create_polls_Button:is(:hover, :focus, :focus-visible, :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -55,8 +59,6 @@
   color: #fff !important;
   background: #81db86 !important;
   font-weight: 600 !important;
-
-
 }
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
@@ -75,12 +77,6 @@
   font-weight: 600 !important;
   font-size: 14px !important;
   cursor: pointer;
-  /* display: inline-block !important; */
-  /* width: 80% !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-  cursor: pointer !important; */
 }
 
 .EmptyState_heading {

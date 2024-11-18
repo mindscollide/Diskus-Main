@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;

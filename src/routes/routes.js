@@ -3,81 +3,219 @@ import {
   createRoutesFromElements,
   createHashRouter,
 } from "react-router-dom";
-import {
-  ChangePassword,
-  CustomMiscellaneous,
-  Dashboard,
-  DeleteOrganization,
-  Home,
-  NotFound,
-  OnBoard,
-  TodoList,
-  Invoice,
-  PaymentHistory,
-  PayOutstanding,
-  Summary,
-  CustomerInformation,
-  AdminHome,
-  Groups,
-  AllMeetings,
-  CancelSubs,
-  PackageDetails,
-  PackageUpgrade,
-  PackageUpgradeDetail,
-  PackageUpgradeSelect,
-  PasswordUpdateMessage,
-  Notes,
-  CalendarPage,
-  ForgotPasswordVerification,
-  UpdatePasswordSuccessfully,
-  Committee,
-  Resolution,
-  DataRoom,
-  Polling,
-  PaymentForm2,
-  NewMeeting,
-  UserSettings,
-  OrganizationLevelSetting,
-  EmptyState,
-  RSVP,
-  MinutesFlow,
-  UserManagementProcess,
-  SignupProcessUserManagement,
-  PakageDetailsUserManagement,
-  BillingMethodUsermanagement,
-  PaymentTest,
-  ManageUsers,
-  PaymentProcess,
-  Reports,
-  PakageDetailsUMUpgrade,
-  AddUsers,
-  UserLevelConfigUM,
-  AddUserMain,
-  PaymentMethodBillInfo,
-  OrganizationLevelConfigUM,
-  CancelSubscriptionAdmin,
-  PakageDetailsAdmin,
-  DeleteOrganizationAdmin,
-} from "../container";
-
-import PrivateAdminRoute from "./privateadmin_routes";
-import PrivateRoutes from "./private_routes";
-import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
-import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
-import ViewSignatureDocument from "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument";
-import RouteWrapperUser from "./RouteWrapperUser";
-import RouteWrapperAdmin from "./RouteWrapperAdmin";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
-//import PaymentTest from "../container/pages/UserMangement/PaymentTestPage/PaymentTest";
-import ReviewSignature from "../container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
-import PendingApproval from "../container/MinutesNewFlow/pendingApprovals/PendingApprovals";
-import NewDashobard from "../container/NewDashboardLayout/NewDashobard";
-import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
-import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
-import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
-import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
-import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
-import { DocumentViewer } from "../components/elements";
+import React, { lazy, Suspense } from "react";
+import { Loader } from "../components/elements/index.js";
+const PrivateAdminRoute = lazy(() => import("./privateadmin_routes"));
+const PrivateRoutes = lazy(() => import("./private_routes"));
+const SignatureViewer = lazy(() =>
+  import(
+    "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer"
+  )
+);
+const PendingSignature = lazy(() =>
+  import(
+    "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue"
+  )
+);
+const ViewSignatureDocument = lazy(() =>
+  import(
+    "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument"
+  )
+);
+const RouteWrapperUser = lazy(() => import("./RouteWrapperUser"));
+const RouteWrapperAdmin = lazy(() => import("./RouteWrapperAdmin"));
+const NewDashobard = lazy(() =>
+  import("../container/NewDashboardLayout/NewDashobard")
+);
+const SubscriptionDetailsUserManagement = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement"
+  )
+);
+const DowngradeSubscription = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription"
+  )
+);
+const UpdatedCancelSubscription = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription"
+  )
+);
+const PrivateVideoMeeting = lazy(() => import("./PrivateVideoMeetingRoute"));
+const VideoMeetingBoardDeck = lazy(() =>
+  import("../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck")
+);
+const DocumentViewer = lazy(() =>
+  import("../components/elements/webviewer/DocumentViewer")
+);
+const GuestVideoCall = lazy(() =>
+  import("../components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall")
+);
+
+// Lazy load components
+const ChangePassword = lazy(() =>
+  import("../container/Admin/ChangePassword/ChangePassword.js")
+);
+const CustomMiscellaneous = lazy(() =>
+  import("../container/miscellaneous/Miscellaneous.js")
+);
+const Dashboard = lazy(() => import("../container/dashboard/Dashboard.js"));
+const DeleteOrganization = lazy(() =>
+  import(
+    "../container/Admin/Subscriptions/DeleteOrganization/DeleteOrganization.js"
+  )
+);
+const NotFound = lazy(() => import("../container/page_404/Page_404.js"));
+const OnBoard = lazy(() => import("../container/pages/onBoard/OnBoard.js"));
+const TodoList = lazy(() => import("../container/pages/todolist/Todolist.js"));
+const PaymentHistory = lazy(() =>
+  import("../container/Admin/BillingInfo/PaymentHistory/PaymentHistory.js")
+);
+const PayOutstanding = lazy(() =>
+  import("../container/Admin/BillingInfo/PayOutstanding/PayOutstanding.js")
+);
+const Summary = lazy(() =>
+  import("../container/Admin/BillingInfo/Summary/Summary.js")
+);
+const CustomerInformation = lazy(() =>
+  import(
+    "../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation.js"
+  )
+);
+const AdminHome = lazy(() => import("../container/Admin/Main/AdminHome.js"));
+const Groups = lazy(() => import("../container/Groups/Groups.js"));
+const AllMeetings = lazy(() =>
+  import("../container/Admin/Meetings/AllMeeting/AllMeetings.js")
+);
+const CancelSubs = lazy(() =>
+  import("../container/Admin/Subscriptions/CancelSub/CancelSubs.js")
+);
+const PackageDetails = lazy(() =>
+  import("../container/Admin/Subscriptions/PackageDetail/PackageDetails.js")
+);
+const PackageUpgrade = lazy(() =>
+  import("../container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade.js")
+);
+const PackageUpgradeDetail = lazy(() =>
+  import(
+    "../container/Admin/Subscriptions/PackageUpgradeDetail/PackageUpgradeDetail.js"
+  )
+);
+const PackageUpgradeSelect = lazy(() =>
+  import(
+    "../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect.js"
+  )
+);
+const PasswordUpdateMessage = lazy(() =>
+  import(
+    "../container/authentication/password_update_message/Password_Update_Message.js"
+  )
+);
+const Notes = lazy(() => import("../container/notes/Notes.js"));
+const CalendarPage = lazy(() =>
+  import("../container/calendarpage/CalendarPage.js")
+);
+const ForgotPasswordVerification = lazy(() =>
+  import(
+    "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification.js"
+  )
+);
+const UpdatePasswordSuccessfully = lazy(() =>
+  import(
+    "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully.js"
+  )
+);
+const Committee = lazy(() => import("../container/Committee/Committee.js"));
+const Resolution = lazy(() => import("../container/Resolution/Resolution.js"));
+const DataRoom = lazy(() => import("../container/DataRoom/DataRoom.js"));
+const Polling = lazy(() => import("../container/Polling/Polling.js"));
+const PaymentForm2 = lazy(() =>
+  import("../container/Admin/Subscriptions/PaymentForm2/PaymentForm2.js")
+);
+const NewMeeting = lazy(() =>
+  import("../container/pages/meeting/MeetingTwo.js")
+);
+const UserSettings = lazy(() =>
+  import("../container/setting/UserLevelSettings/UserSettings.js")
+);
+const EmptyState = lazy(() =>
+  import(
+    "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState.js"
+  )
+);
+const RSVP = lazy(() => import("../container/pages/meeting/RSVP.js"));
+const MinutesFlow = lazy(() => import("../container/MinutesNewFlow/Main.js"));
+const UserManagementProcess = lazy(() =>
+  import("../container/pages/UserManagementProcess/UserManagementProcess.js")
+);
+const SignupProcessUserManagement = lazy(() =>
+  import(
+    "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement.js"
+  )
+);
+const PakageDetailsUserManagement = lazy(() =>
+  import(
+    "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement.js"
+  )
+);
+const BillingMethodUsermanagement = lazy(() =>
+  import(
+    "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement.js"
+  )
+);
+const ManageUsers = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers"
+  )
+);
+const Reports = lazy(() => import("../container/Admin/Reports/Reports.js"));
+const PakageDetailsUMUpgrade = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.js"
+  )
+);
+const AddUsers = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers.js"
+  )
+);
+const UserLevelConfigUM = lazy(() =>
+  import(
+    "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM.js"
+  )
+);
+const AddUserMain = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain.js"
+  )
+);
+const PaymentMethodBillInfo = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo.js"
+  )
+);
+const OrganizationLevelConfigUM = lazy(() =>
+  import(
+    "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM.js"
+  )
+);
+const CancelSubscriptionAdmin = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin.js"
+  )
+);
+const PakageDetailsAdmin = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin.js"
+  )
+);
+const DeleteOrganizationAdmin = lazy(() =>
+  import(
+    "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin.js"
+  )
+);
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -86,537 +224,683 @@ export const router = createHashRouter(
     <>
       {/* Video Meeting Route */}
       <Route element={<PrivateVideoMeeting />}>
-        <Route path='/Diskus/video' element={<VideoMeetingBoardDeck />} />
+        <Route
+          path="/Diskus/video"
+          element={
+            <Suspense fallback={<Loader />}>
+              <VideoMeetingBoardDeck />
+            </Suspense>
+          }
+        />
       </Route>
-
-      <Route>
-        <Route path='/GuestVideoCall' element={<VideoMeetingBoardDeck />} />
-      </Route>
+        <Route
+          path="/GuestVideoCall"
+          element={
+            <Suspense fallback={<Loader />}>
+              <GuestVideoCall />
+            </Suspense>
+          }
+        />
       {/* for all login Routes  */}
-      <Route path='/' element={<UserManagementProcess />} />
-
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={<Loader />}>
+            <UserManagementProcess />
+          </Suspense>
+        }
+      />
       {/* For All Signup Route */}
-      <Route path='/Signup' element={<SignupProcessUserManagement />} />
-
+      <Route
+        path="/Signup"
+        element={
+          <Suspense fallback={<Loader />}>
+            <SignupProcessUserManagement />
+          </Suspense>
+        }
+      />
       {/* ============================================================ */}
       <Route
-        path='/PakageDetailsUserManagement'
-        element={<PakageDetailsUserManagement />}
+        path="/PakageDetailsUserManagement"
+        element={
+          <Suspense fallback={<Loader />}>
+            <PakageDetailsUserManagement />
+          </Suspense>
+        }
       />
       {/* <Route path="/signuporganization" element={<Signup />} /> */}
-
       <Route
-        path='/forgotpasswordVerification'
-        element={<ForgotPasswordVerification />}
-      />
-      <Route path='/updatepassword' element={<UpdatePasswordSuccessfully />} />
-
-      <Route
-        path='/PaymentFormUserManagement'
-        element={<BillingMethodUsermanagement />}
+        path="/forgotpasswordVerification"
+        element={
+          <Suspense fallback={<Loader />}>
+            <ForgotPasswordVerification />
+          </Suspense>
+        }
       />
       <Route
-        path='/updatePasswordSuccess'
-        element={<PasswordUpdateMessage />}
+        path="/updatepassword"
+        element={
+          <Suspense fallback={<Loader />}>
+            <UpdatePasswordSuccessfully />
+          </Suspense>
+        }
       />
-
-      <Route path='/404' element={<NotFound />} />
-      <Route path='*' element={<NotFound />} />
+      Ï
+      <Route
+        path="/PaymentFormUserManagement"
+        element={
+          <Suspense fallback={<Loader />}>
+            <BillingMethodUsermanagement />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/updatePasswordSuccess"
+        element={
+          <Suspense fallback={<Loader />}>
+            <PasswordUpdateMessage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/404"
+        element={
+          <Suspense fallback={<Loader />}>
+            <NotFound />
+          </Suspense>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <Suspense fallback={<Loader />}>
+            <NotFound />
+          </Suspense>
+        }
+      />
       {/* ============================================================ */}
-
       <Route element={<PrivateRoutes />}>
         <Route
           exact
-          path='/Diskus/'
+          path="/Diskus/"
           element={
-            <RouteWrapperUser name='Diskus'>
-              <Dashboard />
-            </RouteWrapperUser>
-          }>
+            <Suspense fallback={<Loader />}>
+              <RouteWrapperUser name="Diskus">
+                <Dashboard />
+              </RouteWrapperUser>
+            </Suspense>
+          }
+        >
           <Route
-            path=''
+            path=""
             element={
-              <RouteWrapperUser name=''>
-                {/* <Home /> */}
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="">
+                  <NewDashobard />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
+          <Route
+            path="Minutes"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="Minutes">
+                  <MinutesFlow />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
+          <Route
+            path="home"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="home">
+                  <NewDashobard />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
+          <Route
+            path="Minutes"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="Minutes">
+                  <MinutesFlow />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
+          <Route
+            path="todolist"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="todolist">
+                  <TodoList />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
+          <Route
+            path="documentViewer"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="documentViewer">
+                  <DocumentViewer />
+                </RouteWrapperUser>
+              </Suspense>
+            }
+          />
 
-                <NewDashobard />
-              </RouteWrapperUser>
+          <Route
+            path="signatureviewer"
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="signatureviewer">
+                  <SignatureViewer />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='Minutes'
+            path="signeddocument"
             element={
-              <RouteWrapperUser name='Minutes'>
-                <MinutesFlow />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="signatureviewer">
+                  <PendingSignature />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='home'
+            path="viewSignDocument"
             element={
-              <RouteWrapperUser name='home'>
-                {/* <Home /> */}
-                <NewDashobard />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path='Minutes'
-            element={
-              <RouteWrapperUser name='Minutes'>
-                <MinutesFlow />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path='todolist'
-            element={
-              <RouteWrapperUser name='todolist'>
-                <TodoList />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path='documentViewer'
-            element={
-              <RouteWrapperUser name='documentViewer'>
-                <DocumentViewer />
-              </RouteWrapperUser>
-            }
-          />
-
-          <Route
-            path='signatureviewer'
-            element={
-              <RouteWrapperUser name='signatureviewer'>
-                <SignatureViewer />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path='signeddocument'
-            element={
-              <RouteWrapperUser name='signatureviewer'>
-                <PendingSignature />
-              </RouteWrapperUser>
-            }
-          />
-          <Route
-            path='viewSignDocument'
-            element={
-              <RouteWrapperUser name='signatureviewer'>
-                <ViewSignatureDocument />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="signatureviewer">
+                  <ViewSignatureDocument />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route
-            path='calendar'
+            path="calendar"
             element={
-              <RouteWrapperUser name='calendar'>
-                <CalendarPage />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="calendar">
+                  <CalendarPage />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='Meeting'
+            path="Meeting"
             element={
-              <RouteWrapperUser name='Meeting'>
-                <NewMeeting />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="Meeting">
+                  <NewMeeting />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='Meeting/Useravailabilityformeeting'
+            path="Meeting/Useravailabilityformeeting"
             element={
-              <RouteWrapperUser name='Meeting'>
-                <RSVP />
-              </RouteWrapperUser>
-            }
-          />
-
-          <Route
-            path='Payment'
-            element={
-              <RouteWrapperUser name='Payment'>
-                <PaymentTest />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="Meeting">
+                  <RSVP />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='setting'
+            path="setting"
             element={
-              <RouteWrapperUser name='setting'>
-                <UserSettings />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="setting">
+                  <UserSettings />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
             path="faq's"
             element={
-              <RouteWrapperUser name="faq's">
-                <CustomMiscellaneous />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="faq's">
+                  <CustomMiscellaneous />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='groups'
+            path="groups"
             element={
-              <RouteWrapperUser name='groups'>
-                <Groups />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="groups">
+                  <Groups />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='changePassword'
+            path="changePassword"
             element={
-              <RouteWrapperUser name='changePassword'>
-                <ChangePassword />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="changePassword">
+                  <ChangePassword />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='notes'
+            path="notes"
             element={
-              <RouteWrapperUser name='notes'>
-                <Notes />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="notes">
+                  <Notes />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='committee'
+            path="committee"
             element={
-              <RouteWrapperUser name='committee'>
-                <Committee />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="committee">
+                  <Committee />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='resolution'
+            path="resolution"
             element={
-              <RouteWrapperUser name='resolution'>
-                <Resolution />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="resolution">
+                  <Resolution />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='dataroom'
+            path="dataroom"
             element={
-              <RouteWrapperUser name='dataroom'>
-                <DataRoom />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="dataroom">
+                  <DataRoom />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
           <Route
-            path='polling'
+            path="polling"
             element={
-              <RouteWrapperUser name='polling'>
-                <Polling />
-              </RouteWrapperUser>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperUser name="polling">
+                  <Polling />
+                </RouteWrapperUser>
+              </Suspense>
             }
           />
         </Route>
       </Route>
-
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path='/Admin/'
+          path="/Admin/"
           element={
-            <RouteWrapperAdmin name='Admin'>
-              <AdminHome />
-            </RouteWrapperAdmin>
-          }>
-          <Route
-            path=''
-            element={
-              <RouteWrapperAdmin name='Admin'>
-                {roleRoute ? <PayOutstanding /> : <ManageUsers />}
+            <Suspense fallback={<Loader />}>
+              <RouteWrapperAdmin name="Admin">
+                <AdminHome />
               </RouteWrapperAdmin>
+            </Suspense>
+          }
+        >
+          <Route
+            path=""
+            element={
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="Admin">
+                  {roleRoute ? <PayOutstanding /> : <ManageUsers />}
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
-
-          {/* Route For Payment Processs start */}
           <Route
-            path='PaymentProcess'
+            path="PaymentFormUserManagement"
             element={
-              <RouteWrapperAdmin name='PaymentProcess'>
-                <PaymentProcess />
-              </RouteWrapperAdmin>
-            }
-          />
-
-          <Route
-            path='PaymentFormUserManagement'
-            element={
-              <RouteWrapperAdmin name='PaymentFormUserManagement'>
-                <BillingMethodUsermanagement />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PaymentFormUserManagement">
+                  <BillingMethodUsermanagement />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           {/* Route For Payment Processs end */}
 
           <Route
-            path='PakageDetailsUserManagement'
+            path="PakageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PakageDetailsUserManagement'>
-                <PakageDetailsUserManagement />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PakageDetailsUserManagement">
+                  <PakageDetailsUserManagement />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='loginreport'
+            path="loginreport"
             element={
-              <RouteWrapperAdmin name='loginreport'>
-                <Reports />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="loginreport">
+                  <Reports />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PackageDetailUMupgrade'
+            path="PackageDetailUMupgrade"
             element={
-              <RouteWrapperAdmin name='PackageDetailUMupgrade'>
-                <PakageDetailsUMUpgrade />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PackageDetailUMupgrade">
+                  <PakageDetailsUMUpgrade />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
 
           <Route
-            path='AddUsers'
+            path="AddUsers"
             element={
-              <RouteWrapperAdmin name='AddUsers'>
-                <AddUsers />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="AddUsers">
+                  <AddUsers />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='ManageUsers'
+            path="ManageUsers"
             element={
-              <RouteWrapperAdmin name='ManageUsers'>
-                <ManageUsers />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="ManageUsers">
+                  <ManageUsers />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='UserLevelConfigUM'
+            path="UserLevelConfigUM"
             element={
-              <RouteWrapperAdmin name='UserLevelConfigUM'>
-                <UserLevelConfigUM />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="UserLevelConfigUM">
+                  <UserLevelConfigUM />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='AddUsersUsermanagement'
+            path="AddUsersUsermanagement"
             element={
-              <RouteWrapperAdmin name='AddUsersUsermanagement'>
-                <AddUserMain />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="AddUsersUsermanagement">
+                  <AddUserMain />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='Invoice'
+            path="PayOutstanding"
             element={
-              <RouteWrapperAdmin name='Invoice'>
-                <Invoice />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PayOutstanding">
+                  <PayOutstanding />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PayOutstanding'
+            path="PaymentHistory"
             element={
-              <RouteWrapperAdmin name='PayOutstanding'>
-                <PayOutstanding />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PaymentHistory">
+                  <PaymentHistory />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PaymentHistory'
+            path="PaymentHistoryusermanagement"
             element={
-              <RouteWrapperAdmin name='PaymentHistory'>
-                <PaymentHistory />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PaymentHistoryusermanagement">
+                  <PaymentMethodBillInfo />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PaymentHistoryusermanagement'
+            path="Summary"
             element={
-              <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
-                <PaymentMethodBillInfo />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="Summary">
+                  <Summary />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='Summary'
+            path="OrganizationlevelConfigUM"
             element={
-              <RouteWrapperAdmin name='Summary'>
-                <Summary />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="OrganizationlevelConfigUM">
+                  <OrganizationLevelConfigUM />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='Organization'
+            path="AllMeeting"
             element={
-              <RouteWrapperAdmin name='Organization'>
-                <OrganizationLevelSetting />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="AllMeeting">
+                  <AllMeetings />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='OrganizationlevelConfigUM'
+            path="CancelSub"
             element={
-              <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
-                <OrganizationLevelConfigUM />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="CancelSub">
+                  <CancelSubs />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='AllMeeting'
+            path="CancelSubscriptionUserManagement"
             element={
-              <RouteWrapperAdmin name='AllMeeting'>
-                <AllMeetings />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
+                  <CancelSubscriptionAdmin />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='CancelSub'
+            path="PackageDetail"
             element={
-              <RouteWrapperAdmin name='CancelSub'>
-                <CancelSubs />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PackageDetail">
+                  <PackageDetails />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='CancelSubscriptionUserManagement'
+            path="PackageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
-                <CancelSubscriptionAdmin />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="PackageDetailsUserManagement">
+                  <PakageDetailsAdmin />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PackageDetail'
+            path="subscriptionDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PackageDetail'>
-                <PackageDetails />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
+                  <SubscriptionDetailsUserManagement />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='PackageDetailsUserManagement'
+            path="downgradeSubscription"
             element={
-              <RouteWrapperAdmin name='PackageDetailsUserManagement'>
-                <PakageDetailsAdmin />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="downgradeSubscription">
+                  <DowngradeSubscription />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='subscriptionDetailsUserManagement'
+            path="updatedCancelSubscription"
             element={
-              <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
-                <SubscriptionDetailsUserManagement />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="updatedCancelSubscription">
+                  <UpdatedCancelSubscription />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='downgradeSubscription'
+            path="EmptyState"
             element={
-              <RouteWrapperAdmin name='downgradeSubscription'>
-                <DowngradeSubscription />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="EmptyState">
+                  <EmptyState />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='updatedCancelSubscription'
+            path="UpgradePackage"
             element={
-              <RouteWrapperAdmin name='updatedCancelSubscription'>
-                <UpdatedCancelSubscription />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="UpgradePackage">
+                  <PackageUpgrade />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='EmptyState'
+            path="changePassword"
             element={
-              <RouteWrapperAdmin name='EmptyState'>
-                <EmptyState />
-              </RouteWrapperAdmin>
-            }
-          />
-          <Route
-            path='UpgradePackage'
-            element={
-              <RouteWrapperAdmin name='UpgradePackage'>
-                <PackageUpgrade />
-              </RouteWrapperAdmin>
-            }
-          />
-          <Route
-            path='changePassword'
-            element={
-              <RouteWrapperAdmin name='changePassword'>
-                <ChangePassword />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="changePassword">
+                  <ChangePassword />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
             path="faq's"
             element={
-              <RouteWrapperAdmin name="faq's">
-                <CustomMiscellaneous />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="faq's">
+                  <CustomMiscellaneous />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='deleteorganization'
+            path="deleteorganization"
             element={
-              <RouteWrapperAdmin name='deleteorganization'>
-                <DeleteOrganization />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="deleteorganization">
+                  <DeleteOrganization />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='deleteorganizationUserMangement'
+            path="deleteorganizationUserMangement"
             element={
-              <RouteWrapperAdmin name='deleteorganizationUserMangement'>
-                <DeleteOrganizationAdmin />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="deleteorganizationUserMangement">
+                  <DeleteOrganizationAdmin />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='paymentForm'
+            path="paymentForm"
             element={
-              <RouteWrapperAdmin name='paymentForm'>
-                <PaymentForm2 />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                <RouteWrapperAdmin name="paymentForm">
+                  <PaymentForm2 />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='UpgradePackageDetail'
+            path="UpgradePackageDetail"
             element={
-              <RouteWrapperAdmin name='UpgradePackageDetail'>
-                <PackageUpgradeDetail />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                {" "}
+                <RouteWrapperAdmin name="UpgradePackageDetail">
+                  <PackageUpgradeDetail />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='UpgradePackageSelect'
+            path="UpgradePackageSelect"
             element={
-              <RouteWrapperAdmin name='UpgradePackageSelect'>
-                <PackageUpgradeSelect />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                {" "}
+                <RouteWrapperAdmin name="UpgradePackageSelect">
+                  <PackageUpgradeSelect />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
           <Route
-            path='CustomerInformation'
+            path="CustomerInformation"
             element={
-              <RouteWrapperAdmin name='CustomerInformation'>
-                <CustomerInformation />
-              </RouteWrapperAdmin>
+              <Suspense fallback={<Loader />}>
+                {" "}
+                <RouteWrapperAdmin name="CustomerInformation">
+                  <CustomerInformation />
+                </RouteWrapperAdmin>
+              </Suspense>
             }
           />
         </Route>
       </Route>
-      <Route Route element={<PrivateRoutes />}>
-        <Route path='/onboard' element={<OnBoard />} />
+      <Route
+        Route
+        element={
+          <Suspense fallback={<Loader />}>
+            <PrivateRoutes />
+          </Suspense>
+        }
+      >
+        <Route
+          path="/onboard"
+          element={
+            <Suspense fallback={<Loader />}>
+              <OnBoard />
+            </Suspense>
+          }
+        />
       </Route>
     </>
   )

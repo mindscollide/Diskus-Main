@@ -17,333 +17,252 @@ import { Notification } from "../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
 import { useNavigate } from "react-router-dom";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const SignupProcessUserManagement = () => {
-  const { UserMangementReducer, Authreducer } = useSelector((state) => state);
+  const UserMangementReducerdefaultRoutingValue = useSelector(
+    (state) => state.UserMangementReducer.defaulSignUpRoute
+  );
+
+  const UserMangementReducerResponseMessage = useSelector(
+    (state) => state.UserMangementReducer.ResponseMessage
+  );
+
+  const AuthreducerVerifyOTPEmailResponseMessage = useSelector(
+    (state) => state.Authreducer.VerifyOTPEmailResponseMessage
+  );
+
+  const AuthreducerEnterPasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.EnterPasswordResponseMessage
+  );
+
+  const AuthreducerOrganizationCreateResponseMessage = useSelector(
+    (state) => state.Authreducer.OrganizationCreateResponseMessage
+  );
+
+  const AuthreducerCreatePasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.CreatePasswordResponseMessage
+  );
+
+  const AuthreducerGetSelectedPackageResponseMessage = useSelector(
+    (state) => state.Authreducer.GetSelectedPackageResponseMessage
+  );
+
+  const AuthreducerEmailValidationResponseMessage = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+
+  const AuthreducerpasswordUpdateOnForgotPasswordMessege = useSelector(
+    (state) => state.Authreducer.passwordUpdateOnForgotPasswordMessege
+  );
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
+  let signUpUserManagementRoute = Number(
+    localStorage.getItem("SignupFlowPageRoute")
+  );
 
   // Retrieve currentStep value from localStorage, default to 1 if not found
-  const storedStep = Number(localStorage.getItem("signupCurrentPage"));
+  const [storedStep, setStoredStep] = useState(
+    Number(localStorage.getItem("SignupFlowPageRoute"))
+  );
   useEffect(() => {
     // Retrieve current step from local storage
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+      console.log("SignupFlowPageRoute");
       if (storedStep) {
+        console.log("SignupFlowPageRoute");
         dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
-      localStorage.setItem("SignupFlowPageRoute", 2);
+      console.log("SignupFlowPageRoute");
+      localStorage.setItem("SignupFlowPageRoute", 1);
+      setStoredStep(1);
+      dispatch(signUpFlowRoutes(1));
     }
   }, []);
 
   useEffect(() => {
-    if (UserMangementReducer.defaulSignUpRoute) {
-      // Update local storage with the current step
-      localStorage.setItem(
-        "SignupFlowPageRoute",
-        UserMangementReducer.defaulSignUpRoute
-      );
+    if (signUpUserManagementRoute !== null && signUpUserManagementRoute !== 0) {
+      setStoredStep(signUpUserManagementRoute);
+    } else {
+      setStoredStep(1);
+      localStorage.setItem("SignupFlowPageRoute", 1);
     }
-  }, [UserMangementReducer.defaulSignUpRoute]);
+  }, [signUpUserManagementRoute]);
+  console.log(
+    "SignupFlowPageRoute",
+    signUpUserManagementRoute,
+    storedStep,
+    UserMangementReducerdefaultRoutingValue
+  );
 
   //For SnakBar Messeges
 
   //Verify OTP SignUp Process Response Messeges Controller
   useEffect(() => {
     if (
-      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
+      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
+      AuthreducerVerifyOTPEmailResponseMessage !== undefined &&
+      AuthreducerVerifyOTPEmailResponseMessage !== t("2fa-verification") &&
+      AuthreducerVerifyOTPEmailResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined &&
-      Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
-      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
+      AuthreducerEnterPasswordResponseMessage !== "" &&
+      AuthreducerEnterPasswordResponseMessage !== undefined &&
+      AuthreducerEnterPasswordResponseMessage !== t("2fa-verification") &&
+      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined &&
-      Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
-      Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
+      AuthreducerOrganizationCreateResponseMessage !== "" &&
+      AuthreducerOrganizationCreateResponseMessage !== undefined &&
+      AuthreducerOrganizationCreateResponseMessage !== t("2fa-verification") &&
+      AuthreducerOrganizationCreateResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        AuthreducerOrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined &&
-      Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
-      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
+      AuthreducerCreatePasswordResponseMessage !== "" &&
+      AuthreducerCreatePasswordResponseMessage !== undefined &&
+      AuthreducerCreatePasswordResponseMessage !== t("2fa-verification") &&
+      AuthreducerCreatePasswordResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(AuthreducerCreatePasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
+      AuthreducerGetSelectedPackageResponseMessage !== "" &&
+      AuthreducerGetSelectedPackageResponseMessage !== undefined &&
+      AuthreducerGetSelectedPackageResponseMessage !== t("2fa-verification") &&
+      AuthreducerGetSelectedPackageResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        AuthreducerGetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined &&
-      Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
-      Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
+      AuthreducerEmailValidationResponseMessage !== "" &&
+      AuthreducerEmailValidationResponseMessage !== undefined &&
+      AuthreducerEmailValidationResponseMessage !== t("2fa-verification") &&
+      AuthreducerEmailValidationResponseMessage !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        AuthreducerEmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== undefined &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !==
+      AuthreducerpasswordUpdateOnForgotPasswordMessege !== "" &&
+      AuthreducerpasswordUpdateOnForgotPasswordMessege !== undefined &&
+      AuthreducerpasswordUpdateOnForgotPasswordMessege !==
         t("2fa-verification") &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
+      AuthreducerpasswordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(
+        AuthreducerpasswordUpdateOnForgotPasswordMessege,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
     }
   }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-    Authreducer.passwordUpdateOnForgotPasswordMessege,
+    AuthreducerEnterPasswordResponseMessage,
+    AuthreducerVerifyOTPEmailResponseMessage,
+    AuthreducerOrganizationCreateResponseMessage,
+    AuthreducerCreatePasswordResponseMessage,
+    AuthreducerEmailValidationResponseMessage,
+    AuthreducerGetSelectedPackageResponseMessage,
+    AuthreducerpasswordUpdateOnForgotPasswordMessege,
   ]);
 
   //Password SignUp Process Response Messeges Controller
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+    if (AuthreducerVerifyOTPEmailResponseMessage !== "") {
+      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
+      dispatch(cleareMessage());
+    } else if (AuthreducerEnterPasswordResponseMessage !== "") {
+      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
+      dispatch(cleareMessage());
+    } else if (AuthreducerOrganizationCreateResponseMessage !== "") {
+      showMessage(
+        AuthreducerOrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
+      dispatch(cleareMessage());
+    } else if (AuthreducerCreatePasswordResponseMessage !== "") {
+      showMessage(AuthreducerCreatePasswordResponseMessage, "success", setOpen);
+      dispatch(cleareMessage());
+    } else if (AuthreducerGetSelectedPackageResponseMessage !== "") {
+      showMessage(
+        AuthreducerGetSelectedPackageResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.CreatePasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.GetSelectedPackageResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+    } else if (AuthreducerEmailValidationResponseMessage !== "") {
+      console.log(
+        AuthreducerEmailValidationResponseMessage,
+        "EmailValidationResponseMessage"
+      );
+      showMessage(
+        AuthreducerEmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
 
       dispatch(cleareMessage());
     } else {
     }
   }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
+    AuthreducerEnterPasswordResponseMessage,
+    AuthreducerVerifyOTPEmailResponseMessage,
+    AuthreducerOrganizationCreateResponseMessage,
+    AuthreducerCreatePasswordResponseMessage,
+    AuthreducerEmailValidationResponseMessage,
+    AuthreducerGetSelectedPackageResponseMessage,
   ]);
 
   //Organization SignUp //SignUp Process Response Messeges Controller
   useEffect(() => {
-    if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-    } else {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
+    if (AuthreducerOrganizationCreateResponseMessage !== "") {
+      showMessage(
+        AuthreducerOrganizationCreateResponseMessage,
+        "success",
+        setOpen
+      );
     }
-  }, [Authreducer.OrganizationCreateResponseMessage]);
+  }, [AuthreducerOrganizationCreateResponseMessage]);
 
   //User Management PakageDetails Messeges SignUp Process Response Messeges Controller
   useEffect(() => {
-    if (UserMangementReducer.ResponseMessage !== "") {
-      setOpen({
-        open: true,
-        message: UserMangementReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+    if (UserMangementReducerResponseMessage !== "") {
+      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
       dispatch(clearMessegesUserManagement());
     }
-  }, [UserMangementReducer.ResponseMessage]);
+  }, [UserMangementReducerResponseMessage]);
 
   //MQTT
   const onMessageArrived = (msg) => {
@@ -396,7 +315,7 @@ const SignupProcessUserManagement = () => {
   let newClient = Helper.socket;
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
@@ -407,19 +326,15 @@ const SignupProcessUserManagement = () => {
   }, [Helper.socket]);
 
   let SignupComponent;
-  if (
-    UserMangementReducer.defaulSignUpRoute === 1 ||
-    UserMangementReducer.defaulSignUpRoute === null ||
-    UserMangementReducer.defaulSignUpRoute === undefined
-  ) {
+  if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
     SignupComponent = <PakageDetailsUserManagement />;
-  } else if (UserMangementReducer.defaulSignUpRoute === 2) {
+  } else if (UserMangementReducerdefaultRoutingValue === 2) {
     SignupComponent = <SignUpOrganizationUM />;
-  } else if (UserMangementReducer.defaulSignUpRoute === 3) {
+  } else if (UserMangementReducerdefaultRoutingValue === 3) {
     SignupComponent = <VerifyOTPUM />;
-  } else if (UserMangementReducer.defaulSignUpRoute === 4) {
+  } else if (UserMangementReducerdefaultRoutingValue === 4) {
     SignupComponent = <PasswordCreationUM />;
-  } else if (UserMangementReducer.defaulSignUpRoute === 5) {
+  } else if (UserMangementReducerdefaultRoutingValue === 5) {
     SignupComponent = <BillingMethodUsermanagement />;
   } else {
     SignupComponent = null;
@@ -429,7 +344,8 @@ const SignupProcessUserManagement = () => {
   return (
     <>
       {SignupComponent}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

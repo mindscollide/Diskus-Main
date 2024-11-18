@@ -12,10 +12,12 @@ const CancelActions = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const cancelActions = useSelector(
+    (state) => state.NewMeetingreducer.cancelActions
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
   const handleNOFunctionality = () => {
     dispatch(showCancelActions(false));
@@ -38,7 +40,7 @@ const CancelActions = ({ setSceduleMeeting, currentMeeting }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelActions}
+        show={cancelActions}
         setShow={dispatch(showCancelActions)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

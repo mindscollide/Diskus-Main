@@ -12,7 +12,7 @@ const Loader = () => {
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
           <h3>{t("Welcome-to")}</h3>
-          <img src={Logo} draggable="false" />
+          <img src={Logo} draggable="false" alt="" />
 
           <div className={styles["line"]}>
             <p>{t("Your-one-step-solution-to-meeting-management")}</p>

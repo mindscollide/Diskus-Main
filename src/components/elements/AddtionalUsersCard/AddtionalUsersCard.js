@@ -31,7 +31,6 @@ const AddtionalUserCard = ({
           className="d-flex justify-content-start align-items-center"
         >
           <span>{Icon}</span>
-          {/* <img src={thumbsup} width="20px" height="20px" /> */}
         </Col>
       </Row>
     </>

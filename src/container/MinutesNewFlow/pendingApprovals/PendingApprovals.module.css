@@ -20,6 +20,14 @@ section.emptyScreen-height {
   border: 1px solid #e1e1e1;
   height: 80vh;
   overflow: hidden auto;
+  border-radius: 8px !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .pendingApprovalPaper::-webkit-scrollbar {
@@ -190,4 +198,40 @@ p.pendingStatus {
   font-weight: 400;
   font-size: 12px;
   color: #5a5a5a;
+}
+
+.FilterResetBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
 }

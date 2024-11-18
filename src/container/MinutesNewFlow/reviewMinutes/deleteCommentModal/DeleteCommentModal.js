@@ -1,16 +1,10 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  TextArea,
-  SelectComment,
-} from "../../../../components/elements"; // Importing necessary components
+import React from "react";
+import { Modal, Button } from "../../../../components/elements"; // Importing necessary components
 import styles from "./DeleteCommentModal.module.css"; // Importing CSS styles
 import { deleteCommentModal } from "../../../../store/actions/Minutes_action"; // Importing action creator
 import { useTranslation } from "react-i18next"; // Importing translation hook
-import { useDispatch, useSelector } from "react-redux"; // Importing Redux hooks
+import { useDispatch } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
-import CrossIcon from "./../../Images/Cross_Icon.png"; // Importing image
 import {
   updateCommentMinutesGeneral,
   updateRejectMinutesAgenda,
@@ -19,17 +13,11 @@ import {
 // Functional component for deleting a comment
 const DeleteCommentModal = ({
   deleteCommentLocal,
-  setDeleteCommentLocal,
   minutesAgenda,
   setMinutesAgenda,
   minutesGeneral,
   setMinutesGeneral,
-  editCommentLocal,
-  setEditCommentLocal,
   parentMinuteID,
-  setParentMinuteID,
-  currentUserID,
-  currentUserName,
   isAgenda,
   minutesToReview,
   setMinutesToReview,
@@ -47,7 +35,6 @@ const DeleteCommentModal = ({
         parentMinuteID,
         deleteCommentLocal
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesGeneral(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);
       dispatch(deleteCommentModal(false));
@@ -58,16 +45,11 @@ const DeleteCommentModal = ({
         parentMinuteID,
         deleteCommentLocal
       );
-      console.log("Updated minutes data:", updatedMinutesData);
       setMinutesAgenda(updatedMinutesData);
       setMinutesToReview(minutesToReview + 1);
       dispatch(deleteCommentModal(false));
     }
   };
-
-  console.log("Minute Data Agenda", minutesAgenda);
-  console.log("Minute Data General", minutesGeneral);
-  console.log("Delete Local Comment", deleteCommentLocal);
 
   return (
     <section>
@@ -77,7 +59,7 @@ const DeleteCommentModal = ({
         setShow={dispatch(deleteCommentModal)} // Set show modal action
         modalFooterClassName={"d-block"} // CSS class for modal footer
         modalHeaderClassName={"d-block"} // CSS class for modal header
-        className='DeleteCommentModal' // Additional CSS class for modal
+        className="DeleteCommentModal" // Additional CSS class for modal
         onHide={() => {
           dispatch(deleteCommentModal(false)); // Hide modal action
         }}
@@ -100,7 +82,7 @@ const DeleteCommentModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center gap-2' // CSS class for flex layout
+                className="d-flex justify-content-center gap-2" // CSS class for flex layout
               >
                 {/* Button for confirming deletion */}
                 <Button

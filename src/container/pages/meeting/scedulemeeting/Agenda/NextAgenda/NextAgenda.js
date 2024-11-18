@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./NextAgenda.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
 import { nextTabAgenda } from "../../../../../../store/actions/MeetingAgenda_action";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";

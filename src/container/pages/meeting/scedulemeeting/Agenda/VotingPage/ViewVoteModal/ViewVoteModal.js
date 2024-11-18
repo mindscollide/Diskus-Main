@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./ViewVoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Loader,
@@ -12,22 +11,19 @@ import {
 } from "../../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { Chart } from "react-google-charts";
-import profile from "../../../../../../../assets/images/newprofile.png";
-import down from "../../../../../../../assets/images/arrdown.png";
 import { showviewVotesAgenda } from "../../../../../../../store/actions/NewMeetingActions";
-import { ViewAgendaVotingResults } from "../../../../../../../store/actions/MeetingAgenda_action";
 import { Progress } from "antd";
 const ViewVoteModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+  const viewVotesAgenda = useSelector(
+    (state) => state.NewMeetingreducer.viewVotesAgenda
   );
-
+  const ViewAgendaVotingResultData = useSelector(
+    (state) => state.MeetingAgendaReducer.ViewAgendaVotingResultData
+  );
   const [enablePieChart, setEnablePieChart] = useState(false);
 
   const [votingResults, setVotingResults] = useState([]);
@@ -121,6 +117,7 @@ const ViewVoteModal = () => {
                   height="22px"
                   width="22px"
                   className={styles["Image"]}
+                  alt=""
                 />
               ))}
             </Col>
@@ -180,17 +177,15 @@ const ViewVoteModal = () => {
 
   useEffect(() => {
     if (
-      MeetingAgendaReducer.ViewAgendaVotingResultData !== null &&
-      MeetingAgendaReducer.ViewAgendaVotingResultData !== undefined &&
-      MeetingAgendaReducer.ViewAgendaVotingResultData.length !== 0
+      ViewAgendaVotingResultData !== null &&
+      ViewAgendaVotingResultData !== undefined &&
+      ViewAgendaVotingResultData.length !== 0
     ) {
-      setVotingResults(
-        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
-      );
+      setVotingResults(ViewAgendaVotingResultData.votingResults);
     } else {
       setVotingResults([]);
     }
-  }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
+  }, [ViewAgendaVotingResultData]);
 
   useEffect(() => {
     if (
@@ -198,8 +193,7 @@ const ViewVoteModal = () => {
       votingResults !== null &&
       votingResults.length > 0
     ) {
-      let votingResultChart =
-        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults;
+      let votingResultChart = ViewAgendaVotingResultData.votingResults;
       setPieChartData(
         votingResultChart.map((result) => [result.answer, result.votes])
       );
@@ -215,14 +209,10 @@ const ViewVoteModal = () => {
     }
   }, [votingResults]);
 
-  console.log("VotingResults", votingResults, pieChartData, barChartData);
-
-  console.log("ViewVotingDetail Reducer", MeetingAgendaReducer);
-
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.viewVotesAgenda}
+        show={viewVotesAgenda}
         setShow={dispatch(showviewVotesAgenda)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

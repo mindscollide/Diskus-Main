@@ -7,8 +7,7 @@ import img9 from "../../../../../assets/images/9.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import logo from "../../../../../assets/images/signinlogo.svg";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
-import { Button, Paper } from "../../../../../components/elements";
-import { useNavigate } from "react-router-dom";
+import { Button } from "../../../../../components/elements";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 const VerifyDeniedUM = () => {
@@ -37,7 +36,7 @@ const VerifyDeniedUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["loginbox_auth_paper_for_SignInDenied"]}>
+            <span className={styles["loginbox_auth_paper_for_SignInDenied"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -97,7 +96,7 @@ const VerifyDeniedUM = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center mt-5"
+                    className="d-flex justify-content-center mt-4"
                   >
                     <Button
                       text={t("Back-to-sign-in").toUpperCase()}
@@ -109,7 +108,7 @@ const VerifyDeniedUM = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
 
           <Col md={7} lg={7} sm={12} className="">
@@ -129,7 +128,6 @@ const VerifyDeniedUM = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  // width="600px"
                   className={styles["denied_signIn_Auth_Icon"]}
                 />
               </Col>

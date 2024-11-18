@@ -16,7 +16,6 @@ body[dir="rtl"] .Lineheight {
   font-size: 12px;
   font-weight: 600;
   color: #5a5a5a !important;
-  /* margin-top: 15px !important; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

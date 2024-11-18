@@ -5,7 +5,6 @@ import {
   TextField,
   TableToDo,
   Notification,
-  SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import searchicon from "../../assets/images/searchicon.svg";
@@ -55,18 +54,61 @@ import ModalCancellResolution2 from "./ModalCancellResolution2/ModalCancellResol
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
-import { validateInput } from "../../commen/functions/regex";
+import {
+  convertToArabicNumerals,
+  validateInput,
+} from "../../commen/functions/regex";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer } = useSelector((state) => state);
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  const ResolutionReducerResponseMessage = useSelector(
+    (state) => state.ResolutionReducer.ResponseMessage
+  );
+  const ResolutionReducersearchVoterResolution = useSelector(
+    (state) => state.ResolutionReducer.searchVoterResolution
+  );
+  const ResolutionReducerGetResolutions = useSelector(
+    (state) => state.ResolutionReducer.GetResolutions
+  );
+  const ResolutionReducermqttResolutionCreated = useSelector(
+    (state) => state.ResolutionReducer.mqttResolutionCreated
+  );
+  const ResolutionReducermqttResolutionCancelled = useSelector(
+    (state) => state.ResolutionReducer.mqttResolutionCancelled
+  );
+  const ResolutionReducermqttResolutionClosed = useSelector(
+    (state) => state.ResolutionReducer.mqttResolutionClosed
+  );
+  const ResolutionReducercreateResolutionModal = useSelector(
+    (state) => state.ResolutionReducer.createResolutionModal
+  );
+  const ResolutionReducerviewResolutionModal = useSelector(
+    (state) => state.ResolutionReducer.viewResolutionModal
+  );
+  const ResolutionReducerresultResolutionFlag = useSelector(
+    (state) => state.ResolutionReducer.resultResolutionFlag
+  );
+  const ResolutionReducervoteResolutionFlag = useSelector(
+    (state) => state.ResolutionReducer.voteResolutionFlag
+  );
+  const ResolutionReducerviewAttachmentFlag = useSelector(
+    (state) => state.ResolutionReducer.viewAttachmentFlag
+  );
+  const ResolutionReducerupdateResolutionModal = useSelector(
+    (state) => state.ResolutionReducer.updateResolutionModal
+  );
+  const ResolutionReducerLoading = useSelector(
+    (state) => state.ResolutionReducer.Loading
+  );
   const [totalResolution, setTotalResolution] = useState(0);
   const [totalVoterResolution, setTotalVoterResolution] = useState(0);
   const [cancelResolutionModal, setCancelResolutionModal] = useState(false);
@@ -177,8 +219,6 @@ const Resolution = () => {
         localStorage.setItem("resolutionView", 2);
         localStorage.setItem("ButtonTab", 1);
         dispatch(getVoterResolution(navigate, 1, t));
-
-        // dispatch(getResolutions(navigate, 1, t));
       }
     } catch {}
 
@@ -221,8 +261,9 @@ const Resolution = () => {
   });
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const showSearchOptions = () => {
@@ -483,10 +524,10 @@ const Resolution = () => {
       key: "circulationDate",
       align: "center",
       width: "128px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
-            {_justShowDateformat(table)}
+            {_justShowDateformat(table, CurrentLanguage)}
           </span>
         );
       },
@@ -497,7 +538,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "center",
       width: "134px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -511,7 +552,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "center",
       width: "134px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -525,7 +566,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -549,8 +590,10 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
-      render: (text, data) => (
-        <span className={styles["voterCountStyle"]}>{text}</span>
+      render: (text) => (
+        <span className={styles["voterCountStyle"]}>
+          {convertToArabicNumerals(text, CurrentLanguage)}
+        </span>
       ),
     },
     {
@@ -560,10 +603,7 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        let newDate = new Date();
-        let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
-          // if (votingDeadline < newDate) {
           return (
             <Tooltip placement="bottomLeft" title={t("Result")}>
               <img
@@ -655,10 +695,10 @@ const Resolution = () => {
       key: "circulationDate",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
-            {_justShowDateformat(table)}
+            {_justShowDateformat(table, CurrentLanguage)}
           </span>
         );
       },
@@ -669,7 +709,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -683,7 +723,7 @@ const Resolution = () => {
       key: "decisionDate",
       align: "center",
       width: "140px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -697,7 +737,7 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -721,7 +761,7 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className="d-flex justify-content-center Saved_money_Tagline ">
             {text}
@@ -735,7 +775,7 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (table, data) => {
+      render: (text, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         if (votingDeadline < newDate) {
@@ -780,7 +820,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "left",
       width: "153px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -794,10 +834,10 @@ const Resolution = () => {
       key: "decisionDate",
       align: "left",
       width: "153px",
-      render: (table, data) => {
+      render: (table) => {
         return (
           <span className={styles["resolution_date_Decision_date"]}>
-            {_justShowDateformat(table)}
+            {_justShowDateformat(table, CurrentLanguage)}
           </span>
         );
       },
@@ -809,7 +849,7 @@ const Resolution = () => {
       width: "145px",
       align: "center",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         return <span className={styles["voterCountStyle"]}>{text}</span>;
       },
     },
@@ -885,7 +925,7 @@ const Resolution = () => {
       key: "decision",
       width: "90px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
@@ -924,7 +964,7 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "left",
       width: "155px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className={styles["voterCountStyle"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(text)}
@@ -938,10 +978,10 @@ const Resolution = () => {
       key: "decisionDate",
       align: "left",
       width: "153px",
-      render: (text, data) => {
+      render: (text) => {
         return (
           <span className={styles["voterCountStyle"]}>
-            {_justShowDateformat(text)}
+            {_justShowDateformat(text, CurrentLanguage)}
           </span>
         );
       },
@@ -953,7 +993,7 @@ const Resolution = () => {
       width: "120px",
       align: "center",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         return <span className={styles["voterCountStyle"]}>{text}</span>;
       },
     },
@@ -985,7 +1025,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (data) => {
         if (data.resolutionStatusID === 3) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
@@ -1021,7 +1061,7 @@ const Resolution = () => {
       key: "decision",
       width: "73px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
+      render: (text) => {
         if (text === "Approved" || text === "Not Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
@@ -1088,36 +1128,23 @@ const Resolution = () => {
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    try {
-      if (
-        ResolutionReducer.ResponseMessage !== "" &&
-        ResolutionReducer.ResponseMessage !== t("No-data-available") &&
-        ResolutionReducer.ResponseMessage !== undefined
-      ) {
-        setOpen({
-          flag: true,
-          message: ResolutionReducer.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            flag: false,
-            message: "",
-          });
-        }, 4000);
-        dispatch(clearResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
+    if (
+      ResolutionReducerResponseMessage !== "" &&
+      ResolutionReducerResponseMessage !== t("No-data-available") &&
+      ResolutionReducerResponseMessage !== undefined
+    ) {
+      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
+      dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage]);
+  }, [ResolutionReducerResponseMessage]);
 
   // voter resolution state manage
   useEffect(() => {
     try {
-      if (ResolutionReducer.searchVoterResolution !== null) {
-        setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
+      if (ResolutionReducersearchVoterResolution !== null) {
+        setSearchVoter(ResolutionReducersearchVoterResolution.resolutionTable);
         setTotalVoterResolution(
-          ResolutionReducer.searchVoterResolution.totalRecords
+          ResolutionReducersearchVoterResolution.totalRecords
         );
       } else {
         setSearchVoter([]);
@@ -1125,27 +1152,27 @@ const Resolution = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.searchVoterResolution]);
+  }, [ResolutionReducersearchVoterResolution]);
 
   // moderator resolution state manage
   useEffect(() => {
     try {
-      if (ResolutionReducer.GetResolutions !== null) {
-        setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
-        setRows(ResolutionReducer.GetResolutions.resolutionTable);
+      if (ResolutionReducerGetResolutions !== null) {
+        setTotalResolution(ResolutionReducerGetResolutions.totalRecords);
+        setRows(ResolutionReducerGetResolutions.resolutionTable);
       } else {
         setRows([]);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.GetResolutions]);
+  }, [ResolutionReducerGetResolutions]);
 
   useEffect(() => {
     try {
-      if (ResolutionReducer.mqttResolutionCreated !== null) {
+      if (ResolutionReducermqttResolutionCreated !== null) {
         try {
-          let getData = ResolutionReducer.mqttResolutionCreated;
+          let getData = ResolutionReducermqttResolutionCreated;
           let findIndexModerator = isSearchVoter.findIndex(
             (data, index) =>
               data.resolutionID === getData.resolution.pK_ResolutionID
@@ -1196,16 +1223,16 @@ const Resolution = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.mqttResolutionCreated]);
+  }, [ResolutionReducermqttResolutionCreated]);
 
   useEffect(() => {
     try {
-      if (ResolutionReducer.mqttResolutionCancelled !== null) {
+      if (ResolutionReducermqttResolutionCancelled !== null) {
         try {
           let findCancelledResolution = isSearchVoter.filter(
             (obj) =>
               obj.resolutionID !==
-              ResolutionReducer.mqttResolutionCancelled.resolution
+              ResolutionReducermqttResolutionCancelled.resolution
                 .pK_ResolutionID
           );
           setSearchVoter(findCancelledResolution);
@@ -1214,12 +1241,12 @@ const Resolution = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [ResolutionReducer.mqttResolutionCancelled]);
+  }, [ResolutionReducermqttResolutionCancelled]);
 
   useEffect(() => {
-    if (ResolutionReducer.mqttResolutionClosed !== null) {
+    if (ResolutionReducermqttResolutionClosed !== null) {
       try {
-        let getData = ResolutionReducer.mqttResolutionCreated;
+        let getData = ResolutionReducermqttResolutionCreated;
         let findIndexResolution = isSearchVoter.findIndex(
           (data, index) =>
             data.resolutionID === getData.resolution.pK_ResolutionID
@@ -1229,7 +1256,7 @@ const Resolution = () => {
             let findCancelledResolution = isSearchVoter.filter(
               (obj) =>
                 obj.resolutionID !==
-                ResolutionReducer.mqttResolutionCancelled.resolution
+                ResolutionReducermqttResolutionCancelled.resolution
                   .pK_ResolutionID
             );
             setSearchVoter(findCancelledResolution);
@@ -1281,28 +1308,28 @@ const Resolution = () => {
         }
       } catch {}
     }
-  }, [ResolutionReducer.mqttResolutionClosed]);
+  }, [ResolutionReducermqttResolutionClosed]);
 
   return (
     <>
       <section className={styles["resolution_container"]}>
-        {ResolutionReducer.createResolutionModal ? (
+        {ResolutionReducercreateResolutionModal ? (
           <>
             <ScheduleNewResolution />
           </>
-        ) : ResolutionReducer.viewResolutionModal ? (
+        ) : ResolutionReducerviewResolutionModal ? (
           <>
             <ViewResolution />
           </>
         ) : resultresolution &&
-          ResolutionReducer.resultResolutionFlag === true ? (
+          ResolutionReducerresultResolutionFlag === true ? (
           <>
             <ResultResolution
               setResultresolution={setResultresolution}
               resultresolution={resultresolution}
             />
           </>
-        ) : voteresolution && ResolutionReducer.voteResolutionFlag === true ? (
+        ) : voteresolution && ResolutionReducervoteResolutionFlag === true ? (
           <>
             <VotingPage
               setVoteresolution={setVoteresolution}
@@ -1310,7 +1337,7 @@ const Resolution = () => {
             />
           </>
         ) : viewattachmentpage &&
-          ResolutionReducer.viewAttachmentFlag === true ? (
+          ResolutionReducerviewAttachmentFlag === true ? (
           <>
             <ViewAttachments
               setViewattachmentpage={setViewattachmentpage}
@@ -1318,7 +1345,7 @@ const Resolution = () => {
               resolutionAttachments={resolutionAttachments}
             />
           </>
-        ) : ResolutionReducer.updateResolutionModal ? (
+        ) : ResolutionReducerupdateResolutionModal ? (
           <>
             <EditResolution setCancelresolution={setCancelResolutionModal} />
           </>
@@ -1488,9 +1515,7 @@ const Resolution = () => {
                                     onFocusedDateChange={
                                       changeCirculateDateHandler
                                     }
-                                    // inputClass="datepicker_input"
                                     format={"DD/MM/YYYY"}
-                                    // value={toDoDate}
                                     minDate={moment().toDate()}
                                     placeholder="DD/MM/YYYY"
                                     render={
@@ -1501,26 +1526,12 @@ const Resolution = () => {
                                     }
                                     editable={false}
                                     className="datePickerTodoCreate2"
-                                    // disabled={disabled}
-                                    // name={name}
                                     onOpenPickNewDate={false}
                                     inputMode=""
-                                    // value={value}
                                     calendar={calendarValue}
                                     locale={localValue}
                                     ref={calendRef}
                                   />
-
-                                  {/* <TextField
-                                    label={
-                                      resolutionView === 2
-                                        ? t("Decision-date")
-                                        : t("Circulation-date")
-                                    }
-                                    type="date"
-                                    name="circulationDate"
-                                    change={changeSearchDateHandler}
-                                  /> */}
                                 </Col>
                                 <Col
                                   lg={6}
@@ -1550,12 +1561,6 @@ const Resolution = () => {
                                     locale={localValue}
                                     ref={calendRef}
                                   />
-                                  {/* <TextField
-                                    label={t("Voting-deadline")}
-                                    type="date"
-                                    name="votingDate"
-                                    change={changeSearchDateHandler}
-                                  /> */}
                                 </Col>
                               </Row>
                               <Row className="mt-3">
@@ -1592,45 +1597,7 @@ const Resolution = () => {
                 </Row>
               </Col>
             </Row>
-            {searchResultsArea ? (
-              <>
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Search_results"]}>
-                      {t("Search-results")}
-                    </span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={3} md={3} sm={3}>
-                    <Row>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="CreateMeetingReminder Atteendees-organizer-participant "
-                      >
-                        <SelectBox
-                          name="Participant"
-                          placeholder={t("Circulation-date")}
-                        />
-                      </Col>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="CreateMeetingReminder Atteendees-organizer-participant"
-                      >
-                        <SelectBox
-                          name="Participant"
-                          placeholder={t("Voting-deadline")}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </>
-            ) : null}
+
             <Row className="mt-3">
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
@@ -1673,7 +1640,7 @@ const Resolution = () => {
                             <Spin />
                           </div>
                         ),
-                        spinning: ResolutionReducer.Loading,
+                        spinning: ResolutionReducerLoading,
                       }}
                       rows={rows}
                       locale={{
@@ -1770,7 +1737,7 @@ const Resolution = () => {
                           <Spin />
                         </div>
                       ),
-                      spinning: ResolutionReducer.Loading,
+                      spinning: ResolutionReducerLoading,
                     }}
                     rows={isSearchVoter}
                     locale={{
@@ -1856,7 +1823,7 @@ const Resolution = () => {
         setCancelresolution={setCancelResolutionModal}
         Id={resolutionIDForCancel}
       />
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

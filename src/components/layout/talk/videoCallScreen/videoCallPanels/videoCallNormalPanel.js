@@ -7,21 +7,15 @@ import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen } from "../../../../elements";
 import {
-  agendaEnableNormalFlag,
-  chatEnableNormalFlag,
-  minutesMeetingEnableNormalFlag,
-} from "../../../../../store/actions/VideoFeature_actions";
-import {
   endIndexUrl,
   extractedUrl,
   generateURLCaller,
   generateURLParticipant,
 } from "../../../../../commen/functions/urlVideoCalls";
-import LayoutIconPurple from "../../../../../assets/images/Layout-Icon-Purple.svg";
-import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selected-with-shape.svg";
-import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
-import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
+import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
+import { useTranslation } from "react-i18next";
+import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -31,13 +25,8 @@ const VideoPanelNormal = () => {
   );
 
   let currentUserID = Number(localStorage.getItem("userID"));
-  // let currentUserName = localStorage.getItem('name')
+  const { t } = useTranslation();
 
-  let callerID = Number(localStorage.getItem("callerID"));
-  let recipentID = Number(localStorage.getItem("recipentID"));
-  let roomID = localStorage.getItem("NewRoomID");
-  let callerName = localStorage.getItem("callerName");
-  let recipentName = localStorage.getItem("recipentName");
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
   localStorage.setItem("VideoView", "Sidebar");
@@ -50,9 +39,8 @@ const VideoPanelNormal = () => {
   const [callerURL, setCallerURL] = useState("");
   const [participantURL, setParticipantURL] = useState("");
 
-  const [isActiveIcon, setIsActiveIcon] = useState(false);
-  const [isNoteActive, setIsNoteActive] = useState(false);
-  const [isNote2Active, setIsNote2Active] = useState(false);
+  const [showTile, setShowTile] = useState(false);
+
   const [isScreenActive, setIsScreenActive] = useState(false);
 
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
@@ -60,60 +48,6 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
-
-  const onClickCloseChatHandler = () => {
-    if (isActiveIcon === false) {
-      dispatch(chatEnableNormalFlag(true));
-      setIsActiveIcon(true);
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    } else {
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
-
-  const onClickNoteIconHandler = () => {
-    if (isNoteActive === false) {
-      dispatch(agendaEnableNormalFlag(true));
-      setIsNoteActive(true);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    } else {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
-
-  const onClickMinutesHandler = () => {
-    if (isNote2Active === false) {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(true));
-      setIsNote2Active(true);
-    } else {
-      dispatch(agendaEnableNormalFlag(false));
-      setIsNoteActive(false);
-      dispatch(chatEnableNormalFlag(false));
-      setIsActiveIcon(false);
-      dispatch(minutesMeetingEnableNormalFlag(false));
-      setIsNote2Active(false);
-    }
-  };
 
   useEffect(() => {
     try {
@@ -187,9 +121,11 @@ const VideoPanelNormal = () => {
       if (iframe && videoView === "Sidebar") {
         iframe.contentWindow.postMessage("TileView", "*");
         localStorage.setItem("VideoView", "TileView");
+        setShowTile(true);
       } else if (iframe && videoView === "TileView") {
         iframe.contentWindow.postMessage("SidebarView", "*");
         localStorage.setItem("VideoView", "Sidebar");
+        setShowTile(false);
       }
     }
   };
@@ -208,26 +144,7 @@ const VideoPanelNormal = () => {
     localStorage.setItem("VidOff", !isVideoActive);
   };
 
-  // useEffect(() => {
-  //   console.log("UseEffect", isMicActive, micStatus);
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     iframe.contentWindow.postMessage("MicOff", "*");
-  //   }
-  // }, [isMicActive]);
-
-  // useEffect(() => {
-  //   console.log("UseEffect", isVideoActive, vidStatus);
-
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     iframe.contentWindow.postMessage("VidOff", "*");
-  //     console.log("Check Check");
-  //   }
-  // }, [isVideoActive]);
-
   useEffect(() => {
-    console.log("Normalize UseEffect Check", micStatus, isMicActive);
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (micStatus !== isMicActive) {
@@ -284,9 +201,9 @@ const VideoPanelNormal = () => {
             {VideoMainReducer.FullLoader === true ? (
               <>
                 <LoaderPanelVideoScreen
-                  message={
-                    "Securing your connection, You'll be able to join in a moment"
-                  }
+                  message={t(
+                    "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
+                  )}
                 />
               </>
             ) : (
@@ -299,13 +216,24 @@ const VideoPanelNormal = () => {
                   disableVideo={disableVideoFunction}
                   isVideoActive={isVideoActive}
                   isMicActive={isMicActive}
+                  showTile={showTile}
                 />
                 {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
                   <VideoOutgoing />
                 ) : null}
                 <Row>
                   <>
-                    <Col lg={12} md={12} sm={12}>
+                    <Col
+                      lg={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }
+                      md={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }
+                      sm={
+                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                      }
+                    >
                       <div
                         className={
                           videoFeatureReducer.NormalizeVideoFlag === true &&
@@ -338,6 +266,23 @@ const VideoPanelNormal = () => {
                         ) : null}
                       </div>
                     </Col>
+                    {videoFeatureReducer.participantWaitinglistBox ? (
+                      <Col
+                        lg={3}
+                        md={3}
+                        sm={3}
+                        className={`${
+                          videoFeatureReducer.participantWaitinglistBox
+                            ? "ParticipantsWaiting_In"
+                            : "ParticipantsWaiting_Out"
+                        } ps-0`}
+                      >
+                        {/* <VideoCallParticipants /> */}
+
+                        <VideoNewParticipantList />
+                      </Col>
+                    ) : null}
+                    {/* <VideoCallParticipants /> */}
                   </>
                 </Row>
                 <Row>

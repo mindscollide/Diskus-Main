@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SignInComponent from "../UserMangement/SignInUserManagement/SignInUserManagement";
 import PasswordVerification from "../UserMangement/PasswordVerification/PasswordVerification";
 import VerifyOTPUM from "../UserMangement/VerifyOTPUM/VerifyOTPUM";
@@ -8,7 +8,6 @@ import VerificationEmailAndNumber from "../UserMangement/2FA Verification/Verifi
 import VerifyDeniedUM from "../UserMangement/2FA Verification/VerifyDeniedUM/VerifyDeniedUM";
 import DeviceFor2FAVerify from "../UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify";
 import SignUpOrganizationUM from "../UserMangement/SignUpOrganizationUM/SignUpOrganizationUM";
-import SignupProcessUserManagement from "../SignUpProcessUserManagement/SignupProcessUserManagement";
 import ForgotPasswordUM from "../UserMangement/ForgotPassword/ForgotPasswordUM";
 import PasswordCreationUM from "../UserMangement/PasswordCreationUM/PasswordCreationUM";
 import ForgotPasswordVerificationUM from "../UserMangement/ForgotPasswordVerification/ForgotPasswordVerificationUM";
@@ -21,13 +20,13 @@ import {
 } from "../../../store/actions/Auth2_actions";
 import { Notification } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
-import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UserManagementProcess = () => {
   // Define setCurrentStep function
@@ -35,15 +34,33 @@ const UserManagementProcess = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
 
-  const { UserMangementReducer, Authreducer } = useSelector((state) => state);
+  const UserMangementReducerdefaultRoutingValue = useSelector(
+    (state) => state.UserMangementReducer.defaultRoutingValue
+  );
+
+  const AuthreducerEmailValidationResponseMessage = useSelector(
+    (state) => state.Authreducer.EmailValidationResponseMessage
+  );
+
+  const AuthreducerEnterPasswordResponseMessage = useSelector(
+    (state) => state.Authreducer.EnterPasswordResponseMessage
+  );
+
+  const AuthreducerVerifyOTPEmailResponseMessage = useSelector(
+    (state) => state.Authreducer?.VerifyOTPEmailResponseMessage
+  );
+
+  const AuthreducerAuthenticateAFAResponseMessage = useSelector(
+    (state) => state.Authreducer?.AuthenticateAFAResponseMessage
+  );
 
   //state to show snackbar
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
@@ -55,7 +72,9 @@ const UserManagementProcess = () => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
       if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
+        console.log("LoginFlowPageRoute");
         if (storedStep) {
+          console.log("LoginFlowPageRoute");
           dispatch(LoginFlowRoutes(storedStep));
         }
       } else {
@@ -75,19 +94,11 @@ const UserManagementProcess = () => {
   }, [currentUrl]);
 
   useEffect(() => {
-    if (UserMangementReducer.defaultRoutingValue) {
-      // Update local storage with the current step
-      // localStorage.setItem(
-      //   "LoginFlowPageRoute",
-      //   UserMangementReducer.defaultRoutingValue
-      // );
-    }
-  }, [UserMangementReducer.defaultRoutingValue]);
-
-  useEffect(() => {
-    if (userManagementRoute !== null) {
+    if (userManagementRoute !== null && userManagementRoute !== 0) {
+      console.log("LoginFlowPageRoute", userManagementRoute);
       setStoredStep(userManagementRoute);
     } else {
+      console.log("LoginFlowPageRoute");
       setStoredStep(1);
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
@@ -95,50 +106,31 @@ const UserManagementProcess = () => {
 
   useEffect(() => {
     if (
-      Authreducer.EmailValidationResponseMessage != "" &&
-      Authreducer.EmailValidationResponseMessage !=
+      AuthreducerEmailValidationResponseMessage !== "" &&
+      AuthreducerEmailValidationResponseMessage !==
         t("Users-password-is-created")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(
+        AuthreducerEmailValidationResponseMessage,
+        "success",
+        setOpen
+      );
       dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage != "" &&
-      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
-      Authreducer.EnterPasswordResponseMessage != undefined &&
-      Authreducer.EnterPasswordResponseMessage !=
+      AuthreducerEnterPasswordResponseMessage !== "" &&
+      AuthreducerEnterPasswordResponseMessage !== t("2fa-enabled") &&
+      AuthreducerEnterPasswordResponseMessage !== undefined &&
+      AuthreducerEnterPasswordResponseMessage !==
         t("The-user-is-not-an-admin-user")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(AuthreducerEnterPasswordResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
   }, [
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.EnterPasswordResponseMessage,
+    AuthreducerEmailValidationResponseMessage,
+    AuthreducerEnterPasswordResponseMessage,
   ]);
 
   //MQTT
@@ -192,7 +184,7 @@ const UserManagementProcess = () => {
   let newClient = Helper.socket;
 
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
       newClient.onMessageArrived = onMessageArrived;
     } else {
       let userID = localStorage.getItem("userID");
@@ -202,97 +194,72 @@ const UserManagementProcess = () => {
     }
   }, [Helper.socket]);
 
-  // console.log(Authreducer, "AuthreducerAuthreducerAuthreducer");
-  //USer Password Verification After forget password
+  //User Password Verification After forget password
   useEffect(() => {
     if (
-      Authreducer?.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer?.VerifyOTPEmailResponseMessage !== undefined
+      AuthreducerVerifyOTPEmailResponseMessage !== "" &&
+      AuthreducerVerifyOTPEmailResponseMessage !== undefined
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer?.VerifyOTPEmailResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
+      showMessage(AuthreducerVerifyOTPEmailResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer?.VerifyOTPEmailResponseMessage]);
+  }, [AuthreducerVerifyOTPEmailResponseMessage]);
 
   useEffect(() => {
     if (
-      Authreducer?.AuthenticateAFAResponseMessage != "" &&
-      Authreducer?.AuthenticateAFAResponseMessage != undefined
+      AuthreducerAuthenticateAFAResponseMessage !== "" &&
+      AuthreducerAuthenticateAFAResponseMessage !== undefined
     ) {
-      console.log(
-        Authreducer.AuthenticateAFAResponseMessage,
-        "AuthreducerAuthreducerAuthreducer"
+      showMessage(
+        AuthreducerAuthenticateAFAResponseMessage,
+        "success",
+        setOpen
       );
 
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer?.AuthenticateAFAResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer?.AuthenticateAFAResponseMessage]);
+  }, [AuthreducerAuthenticateAFAResponseMessage]);
 
   let componentToRender;
   console.log(
-    UserMangementReducer.defaultRoutingValue,
+    UserMangementReducerdefaultRoutingValue,
     { storedStep, userManagementRoute },
     "storedStepstoredStep"
   );
 
-  if (UserMangementReducer.defaultRoutingValue === 1 && storedStep === 1) {
+  if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
     componentToRender = <SignInComponent />;
-  } else if (UserMangementReducer.defaultRoutingValue === 2) {
+  } else if (UserMangementReducerdefaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;
-  } else if (UserMangementReducer.defaultRoutingValue === 3) {
+  } else if (UserMangementReducerdefaultRoutingValue === 3) {
     componentToRender = <VerifyOTPUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 4) {
+  } else if (UserMangementReducerdefaultRoutingValue === 4) {
     componentToRender = <TwoFactorVerifyUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 5) {
+  } else if (UserMangementReducerdefaultRoutingValue === 5) {
     componentToRender = <TapOptions />;
-  } else if (UserMangementReducer.defaultRoutingValue === 6) {
+  } else if (UserMangementReducerdefaultRoutingValue === 6) {
     componentToRender = <VerificationEmailAndNumber />;
-  } else if (UserMangementReducer.defaultRoutingValue === 7) {
+  } else if (UserMangementReducerdefaultRoutingValue === 7) {
     componentToRender = <VerifyDeniedUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 8) {
+  } else if (UserMangementReducerdefaultRoutingValue === 8) {
     componentToRender = <DeviceFor2FAVerify />;
-  } else if (UserMangementReducer.defaultRoutingValue === 9) {
+  } else if (UserMangementReducerdefaultRoutingValue === 9) {
     componentToRender = <SignUpOrganizationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 10) {
+  } else if (UserMangementReducerdefaultRoutingValue === 10) {
     componentToRender = <ForgotPasswordUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 11) {
+  } else if (UserMangementReducerdefaultRoutingValue === 11) {
     componentToRender = <PasswordCreationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 12) {
+  } else if (UserMangementReducerdefaultRoutingValue === 12) {
     componentToRender = <ForgotPasswordVerificationUM />;
-  } else if (UserMangementReducer.defaultRoutingValue === 13) {
+  } else if (UserMangementReducerdefaultRoutingValue === 13) {
     componentToRender = <TwoFactorMultipleDevices />;
-  } else if (UserMangementReducer.defaultRoutingValue === 14) {
+  } else if (UserMangementReducerdefaultRoutingValue === 14) {
     componentToRender = <VerificationCodeThree />;
-  } else if (UserMangementReducer.defaultRoutingValue === 15) {
+  } else if (UserMangementReducerdefaultRoutingValue === 15) {
     componentToRender = <VerificationIphone />;
   } else {
     componentToRender = null;
@@ -302,7 +269,7 @@ const UserManagementProcess = () => {
   return (
     <>
       {componentToRender}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

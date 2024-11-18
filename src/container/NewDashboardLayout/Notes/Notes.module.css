@@ -15,3 +15,56 @@
   word-wrap: break-word;
   text-align: center;
 }
+.noteheading {
+  font-size: 20px !important;
+  font-weight: 600;
+  margin: 0 !important;
+  text-align: left !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .noteheading {
+  font-weight: 600;
+}
+
+.notesdescription {
+  border: 1px solid #dddddd;
+  margin: 10px 0 !important;
+  padding: 5px !important;
+  cursor: pointer;
+  border-radius: 4px !important;
+}
+.DataTimeDay {
+  font-size: 8px !important;
+  width: auto !important;
+  text-align: end;
+  font-weight: 400;
+}
+
+body[dir="rtl"] .DataTimeDay {
+  font-size: 8px !important;
+  width: auto !important;
+  font-weight: 400;
+}
+.ViewMoreLink_notes {
+  cursor: pointer;
+  font-size: 12px !important;
+  font-weight: 600;
+}
+
+.notescontent {
+  font-size: 12px !important;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 5px 5px !important;
+  color: #6172d6 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  word-wrap: break-word;
+}
+
+body[dir="rtl"] .notescontent {
+  font-weight: 600;
+}

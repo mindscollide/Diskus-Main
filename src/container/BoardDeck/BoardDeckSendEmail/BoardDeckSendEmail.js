@@ -23,6 +23,7 @@ import { validateInput } from "../../../commen/functions/regex";
 import { Checkbox } from "antd";
 import { BoardDeckSendEmailApi } from "../../../store/actions/UserManagementActions";
 import { GetAllCommitteesUsersandGroups } from "../../../store/actions/MeetingOrganizers_action";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 const BoardDeckSendEmail = ({
   boardDeckMeetingID,
   boarddeckOptions,
@@ -42,10 +43,12 @@ const BoardDeckSendEmail = ({
 
   const OrganizationID = localStorage.getItem("organizationID");
 
-  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
+  const boardDeckEmailModal = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckEmailModal
   );
-
+  const AllUserCommitteesGroupsData = useSelector(
+    (state) => state.MeetingOrganizersReducer.AllUserCommitteesGroupsData
+  );
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [tags, setTags] = useState([]);
@@ -53,6 +56,7 @@ const BoardDeckSendEmail = ({
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notifyPeople, setNotifyPeople] = useState({
@@ -176,13 +180,7 @@ const BoardDeckSendEmail = ({
         );
       }
     } else {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Atleast-add-one-user"),
-        }),
-        3000
-      );
+      showMessage(t("Atleast-add-one-user"), "error", setOpen);
     }
   };
 
@@ -195,44 +193,15 @@ const BoardDeckSendEmail = ({
 
     if (value.endsWith(".com")) {
       if (!emailRegex.test(value)) {
-        setTimeout(() => {
-          setOpen({
-            open: true,
-            message: t("Invalid-email-format"),
-          });
-        }, 3000);
+        showMessage(t("Invalid-email-format"), "error", setOpen);
         return;
       }
       setTags([...tags, value]);
       e.target.value = "";
     }
   };
-  // function handleKeyDown(e) {
-  //   if (e.key !== "Enter") return;
-  //   const value = e.target.value.trim();
-
-  //   // Regular expression to validate email format
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // if (!emailRegex.test(value)) {
-  //   setTimeout(
-  //     setOpen({
-  //       open: true,
-  //       message: t("Invalid-email-format"),
-  //     }),
-  //     3000
-  //   );
-  //   return;
-  // }
-
-  //   setTags([...tags, value]);
-  //   e.target.value = "";
-  // }
-
-  //Organizational Users
   useEffect(() => {
-    let newOrganizersData =
-      MeetingOrganizersReducer.AllUserCommitteesGroupsData;
+    let newOrganizersData = AllUserCommitteesGroupsData;
     if (newOrganizersData !== null && newOrganizersData !== undefined) {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
@@ -276,12 +245,12 @@ const BoardDeckSendEmail = ({
         setDropdowndata([]);
       }
     }
-  }, [MeetingOrganizersReducer.AllUserCommitteesGroupsData]);
+  }, [AllUserCommitteesGroupsData]);
 
   return (
     <Container>
       <Modal
-        show={NewMeetingreducer.boardDeckEmailModal}
+        show={boardDeckEmailModal}
         setShow={dispatch(boardDeckEmailModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
@@ -440,7 +409,7 @@ const BoardDeckSendEmail = ({
           </>
         }
       />
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </Container>
   );
 };

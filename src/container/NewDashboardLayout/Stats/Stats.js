@@ -12,13 +12,24 @@ import { getDashbardTaskDataApi } from "../../../store/actions/ToDoList_action";
 import { getDashbardMeetingDataApi } from "../../../store/actions/NewMeetingActions";
 import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Stats = () => {
-  const { NewMeetingreducer, toDoListReducer, SignatureWorkFlowReducer } =
-    useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const getDashboardMeetingData = useSelector(
+    (state) => state.NewMeetingreducer.getDashboardMeetingData
+  );
+  const getDashboardTaskData = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskData
+  );
+  const getDashboardTaskCountMQTT = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskCountMQTT
+  );
+  const getDashboardPendingApprovalData = useSelector(
+    (state) => state.SignatureWorkFlowReducer.getDashboardPendingApprovalData
+  );
 
   const [counts, setCounts] = useState({
     totalMeetingCount: 0,
@@ -38,39 +49,34 @@ const Stats = () => {
   }, []);
 
   useEffect(() => {
-    if (NewMeetingreducer.getDashboardMeetingData) {
-      console.log(
-        NewMeetingreducer.getDashboardMeetingData,
-        "NEW_MEETINGS_COUNTNEW_MEETINGS_COUNT"
-      );
-
+    if (getDashboardMeetingData) {
       const { totalNumberOfMeetings, numberOfUpcommingMeetings } =
-        NewMeetingreducer.getDashboardMeetingData;
+        getDashboardMeetingData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalMeetingCount: totalNumberOfMeetings,
         upcomingMeetingCount: numberOfUpcommingMeetings,
       }));
     }
-  }, [NewMeetingreducer.getDashboardMeetingData]);
+  }, [getDashboardMeetingData]);
 
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskData) {
+    if (getDashboardTaskData) {
       const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
-        toDoListReducer.getDashboardTaskData;
+        getDashboardTaskData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalTaskCount: totalNumberOfToDoList,
         upComingTaskCount: totalNumberOfAssignedToDoList,
       }));
     }
-  }, [toDoListReducer.getDashboardTaskData]);
-  
+  }, [getDashboardTaskData]);
+
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskCountMQTT !== null) {
+    if (getDashboardTaskCountMQTT !== null) {
       try {
         const { totalNumberOfToDoList, totalNumberOfAssignedToDoList } =
-          toDoListReducer.getDashboardTaskCountMQTT;
+          getDashboardTaskCountMQTT;
         setCounts((prevCounts) => ({
           ...prevCounts,
           totalTaskCount: totalNumberOfToDoList,
@@ -78,19 +84,19 @@ const Stats = () => {
         }));
       } catch (error) {}
     }
-  }, [toDoListReducer.getDashboardTaskCountMQTT]);
+  }, [getDashboardTaskCountMQTT]);
 
   useEffect(() => {
-    if (SignatureWorkFlowReducer.getDashboardPendingApprovalData) {
+    if (getDashboardPendingApprovalData) {
       const { pendingApprovalsCount, totalApprovalsCount } =
-        SignatureWorkFlowReducer.getDashboardPendingApprovalData;
+        getDashboardPendingApprovalData;
       setCounts((prevCounts) => ({
         ...prevCounts,
         totalPendingApprovalCount: totalApprovalsCount,
         upComingApprovalCount: pendingApprovalsCount,
       }));
     }
-  }, [SignatureWorkFlowReducer.getDashboardPendingApprovalData]);
+  }, [getDashboardPendingApprovalData]);
 
   const progressBarData = useMemo(
     () => [
@@ -122,7 +128,10 @@ const Stats = () => {
     ],
     [counts]
   );
-  console.log({ counts }, "countscountscounts");
+
+  let locale = localStorage.getItem("i18nextLng");
+
+
   return (
     <Row>
       <Col sm={12} md={6} lg={6}>
@@ -131,21 +140,24 @@ const Stats = () => {
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
+            className="d-flex justify-content-center align-items-center"
+          >
             <UpcomingMeeting meetingValue={counts.upcomingMeetingCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
+            className="d-flex justify-content-center align-items-center"
+          >
             <PendingTasks taskValue={counts.upComingTaskCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
+            className="d-flex justify-content-center align-items-center"
+          >
             <PendingApproval pendingAppr={counts.upComingApprovalCount} />
           </Col>
         </Row>
@@ -154,7 +166,8 @@ const Stats = () => {
         sm={12}
         md={6}
         lg={6}
-        className={`d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}>
+        className={`d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}
+      >
         {progressBarData.map((bar, index) => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
@@ -164,17 +177,12 @@ const Stats = () => {
             <ProgressBar
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
-              label={`${bar.now}/${bar.max}`}
+              label={`${convertToArabicNumerals(bar.now, locale)}/${convertToArabicNumerals(bar.max, locale)}`}
               className={
                 checkisbothValueisEqual
                   ? styles["dashboard_progress_upcomingmeeting_R"]
                   : bar.className
               }
-              // children={
-              //   <>
-              //     <span>{`${calculateValue}/${bar.max}`}</span>
-              //   </>
-              // }
             />
           );
         })}

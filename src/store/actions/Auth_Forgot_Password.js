@@ -2,7 +2,6 @@ import * as actions from "../action_types";
 import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { LoginFlowRoutes } from "./UserManagementActions";
 
 const forgotPasswordInit = () => {
@@ -27,9 +26,6 @@ const forgotPasswordFail = (message) => {
 };
 
 const changePasswordRequest = (email, t, navigate) => {
-  var min = 10000;
-  var max = 90000;
-  var id = min + Math.random() * (max - min);
   let Data = {
     Email: email,
     DeviceID: "1",
@@ -55,7 +51,7 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_01".toLowerCase()
               )
           ) {
-            dispatch(forgotPasswordFail(t("Device does not exists")));
+            dispatch(forgotPasswordFail(t("Device-does-not-exists")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -63,7 +59,7 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_02".toLowerCase()
               )
           ) {
-            dispatch(forgotPasswordFail(t("Device ID does not exists")));
+            dispatch(forgotPasswordFail(t("Device-id-does-not-exists")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -82,8 +78,8 @@ const changePasswordRequest = (email, t, navigate) => {
                 t("OTP-has-been-sent-to-your-email")
               )
             );
-            //localStorage.setItem("LoginFlowPageRoute", 12);
-           dispatch(LoginFlowRoutes(12));
+            localStorage.setItem("LoginFlowPageRoute", 12);
+            dispatch(LoginFlowRoutes(12));  
             // navigate("/forgotpasswordVerification");
           } else if (
             response.data.responseResult.responseMessage
@@ -92,7 +88,7 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_04".toLowerCase()
               )
           ) {
-            dispatch(forgotPasswordFail(t("Failed to generate OTP")));
+            dispatch(forgotPasswordFail(t("Failed-to-generate-OTP")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -100,7 +96,7 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_05".toLowerCase()
               )
           ) {
-            dispatch(forgotPasswordFail(t("Failed to identify user")));
+            dispatch(forgotPasswordFail(t("Failed-to-identify-user")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

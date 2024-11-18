@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./SelectMinutes.module.css";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import {
-  Button,
-  Modal,
   Checkbox,
   AttachmentViewer,
 } from "../../../../../../../components/elements";
@@ -16,7 +12,6 @@ import {
   handleCheck,
   checkReviewersListAgenda,
   checkReviewersListGeneral,
-  updateMinutesData,
   hasNonEmptyReviewersAgenda,
   allReviewersListsNonEmptyGeneral,
 } from "../functionsAddReviewers";

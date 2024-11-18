@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
-import { Select } from "antd";
+import { Checkbox, Dropdown, Menu, Select } from "antd";
 import { Button, TableToDo } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 import {
   ViewToDoList,
@@ -13,7 +14,7 @@ import {
   createTaskGroupMQTT,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
@@ -40,17 +41,54 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const state = useSelector((state) => state);
-  const {
-    toDoListReducer,
-    todoStatus,
-    assignees,
-    getTodosStatus,
-    socketTodoStatusData,
-    PollsReducer,
-  } = state;
+  const { todoStatus } = state;
+
+  const toDoListReducersocketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+
+  const toDoListReducercreateTaskGroup = useSelector(
+    (state) => state.toDoListReducer.createTaskGroup
+  );
+
+  const toDoListReducerToDoDetails = useSelector(
+    (state) => state.toDoListReducer.ToDoDetails
+  );
+
+  const toDoListReducerResponseMessage = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const todoStatusResponse = useSelector((state) => state.todoStatus.Response);
+
+  const assigneesResponseMessage = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const assigneesgetTodosStatus = useSelector(
+    (state) => state.assignees.getTodosStatus
+  );
+
+  const assigneesUpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const getTodosStatusResponseMessage = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+
+  const getTodoStatusUpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
+
+  const PollsReducertodoGetGroupTask = useSelector(
+    (state) => state.PollsReducer.todoGetGroupTask
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rowsToDo, setRowToDo] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
@@ -61,6 +99,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
   const [taskTitleSort, setTaskTitleSort] = useState(null);
@@ -74,7 +113,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!todoStatusResponse?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (ViewGroupID !== null) {
@@ -91,8 +130,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   // Remove task from mqtt response
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (toDoListReducersocketTodoStatusData !== null) {
+        let payloadData = toDoListReducersocketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -118,17 +157,17 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [toDoListReducersocketTodoStatusData]);
 
   //get todolist reducer
   useEffect(() => {
     try {
       if (
-        PollsReducer.todoGetGroupTask !== null &&
-        PollsReducer.todoGetGroupTask !== undefined
+        PollsReducertodoGetGroupTask !== null &&
+        PollsReducertodoGetGroupTask !== undefined
       ) {
-        if (PollsReducer.todoGetGroupTask.toDoLists.length > 0) {
-          let dataToSort = [...PollsReducer.todoGetGroupTask.toDoLists];
+        if (PollsReducertodoGetGroupTask.toDoLists.length > 0) {
+          let dataToSort = [...PollsReducertodoGetGroupTask.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -138,21 +177,24 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           });
 
           setRowToDo(sortedTasks);
+          setOriginalData(sortedTasks);
         } else {
           setRowToDo([]);
+          setOriginalData([]);
         }
       } else {
         setRowToDo([]);
+        setOriginalData([]);
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [PollsReducer.todoGetGroupTask]);
+  }, [PollsReducertodoGetGroupTask]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.createTaskGroup !== null) {
-        let taskData = toDoListReducer.createTaskGroup;
+      if (toDoListReducercreateTaskGroup !== null) {
+        let taskData = toDoListReducercreateTaskGroup;
         if (Number(taskData.groupID) === Number(ViewGroupID)) {
           setRowToDo([...rowsToDo, taskData.todoList]);
         }
@@ -161,7 +203,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
     }
-  }, [toDoListReducer.createTaskGroup]);
+  }, [toDoListReducercreateTaskGroup]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -171,11 +213,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response.length > 0
+        todoStatusResponse !== null &&
+        todoStatusResponse !== "" &&
+        todoStatusResponse.length > 0
       ) {
-        todoStatus.Response.map((data, index) => {
+        todoStatusResponse.forEach((data, index) => {
           optionsArr.push({
             id: data.pK_TSID,
             status: data.status,
@@ -217,17 +259,109 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 4, setShow));
   };
 
+  //Filter table work
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ]);
+
+  const filters = [
+    {
+      value: "1",
+      text: t("In-progress"),
+    },
+    {
+      value: "2",
+      text: t("Pending"),
+    },
+    {
+      value: "3",
+      text: t("Upcoming"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+    {
+      value: "5",
+      text: t("Completed"),
+    },
+    {
+      value: "6",
+      text: t("Deleted"),
+    },
+  ];
+
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.pK_TSID.toString())
+    );
+    setRowToDo(filteredData);
+    setVisible(false);
+  };
+  const resetFilter = () => {
+    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
+    setRowToDo(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className="FilterResetBtn"
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className="ResetOkBtn"
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
 
   const columnsToDo = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -250,9 +384,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       }),
       render: (text, record) => (
         <p
-          className='todolist-title-col'
+          className="todolist-title-col"
           title={text}
-          onClick={(e) => viewModalHandler(record.pK_TID)}>
+          onClick={(e) => viewModalHandler(record.pK_TID)}
+        >
           {text}
         </p>
       ),
@@ -260,12 +395,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -294,13 +429,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=''
+              alt=""
             />
             {record?.name}
           </p>
@@ -310,12 +445,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -342,15 +477,15 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
 
                     {text[0].name}
@@ -358,10 +493,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
                     {text[0].name}
                   </>
@@ -375,12 +510,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center justify-content-center'>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -407,8 +542,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
       render: (text, record) => {
         return (
-          <span className='text-nowrap text-center'>
-            {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
+          <span className="text-nowrap text-center">
+            {newTimeFormaterAsPerUTCFullDate(
+              record.deadlineDateTime,
+              currentLanguage
+            )}
           </span>
         );
       },
@@ -419,41 +557,22 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       key: "status",
       align: "center",
       width: "220px",
-      filters: [
-        {
-          text: t("In-progress"),
-          value: "In Progress",
-          // className: currentLanguage,
-        },
-        {
-          text: t("Pending"),
-          value: "Pending",
-        },
-
-        {
-          text: t("Cancelled"),
-          value: "Cancelled",
-        },
-        {
-          text: t("Completed"),
-          value: "Completed",
-        },
-      ],
-      defaultFilteredValue: [
-        "In Progress",
-        "Pending",
-        "Cancelled",
-        "Completed",
-      ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) => {
-        return record?.status?.status
-          ?.toLowerCase()
-          .includes(value.toLowerCase());
-      },
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
@@ -461,7 +580,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -475,7 +594,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -501,7 +621,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }>
+              }
+            >
               {text.status}
             </p>
           );
@@ -519,10 +640,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className='meeting-editbutton cursor-pointer'
+              className="meeting-editbutton cursor-pointer"
               title={t("Delete")}
-              onClick={(e) => deleteTodolist(record)}>
-              <img draggable='false' src={del} alt='' />
+              onClick={(e) => deleteTodolist(record)}
+            >
+              <img draggable="false" src={del} alt="" />
             </i>
           );
         } else {
@@ -532,251 +654,19 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     },
   ];
 
-  // const columnsToDo = [
-  //   {
-  //     title: t("Task"),
-  //     dataIndex: "title",
-  //     key: "title",
-  //     width: "220px",
-  //     sortDirections: ["descend", "ascend"],
-  //     sorter: (a, b) =>
-  //       a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
-  //     render: (text, record) => (
-  //       <p
-  //         className="todolist-title-col"
-  //         onClick={(e) => viewModalHandler(record.pK_TID)}
-  //       >
-  //         {text}
-  //       </p>
-  //     ),
-  //   },
-  //   {
-  //     title: t("Assigned-by"),
-  //     dataIndex: "taskCreator",
-  //     key: "taskCreator",
-  //     width: "220px",
-  //     sortDirections: ["descend", "ascend"],
-  //     render: (record, index) => {
-  //       return (
-  //         <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
-  //           {" "}
-  //           <img
-  //             draggable="false"
-  //             className="data-img"
-  //             src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
-  //             alt="userimage"
-  //           />
-  //           {record?.name}
-  //         </p>
-  //       );
-  //     },
-  //     sorter: (a, b) => {
-  //       return a?.taskCreator?.name
-  //         .toLowerCase()
-  //         .localeCompare(b?.taskCreator?.name.toLowerCase());
-  //     },
-  //   },
-  //   {
-  //     title: t("Assigned-to"),
-  //     width: "220px",
-  //     dataIndex: "taskAssignedTo",
-  //     key: "taskAssignedTo",
-  //     sortDirections: ["descend", "ascend"],
-  //     sorter: (a, b) =>
-  //       a.taskAssignedTo[0].name
-  //         .toLowerCase()
-  //         .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
-  //     render: (text, record) => {
-  //       if (text !== undefined && text !== null && text.length > 0) {
-  //         return (
-  //           <>
-  //             <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
-  //               {" "}
-  //               {currentLanguage === "ar" ? (
-  //                 <>
-  //                   <img
-  //                     draggable="false"
-  //                     className="data-img"
-  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-  //                     alt="userimage"
-  //                   />
-
-  //                   {text[0].name}
-  //                 </>
-  //               ) : (
-  //                 <>
-  //                   <img
-  //                     draggable="false"
-  //                     className="data-img"
-  //                     src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-  //                     alt="userimage"
-  //                   />
-  //                   {text[0].name}
-  //                 </>
-  //               )}
-  //             </p>
-  //           </>
-  //         );
-  //       }
-  //     },
-  //   },
-  //   {
-  //     title: t("Deadline"),
-  //     dataIndex: "deadlineDateTime",
-  //     key: "deadlineDateTime",
-  //     className: "deadLineTodo",
-  //     width: "220px",
-  //     ellipsis: true,
-  //     sortDirections: ["descend", "ascend"],
-  //     sorter: (a, b) =>
-  //       utcConvertintoGMT(a.deadlineDateTime) -
-  //       utcConvertintoGMT(b.deadlineDateTime),
-  //     render: (text, record) => {
-  //       return (
-  //         <span className="MontserratRegular">
-  //           {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
-  //         </span>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     title: t("Status"),
-  //     dataIndex: "status",
-  //     key: "status",
-  //     align: "center",
-  //     width: "220px",
-  //     filters: [
-  //       {
-  //         text: t("In-progress"),
-  //         value: "In Progress",
-  //       },
-  //       {
-  //         text: t("Pending"),
-  //         value: "Pending",
-  //       },
-  //       {
-  //         text: t("Upcoming"),
-  //         value: "Upcoming",
-  //       },
-  //       {
-  //         text: t("Cancelled"),
-  //         value: "Cancelled",
-  //       },
-  //       {
-  //         text: t("Completed"),
-  //         value: "Completed",
-  //       },
-  //     ],
-  //     defaultFilteredValue: [
-  //       "In Progress",
-  //       "Pending",
-  //       "Upcoming",
-  //       "Cancelled",
-  //       "Completed",
-  //     ],
-  //     filterResetToDefaultFilteredValue: true,
-  //     filterIcon: (filtered) => (
-  //       <ChevronDown className="filter-chevron-icon-todolist" />
-  //     ),
-  //     onFilter: (value, record) => {
-  //       return record.status.status.toLowerCase().includes(value.toLowerCase());
-  //     },
-  //     render: (text, record) => {
-  //       if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
-  //         return (
-  //           <>
-  //             <Select
-  //               defaultValue={text.status}
-  //               bordered={false}
-  //               dropdownClassName="Status-Todo"
-  //               className={
-  //                 text.pK_TSID === 1
-  //                   ? "InProgress  custom-class "
-  //                   : text.pK_TSID === 2
-  //                   ? "Pending  custom-class "
-  //                   : text.pK_TSID === 3
-  //                   ? "Upcoming  custom-class "
-  //                   : text.pK_TSID === 4
-  //                   ? "Cancelled  custom-class "
-  //                   : text.pK_TSID === 5
-  //                   ? "Completed  custom-class "
-  //                   : null
-  //               }
-  //               onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-  //             >
-  //               {statusOptions.map((optValue, index) => {
-  //                 return (
-  //                   <option key={optValue.id} value={optValue.id}>
-  //                     {optValue.status}
-  //                   </option>
-  //                 );
-  //               })}
-  //             </Select>
-  //           </>
-  //         );
-  //       } else {
-  //         return (
-  //           <p
-  //             className={
-  //               text.pK_TSID === 1
-  //                 ? "InProgress custom-class   color-5a5a5a text-center  my-1"
-  //                 : text.pK_TSID === 2
-  //                 ? "Pending  custom-class  color-5a5a5a text-center my-1"
-  //                 : text.pK_TSID === 3
-  //                 ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-  //                 : text.pK_TSID === 4
-  //                 ? "Cancelled  custom-class  color-5a5a5a text-center my-1"
-  //                 : text.pK_TSID === 5
-  //                 ? "Completed  custom-class  color-5a5a5a  text-center my-1"
-  //                 : null
-  //             }
-  //           >
-  //             {text.status}
-  //           </p>
-  //         );
-  //       }
-  //     },
-  //     filterMultiple: true,
-  //   },
-  //   {
-  //     title: t("Delete"),
-  //     dataIndex: "taskCreator",
-  //     key: "taskCreator",
-  //     width: "120px",
-  //     render: (record, index) => {
-  //       if (
-  //         Number(record?.pK_UID) === Number(createrID) &&
-  //         Number(groupStatus) === 3
-  //       ) {
-  //         return (
-  //           <i
-  //             className="meeting-editbutton cursor-pointer"
-  //             onClick={(e) => deleteTodolist(index)}
-  //           >
-  //             <img draggable="false" src={del} alt="" />
-  //           </i>
-  //         );
-  //       } else {
-  //         <></>;
-  //       }
-  //     },
-  //   },
-  // ];
-
   useEffect(() => {
     try {
       setViewFlagToDo(false);
-      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (Object.keys(toDoListReducerToDoDetails).length > 0) {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
-        } else {
         }
       }
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [toDoListReducerToDoDetails]);
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -789,42 +679,20 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   useEffect(() => {
     try {
       if (
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== undefined &&
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== t("No-records-found")
+        toDoListReducerResponseMessage !== "" &&
+        toDoListReducerResponseMessage !== undefined &&
+        toDoListReducerResponseMessage !== "" &&
+        toDoListReducerResponseMessage !== t("No-records-found")
       ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: toDoListReducer.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(toDoListReducerResponseMessage, "success", setOpen);
 
         dispatch(clearResponce());
       } else if (
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== t("No-records-found")
+        assigneesResponseMessage !== "" &&
+        assigneesResponseMessage !== "" &&
+        assigneesResponseMessage !== t("No-records-found")
       ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: assignees.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(assigneesResponseMessage, "success", setOpen);
 
         dispatch(clearResponseMessage());
       } else {
@@ -834,13 +702,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [toDoListReducerResponseMessage, assigneesResponseMessage]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          assigneesUpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -854,68 +722,39 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [assigneesUpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
     try {
       if (
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== undefined &&
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== t("No-records-found")
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== undefined &&
+        getTodosStatusResponseMessage !== "" &&
+        getTodosStatusResponseMessage !== t("No-records-found")
       ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(
+          assigneesgetTodosStatus.ResponseMessage,
+          "success",
+          setOpen
+        );
 
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
+        assigneesUpdateTodoStatusMessage !== "" &&
+        assigneesUpdateTodoStatusMessage !== undefined &&
+        assigneesUpdateTodoStatusMessage !== "" &&
+        assigneesUpdateTodoStatusMessage !== t("No-records-found")
       ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.UpdateTodoStatusMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(assigneesUpdateTodoStatusMessage, "success", setOpen);
 
         dispatch(cleareMessage());
       } else if (
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== undefined &&
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
+        getTodoStatusUpdateTodoStatus !== "" &&
+        getTodoStatusUpdateTodoStatus !== undefined &&
+        getTodoStatusUpdateTodoStatus !== "" &&
+        getTodoStatusUpdateTodoStatus !== t("No-records-found")
       ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.UpdateTodoStatus,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(getTodoStatusUpdateTodoStatus, "success", setOpen);
 
         dispatch(cleareMessage());
       } else {
@@ -925,9 +764,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       console.log(error, "error");
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    getTodosStatusResponseMessage,
+    assigneesUpdateTodoStatusMessage,
+    getTodoStatusUpdateTodoStatus,
   ]);
 
   const scroll = {

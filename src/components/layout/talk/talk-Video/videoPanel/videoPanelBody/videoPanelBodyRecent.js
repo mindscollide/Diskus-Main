@@ -31,7 +31,6 @@ import {
   leaveCallModal,
   participantPopup,
 } from "../../../../../../store/actions/VideoFeature_actions";
-import MissedRedIcon from "../../../../../../assets/images/Missed-Red-Icon.png";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
 import IncomingIcon from "../../../../../../assets/images/Incoming-Icon.png";
@@ -50,6 +49,9 @@ const VideoPanelBodyRecent = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
 
   let currentUserName = localStorage.getItem("name");
 
@@ -204,6 +206,7 @@ const VideoPanelBodyRecent = () => {
           OrganizationID: currentOrganization,
         };
         localStorage.setItem("CallType", Data.CallTypeID);
+        localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("isCaller", true);
         localStorage.setItem("callerID", currentUserID);
@@ -514,7 +517,7 @@ const VideoPanelBodyRecent = () => {
                               ? recentCallData.recipients[0].userName
                               : recentCallData.callerName}
                             <span className="call-status-icon">
-                              <img src={MissedCallIcon} />
+                              <img src={MissedCallIcon} alt="" />
                             </span>
                           </p>
                         ) : (recentCallData.callStatus.status ===
@@ -524,7 +527,7 @@ const VideoPanelBodyRecent = () => {
                           <p className="Video-chat-username m-0">
                             {formatUserNames(recentCallData.recipients)}
                             <span className="call-status-icon">
-                              <img src={MissedCallIcon} />
+                              <img src={MissedCallIcon} alt="" />
                             </span>
                           </p>
                         ) : recentCallData.callType.callTypeID === 3 ? (
@@ -544,9 +547,9 @@ const VideoPanelBodyRecent = () => {
                               : null}
                             <span className="call-status-icon">
                               {recentCallData.isIncoming === false ? (
-                                <img src={OutgoingIcon} />
+                                <img src={OutgoingIcon} alt="" />
                               ) : (
-                                <img src={IncomingIcon} />
+                                <img src={IncomingIcon} alt="" />
                               )}
                             </span>
                           </p>
@@ -558,7 +561,8 @@ const VideoPanelBodyRecent = () => {
                           recentCallData.callDate !== undefined ? (
                             <>
                               {newTimeFormaterAsPerUTCTalkTime(
-                                recentCallDateTime
+                                recentCallDateTime,
+                                lang
                               )}
                             </>
                           ) : recentCallData.callDate === yesterdayDateUtc &&
@@ -566,7 +570,8 @@ const VideoPanelBodyRecent = () => {
                             recentCallData.callDate !== undefined ? (
                             <>
                               {newTimeFormaterAsPerUTCTalkDate(
-                                recentCallDateTime
+                                recentCallDateTime,
+                                lang
                               ) + " "}
                               | {t("Yesterday")}
                             </>
@@ -575,7 +580,8 @@ const VideoPanelBodyRecent = () => {
                               {recentCallData.callDate !== "" &&
                               recentCallData.callDate !== undefined
                                 ? newTimeFormaterAsPerUTCTalkDate(
-                                    recentCallDateTime
+                                    recentCallDateTime,
+                                    lang
                                   )
                                 : ""}
                             </>
@@ -599,6 +605,7 @@ const VideoPanelBodyRecent = () => {
                         title={t("Start-video-call")}
                       >
                         <img
+                          alt=""
                           className="cursor-pointer"
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
@@ -612,7 +619,7 @@ const VideoPanelBodyRecent = () => {
           </InfiniteScroll>
         ) : VideoMainReducer.Loading === true ? (
           <>
-            <LoaderPanel message={"Protecting your data"} />
+            <LoaderPanel message={t("Protecting-your-data")} />
           </>
         ) : (
           <EmptyRecentCalls />

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../../assets/images/bin.svg";
-import { Pagination, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -19,25 +19,21 @@ import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg"
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
-  CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
   clearResponseNewMeetingReducerMessage,
   cleareAllState,
   deleteSavedPollsMeeting,
   searchNewUserMeeting,
-  showCancelPolls,
   showUnsavedPollsMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
-import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   clearPollsMesseges,
   createPollMeetingMQTT,
-  deleteMeetingPollApi,
   deletePollsMQTT,
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
@@ -46,6 +42,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -53,8 +50,6 @@ const Polls = ({
   setAttendance,
   currentMeeting,
   editorRole,
-  setEditMeeting,
-  isEditMeeting,
   setEdiorRole,
   setAdvanceMeetingModalID,
   setactionsPage,
@@ -62,45 +57,53 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
-    (state) => state
+  const getPollsMeetingID = useSelector(
+    (state) => state.NewMeetingreducer.getPollsMeetingID
+  );
+  const ResponseMessageMeeting = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const cancelPolls = useSelector(
+    (state) => state.NewMeetingreducer.cancelPolls
+  );
+  const deletPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.deletPollsMeeting
+  );
+  const newPollMeeting = useSelector(
+    (state) => state.PollsReducer.newPollMeeting
+  );
+  const pollingSocket = useSelector(
+    (state) => state.PollsReducer.pollingSocket
+  );
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete
+  );
+  const ResponseMessagePoll = useSelector(
+    (state) => state.PollsReducer.ResponseMessage
   );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
-  const [afterViewPolls, setafterViewPolls] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let currentUserID = Number(localStorage.getItem("userID"));
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [pollID, setPollID] = useState(0);
 
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
 
-  const enableAfterSavedViewPolls = () => {
-    setafterViewPolls(true);
-  };
-
-  const handleCacnelbutton = () => {
-    dispatch(showCancelPolls(true));
-  };
-
-  const handleSaveAndnext = () => {
-    setPolls(false);
-    setAttendance(true);
-  };
   const handleEditMeetingPoll = (record) => {
     let data = {
       PollID: record.pollID,
@@ -208,25 +211,18 @@ const Polls = ({
     };
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
   };
-  console.log(
-    NewMeetingreducer,
-    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
-  );
+
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getPollsMeetingID !== undefined &&
-        NewMeetingreducer.getPollsMeetingID !== null
-      ) {
-        if (NewMeetingreducer.getPollsMeetingID.polls.length > 0) {
-          let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
-          setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+      if (getPollsMeetingID !== undefined && getPollsMeetingID !== null) {
+        if (getPollsMeetingID.polls.length > 0) {
+          let pollsData = getPollsMeetingID.polls;
+          setTotalRecords(getPollsMeetingID.totalRecords);
           let newPollsArray = [];
           pollsData.forEach((data, index) => {
             console.log(data, "datadatadatadata");
             newPollsArray.push(data);
           });
-          console.log(newPollsArray, "newPollsArraynewPollsArray");
           setPollsRows(newPollsArray);
         } else {
           setPollsRows([]);
@@ -235,13 +231,13 @@ const Polls = ({
         setPollsRows([]);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID]);
+  }, [getPollsMeetingID]);
 
   // MQTT Response of Polls for Meeting
   useEffect(() => {
     try {
-      if (PollsReducer.newPollMeeting !== null) {
-        let PollData = PollsReducer.newPollMeeting;
+      if (newPollMeeting !== null) {
+        let PollData = newPollMeeting;
         if (Number(PollData.meetingID) === Number(currentMeeting)) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
@@ -250,15 +246,11 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollMeeting]);
+  }, [newPollMeeting]);
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.pollingSocket &&
-        Object.keys(PollsReducer.pollingSocket).length > 0
-      ) {
-        const { pollingSocket } = PollsReducer;
+      if (pollingSocket && Object.keys(pollingSocket).length > 0) {
         const { polls } = pollingSocket;
 
         let updatedRows = [...pollsRows];
@@ -282,17 +274,16 @@ const Polls = ({
     } catch (error) {
       console.log(error, "errorerror");
     }
-  }, [PollsReducer.pollingSocket]);
+  }, [pollingSocket]);
 
   useEffect(() => {
     try {
-      if (PollsReducer.newPollDelete !== null) {
-        const polls = PollsReducer.newPollDelete;
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2, index) =>
-              Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -300,7 +291,7 @@ const Polls = ({
     } catch (error) {
       console.log(error);
     }
-  }, [PollsReducer.newPollDelete]);
+  }, [newPollDelete]);
 
   const voteCastModal = (record) => {
     let data = {
@@ -330,10 +321,7 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={
-              () => handleClickTitle(record)
-              // navigate("/DisKus/polling", { state: { record, isVote: false } })
-            }
+            onClick={() => handleClickTitle(record)}
           >
             {text}
           </span>
@@ -399,12 +387,6 @@ const Polls = ({
       },
     },
 
-    // {
-    //   title: t("Poll-type"),
-    //   dataIndex: "PollType",
-    //   key: "PollType",
-    //   width: "90px",
-    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -429,12 +411,7 @@ const Polls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={
-                    () => voteCastModal(record)
-                    // navigate("/DisKus/polling", {
-                    //   state: { record, isVote: true },
-                    // })
-                  }
+                  onClick={() => voteCastModal(record)}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -571,12 +548,11 @@ const Polls = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
-    // dispatch(showCancelPolls(true));
   };
 
   const navigatetoAttendance = () => {
@@ -584,272 +560,213 @@ const Polls = ({
     setPolls(false);
   };
   console.log(editorRole, "editorRoleeditorRole");
-  const handleClickPrev = () => {
-    if (
-      (Number(editorRole.status) === 10 || Number(editorRole.status) === 9) &&
-      (editorRole.role === "Agenda Contributor" ||
-        editorRole.role === "Participant" ||
-        editorRole.role === "Organizer")
-    ) {
-      setPolls(false);
-      setactionsPage(true);
-      // setac
-    }
-  };
 
   useEffect(() => {
     if (
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-data-available") &&
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("No-records-found") &&
-      PollsReducer.ResponseMessage !== t("No-record-found")
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-data-available") &&
+      ResponseMessagePoll !== "" &&
+      ResponseMessagePoll !== t("No-records-found") &&
+      ResponseMessagePoll !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: PollsReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(ResponseMessagePoll, "success", setOpen);
       dispatch(clearPollsMesseges());
     } else {
       dispatch(clearPollsMesseges());
     }
-  }, [PollsReducer.ResponseMessage]);
+  }, [ResponseMessagePoll]);
+
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      ResponseMessageMeeting !== "" &&
+      ResponseMessageMeeting !== t("No-data-available") &&
+      ResponseMessageMeeting !== "" &&
+      ResponseMessageMeeting !== t("No-records-found") &&
+      ResponseMessageMeeting !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(ResponseMessageMeeting, "success", setOpen);
       dispatch(clearResponseNewMeetingReducerMessage());
     } else {
       dispatch(clearResponseNewMeetingReducerMessage());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
-
-  console.log(
-    NewMeetingreducer,
-    "ResponseMessageResponseMessageResponseMessageResponseMessage NewMeetingreducer"
-  );
-  console.log(
-    PollsReducer.ResponseMessage,
-    "ResponseMessageResponseMessageResponseMessageResponseMessage PollsReducer"
-  );
+  }, [ResponseMessageMeeting]);
 
   return (
     <>
-      {afterViewPolls ? (
-        <AfterViewPolls />
-      ) : (
-        <>
-          <section>
-            {createpoll ? (
-              <Createpolls
-                setCreatepoll={setCreatepoll}
-                currentMeeting={currentMeeting}
-              />
-            ) : votePolls ? (
-              <CastVotePollsMeeting
-                setvotePolls={setvotePolls}
-                currentMeeting={currentMeeting}
-              />
-            ) : editPolls ? (
-              <EditPollsMeeting
-                setEditPolls={setEditPolls}
-                currentMeeting={currentMeeting}
-              />
-            ) : viewPublishedPoll ? (
-              <ViewPollsPublishedScreen
-                setViewPublishedPoll={setViewPublishedPoll}
-                currentMeeting={currentMeeting}
-              />
-            ) : unPublished ? (
-              <ViewPollsUnPublished
-                setUnPublished={setUnPublished}
-                currentMeeting={currentMeeting}
-              />
-            ) : (
-              <>
-                {Number(editorRole.status) === 10 &&
-                (editorRole.role === "Organizer" ||
-                  editorRole.role === "Agenda Contributor" ||
-                  editorRole?.role === "Participant") ? (
-                  <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end "
-                    >
-                      <Button
-                        text={t("Create-polls")}
-                        icon={<img draggable={false} src={addmore} alt="" />}
-                        className={styles["Create_polls_Button"]}
-                        onClick={handleCreatepolls}
-                      />
-                    </Col>
-                  </Row>
-                ) : null}
+      <section>
+        {createpoll ? (
+          <Createpolls
+            setCreatepoll={setCreatepoll}
+            currentMeeting={currentMeeting}
+          />
+        ) : votePolls ? (
+          <CastVotePollsMeeting
+            setvotePolls={setvotePolls}
+            currentMeeting={currentMeeting}
+          />
+        ) : editPolls ? (
+          <EditPollsMeeting
+            setEditPolls={setEditPolls}
+            currentMeeting={currentMeeting}
+          />
+        ) : viewPublishedPoll ? (
+          <ViewPollsPublishedScreen
+            setViewPublishedPoll={setViewPublishedPoll}
+            currentMeeting={currentMeeting}
+          />
+        ) : unPublished ? (
+          <ViewPollsUnPublished
+            setUnPublished={setUnPublished}
+            currentMeeting={currentMeeting}
+          />
+        ) : (
+          <>
+            {Number(editorRole.status) === 10 &&
+            (editorRole.role === "Organizer" ||
+              editorRole.role === "Agenda Contributor" ||
+              editorRole?.role === "Participant") ? (
+              <Row className="mt-4">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end "
+                >
+                  <Button
+                    text={t("Create-polls")}
+                    icon={<img draggable={false} src={addmore} alt="" />}
+                    className={styles["Create_polls_Button"]}
+                    onClick={handleCreatepolls}
+                  />
+                </Col>
+              </Row>
+            ) : null}
 
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    {pollsRows.length > 0 ? (
-                      <>
-                        <section className={styles["MaintainingHeight"]}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Table
-                                column={PollsColoumn}
-                                rows={pollsRows}
-                                scroll={{ y: "40vh" }}
-                                pagination={false}
-                                className="Polling_table"
-                              />
-                            </Col>
-                          </Row>
-                        </section>
-                      </>
-                    ) : (
-                      <>
-                        <Row className="mt-3">
-                          <Col
-                            lg={12}
-                            ms={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              draggable={false}
-                              src={emtystate}
-                              height="230px"
-                              width="293.93px"
-                              alt=""
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_heading"]}>
-                              {t("No-polls")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["EmptyState_subHeading"]}>
-                              {t(
-                                "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                              )}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    )}
-                  </Col>
-                </Row>
-                {pollsRows.length > 0 && (
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="pagination-groups-table d-flex justify-content-center my-3"
-                    >
-                      <CustomPagination
-                        pageSizeOptionsValues={["30", "50", "100", "200"]}
-                        current={pageNumber}
-                        pageSize={pageSize}
-                        total={totalRecords}
-                        showSizer={totalRecords >= 9 ? true : false}
-                        className={styles["PaginationStyle-Resolution"]}
-                        onChange={handleChangePagination}
-                      />
-                    </Col>
-                  </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {pollsRows.length > 0 ? (
+                  <>
+                    <section className={styles["MaintainingHeight"]}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Table
+                            column={PollsColoumn}
+                            rows={pollsRows}
+                            scroll={{ y: "40vh" }}
+                            pagination={false}
+                            className="Polling_table"
+                          />
+                        </Col>
+                      </Row>
+                    </section>
+                  </>
+                ) : (
+                  <>
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        ms={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <img
+                          draggable={false}
+                          src={emtystate}
+                          height="230px"
+                          width="293.93px"
+                          alt=""
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_heading"]}>
+                          {t("No-polls")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["EmptyState_subHeading"]}>
+                          {t(
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                          )}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
                 )}
-                <Row className="mt-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end gap-2"
-                  >
-                    <Button
-                      text={t("Cancel")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
-                      onClick={handleCancelPolls}
-                      // onClick={handleCancelActionNoPopup}
-                    />
-                    {/* <Button
-                      text={t("Previous")}
-                      className={styles["Save_Button_Polls_meeting"]}
-                      onClick={handleClickPrev}
-                      // onClick={prevTabToMinutes}
-                    /> */}
-                    {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Organizer" ? (
-                      <Button
-                        text={t("Next")}
-                        className={styles["Save_Button_Polls_meeting"]}
-                        onClick={navigatetoAttendance}
-                        // onClick={nextTabToPolls}
-                      />
-                    ) : null}
-                  </Col>
-                </Row>
-              </>
+              </Col>
+            </Row>
+            {pollsRows.length > 0 && (
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="pagination-groups-table d-flex justify-content-center my-3"
+                >
+                  <CustomPagination
+                    pageSizeOptionsValues={["30", "50", "100", "200"]}
+                    current={pageNumber}
+                    pageSize={pageSize}
+                    total={totalRecords}
+                    showSizer={totalRecords >= 9 ? true : false}
+                    className={styles["PaginationStyle-Resolution"]}
+                    onChange={handleChangePagination}
+                  />
+                </Col>
+              </Row>
             )}
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                  onClick={handleCancelPolls}
+                />
 
-            {NewMeetingreducer.cancelPolls && (
-              <CancelPolls
-                setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-              />
-            )}
-            {NewMeetingreducer.deletPollsMeeting && (
-              <DeletePollConfirmModal
-                currentMeeting={currentMeeting}
-                pollID={pollID}
-              />
-            )}
-            <Notification
-              setOpen={setOpen}
-              open={open.flag}
-              message={open.message}
-            />
-          </section>
-        </>
-      )}
+                {Number(editorRole.status) === 10 &&
+                editorRole.role === "Organizer" ? (
+                  <Button
+                    text={t("Next")}
+                    className={styles["Save_Button_Polls_meeting"]}
+                    onClick={navigatetoAttendance}
+                  />
+                ) : null}
+              </Col>
+            </Row>
+          </>
+        )}
+
+        {cancelPolls && (
+          <CancelPolls
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          />
+        )}
+        {deletPollsMeeting && (
+          <DeletePollConfirmModal
+            currentMeeting={currentMeeting}
+            pollID={pollID}
+          />
+        )}
+        <Notification open={open} setOpen={setOpen} />
+      </section>
     </>
   );
 };

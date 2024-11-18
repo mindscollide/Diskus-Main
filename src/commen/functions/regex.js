@@ -23,7 +23,6 @@ export const replaceSlashWithBackslash = (inputString) => {
 };
 
 // Validae URL regex
-
 export const urlPatternValidation = (URL) => {
   const regex = new RegExp(
     "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
@@ -42,15 +41,45 @@ export const containsStringandNumericCharacters = (value) => {
 export const truncateString = (string, length) => {
   return string.length < length ? string : `${string.slice(0, length - 3)}...`;
 };
-export const validateIP = (ip) => {
-  const ipRegex =
-    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-  return ipRegex.test(ip);
-};
 
 // For Only Number Regex
 export const regexOnlyNumbers = (data) => {
   return data.replace(/^\s/, "").replace(/\D/g, "");
 };
 
-export const formatValue = (value) => (value < 10 ? `0${value}` : value);
+// export const formatValue = (value) => (value < 10 ? `0${value}` : value);
+export const formatValue = (value, locale) => {
+  const formattedValue = value < 10 ? `0${value}` : value;
+
+  if (locale === "ar") {
+    // Convert each digit to its Arabic numeral equivalent
+    return formattedValue
+      .toString()
+      .replace(/\d/g, (digit) => String.fromCharCode(0x0660 + parseInt(digit)));
+  }
+
+  return formattedValue;
+};
+export const convertToArabicNumerals = (input, locale) => {
+  console.log(input, "inputinputinputinput");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  // Check for null or undefined input
+  if (input == null) {
+    return ""; // Return an empty string if input is null or undefined
+  }
+  if (input == undefined) {
+    return ""; // Return an empty string if input is null or undefined
+  }
+  // Convert input to a string if it's a number or if it's not already a string
+  const number = input.toString();
+
+  // If locale is 'ar', replace digits with Arabic numerals
+  if (currentLanguage === "ar") {
+    return number.replace(/\d/g, (digit) =>
+      String.fromCharCode(0x0660 + parseInt(digit))
+    );
+  }
+
+  // Return the input as is if locale is not 'ar'
+  return input;
+};

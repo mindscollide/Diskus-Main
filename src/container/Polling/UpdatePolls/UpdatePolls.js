@@ -31,6 +31,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { validateInput } from "../../../commen/functions/regex";
 import DatePicker from "react-multi-date-picker";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -39,17 +40,28 @@ const UpdatePolls = () => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducergellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducereditpollmodal = useSelector(
+    (state) => state.PollsReducer.editpollmodal
+  );
+  const PollsReducereditPollModalFlag = useSelector(
+    (state) => state.PollsReducer.editPollModalFlag
+  );
   const datePickerRef = useRef();
   let dateFormat = "DD/MM/YYYY";
-  const [polloptions, setPolloptions] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //For Custom language datepicker
@@ -79,13 +91,13 @@ const UpdatePolls = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
 
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
-          pollsData.groups.map((a, index) => {
+          pollsData.groups.forEach((a) => {
             let newData = {
               value: a.groupID,
               name: a.groupName,
@@ -96,13 +108,14 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={GroupIcon}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -117,7 +130,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.committees).length > 0) {
-          pollsData.committees.map((a, index) => {
+          pollsData.committees.forEach((a) => {
             let newData = {
               value: a.committeeID,
               name: a.committeeName,
@@ -128,13 +141,14 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={committeeicon}
-                        width='21.71px'
-                        height='18.61px'
-                        draggable='false'
-                        alt=''
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -149,7 +163,7 @@ const UpdatePolls = () => {
           });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
-          pollsData.organizationUsers.map((a, index) => {
+          pollsData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.userID,
               name: a.userName,
@@ -160,14 +174,15 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
                         className={styles["UserProfilepic"]}
-                        width='18px'
-                        height='18px'
-                        alt=''
-                        draggable='false'
+                        width="18px"
+                        height="18px"
+                        alt=""
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -186,14 +201,13 @@ const UpdatePolls = () => {
         setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups]);
-  console.log(pollmembers, "pollmemberspollmembersData");
+  }, [PollsReducergellAllCommittesandGroups]);
   useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
-      let pollsDetails = PollsReducer.Allpolls;
-      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+    if (PollsReducerAllpolls != null && PollsReducerAllpolls !== undefined) {
+      let pollsDetails = PollsReducerAllpolls;
+      if (Object.keys(PollsReducerAllpolls).length > 0) {
         let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+        PollsReducerAllpolls.poll.pollParticipants.forEach((data) => {
           members.push({
             userName: data.userName,
             userID: data.userID,
@@ -201,12 +215,11 @@ const UpdatePolls = () => {
           });
         });
         setPollmembers(members);
-    
+
         let DateDate = utcConvertintoGMT(
           pollsDetails.poll.pollDetails.dueDate,
           1
         );
-        // let DateDate = new Date(newDateGmt);
         if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
           setCheckForPollStatus(true);
         } else {
@@ -220,57 +233,38 @@ const UpdatePolls = () => {
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         try {
-          // if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
           let Option = [];
-          PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+          PollsReducerAllpolls.poll.pollOptions.forEach((data, index) => {
             let dataAdd = { name: index + 1, value: data.answer };
             Option.push(dataAdd);
           });
           setOptions(Option);
-          // } else if (
-          //   Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
-          // ) {
-          //   const updatedOptions = options.map((option) => {
-          //     const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
-          //       (apiOption, index) => index + 1 === option.name
-          //     );
-          //     return apiData ? { ...option, value: apiData.answer } : option;
-          //   });
-          //   setOptions(updatedOptions);
-          // }
         } catch {}
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
-  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
-    if (index === options.length - 1) {
-      return true; // Allow the last object's value to be empty
-    }
-    return item.value !== "";
-  });
-
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let pollsData = PollsReducergellAllCommittesandGroups;
     let tem = [...pollmembers];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.forEach((seledtedData) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value
+              (data) => data.groupID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.forEach((gUser) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === gUser.userID
+                    (data) => data.UserID === gUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: gUser.userName,
@@ -284,16 +278,16 @@ const UpdatePolls = () => {
             }
           } else if (seledtedData.type === 2) {
             let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value
+              (data) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.forEach((cUser) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === cUser.userID
+                    (data) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
@@ -307,14 +301,14 @@ const UpdatePolls = () => {
             }
           } else if (seledtedData.type === 3) {
             let check1 = pollmembers.find(
-              (data, index) => data.UserID === seledtedData.value
+              (data) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value
+                (data) => data.userID === seledtedData.value
               );
-              if (check2 != undefined) {
+              if (check2 !== undefined) {
                 let newUser = {
                   userName: check2.userName,
                   userID: check2.userID,
@@ -343,22 +337,16 @@ const UpdatePolls = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -438,15 +426,15 @@ const UpdatePolls = () => {
     }
   };
   const CustomIcon = () => (
-    <div className='custom-icon-wrapper'>
+    <div className="custom-icon-wrapper">
       <img
         src={EditIcon}
-        alt='Edit Icon'
-        height='11.11px'
-        width='11.54px'
-        className='custom-icon cursor-pointer'
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
         onClick={handleIconClick}
-        draggable='false'
+        draggable="false"
       />
     </div>
   );
@@ -464,12 +452,12 @@ const UpdatePolls = () => {
       (checkForPollStatus || allValuesNotEmpty)
     ) {
       if (Object.keys(pollmembers).length > 0) {
-        pollmembers.forEach((data, index) => {
+        pollmembers.forEach((data) => {
           users.push(data.userID);
         });
       }
       if (Object.keys(options).length > 0) {
-        options.forEach((optionData, index) => {
+        options.forEach((optionData) => {
           if (optionData.value !== "") {
             optionsListData.push(optionData.value);
           }
@@ -494,41 +482,17 @@ const UpdatePolls = () => {
       setError(true);
 
       if (UpdatePolls.TypingTitle === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (UpdatePolls.datepoll === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(pollmembers).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 2) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
@@ -545,7 +509,7 @@ const UpdatePolls = () => {
     <>
       <Container>
         <Modal
-          show={PollsReducer.editpollmodal}
+          show={PollsReducereditpollmodal}
           setShow={dispatch(setEditpollModal)}
           modalTitleClassName={styles["ModalHeader_Update_poll"]}
           modalHeaderClassName={
@@ -564,25 +528,28 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Back_Ground_strip_Create_Poll_modal"]}>
+                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
+                    >
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center gap-2 align-items-center'>
-                          <span className='cursor-pointer d-flex gap-2 align-items-center'>
+                          className="d-flex justify-content-center gap-2 align-items-center"
+                        >
+                          <span className="cursor-pointer d-flex gap-2 align-items-center">
                             <img
                               src={AlarmClock}
-                              width='14.97px'
-                              height='14.66px'
-                              alt=''
-                              draggable='false'
+                              width="14.97px"
+                              height="14.66px"
+                              alt=""
+                              draggable="false"
                               onClick={handleIconClick}
                             />
                             <span
                               className={styles["Due_Date_heading"]}
-                              onClick={handleIconClick}>
+                              onClick={handleIconClick}
+                            >
                               {t("Due-date-on")}
                               {"* "}
                               <span className={styles["Date_update_poll"]}>
@@ -601,29 +568,14 @@ const UpdatePolls = () => {
                               }
                               format={dateFormat}
                               value={UpdatePolls.date}
-                              calendarPosition='bottom-center'
+                              calendarPosition="bottom-center"
                               minDate={moment().toDate()}
-                              className='datePickerTodoCreate2'
+                              className="datePickerTodoCreate2"
                               calendar={calendarValue}
                               onClick={handleIconClick}
                               locale={localValue}
                             />
                           </span>
-
-                          {/* <MultiDatePickers
-                            value={UpdatePolls.date}
-                            name="MeetingDate"
-                            highlightToday={false}
-                            onOpenPickNewDate={false}
-                            multiple={false}
-                            calendar={calendarValue}
-                            locale={localValue}
-                            onChange={(value) =>
-                              changeDateStartHandler(
-                                value?.toDate?.().toString()
-                              )
-                            }
-                          /> */}
                         </Col>
                       </Row>
                     </Col>
@@ -635,7 +587,8 @@ const UpdatePolls = () => {
                           error && UpdatePolls.date === ""
                             ? ` ${styles["errorMessage-inLogin_1"]} `
                             : `${styles["errorMessage-inLogin_1_hidden"]}`
-                        }>
+                        }
+                      >
                         {t("Please-select-due-date")}
                       </p>
                     </Col>
@@ -653,7 +606,8 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center'>
+                      className="d-flex justify-content-center"
+                    >
                       <span className={styles["Unsaved_heading"]}>
                         {t("Any-unsaved-changes-will-be")}
                         <br />
@@ -671,49 +625,53 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-end'>
+                      className="d-flex justify-content-end"
+                    >
                       <img
                         src={BlackCrossIcon}
                         className={
                           styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
-                        width='16px'
-                        height='16px'
-                        alt=''
+                        width="16px"
+                        height="16px"
+                        alt=""
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
-                        draggable='false'
+                        draggable="false"
                       />
                     </Col>
                   </Row>
                   <Row className={styles["Overall_padding"]}>
                     <Col lg={12} md={12} sm={12}>
-                      <Row className='d-flex'>
+                      <Row className="d-flex">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Update_Poll_Heading"]}>
                             {t("Update-poll")}
                           </span>
                         </Col>
                       </Row>
-                      {PollsReducer.editPollModalFlag ? (
-                        <Row className='mt-2'>
+                      {PollsReducereditPollModalFlag ? (
+                        <Row className="mt-2">
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={`${styles["BOx_for_yes"]} d-flex`}>
-                            <Row className='mt-2'>
+                            className={`${styles["BOx_for_yes"]} d-flex`}
+                          >
+                            <Row className="mt-2">
                               <Col lg={12} md={12} sm={12}>
                                 {UpdatePolls.TypingTitle.length > 100 ? (
                                   // Add d-flex class and justify-content-center to center the text
                                   <div
-                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}>
+                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                                  >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
                                 ) : (
                                   <div
-                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
+                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                  >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
                                 )}
@@ -722,12 +680,12 @@ const UpdatePolls = () => {
                           </Col>
                         </Row>
                       ) : (
-                        <Row className='mt-2'>
+                        <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <TextField
                               placeholder={t("Title") + "*"}
                               applyClass={"PollingCreateModal"}
-                              labelclass='d-none'
+                              labelclass="d-none"
                               name={"TypingTitle"}
                               maxLength={140}
                               value={UpdatePolls.TypingTitle}
@@ -744,35 +702,40 @@ const UpdatePolls = () => {
                               error && UpdatePolls.TypingTitle === ""
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
-                            }>
+                            }
+                          >
                             {t("Please-enter-title")}
                           </p>
                         </Col>
                       </Row>
 
-                      {PollsReducer.editPollModalFlag ? (
-                        <Row className='mt-2'>
+                      {PollsReducereditPollModalFlag ? (
+                        <Row className="mt-2">
                           <Col
                             className={styles["scroll-height"]}
                             sm={12}
                             md={12}
-                            lg={12}>
+                            lg={12}
+                          >
                             {options.length > 0 &&
                               options.map((list, index) => {
                                 return (
                                   <>
-                                    {list.value != "" ? (
+                                    {list.value !== "" ? (
                                       <span
                                         key={index}
-                                        className={`${styles["BOx_for_yes"]} d-flex`}>
+                                        className={`${styles["BOx_for_yes"]} d-flex`}
+                                      >
                                         {list.value.length > 100 ? (
                                           <div
-                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}>
+                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}
+                                          >
                                             {list.value}
                                           </div>
                                         ) : (
                                           <div
-                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}>
+                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                          >
                                             {list.value}
                                           </div>
                                         )}
@@ -789,16 +752,17 @@ const UpdatePolls = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles["Scroller_For_UpdatePollModal"]}>
+                            className={styles["Scroller_For_UpdatePollModal"]}
+                          >
                             {options.length > 0
                               ? options.map((data, index) => {
                                   return (
                                     <>
                                       {index <= 1 ? (
                                         <>
-                                          <Row key={index} className='mt-2'>
+                                          <Row key={index} className="mt-2">
                                             <Col lg={12} md={12} sm={12}>
-                                              <span className='position-relative'>
+                                              <span className="position-relative">
                                                 <TextField
                                                   placeholder={
                                                     "Option" +
@@ -809,7 +773,7 @@ const UpdatePolls = () => {
                                                   applyClass={
                                                     "PollingCreateModal"
                                                   }
-                                                  labelclass='d-none'
+                                                  labelclass="d-none"
                                                   maxLength={100}
                                                   name={data.name}
                                                   value={data.value}
@@ -823,12 +787,13 @@ const UpdatePolls = () => {
                                         </>
                                       ) : (
                                         <>
-                                          <Row key={index} className='mt-2'>
+                                          <Row key={index} className="mt-2">
                                             <Col
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className='position-relative'>
+                                              className="position-relative"
+                                            >
                                               <TextField
                                                 placeholder={
                                                   "Option" +
@@ -839,7 +804,7 @@ const UpdatePolls = () => {
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
-                                                labelclass='d-none'
+                                                labelclass="d-none"
                                                 maxLength={100}
                                                 name={data.name}
                                                 value={data.value}
@@ -848,11 +813,10 @@ const UpdatePolls = () => {
                                                 }
                                                 inputicon={
                                                   <img
-                                                    draggable='false'
                                                     src={WhiteCrossIcon}
-                                                    width='31.76px'
-                                                    height='31.76px'
-                                                    alt=''
+                                                    width="31.76px"
+                                                    alt=""
+                                                    height="31.76px"
                                                     onClick={() =>
                                                       HandleCancelFunction(
                                                         index
@@ -863,6 +827,7 @@ const UpdatePolls = () => {
                                                         "Cross-icon-Create_poll"
                                                       ]
                                                     }
+                                                    draggable="false"
                                                   />
                                                 }
                                                 iconclassname={
@@ -879,28 +844,31 @@ const UpdatePolls = () => {
                                   );
                                 })
                               : null}
-                            {PollsReducer.editPollModalFlag === false ? (
-                              <Row className='mt-2'>
+                            {PollsReducereditPollModalFlag === false ? (
+                              <Row className="mt-2">
                                 <Col lg={12} md={12} sm={12}>
                                   <Button
                                     text={
                                       <>
-                                        <Row>
+                                        <Row className="mt-1">
                                           <Col
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className={
-                                              styles["ClassAddButton"]
-                                            }>
+                                            className="d-flex gap-2"
+                                          >
                                             <img
+                                              draggable={false}
                                               src={plusFaddes}
-                                              width='15.87px'
-                                              height='15.87px'
-                                              alt=''
-                                              draggable='false'
+                                              alt=""
+                                              width="15.87px"
+                                              height="15.87px"
                                             />
-                                            <span>
+                                            <span
+                                              className={
+                                                styles["Add_Button_Heading"]
+                                              }
+                                            >
                                               {t("Add-another-field")}
                                             </span>
                                           </Col>
@@ -922,7 +890,8 @@ const UpdatePolls = () => {
                                     error && allValuesNotEmpty === false
                                       ? ` ${styles["errorMessage-inLogin"]} `
                                       : `${styles["errorMessage-inLogin_hidden"]}`
-                                  }>
+                                  }
+                                >
                                   {t("Options-must-be-more-than-2")}
                                 </p>
                               </Col>
@@ -930,17 +899,18 @@ const UpdatePolls = () => {
                           </Col>
                         </Row>
                       )}
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex align-items-center gap-2'>
+                          className="d-flex align-items-center gap-2"
+                        >
                           <Checkbox
                             checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
                             disabled={
-                              PollsReducer.editPollModalFlag ? true : false
+                              PollsReducereditPollModalFlag ? true : false
                             }
                           />
                           <p className={styles["CheckBoxTitle"]}>
@@ -949,7 +919,7 @@ const UpdatePolls = () => {
                         </Col>
                       </Row>
 
-                      {PollsReducer.editPollModalFlag === false ? (
+                      {PollsReducereditPollModalFlag === false ? (
                         <>
                           <Row>
                             {" "}
@@ -957,7 +927,8 @@ const UpdatePolls = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className='group-fields d-flex align-items-center gap-2 '>
+                              className="group-fields d-flex align-items-center gap-2 "
+                            >
                               <Select
                                 onChange={handleSelectValue}
                                 value={selectedsearch}
@@ -982,7 +953,8 @@ const UpdatePolls = () => {
                                   error && pollmembers.length === 0
                                     ? ` ${styles["errorMessage-inLogin"]} `
                                     : `${styles["errorMessage-inLogin_hidden"]}`
-                                }>
+                                }
+                              >
                                 {t("Select-atleast-one-participants")}
                               </p>
                             </Col>
@@ -995,7 +967,8 @@ const UpdatePolls = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles["Participant_heading"]}>
+                        className={styles["Participant_heading"]}
+                      >
                         {t("Participants")}
                       </Col>
                       <Row>
@@ -1005,20 +978,18 @@ const UpdatePolls = () => {
                           sm={12}
                           className={
                             styles["Scroller_For_CreatePollModal2_Update_poll"]
-                          }>
+                          }
+                        >
                           <Row>
                             {pollmembers.map((data, index) => {
-                              console.log(
-                                data,
-                                "pollmemberspollmembers"
-                              );
                               return (
                                 <Col
                                   key={index}
                                   lg={6}
                                   md={6}
                                   sm={12}
-                                  className='mt-2'>
+                                  className="mt-2"
+                                >
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
                                       <Row className={styles["Card_border2"]}>
@@ -1026,29 +997,34 @@ const UpdatePolls = () => {
                                           sm={12}
                                           md={10}
                                           lg={10}
-                                          className='d-flex align-items-center'>
+                                          className="d-flex align-items-center"
+                                        >
                                           <img
                                             src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                            width='33px'
-                                            height='33px'
-                                            className='rounded-circle'
-                                            alt=''
-                                            draggable='false'
+                                            width="33px"
+                                            height="33px"
+                                            className="rounded-circle"
+                                            alt=""
+                                            draggable="false"
                                           />
                                           <span
-                                            className={styles["Name_cards"]}>
+                                            className={styles["Name_cards"]}
+                                          >
                                             {data.userName}
                                           </span>
                                         </Col>
-                                        {PollsReducer.editPollModalFlag ===
+                                        {PollsReducereditPollModalFlag ===
                                         false ? (
                                           <Col sm={12} md={2} lg={2}>
                                             <img
                                               src={CrossIcon}
-                                              width='14px'
-                                              height='14px'
-                                              onClick={cancellAnyUser}
-                                              draggable='false'
+                                              alt=""
+                                              width="14px"
+                                              height="14px"
+                                              onClick={() =>
+                                                cancellAnyUser(index)
+                                              }
+                                              draggable="false"
                                               style={{ cursor: "pointer" }}
                                             />
                                           </Col>
@@ -1079,7 +1055,8 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex justify-content-center gap-3'>
+                      className="d-flex justify-content-center gap-3"
+                    >
                       <Button
                         text={t("No")}
                         className={styles["No_Btn_polls_delModal"]}
@@ -1105,13 +1082,15 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Overall_padding"]}>
-                      <Row className='mt-5'>
+                      className={styles["Overall_padding"]}
+                    >
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-end gap-2 m-0 p-0'>
+                          className="d-flex justify-content-end gap-2 m-0 p-0"
+                        >
                           <Button
                             text={t("Cancel")}
                             className={styles["Cancell_btn_class_Update_polls"]}
@@ -1148,7 +1127,7 @@ const UpdatePolls = () => {
           size={defineUnsaveModal ? null : "md"}
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

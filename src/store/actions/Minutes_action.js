@@ -10,14 +10,11 @@ import {
   getMinuteReviewPendingApprovalsStatsByReviewerId,
   getMinuteReviewPendingApprovalsByReviewerId,
   saveMinutesReviewFlow,
-  getPendingApprovalStatusesForMinuteReview,
   acceptRejectMinuteReview,
   resendUpdatedMinuteForReview,
   getMinuteVersionHistoryWithComments,
   getMinuteReviewFlowByMeetingId,
-  updateCommentForRejectedMinute,
   getMinuteReviewDetailsForOrganizerByMinuteId,
-  deleteMinuteReviewByReviewer,
   PublishMeetingMinutesRM,
   GetAllPublishedMeetingMinutesRM,
   publishMeetingMinutes,
@@ -27,8 +24,6 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
-  AllDocumentsForAgendaWiseMinutesApiFunc,
-  DocumentsOfMeetingGenralMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";

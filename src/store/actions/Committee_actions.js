@@ -166,7 +166,6 @@ const saveFiles_fail = (message) => {
 const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: data,

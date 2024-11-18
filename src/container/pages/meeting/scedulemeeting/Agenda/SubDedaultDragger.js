@@ -6,8 +6,8 @@ import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
-import { useSelector } from "react-redux";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
 
 const SubDedaultDragger = ({
@@ -23,8 +23,9 @@ const SubDedaultDragger = ({
   //Uploader Props For SubAgendas
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
 
@@ -34,7 +35,6 @@ const SubDedaultDragger = ({
 
   const Subprops = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
@@ -50,10 +50,7 @@ const SubDedaultDragger = ({
       let getRowData = newRows[index].subAgenda[subIndex];
 
       if (getRowData.subfiles.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
       if (getRowData.subfiles.length > 0) {
@@ -67,29 +64,15 @@ const SubDedaultDragger = ({
             (oldFileData) => oldFileData.displayAttachmentName === fileData.name
           );
           if (!size) {
-            console.log("size");
-            setTimeout(() => {
-              console.log("size");
-
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-greater-then-1-5GB"),
-              });
-            }, 3000);
+            showMessage(
+              t("File-size-should-not-be-greater-then-1-5GB"),
+              "error",
+              setOpen
+            );
           } else if (!sizezero) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-zero"),
-              });
-            }, 3000);
+            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
           } else if (fileExists) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-already-exists"),
-              });
-            }, 3000);
+            showMessage(t("File-already-exists"), "error", setOpen);
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -115,19 +98,13 @@ const SubDedaultDragger = ({
           }
 
           if (!size) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-greater-then-1-5GB"),
-              });
-            }, 3000);
+            showMessage(
+              t("File-size-should-not-be-greater-then-1-5GB"),
+              "error",
+              setOpen
+            );
           } else if (!sizezero) {
-            setTimeout(() => {
-              setOpen({
-                flag: true,
-                message: t("File-size-should-not-be-zero"),
-              });
-            }, 3000);
+            showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
           } else {
             let file = {
               displayAttachmentName: fileData.originFileObj.name,
@@ -228,7 +205,7 @@ const SubDedaultDragger = ({
           </Dragger>
         </Col>
       </Row>
-      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

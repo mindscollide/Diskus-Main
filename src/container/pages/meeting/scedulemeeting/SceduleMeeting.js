@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
 import { Button } from "../../../../components/elements";
 import MeetingDetails from "./meetingDetails/MeetingDetails";
 import Organizers from "./Organizers/Organizers";
@@ -35,11 +33,6 @@ import {
   uploadGlobalFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewMeetingFlag,
-  meetingAgendaContributorAdded,
-  meetingAgendaContributorRemoved,
-  meetingOrganizerAdded,
-  meetingOrganizerRemoved,
   searchNewUserMeeting,
   scheduleMeetingPageFlag,
 } from "../../../../store/actions/NewMeetingActions";
@@ -82,7 +75,7 @@ const SceduleMeeting = ({
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
 
   const dispatch = useDispatch();
@@ -425,8 +418,8 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");
@@ -462,16 +455,15 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
         console.error(error, "error");
       }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
-  console.log(typeof editorRole.role, "editorRoleeditorRole");
-  console.log(currentMeeting, "editorRoleeditorRole");
+
   return (
     <section>
       <Row className="mt-2">
@@ -489,7 +481,7 @@ const SceduleMeeting = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} className="mb-4">
-          <Paper className={styles["Scedule_meeting_paper"]}>
+          <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
@@ -518,11 +510,9 @@ const SceduleMeeting = ({
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
-                        // onClick={handleClickOrganizers}
                         onClick={showOrganizers}
                       />
                     )}
-                    {/* {checkFeatureIDAvailability(11) ? ( */}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -535,7 +525,6 @@ const SceduleMeeting = ({
                         onClick={showAgendaContributers}
                       />
                     )}
-                    {/* ) : null} */}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -548,7 +537,6 @@ const SceduleMeeting = ({
                         onClick={showParticipants}
                       />
                     )}
-                    {/* {checkFeatureIDAvailability(10) ? ( */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-builder")}
@@ -559,7 +547,6 @@ const SceduleMeeting = ({
                       }
                       onClick={showAgenda}
                     />
-                    {/* ) : null} */}
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Agenda-viewer")}
@@ -572,7 +559,6 @@ const SceduleMeeting = ({
                     />
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        // disableBtn={Number(currentMeeting) === 0 ? true : false}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                           Number(editorRole.status) === 9
@@ -704,7 +690,6 @@ const SceduleMeeting = ({
               <Participants
                 setParticipants={setParticipants}
                 setAgenda={setAgenda}
-                setProposedMeetingDates={setProposedMeetingDates}
                 proposedMeetingDates={proposedMeetingDates}
                 setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
@@ -810,7 +795,7 @@ const SceduleMeeting = ({
                 setEdiorRole={setEdiorRole}
               />
             )}
-          </Paper>
+          </span>
         </Col>
       </Row>
     </section>

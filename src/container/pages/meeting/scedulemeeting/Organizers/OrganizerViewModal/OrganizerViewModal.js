@@ -4,7 +4,6 @@ import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Paper } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
   showSceduleProposedMeeting,
@@ -25,7 +24,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
 
   const sceduleproposedMeeting = useSelector(
@@ -146,8 +145,8 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
         Length: Number(meetingpageRow),
         PublishedMeetings: false,
       };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
     }
   };
 
@@ -157,12 +156,13 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
   return (
     <section>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col
           lg={12}
           md={12}
           sm={12}
-          className='d-flex align-items-center align-items-center gap-3'>
+          className="d-flex align-items-center align-items-center gap-3"
+        >
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Organizer-View")}
           </span>
@@ -170,13 +170,14 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["Paper_styling"]}>
+          <span className={styles["Paper_styling"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end'>
+                className="d-flex justify-content-end"
+              >
                 <Button
                   text={t("Cancel")}
                   onClick={cancelHandler}
@@ -195,7 +196,8 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center mt-3'>
+                className="d-flex justify-content-center mt-3"
+              >
                 <Button
                   text={t("View-poll")}
                   onClick={handleViewPollClick}
@@ -203,7 +205,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 />
               </Col>
             </Row>
-          </Paper>
+          </span>
           {sceduleproposedMeeting ? (
             <SceduleProposedmeeting
               organizerRows={organizerRows}

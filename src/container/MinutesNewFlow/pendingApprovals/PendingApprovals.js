@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
 import {
   utcConvertintoGMT,
@@ -16,7 +16,7 @@ import {
 } from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
 import { useNavigate } from "react-router-dom"; // Importing navigation hook
-import { Button, Paper, TableToDo } from "../../../components/elements"; // Importing custom components
+import { Button, TableToDo } from "../../../components/elements"; // Importing custom components
 import { ChevronDown } from "react-bootstrap-icons"; //Bootstrap Icon
 import DescendIcon from "./../Images/SorterIconDescend.png";
 import AscendIcon from "./../Images/SorterIconAscend.png";
@@ -26,11 +26,11 @@ import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import {
   getAllPendingApprovalStatusApi,
-  getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
 } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import ProgressStats from "../../../components/elements/progressStats/ProgressStats";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
+import { Checkbox, Dropdown, Menu } from "antd";
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -38,10 +38,17 @@ const PendingApproval = () => {
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
+    (state) =>
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
+  );
+  const GetMinuteReviewPendingApprovalsStatsByReviewerIdData = useSelector(
+    (state) =>
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+  );
 
   //Getting current Language
-  let currentLanguage = localStorage.getItem("i18nextLng");
+  let lang = localStorage.getItem("i18nextLng");
 
   // State for tracking the active state of each button
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
@@ -51,6 +58,19 @@ const PendingApproval = () => {
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([
+    "Reviewed",
+    "Pending",
+    "Expired",
+  ]);
+
+  const filters = [
+    { text: t("Reviewed"), value: "Reviewed" },
+    { text: t("Pending"), value: "Pending" },
+    { text: t("Expired"), value: "Expired" },
+  ];
 
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
@@ -79,49 +99,81 @@ const PendingApproval = () => {
     // Your functionality for Review & Sign button
   };
 
-  // ProgressBar component for visualizing progress
-  const ProgressBar = ({ width, color, indexValue, percentageValue }) => {
-    const barStyle = {
-      background: color,
-      height: "35px",
-      width: `${width}%`,
-      borderRadius: "25px",
-      zIndex: indexValue,
-      position: "absolute",
-      textAlign: currentLanguage === "en" ? "right" : "left",
-      fontFamily: "Montserrat",
-      fontStyle: "normal",
-      fontWeight: "800",
-      fontSize: "16px",
-      textTransform: "uppercase",
-      color: "#FFFFFF",
-      paddingTop: "5px",
-      paddingRight: currentLanguage === "en" ? "10px" : "auto",
-      paddingLeft: currentLanguage === "en" ? "auto" : "10px",
-      minWidth: `${indexValue === "0" ? "100%" : "auto"}`,
-    };
+  //Filteration Table
 
-    return <span style={barStyle}>{percentageValue}</span>; // Display progress bar with percentage
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
   };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.toString())
+    );
+    setRowsPendingApproval(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["Reviewed", "Pending", "Expired"]);
+    setRowsPendingApproval(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className={styles["FilterResetBtn"]}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className={styles["ResetOkBtn"]}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
-      // title: t("Meeting-title"),
       title: (
         <>
-          <span>
+          <span >
             {t("Meeting-title")}{" "}
             {sortOrderMeetingTitle === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
       ),
       dataIndex: "title",
       key: "title",
+      align: lang === "en" ? "left" : "right",
       className: "nameParticipant",
       width: "200px",
       ellipsis: true,
@@ -150,7 +202,8 @@ const PendingApproval = () => {
             record.status === "Expired"
               ? "cursor-pointer opacity-25 m-0 text-truncate"
               : "cursor-pointer m-0 text-truncate"
-          }>
+          }
+        >
           {text}
         </p>
       ),
@@ -161,9 +214,9 @@ const PendingApproval = () => {
           <span>
             {t("Review-requested-by")}{" "}
             {sortOrderReviewRequest === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -172,6 +225,7 @@ const PendingApproval = () => {
       key: "requestedBy",
       className: "emailParticipant",
       width: "180px",
+      align: "center",
       ellipsis: true,
       sorter: (a, b) =>
         a.requestedBy.toLowerCase().localeCompare(b.requestedBy.toLowerCase()),
@@ -197,9 +251,9 @@ const PendingApproval = () => {
           <span>
             {t("Submission-date")}{" "}
             {sortOrderLeaveDateTime === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -223,10 +277,9 @@ const PendingApproval = () => {
       }),
       render: (text, record) => (
         <p className={record.status === "Expired" ? "opacity-25 m-0" : "m-0"}>
-          {newDateFormatterForMinutesPendingApproval(text)}
+          {newDateFormatterForMinutesPendingApproval(text, lang)}
         </p>
       ),
-      // render: (text, record) => convertAndFormatDateTimeGMT(text),
     },
     {
       title: t("Status"),
@@ -235,14 +288,21 @@ const PendingApproval = () => {
       align: "center",
       className: "statusParticipant",
       width: "150px",
-      filters: [
-        { text: t("Reviewed"), value: "Reviewed" },
-        { text: t("Pending"), value: "Pending" },
-        { text: t("Expired"), value: "Expired" },
-      ],
-      onFilter: (value, record) => record.status === value,
-      filterIcon: () => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+      filterResetToDefaultFilteredValue: true,
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
+      ),
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
       ),
       render: (text, record) => (
         <p
@@ -252,7 +312,8 @@ const PendingApproval = () => {
               : text === "Pending"
               ? styles["pendingStatus"]
               : styles["reviewedStatus"]
-          }>
+          }
+        >
           {text}
         </p>
       ),
@@ -267,46 +328,39 @@ const PendingApproval = () => {
 
   useEffect(() => {
     if (
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData !==
-        undefined &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData.length !==
-        0
+      GetMinuteReviewPendingApprovalsByReviewerIdData !== null &&
+      GetMinuteReviewPendingApprovalsByReviewerIdData !== undefined &&
+      GetMinuteReviewPendingApprovalsByReviewerIdData.length !== 0
     ) {
       let reducerDataRow =
-        MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
-          .pendingReviews;
+        GetMinuteReviewPendingApprovalsByReviewerIdData.pendingReviews;
       setRowsPendingApproval(reducerDataRow);
+      setOriginalData(reducerDataRow);
     } else {
       setRowsPendingApproval([]);
+      setOriginalData([]);
     }
-  }, [MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData]);
+  }, [GetMinuteReviewPendingApprovalsByReviewerIdData]);
 
   useEffect(() => {
     if (
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
-        null &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData !==
-        undefined &&
-      MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
-        .length !== 0
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== null &&
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== undefined &&
+      GetMinuteReviewPendingApprovalsStatsByReviewerIdData.length !== 0
     ) {
       let reducerData =
-        MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
-          .data;
+        GetMinuteReviewPendingApprovalsStatsByReviewerIdData.data;
       setProgress(reducerData);
     } else {
       setProgress([]);
     }
-  }, [MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
-
-  console.log("progressprogress", progress);
+  }, [GetMinuteReviewPendingApprovalsStatsByReviewerIdData]);
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
       {" "}
       {/* Container for pending approval section */}
-      <Row className='my-3 d-flex align-items-center'>
+      <Row className="my-3 d-flex align-items-center">
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {t("Pending-approval")}{" "}
@@ -314,7 +368,7 @@ const PendingApproval = () => {
           </span>
         </Col>
       </Row>
-      <Paper className={styles["pendingApprovalPaper"]}>
+      <span className={styles["pendingApprovalPaper"]}>
         {/* Paper component for styling */}
         <Container>
           <Row>
@@ -322,7 +376,7 @@ const PendingApproval = () => {
               <div className={styles["overallGap"]}>
                 {/* Buttons for reviewing minutes */}
                 <Button
-                  text='Review Minutes'
+                  text={t("Review-minutes")}
                   className={
                     reviewMinutesActive
                       ? styles.activeMinutes
@@ -334,7 +388,7 @@ const PendingApproval = () => {
                 {(checkFeatureIDAvailability(19) ||
                   checkFeatureIDAvailability(21)) && (
                   <Button
-                    text='Review & Sign'
+                    text={t("Review-&-sign")}
                     className={
                       reviewAndSignActive
                         ? styles.activeMinutes
@@ -351,126 +405,123 @@ const PendingApproval = () => {
               {" "}
               <Row>
                 <Col>
-                  {rowsPendingApproval.length > 0 ? (
-                    <>
-                      <div className={styles["progressWrapper"]}>
-                        <Row>
-                          <Col lg={6} md={6} sm={12}>
-                            <div className='d-flex positionRelative'>
-                              {/* Progress bars with different colors and percentages */}
-                              <ProgressStats
-                                FirstColor='#6172D6'
-                                firstValue={progress.reviewedPercentage}
-                                thirdValue={progress.expiredPercentage}
-                                thirdColor='#F16B6B'
-                                secondColor='#ffc300'
-                                secondValue={progress.pendingPercentage}
-                              />
-                              {/* {progress.reviewed === 0 ? null : (
-                                <ProgressBar
-                                  width={progress.reviewedPercentage}
-                                  color="#6172d6"
-                                  indexValue="0"
-                                  percentageValue={
-                                    progress.reviewedPercentage + "%"
-                                  }
-                                />
-                              )}{" "}
-                              {progress.pendingPercentage === 0 ? null : (
-                                <ProgressBar
-                                  width={progress.pendingPercentage}
-                                  color="#ffc300"
-                                  indexValue="1"
-                                  percentageValue={
-                                    progress.pendingPercentage + "%"
-                                  }
-                                />
-                              )}
-                              {progress.expiredPercentage === 0 ? null : (
-                                <ProgressBar
-                                  width={progress.expiredPercentage}
-                                  color="#f16b6b"
-                                  indexValue="2"
-                                  percentageValue={
-                                    progress.expiredPercentage + "%"
-                                  }
-                                />
-                              )} */}
-                            </div>
-                          </Col>
-                          <Col lg={6} md={6} sm={12} className='d-flex'>
-                            <span className={styles["line"]} />
-                            <div
-                              className={
-                                styles["progress-value-wrapper-purple"]
-                              }>
-                              <span className={styles["numeric-value"]}>
-                                {progress.reviewed}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Reviewed")}
-                              </span>
-                            </div>
-                            <span className={styles["line"]} />
-                            <div
-                              className={
-                                styles["progress-value-wrapper-yellow"]
-                              }>
-                              <span className={styles["numeric-value"]}>
-                                {progress.pending}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Pending")}
-                              </span>
-                            </div>
-                            <span className={styles["line"]} />
-                            <div
-                              className={styles["progress-value-wrapper-red"]}>
-                              <span className={styles["numeric-value"]}>
-                                {progress.expired}
-                              </span>
-                              <span className={styles["value"]}>
-                                {t("Expired")}
-                              </span>
-                            </div>
-                          </Col>
-                        </Row>
-                      </div>
-                      <Row>
-                        <Col>
-                          <TableToDo
-                            sortDirections={["descend", "ascend"]}
-                            column={pendingApprovalColumns}
-                            className={"PendingApprovalsTable"}
-                            rows={rowsPendingApproval}
-                            // scroll={scroll}
-                            pagination={false}
-                            scroll={
-                              rowsPendingApproval.length > 10
-                                ? { y: 385 }
-                                : undefined
-                            }
-                            id={(record, index) =>
-                              index === rowsPendingApproval.length - 1
-                                ? "last-row-class"
-                                : ""
-                            }
+                  <div className={styles["progressWrapper"]}>
+                    <Row>
+                      <Col lg={6} md={6} sm={12}>
+                        <ProgressBar
+                          style={{
+                            height: "30px",
+                            borderRadius: "20px",
+                          }}
+                        >
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#6172D6",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.reviewedPercentage,
+                              lang
+                            )}%`}
+                            now={progress.reviewedPercentage}
+                            key={1}
                           />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <section
-                      className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}>
-                      <img src={NoApprovals} alt='' />
-                      <span className={styles["No-Approvals"]}>
-                        {t("Approvals")}
-                      </span>
-                      <span className={styles["No-Approvals-Text"]}>
-                        {t("No-pending-approvals-at-the-moment")}
-                      </span>
-                    </section>
-                  )}
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#ffc300",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.pendingPercentage,
+                              lang
+                            )}%`}
+                            now={progress.pendingPercentage}
+                            key={2}
+                          />
+                          <ProgressBar
+                            style={{
+                              backgroundColor: "#F16B6B",
+                            }}
+                            label={`${convertToArabicNumerals(
+                              progress.expiredPercentage,
+                              lang
+                            )}%`}
+                            now={progress.expiredPercentage}
+                            key={3}
+                          />
+                        </ProgressBar>
+                      </Col>
+                      <Col lg={6} md={6} sm={12} className="d-flex">
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-purple"]}
+                        >
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.reviewed, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Reviewed")}
+                          </span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div
+                          className={styles["progress-value-wrapper-yellow"]}
+                        >
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.pending, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Pending")}
+                          </span>
+                        </div>
+                        <span className={styles["line"]} />
+                        <div className={styles["progress-value-wrapper-red"]}>
+                          <span className={styles["numeric-value"]}>
+                            {convertToArabicNumerals(progress.expired, lang)}
+                          </span>
+                          <span className={styles["value"]}>
+                            {t("Expired")}
+                          </span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                  <Row>
+                    <Col>
+                      <TableToDo
+                        sortDirections={["descend", "ascend"]}
+                        column={pendingApprovalColumns}
+                        className={"PendingApprovalsTable"}
+                        rows={rowsPendingApproval}
+                        pagination={false}
+                        scroll={
+                          rowsPendingApproval.length > 10
+                            ? { y: 385 }
+                            : undefined
+                        }
+                        id={(record, index) =>
+                          index === rowsPendingApproval.length - 1
+                            ? "last-row-class"
+                            : ""
+                        }
+                        locale={{
+                          emptyText: (
+                            <>
+                              <section
+                                className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
+                              >
+                                <img src={NoApprovals} alt="" />
+                                <span className={styles["No-Approvals"]}>
+                                  {t("Approvals")}
+                                </span>
+                                <span className={styles["No-Approvals-Text"]}>
+                                  {t("No-pending-approvals-at-the-moment")}
+                                </span>
+                              </section>
+                            </>
+                          ),
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </>
@@ -478,7 +529,7 @@ const PendingApproval = () => {
             <ReviewSignature />
           )}
         </Container>
-      </Paper>
+      </span>
     </section>
   );
 };

@@ -4,7 +4,6 @@ import {
   getAllCommittesandGroupsforPolls,
   searcPollsRequestMethod,
   castVote,
-  getAllPollStatus,
   getPollByPollID,
   updatePolls,
   viewvotes,
@@ -29,28 +28,15 @@ import {
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
-import { message } from "antd";
+
 import {
   GetAllPollsByMeetingIdApiFunc,
   SetMeetingPollsApiFunc,
 } from "./NewMeetingActions";
 
-const mainLoaderStart = () => {
-  return {
-    type: actions.GET_MAIN_LOADER_START,
-  };
-};
-
 const clearPollsMesseges = () => {
   return {
     type: actions.CLEAR_POLLS_MESSAGES,
-  };
-};
-
-const mainLoaderFail = (message) => {
-  return {
-    type: actions.GET_MAIN_LOADER_FAIL,
-    message: message,
   };
 };
 
@@ -290,13 +276,6 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                   )
                 );
               }
-              // dispatch(
-              //   deltePollsSuccess(
-              //     response.data.responseResult,
-
-              //     t("Poll Status Updated Successfully")
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -669,84 +648,6 @@ const castVoteApi = (
         }
       } else {
         dispatch(castVoteFailed(t("Something-went-wrong")));
-      }
-    });
-  };
-};
-
-const getAllPollsStatusInit = () => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_INIT,
-  };
-};
-
-const getAllPollsStatusSuccess = (response, message) => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const getAllPollsStatusFailed = (message) => {
-  return {
-    type: actions.GET_ALL_POLL_STATUS_FAILED,
-    message: message,
-  };
-};
-
-const getAllPollsStatusApi = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return async (dispatch) => {
-    dispatch(getAllPollsStatusInit());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", getAllPollStatus.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t));
-        dispatch(getAllPollsStatusApi(navigate, data, t));
-      } else if (response.data.responseCode === 200) {
-        if (response.data.responseResult.isExecuted === true) {
-          if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Polls_PollsServiceManager_GetAllPollStatus_01".toLowerCase()
-              )
-          ) {
-            await dispatch(
-              getAllPollsStatusSuccess(response.data.responseResult, "")
-            );
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Polls_PollsServiceManager_GetAllPollStatus_02".toLowerCase()
-              )
-          ) {
-            dispatch(getAllPollsStatusFailed(t("No-records-found")));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Polls_PollsServiceManager_GetAllPollStatus_03".toLowerCase()
-              )
-          ) {
-            dispatch(getAllPollsStatusFailed(t("Exception")));
-          }
-        } else {
-          dispatch(getAllPollsStatusFailed(t("Something-went-wrong")));
-        }
-      } else {
-        dispatch(getAllPollsStatusFailed(t("Something-went-wrong")));
       }
     });
   };
@@ -2405,53 +2306,6 @@ const getPollsByPollIdforCommitteeApi = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
@@ -2546,53 +2400,6 @@ const getPollByPollIdforGroups = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );
@@ -2687,53 +2494,6 @@ const getPollByPollIdforMeeting = (
             } else if (Number(check) === 4) {
               setViewPublishedPoll(true);
             }
-            // if (parseInt(check) === 1) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(globalFlag(true));
-            //   await dispatch(setEditpollModal(true));
-            //
-            // } else if (parseInt(check) === 2) {
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(getAllCommitteesandGroups(navigate, t));
-            //   await dispatch(setEditpollModal(true));
-
-            //
-            // } else if (parseInt(check) === 3) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollProgressModal(true));
-            //
-            // } else if (parseInt(check) === 4) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setVotePollModal(false));
-            //   await dispatch(setviewpollModal(true));
-            //
-            // } else if (parseInt(check) === 5) {
-            //   await dispatch(setEditpollModal(false));
-            //   await dispatch(setCreatePollModal(false));
-            //   await dispatch(setviewpollProgressModal(false));
-            //   await dispatch(globalFlag(false));
-            //   await dispatch(viewVotesDetailsModal(false));
-            //   await dispatch(setviewpollModal(false));
-            //   await dispatch(setVotePollModal(true));
-            // }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")
             );

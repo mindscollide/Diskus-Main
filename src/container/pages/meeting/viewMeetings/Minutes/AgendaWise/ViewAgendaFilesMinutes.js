@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "./AgendaWise.module.css";
 import { Col, Row } from "react-bootstrap";
-import file_image from "../../../../../../assets/images/file_image.svg";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import { AttachmentViewer } from "../../../../../../components/elements";
 
 const ViewAgendaFilesMinutes = ({

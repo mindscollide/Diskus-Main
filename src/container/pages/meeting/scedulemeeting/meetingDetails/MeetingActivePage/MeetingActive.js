@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./MeetingActive.module.css";
 import { Button } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import Messegeblue from "../../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../../assets/images/blue Camera.svg";
-import PublishedMeeting from "../PublishedMeeting/PublishedMeeting";
 
 const MeetingActive = () => {
   const { t } = useTranslation();
@@ -96,8 +95,18 @@ const MeetingActive = () => {
                   sm={12}
                   className="d-flex align-items-center gap-1"
                 >
-                  <img src={Messegeblue} height="20.44px" width="25.68px" />
-                  <img src={BlueCamera} height="17.84px" width="27.19px" />
+                  <img
+                    src={Messegeblue}
+                    height="20.44px"
+                    width="25.68px"
+                    alt=""
+                  />
+                  <img
+                    src={BlueCamera}
+                    height="17.84px"
+                    width="27.19px"
+                    alt=""
+                  />
                   <span className={styles["LinkClass"]}>
                     https://meet.google.com/hak-qtiz-swr?authuser=0&pli=1
                   </span>

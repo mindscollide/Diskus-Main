@@ -115,14 +115,24 @@ body[dir="rtl"] .Auth_Icon {
 
 .OTP_auth_paper {
   margin-left: 60px;
+  border-radius: 8px !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
   border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
 }
 
 body[dir="rtl"] .OTP_auth_paper {
   margin-right: 60px;
+  border-radius: 8px !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
   border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
   margin-left: 0px !important;
 }
 
@@ -174,8 +184,8 @@ body[dir="rtl"] .resendCode_btn {
 }
 
 .resendCode_btn:disabled {
-  opacity: 30%;
-  color: #000;
+  opacity: 30% !important;
+  color: #000 !important;
 }
 
 .resendCode_btn span {
@@ -287,7 +297,6 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  /* font-size: calc(12px - 20%) !important; */
   margin-top: 4px !important;
   color: #5a5a5a !important;
   font-weight: 400 !important;

@@ -3,7 +3,6 @@
   justify-content: center;
   flex-direction: column;
   width: 270px !important;
-  /* padding: 0 20px; */
 }
 
 .Next_button_EmailVerifySendEmailRealme {
@@ -38,6 +37,13 @@ body[dir="rtl"] .Next_button_EmailVerifySendEmailRealme {
   border-radius: 4px;
   height: 469px !important;
   width: 330px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .forogt_email_link {
@@ -65,7 +71,6 @@ body[dir="rtl"] .forogt_email_link a {
 }
 
 .SelectLine {
-  /* margin-top: -0.9rem; */
   color: #5a5a5a;
   font-weight: 600 !important;
   margin-bottom: 28px;

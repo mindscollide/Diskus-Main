@@ -5,15 +5,9 @@ import { Col, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Upload } from "antd";
-import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
-import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
-  showCancelModalAgenda,
-  showImportPreviousAgendaModal,
   searchNewUserMeeting,
-  cleareAllState,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -21,26 +15,22 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearAgendaReducerState,
   clearResponseMessage,
-  getAdvanceMeetingAgendabyMeetingID_fail,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
-
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
-import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
-import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
+import { onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 
 const Agenda = ({
   setParticipants,
@@ -63,9 +53,6 @@ const Agenda = ({
   );
   const mainAgendaItemRemoved = useSelector(
     (state) => state.NewMeetingreducer.mainAgendaItemRemoved
-  );
-  const advancePermissionModal = useSelector(
-    (state) => state.NewMeetingreducer.advancePermissionModal
   );
   const advancePermissionConfirmation = useSelector(
     (state) => state.NewMeetingreducer.advancePermissionConfirmation
@@ -90,28 +77,25 @@ const Agenda = ({
     (state) => state
   );
 
-  const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
-  const [agendaViewPage, setagendaViewPage] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
-  const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [rows, setRows] = useState([]);
-  console.log(rows, "rowsrowsrowsrows");
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
   useEffect(() => {
@@ -124,10 +108,6 @@ const Agenda = ({
       setRows([]);
     };
   }, []);
-  //   updatedRows.push(newMainAgenda);
-  //   setRows(updatedRows);
-  //   console.log(updatedRows, "updatedRowsupdatedRows");
-  // };
 
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
@@ -152,11 +132,6 @@ const Agenda = ({
     setAdvanceMeetingModalID(null);
   };
 
-  const handlePreviousBtn = () => {
-    setAgenda(false);
-    setParticipants(true);
-  };
-
   const handleNextBtn = () => {
     setAgenda(false);
     setMeetingMaterial(true);
@@ -171,86 +146,16 @@ const Agenda = ({
       setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDData]);
-  console.log(
-    "GetAdvanceMeetingAgendabyMeetingIDData",
-    GetAdvanceMeetingAgendabyMeetingIDData
-  );
 
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Saved",
-        }),
-        3000
-      );
+      showMessage(t("Record-saved"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      setTimeout(
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Record Updated",
-        }),
-        3000
-      );
+      showMessage(t("Record-updated"), "error", setOpen);
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
-
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
-  //     MeetingAgendaReducer.MeetingAgendaStartedData !== null
-  //   ) {
-  //     setRows((prevState) => {
-  //       const updatedState = prevState.map((item) => {
-  //         if (
-  //           item.id ===
-  //             MeetingAgendaReducer.MeetingAgendaStartedData.agendaID ||
-  //           item.subAgenda.some(
-  //             (subItem) =>
-  //               subItem.subAgendaID ===
-  //               MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
-  //           )
-  //         ) {
-  //           console.log("Updating item:", item);
-  //           const updatedItem = {
-  //             ...item,
-  //             voteOwner: {
-  //               ...item.voteOwner,
-  //               currentVotingClosed: true,
-  //             },
-  //             subAgenda: item.subAgenda.map((subItem) => {
-  //               if (
-  //                 subItem.subAgendaID ===
-  //                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
-  //               ) {
-  //                 console.log("Updating subItem:", subItem);
-  //                 return {
-  //                   ...subItem,
-  //                   voteOwner: {
-  //                     ...subItem.voteOwner,
-  //                     currentVotingClosed: true,
-  //                   },
-  //                 };
-  //               }
-  //               return subItem;
-  //             }),
-  //           };
-  //           console.log("Updated item:", updatedItem);
-  //           return updatedItem;
-  //         }
-  //         return item;
-  //       });
-
-  //       console.log("Updated state:", updatedState);
-  //       return updatedState;
-  //     });
-  //   }
-  // }, [MeetingAgendaReducer.MeetingAgendaStartedData]);
 
   useEffect(() => {
     if (
@@ -262,7 +167,6 @@ const Agenda = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
           ) {
-            console.log("Updating main item:", item);
             return {
               ...item,
               voteOwner: {
@@ -277,7 +181,6 @@ const Agenda = ({
                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
             )
           ) {
-            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -285,7 +188,6 @@ const Agenda = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
                 ) {
-                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -301,7 +203,6 @@ const Agenda = ({
           return item;
         });
 
-        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -317,7 +218,6 @@ const Agenda = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
           ) {
-            console.log("Updating main item:", item);
             return {
               ...item,
               voteOwner: {
@@ -332,7 +232,6 @@ const Agenda = ({
                 MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
             )
           ) {
-            console.log("Updating subItem:", item);
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
@@ -340,7 +239,6 @@ const Agenda = ({
                   subItem.subAgendaID ===
                   MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
                 ) {
-                  console.log("Updating subItem:", subItem);
                   return {
                     ...subItem,
                     voteOwner: {
@@ -356,7 +254,6 @@ const Agenda = ({
           return item;
         });
 
-        console.log("Updated state:", updatedState);
         return updatedState;
       });
     }
@@ -390,12 +287,6 @@ const Agenda = ({
       setEmptyStateRows(false);
     }
   }, [rows]);
-
-  console.log(
-    "MeetingAgendaReducerMeetingAgendaReducer",
-    MeetingAgendaReducer
-    // data
-  );
 
   return (
     <>
@@ -434,11 +325,7 @@ const Agenda = ({
           </Row>
         </>
       ) : null}
-      {savedViewAgenda ? (
-        <SaveAgendaView />
-      ) : agendaViewPage ? (
-        <AgendaView />
-      ) : enableVotingPage ? (
+      {enableVotingPage ? (
         <VotingPage />
       ) : (
         <>
@@ -560,11 +447,7 @@ const Agenda = ({
                   className={styles["Cancel_Meeting_Details"]}
                   onClick={handleCancelMeetingNoPopup}
                 />
-                {/* <Button
-                  text={t("Previous")}
-                  className={styles["Next_Button_Organizers_view"]}
-                  onClick={handlePreviousBtn}
-                /> */}
+
                 <Button
                   text={t("Next")}
                   className={styles["Next_Button_Organizers_view"]}
@@ -594,7 +477,6 @@ const Agenda = ({
           setRows={setRows}
         />
       )}
-      {advancePermissionModal && <AdvancePersmissionModal />}
       {advancePermissionConfirmation && <PermissionConfirmation />}
       {voteAgendaModal && (
         <VoteModal setenableVotingPage={setenableVotingPage} />
@@ -618,7 +500,7 @@ const Agenda = ({
           setMinutes={setMinutes}
         />
       )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

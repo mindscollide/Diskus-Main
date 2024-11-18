@@ -1,14 +1,13 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import { Button, Loader, Modal, Notification } from "../../components/elements";
+import { Button, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
-import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
-import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
-import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
-import ViewGrouppage from "../../components/elements/ViewGrouppage/ViewGrouppage";
+import CreateGroup from "./MainGroup/CreateGroup/CreateGroup";
+import UpdateGroupPage from "./MainGroup/UpdateGroup/UpdateGroupPage";
+import ViewGrouppage from "./MainGroup/ViewGrouppage/ViewGrouppage";
 import archivedbtn from "../../assets/images/archivedbtn.png";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import Card from "../../components/elements/Card/Card";
@@ -18,7 +17,6 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
-  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
   createGroupPageFlag,
@@ -45,12 +43,51 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer, talkStateData, talkFeatureStates } = useSelector(
-    (state) => state
+
+  const GroupsReducerrealtimeGroupStatus = useSelector(
+    (state) => state.GroupsReducer.realtimeGroupStatus
   );
+
+  const GroupsReducerArcheivedGroups = useSelector(
+    (state) => state.GroupsReducer.ArcheivedGroups
+  );
+
+  const GroupsReducerrealtimeGroupCreateResponse = useSelector(
+    (state) => state.GroupsReducer.realtimeGroupCreateResponse
+  );
+
+  const GroupsReducergetAllGroupsResponse = useSelector(
+    (state) => state.GroupsReducer.getAllGroupsResponse
+  );
+
+  const GroupsReducerremoveGroupMember = useSelector(
+    (state) => state.GroupsReducer.removeGroupMember
+  );
+
+  const GroupsReducerResponseMessage = useSelector(
+    (state) => state.GroupsReducer.ResponseMessage
+  );
+
+  const GroupsReducercreateGroupPageFlag = useSelector(
+    (state) => state.GroupsReducer.createGroupPageFlag
+  );
+
+  const GroupsReducerupdateGroupPageFlag = useSelector(
+    (state) => state.GroupsReducer.updateGroupPageFlag
+  );
+
+  const GroupsReducerviewGroupPageFlag = useSelector(
+    (state) => state.GroupsReducer.viewGroupPageFlag
+  );
+
+  const talkStateDataAllUserChats = useSelector(
+    (state) => state.talkStateData.AllUserChats
+  );
+
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -69,6 +106,7 @@ const Groups = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
@@ -99,12 +137,12 @@ const Groups = () => {
   }, []);
 
   useEffect(() => {
-    if (GroupsReducer.realtimeGroupStatus !== null) {
-      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+    if (GroupsReducerrealtimeGroupStatus !== null) {
+      let status = GroupsReducerrealtimeGroupStatus.groupStatusID;
       if (status === 2) {
         let findGroupIndex = groupsData.findIndex(
           (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+            data.groupID === GroupsReducerrealtimeGroupStatus.groupID
         );
         if (findGroupIndex !== -1) {
           let newArr = [...groupsData];
@@ -114,32 +152,31 @@ const Groups = () => {
         }
       } else if (status === 1 || status === 3) {
         if (
-          GroupsReducer.ArcheivedGroups !== null &&
-          GroupsReducer.ArcheivedGroups.groups.length > 0
+          GroupsReducerArcheivedGroups !== null &&
+          GroupsReducerArcheivedGroups.groups.length > 0
         ) {
-          let findisExist = GroupsReducer.ArcheivedGroups.groups.findIndex(
+          let findisExist = GroupsReducerArcheivedGroups.groups.findIndex(
             (data, index) =>
               Number(data.groupID) ===
-              Number(GroupsReducer.realtimeGroupStatus.groupID)
+              Number(GroupsReducerrealtimeGroupStatus.groupID)
           );
           if (findisExist !== -1) {
             let findGroupData =
-              GroupsReducer.ArcheivedGroups.groups[findisExist];
+              GroupsReducerArcheivedGroups.groups[findisExist];
             let modifiedData = { ...findGroupData, groupStatusID: status };
             setgroupsData([modifiedData, ...groupsData]);
           }
         } else {
           let findGroupIndex = groupsData.findIndex(
             (data, index) =>
-              data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+              data.groupID === GroupsReducerrealtimeGroupStatus.groupID
           );
           if (findGroupIndex !== -1) {
             let newArr = groupsData.map((data, index) => {
               if (findGroupIndex === index) {
                 let newData = {
                   ...data,
-                  groupStatusID:
-                    GroupsReducer.realtimeGroupStatus.groupStatusID,
+                  groupStatusID: GroupsReducerrealtimeGroupStatus.groupStatusID,
                 };
                 return newData;
               }
@@ -150,7 +187,7 @@ const Groups = () => {
         }
       }
     }
-  }, [GroupsReducer.realtimeGroupStatus]);
+  }, [GroupsReducerrealtimeGroupStatus]);
 
   const handleClickMeetingTab = (data) => {
     setViewGroupTab(4);
@@ -173,28 +210,25 @@ const Groups = () => {
   };
 
   useEffect(() => {
-    if (GroupsReducer.realtimeGroupCreateResponse !== null) {
-      let MQttgroupData = GroupsReducer.realtimeGroupCreateResponse;
+    if (GroupsReducerrealtimeGroupCreateResponse !== null) {
+      let MQttgroupData = GroupsReducerrealtimeGroupCreateResponse;
       let newData = {
         ...MQttgroupData,
         groupMembers: [...MQttgroupData.groupMembers],
       };
       setgroupsData([newData, ...groupsData]);
     }
-  }, [GroupsReducer.realtimeGroupCreateResponse]);
-  console.log(
-    GroupsReducer.getAllGroupsResponse,
-    "GroupsReducerGroupsReducerGroupsReducer"
-  );
+  }, [GroupsReducerrealtimeGroupCreateResponse]);
+
   useEffect(() => {
     try {
       if (
-        GroupsReducer.getAllGroupsResponse !== null &&
-        GroupsReducer.getAllGroupsResponse !== undefined
+        GroupsReducergetAllGroupsResponse !== null &&
+        GroupsReducergetAllGroupsResponse !== undefined
       ) {
-        if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
-          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
-          let copyData = [...GroupsReducer.getAllGroupsResponse?.groups];
+        if (GroupsReducergetAllGroupsResponse?.groups?.length > 0) {
+          setTotalLength(GroupsReducergetAllGroupsResponse.totalRecords);
+          let copyData = [...GroupsReducergetAllGroupsResponse?.groups];
           // Create a new copy of committeeMembers array for each committee
           const updateGroups = copyData.map((groups) => ({
             ...groups,
@@ -209,12 +243,12 @@ const Groups = () => {
         setgroupsData([]);
       }
     } catch (error) {}
-  }, [GroupsReducer.getAllGroupsResponse]);
+  }, [GroupsReducergetAllGroupsResponse]);
 
   useEffect(() => {
     try {
-      if (GroupsReducer.removeGroupMember !== null) {
-        let groupRemoveMemberData = GroupsReducer.removeGroupMember.groups;
+      if (GroupsReducerremoveGroupMember !== null) {
+        let groupRemoveMemberData = GroupsReducerremoveGroupMember.groups;
         setgroupsData((groupremover) => {
           return groupremover.filter((groupData, index) => {
             return groupData.groupID !== groupRemoveMemberData.groupID;
@@ -224,7 +258,7 @@ const Groups = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [GroupsReducer.removeGroupMember]);
+  }, [GroupsReducerremoveGroupMember]);
 
   const handlechange = (value) => {
     localStorage.setItem("groupsCurrent", value);
@@ -270,7 +304,7 @@ const Groups = () => {
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+        talkStateDataAllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
         (item) => item.id === data.talkGroupID
       );
@@ -312,37 +346,11 @@ const Groups = () => {
           )
         );
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: "Talk Group Doesnt Exist",
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            flag: false,
-            message: "",
-          });
-        }, 3000);
+        showMessage(t("Talk-group-doesnt-exist"), "error", setOpen);
       }
     } else {
-      setOpen({
-        ...open,
-        flag: true,
-        message: "No Talk Group Created",
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(t("No-talk-group-created"), "error", setOpen);
     }
-  };
-
-  const activegroupmodal = () => {
-    setShowActivegroup(true);
   };
 
   const handleDocumentsClickTab = (data) => {
@@ -379,26 +387,15 @@ const Groups = () => {
 
   useEffect(() => {
     if (
-      GroupsReducer.ResponseMessage !== "" &&
-      GroupsReducer.ResponseMessage !== t("No-data-available")
+      GroupsReducerResponseMessage !== "" &&
+      GroupsReducerResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: GroupsReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(GroupsReducerResponseMessage, "success", setOpen);
       dispatch(clearMessagesGroup());
     } else {
       dispatch(clearMessagesGroup());
     }
-  }, [GroupsReducer.ResponseMessage]);
+  }, [GroupsReducerResponseMessage]);
 
   const isCurrentUserCreator = (data) => {
     return (
@@ -414,33 +411,21 @@ const Groups = () => {
   };
 
   const openNotification = () => {
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Not-a-member-of-talk-group"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage(t("Not-a-member-of-talk-group"), "success", setOpen);
   };
 
   return (
     <>
       <div className={styles["Groupscontainer"]}>
-        {creategrouppage && GroupsReducer.createGroupPageFlag === true ? (
+        {creategrouppage && GroupsReducercreateGroupPageFlag === true ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
           </>
-        ) : updateComponentpage &&
-          GroupsReducer.updateGroupPageFlag === true ? (
+        ) : updateComponentpage && GroupsReducerupdateGroupPageFlag === true ? (
           <>
             <UpdateGroupPage setUpdateComponentpage={setUpdateComponentpage} />
           </>
-        ) : ViewGroupPage && GroupsReducer.viewGroupPageFlag === true ? (
+        ) : ViewGroupPage && GroupsReducerviewGroupPageFlag === true ? (
           <>
             <ViewGrouppage
               setViewGroupPage={setViewGroupPage}
@@ -748,7 +733,7 @@ const Groups = () => {
         />
       ) : null}
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

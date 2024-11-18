@@ -27,6 +27,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   width: 100% !important;
   padding: 50px 50px !important;
   margin-bottom: 20px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .Gray_Border_box {
@@ -101,11 +108,6 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-/* .Abstain_btn_vote_resolution:hover {
-  background: #fff;
-  color: #828282;
-  border: 1px solid #828282;
-} */
 .Notapproved_btn_voteresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -280,8 +282,6 @@ body[dir="rtl"] .Total_voters_voteResolution {
 .Status_voteResolutioin {
   font-size: 30px !important;
   font-weight: 600;
-
-  /* color: #ddb227 !important; */
 }
 
 body[dir="rtl"] .Status_voteResolutioin {
@@ -311,7 +311,6 @@ body[dir="rtl"] .close_btn_VoteResolution {
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   font-weight: 600;
-
 }
 
 .save_btn_VoteResolution {
@@ -321,12 +320,10 @@ body[dir="rtl"] .close_btn_VoteResolution {
   background: #6172d6;
   color: #fff;
   font-weight: 600;
-
 }
 
 body[dir="rtl"] .save_btn_VoteResolution {
   font-weight: 600;
-
 }
 
 .save_btn_VoteResolution:hover,
@@ -368,9 +365,7 @@ body[dir="rtl"] .Your_vote_voteresolution {
 
 .VotingMethods_box span {
   font-weight: 600;
-
   font-size: 16px !important;
-  /* color: #6172d6 !important; */
 }
 
 .line_voteResolution {

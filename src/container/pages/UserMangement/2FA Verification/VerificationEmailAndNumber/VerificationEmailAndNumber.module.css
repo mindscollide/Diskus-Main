@@ -1,7 +1,6 @@
 .EmailVerifyOTPbox {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   flex-direction: column;
   width: 380px !important;
   padding: 30px 45px;
@@ -47,7 +46,6 @@ body[dir="rtl"] .verify_heading_line2 {
 
 .subscribNow_button_EmailVerify {
   width: 280px;
-  /* height: 1; */
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
@@ -63,7 +61,6 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 
 .subscribNow_button_EmailVerify:hover {
   width: 280px;
-  /* height: 1; */
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
@@ -92,9 +89,16 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
 /* Start */
 
 .OTP_auth_paper {
-  /* margin-left: 60px; */
-  /* padding: 30px 0; */
-  border: 1px solid lightgray;
+  padding: 40px 20px;
+  border: 1px solid #e1e1e1;
+  /* max-width: 330px; */
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 /* End */

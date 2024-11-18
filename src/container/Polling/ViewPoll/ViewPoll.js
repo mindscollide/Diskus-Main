@@ -7,15 +7,17 @@ import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { setviewpollModal } from "../../../store/actions/Polls_actions";
-import moment from "moment";
 import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 
 const ViewPoll = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const PollsReducerAllpolls = useSelector(
+    (state) => state.PollsReducer.Allpolls
+  );
+  const PollsReducerviewPollModal = useSelector(
+    (state) => state.PollsReducer.viewPollModal
+  );
 
   const [viewpollMembers, setViewPollmembers] = useState([]);
 
@@ -26,27 +28,20 @@ const ViewPoll = () => {
     allowmultipleanswers: false,
   });
   const { t } = useTranslation();
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
-
-    return newDate;
-  };
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollanswers = [];
-      if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 0) {
-        setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions);
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
+      if (Object.keys(PollsReducerAllpolls.poll.pollOptions).length > 0) {
+        setPollAnswersDetailsView(PollsReducerAllpolls.poll.pollOptions);
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      console.log(PollsReducer.Allpolls, "PollsReducer");
+    if (PollsReducerAllpolls !== null && PollsReducerAllpolls !== undefined) {
       let users = [];
-      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+      if (Object.keys(PollsReducerAllpolls.poll.pollParticipants).length > 0) {
+        PollsReducerAllpolls.poll.pollParticipants.forEach((data) => {
           users.push({
             emailAddress: data.emailAddress,
             userName: data.userName,
@@ -56,20 +51,19 @@ const ViewPoll = () => {
       }
       setViewPollsDetails({
         ...viewPollsDetails,
-        date: PollsReducer.Allpolls.poll.pollDetails.dueDate,
-        Title: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
+        date: PollsReducerAllpolls.poll.pollDetails.dueDate,
+        Title: PollsReducerAllpolls.poll.pollDetails.pollTitle,
         allowmultipleanswers:
-          PollsReducer.Allpolls.poll.pollDetails.allowMultipleAnswers,
+          PollsReducerAllpolls.poll.pollDetails.allowMultipleAnswers,
       });
       setViewPollmembers(users);
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducerAllpolls]);
 
-  console.log(viewPollsDetails.date, "viewPollsDetails");
   return (
     <Container>
       <Modal
-        show={PollsReducer.viewPollModal}
+        show={PollsReducerviewPollModal}
         setShow={dispatch(setviewpollModal)}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
@@ -230,7 +224,7 @@ const ViewPoll = () => {
                     }
                   >
                     <Row>
-                      {viewpollMembers.map((data, index) => {
+                      {viewpollMembers.map((data) => {
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>

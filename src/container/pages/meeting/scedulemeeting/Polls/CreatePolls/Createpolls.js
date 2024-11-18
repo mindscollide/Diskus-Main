@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {
   Button,
@@ -35,13 +33,23 @@ import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const getMeetingusers = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingusers
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
+
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -54,8 +62,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     date: "",
   });
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
 
   const [options, setOptions] = useState([
@@ -74,8 +80,9 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   ]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   const [members, setMembers] = useState([]);
@@ -89,7 +96,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
         return item.name === name ? { ...item, value: newValue } : item;
@@ -109,16 +115,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           setOptions([...options, newOptions]);
         }
       } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+        showMessage(t("Please-fill-options"), "error", setOpen);
       }
     } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
+      showMessage(t("Please-fill-options"), "error", setOpen);
     }
   };
 
@@ -130,14 +130,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   const handleCancelButton = () => {
     dispatch(showUnsavedPollsMeeting(true));
-  };
-
-  const handleViewPollsUnPublished = () => {
-    setSavedPolls(true);
-  };
-
-  const handleViewPollsPublished = () => {
-    setSavePollsPublished(true);
   };
 
   const HandleChange = (e, index) => {
@@ -185,12 +177,12 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   }, []);
 
   useEffect(() => {
-    let pollMeetingData = NewMeetingreducer.getMeetingusers;
+    let pollMeetingData = getMeetingusers;
     if (pollMeetingData !== undefined && pollMeetingData !== null) {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
         if (pollMeetingData.meetingOrganizers.length > 0) {
-          pollMeetingData.meetingOrganizers.map(
+          pollMeetingData.meetingOrganizers.forEach(
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
                 value: MorganizerData.userID,
@@ -227,7 +219,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
         if (pollMeetingData.meetingAgendaContributors.length > 0) {
-          pollMeetingData.meetingAgendaContributors.map(
+          pollMeetingData.meetingAgendaContributors.forEach(
             (meetAgendaContributor, meetAgendaContributorIndex) => {
               let MeetingAgendaContributorData = {
                 value: meetAgendaContributor.userID,
@@ -264,7 +256,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
         if (pollMeetingData.meetingParticipants.length > 0) {
-          pollMeetingData.meetingParticipants.map(
+          pollMeetingData.meetingParticipants.forEach(
             (meetParticipants, meetParticipantsIndex) => {
               let MeetingParticipantsData = {
                 value: meetParticipants.userID,
@@ -308,7 +300,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
     } else {
       setmemberSelect([]);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [getMeetingusers]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -316,18 +308,14 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   const handleAddUsers = () => {
-    let pollsData = NewMeetingreducer.getMeetingusers;
+    let pollsData = getMeetingusers;
 
     let tem = [...members];
     let newarr = [];
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.map((seledtedData, index) => {
-            console.log(
-              seledtedData,
-              "seledtedDataseledtedDataseledtedDataseledtedData"
-            );
+          selectedsearch.forEach((seledtedData, index) => {
             if (seledtedData.type === 1) {
               let check1 = pollsData.meetingOrganizers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -336,10 +324,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
@@ -365,10 +351,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
@@ -393,10 +377,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
               if (check1 !== undefined) {
                 newarr.push(check1);
 
-                let meetingOrganizers = check1;
-
                 if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
+                  newarr.forEach((morganizer, index) => {
                     let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
@@ -472,41 +454,17 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       // setError(true);
 
       if (pollsData.Title === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
+        showMessage(t("Title-is-required"), "error", setOpen);
       } else if (pollsData.date === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
+        showMessage(t("Select-date"), "error", setOpen);
       } else if (Object.keys(members).length === 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
+        showMessage(t("Atleat-one-member-required"), "error", setOpen);
       } else if (Object.keys(options).length <= 1) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
+        showMessage(t("Required-atleast-two-options"), "error", setOpen);
       } else if (!allValuesNotEmpty) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-open-option-fields"),
-        });
+        showMessage(t("Please-fill-all-open-option-fields"), "error", setOpen);
       } else {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
+        showMessage(t("Please-fill-all-reqired-fields"), "error", setOpen);
       }
     }
   };
@@ -521,27 +479,16 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      ResponseMessage !== "" &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <>
@@ -709,8 +656,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                       className="datePickerTodoCreate2"
                       onOpenPickNewDate={true}
                       inputMode=""
-                      calendar={calendarValue}
-                      locale={localValue}
+                      calendar={gregorian}
+                      locale={gregorian_en}
                       ref={calendRef}
                       onFocusedDateChange={(value) =>
                         changeDateStartHandler(value)
@@ -805,6 +752,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
+                                              alt=""
                                               height="33px"
                                               width="33px"
                                               className={
@@ -826,6 +774,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
+                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
@@ -864,24 +813,17 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(1)}
-                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Publish")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
                   onClick={() => SavePollsButtonFunc(2)}
-
-                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>
-            <Notification
-              setOpen={setOpen}
-              open={open.flag}
-              message={open.message}
-            />
+            <Notification open={open} setOpen={setOpen} />
 
-            {NewMeetingreducer.unsavedPollsMeeting && (
+            {unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
           </section>

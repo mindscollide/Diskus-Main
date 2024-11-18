@@ -8,22 +8,22 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Checkbox,
-  CustomRadio2,
   Notification,
 } from "../../../../../../components/elements";
 import { Progress, Radio } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
-import { Radio3 } from "../../../../../../components/elements/radio/Radio3";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   let userID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,10 +49,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
     } else {
       // open sncak bar for atleast select one option
-      setOpen({
-        open: true,
-        message: t("Required-atleast-one-vote"),
-      });
+      showMessage(t("Required-atleast-one-vote"), "error", setOpen);
     }
   };
   const handleForCheck = (value) => {
@@ -65,18 +62,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       return false;
     }
   };
-  const handleCheckBoxForOneOnly = (e) => {
-    console.log(
-      e,
-      "handleCheckBoxForOneOnlyhandleCheckBoxForOneOnlyhandleCheckBoxForOneOnly"
-    );
-    let value = e.target.value;
 
-    setViewProgressPollsDetails({
-      ...viewProgressPollsDetails,
-      answer: [value],
-    });
-  };
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
     let name = e.target.name;
@@ -100,11 +86,8 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   };
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -126,7 +109,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const handleCancelButton = () => {
     setvotePolls(false);
@@ -173,11 +156,6 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                       <span>({data.totalVotes})</span>
                                     </span>
                                   </Col>
-                                  {/* <Col lg={2} md={2} sm={2}>
-                                  <span className={styles["Percentage_Class"]}>
-                                    59%
-                                  </span>
-                                </Col> */}
                                 </Row>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
@@ -199,17 +177,6 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          // <CustomRadio2
-                                          //   value={
-                                          //     viewProgressPollsDetails.answer
-                                          //   }
-                                          //   Optios={data.pollAnswerID}
-                                          //   onChange={handleCheckBoxForOneOnly}
-
-                                          //   className={
-                                          //     styles["Custom_radio_button"]
-                                          //   }
-                                          // />
                                           <Radio.Group
                                             onChange={(e) =>
                                               setViewProgressPollsDetails({
@@ -342,7 +309,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
           </Col>
         </Row>
       </section>
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

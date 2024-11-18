@@ -30,9 +30,7 @@ import {
   DataRoomAllFilesDownloads,
 } from "../../commen/apis/Api_ends_points";
 import {
-  GetAllAgendaWiseMinutesApiFunc,
   GetAllUserAgendaRightsApiFunc,
-  showVoteAgendaModal,
   meetingDetailsGlobalFlag,
   organizersGlobalFlag,
   agendaContributorsGlobalFlag,
@@ -1169,21 +1167,9 @@ const saveFiles_fail = (message) => {
 const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: data,
-    // Files: [
-    //   {
-    //     DisplayFileName: data.displayFileName,
-    //     DiskusFileNameString: data.diskusFileName,
-    //     ShareAbleLink: data.shareAbleLink,
-    //     FK_UserID: JSON.parse(createrID),
-    //     FK_OrganizationID: JSON.parse(OrganizationID),
-    //     FileSizeOnDisk: Number(data.fileSizeOnDisk),
-    //     FileSize: Number(data.fileSize),
-    //   },
-    // ],
     UserID: JSON.parse(createrID),
     Type: 0,
   };
@@ -2169,7 +2155,6 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
   let form = new FormData();
   form.append("RequestMethod", exportAgendaAsPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
-  let contentType = "application/pdf";
   return (dispatch) => {
     dispatch(sendAgendaPDFAsEmail_init());
     axios({

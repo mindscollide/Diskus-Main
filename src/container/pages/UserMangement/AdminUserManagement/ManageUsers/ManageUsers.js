@@ -11,7 +11,6 @@ import {
   Checkbox,
   Table,
   TextField,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
 import greenCheck from "../../../../../assets/images/greenCheck.svg";
@@ -34,6 +33,7 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const ManageUsers = () => {
   const { t } = useTranslation();
 
@@ -45,10 +45,34 @@ const ManageUsers = () => {
 
   let userID = localStorage.getItem("userID");
 
-  let FreeTrial = localStorage.getItem("isTrial");
+  const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+  );
 
-  const { UserMangementReducer, UserManagementModals } = useSelector(
-    (state) => state
+  const UserMangementReducerallOrganizationUsersData = useSelector(
+    (state) => state.UserMangementReducer.allOrganizationUsersData
+  );
+
+  console.log(UserMangementReducerallOrganizationUsersData, "statestate");
+
+  const UserMangementReducerResponseMessage = useSelector(
+    (state) => state.UserMangementReducer.ResponseMessage
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const UserManagementModalsdeleteUsersModal = useSelector(
+    (state) => state.UserManagementModals.deleteUsersModal
+  );
+
+  const UserManagementModalseditUserModal = useSelector(
+    (state) => state.UserManagementModals.editUserModal
+  );
+
+  const UserManagementModalssuccessfullyUpdated = useSelector(
+    (state) => state.UserManagementModals.successfullyUpdated
   );
 
   //States
@@ -91,6 +115,7 @@ const ManageUsers = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   //AllOrganizationsUsers Api
@@ -123,28 +148,25 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (
-      UserMangementReducer.getOrganizationUserStatsGraph !== null &&
-      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails
+      UserMangementReducergetOrganizationUserStatsGraph !== null &&
+      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails
         .length > 0
     ) {
       let UserCount = 0;
-      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.forEach(
+      UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails.forEach(
         (data) => {
           UserCount += data.headCount - data.packageAllotedUsers;
         }
       );
       setTotalUserCount(UserCount);
     }
-  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+  }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
   //AllOrganizationsUsers Api Data
   useEffect(() => {
     try {
-      console.log("datadatadata");
-      const Users = UserMangementReducer.allOrganizationUsersData;
-      console.log(Users, "UsersUsersUsersUsersUsers");
-      Users.selectedPackageDetails.map((data, index) => {
-        console.log(data, "datadatadata");
+      const Users = UserMangementReducerallOrganizationUsersData;
+      Users.selectedPackageDetails.forEach((data) => {
         setHeadCount(data.headCount);
       });
 
@@ -153,8 +175,9 @@ const ManageUsers = () => {
         Users.organizationUsers &&
         Users.organizationUsers.length > 0
       ) {
+        console.log(Users, "UsersUsersUsersUsersUsersUsers");
         setManageUserGrid(
-          UserMangementReducer.allOrganizationUsersData.organizationUsers
+          UserMangementReducerallOrganizationUsersData.organizationUsers
         );
       } else {
         setManageUserGrid([]);
@@ -162,7 +185,7 @@ const ManageUsers = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [UserMangementReducer.allOrganizationUsersData]);
+  }, [UserMangementReducerallOrganizationUsersData]);
 
   //Table Columns All Users
   const ManageUsersColumn = [
@@ -238,7 +261,6 @@ const ManageUsers = () => {
         }
       },
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         return (
           <>
             {(() => {
@@ -253,7 +275,7 @@ const ManageUsers = () => {
       },
     },
     {
-      title: "User Status",
+      title: t("User-status"),
       dataIndex: "userStatus",
       key: "userStatus",
       align: "left",
@@ -266,28 +288,36 @@ const ManageUsers = () => {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-enabled"></span>
-                    <p className="m-0 userName FontArabicRegular">Enabled</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Enabled")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Disabled") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-disabled"></span>
-                    <p className="m-0 userName FontArabicRegular">Disabled</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Disabled")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Dormant") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-dormant"></span>
-                    <p className="m-0 userName FontArabicRegular">Dormant</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Dormant")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Locked") {
                 return (
                   <div className="d-flex">
                     <span className="userstatus-signal-locked"></span>
-                    <p className="m-0 userName FontArabicRegular">Locked</p>
+                    <p className="m-0 userName FontArabicRegular">
+                      {t("Locked")}
+                    </p>
                   </div>
                 );
               } else if (record.userStatus === "Closed") {
@@ -295,7 +325,7 @@ const ManageUsers = () => {
                   <div className="d-flex">
                     <span className="userstatus-signal-closed"></span>
                     <p className="m-0 Disabled-Close userName FontArabicRegular">
-                      Closed
+                      {t("Closed")}
                     </p>
                   </div>
                 );
@@ -403,7 +433,7 @@ const ManageUsers = () => {
     }
 
     const filteredData =
-      UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+      UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
         (user) => {
           console.log(user, "useruseruseruseruser");
           const nameInput = searchDetails.Name || "";
@@ -493,19 +523,18 @@ const ManageUsers = () => {
 
   // handle Edit User Modal
   const handleClickEditIcon = (record) => {
-    console.log(record, "recordrecord");
     setEditModalData(record);
     dispatch(showEditUserModal(true));
   };
 
   //Options For Search
   const options = [
-    { value: "Enabled", label: "Enabled" },
-    { value: "Disabled", label: "Disabled" },
-    { value: "Locked", label: "Locked" },
-    { value: "Closed", label: "Closed" },
-    { value: "Dormant", label: "Dormant" },
-    { value: "Delete", label: "Delete" },
+    { value: "Enabled", label: t("Enabled") },
+    { value: "Disabled", label: t("Disabled") },
+    { value: "Locked", label: t("Locked") },
+    { value: "Closed", label: t("Closed") },
+    { value: "Dormant", label: t("Dormant") },
+    { value: "Delete", label: t("Delete") },
   ];
 
   //Status onChange Search
@@ -540,7 +569,7 @@ const ManageUsers = () => {
     if (e.key === "Enter") {
       setEnterpressed(true);
       const filteredData =
-        UserMangementReducer.allOrganizationUsersData.organizationUsers.filter(
+        UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
           (user) => {
             const matchesName =
               manangeUserSearch.searchValue === "" ||
@@ -580,22 +609,13 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (
-      UserMangementReducer.ResponseMessage !== "" &&
-      UserMangementReducer.ResponseMessage !== t("No-data-found")
+      UserMangementReducerResponseMessage !== "" &&
+      UserMangementReducerResponseMessage !== t("No-data-found")
     ) {
-      setOpen({
-        open: true,
-        message: UserMangementReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 4000);
+      showMessage(UserMangementReducerResponseMessage, "success", setOpen);
       dispatch(clearMessegesUserManagement());
     }
-  }, [UserMangementReducer.ResponseMessage]);
+  }, [UserMangementReducerResponseMessage]);
 
   return (
     <Container>
@@ -619,16 +639,16 @@ const ManageUsers = () => {
             />
           ) : null}
         </Col>
+        <Col lg={1} md={1} sm={1} xs={12}></Col>
         <Col
-          lg={6}
-          md={6}
-          sm={6}
+          lg={5}
+          md={5}
+          sm={5}
           xs={12}
-          className="justify-content-end d-flex align-items-center"
+          className="justify-content-end d-block align-items-center m-0 p-0"
         >
           <span className="position-relative">
             <TextField
-              width={"502px"}
               placeholder={t("Search")}
               name={"SearchVal"}
               value={manangeUserSearch.searchValue}
@@ -874,17 +894,16 @@ const ManageUsers = () => {
           />
         </Col>
       </Row>
-      {UserManagementModals.deleteUsersModal && (
+      {UserManagementModalsdeleteUsersModal && (
         <DeleteUserModal deleteModalData={deleteModalData} />
       )}
-      {UserManagementModals.editUserModal && (
+      {UserManagementModalseditUserModal && (
         <EditUserModal editModalData={editModalData} />
       )}
-      {UserManagementModals.successfullyUpdated && (
+      {UserManagementModalssuccessfullyUpdated && (
         <SuccessfullyUpdateModal editModalData={editModalData} />
       )}
-      {UserMangementReducer.Loading ? <Loader /> : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </Container>
   );
 };

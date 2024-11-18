@@ -6,11 +6,12 @@ export const MeetingContext = createContext();
 
 // Create a Provider component
 export const MeetingProvider = ({ children }) => {
-  const { settingReducer } = useSelector((state) => state);
+  const UserProfileData = useSelector(
+    (state) => state.settingReducer.UserProfileData
+  );
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
   // Meeting Details State
-  const [currentMeeting, setCurrentMeetingID] = useState(0);
   const [cancelConfirmationModal, setCancelConfirmationModal] = useState(false);
   const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] =
     useState(false);
@@ -20,15 +21,12 @@ export const MeetingProvider = ({ children }) => {
     role: null,
     isPrimaryOrganizer: false,
   });
-  const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null)
+  const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
   useEffect(() => {
     try {
-      if (
-        settingReducer.UserProfileData !== null &&
-        settingReducer.UserProfileData !== undefined
-      ) {
+      if (UserProfileData !== null && UserProfileData !== undefined) {
         setIsAgendaUpdateWhenMeetingActive(
-          settingReducer.UserProfileData?.emailWhenActiveMeetingAgendaUpdated
+          UserProfileData?.emailWhenActiveMeetingAgendaUpdated
         );
       } else {
         setIsAgendaUpdateWhenMeetingActive(true);
@@ -36,7 +34,7 @@ export const MeetingProvider = ({ children }) => {
     } catch (error) {
       setIsAgendaUpdateWhenMeetingActive(true);
     }
-  }, [settingReducer.UserProfileData]);
+  }, [UserProfileData]);
   return (
     <MeetingContext.Provider
       value={{
@@ -50,8 +48,9 @@ export const MeetingProvider = ({ children }) => {
         endMeetingConfirmationModal,
         setEndMeetingConfirmationModal,
         setCurrentMeetingStatus,
-        currentMeetingStatus
-      }}>
+        currentMeetingStatus,
+      }}
+    >
       {children}
     </MeetingContext.Provider>
   );

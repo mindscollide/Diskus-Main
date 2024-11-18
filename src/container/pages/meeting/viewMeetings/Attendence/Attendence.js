@@ -7,12 +7,10 @@ import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Table,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
 import {
   clearAttendanceResponse,
-  clearAttendanceState,
   getAllAttendanceMeetingApi,
   saveMeetingAttendanceApi,
 } from "../../../../../store/actions/Attendance_Meeting";
@@ -34,6 +32,7 @@ import {
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const Attendence = ({
   setPolls,
   setMinutes,
@@ -49,34 +48,28 @@ const Attendence = ({
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [useCase, setUseCase] = useState(0);
   //reducer call from Attendance_Reducers
-  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
-    (state) => state
+  const attendanceConfirmationModal = useSelector(
+    (state) => state.NewMeetingreducer.attendanceConfirmationModal
   );
-  console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
-
-  let meetingID = Number(localStorage.getItem("meetingID"));
-
-  const [attendenceRows, setAttendenceRows] = useState([]);
-  console.log(attendenceRows, "attendenceRowsattendenceRows");
 
   const ResponseMessage = useSelector(
     (state) => state.attendanceMeetingReducer.ResponseMessage
   );
-
-  console.log(ResponseMessage, "ResponseMessageResponseMessage");
-
+  const attendanceMeetings = useSelector(
+    (state) => state.attendanceMeetingReducer.attendanceMeetings
+  );
+  const [attendenceRows, setAttendenceRows] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
 
   const [cancelModalView, setCancelModalView] = useState(false);
-
-  console.log(meetingID, "meetingIDmeetingID");
 
   const enablePresent = (record, status) => {
     const updatedRows = attendenceRows.map((row) => {
@@ -273,24 +266,15 @@ const Attendence = ({
   // for rendering data in table
   useEffect(() => {
     if (
-      attendanceMeetingReducer.attendanceMeetings !== null &&
-      attendanceMeetingReducer.attendanceMeetings !== undefined &&
-      attendanceMeetingReducer.attendanceMeetings.length > 0
+      attendanceMeetings !== null &&
+      attendanceMeetings !== undefined &&
+      attendanceMeetings.length > 0
     ) {
-      console.log(
-        attendanceMeetingReducer.attendanceMeetings,
-        "setAttendenceRowssetAttendenceRows"
-      );
-      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
+      setAttendenceRows(attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
-  }, [attendanceMeetingReducer.attendanceMeetings]);
-
-  console.log(
-    attendanceMeetingReducer.attendanceMeetings,
-    "attendanceMeetingReducerattendanceMeetings"
-  );
+  }, [attendanceMeetings]);
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -305,7 +289,7 @@ const Attendence = ({
   // Function to handle notification logic
   const handleSaveNotification = () => {
     if (ResponseMessage) {
-      setOpen({ open: true, message: ResponseMessage });
+      showMessage(ResponseMessage, "success", setOpen);
 
       // Dispatch an action to reset/clear ResponseMessage
       dispatch(clearAttendanceResponse());
@@ -351,35 +335,18 @@ const Attendence = ({
   // This is how I can revert Data without Hitting an API
   const revertHandler = () => {
     if (
-      attendanceMeetingReducer.attendanceMeetings !== null &&
-      attendanceMeetingReducer.attendanceMeetings !== undefined &&
-      attendanceMeetingReducer.attendanceMeetings.length > 0
+      attendanceMeetings !== null &&
+      attendanceMeetings !== undefined &&
+      attendanceMeetings.length > 0
     ) {
-      setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
+      setAttendenceRows(attendanceMeetings);
     } else {
       setAttendenceRows([]);
     }
   };
 
-  const navigatePrevHandler = () => {
-    let ReducerAttendeceData = deepEqual(
-      attendanceMeetingReducer.attendanceMeetings,
-      attendenceRows
-    );
-    if (ReducerAttendeceData) {
-      setPolls(true);
-      setAttendance(false);
-    } else {
-      dispatch(showAttendanceConfirmationModal(true));
-      setUseCase(1);
-    }
-  };
-
   const handleCancelBtn = () => {
-    let ReducerAttendeceData = deepEqual(
-      attendanceMeetingReducer.attendanceMeetings,
-      attendenceRows
-    );
+    let ReducerAttendeceData = deepEqual(attendanceMeetings, attendenceRows);
     if (ReducerAttendeceData) {
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -397,8 +364,8 @@ const Attendence = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
@@ -436,11 +403,7 @@ const Attendence = ({
             className={styles["Cancel_Meeting_Details"]}
             onClick={handleCancelBtn}
           />
-          {/* <Button
-            text={t("Previous")}
-            onClick={navigatePrevHandler}
-            className={styles["CloneMeetingStyles"]}
-          /> */}
+
           <Button
             text={t("Revert")}
             onClick={() => revertHandler()}
@@ -467,7 +430,7 @@ const Attendence = ({
         />
       )}
 
-      {NewMeetingreducer.attendanceConfirmationModal && (
+      {attendanceConfirmationModal && (
         <ModalCancelAttendance
           setAttendance={setAttendance}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -476,7 +439,7 @@ const Attendence = ({
         />
       )}
 
-      <Notification message={open.message} setOpen={setOpen} open={open.open} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -3,7 +3,6 @@ import styles from "./VoteModalConfirm.module.css";
 import { Modal, Button } from "../../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import {
   showVoteAgendaModal,
@@ -12,7 +11,6 @@ import {
 const VoteModalConfirm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const noBtnFunctionality = () => {

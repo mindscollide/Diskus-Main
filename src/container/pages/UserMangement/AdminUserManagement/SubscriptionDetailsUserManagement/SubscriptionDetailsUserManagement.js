@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./SubscriptionDetailsUserManagement.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,11 +11,11 @@ import {
 } from "../../../../../store/actions/UserManagementActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { render } from "@testing-library/react";
 import {
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const SubscriptionDetailsUserManagement = () => {
   const { t } = useTranslation();
 
@@ -23,7 +23,14 @@ const SubscriptionDetailsUserManagement = () => {
 
   const dispatch = useDispatch();
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  let Locale = localStorage.getItem("i18nextLng");
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
 
   //Subscription Details Table Data
   const [subscriptionDetails, setSubscriptionDetails] = useState([]);
@@ -47,86 +54,102 @@ const SubscriptionDetailsUserManagement = () => {
   useEffect(() => {
     try {
       const data =
-        UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+        UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
       if (data) {
         setSubscriptionDetails(data.organizationSubscriptions);
       }
     } catch (error) {
       console.log("error", error);
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   // Calculate total essential licenses count
   const totalEssentialLicenses = subscriptionDetails.reduce((total, record) => {
-    if (!record.IsDefaultRow) {
-      const essentialPackage = record.organizationSelectedPackages?.find(
-        (pkg) => pkg.name === "Essential"
-      );
-      if (essentialPackage) {
-        return total + essentialPackage.headCount;
-      }
-    }
-    return total;
-  }, 0);
-
-  // Calculate total essential licenses count
-  const totalProfessionalLicenses = subscriptionDetails.reduce(
-    (total, record) => {
+    try {
       if (!record.IsDefaultRow) {
         const essentialPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Professional"
+          (pkg) => pkg.name === "Essential"
         );
         if (essentialPackage) {
           return total + essentialPackage.headCount;
         }
       }
       return total;
+    } catch (error) {
+      console.error("totalEssentialLicenses", error);
+    }
+  }, 0);
+
+  // Calculate total essential licenses count
+  const totalProfessionalLicenses = subscriptionDetails.reduce(
+    (total, record) => {
+      try {
+        if (!record.IsDefaultRow) {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          if (essentialPackage) {
+            return total + essentialPackage.headCount;
+          }
+        }
+        return total;
+      } catch (error) {
+        console.error("totalProfessionalLicenses", error);
+      }
     },
     0
   );
 
   // Calculate total essential licenses count
   const totalPremiumLicenses = subscriptionDetails.reduce((total, record) => {
-    if (!record.IsDefaultRow) {
-      const essentialPackage = record.organizationSelectedPackages?.find(
-        (pkg) => pkg.name === "Premium"
-      );
-      if (essentialPackage) {
-        return total + essentialPackage.headCount;
+    try {
+      if (!record.IsDefaultRow) {
+        const essentialPackage = record.organizationSelectedPackages?.find(
+          (pkg) => pkg.name === "Premium"
+        );
+        if (essentialPackage) {
+          return total + essentialPackage.headCount;
+        }
       }
+      return total;
+    } catch (error) {
+      console.error("totalPremiumLicenses", error);
     }
-    return total;
   }, 0);
 
   //Calculating the total of total charges
   const calculateTotalCharges = (dataSource) => {
     let totalCharges = dataSource.reduce((total, record) => {
-      if (!record.IsDefaultRow) {
-        const essentialPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Essential"
-        );
-        const ProfessionalPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Professional"
-        );
-        const PremiumPackage = record.organizationSelectedPackages?.find(
-          (pkg) => pkg.name === "Premium"
-        );
+      try {
+        if (!record.IsDefaultRow) {
+          const essentialPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Essential"
+          );
+          const ProfessionalPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Professional"
+          );
+          const PremiumPackage = record.organizationSelectedPackages?.find(
+            (pkg) => pkg.name === "Premium"
+          );
 
-        const EssentialTotal = essentialPackage
-          ? essentialPackage.headCount * essentialPackage.price
-          : 0;
+          const EssentialTotal = essentialPackage
+            ? essentialPackage.headCount * essentialPackage.price
+            : 0;
 
-        const ProfessionalTotal = ProfessionalPackage
-          ? ProfessionalPackage.headCount * ProfessionalPackage.price
-          : 0;
+          const ProfessionalTotal = ProfessionalPackage
+            ? ProfessionalPackage.headCount * ProfessionalPackage.price
+            : 0;
 
-        const PremiumTotal = PremiumPackage
-          ? PremiumPackage.headCount * PremiumPackage.price
-          : 0;
+          const PremiumTotal = PremiumPackage
+            ? PremiumPackage.headCount * PremiumPackage.price
+            : 0;
 
-        return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
+          return total + EssentialTotal + ProfessionalTotal + PremiumTotal;
+        }
+        return total;
+      } catch (error) {
+        console.error("calculateTotalCharges", error);
       }
-      return total;
     }, 0);
 
     return totalCharges;
@@ -145,25 +168,34 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return (
-            <>
-              <span className={styles["TableheadingTotal"]}>{t("Total")}</span>
-            </>
-          );
-        } else {
-          let startdate = record.subscriptionStartDate;
-          let orgnizationID = record.fK_OrganizationsID;
-          let organizationSubscriptionID = record.fK_SubscriptionStatusID;
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {`${formatDateToDDMMYYYYDownGradeSubscription(
-                  startdate
-                )}-${orgnizationID}-${organizationSubscriptionID}`}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return (
+              <>
+                <span className={styles["TableheadingTotal_Main_Heading"]}>
+                  {t("Total")}
+                </span>
+              </>
+            );
+          } else {
+            let startdate = record.subscriptionStartDate;
+            let orgnizationID = record.fK_OrganizationsID;
+            let organizationSubscriptionID = record.fK_SubscriptionStatusID;
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {convertToArabicNumerals(
+                    `${formatDateToDDMMYYYYDownGradeSubscription(
+                      startdate
+                    )}-${orgnizationID}-${organizationSubscriptionID}`,
+                    Locale
+                  )}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -179,23 +211,27 @@ const SubscriptionDetailsUserManagement = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        console.log(record.organizationSelectedPackages, "recordrecord");
-        if (record.IsDefaultRow) {
-          return <></>;
-        } else {
-          return (
-            <>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
-                  <span className={styles["SubscritionNumber_Styles"]}>
-                    {formatDateDownGradeSubscription(
-                      record.subscriptionStartDate
-                    )}
-                  </span>
-                </Col>
-              </Row>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return <></>;
+          } else {
+            return (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="text-center">
+                    <span className={styles["SubscritionNumber_Styles"]}>
+                      {formatDateDownGradeSubscription(
+                        record.subscriptionStartDate,
+                        Locale
+                      )}
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -211,16 +247,23 @@ const SubscriptionDetailsUserManagement = () => {
       key: "ExpiryDate",
       align: "center",
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return <></>;
-        } else {
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {formatDateDownGradeSubscription(record.subscriptionExpiryDate)}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return <></>;
+          } else {
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {formatDateDownGradeSubscription(
+                    record.subscriptionExpiryDate,
+                    Locale
+                  )}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -236,16 +279,20 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return <></>;
-        } else {
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {record.tenure}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return <></>;
+          } else {
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {record.tenure}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -264,27 +311,30 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
-          return (
-            <>
-              <span className={styles["TableheadingTotal"]}>
-                {totalEssentialLicenses}
-              </span>
-            </>
-          );
-        } else {
-          const essentialPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Essential"
-          );
-          const headCount = essentialPackage ? essentialPackage.headCount : 0;
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {headCount}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return (
+              <>
+                <span className={styles["TableheadingTotal"]}>
+                  {convertToArabicNumerals(totalEssentialLicenses, Locale)}
+                </span>
+              </>
+            );
+          } else {
+            const essentialPackage = record.organizationSelectedPackages?.find(
+              (pkg) => pkg.name === "Essential"
+            );
+            const headCount = essentialPackage ? essentialPackage.headCount : 0;
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {convertToArabicNumerals(headCount, Locale)}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -303,28 +353,33 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return (
-            <>
-              <span className={styles["TableheadingTotal"]}>
-                {totalProfessionalLicenses}
-              </span>
-            </>
-          );
-        } else {
-          const professionalPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Professional"
-          );
-          const headCount = professionalPackage
-            ? professionalPackage.headCount
-            : 0;
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {headCount}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return (
+              <>
+                <span className={styles["TableheadingTotal"]}>
+                  {convertToArabicNumerals(totalProfessionalLicenses, Locale)}
+                </span>
+              </>
+            );
+          } else {
+            const professionalPackage =
+              record.organizationSelectedPackages?.find(
+                (pkg) => pkg.name === "Professional"
+              );
+            const headCount = professionalPackage
+              ? professionalPackage.headCount
+              : 0;
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {convertToArabicNumerals(headCount, Locale)}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -343,26 +398,30 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       width: 100,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return (
-            <>
-              <span className={styles["TableheadingTotal"]}>
-                {totalPremiumLicenses}
-              </span>
-            </>
-          );
-        } else {
-          const premiumPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Premium"
-          );
-          const headCount = premiumPackage ? premiumPackage.headCount : 0;
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {headCount}
-              </span>
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return (
+              <>
+                <span className={styles["TableheadingTotal"]}>
+                  {convertToArabicNumerals(totalPremiumLicenses, Locale)}
+                </span>
+              </>
+            );
+          } else {
+            const premiumPackage = record.organizationSelectedPackages?.find(
+              (pkg) => pkg.name === "Premium"
+            );
+            const headCount = premiumPackage ? premiumPackage.headCount : 0;
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {convertToArabicNumerals(headCount, Locale)}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -381,40 +440,49 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
-          const totalCharges = calculateTotalCharges(subscriptionDetails);
+        try {
+          if (record.IsDefaultRow) {
+            const totalCharges = calculateTotalCharges(subscriptionDetails);
 
-          return (
-            <span className={styles["TableheadingTotal"]}>{totalCharges}</span>
-          );
-        } else {
-          const essentialPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Essential"
-          );
-          const ProfessionalPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Professional"
-          );
-          const PremiumPackage = record.organizationSelectedPackages?.find(
-            (pkg) => pkg.name === "Premium"
-          );
-          const EssentialTotal = essentialPackage
-            ? essentialPackage.headCount * essentialPackage.price
-            : 0;
-
-          const ProfessionalTotal = ProfessionalPackage
-            ? ProfessionalPackage.headCount * ProfessionalPackage.price
-            : 0;
-          const PremiumTotal = PremiumPackage
-            ? PremiumPackage.headCount * PremiumPackage.price
-            : 0;
-          return (
-            <>
-              <span className={styles["SubscritionNumber_Styles"]}>
-                {EssentialTotal + ProfessionalTotal + PremiumTotal}
+            return (
+              <span className={styles["TableheadingTotal"]}>
+                {convertToArabicNumerals(totalCharges, Locale)}
               </span>
-            </>
-          );
+            );
+          } else {
+            const essentialPackage = record.organizationSelectedPackages?.find(
+              (pkg) => pkg.name === "Essential"
+            );
+            const ProfessionalPackage =
+              record.organizationSelectedPackages?.find(
+                (pkg) => pkg.name === "Professional"
+              );
+            const PremiumPackage = record.organizationSelectedPackages?.find(
+              (pkg) => pkg.name === "Premium"
+            );
+            const EssentialTotal = essentialPackage
+              ? essentialPackage.headCount * essentialPackage.price
+              : 0;
+
+            const ProfessionalTotal = ProfessionalPackage
+              ? ProfessionalPackage.headCount * ProfessionalPackage.price
+              : 0;
+            const PremiumTotal = PremiumPackage
+              ? PremiumPackage.headCount * PremiumPackage.price
+              : 0;
+            return (
+              <>
+                <span className={styles["SubscritionNumber_Styles"]}>
+                  {convertToArabicNumerals(
+                    EssentialTotal + ProfessionalTotal + PremiumTotal,
+                    Locale
+                  )}
+                </span>
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -433,18 +501,22 @@ const SubscriptionDetailsUserManagement = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
-          return <></>;
-        } else {
-          return (
-            <>
-              <Button
-                text={"Downgrade"}
-                className={styles["DowngradeButton_styles"]}
-                onClick={() => handleDowngradeOption(record)}
-              />
-            </>
-          );
+        try {
+          if (record.IsDefaultRow) {
+            return <></>;
+          } else {
+            return (
+              <>
+                <Button
+                  text={"Downgrade"}
+                  className={styles["DowngradeButton_styles"]}
+                  onClick={() => handleDowngradeOption(record)}
+                />
+              </>
+            );
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     },
@@ -499,7 +571,6 @@ const SubscriptionDetailsUserManagement = () => {
           />
         </Col>
       </Row>
-      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

@@ -2,7 +2,6 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { getNotesApi } from "../../commen/apis/Api_ends_points";
 import {
-  GetNotesByUserIDAndOrganizationID,
   SavesNotesRequestMethod,
   UpdateNotesRequestMethod,
   GetNotesByNotesIDRequestMethod,
@@ -397,6 +396,10 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_01".toLowerCase()
                 )
             ) {
+              console.log(
+                response.data.responseResult.getNotes,
+                "Notes_NotesServiceManager_GetNotesByNotesID_01"
+              );
               dispatch(
                 GetNotesById_Success(response.data.responseResult.getNotes, "")
               );
@@ -428,6 +431,7 @@ const GetNotesByIdAPI = (
                 )
             ) {
               dispatch(GetNotesById_Fail(""));
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -435,18 +439,23 @@ const GetNotesByIdAPI = (
                   "Notes_NotesServiceManager_GetNotesByNotesID_03".toLowerCase()
                 )
             ) {
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             } else {
+              console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             }
           } else {
+            console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
             dispatch(GetNotesById_Fail(t("Something-went-wrong")));
           }
         } else {
+          console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        console.log(response, "Notes_NotesServiceManager_GetNotesByNotesID_01");
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
       });
   };

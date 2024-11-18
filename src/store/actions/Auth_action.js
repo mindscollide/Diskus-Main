@@ -1,9 +1,8 @@
 import * as actions from "../action_types";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { authenticationRefreshToken } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import { signOut, userLogOutApiFunc } from "./Auth_Sign_Out";
+import { signOut } from "./Auth_Sign_Out";
 
 // Refresh Token
 const refreshtokenFail = (message) => {
@@ -22,7 +21,6 @@ const refreshtokenSuccess = (response, message) => {
 };
 
 const RefreshToken = (navigate, t) => {
-  // const navigate = useNavigate();
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
   let Data = {
@@ -48,9 +46,6 @@ const RefreshToken = (navigate, t) => {
               "authenticationApiauthenticationApiauthenticationApi"
             );
             let message2 = t("Your-session-has-expired-please-login-again");
-            // await dispatch(signOut(navigate, message2, dispatch));
-
-            // dispatch(userLogOutApiFunc(navigate, t));
             await dispatch(refreshtokenFail(message2));
             setTimeout(() => {
               signOut(navigate, "", dispatch);

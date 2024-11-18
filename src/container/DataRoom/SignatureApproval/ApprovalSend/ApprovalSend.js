@@ -33,6 +33,7 @@ import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
     (state) => state.SignatureWorkFlowReducer
   );
@@ -73,7 +74,7 @@ const ApprovalSend = () => {
       dataIndex: "fileName",
       key: "fileName",
       className: "nameParticipant",
-      align: "left",
+      align: "start",
       ellipsis: true,
       width: 200,
       sortDirections: ["ascend", "descend"],
@@ -168,7 +169,7 @@ const ApprovalSend = () => {
         } else {
           return (
             <span className={styles["date_vale"]}>
-              {SignatureandPendingApprovalDateTIme(text)}
+              {SignatureandPendingApprovalDateTIme(text, CurrentLanguage)}
             </span>
           );
         }
@@ -201,7 +202,7 @@ const ApprovalSend = () => {
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }>
-            {status}
+            {t(status)}
           </p>
         );
       },

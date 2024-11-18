@@ -35,6 +35,7 @@ const EmptyState = () => {
                   src={emptyState}
                   height="205.59px"
                   width="344.2px"
+                  alt=""
                 />
               </Col>
             </Row>

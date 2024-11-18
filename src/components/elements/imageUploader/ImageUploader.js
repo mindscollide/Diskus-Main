@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getBase64 } from "../../../commen/functions/getBase64";
-import { PlusLg, Eye } from "react-bootstrap-icons";
+import { PlusLg } from "react-bootstrap-icons";
 import { isBase64 } from "../../../commen/functions/validations";
 
 const AvatarEditorComponent = ({ pictureObj }) => {
@@ -60,22 +60,23 @@ const AvatarEditorComponent = ({ pictureObj }) => {
     <>
       <ImgCrop rotationSlider modalCancel={t("Cancel")} modalOk={t("Ok")}>
         <Upload
-          listType='picture-card'
+          listType="picture-card"
           fileList={fileList}
           customRequest={uploadProfilePic}
           onPreview={handlePreview}
-          accept='image/png, image/jpeg'
+          accept="image/png, image/jpeg"
           onRemove={() => setFileList([])}
           className={
             fileList.length > 0 && isBase64(fileList[0].url)
               ? "image_uploader_box"
               : "not_working"
-          }>
+          }
+        >
           {Authreducer.Loading ? (
             <Spin />
           ) : fileList.length === 0 ? (
             <>
-              <span className='d-flex align-items-center gap-1'>
+              <span className="d-flex align-items-center gap-1">
                 <PlusLg /> Upload
               </span>
             </>
@@ -91,9 +92,9 @@ const AvatarEditorComponent = ({ pictureObj }) => {
           <>
             {previewImage && (
               <img
-                alt='Preview'
+                alt="Preview"
                 src={`data:image/jpeg;base64,${previewImage}`}
-                draggable='false'
+                draggable="false"
                 height={500}
                 width={"100%"}
               />

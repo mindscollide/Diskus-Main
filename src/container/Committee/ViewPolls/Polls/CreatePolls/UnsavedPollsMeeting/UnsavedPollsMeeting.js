@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./UnsavedPollsMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../components/elements";
@@ -11,9 +10,9 @@ import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeet
 const UnsavedPollsMeeting = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const unsavedPollsMeeting = useSelector(
+    (state) => state.NewMeetingreducer.unsavedPollsMeeting
+  );
   const handleNOFunctionality = () => {
     dispatch(showUnsavedPollsMeeting(false));
   };
@@ -25,7 +24,7 @@ const UnsavedPollsMeeting = ({ setCreatepoll }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsavedPollsMeeting}
+        show={unsavedPollsMeeting}
         setShow={dispatch(showUnsavedPollsMeeting)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

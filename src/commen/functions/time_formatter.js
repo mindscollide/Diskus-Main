@@ -2,14 +2,6 @@ import moment from "moment";
 import { DateObject } from "react-multi-date-picker";
 import { utcConvertintoGMT } from "./date_formater";
 
-export const timeFormatforResolution = () => {
-  const currentDate = new Date();
-  const currentHours = currentDate.getHours().toString().padStart(2, "0");
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
-  const getcurrentTime = `${currentHours}:${currentMinutes}`;
-  return getcurrentTime;
-};
-
 export const getStartTimeWithCeilFunction = () => {
   let newDate = new Date();
   const hours = ("0" + newDate.getHours()).slice(-2);
@@ -123,10 +115,8 @@ export const dateforView = (date, daycount = 1) => {
   if (date instanceof Date && !isNaN(date)) {
     let newDate = new Date();
     newDate.setDate(date.getDate() + daycount);
-    // let DateValforSend = moment(newDate).format("YYYY-MM-DD");
     let DateValforView = moment(newDate).format("DD/MM/YYYY");
-    // let timeValforSend = moment(newDate).format("HH:SS");
-    // let timeValuforView = newDate;
+
     return DateValforView;
   }
   return "";
@@ -147,7 +137,6 @@ export const dateforSend = (date, daycount = 1) => {
 export const timeforView = (date) => {
   if (date instanceof Date && !isNaN(date)) {
     let newDate = new Date();
-    // newDate.setDate(date.getDate() + daycount);
 
     let timeValuforView = newDate;
     return timeValuforView;
@@ -157,11 +146,8 @@ export const timeforView = (date) => {
 
 export const timeforSend = (date) => {
   if (date instanceof Date && !isNaN(date)) {
-    const minutes = ("0" + date.getMinutes()).slice(-2);
-
     date.setHours(date.getHours() + 1, 0, 0, 0);
 
-    let newDate = new Date(date.getHours, 0, 0, 0);
     let timeValforSend = moment(date).format("HH:mm");
 
     return timeValforSend;
@@ -200,34 +186,6 @@ export const getTimeDifference = (dateLogin, dateLogOut) => {
 };
 
 //Newly added fomatter
-
-export const newGMTFormatter = (meetingDate, time) => {
-  // Combine date and time strings
-  const dateTimeString = `${meetingDate}T${time}`;
-
-  // Parse date and time strings
-  const year = meetingDate.substring(0, 4);
-  const month = meetingDate.substring(4, 6) - 1; // Months are 0-indexed in JavaScript Date object
-  const day = meetingDate.substring(6, 8);
-  const hours = time.substring(0, 2);
-  const minutes = time.substring(2, 4);
-
-  // Create a Date object with the parsed values
-  const dateTime = new Date(year, month, day, hours, minutes);
-
-  // Get GMT hours and minutes
-  const hoursGMT = dateTime.getUTCHours();
-  const minutesGMT = dateTime.getUTCMinutes();
-
-  // Format hours and minutes
-  const formattedHours = hoursGMT < 10 ? `0${hoursGMT}` : hoursGMT;
-  const formattedMinutes = minutesGMT < 10 ? `0${minutesGMT}` : minutesGMT;
-
-  // Construct GMT time string
-  const gmtTimeString = `${formattedHours}:${formattedMinutes} GMT`;
-
-  return gmtTimeString;
-};
 
 export const convertToGMTMinuteTime = (timeStr) => {
   try {

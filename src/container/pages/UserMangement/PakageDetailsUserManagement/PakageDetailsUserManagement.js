@@ -8,22 +8,18 @@ import Card from "react-bootstrap/Card";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Button, TableToDo, TextField } from "../../../../components/elements";
 import {
-  Button,
-  TableToDo,
-  TextField,
-  Notification,
-} from "../../../../components/elements";
-import {
-  LoginFlowRoutes,
   cancelisTrailandSubscriptionApi,
   changeSelectPacakgeApi,
   getAllUserTypePackagesApi,
+  LoginFlowRoutes,
   signUpFlowRoutes,
-  signupFlowRoutes,
 } from "../../../../store/actions/UserManagementActions";
-import { Table } from "antd";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+
 import { calculateTotals } from "../../../../commen/functions/TableDataCalculation";
+import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 
 const PakageDetailsUserManagement = () => {
   const navigate = useNavigate();
@@ -32,29 +28,31 @@ const PakageDetailsUserManagement = () => {
 
   const { t } = useTranslation();
 
+  let locale = localStorage.getItem("i18nextLng");
+
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
-  console.log(trialPage, "trialPagetrialPagetrialPage");
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
 
-  const { UserMangementReducer, LanguageReducer } = useSelector(
-    (state) => state
+  const UserMangementReducergetAllUserTypePackagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllUserTypePackagesData
+  );
+
+  const UserMangementReducergetAllSelectedPakagesData = useSelector(
+    (state) => state.UserMangementReducer.getAllSelectedPakagesData
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
+  );
+
+  const LanguageReducerLoadingData = useSelector(
+    (state) => state.LanguageReducer.Loading
   );
 
   //States
   const [tableData, setTableData] = useState([]);
-  console.log(tableData, "tableDatatableData");
-  const [lisence, setlisence] = useState({
-    TotalLisence: "",
-  });
   const [packageDetail, setPackageDetail] = useState([]);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
-  console.log(tableData, "tableDatatableDatatableData");
-
   //get All user pakages Api call
   useEffect(() => {
     try {
@@ -74,8 +72,8 @@ const PakageDetailsUserManagement = () => {
 
   useEffect(() => {
     try {
-      const pakageDetails = UserMangementReducer.getAllUserTypePackagesData;
-      console.log(pakageDetails, "datadatadatadata");
+      const pakageDetails = UserMangementReducergetAllUserTypePackagesData;
+      console.log(pakageDetails, "avjshvdjhasvd");
 
       // Check if the package details object and its packages array exist and are not empty
       if (
@@ -99,15 +97,13 @@ const PakageDetailsUserManagement = () => {
       // Log any errors that occur
       console.log(error, "error");
     }
-  }, [UserMangementReducer.getAllUserTypePackagesData]);
-
-  console.log(tableData, "setTableDatasetTableDatasetTableData");
+  }, [UserMangementReducergetAllUserTypePackagesData]);
 
   //Fetching User headcounts data and set in the table
   useEffect(() => {
-    if (UserMangementReducer.getAllSelectedPakagesData) {
+    if (UserMangementReducergetAllSelectedPakagesData) {
       const { organizationSubscription } =
-        UserMangementReducer.getAllSelectedPakagesData;
+        UserMangementReducergetAllSelectedPakagesData;
 
       if (
         organizationSubscription &&
@@ -129,33 +125,15 @@ const PakageDetailsUserManagement = () => {
           }
         );
       }
-
-      console.log(
-        UserMangementReducer.getAllSelectedPakagesData,
-        "UserMangementReducerUserMangementReducer"
-      );
     }
-  }, [UserMangementReducer.getAllSelectedPakagesData]);
-
-  // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
+  }, [UserMangementReducergetAllSelectedPakagesData]);
 
   const currentLocale = Cookies.get("i18next") || "en";
-
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
 
   const ColumnsPakageSelection = [
     {
       title: (
-        <span className='pakageselectionSpanUsermanagement'>
+        <span className="pakageselectionSpanUsermanagement">
           {t("Package-details")}
         </span>
       ),
@@ -171,7 +149,7 @@ const PakageDetailsUserManagement = () => {
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{response.name}</span>
+              <span className={styles["Tableheading"]}>{response?.name}</span>
             </>
           );
         }
@@ -179,9 +157,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
+        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Charges-per")}
-          <span className='pakageselectionSpanUsermanagement'>
+          <span className="pakageselectionSpanUsermanagement">
             {t("License-US$")}
           </span>
         </span>
@@ -197,7 +175,9 @@ const PakageDetailsUserManagement = () => {
         } else {
           return (
             <>
-              <span className={styles["ChargesPerLicesense"]}>{row.price}</span>
+              <span className={styles["ChargesPerLicesense"]}>
+                {convertToArabicNumerals(row.price, locale)}
+              </span>
             </>
           );
         }
@@ -205,9 +185,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
+        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Number")}
-          <span className='pakageselectionSpanUsermanagement'>
+          <span className="pakageselectionSpanUsermanagement">
             {t("of-licenses")}
           </span>
         </span>
@@ -218,6 +198,7 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, row) => {
         const { Numberoflicenses } = calculateTotals(tableData);
+        console.log(Numberoflicenses, "datadtadtatdt");
 
         if (row.shouldDisplayTextField) {
           return;
@@ -225,7 +206,7 @@ const PakageDetailsUserManagement = () => {
           if (row.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
-                {Numberoflicenses}
+                {convertToArabicNumerals(Numberoflicenses, locale)}
               </span>
             );
           } else {
@@ -243,11 +224,11 @@ const PakageDetailsUserManagement = () => {
 
             return (
               <Row>
-                <Col className='d-flex justify-content-center'>
+                <Col className="d-flex justify-content-center">
                   <TextField
-                    labelclass='d-none'
-                    applyClass='PakageDetails'
-                    name='noofLisence'
+                    labelclass="d-none"
+                    applyClass="PakageDetails"
+                    name="noofLisence"
                     maxLength={3}
                     value={row.licenseCount}
                     change={(e) => handleChange(e.target.value)}
@@ -261,9 +242,9 @@ const PakageDetailsUserManagement = () => {
     },
     {
       title: (
-        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
+        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Monthly")}
-          <span className='pakageselectionSpanUsermanagement'>
+          <span className="pakageselectionSpanUsermanagement">
             {t("charges-in")}
           </span>
         </span>
@@ -275,9 +256,9 @@ const PakageDetailsUserManagement = () => {
       render: (text, row) => {
         const { MonthCharges } = calculateTotals(tableData);
         console.log(MonthCharges, "pricepricepriceprice");
-        const monthlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount : 0;
-        console.log(monthlyCharges, "licenseCount");
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const monthlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0);
+        console.log(monthlyCharges, "monthlyChargesmonthlyCharges");
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -290,7 +271,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
-                  disableBtn={MonthCharges === 0 ? true : false}
+                  disableBtn={MonthCharges === 0}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(2)}
                 />
@@ -298,31 +279,23 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {MonthCharges}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <>
-                  <span className={styles["ChargesPerLicesense"]}>
-                    {monthlyCharges}
-                  </span>
-                </>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(MonthCharges, locale)}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(monthlyCharges, locale)}
+            </span>
+          );
         }
       },
     },
     {
       title: (
-        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
+        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Quarterly")}
-          <span className='pakageselectionSpanUsermanagement'>
+          <span className="pakageselectionSpanUsermanagement">
             {t("charges-in")}
           </span>
         </span>
@@ -333,9 +306,8 @@ const PakageDetailsUserManagement = () => {
       width: 100,
       render: (text, row) => {
         const { Quarterlycharges } = calculateTotals(tableData);
-
-        const quarterlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 3 : 0;
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const quarterlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0) * 3;
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -348,7 +320,7 @@ const PakageDetailsUserManagement = () => {
                       ? t("Upgrade-now")
                       : t("Pay-now")
                   }
-                  disableBtn={Quarterlycharges === 0 ? true : false}
+                  disableBtn={Quarterlycharges === 0}
                   className={styles["PayNowButtons"]}
                   onClick={() => handlePayNowClick(3)}
                 />
@@ -356,29 +328,23 @@ const PakageDetailsUserManagement = () => {
             </>
           );
         } else {
-          if (row.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {Quarterlycharges}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <span className={styles["ChargesPerLicesense"]}>
-                  {quarterlyCharges}
-                </span>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(Quarterlycharges, locale)}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(quarterlyCharges, locale)}
+            </span>
+          );
         }
       },
     },
     {
       title: (
-        <span className='d-flex flex-column flex-wrap pakageselectionSpanUsermanagement'>
+        <span className="d-flex flex-column flex-wrap pakageselectionSpanUsermanagement">
           {t("Yearly")}
-          <span className='pakageselectionSpanUsermanagement'>
+          <span className="pakageselectionSpanUsermanagement">
             {t("charges-in")}
           </span>
         </span>
@@ -390,8 +356,9 @@ const PakageDetailsUserManagement = () => {
       render: (text, row) => {
         const { YearlychargesTotal } = calculateTotals(tableData);
 
-        const YearlyCharges =
-          row.price && row.licenseCount ? row.price * row.licenseCount * 12 : 0;
+        // apply nullish operator for code exploiting it will show 0 when value get null or undefined
+        const YearlyCharges = (row.price ?? 0) * (row.licenseCount ?? 0) * 12;
+
         if (row.shouldDisplayTextField) {
           return (
             <>
@@ -405,28 +372,22 @@ const PakageDetailsUserManagement = () => {
                       : t("Pay-now")
                   }
                   className={styles["PayNowButtons"]}
-                  disableBtn={YearlychargesTotal === 0 ? true : false}
+                  disableBtn={YearlychargesTotal === 0}
                   onClick={() => handlePayNowClick(1)}
                 />
               </span>
             </>
           );
         } else {
-          if (row.isTotalRow) {
-            return (
-              <span className={styles["ChargesPerLicesense"]}>
-                {YearlychargesTotal}
-              </span>
-            );
-          } else {
-            return (
-              <>
-                <span className={styles["ChargesPerLicesense"]}>
-                  {YearlyCharges}
-                </span>
-              </>
-            );
-          }
+          return row.isTotalRow ? (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(YearlychargesTotal, locale)}
+            </span>
+          ) : (
+            <span className={styles["ChargesPerLicesense"]}>
+              {convertToArabicNumerals(YearlyCharges, locale)}
+            </span>
+          );
         }
       },
     },
@@ -440,7 +401,7 @@ const PakageDetailsUserManagement = () => {
       if (data?.licenseCount) {
         if (data?.licenseCount !== "") {
           newArr.push({
-            PackageID: data.pK_PackageID,
+            PackageID: data?.pK_PackageID,
             HeadCount: Number(data.licenseCount),
           });
         }
@@ -458,7 +419,6 @@ const PakageDetailsUserManagement = () => {
       dispatch(
         changeSelectPacakgeApi(navigate, t, requestData, changePacakgeFlag)
       );
-      // localStorage.removeItem("changePacakgeFlag")
     } else {
       if (SignupPage) {
         let requestData = {
@@ -471,7 +431,7 @@ const PakageDetailsUserManagement = () => {
         );
         localStorage.setItem("SignupFlowPageRoute", 2);
         dispatch(signUpFlowRoutes(2));
-        navigate("/Signup");
+        // navigate("/Signup");
       } else if (Boolean(trialPage) === true) {
         let requestData = {
           TenureOfSubscriptionID: Number(tenureOfSuscriptionID),
@@ -499,40 +459,38 @@ const PakageDetailsUserManagement = () => {
     if (token == null) {
       dispatch(LoginFlowRoutes(1));
       localStorage.setItem("LoginFlowPageRoute", 1);
-      navigate("/")
+      navigate("/");
     } else {
       navigate("/Admin/subscriptionDetailsUserManagement");
     }
   };
 
-  const { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal } =
-    calculateTotals(tableData);
-
-  console.log(
-    { Numberoflicenses, price, Quarterlycharges, YearlychargesTotal },
-    "calculateTotalscalculateTotals"
-  );
-  // const isLastRow = {true}
   return (
     <Container>
+      <Row className="posotion-relative">
+        <Col className={styles["languageSelector-Signup"]}>
+          <LanguageSelector />
+        </Col>
+      </Row>
       <Row>
-        <Col sm={12} className='mt-4'>
+        <Col sm={12} className="mt-4">
           <h2
             className={`${"MontserratSemiBold"} ${
               styles["packageselection_heading"]
-            }`}>
+            }`}
+          >
             {t("Diskus-pakage-details")}
           </h2>
         </Col>
       </Row>
       <Row>
-        <Col sm={12} md={12} lg={12} className='d-flex justify-content-center'>
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center">
           <span className={styles["PerUserheading"]}>
             {t("Per-user-per-month-billed-annually")}
           </span>
         </Col>
       </Row>
-      <Row className='mt-3 '>
+      <Row className="mt-3 ">
         {packageDetail.length > 0 ? (
           packageDetail.map((data, index) => {
             return (
@@ -540,41 +498,26 @@ const PakageDetailsUserManagement = () => {
                 sm={12}
                 lg={4}
                 md={4}
-                className={index === 1 && index === 3 ? "p-0" : "my-2"}>
-                <Row className='g-4'>
+                className={index === 1 && index === 3 ? "p-0" : "my-2"}
+              >
+                <Row className="g-4">
                   <Col sm={12} className={styles["packageCardBox"]}>
                     <Card className={styles["packagecard"]}>
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         <Col sm={12}>
                           <>
-                            {/* <span className="icon-star package-icon-style">
-                              <span
-                                className="path1"
-                                // style={{ color: packageColorPath1 }}
-                              ></span>
-                              <span
-                                className="path2"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                              <span
-                                className="path3"
-                                // style={{ color: packageColorPath2 }}
-                              ></span>
-                            </span> */}
                             <span className={styles["package_title"]}>
-                              {/* {t("Gold")} */}
-                              {/* {data.PackageName} */}
                               <p title={data.name}>{data.name}</p>
                             </span>{" "}
                           </>
                         </Col>
                       </Row>
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         <Col sm={false} md={2} lg={2}></Col>
                         <Col sm={12} md={8} lg={8}>
                           <div className={styles["packagecard_pricebox"]}>
                             <span className={styles["package_actualPrice"]}>
-                              ${data.price}/
+                              ${convertToArabicNumerals(data?.price, locale)}/
                               <p className={styles["package_actualPrice_p"]}>
                                 {t("Month")}
                               </p>
@@ -583,7 +526,7 @@ const PakageDetailsUserManagement = () => {
                         </Col>
                         <Col sm={false} md={2} lg={2}></Col>
                       </Row>{" "}
-                      <Row className='mt-3'>
+                      <Row className="mt-3">
                         {" "}
                         <Col lg={1} md={1} sm={1}></Col>
                         <Col lg={11} md={11} sm={11} xs={12}>
@@ -592,9 +535,10 @@ const PakageDetailsUserManagement = () => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className='mt-2'>
+                      <Row className="mt-2">
                         <section
-                          className={styles["Scroller_PakagesSelectionCard"]}>
+                          className={styles["Scroller_PakagesSelectionCard"]}
+                        >
                           {data.packageFeatures !== null &&
                           data.packageFeatures !== undefined
                             ? data.packageFeatures.map((features, index) => {
@@ -606,7 +550,8 @@ const PakageDetailsUserManagement = () => {
                                         lg={11}
                                         md={11}
                                         sm={11}
-                                        className='d-flex flex-column flex-wrap gap-3 mt-1'>
+                                        className="d-flex flex-column flex-wrap gap-3 mt-1"
+                                      >
                                         <span className={styles["keypoints"]}>
                                           {features.name}
                                         </span>
@@ -628,34 +573,35 @@ const PakageDetailsUserManagement = () => {
           <Loader />
         )}
       </Row>
-      <Row className='mt-4'>
-        <Col lg={12} md={12} sm={12} className='d-flex justify-content-center'>
+      <Row className="mt-4">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
           <span className={styles["BillingHeading"]}>
             {t("Billing-calculator")}
           </span>
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <TableToDo
             column={ColumnsPakageSelection}
             className={"Billing_TablePakageSelection"}
             rows={[...tableData, showTotalValues, defaultRowWithButtons]}
             pagination={false}
-            id='PakageDetailsTable'
-            rowHoverBg='none'
+            id="PakageDetailsTable"
+            rowHoverBg="none"
           />
         </Col>
       </Row>
       <>
         {SignupPage ? (
           <>
-            <Row className='mt-3 mb-3'>
+            <Row className="mt-3 mb-3">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span onClick={onClickLink} className={styles["signUp_goBack"]}>
                   {t("Go-back")}
                 </span>
@@ -664,11 +610,6 @@ const PakageDetailsUserManagement = () => {
           </>
         ) : null}
       </>
-
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {UserMangementReducer.Loading || LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
     </Container>
   );
 };

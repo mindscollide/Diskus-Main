@@ -16,10 +16,12 @@ import {
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
-import { Col, Row, Tooltip } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import { Tooltip } from "antd";
 import {
   _justShowDateformat,
   _justShowDay,
+  formatToLocalTimezone,
 } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
@@ -36,7 +38,6 @@ const Notes = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   const [modalNote, setModalNote] = useState(false);
 
-  console.log(notes, "notesnotesnotes");
   const calApi = async () => {
     // Notes Feature
     if (checkFeatureIDAvailability(6)) {
@@ -118,11 +119,10 @@ const Notes = () => {
   return (
     <>
       <div className='d-flex justify-content-start mb-2 gap-3'>
-        <h1 className='noteheading color-5a5a5a '>{t("Notes")}</h1>
+        <h1 className={styles["noteheading"]}>{t("Notes")}</h1>
         {checkFeatureIDAvailability(6) && (
           <img
             src={PlusButton}
-            // onClick={handleClickNoteModal}
             onClick={() => setModalNote(true)}
             className='cursor-pointer'
             alt=''
@@ -137,13 +137,12 @@ const Notes = () => {
               return (
                 <>
                   <div
-                    className='notesdescription cursor-pointer'
+                    className={styles["notesdescription"]}
                     key={data.pK_NotesID}
                     onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        {/* <p className="notescontent" > */}
-                        <p className='notescontent'>
+                        <p className={styles['notescontent']}>
                           {data.title.slice(0, 100)}
                         </p>
                       </Col>
@@ -154,39 +153,7 @@ const Notes = () => {
                         md={12}
                         sm={12}
                         className='d-flex gap-2 align-items-center justify-content-between'>
-                        <span >
-                          {/* {data.isStarred ? (
-                            <Tooltip
-                              placement='bottomLeft'
-                              title={t("Starred")}>
-                              <img
-                                src={hollowstar}
-                                width='17.26px'
-                                height='16.62px'
-                                alt=''
-                                draggable='false'
-                                className={
-                                  styles["starIcon-In-Collapse-material"]
-                                }
-                              />
-                            </Tooltip>
-                          ) : (
-                            <Tooltip
-                              placement='bottomLeft'
-                              title={t("Unstarred")}>
-                              <img
-                                src={StarIcon}
-                                width='17.34px'
-                                height='16.62px'
-                                alt=''
-                                draggable='false'
-                                className={
-                                  styles["starIcon-In-Collapse-material"]
-                                }
-                              />
-                            </Tooltip>
-                          )} */}
-                          {/* <Star /> */}
+                        <span>
                           {data.isAttachment && (
                             <span>
                               <img
@@ -199,15 +166,13 @@ const Notes = () => {
                             </span>
                           )}
                         </span>
-                        {/* <img src={IconAttachment} alt="" /> */}
-                        <span className='DataTimeDay'>
-                          {_justShowDateformat(data.date + data.time)} |
-                          {_justShowDay(data.date + data.time)}
+                        <span className={styles['DataTimeDay']}>
+                          {formatToLocalTimezone(data.date + data.time)}
+                      
                         </span>
                       </Col>
                     </Row>
                   </div>
-                  {/* <span>See More</span> */}
                 </>
               );
             } else if (index === 12) {
@@ -215,7 +180,7 @@ const Notes = () => {
               return (
                 <div key={index} className='d-flex justify-content-center'>
                   <p
-                    className='ViewMoreLink_notes'
+                    className={styles['ViewMoreLink_notes']}
                     onClick={() => navigate("/DisKus/Notes")}>
                     {t("View-more")}
                   </p>

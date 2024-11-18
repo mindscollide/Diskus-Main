@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./CancelSubscriptionAdmin.module.css";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button, Loader, TableToDo } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import CancelSubscriptionModal from "../../ModalsUserManagement/CancelSubscriptionModal/CancelSubscriptionModal";
 import { useSelector } from "react-redux";
 import { showCancelSubscriptionModal } from "../../../../../store/actions/UserMangementModalActions";
@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import ReasonForCancelSubs from "../../ModalsUserManagement/ResonsForCancelSubscriptionModal/ReasonForCancelSubs";
 import { GetOrganizationSelectedPackagesByOrganizationIDApi } from "../../../../../store/actions/UserManagementActions";
 import {
-  _justShowDateformat,
   formatDateDownGradeSubscription,
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
@@ -26,13 +25,20 @@ const CancelSubscriptionAdmin = () => {
 
   const { CancellationDetials } = location.state;
 
-  console.log(CancellationDetials, "CancellationDetialsCancellationDetials");
-
-  const organizationID = localStorage.getItem("organizationID");
-
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
+  const UserManagementModalscancelSubscriptionModal = useSelector(
+    (state) => state.UserManagementModals.cancelSubscriptionModal
   );
+
+  const UserManagementModalreasonForleavingModal = useSelector(
+    (state) => state.UserManagementModals.reasonForleavingModal
+  );
+
+  const UserMangementReducerorganizationSelectedPakagesByOrganizationIDData =
+    useSelector(
+      (state) =>
+        state.UserMangementReducer
+          .organizationSelectedPakagesByOrganizationIDData
+    );
 
   // state for passing SubscriptionStatusID
   const [completionContract, setCompletionContract] = useState(false);
@@ -59,7 +65,7 @@ const CancelSubscriptionAdmin = () => {
 
   useEffect(() => {
     let cancelPackage =
-      UserMangementReducer.organizationSelectedPakagesByOrganizationIDData;
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
     if (cancelPackage !== null && cancelPackage !== undefined) {
       cancelPackage.organizationSubscriptions?.map((subscription) => {
         setCancelSubsDetail((prevState) => ({
@@ -72,7 +78,7 @@ const CancelSubscriptionAdmin = () => {
         }));
       });
     }
-  }, [UserMangementReducer.organizationSelectedPakagesByOrganizationIDData]);
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Extracting the PakageDetials Data
 
@@ -146,8 +152,7 @@ const CancelSubscriptionAdmin = () => {
 
   // col data in package details
   const organizationPackages =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData
-      ?.organizationSubscriptions;
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions;
 
   let Data = [];
 
@@ -180,7 +185,7 @@ const CancelSubscriptionAdmin = () => {
   let totalLicenses = 0;
   let totalYearlyCharges = 0;
 
-  UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+  UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
     (packageses) => {
       packageses.organizationSelectedPackages.map((totals) => {
         let totalofLicences = totals.headCount;
@@ -193,7 +198,7 @@ const CancelSubscriptionAdmin = () => {
 
   // for ServiceManager.CancelOrganizationsSubscription pass as a request data
   const subscriptionID =
-    UserMangementReducer.organizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
+    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData?.organizationSubscriptions.map(
       (SubsID) => SubsID.pK_OrganizationsSubscriptionID
     );
 
@@ -288,25 +293,7 @@ const CancelSubscriptionAdmin = () => {
         <Col lg={8} md={8} sm={12} xs={12}>
           <Card className={styles["CardCancelSubscription"]}>
             <Row className="mt-3">
-              <Col sm={12}>
-                {/* <span class="icon-star package-icon-style">
-                  <span
-                    class="path1"
-                    style={{ color: packageColorPath1 }}
-                  ></span>
-                  <span
-                    class="path2"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                  <span
-                    class="path3"
-                    style={{ color: packageColorPath2 }}
-                  ></span>
-                </span>
-                <h3 className={styles["packageCard_title"]}>
-                  {isPackageDetail.PackageTitle}
-                </h3>{" "} */}
-              </Col>
+              <Col sm={12}></Col>
             </Row>
             <Row>
               <Col
@@ -356,16 +343,15 @@ const CancelSubscriptionAdmin = () => {
         </Col>
       </Row>
 
-      {UserManagementModals.cancelSubscriptionModal && (
+      {UserManagementModalscancelSubscriptionModal && (
         <CancelSubscriptionModal />
       )}
-      {UserManagementModals.reasonForleavingModal && (
+      {UserManagementModalreasonForleavingModal && (
         <ReasonForCancelSubs
           completionContract={completionContract}
           subscriptionID={subscriptionID}
         />
       )}
-      {UserMangementReducer.Loading ? <Loader /> : null}
     </Container>
   );
 };

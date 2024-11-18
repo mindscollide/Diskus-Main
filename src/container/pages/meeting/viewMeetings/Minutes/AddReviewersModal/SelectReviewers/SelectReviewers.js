@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./SelectReviewers.module.css";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import {
   AttachmentViewer,

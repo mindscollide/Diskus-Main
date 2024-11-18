@@ -42,6 +42,18 @@ body[dir="rtl"] .Create_New_subscription_styles {
 body[dir="rtl"] .TableheadingTotal {
   font-weight: 600 !important;
   display: flex !important;
+  justify-content: start !important;
+}
+
+.TableheadingTotal_Main_Heading {
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .TableheadingTotal_Main_Heading {
+  font-weight: 600 !important;
+  display: flex !important;
   justify-content: center !important;
 }
 
@@ -77,7 +89,4 @@ body[dir="rtl"] .SubscritionNumber_Styles {
 
 body[dir="rtl"] .DowngradeButton_styles {
   font-weight: 600 !important;
-}
-
-.SubscritionNumber_Styles {
 }

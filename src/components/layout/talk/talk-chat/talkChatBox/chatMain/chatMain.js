@@ -94,10 +94,8 @@ import ChatSendIcon from "../../../../../../assets/images/Chat-Send-Icon.png";
 import DownloadIcon from "../../../../../../assets/images/Download-Icon.png";
 import DocumentIcon from "../../../../../../assets/images/Document-Icon.png";
 import DropDownIcon from "../../../../../../assets/images/dropdown-icon.png";
-import DropDownChatIcon from "../../../../../../assets/images/dropdown-icon-chatmessage.png";
 import UploadDocument from "../../../../../../assets/images/Upload-Document.png";
 import UploadPicVid from "../../../../../../assets/images/Upload-PicVid.png";
-import UploadSticker from "../../../../../../assets/images/Upload-Sticker.png";
 import SingleIcon from "../../../../../../assets/images/Single-Icon.png";
 import GroupIcon from "../../../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../../../assets/images/Shout-Icon.png";
@@ -106,7 +104,6 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
-import { clippingParents } from "@popperjs/core";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -128,6 +125,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+  //Current language
+  let lang = localStorage.getItem("i18nextLng");
 
   const { talkStateData, talkFeatureStates } = useSelector((state) => state);
   var currentDateToday = moment().format("YYYYMMDD");
@@ -549,7 +549,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ TasksAttachments: file });
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
     } else if (uploadType === "image") {
@@ -604,14 +604,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
         DisplayAttachmentName: uploadedFile.name,
         OriginalAttachmentName: uploadFilePath,
       });
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ TasksAttachments: file });
     }
   };
 
   const deleteFilefromAttachments = (data, index) => {
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      TasksAttachments: [],
     });
     setUploadFileTalk({});
     setFile("");
@@ -2206,7 +2206,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setFile("");
       setTasksAttachments({
         ...tasksAttachments,
-        ["TasksAttachments"]: [],
+        TasksAttachments: [],
       });
       setUploadFileTalk({});
       if (inputRef.current) {
@@ -2806,7 +2806,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setUploadFileTalk({});
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      TasksAttachments: [],
     });
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
   };
@@ -3584,7 +3584,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ]
                                             }
                                           >
-                                            <Dropdown className="border-none">
+                                            <Dropdown className="ChatsOneToOneDropDownSender border-none">
                                               <Dropdown.Toggle id="dropdown-basic">
                                                 <img
                                                   draggable="false"
@@ -3596,8 +3596,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               <Dropdown.Menu
                                                 className={
                                                   isLastMessage
-                                                    ? "dropdown-menu-upwards"
-                                                    : ""
+                                                    ? "dropdown-menu-upwardsSender"
+                                                    : "ChatsOneToOneDropDownMenuSender"
                                                 }
                                               >
                                                 <>
@@ -3889,7 +3889,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -3898,7 +3899,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -3906,7 +3908,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   "" ? null : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -4029,7 +4032,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         />
                                       ) : null}
 
-                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                      <div className="direct-chat-text message-inbox message-box text-start ChatsOneToOne">
                                         <div
                                           className="chatmessage-box-icons"
                                           ref={
@@ -4038,20 +4041,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                             ]
                                           }
                                         >
-                                          <Dropdown className="border-none">
-                                            <Dropdown.Toggle id="dropdown-basic">
+                                          <Dropdown className="ChatsOneToOneDropDownReciever border-none">
+                                            <Dropdown.Toggle id="ChatsOneToOneDropDownRecieverToggle">
                                               <img
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
                                               className={
                                                 isLastMessage
-                                                  ? "dropdown-menu-upwards"
-                                                  : ""
+                                                  ? "dropdown-menu-upwardsReciever"
+                                                  : "ChatsOneToOneDropDownMenuReciever"
                                               }
+                                              popperConfig={{
+                                                modifiers: [
+                                                  {
+                                                    name: "flip",
+                                                    enabled: false,
+                                                  },
+                                                ],
+                                              }}
                                             >
                                               <>
                                                 <Dropdown.Item
@@ -4237,7 +4249,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4246,14 +4259,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -4304,6 +4319,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4475,7 +4491,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4484,14 +4501,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -4597,6 +4616,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 draggable="false"
                                                 className="dropdown-icon"
                                                 src={DropDownIcon}
+                                                alt=""
                                               />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu
@@ -4777,7 +4797,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) === currentUtcDate ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               ) : messageData.sentDate.slice(
@@ -4786,14 +4807,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === yesterdayDateUtc ? (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   ) + " "}
                                                   | {t("Yesterday")}
                                                 </>
                                               ) : (
                                                 <>
                                                   {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate
+                                                    messageData.sentDate,
+                                                    lang
                                                   )}
                                                 </>
                                               )}
@@ -4842,6 +4865,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   draggable="false"
                                                   className="dropdown-icon"
                                                   src={DropDownIcon}
+                                                  alt=""
                                                 />
                                               </Dropdown.Toggle>
                                               <Dropdown.Menu
@@ -5037,7 +5061,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -5046,7 +5071,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     ) + " "}
                                                     | {t("Yesterday")}
                                                   </>
@@ -5054,7 +5080,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   "" ? null : (
                                                   <>
                                                     {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate
+                                                      messageData.sentDate,
+                                                      lang
                                                     )}
                                                   </>
                                                 )}
@@ -5870,7 +5897,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.sentDate
+                          messageInfoData.sentDate,
+                          lang
                         )
                       )}
                     </div>
@@ -5889,7 +5917,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.receivedDate
+                          messageInfoData.receivedDate,
+                          lang
                         )
                       )}
                     </div>
@@ -5904,7 +5933,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         <p className="m-0">-</p>
                       ) : (
                         newTimeFormaterMIAsPerUTCTalkDateTime(
-                          messageInfoData.seenDate
+                          messageInfoData.seenDate,
+                          lang
                         )
                       )}
                     </div>
@@ -6068,7 +6098,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       {groupInfoData === undefined || groupInfoData.length === 0
                         ? ""
                         : newTimeFormaterAsPerUTCTalkDateTime(
-                            messageInfoData.seenDate
+                            messageInfoData.seenDate,
+                            lang
                           )}
                     </p>
                   </Col>

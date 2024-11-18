@@ -1,4 +1,4 @@
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "./Todo_cards-employees.css";
 
 const TodoAssgineeEmployeeCard = ({
@@ -11,23 +11,24 @@ const TodoAssgineeEmployeeCard = ({
 }) => {
   return (
     <>
-      <Row className='d-flex justify-content-start align-items-center my-2'>
+      <Row className="d-flex justify-content-start align-items-center my-2">
         <Col
           lg={6}
           md={6}
           sm={6}
           xs={12}
-          className='d-flex justify-content-start gap-1 align-items-center'>
+          className="d-flex justify-content-start gap-1 align-items-center"
+        >
           <img
             src={`data:image/jpeg;base64,${userImage}`}
-            className='todo-employee-name-image'
-            alt=''
-            draggable='false'
+            className="todo-employee-name-image"
+            alt=""
+            draggable="false"
           />
           <span>
-            <label className=' todo-employee-name-card'>{employeeName}</label>
+            <label className=" todo-employee-name-card">{employeeName}</label>
             <br />
-            <label className=' todo-employee-label-card'>
+            <label className=" todo-employee-label-card">
               {employeeDesignation}
             </label>
           </span>

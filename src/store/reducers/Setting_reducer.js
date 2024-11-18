@@ -42,7 +42,7 @@ const settingReducer = (state = initialState, action) => {
     case actions.GETSETTING_SUCCESS: {
       return {
         ...state,
-        Loading: action.loader,
+        Loading: action.loader?action.loader:false,
         UserProfileData: action.response,
         ResponseMessage: action.message,
       };

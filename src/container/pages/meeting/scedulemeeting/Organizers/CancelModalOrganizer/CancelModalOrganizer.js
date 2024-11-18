@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
-  GetAllMeetingOrganizers,
   editMeetingFlag,
   saveMeetingFlag,
 } from "../../../../../../store/actions/MeetingOrganizers_action";
@@ -20,10 +19,12 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const cancelModalOrganizer = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalOrganizer
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const handleNOFunctionality = () => {
     dispatch(showCancelModalOrganizers(false));
@@ -51,7 +52,7 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelModalOrganizer}
+        show={cancelModalOrganizer}
         setShow={dispatch(showCancelModalOrganizers)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}

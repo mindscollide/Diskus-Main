@@ -1780,6 +1780,54 @@ const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
 };
 
+const getMeetingGuestVideoURL = {
+  RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
+};
+
+const ValidateEncryptedStringGuestVideoLink = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringGuestVideoLink",
+};
+
+const joinGuestVideo = {
+  RequestMethod: "ServiceManager.JoinGuestVideo",
+};
+
+const admitRejectAttendee = {
+  RequestMethod: "ServiceManager.AdmitRejectAttendee",
+};
+
+const raiseUnRaisedHand = {
+  RequestMethod: "ServiceManager.RaiseUnRaiseHand",
+};
+
+const muteUnMuteParticipant = {
+  RequestMethod: "ServiceManager.MuteUnMuteParticpant",
+};
+
+const transferMeetingHost = {
+  RequestMethod: "ServiceManager.TransferMeetingHost",
+};
+
+const removeParticipantMeeting = {
+  RequestMethod: "ServiceManager.RemoveParticipantFromMeeting",
+};
+
+const guestLeaveMeetingVideo = {
+  RequestMethod: "ServiceManager.GuestLeaveMeetingVideo",
+};
+
+const muteUnMuteSelf = {
+  RequestMethod: "ServiceManager.MuteUnMuteSelf",
+};
+
+const hideUnHideVideoSelf = {
+  RequestMethod: "ServiceManager.HideUnHideVideo",
+};
+
+const hideUnHidePaticipantVideo = {
+  RequestMethod: "ServiceManager.HideUnHideParticpantVideo",
+};
+
 const ProposeNewMeetingSaveParticipants = {
   RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
 };
@@ -1787,6 +1835,10 @@ const ProposeNewMeetingSaveParticipants = {
 const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesPoll",
+};
+
+const getVideoCallParticipantsForGuest = {
+  RequestMethod: "ServiceManager.GetVideoCallParticipantsForGuest",
 };
 
 export {
@@ -2261,5 +2313,18 @@ export {
   downloadCallRecording,
   downloadMeetingRecording,
   leaveMeetingVideo,
+  getMeetingGuestVideoURL,
+  ValidateEncryptedStringGuestVideoLink,
+  joinGuestVideo,
+  admitRejectAttendee,
+  raiseUnRaisedHand,
+  muteUnMuteParticipant,
+  transferMeetingHost,
+  removeParticipantMeeting,
+  guestLeaveMeetingVideo,
+  muteUnMuteSelf,
+  hideUnHideVideoSelf,
+  hideUnHidePaticipantVideo,
   ProposeNewMeetingSaveParticipants,
+  getVideoCallParticipantsForGuest,
 };

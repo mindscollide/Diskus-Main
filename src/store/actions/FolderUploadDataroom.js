@@ -2,7 +2,6 @@ import axios from "axios";
 import {
   FolderisExistRequestMethod,
   createFolderRequestMethod,
-  getDocumentsAndFolderRequestMethod,
   saveFilesRequestMethod,
   saveFilesandFolderRM,
   uploadDocumentsRequestMethod,
@@ -13,39 +12,15 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
 import {
-  clearDataResponseMessage,
   getDocumentsAndFolderApi,
   getFolderDocumentsApi,
 } from "./DataRoom_actions";
 import { replaceSlashWithBackslash } from "../../commen/functions/regex";
 
-// Folder Exist init
-const FolderisExist_init = () => {
-  return {
-    type: actions.FOLDERISEXIST_INIT,
-  };
-};
-
 // Folder Exist fail
 const FolderisExist_fail = (message) => {
   return {
     type: actions.FOLDERISEXIST_FAIL,
-    message: message,
-  };
-};
-
-// Create Folder Init
-const createFolder_init = () => {
-  return {
-    type: actions.CREATE_FOLDER_DATAROOM_INIT,
-  };
-};
-
-// Create Folder Success
-const createFolder_success = (response, message) => {
-  return {
-    type: actions.CREATE_FOLDER_DATAROOM_SUCCESS,
-    response: response,
     message: message,
   };
 };
@@ -71,7 +46,6 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     ParentFolderID: folderID !== null ? folderID : 0,
   };
   return (dispatch) => {
-    // dispatch(createFolder_init());
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -129,13 +103,6 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
       .catch((error) => {
         dispatch(createFolder_fail(t("Something-went-wrong")));
       });
-  };
-};
-
-// Upload Documents Init
-const uploadDocument_init = () => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
   };
 };
 
@@ -269,12 +236,6 @@ const uploadDocumentsApi = (
   };
 };
 
-// Save Files Init
-const saveFiles_init = () => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
-  };
-};
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
@@ -319,7 +280,6 @@ const saveFilesApi = (
     ],
   };
   return (dispatch) => {
-    // dispatch(saveFiles_init())
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -553,8 +513,6 @@ const createFolder = (
                   "DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase()
                 )
             ) {
-              let id = response.data.responseResult.folderID;
-
               let newDataResponceUD = {
                 FolderName: response.data.responseResult.displayFolderName,
                 FolderID: response.data.responseResult.folderID,

@@ -16,7 +16,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   const [viewVotes, setviewVotes] = useState(false);
 
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -32,11 +32,8 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -58,7 +55,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const handleCancelButton = () => {
     setViewPublishedPoll(false);
@@ -69,7 +66,6 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
       PollID: viewPublishedPollDetails.PollID,
     };
     dispatch(viewVotesApi(navigate, data, t, 1, setviewVotes));
-    // setviewVotes(true);
   };
   return (
     <>
@@ -97,10 +93,6 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                     <Row>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
-                            console.log(
-                              data,
-                              "datadatadatadatadatadatapollsOption"
-                            );
                             return (
                               <>
                                 <Col lg={12} md={12} sm={12} className="mt-2">
@@ -129,7 +121,6 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                                             <Checkbox disabled={true} />
                                             <Progress
                                               className="Progress_bar_Polls"
-                                              // prefixCls="progress_bar_poll"
                                               percent={data.votePercentage}
                                               status="active"
                                             />

@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
-  getAllAgendaContributorApi,
   searchNewUserMeeting,
   showCancelModalAgendaContributor,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -16,10 +15,12 @@ const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const cancelAgendaContributor = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgendaContributor
+  );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const handleNOFunctionality = () => {
     dispatch(showCancelModalAgendaContributor(false));
@@ -39,8 +40,8 @@ const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (
@@ -48,7 +49,7 @@ const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
       {" "}
       <section>
         <Modal
-          show={NewMeetingreducer.cancelAgendaContributor}
+          show={cancelAgendaContributor}
           setShow={dispatch(showCancelModalAgendaContributor)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}

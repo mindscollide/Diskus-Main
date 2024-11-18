@@ -12,6 +12,10 @@ const RequestExtensionModal = () => {
   const dispatch = useDispatch();
   const { UserManagementModals } = useSelector((state) => state);
 
+  const UserManagementModalsrequestExtentionModalData = useSelector(
+    (state) => state.UserManagementModals.requestExtentionModal
+  );
+
   const yesBtnFunctionality = () => {
     dispatch(showRequestExtentionModal(false));
   };
@@ -23,7 +27,7 @@ const RequestExtensionModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.requestExtentionModal}
+        show={UserManagementModalsrequestExtentionModalData}
         setShow={dispatch(showRequestExtentionModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}

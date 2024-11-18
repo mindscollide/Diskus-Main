@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../../elements";
 import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
 import videoAttendIcon from "../../../../../assets/images/newElements/VideoAttendIcon.png";
 import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {
@@ -262,7 +261,7 @@ const VideoMaxIncoming = () => {
                           }
                           icon={<img src={BusyIcon} width={50} />}
                           onClick={busyCall}
-                          style={{ marginTop: "10px" }}
+                          style={{ paddingBottom: "0" }}
                         />
                         <span
                           className={
@@ -304,7 +303,7 @@ const VideoMaxIncoming = () => {
                         <Button
                           style={
                             activeCallState === true
-                              ? { marginTop: "10px" }
+                              ? { paddingBottom: "0" }
                               : null
                           }
                           className={

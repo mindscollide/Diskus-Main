@@ -19,7 +19,9 @@ const DeleteUserModal = ({ deleteModalData }) => {
 
   let organizationID = localStorage.getItem("organizationID");
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModalsdeleteUsersModalData = useSelector(
+    (state) => state.UserManagementModals.deleteUsersModal
+  );
 
   const handleCancelButton = () => {
     dispatch(showDeleteUsersModal(false));
@@ -37,10 +39,10 @@ const DeleteUserModal = ({ deleteModalData }) => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.deleteUsersModal}
+        show={UserManagementModalsdeleteUsersModalData}
         setShow={dispatch(showDeleteUsersModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block border-0"}
+        modalHeaderClassName={"d-block border-0"}
         size={"md"}
         onHide={() => {
           dispatch(showDeleteUsersModal(false));

@@ -11,7 +11,6 @@ import {
   Checkbox,
   Modal,
   TextField,
-  Loader,
   AddtionalUserCard,
 } from "../../../../../components/elements";
 import Cookies from "js-cookie";
@@ -43,10 +42,16 @@ const CreateAddtionalUsersModal = () => {
 
   let OrganizatioName = localStorage.getItem("organizatioName");
 
-  let pakageSelectedID = localStorage.getItem("PakageSelectedID");
-
   const { UserManagementModals, UserMangementReducer } = useSelector(
     (state) => state
+  );
+
+  const UserManagementModalscreateAdditionalModalsData = useSelector(
+    (state) => state.UserManagementModals.createAdditionalModals
+  );
+
+  const UserMangementReducerLoadingData = useSelector(
+    (state) => state.UserMangementReducer.Loading
   );
 
   //States
@@ -200,7 +205,6 @@ const CreateAddtionalUsersModal = () => {
       // e.g., set error messages in createAddionalUsers
     }
   };
-  console.log("members", members);
   //handle removing the addional Users
   const handleCrossIcon = (indexToRemove) => {
     setMembers((currentMembers) =>
@@ -210,9 +214,6 @@ const CreateAddtionalUsersModal = () => {
 
   //Handle Skip Button
   const handleSkipButton = async () => {
-    let data = {
-      OrganizationID: Number(organzataionID),
-    };
     await dispatch(showCreateAddtionalUsersModal(false));
 
     await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
@@ -243,7 +244,7 @@ const CreateAddtionalUsersModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.createAdditionalModals}
+        show={UserManagementModalscreateAdditionalModalsData}
         setShow={dispatch(showCreateAddtionalUsersModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
@@ -504,7 +505,6 @@ const CreateAddtionalUsersModal = () => {
                 </Col>
               </Row>
             </section>{" "}
-            {UserMangementReducer.Loading ? <Loader /> : null}
           </>
         }
       />

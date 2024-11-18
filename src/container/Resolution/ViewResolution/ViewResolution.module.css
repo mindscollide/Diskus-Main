@@ -9,6 +9,13 @@
   height: auto !important;
   padding: 50px 50px !important;
   position: relative !important;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .Details_ViewResolution {
@@ -220,7 +227,6 @@ body[dir="rtl"] .Non_Voters_Btn_viewresolution_Active {
 .scroll-bar-view-resolution {
   height: 300px !important;
   overflow-x: hidden !important;
-  /* margin-bottom: 60px !important; */
 }
 
 .scroll-bar-view-resolution::-webkit-scrollbar {

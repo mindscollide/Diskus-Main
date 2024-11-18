@@ -7,14 +7,12 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import {
   Button,
-  Paper,
   VerificationInputField,
   Notification,
-  Loader,
 } from "../../../../../components/elements";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 import { useTranslation } from "react-i18next";
@@ -26,18 +24,24 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const VerificationEmailAndNumber = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  //
-  const storedValue = localStorage.getItem("value");
-
   const [value, setValue] = useState(null);
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+
+  const AuthreducerAuthenticateAFAResponse = useSelector(
+    (state) => state.Authreducer.AuthenticateAFAResponse
+  );
+
+  const AuthreducerSendTwoFacOTPResponseMessage = useSelector(
+    (state) => state.Authreducer.SendTwoFacOTPResponseMessage
+  );
+
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [worldCountryIDS, setWorldCountryIDS] = useState("");
@@ -45,8 +49,8 @@ const VerificationEmailAndNumber = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
-  let GobackSelection = localStorage.getItem("GobackSelection");
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
@@ -85,7 +89,6 @@ const VerificationEmailAndNumber = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let userID = localStorage.getItem("userID");
-    // let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
     let Data = {
       UserID: JSON.parse(userID),
       IsRequestFromDevice: false,
@@ -117,45 +120,30 @@ const VerificationEmailAndNumber = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.AuthenticateAFAResponse !== null) {
-      console.log(
-        Authreducer.AuthenticateAFAResponse,
-        "Authreducer.AuthenticateAFAResponse"
-      );
+    if (AuthreducerAuthenticateAFAResponse !== null) {
       localStorage.setItem(
         "email",
-        Authreducer.AuthenticateAFAResponse.emailAddress
+        AuthreducerAuthenticateAFAResponse.emailAddress
       );
       localStorage.setItem(
         "phoneNumber",
-        Authreducer.AuthenticateAFAResponse.mobileNumber
+        AuthreducerAuthenticateAFAResponse.mobileNumber
       );
       localStorage.setItem(
         "worldCountryID",
-        Authreducer.AuthenticateAFAResponse.worldCountryID
+        AuthreducerAuthenticateAFAResponse.worldCountryID
       );
     }
-  }, [Authreducer.AuthenticateAFAResponse]);
+  }, [AuthreducerAuthenticateAFAResponse]);
 
   useEffect(() => {
-    if (
-      Authreducer.SendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")
-    ) {
-      setOpen({
-        open: true,
-        message: Authreducer.SendTwoFacOTPResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          open: false,
-          message: "",
-        });
-      }, 3000);
+    if (AuthreducerSendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")) {
+      showMessage(AuthreducerSendTwoFacOTPResponseMessage, "success", setOpen);
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
     }
-  }, [Authreducer.SendTwoFacOTPResponseMessage]);
+  }, [AuthreducerSendTwoFacOTPResponseMessage]);
 
   useEffect(() => {
     let value = localStorage.getItem("value");
@@ -225,12 +213,11 @@ const VerificationEmailAndNumber = () => {
 
   let newClient = Helper.socket;
   useEffect(() => {
-    if (newClient != null && newClient != "" && newClient != undefined) {
+    if (newClient !== null && newClient !== "" && newClient !== undefined) {
     } else {
       let userID = localStorage.getItem("userID");
-      if(userID !== null) {
+      if (userID !== null) {
         mqttConnection(userID, dispatch);
-
       }
     }
   }, [Helper.socket]);
@@ -255,7 +242,7 @@ const VerificationEmailAndNumber = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["OTP_auth_paper"]}>
+            <span className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
@@ -359,19 +346,6 @@ const VerificationEmailAndNumber = () => {
                     lg={12}
                     className={styles["Go_back_link_VerifyCodeOne"]}
                   >
-                    {/* <Link
-                      to={
-                        parseInt(GobackSelection) === 1
-                          ? "/twofac"
-                          : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
-                      }
-                    >
-                      {t("Go-back")}
-                    </Link> */}
                     <span
                       className="d-flex justify-content-center cursor-pointer"
                       onClick={handleGoBackButton}
@@ -382,7 +356,7 @@ const VerificationEmailAndNumber = () => {
                   </Col>
                 </Row>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
@@ -391,7 +365,6 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={img2}
                   alt="auth_icon"
-                  // width="380px"
                   className={styles["phone-image"]}
                 />
               </Col>
@@ -400,7 +373,6 @@ const VerificationEmailAndNumber = () => {
                   draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
-                  // width="600px"
                   className={styles["Auth_Icon"]}
                 />
               </Col>
@@ -408,8 +380,7 @@ const VerificationEmailAndNumber = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      <Notification open={open.open} setOpen={setOpen} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </div>
   );
 };

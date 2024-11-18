@@ -23,6 +23,9 @@
   font-weight: 600;
   border: none !important;
 }
+body[dir="rtl"] .new_Poll_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
 
 .polling_searchinput {
   display: inline-block;
@@ -285,7 +288,6 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
-  /* bottom: 10px !important; */
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
@@ -298,9 +300,17 @@ body[dir="rtl"] .PaginationStyle-Committee {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 40px 0px !important;
   flex-direction: column !important;
-  border: 1px solid #e1e1e1 !important;
   margin-bottom: 10px;
+  width: 100% !important;
+  border-radius: 8px !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .No_Poll_Heading {
@@ -314,4 +324,40 @@ body[dir="rtl"] .PaginationStyle-Committee {
   font-weight: 600;
   font-size: 12px !important;
   color: #5a5a5a !important;
+}
+
+.FilterResetBtn {
+  padding: 2px 14px !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 10px !important;
+  border: 1px solid #5a5a5a !important;
+}
+
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 2px 14px !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 10px !important;
+  border: 1px solid #5a5a5a !important;
+}
+
+.ResetOkBtn {
+  padding: 3px 14px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 3px 14px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
 }

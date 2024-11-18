@@ -106,30 +106,19 @@
   width: 100%;
 }
 
-.Next_button_EmailVerify_For_SignInDenied {
-  width: 100%;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-}
-
-.Next_button_EmailVerify_For_SignInDenied:focus-visible {
-  width: 280px;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-}
-
 .loginbox_auth_paper_for_SignInDenied {
   padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   height: 469px !important;
   width: 330px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -238,7 +227,6 @@ body[dir="rtl"] .mobile_image {
 }
 .Un_Ordered_List {
   padding-left: 1rem !important;
-  /* margin: 0 !important; */
 }
 
 .List_Components {
@@ -259,7 +247,6 @@ body[dir="rtl"] .Un_Ordered_List {
   background-image: url("../../../../../assets/images/3.png");
   background-repeat: no-repeat;
   background-position: right -632px top 330px !important;
-  /* position: relative; */
 }
 
 body[dir="rtl"] .roundspinner-image-SigninDenied {

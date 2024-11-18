@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import styles from "./ProposedNewMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
@@ -48,6 +47,7 @@ import {
   SaveMeetingDetialsNewApiFunction,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 const ProposedNewMeeting = ({
   setProposedNewMeeting,
   editorRole,
@@ -70,9 +70,12 @@ const ProposedNewMeeting = ({
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const gellAllCommittesandGroups = useSelector(
+    (state) => state.PollsReducer.gellAllCommittesandGroups
+  );
+
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
@@ -81,6 +84,9 @@ const ProposedNewMeeting = ({
   );
   const getAllProposedDatesEditFlow = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -119,12 +125,8 @@ const ProposedNewMeeting = ({
   //Now Working on Edit Flow Proposed new  Meeting
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getAllMeetingDetails !== null &&
-        NewMeetingreducer.getAllMeetingDetails !== undefined
-      ) {
-        const EditFlowData =
-          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
+        const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(EditFlowData, "EditFlowData");
         if (isProposedMeetEdit) {
           setEditmeetingTypeDetails({
@@ -153,7 +155,7 @@ const ProposedNewMeeting = ({
     } catch (error) {
       console.log(error, "error");
     }
-  }, [NewMeetingreducer.getAllMeetingDetails, isProposedMeetEdit]);
+  }, [getAllMeetingDetails, isProposedMeetEdit]);
 
   //Getting All the Participants for edit flow
   useEffect(() => {
@@ -172,8 +174,9 @@ const ProposedNewMeeting = ({
   }, [getAllParticipants]);
 
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
 
   //Send Response By Date
@@ -261,7 +264,7 @@ const ProposedNewMeeting = ({
 
   //Getting All Groups And Committees and users data from polls api
   useEffect(() => {
-    let newParticpantData = PollsReducer.gellAllCommittesandGroups;
+    let newParticpantData = gellAllCommittesandGroups;
     try {
       if (newParticpantData !== null && newParticpantData !== undefined) {
         let temp = [];
@@ -392,7 +395,7 @@ const ProposedNewMeeting = ({
       console.error("Error processing participant data:", error);
     }
   }, [
-    PollsReducer.gellAllCommittesandGroups,
+    gellAllCommittesandGroups,
     isProposedMeetEdit,
     membersParticipants,
     userID,
@@ -486,12 +489,13 @@ const ProposedNewMeeting = ({
           //Checks that if the start time of lower row is less then end time of upper row (same date scenario)
           updatedRows[index - 1].startTime <= updatedRows[index - 1].endTime
         ) {
-          setOpen({
-            flag: true,
-            message: t(
+          showMessage(
+            t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
             ),
-          });
+            "error",
+            setOpen
+          );
           //if the scnario gets exist paste the current value that is assigned to it already
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
@@ -502,12 +506,11 @@ const ProposedNewMeeting = ({
             updatedRows[index].endTime !== "" &&
             newDate >= updatedRows[index].endTime
           ) {
-            setOpen({
-              flag: true,
-              message: t(
-                "Selected-start-time-should-not-be-greater-than-the-endTime"
-              ),
-            });
+            showMessage(
+              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+              "error",
+              setOpen
+            );
             updatedRows[index].startTime = newDate;
             setRows(updatedRows);
             return;
@@ -521,12 +524,11 @@ const ProposedNewMeeting = ({
           updatedRows[index].endTime !== "" &&
           newDate >= updatedRows[index].endTime
         ) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-start-time-should-not-be-greater-than-the-endTime"
-            ),
-          });
+          showMessage(
+            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
+            "error",
+            setOpen
+          );
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           return;
@@ -551,12 +553,11 @@ const ProposedNewMeeting = ({
           updatedRows[index].dateSelect?.toDateString()
       ) {
         if (updatedRows[index - 1].endTime <= updatedRows[index].startTime) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Selected-end-time-should-not-be-less-than-the-previous-one"
-            ),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -565,10 +566,11 @@ const ProposedNewMeeting = ({
         }
       } else {
         if (newDate <= updatedRows[index].startTime) {
-          setOpen({
-            flag: true,
-            message: t("Selected-end-time-should-not-be-less-than-start-time"),
-          });
+          showMessage(
+            t("Selected-end-time-should-not-be-less-than-start-time"),
+            "error",
+            setOpen
+          );
           updatedRows[index].endTime = newDate;
           return;
         } else {
@@ -593,12 +595,12 @@ const ProposedNewMeeting = ({
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    if (rows.length === 1) {
-      // If there's only one record, show the setOpen message
-      setOpen({
-        flag: true,
-        message: t("At-least-one-date-time-slot-is-mandatory"),
-      });
+    if (index === 0) {
+      showMessage(
+        t("At-least-one-date-time-slot-is-mandatory"),
+        "error",
+        setOpen
+      );
     } else {
       // Otherwise, remove the record at the given index
       const updatedRows = [...rows];
@@ -919,7 +921,7 @@ const ProposedNewMeeting = ({
 
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
-    let newOrganizersData = PollsReducer.gellAllCommittesandGroups;
+    let newOrganizersData = gellAllCommittesandGroups;
     console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     let tem = [...membersParticipants];
@@ -1065,7 +1067,7 @@ const ProposedNewMeeting = ({
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["ProposedNewMeetingPaper"]}>
+          <span className={styles["ProposedNewMeetingPaper"]}>
             <Row>
               <Col lg={5} md={5} sm={5}>
                 <Row>
@@ -1654,10 +1656,10 @@ const ProposedNewMeeting = ({
                 </Row>
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

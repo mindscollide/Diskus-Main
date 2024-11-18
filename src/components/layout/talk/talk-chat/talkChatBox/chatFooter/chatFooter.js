@@ -8,7 +8,6 @@ import {
   InsertOTOMessages,
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
-  pushMessageData,
   pushChatData,
   fileUploadData,
 } from "../../../../../../store/actions/Talk_action";
@@ -160,7 +159,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
+      "TasksAttachments": searchIndex,
     });
     setUploadFileTalk({});
   };
@@ -260,7 +259,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
 
       setUploadOptions(false);
       setUploadFileTalk(uploadedFile);
-      setTasksAttachments({ ["TasksAttachments"]: file });
+      setTasksAttachments({ "TasksAttachments": file });
       dispatch(fileUploadFlag(true, "document"));
     } else if (uploadType === "image") {
       const uploadedFile = data.target.files[0];
@@ -546,7 +545,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
     setFile("");
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: [],
+      "TasksAttachments": [],
     });
     setUploadFileTalk({});
     dispatch(fileUploadFlag(false, ""));

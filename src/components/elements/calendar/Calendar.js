@@ -1,5 +1,5 @@
 import { DatePicker } from "antd";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -92,9 +92,6 @@ function CustomCalendar({
   const [prevCheck, setPrevCheck] = useState(false);
   const [nextCheck, setNextCheck] = useState(false);
   const [hoveredEvent, setHoveredEvent] = useState(null);
-  const handleEventMouseEnter = (event) => {
-    setHoveredEvent(event);
-  };
 
   const handleEventMouseLeave = () => {
     setHoveredEvent(null);
@@ -140,7 +137,6 @@ function CustomCalendar({
     };
 
     return (
-      // <Container>
       <Row className="d-flex justify-content-center calendar-header">
         <Col lg={3} md={3} sm={false}></Col>
         <Col
@@ -203,7 +199,6 @@ function CustomCalendar({
           />
         </Col>
       </Row>
-      // </Container>
     );
   };
 
@@ -285,10 +280,7 @@ function CustomCalendar({
             ),
           nextDate.getDate()
         );
-        console.log(
-          { nextDate, updateEndDate },
-          "updateEndDateupdateEndDateupdateEndDate"
-        );
+
         let calendarData = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(OrganizationID),
@@ -373,21 +365,8 @@ function CustomCalendar({
           className={className}
           components={{
             toolbar: customToolbar,
-            // header: customTimeSlotHeader,
             month: false,
-            // event: (eventProps) => {
-            //
-            //   return (
-            //     <div
-            //       onMouseEnter={() => handleEventMouseEnter(eventProps.event)}
-            //       onMouseLeave={handleEventMouseLeave}
-            //     >
-            //       {eventProps.event}
-            //     </div>
-            //   );
-            // },
           }}
-          // dayPropGetter={dayPropGetter}
           eventPropGetter={eventStyleGetter}
           onNavigate={onNavigate}
           step={15}

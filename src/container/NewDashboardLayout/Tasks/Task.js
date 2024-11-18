@@ -4,29 +4,31 @@ import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import noTask from "../../../assets/images/DashBoardTask.svg";
-
-import { CustomTableToDoDashboard, Button } from "../../../components/elements";
-import { Paper } from "@material-ui/core";
+import { Button } from "../../../components/elements";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./newTable.css";
 import { useDispatch } from "react-redux";
-import {
-  SearchTodoListApi,
-  ViewToDoList,
-  getTodoListInit,
-} from "../../../store/actions/ToDoList_action";
+import { ViewToDoList } from "../../../store/actions/ToDoList_action";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { Table } from "antd";
-import { off } from "rsuite/esm/DOMHelper";
 const Task = () => {
   const { t } = useTranslation();
-  const { toDoListReducer } = useSelector((state) => state);
+  const getDashboardTaskData = useSelector(
+    (state) => state.toDoListReducer.getDashboardTaskData
+  );
+  const SocketTodoActivityData = useSelector(
+    (state) => state.toDoListReducer.SocketTodoActivityData
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let creatorID = Number(localStorage.getItem("userID"));
+  let locale = localStorage.getItem("i18nextLng") || "en";
   const [rowsToDo, setRowToDo] = useState([]);
   const [totalDataRecords, setTotalDataRecords] = useState(0);
   console.log(totalDataRecords, "totalDataRecordstotalDataRecords");
@@ -34,7 +36,6 @@ const Task = () => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const [showTodo, setShowTodo] = useState(false);
- 
 
   const columnsToDo = [
     {
@@ -44,6 +45,7 @@ const Task = () => {
       width: "35%",
       className: "titleDashboard",
       ellipsis: true,
+      align: locale === "en" ? "left" : "right",
       render: (text, record) => {
         const className =
           Number(record?.taskCreator?.pK_UID) === creatorID
@@ -59,10 +61,11 @@ const Task = () => {
       width: "40%",
       className: "deadlineDashboard",
       ellipsis: true,
+      align: "center",
 
       render: (text, record) => {
         return (
-          <span className='cursor-pointer'>{_justShowDateformat(text)}</span>
+          <span className="cursor-pointer">{_justShowDateformat(text, )}</span>
         );
       },
     },
@@ -70,45 +73,46 @@ const Task = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "25%",
+      width: "35%",
+      align: "center",
       className: "statusDashboard",
       ellipsis: true,
 
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=' InProgress status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" InProgress status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 2) {
           return (
-            <span className=' Pending  status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" Pending  status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className=' Upcoming  status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" Upcoming  status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=' Cancelled status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" Cancelled status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=' Completed status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" Completed status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=' color-F68732 status_value text-truncate cursor-pointer'>
-              {text.status}
+            <span className=" color-F68732 status_value text-truncate cursor-pointer">
+              {t(text.status)}
             </span>
           );
         }
@@ -117,12 +121,8 @@ const Task = () => {
   ];
 
   useEffect(() => {
-    if (toDoListReducer.getDashboardTaskData) {
-      console.log(
-        toDoListReducer.getDashboardTaskData,
-        "getDashboardTaskDatagetDashboardTaskDatagetDashboardTaskData"
-      );
-      const { toDoLists, totalRecords } = toDoListReducer.getDashboardTaskData;
+    if (getDashboardTaskData) {
+      const { toDoLists, totalRecords } = getDashboardTaskData;
       if (toDoLists?.length > 0) {
         setTotalDataRecords(totalRecords);
         let dataToSort = [...toDoLists];
@@ -140,24 +140,21 @@ const Task = () => {
     } else {
       setRowToDo([]);
     }
-  }, [toDoListReducer.getDashboardTaskData]);
+  }, [getDashboardTaskData]);
 
   // Add Tasks from MQTT
   useEffect(() => {
     try {
       if (
-        toDoListReducer.SocketTodoActivityData !== null &&
-        toDoListReducer.SocketTodoActivityData !== undefined
+        SocketTodoActivityData !== null &&
+        SocketTodoActivityData !== undefined
       ) {
         if (
-          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-          toDoListReducer.SocketTodoActivityData.meetingID === -1
+          SocketTodoActivityData.comitteeID === -1 &&
+          SocketTodoActivityData.groupID === -1 &&
+          SocketTodoActivityData.meetingID === -1
         ) {
-          let dataToSort = [
-            toDoListReducer.SocketTodoActivityData.todoList,
-            ...rowsToDo,
-          ];
+          let dataToSort = [SocketTodoActivityData.todoList, ...rowsToDo];
 
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
@@ -171,13 +168,13 @@ const Task = () => {
         }
       }
     } catch (error) {}
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [SocketTodoActivityData]);
 
   // Update MQTT Status
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (payloadData.todoStatusID === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -186,7 +183,7 @@ const Task = () => {
           });
         } else {
           setRowToDo((rowsData) => {
-            return rowsData.map((newData, index) => {
+            return rowsData.map((newData) => {
               if (newData.pK_TID === payloadData.todoid) {
                 const newObj = {
                   ...newData,
@@ -216,7 +213,7 @@ const Task = () => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     if (todoViewModal) {
@@ -248,12 +245,14 @@ const Task = () => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className='d-flex justify-content-between'>
-                  <span className='task-title'>{t("Tasks")}</span>
+                  className="d-flex justify-content-between"
+                >
+                  <span className="task-title">{t("Tasks")}</span>
                   {totalDataRecords >= 15 && (
                     <span
-                      className='cursor-pointer'
-                      onClick={() => navigate("/DisKus/todolist")}>
+                      className="cursor-pointer"
+                      onClick={() => navigate("/DisKus/todolist")}
+                    >
                       {t("View-more")}
                     </span>
                   )}
@@ -263,19 +262,15 @@ const Task = () => {
             <Table
               columns={columnsToDo}
               dataSource={rowsToDo}
-              className='newDashboardTable'
-              tableLayout='fixed'
+              className="newDashboardTable"
+              tableLayout="fixed"
               pagination={false}
-              size='small'
-              rowKey='id'
+              size="small"
+              rowKey="id"
               rowClassName={(record, index) => {
                 if (Number(record?.taskCreator?.pK_UID) === creatorID) {
-                  console.log({ record, index }, "rowClassNamerowClassName");
-
                   return "AssignedToMe";
                 } else {
-                  console.log({ record, index }, "rowClassNamerowClassName");
-
                   return "AssignedByMe";
                 }
               }}
@@ -291,9 +286,9 @@ const Task = () => {
           </>
         ) : (
           <>
-            <span className='task-title'>{t("Tasks")}</span>
+            <span className="task-title">{t("Tasks")}</span>
             <section className={styles["No_Tasks_View"]}>
-              <img src={noTask} width={"100%"} alt='' draggable='false' />
+              <img src={noTask} width={"100%"} alt="" draggable="false" />
               <span className={styles["MainTitleClass"]}>{t("No-task")}</span>
               <span className={styles["SubtitleTodoMessege"]}>
                 {t("There-is-no-pending-task")}

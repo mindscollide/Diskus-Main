@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
-import { Button, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import {
@@ -15,17 +14,8 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   searchNewUserMeeting,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  meetingOrganizerRemoved,
-  meetingOrganizerAdded,
-  meetingAgendaContributorRemoved,
-  meetingAgendaContributorAdded,
-  viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
@@ -54,11 +44,6 @@ const ViewMeetingModal = ({
   videoTalk,
   setVideoTalk,
 }) => {
-  console.log(
-    Number(editorRole.status),
-    "editorRoleeditorRoleeditorRoleeditorRole"
-  );
-  console.log(videoTalk, "videoTalkvideoTalk");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
@@ -90,7 +75,7 @@ const ViewMeetingModal = ({
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMinutePublished = localStorage.getItem("isMinutePublished");
@@ -290,7 +275,6 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        // setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
         let searchData = {
@@ -322,7 +306,6 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        // setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
         let searchData = {
@@ -380,29 +363,14 @@ const ViewMeetingModal = ({
         setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
-        // let searchData = {
-        //   Date: "",
-        //   Title: "",
-        //   HostName: "",
-        //   UserID: Number(userID),
-        //   PageNumber:
-        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        //   PublishedMeetings:
-        //     currentView && Number(currentView) === 1 ? true : false,
-        // };
-        // console.log("chek search meeting")
-        // dispatch(searchNewUserMeeting(navigate, searchData, t));
-
         localStorage.setItem("folderDataRoomMeeting", 0);
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
-  console.log(editorRole, "editorRoleeditorRole");
   return (
     <>
-      <section className='position-relative'>
-        <Row className='mt-2'>
+      <section className="position-relative">
+        <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -410,10 +378,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
-            <Paper className={styles["Scedule_meeting_paper"]}>
+          <Col lg={12} md={12} sm={12} className="mb-4">
+            <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -519,7 +487,6 @@ const ViewMeetingModal = ({
 
                     {checkFeatureIDAvailability(14) ? (
                       <>
-                        {/* {editorRole.role === "Participant" ? null : ( */}
                         <Button
                           text={t("Task")}
                           className={
@@ -535,7 +502,6 @@ const ViewMeetingModal = ({
                               : true
                           }
                         />
-                        {/* )} */}
                       </>
                     ) : null}
                     {checkFeatureIDAvailability(15) ? (
@@ -587,9 +553,7 @@ const ViewMeetingModal = ({
                         onClick={showAttendees}
                       />
                     )}
-                    {/* )} */}
                   </>
-                  {/* )} */}
                 </Col>
               </Row>
               {meetingDetails && (
@@ -737,7 +701,7 @@ const ViewMeetingModal = ({
                   )}
                 </>
               )}
-            </Paper>
+            </span>
           </Col>
         </Row>
       </section>

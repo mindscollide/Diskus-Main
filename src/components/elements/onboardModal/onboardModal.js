@@ -22,20 +22,14 @@ const CustomOnboardModal = ({
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
-  console.log("OnBoardModalOnBoardModalOnBoardModal", OnBoardModal.show);
-  // const [show, setShow] = useState(false);
+
   const handleShow = () => {
     console.log("modalTitle", show);
     dispatch(showModalStepsOnboard(true));
     setCurrentStep(3);
-    // setShow(true);
     dispatch(showIsDetailOnboard(true));
     dispatch(showModalOnboard(true));
   };
-
-  console.log("modalTitle", show);
-
-  console.log("modalBody", ModalBody);
 
   return (
     <>
@@ -53,7 +47,6 @@ const CustomOnboardModal = ({
       <Modal
         show={OnBoardModal.show}
         className="onboard-modal"
-        // onHide={handleClose}
         size={size}
         data-tut={datatut}
         data-backdrop="false"

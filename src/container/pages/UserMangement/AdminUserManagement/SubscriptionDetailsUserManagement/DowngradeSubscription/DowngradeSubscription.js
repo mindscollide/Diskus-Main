@@ -4,7 +4,6 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  Loader,
   TableToDo,
   TextField,
 } from "../../../../../../components/elements";
@@ -38,9 +37,10 @@ const DowngradeSubscription = () => {
 
   const { subscriptionDetails } = location.state;
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const UserMangementReducergetOrganizationWalletData = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationWallet
+  );
 
-  console.log(UserMangementReducer.Loading, "UserMangementReducer");
   //Data States
   const [downgradeSubsData, setDowngradeSubsData] = useState([]);
   const [textFieldValues, setTextFieldValues] = useState({});
@@ -92,20 +92,21 @@ const DowngradeSubscription = () => {
     }
   }, [subscriptionDetails]);
 
+  console.log(
+    downgradeSubsData,
+    "downgradeSubsDatadowngradeSubsDatadowngradeSubsData"
+  );
+
   //Extracting Wallet Data
   useEffect(() => {
     try {
       if (
-        UserMangementReducer.getOrganizationWallet !== null &&
-        UserMangementReducer.getOrganizationWallet !== undefined
+        UserMangementReducergetOrganizationWalletData !== null &&
+        UserMangementReducergetOrganizationWalletData !== undefined
       ) {
-        console.log(
-          UserMangementReducer.getOrganizationWallet,
-          "getOrganizationWallet"
-        );
         setWalletData({
           walletamount:
-            UserMangementReducer.getOrganizationWallet.organizationWallet
+            UserMangementReducergetOrganizationWalletData.organizationWallet
               .walletAmount,
         });
       }
@@ -177,8 +178,7 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       align: "center",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           return (
             <>
               <span className={styles["TableheadingTotal"]}>Total</span>
@@ -209,8 +209,9 @@ const DowngradeSubscription = () => {
       width: 100,
       align: "center",
       ellipsis: true,
-      render: (text, record, index) => {
-        if (record.IsDefaultRow) {
+      render: (text, record) => {
+        console.log(record, "recordrecordrecordrecord");
+        if (record && record.IsDefaultRow) {
           // Get the total charges only once, assuming you have access to the original data
           const totalCharges = calculateTotalChargesDowngradeSubscription(
             subscriptionDetails.organizationSelectedPackages
@@ -242,7 +243,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totalHeadCount = calculateTotalHeadCountDowngradeSubscription(
             subscriptionDetails.organizationSelectedPackages
           );
@@ -275,7 +276,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           // Get the total alloted users only once, assuming you have access to the original data
           const totalAllotedUsers =
             calculateTotalAllotedUsersDowngradeSubscription(
@@ -311,7 +312,7 @@ const DowngradeSubscription = () => {
       ellipsis: true,
       render: (text, record) => {
         console.log(record, "recordrecordrecord");
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           // Get the total not utilized only once, assuming you have access to the original data
           const totalNotUtilized =
             calculateTotalNotUtilizedDowngradeSubscription(
@@ -346,7 +347,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totalReduction =
             calculateTotalReductionDowngradeSubscription(textFieldValues);
           return (
@@ -401,7 +402,7 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        if (record.IsDefaultRow) {
+        if (record && record.IsDefaultRow) {
           const totaltransfertowallet = calculateTotalTransferAmount(
             downgradeSubsData,
             textFieldValues
@@ -456,7 +457,6 @@ const DowngradeSubscription = () => {
       PackagesHeadCounts: packagesHeadCounts,
     };
 
-    console.log(data, "handelOnClickDownGradeButton");
     dispatch(downgradeOrganizationSubscriptionApi(navigate, t, data));
   };
 
@@ -551,7 +551,6 @@ const DowngradeSubscription = () => {
             />
           </Col>
         </Row>
-        {UserMangementReducer.Loading ? <Loader /> : null}
       </section>
     </>
   );

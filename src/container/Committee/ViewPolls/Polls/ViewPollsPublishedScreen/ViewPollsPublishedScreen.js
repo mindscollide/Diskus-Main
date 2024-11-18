@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import Profile from "../../../../../assets/images/newprofile.png";
 import { Button, Checkbox } from "../../../../../components/elements";
 import { Progress } from "antd";
 import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
@@ -18,7 +17,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   const [viewVotes, setviewVotes] = useState(false);
 
   const [pollParticipants, setPollParticipants] = useState([]);
@@ -34,11 +33,8 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
 
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -60,7 +56,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
 
   const handleCancelButton = () => {
     setSavePollsPublished(false);
@@ -98,10 +94,6 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                     <Row>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
-                            console.log(
-                              data,
-                              "datadatadatadatadatadatapollsOption"
-                            );
                             return (
                               <>
                                 <Col lg={12} md={12} sm={12} className="mt-2">

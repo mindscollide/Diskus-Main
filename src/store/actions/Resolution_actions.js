@@ -794,13 +794,6 @@ const createResolution_Init = () => {
   };
 };
 
-const createResolution_Success = (response, message) => {
-  return {
-    type: actions.SCHEDULE_RESOLUTION_SUCCESS,
-    response: response,
-  };
-};
-
 const createResolution_Fail = (message) => {
   return {
     type: actions.SCHEDULE_RESOLUTION_FAIL,
@@ -834,11 +827,6 @@ const createResolution = (navigate, Data, voters, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()
             ) {
-              // await dispatch(
-              //   createResolution_Success(
-              //     response.data.responseResult.resolutionID
-              //   )
-              // );
               let newArr = [];
               await voters.map((data, index) => newArr.push(data.FK_UID));
               let NewData = {
@@ -847,20 +835,7 @@ const createResolution = (navigate, Data, voters, t) => {
                 IsUpdateFlow: false,
                 VotersList: newArr,
               };
-
               await dispatch(updateResolutionDataRoomApi(navigate, t, NewData));
-              // dispatch(
-              //   updateResolution(
-              //     navigate,
-              //     response.data.responseResult.resolutionID,
-              //     voters,
-              //     nonVoter,
-              //     tasksAttachments,
-              //     t,
-              //     no,
-              //     circulated
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()

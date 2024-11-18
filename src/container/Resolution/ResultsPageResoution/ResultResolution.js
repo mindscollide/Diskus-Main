@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ResultResolution.module.css";
-import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import result from "../../../assets/images/result.svg";
 import Abstain from "../../../assets/images/Abstain.svg";
@@ -17,12 +16,16 @@ import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
-const ResultResolution = ({ setResultresolution, resultresolution }) => {
+const ResultResolution = ({ setResultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer } = useSelector((state) => state);
+  let CurrentLanguage = localStorage.getItem("i18nextLng");
+  const ResolutionReducergetResolutionResult = useSelector(
+    (state) => state.ResolutionReducer.getResolutionResult
+  );
   let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
@@ -32,8 +35,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [abstain, setAbstain] = useState(0);
   const [votingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
-
-  console.log(votingMethod, "votingMethodvotingMethod");
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -44,7 +45,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
-    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -109,11 +109,10 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   };
   useEffect(() => {
     try {
-      if (ResolutionReducer.getResolutionResult !== null) {
-        let resolutionresult = ResolutionReducer.getResolutionResult;
+      if (ResolutionReducergetResolutionResult !== null) {
+        let resolutionresult = ResolutionReducergetResolutionResult;
         setApproved(resolutionresult.approvedVotes);
         setAbstain();
-
         setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
@@ -135,7 +134,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         }
       }
     } catch (error) {}
-  }, [ResolutionReducer.getResolutionResult]);
+  }, [ResolutionReducergetResolutionResult]);
   return (
     <section>
       <Row className="my-2">
@@ -145,10 +144,9 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
           </span>
         </Col>
       </Row>
-
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["Result_page_paper"]}>
+          <span className={styles["Result_page_paper"]}>
             <Row>
               <Col lg={5} md={5} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
@@ -297,7 +295,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <span className={styles["Total_voters"]}>
                       {t("Total-voters")}
                       <span className={styles["No_of_Votes"]}>
-                        {totalVoters}
+                        {convertToArabicNumerals(totalVoters, CurrentLanguage)}
                       </span>
                     </span>
                   </Col>
@@ -416,7 +414,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                 </Row>
               </Col>
             </Row>
-          </Paper>
+          </span>
         </Col>
       </Row>
     </section>

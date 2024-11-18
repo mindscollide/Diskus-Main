@@ -3,6 +3,13 @@
   width: 100% !important;
   padding: 30px 30px !important;
   margin-bottom: 20px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
 }
 
 .Title-file {
@@ -73,7 +80,7 @@ body[dir="rtl"] .ViewDetials_Buttons_active {
   border-radius: 4px !important;
   font-weight: 600;
 }
-.Activity_Buttons_active:is(:active,:hover,:focus,:focus-visible,:target) {
+.Activity_Buttons_active:is(:active, :hover, :focus, :focus-visible, :target) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -123,10 +130,6 @@ body[dir="rtl"] .Activity_Buttons_active {
   border-radius: 4px !important;
   font-weight: 600;
 }
-
-/* body[dir="rtl"] .Activity_Buttons {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-} */
 
 .owned_heading {
   font-size: 12px !important;

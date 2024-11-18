@@ -5,7 +5,7 @@ import {
   ChevronDown,
   Plus,
 } from "react-bootstrap-icons";
-import { Select } from "antd";
+import { Checkbox, Dropdown, Menu, Select } from "antd";
 import {
   Button,
   TableToDo,
@@ -23,7 +23,7 @@ import {
   SearchTodoListApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { Tooltip } from "antd";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
@@ -43,6 +43,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
 import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
@@ -50,14 +51,57 @@ import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
 const TodoList = () => {
   //For Localization
-  const { t } = useTranslation();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const SearchTodolist = useSelector(
+    (state) => state.toDoListReducer.SearchTodolist
+  );
+  const SocketTodoActivityData = useSelector(
+    (state) => state.toDoListReducer.SocketTodoActivityData
+  );
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+  const ToDoDetails = useSelector((state) => state.toDoListReducer.ToDoDetails);
+
+  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
+
+  let todoListPageSize = localStorage.getItem("todoListRow");
+
+  //Get Current User ID
+  let createrID = localStorage.getItem("userID");
+
+  const ResponseMessageTodoReducer = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const ResponseStatusReducer = useSelector(
+    (state) => state.todoStatus.Response
+  );
+
+  const ResponseMessageAssigneesReducer = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
+  const UpdateTodoStatusMessage = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+  );
+
+  const ResponseMessageTodoStatusReducer = useSelector(
+    (state) => state.getTodosStatus.ResponseMessage
+  );
+  const UpdateTodoStatus = useSelector(
+    (state) => state.getTodosStatus.UpdateTodoStatus
+  );
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
@@ -75,20 +119,55 @@ const TodoList = () => {
     AssignedToName: "",
     UserID: 0,
   });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: "error",
   });
   const [statusOptions, setStatusOptions] = useState([]);
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
-  console.log(rowsToDo, "rowsToDorowsToDo");
+
+  const [visible, setVisible] = useState(false);
+
+  const [selectedValues, setSelectedValues] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ]);
+
+  const filters = [
+    {
+      value: "1",
+      text: t("In-progress"),
+    },
+    {
+      value: "2",
+      text: t("Pending"),
+    },
+    {
+      value: "3",
+      text: t("Upcoming"),
+    },
+    {
+      value: "4",
+      text: t("Cancelled"),
+    },
+    {
+      value: "5",
+      text: t("Completed"),
+    },
+    {
+      value: "6",
+      text: t("Deleted"),
+    },
+  ];
+
   // GET TODOS STATUS
   useEffect(() => {
     try {
-      if (!todoStatus.Response?.length > 0) {
+      if (!ResponseStatusReducer?.length > 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (todoListPageSize !== null && todoListCurrentPage !== null) {
@@ -118,13 +197,10 @@ const TodoList = () => {
   //get todolist reducer
   useEffect(() => {
     try {
-      if (
-        toDoListReducer.SearchTodolist !== null &&
-        toDoListReducer.SearchTodolist !== undefined
-      ) {
-        setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-        if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-          let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+      if (SearchTodolist !== null && SearchTodolist !== undefined) {
+        setTotalRecords(SearchTodolist.totalRecords);
+        if (SearchTodolist.toDoLists.length > 0) {
+          let dataToSort = [...SearchTodolist.toDoLists];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -134,6 +210,7 @@ const TodoList = () => {
           });
 
           setRowToDo(sortedTasks);
+          setOriginalData(sortedTasks);
         } else {
           setRowToDo([]);
         }
@@ -143,23 +220,20 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [SearchTodolist]);
 
   useEffect(() => {
     try {
       if (
-        toDoListReducer.SocketTodoActivityData !== null &&
-        toDoListReducer.SocketTodoActivityData !== undefined
+        SocketTodoActivityData !== null &&
+        SocketTodoActivityData !== undefined
       ) {
         if (
-          toDoListReducer.SocketTodoActivityData.comitteeID === -1 &&
-          toDoListReducer.SocketTodoActivityData.groupID === -1 &&
-          toDoListReducer.SocketTodoActivityData.meetingID === -1
+          SocketTodoActivityData.comitteeID === -1 &&
+          SocketTodoActivityData.groupID === -1 &&
+          SocketTodoActivityData.meetingID === -1
         ) {
-          let dataToSort = [
-            toDoListReducer.SocketTodoActivityData.todoList,
-            ...rowsToDo,
-          ];
+          let dataToSort = [SocketTodoActivityData.todoList, ...rowsToDo];
           const sortedTasks = dataToSort.sort((taskA, taskB) => {
             const deadlineA = taskA?.deadlineDateTime;
             const deadlineB = taskB?.deadlineDateTime;
@@ -173,12 +247,12 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [SocketTodoActivityData]);
 
   useEffect(() => {
     try {
-      if (toDoListReducer.socketTodoStatusData !== null) {
-        let payloadData = toDoListReducer.socketTodoStatusData;
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
         if (Number(payloadData.todoStatusID) === 6) {
           setRowToDo((rowsData) => {
             return rowsData.filter((newData, index) => {
@@ -204,7 +278,7 @@ const TodoList = () => {
         }
       }
     } catch {}
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [socketTodoStatusData]);
 
   useEffect(() => {
     try {
@@ -213,11 +287,11 @@ const TodoList = () => {
       let newArrStatus = [""];
 
       if (
-        todoStatus.Response !== null &&
-        todoStatus.Response !== "" &&
-        todoStatus.Response.length > 0
+        ResponseStatusReducer !== null &&
+        ResponseStatusReducer !== "" &&
+        ResponseStatusReducer.length > 0
       ) {
-        todoStatus.Response.forEach((data) => {
+        ResponseStatusReducer.forEach((data) => {
           // Check if pK_TSID is not 1 and not 6
           if (data.pK_TSID !== 1 && data.pK_TSID !== 6) {
             optionsArr.push({
@@ -238,7 +312,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [todoStatus]);
+  }, [ResponseStatusReducer]);
 
   // for modal create  handler
   const modalHandler = (e) => {
@@ -269,23 +343,80 @@ const TodoList = () => {
     dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow, 6));
   };
 
+  // Menu click handler for selecting filters
+  const handleMenuClick = (filterValue) => {
+    setSelectedValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      selectedValues.includes(item.status.pK_TSID.toString())
+    );
+    setRowToDo(filteredData);
+    setVisible(false);
+  };
+
+  const resetFilter = () => {
+    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
+    setRowToDo(originalData);
+    setVisible(false);
+  };
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+
+  const menu = (
+    <Menu>
+      {filters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}
+        >
+          <Checkbox checked={selectedValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className="d-flex gap-3 align-items-center justify-content-center">
+        <Button
+          text={"Reset"}
+          className="FilterResetBtn"
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedValues.length === 0}
+          className="ResetOkBtn"
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
+
   const columnsToDo = [
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "190px",
+      ellipsis: true,
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -301,9 +432,10 @@ const TodoList = () => {
       }),
       render: (text, record) => (
         <p
-          className='todolist-title-col'
+          className="todolist-title-col"
           title={text}
-          onClick={(e) => viewModalHandler(record.pK_TID)}>
+          onClick={(e) => viewModalHandler(record.pK_TID)}
+        >
           {text}
         </p>
       ),
@@ -311,21 +443,22 @@ const TodoList = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
+      align: "center",
+
       width: "220px",
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
@@ -345,13 +478,13 @@ const TodoList = () => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className='m-0 d-flex justify-content-center MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=''
+              alt=""
             />
             {record?.name}
           </p>
@@ -361,18 +494,20 @@ const TodoList = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
       ),
       width: "220px",
       dataIndex: "taskAssignedTo",
+      align: "center",
+
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
@@ -393,15 +528,15 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className='m-0 MontserratRegular d-flex justify-content-center color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
 
                     {text[0].name}
@@ -409,10 +544,10 @@ const TodoList = () => {
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
                     {text[0].name}
                   </>
@@ -426,12 +561,12 @@ const TodoList = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center justify-content-center'>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -459,8 +594,11 @@ const TodoList = () => {
 
       render: (text, record) => {
         return (
-          <span className='text-nowrap text-center'>
-            {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
+          <span className="text-nowrap text-center">
+            {newTimeFormaterAsPerUTCFullDate(
+              record.deadlineDateTime,
+              currentLanguage
+            )}
           </span>
         );
       },
@@ -471,49 +609,31 @@ const TodoList = () => {
       key: "status",
       align: "center",
       width: "220px",
-      filters: [
-        {
-          text: t("In-progress"),
-          value: "In Progress",
-          // className: currentLanguage,
-        },
-        {
-          text: t("Pending"),
-          value: "Pending",
-        },
 
-        {
-          text: t("Cancelled"),
-          value: "Cancelled",
-        },
-        {
-          text: t("Completed"),
-          value: "Completed",
-        },
-      ],
-      defaultFilteredValue: [
-        "In Progress",
-        "Pending",
-        "Cancelled",
-        "Completed",
-      ],
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown
+          className="filter-chevron-icon-todolist"
+          onClick={handleClickChevron}
+        />
       ),
-      onFilter: (value, record) => {
-        return record?.status?.status
-          ?.toLowerCase()
-          .includes(value.toLowerCase());
-      },
+      filterDropdown: () => (
+        <Dropdown
+          overlay={menu}
+          visible={visible}
+          onVisibleChange={(open) => setVisible(open)}
+        >
+          <div />
+        </Dropdown>
+      ),
       render: (text, record) => {
         if (Number(record?.taskCreator?.pK_UID) === Number(createrID)) {
           return (
             <>
               <Select
-                value={text.status}
+                value={t(text.status)}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -527,11 +647,12 @@ const TodoList = () => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
-                      {optValue.status}
+                      {t(optValue.status)}
                     </option>
                   );
                 })}
@@ -553,8 +674,9 @@ const TodoList = () => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }>
-              {text.status}
+              }
+            >
+              {t(text.status)}
             </p>
           );
         }
@@ -567,16 +689,15 @@ const TodoList = () => {
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "120px",
-      render: (record, index) => {
+      render: (text, record) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
-            <Tooltip placement='topRight' title={t("Delete")}>
-              <i
-                className='meeting-editbutton cursor-pointer'
-                onClick={(e) => deleteTodolist(record)}>
-                <img draggable='false' src={del} alt='' />
-              </i>
-            </Tooltip>
+            <i
+              className="meeting-editbutton cursor-pointer"
+              onClick={(e) => deleteTodolist(record)}
+            >
+              <img draggable="false" src={del} alt="" />
+            </i>
           );
         } else {
           <></>;
@@ -588,7 +709,7 @@ const TodoList = () => {
   useEffect(() => {
     try {
       setViewFlagToDo(false);
-      if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (Object.keys(ToDoDetails).length > 0) {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
@@ -598,7 +719,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [ToDoDetails]);
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -690,61 +811,33 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    try {
-      if (
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== undefined &&
-        toDoListReducer.ResponseMessage !== "" &&
-        toDoListReducer.ResponseMessage !== t("No-records-found")
-      ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: toDoListReducer.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(clearResponce());
-      } else if (
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== "" &&
-        assignees.ResponseMessage !== t("No-records-found") &&
-        assignees.ResponseMessage !== t("The-meeting-has-been-cancelled")
-      ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: assignees.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(clearResponseMessage());
-      } else {
-        dispatch(clearResponce());
-        dispatch(clearResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
+    if (
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== undefined &&
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== t("No-records-found")
+    ) {
+      showMessage(ResponseMessageTodoReducer, "success", setOpen);
+      dispatch(clearResponce());
+    } else if (
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found") &&
+      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
+    ) {
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
+      dispatch(clearResponseMessage());
+    } else {
+      dispatch(clearResponce());
+      dispatch(clearResponseMessage());
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   useEffect(() => {
     try {
       if (removeTodo !== 0) {
         if (
-          getTodosStatus.UpdateTodoStatusMessage ===
+          UpdateTodoStatusMessage ===
           t("The-record-has-been-updated-successfully")
         ) {
           let copyData = [...rowsToDo];
@@ -758,99 +851,57 @@ const TodoList = () => {
     } catch (error) {
       console.log(error, "error");
     }
-  }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+  }, [UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
-    try {
-      if (
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== undefined &&
-        getTodosStatus.ResponseMessage !== "" &&
-        getTodosStatus.ResponseMessage !== t("No-records-found")
-      ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+    if (
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== undefined &&
+      ResponseMessageTodoStatusReducer !== "" &&
+      ResponseMessageTodoStatusReducer !== t("No-records-found")
+    ) {
+      showMessage(ResponseMessageTodoStatusReducer, "success", setOpen);
 
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== undefined &&
-        getTodosStatus.UpdateTodoStatusMessage !== "" &&
-        getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
-      ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.UpdateTodoStatusMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(cleareMessage());
-      } else if (
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== undefined &&
-        getTodosStatus.UpdateTodoStatus !== "" &&
-        getTodosStatus.UpdateTodoStatus !== t("No-records-found")
-      ) {
-        setOpen({
-          ...open,
-          open: true,
-          message: getTodosStatus.UpdateTodoStatus,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(cleareMessage());
-      } else {
-        dispatch(cleareMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
+      dispatch(cleareMessage());
+    } else if (
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== undefined &&
+      UpdateTodoStatusMessage !== "" &&
+      UpdateTodoStatusMessage !== t("No-records-found")
+    ) {
+      showMessage(UpdateTodoStatusMessage, "success", setOpen);
+      dispatch(cleareMessage());
+    } else if (
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== undefined &&
+      UpdateTodoStatus !== "" &&
+      UpdateTodoStatus !== t("No-records-found")
+    ) {
+      showMessage(UpdateTodoStatus, "success", setOpen);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
     }
   }, [
-    getTodosStatus.ResponseMessage,
-    getTodosStatus.UpdateTodoStatusMessage,
-    getTodosStatus.UpdateTodoStatus,
+    ResponseMessageTodoStatusReducer,
+    UpdateTodoStatusMessage,
+    UpdateTodoStatus,
   ]);
 
   const scroll = {
     y: "58vh",
-    scrollbar: {
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-    },
+    x: "auto",
   };
 
   return (
     <>
-      <div className='todolistContainer'>
-        <Row className='d-flex justify-content-start align-items-center   mt-3'>
-          <Col md={2} sm={4} lg={2} className='todolist-heading-size'>
+      <div className="todolistContainer">
+        <Row className="d-flex justify-content-start align-items-center   mt-3">
+          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {t("Tasks")}
           </Col>
 
-          <Col lg={2} md={2} sm={4} className='todolist-create-btn'>
+          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
@@ -863,112 +914,112 @@ const TodoList = () => {
             md={8}
             lg={8}
             sm={4}
-            className='todo-list-field todolist-search-row '>
+            className="todo-list-field todolist-search-row "
+          >
             <Search
-              width='24px'
-              height='24px'
-              className='search-Icon toExpandSearch Meeting'
+              width="24px"
+              height="24px"
+              className="search-Icon toExpandSearch Meeting"
               onClick={ShowHide}
             />
             {isExpand && (
               <>
                 {currentLanguage === "ar" ? (
-                  <div className='expandableMenuSearch'>
-                    <Form className='d-flex'>
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='ar'
+                          locale="ar"
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='en'
+                          locale="en"
                         />
                       )}
                       <TextField
-                        width='180px'
-                        name='AssignedToName'
+                        width="180px"
+                        name="AssignedToName"
                         value={searchData.AssignedToName}
-                        className='mx-2 '
+                        className="mx-2 "
                         placeholder={t("Assigned-to")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
-                        width='250px'
-                        name='Title'
+                        width="250px"
+                        name="Title"
                         value={searchData.Title}
-                        // className="mx-4"
                         placeholder={t("Task")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
 
                       <Button
-                        className='btn btn-primary meeting search me-3'
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        type='submit'
+                        type="submit"
                         onClick={search}
                       />
                       <Button
-                        className='btn  btn-primary meeting search'
+                        className="btn  btn-primary meeting search"
                         variant={"Primary"}
-                        type='reset'
+                        type="reset"
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
                 ) : (
-                  <div className='expandableMenuSearch'>
-                    <Form className='d-flex'>
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='ar'
+                          locale="ar"
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
-                          locale='en'
+                          locale="en"
                         />
                       )}
                       <TextField
-                        applyClass='form-control2'
-                        width='250px'
-                        name='Title'
+                        applyClass="form-control2"
+                        width="250px"
+                        name="Title"
                         value={searchData.Title}
-                        className='mx-2'
+                        className="mx-2"
                         placeholder={t("Task")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <TextField
-                        applyClass='form-control2'
-                        width='180px'
-                        name='AssignedToName'
+                        applyClass="form-control2"
+                        width="180px"
+                        name="AssignedToName"
                         value={searchData.AssignedToName}
-                        className='mx-2'
+                        className="mx-2"
                         placeholder={t("Assigned-to")}
-                        labelclass='textFieldSearch'
+                        labelclass="textFieldSearch"
                         change={searchHandler}
                       />
                       <Button
-                        className='btn btn-primary meeting search me-3'
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowRight />}
                         onClick={search}
                       />
                       <Button
-                        className='btn  btn-primary meeting search'
+                        className="btn  btn-primary meeting search"
                         variant={"Primary"}
-                        type='reset'
+                        type="reset"
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
                       />
@@ -979,7 +1030,7 @@ const TodoList = () => {
             )}
           </Col>
         </Row>
-        <section className='todolist_main_section'>
+        <section className="todolist_main_section">
           <Row>
             <Col>
               <TableToDo
@@ -991,9 +1042,9 @@ const TodoList = () => {
                 locale={{
                   emptyText: (
                     <>
-                      <section className='d-flex flex-column align-items-center justify-content-center '>
-                        <img src={TodoMessageIcon1} width={"250px"} alt='' />
-                        <span className='NotaskTodolist'>{t("No-Task")}</span>
+                      <section className="d-flex flex-column align-items-center justify-content-center ">
+                        <img src={TodoMessageIcon1} width={"250px"} alt="" />
+                        <span className="NotaskTodolist">{t("No-Task")}</span>
                       </section>
                     </>
                   ), // Set your custom empty text here
@@ -1002,20 +1053,17 @@ const TodoList = () => {
               />
             </Col>
           </Row>
-          {/* <Row> */}
 
-          {/* </Row> */}
-          {/* </Col> */}
-          {/* </Row> */}
           <Row>
             <Col>
               {rowsToDo.length > 0 && (
-                <Row className=''>
+                <Row className="">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Row>
                       <Col
                         lg={12}
@@ -1023,8 +1071,9 @@ const TodoList = () => {
                         sm={12}
                         className={
                           "pagination-groups-table d-flex justify-content-center"
-                        }>
-                        <span className='PaginationStyle-TodoList'>
+                        }
+                      >
+                        <span className="PaginationStyle-TodoList">
                           <CustomPagination
                             onChange={paginationChangeHandlerTodo}
                             current={
@@ -1059,7 +1108,7 @@ const TodoList = () => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className='toDoViewModal'
+          className="toDoViewModal"
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo
@@ -1073,7 +1122,7 @@ const TodoList = () => {
           setModalsflag={setModalsflag}
         />
       ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

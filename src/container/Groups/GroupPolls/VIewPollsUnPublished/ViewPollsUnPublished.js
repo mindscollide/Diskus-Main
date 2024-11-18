@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewPollsUnPublished.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Button } from "../../../../components/elements";
@@ -10,15 +8,9 @@ import { EditmeetingDateFormat } from "../../../../commen/functions/date_formate
 import moment from "moment";
 const ViewPollsUnPublished = ({ setViewUnPublished }) => {
   const { t } = useTranslation();
-  const { PollsReducer } = useSelector((state) => state);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
-
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -32,11 +24,8 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
   };
   useEffect(() => {
     try {
-      if (
-        PollsReducer.Allpolls !== null &&
-        PollsReducer.Allpolls !== undefined
-      ) {
-        let pollData = PollsReducer.Allpolls.poll;
+      if (Allpolls !== null && Allpolls !== undefined) {
+        let pollData = Allpolls.poll;
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
@@ -58,7 +47,7 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
         }
       }
     } catch {}
-  }, [PollsReducer.Allpolls]);
+  }, [Allpolls]);
   return (
     <section>
       <Row>
@@ -79,7 +68,7 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
             >
               <Row>
                 {pollsOption.length > 0
-                  ? pollsOption.map((data, index) => {
+                  ? pollsOption.map((data) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">

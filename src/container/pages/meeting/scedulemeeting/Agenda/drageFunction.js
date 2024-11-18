@@ -41,10 +41,13 @@ export const onDragEnd = (result, rows, setRows) => {
     const sourceParentType = result.source.droppableId.split("-")[0];
     const destinationParentType = result.destination.droppableId.split("-")[0];
     if (sourceParentType === "parent" && destinationParentType === "parent") {
-      const sourceParentID = parseInt(result.source.droppableId.split("-")[1]);
+      // const sourceParentID = parseInt(result.source.droppableId.split("-")[1]);
+      const sourceParentID = result.source.droppableId.split("-")[1];
+
       const sourceParentIndex = rows.findIndex(
         (obj) => obj.iD === sourceParentID.toString()
       );
+
       const destinationParentID = parseInt(
         result.destination.droppableId.split("-")[1]
       );

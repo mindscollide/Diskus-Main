@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import styles from "./VideoMeetingMinutes.module.css";
 import { Container, Row, Col } from "react-bootstrap";
 import { ChevronRight } from "react-bootstrap-icons";
-import { useSelector } from "react-redux";
 import { TextField, Button } from "../../components/elements";
 const VideoMeetingMinutes = () => {
-  const { VideoChatReducer } = useSelector((state) => state);
   const [minutes, setMinutes] = useState("");
   return (
     <Container>

@@ -1,36 +1,17 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Accordian,
-  Loader,
-  Notification,
-} from "./../../components/elements";
+import React, { useEffect } from "react";
+import { Accordian } from "./../../components/elements";
 import "./Miscellaneous.css";
 import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
-import { Row, Col, Container, Card } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 const CustomMiscellaneous = () => {
   const state = useSelector((state) => state);
   const { t } = useTranslation();
-  //import faqsReducer from reducers
-  const { fAQsReducer, LanguageReducer } = state;
+  const { fAQsReducer } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-
-  //list of FAQ'S data
-  const [userListOfFaqs, setUserListOfFaqs] = useState({
-    pK_FAQID: 1,
-    question: "",
-    answer: "",
-    isEnable: true,
-    listOfFAQs: [],
-  });
 
   //dispatch user getfaqs api
   useEffect(() => {
@@ -69,7 +50,6 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
-      {fAQsReducer.Loading ? <Loader /> : null}
     </>
   );
 };

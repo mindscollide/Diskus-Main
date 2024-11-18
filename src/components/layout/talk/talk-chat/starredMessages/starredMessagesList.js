@@ -206,7 +206,7 @@ const StarredMessagesList = () => {
         <>
           {/* <Spin className="talk-overallchat-spinner" /> */}
           <LoaderPanel
-            message={"Safeguarding your data to enhance the experience"}
+            message={t("Safeguarding-your-data-to-enhance-the-experience")}
           />
         </>
       ) : talkStateData.AllStarMessagesData.Loading === false &&

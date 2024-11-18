@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./VideoMaxOutgoing.css";
-import { Container, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../../../../elements";
-import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
-import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.png";
+import { Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
 
 const VideoOutgoing = () => {
-  const { VideoMainReducer } = useSelector((state) => state);
-
+  const VideoRecipentData = useSelector(
+    (state) => state.VideoMainReducer.VideoRecipentData
+  );
+  const CallRequestReceivedMQTTData = useSelector(
+    (state) => state.VideoMainReducer.CallRequestReceivedMQTTData
+  );
   let currentCallType = Number(localStorage.getItem("CallType"));
 
   useEffect(() => {
@@ -40,18 +41,18 @@ const VideoOutgoing = () => {
 
   useEffect(() => {
     if (
-      VideoMainReducer.VideoRecipentData !== undefined &&
-      VideoMainReducer.VideoRecipentData !== null &&
-      Object.keys(VideoMainReducer.VideoRecipentData).length !== 0 &&
-      VideoMainReducer.VideoRecipentData.userName !== undefined
+      VideoRecipentData !== undefined &&
+      VideoRecipentData !== null &&
+      Object.keys(VideoRecipentData).length !== 0 &&
+      VideoRecipentData.userName !== undefined
     ) {
-      setUserNameCR(VideoMainReducer.VideoRecipentData.userName);
+      setUserNameCR(VideoRecipentData.userName);
     } else if (
-      VideoMainReducer.VideoRecipentData !== undefined &&
-      VideoMainReducer.VideoRecipentData !== null &&
-      Object.keys(VideoMainReducer.VideoRecipentData).length !== 0
+      VideoRecipentData !== undefined &&
+      VideoRecipentData !== null &&
+      Object.keys(VideoRecipentData).length !== 0
     ) {
-      setUserNameCR(VideoMainReducer.VideoRecipentData.recipients[0].userName);
+      setUserNameCR(VideoRecipentData.recipients[0].userName);
     }
   }, []);
 
@@ -61,15 +62,12 @@ const VideoOutgoing = () => {
         <Col lg={12} md={12} sm={12}>
           {currentCallType === 1 ? (
             <div className="Caller-Status">
-              {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
-                .length > 0 &&
-              VideoMainReducer.CallRequestReceivedMQTTData.message ===
+              {Object.keys(CallRequestReceivedMQTTData).length > 0 &&
+              CallRequestReceivedMQTTData.message ===
                 "VIDEO_CALL_UNANSWERED" ? (
                 <>{userNameCR} is unavailable</>
-              ) : Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
-                  .length > 0 &&
-                VideoMainReducer.CallRequestReceivedMQTTData.message ===
-                  "VIDEO_CALL_RINGING" ? (
+              ) : Object.keys(CallRequestReceivedMQTTData).length > 0 &&
+                CallRequestReceivedMQTTData.message === "VIDEO_CALL_RINGING" ? (
                 <>
                   Ringing
                   {" " + userNameCR}

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./Events.module.css";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
-import { Button, ResultMessage } from "../../../components/elements";
-import { Col, Row } from "react-bootstrap";
+import { Button } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import {
+  isSameAsToday,
   multiDatePickerDateChangIntoUTC,
   newTimeFormaterAsPerUTCFullDate,
 } from "../../../commen/functions/date_formater";
@@ -19,9 +19,20 @@ import {
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const Events = () => {
-  const { meetingIdReducer, settingReducer } = useSelector((state) => state);
+  const UpcomingEventsData = useSelector(
+    (state) => state.meetingIdReducer.UpcomingEventsData
+  );
+
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+  const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
 
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
@@ -29,9 +40,8 @@ const Events = () => {
   let getCurrentDate = moment(new Date()).format("DD");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
-  console.log(remainingMinutesAgo, "remainingMinutesAgoremainingMinutesAgo");
   const currentUTCDateTime = multiDatePickerDateChangIntoUTC(new Date());
+  const currentLanguage = localStorage.getItem("i18nextLng");
   useEffect(() => {
     let Data2 = {
       UserID: parseInt(createrID),
@@ -42,25 +52,22 @@ const Events = () => {
   useEffect(() => {
     try {
       if (
-        meetingIdReducer.UpcomingEventsData.length > 0 &&
-        meetingIdReducer.UpcomingEventsData !== null &&
-        meetingIdReducer.UpcomingEventsData !== undefined
+        UpcomingEventsData.length > 0 &&
+        UpcomingEventsData !== null &&
+        UpcomingEventsData !== undefined
       ) {
         // Create a new array with updated objects without mutating the original state
-        const updatedUpcomingEvents = meetingIdReducer.UpcomingEventsData.map(
-          (event) => {
-            // Assuming statusID is within each event object
-            return {
-              ...event, // Spread the properties of the original event object
-              meetingDetails: {
-                ...event.meetingDetails, // Spread the properties of meetingDetails
-                statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
-              },
-            };
-          }
-        );
+        const updatedUpcomingEvents = UpcomingEventsData.map((event) => {
+          // Assuming statusID is within each event object
+          return {
+            ...event, // Spread the properties of the original event object
+            meetingDetails: {
+              ...event.meetingDetails, // Spread the properties of meetingDetails
+              statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
+            },
+          };
+        });
 
-        console.log("upComingEvents", updatedUpcomingEvents);
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
         console.log("upComingEvents", upComingEvents);
@@ -69,20 +76,16 @@ const Events = () => {
     } catch (error) {
       // Log any errors for debugging
     }
-  }, [meetingIdReducer.UpcomingEventsData]);
+  }, [UpcomingEventsData]);
 
   useEffect(() => {
-    if (meetingIdReducer.MeetingStatusSocket !== null) {
-      let meetingStatusID =
-        meetingIdReducer.MeetingStatusSocket.meetingStatusID;
+    if (MeetingStatusSocket !== null) {
       if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
       ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
-        // updateCalendarData(true, meetingID);
-        console.log("upComingEvents");
+        let meetingID = MeetingStatusSocket.meetingID;
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -90,7 +93,6 @@ const Events = () => {
           )
         );
 
-        console.log("upComingEvents");
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             return (
@@ -99,11 +101,11 @@ const Events = () => {
           })
         );
       } else if (
-        meetingIdReducer.MeetingStatusSocket.message
+        MeetingStatusSocket.message
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
 
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
@@ -119,11 +121,8 @@ const Events = () => {
       }
 
       dispatch(getMeetingStatusfromSocket(null));
-      // if (meetingStatusID === 4) {
-      //   updateCalendarData(true, meetingID);
-      // }
     }
-  }, [meetingIdReducer.MeetingStatusSocket]);
+  }, [MeetingStatusSocket]);
 
   const meetingDashboardCalendarEvent = (data) => {
     // Create a shallow copy of the data object to prevent mutation
@@ -159,27 +158,25 @@ const Events = () => {
 
   const upcomingEventsHandler = (upComingEvents) => {
     console.log("upComingEvents", upComingEvents);
-    let flag = false;
-    let indexforUndeline = null;
-    try {
-      upComingEvents.map((upcomingEventsData, index) => {
-        console.log(upComingEvents, getCurrentDate, "upcomingEventsHandler");
-        if (
-          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-          getCurrentDate
-        ) {
-          if (indexforUndeline === null && flag === false) {
-            // if (index - 1 >= 0) {
-            flag = true;
-            indexforUndeline = index;
-            // }
-          }
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    console.log(flag, indexforUndeline, "upcomingEventsHandler");
+    // let flag = false;
+    // let indexforUndeline = null;
+    // try {
+    //   upComingEvents.map((upcomingEventsData, index) => {
+    //     let { isSame } = isSameAsToday(
+    //       `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
+    //     );
+    //     console.log(isSame,"isSameisSame")
+    //     if (isSame) {
+    //       if (indexforUndeline === null && flag === false) {
+    //         flag = true;
+    //         indexforUndeline = index;
+    //       }
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
     return upComingEvents.map((upcomingEventsData, index) => {
       let meetingDateTime =
         upcomingEventsData.meetingEvent.meetingDate +
@@ -207,48 +204,62 @@ const Events = () => {
 
       // Convert milliseconds to minutes
       const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
+      console.log(
+        convertToArabicNumerals(minutesDifference),
+        "minutesDifference"
+      );
+      let checkisTodayorActive =
+        upcomingEventsData?.meetingDetails?.statusID === 1 ||
+        upcomingEventsData?.meetingDetails?.statusID === 10;
+      console.log(
+        upcomingEventsData.meetingDetails.statusID === 1,
+        minutesDifference < 60,
+        upcomingEventsData.meetingDetails.statusID === 10,
+        checkisTodayorActive,
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8),
+        getCurrentDate,
+        minutesDifference,
+        "upcomingEventsDataupcomingEventsData"
+      );
+      let { isSame } = isSameAsToday(
+        `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
+      );
       return (
         <>
-          {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-          getCurrentDate ? (
+          {isSame ? (
             <div
               className={
-                (upcomingEventsData.meetingDetails.statusID === 1 &&
-                  minutesDifference < remainingMinutesAgo) ||
-                upcomingEventsData.meetingDetails.statusID === 10
-                  ? "event-details upcoming_events todayEvent border-0 d-flex justify-content-center align-items-center"
-                  : "event-details upcoming_events todayEvent border-0"
+                checkisTodayorActive
+                  ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
+                  : styles["event-details"] || ""
               }>
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < remainingMinutesAgo) ||
+                    minutesDifference < 60) ||
                   upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details-block"
+                    ? `${styles["event-details-block"]}`
                     : ""
                 }>
-                <p className='events-description '>
+                <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
-                <p className='events-dateTime '>
+                <p className={styles["events-dateTime"]}>
                   {newTimeFormaterAsPerUTCFullDate(
                     upcomingEventsData.meetingEvent.meetingDate +
-                      upcomingEventsData.meetingEvent.startTime
+                      upcomingEventsData.meetingEvent.startTime,
+                    currentLanguage
                   )}
                 </p>
               </div>
               {upcomingEventsData.meetingDetails.statusID === 1 &&
               upcomingEventsData.participantRoleID === 1 ? (
                 upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < remainingMinutesAgo ? (
-                  // &&
-                  // minutesDifference > 0
-                  //   &&
-                  //   minutesDifference <= 99999999 &&
-                  //   minutesDifference > 0
+                minutesDifference < 60 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className='Start-Meeting-Upcoming'
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -260,15 +271,10 @@ const Events = () => {
                 ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
                     false &&
                   upcomingEventsData.participantRoleID === 1 &&
-                  minutesDifference < remainingMinutesAgo ? (
-                  // &&
-                  // minutesDifference > 0
-                  //   &&
-                  //     minutesDifference <= 99999999 &&
-                  //     minutesDifference > 0
+                  minutesDifference < 60 ? (
                   <Button
                     text={t("Start-meeting")}
-                    className='Start-Meeting-Upcoming'
+                    className={styles["Start-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -282,7 +288,7 @@ const Events = () => {
                 upcomingEventsData.participantRoleID === 2 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -294,7 +300,7 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 4 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
@@ -306,54 +312,55 @@ const Events = () => {
                 ) : upcomingEventsData.participantRoleID === 1 ? (
                   <Button
                     text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
+                    className={styles["joining-Meeting-Upcoming"]}
                     onClick={() => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
+                        upcomingEventsData.meetingDetails.titleg
                       );
                     }}
                   />
                 ) : null
               ) : null}
             </div>
-          ) : indexforUndeline !== null && indexforUndeline === index ? (
+          ) : (
             <>
-              <span className='bordertop' />
+              <span className={styles["bordertop"]} />
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < remainingMinutesAgo) ||
+                    minutesDifference < 60) ||
                   upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details d-flex justify-content-center align-items-center"
-                    : "event-details"
+                    ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
+                    : ` ${styles["event-details"]}`
                 }>
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-                      minutesDifference < remainingMinutesAgo) ||
+                      minutesDifference < 60) ||
                     upcomingEventsData.meetingDetails.statusID === 10
-                      ? "event-details-block"
+                      ? `${styles["event-details-block"]}`
                       : ""
                   }>
-                  <p className='events-description'>
+                  <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
-                  <p className='events-dateTime'>
+                  <p className={styles["events-dateTime"]}>
                     {newTimeFormaterAsPerUTCFullDate(
                       upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime,
+                      currentLanguage
                     )}
                   </p>
                 </div>
                 {upcomingEventsData.meetingDetails.statusID === 1 &&
                 upcomingEventsData.participantRoleID === 1 ? (
                   upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                  minutesDifference < remainingMinutesAgo ? (
+                  minutesDifference < 60 ? (
                     <Button
                       text={t("Start-meeting")}
-                      className='Start-Meeting-Upcoming'
+                      className={styles["Start-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -363,10 +370,10 @@ const Events = () => {
                       }}
                     />
                   ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                      false && minutesDifference < remainingMinutesAgo ? (
+                      false && minutesDifference < 60 ? (
                     <Button
                       text={t("Start-meeting")}
-                      className='Start-Meeting-Upcoming'
+                      className={styles["Start-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
 
@@ -381,7 +388,7 @@ const Events = () => {
                   upcomingEventsData.participantRoleID === 2 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className='joining-Meeting-Upcoming'
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -393,7 +400,7 @@ const Events = () => {
                   ) : upcomingEventsData.participantRoleID === 4 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className='joining-Meeting-Upcoming'
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -405,7 +412,7 @@ const Events = () => {
                   ) : upcomingEventsData.participantRoleID === 1 ? (
                     <Button
                       text={t("Join-meeting")}
-                      className='joining-Meeting-Upcoming'
+                      className={styles["joining-Meeting-Upcoming"]}
                       onClick={() => {
                         meetingDashboardCalendarEvent(upcomingEventsData);
                         localStorage.setItem(
@@ -418,102 +425,6 @@ const Events = () => {
                 ) : null}
               </div>
             </>
-          ) : (
-            <div
-              className={
-                (upcomingEventsData.meetingDetails.statusID === 1 &&
-                  minutesDifference < remainingMinutesAgo) ||
-                upcomingEventsData.meetingDetails.statusID === 10
-                  ? "event-details d-flex justify-content-center align-items-center"
-                  : "event-details"
-              }>
-              <div
-                className={
-                  (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < remainingMinutesAgo) ||
-                  upcomingEventsData.meetingDetails.statusID === 10
-                    ? "event-details-block"
-                    : ""
-                }>
-                <p className='events-description'>
-                  {upcomingEventsData.meetingDetails.title}
-                </p>
-                <p className='events-dateTime'>
-                  {newTimeFormaterAsPerUTCFullDate(
-                    upcomingEventsData.meetingEvent.meetingDate +
-                      upcomingEventsData.meetingEvent.startTime
-                  )}
-                </p>
-              </div>
-              {upcomingEventsData.meetingDetails.statusID === 1 &&
-              upcomingEventsData.participantRoleID === 1 ? (
-                upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < remainingMinutesAgo ? (
-                  <Button
-                    text={t("Start-meeting")}
-                    className='Start-Meeting-Upcoming'
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                    false && minutesDifference < remainingMinutesAgo ? (
-                  <Button
-                    text={t("Start-meeting")}
-                    className='Start-Meeting-Upcoming'
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : null
-              ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                upcomingEventsData.participantRoleID === 2 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.participantRoleID === 4 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.participantRoleID === 1 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className='joining-Meeting-Upcoming'
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : null
-              ) : null}
-            </div>
           )}
         </>
       );
@@ -521,10 +432,9 @@ const Events = () => {
   };
   useEffect(() => {
     try {
-      if (meetingIdReducer.MeetingStatusEnded !== null) {
+      if (MeetingStatusEnded !== null) {
         try {
-          let meetingID = meetingIdReducer.MeetingStatusEnded?.meeting?.pK_MDID;
-          console.log(meetingID, "meetingIDmeetingIDmeetingID");
+          let meetingID = MeetingStatusEnded?.meeting?.pK_MDID;
           setUpComingEvents((upcomingeventData) => {
             return upcomingeventData.filter((meetingData) => {
               return (
@@ -541,65 +451,11 @@ const Events = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
-
-  useEffect(() => {
-    if (settingReducer?.UserProfileData !== null) {
-      let settingConfigurations =
-        settingReducer?.UserProfileData?.configurations;
-      if (
-        settingConfigurations !== null &&
-        settingConfigurations !== undefined &&
-        settingConfigurations.length > 0
-      ) {
-        let findReminingMinutesAgo = settingConfigurations.find(
-          (remainsData, index) =>
-            remainsData?.configKey?.toLowerCase() ===
-            "Join_Meeting_Before_Minutes".toLowerCase()
-        );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
-        );
-        if (findReminingMinutesAgo !== undefined) {
-          setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
-        }
-      }
-    }
-  }, [settingReducer?.UserProfileData]);
-
-  useEffect(() => {
-    if (meetingIdReducer.MQTTUpcomingEvents !== null) {
-      try {
-        const upComingMeetingEvent = meetingIdReducer.MQTTUpcomingEvents;
-        setUpComingEvents((prevUpcomingEvents) => {
-          const existingEventIndex = prevUpcomingEvents.findIndex(
-            (event) =>
-              event.meetingDetails.pK_MDID ===
-              upComingMeetingEvent.meetingDetails.pK_MDID
-          );
-
-          if (existingEventIndex !== -1) {
-            // Update existing event
-            return prevUpcomingEvents.map((event, index) =>
-              index === existingEventIndex
-                ? { ...event, ...upComingMeetingEvent } // Update with new event details
-                : event
-            );
-          } else {
-            // Add new event
-            return [...prevUpcomingEvents, upComingMeetingEvent];
-          }
-        });
-      } catch (error) {
-        console.error("Error updating upcoming events:", error);
-      }
-    }
-  }, [meetingIdReducer.MQTTUpcomingEvents]);
+  }, [MeetingStatusEnded]);
 
   return (
     <>
-      {meetingIdReducer.Spinner === true ? (
+      {Spinner === true ? (
         <Spin />
       ) : (
         <>

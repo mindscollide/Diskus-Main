@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 const EditUserModal = ({ editModalData }) => {
-  console.log(editModalData, "editModalDataeditModalData");
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -32,8 +31,12 @@ const EditUserModal = ({ editModalData }) => {
 
   console.log(typeof isTrialCheck, "isTrialCheck");
 
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
+  const UserManagementModalseditUserModalData = useSelector(
+    (state) => state.UserManagementModals.editUserModal
+  );
+
+  const UserMangementReducergetOrganizationUserStatsGraphData = useSelector(
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
   );
 
   let organizationID = localStorage.getItem("organizationID");
@@ -91,12 +94,12 @@ const EditUserModal = ({ editModalData }) => {
 
   //options for the dropdowm
   const options = [
-    { value: 1, label: "Enabled" },
-    { value: 2, label: "Disabled" },
-    { value: 3, label: "Locked" },
-    { value: 4, label: "Closed" },
-    { value: 5, label: "Dormant" },
-    { value: 6, label: "Delete" },
+    { value: 1, label: t("Enabled") },
+    { value: 2, label: t("Disabled") },
+    { value: 3, label: t("Locked") },
+    { value: 4, label: t("Closed") },
+    { value: 5, label: t("Dormant") },
+    { value: 6, label: t("Delete") },
   ];
 
   const findOptionByValue = (value) => {
@@ -146,13 +149,13 @@ const EditUserModal = ({ editModalData }) => {
   // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
-      UserMangementReducer.getOrganizationUserStatsGraph &&
-      Object.keys(UserMangementReducer.getOrganizationUserStatsGraph).length > 0
+      UserMangementReducergetOrganizationUserStatsGraphData &&
+      Object.keys(UserMangementReducergetOrganizationUserStatsGraphData)
+        .length > 0
     ) {
       let temp = [];
-      UserMangementReducer.getOrganizationUserStatsGraph.selectedPackageDetails.map(
-        (data, index) => {
-          console.log(data, "packageDatapackageData");
+      UserMangementReducergetOrganizationUserStatsGraphData.selectedPackageDetails.forEach(
+        (data) => {
           temp.push({
             value: data.pK_PackageID,
             label: data.name,
@@ -162,11 +165,10 @@ const EditUserModal = ({ editModalData }) => {
       );
       setPackageAssignedOption(temp);
     }
-  }, [UserMangementReducer.getOrganizationUserStatsGraph]);
+  }, [UserMangementReducergetOrganizationUserStatsGraphData]);
 
   // Handler for when an option is selected.
   const handleSelectChange = async (selectedOption) => {
-    console.log(selectedOption, "selectedOptionselectedOption");
     setUserStatus(selectedOption);
     setUserStatusID(selectedOption.value);
   };
@@ -175,14 +177,11 @@ const EditUserModal = ({ editModalData }) => {
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
-    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary == country;
-    });
   };
+
   const handleUpdateModal = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log({ name, value }, "handleChangeSearchBoxValues");
 
     if (name === "Name" && value !== "") {
       let valueName = regexOnlyCharacters(value);
@@ -313,20 +312,17 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handlePackageAssigned = async (selectedOption) => {
-    console.log(selectedOption, "selectedOptionselectedOption");
     setPackageAssignedValue(selectedOption);
     setEditPakageID(selectedOption.value);
   };
 
-  console.log(selected, "selectedselected");
-
   return (
     <section>
       <Modal
-        show={UserManagementModals.editUserModal}
+        show={UserManagementModalseditUserModalData}
         setShow={dispatch(showEditUserModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block border-0"}
+        modalHeaderClassName={"d-block border-0"}
         onHide={() => {
           dispatch(showEditUserModal(false));
         }}
@@ -552,10 +548,9 @@ const EditUserModal = ({ editModalData }) => {
           <>
             <section className={styles["ModalAlignmnet"]}>
               <Row>
-                <Col lg={1} md={1} sm={12} xs={12}></Col>
                 <Col
-                  lg={10}
-                  md={10}
+                  lg={12}
+                  md={12}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-end"
@@ -566,7 +561,6 @@ const EditUserModal = ({ editModalData }) => {
                     onClick={handleUpdateButton}
                   />
                 </Col>
-                <Col lg={1} md={1} sm={12} xs={12}></Col>
               </Row>
             </section>
           </>

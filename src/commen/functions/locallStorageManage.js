@@ -33,7 +33,11 @@ export const localStorageManage = (
   const RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")
   );
-  let LoginFlowPageRoute = localStorage.getItem("LoginFlowPageRoute") !== null ? JSON.parse(localStorage.getItem("LoginFlowPageRoute")): 1
+  let LoginFlowPageRoute =
+    localStorage.getItem("LoginFlowPageRoute") !== null ||
+    localStorage.getItem("LoginFlowPageRoute") !== undefined
+      ? JSON.parse(localStorage.getItem("LoginFlowPageRoute"))
+      : 1;
 
   const commonData = {
     i18nextLng: localStorage.getItem("i18nextLng"),
@@ -61,11 +65,7 @@ export const localStorageManage = (
     const RememberPasswordLocalValue =
       localStorage.getItem("rememberPasswordValue") || "";
 
-    manageCommonLocalStorage(
-      LoginFlowPageRoute,
-      dispatch,
-      commonData
-    );
+    manageCommonLocalStorage(LoginFlowPageRoute, dispatch, commonData);
 
     setLocalStorage("rememberEmail", RememberEmailLocal);
     setLocalStorage("rememberEmailValue", RememberEmailLocalValue);
@@ -79,11 +79,7 @@ export const localStorageManage = (
 
  
   } else {
-    manageCommonLocalStorage(
-      LoginFlowPageRoute,
-      dispatch,
-      commonData
-    );
+    manageCommonLocalStorage(LoginFlowPageRoute, dispatch, commonData);
 
     setLocalStorage("rememberEmail", false);
     setLocalStorage("rememberEmailValue", "");

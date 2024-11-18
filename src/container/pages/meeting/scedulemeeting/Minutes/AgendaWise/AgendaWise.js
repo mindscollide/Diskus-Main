@@ -2,26 +2,18 @@ import React, { useEffect, useState } from "react";
 import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import PlusExpand from "../../../../../../assets/images/Plus-notesExpand.svg";
-import MinusExpand from "../../../../../../assets/images/close-accordion.svg";
 import { useDispatch } from "react-redux";
 import {
   AttachmentViewer,
   Button,
   Notification,
 } from "../../../../../../components/elements";
-import { Accordion, AccordionSummary } from "@material-ui/core";
 import Select from "react-select";
-import { Col, Row } from "react-bootstrap";
+import { Accordion, Col, Row } from "react-bootstrap";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
-import Leftploygon from "../../../../../../assets/images/Polygon 3.svg";
-import file_image from "../../../../../../assets/images/file_image.svg";
-import { AccordionDetails } from "@mui/material";
-import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
-import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
@@ -39,12 +31,9 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
-import {
-  getFileExtension,
-  getIconSource,
-} from "../../../../../DataRoom/SearchFunctionality/option";
 import FilesMappingAgendaWiseMinutes from "./FilesMappingAgendaWiseMinutes";
 import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/utils";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const AgendaWise = ({
   currentMeeting,
@@ -59,21 +48,36 @@ const AgendaWise = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const Delta = Quill.import("delta");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [isEdit, setisEdit] = useState(false);
   const [accordianExpand, setAccordianExpand] = useState(false);
   const [organizerID, setOrganizerID] = useState(0);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
-    (state) => state
-  );
 
+  const agendaWiseMinutesReducer = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinutesReducer
+  );
+  const getallDocumentsForAgendaWiseMinutes = useSelector(
+    (state) => state.NewMeetingreducer.getallDocumentsForAgendaWiseMinutes
+  );
+  const agendaWiseMinuteID = useSelector(
+    (state) => state.NewMeetingreducer.agendaWiseMinuteID
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const RetriveAgendaWiseDocuments = useSelector(
+    (state) => state.NewMeetingreducer.RetriveAgendaWiseDocuments
+  );
+  const AllAgendas = useSelector(
+    (state) => state.AgendaWiseAgendaListReducer.AllAgendas
+  );
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -86,14 +90,12 @@ const AgendaWise = ({
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
       title: "",
     },
   });
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     let Data = {
@@ -117,51 +119,39 @@ const AgendaWise = ({
 
   useEffect(() => {
     try {
-      if (
-        AgendaWiseAgendaListReducer.AllAgendas !== null &&
-        AgendaWiseAgendaListReducer.AllAgendas !== undefined
-      ) {
+      if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
-        console.log(
-          AgendaWiseAgendaListReducer.AllAgendas,
-          "agendaListagendaList"
-        );
-        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
-          (agenda, index) => {
-            console.log(agenda, "agendaListagendaList");
-            NewData.push({
-              value: agenda.id,
-              label: agenda.title,
-            });
+        AllAgendas.agendaList.forEach((agenda, index) => {
+          console.log(agenda, "agendaListagendaList");
+          NewData.push({
+            value: agenda.id,
+            label: agenda.title,
+          });
 
-            agenda.subAgenda.map((subajendaData, index) => {
-              NewData.push({
-                value: subajendaData.subAgendaID,
-                label: subajendaData.subTitle,
-              });
+          agenda.subAgenda.forEach((subajendaData, index) => {
+            NewData.push({
+              value: subajendaData.subAgendaID,
+              label: subajendaData.subTitle,
             });
-          }
-        );
+          });
+        });
         setAgendaOptions(NewData);
-        setAgendaID(NewData);
       }
     } catch {}
-  }, [AgendaWiseAgendaListReducer.AllAgendas]);
+  }, [AllAgendas]);
 
   // Combined Data for both Documents and Minutes Agenda Wise
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
-        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
+        agendaWiseMinutesReducer !== null &&
+        agendaWiseMinutesReducer &&
+        getallDocumentsForAgendaWiseMinutes !== null &&
+        getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
-        const minutesData =
-          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+        const minutesData = agendaWiseMinutesReducer.agendaWiseMinutes;
 
-        const documentsData =
-          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        const documentsData = getallDocumentsForAgendaWiseMinutes.data;
 
         // Grouping data based on agendaID
         const groupedData = minutesData.reduce((acc, item1) => {
@@ -185,8 +175,6 @@ const AgendaWise = ({
             });
           }
 
-          console.log(acc, "groupedDatagroupedDatagroupedData");
-
           return acc;
         }, {});
 
@@ -203,10 +191,7 @@ const AgendaWise = ({
       // Handle any errors here
       console.error(error);
     }
-  }, [
-    NewMeetingreducer.agendaWiseMinutesReducer,
-    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
-  ]);
+  }, [agendaWiseMinutesReducer, getallDocumentsForAgendaWiseMinutes]);
 
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
@@ -246,8 +231,6 @@ const AgendaWise = ({
     return acc;
   }, {});
 
-  console.log(groupedMessages, "messagesmessagesmessages2");
-
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -261,22 +244,16 @@ const AgendaWise = ({
   const modules = {
     toolbar: {
       container: [
-        {
-          size: ["14px", "16px", "18px"],
-        },
-        { font: ["impact", "courier", "comic", "Montserrat"] },
-        { bold: {} },
-        { italic: {} },
-        { underline: {} },
-
-        { color: [] },
-        { background: [] },
-        { align: [] },
-        { list: "ordered" },
-        { list: "bullet" },
+        [{ header: [2, 3, 4, false] }],
+        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
+        ["bold", "italic", "underline", "blockquote"],
+        [{ color: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
       ],
       handlers: {},
-      clipboard: { matchVisual: false },
+    },
+    clipboard: {
+      matchVisual: true,
     },
   };
 
@@ -297,15 +274,11 @@ const AgendaWise = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
       if (fileAttachments.length > 9) {
-        setOpen({
-          flag: true,
-          message: t("Not-allowed-more-than-10-files"),
-        });
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
@@ -321,26 +294,15 @@ const AgendaWise = ({
         );
 
         if (!size) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            });
-          }, 3000);
+          showMessage(
+            t("File-size-should-not-be-greater-then-zero"),
+            "error",
+            setOpen
+          );
         } else if (!sizezero) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-size-should-not-be-zero"),
-            });
-          }, 3000);
+          showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
         } else if (fileExists) {
-          setTimeout(() => {
-            setOpen({
-              flag: true,
-              message: t("File-already-exists"),
-            });
-          }, 3000);
+          showMessage(t("File-already-exists"), "error", setOpen);
         } else {
           let file = {
             DisplayAttachmentName: fileData.name,
@@ -362,18 +324,6 @@ const AgendaWise = ({
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-
-  //Sliders For Attachments
-
-  const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
-
-  const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
 
   const onTextChange = (content, delta, source) => {
     const deltaOps = delta.ops || [];
@@ -482,10 +432,7 @@ const AgendaWise = ({
       }
 
       if (!isAgendaSelected) {
-        setOpen({
-          flag: true,
-          message: t("Select-agenda"),
-        });
+        showMessage(t("Select-agenda"), "error", setOpen);
       }
     }
   };
@@ -546,14 +493,11 @@ const AgendaWise = ({
   };
   // For getting the MinuteID
   useEffect(() => {
-    if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
-      console.log(
-        NewMeetingreducer.agendaWiseMinuteID,
-        "agendaWiseMinuteIDagendaWiseMinuteID"
-      );
-      documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
+    if (agendaWiseMinuteID !== 0) {
+      console.log(agendaWiseMinuteID, "agendaWiseMinuteIDagendaWiseMinuteID");
+      documentUploadingFunc(agendaWiseMinuteID);
     }
-  }, [NewMeetingreducer.agendaWiseMinuteID]);
+  }, [agendaWiseMinuteID]);
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
@@ -638,13 +582,13 @@ const AgendaWise = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
+        RetriveAgendaWiseDocuments !== null &&
+        RetriveAgendaWiseDocuments !== undefined &&
+        RetriveAgendaWiseDocuments.data.length > 0
       ) {
         let files = [];
         let prevData = [];
-        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
+        RetriveAgendaWiseDocuments.data.forEach((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -658,7 +602,7 @@ const AgendaWise = ({
         setPreviousFileIDs(prevData);
       }
     } catch {}
-  }, [NewMeetingreducer.RetriveAgendaWiseDocuments]);
+  }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api
   const handleUpdateFuncagendaWise = async () => {
@@ -740,7 +684,7 @@ const AgendaWise = ({
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     let minutesID = 0;
-    AgendaWiseData.items.map((id, index) => {
+    AgendaWiseData.items.forEach((id, index) => {
       minutesID = Number(id.minuteID);
     });
 
@@ -780,30 +724,19 @@ const AgendaWise = ({
   //Handling of the Response Messege
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("List-updated-successfully") &&
+      ResponseMessage !== t("No-data-available")
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
+      showMessage(ResponseMessage, "success", setOpen);
       dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   const toggleAcordion = (agendaID) => {
     // setExpanded((prev) => (prev === notesID ? true : false));
@@ -984,349 +917,289 @@ const AgendaWise = ({
             console.log(data, "groupedMessagesgroupedMessages");
             return (
               <>
-                <div key={data.agendaID}>
-                  {/* Display agendaTitle once */}
+                {/* Display agendaTitle once */}
 
-                  {/* Map associated minutes within AccordionDetails */}
-                  <Row key={index}>
-                    <Col lg={12} md={12} sm={12} className="mt-2">
-                      <Accordion
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        className={styles["notes_accordion"]}
-                        key={data.agendaID}
-                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
+                {/* Map associated minutes within AccordionDetails */}
+                <Row key={data.agendaID} >
+                  <Col lg={12} md={12} sm={12} className={` ${"mt-2"}`}>
+                    <Accordion
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      prefix="minutes_accordion"
+                      className={styles["notes_accordion"]}
+                      key={data.agendaID}
+                      // onChange={handleChangeExpanded(data?.pK_NotesID)}
+                    >
+                     
+                      <Accordion.Header
+                        onClick={() =>
+                          toggleAcordion(JSON.parse(data.agendaID))
+                        }
                       >
-                        <AccordionSummary
-                          disableRipple={true}
-                          disableTouchRipple={true}
-                          focusRipple={false}
-                          radioGroup={false}
-                          IconButtonProps={{
-                            onClick: () =>
-                              toggleAcordion(JSON.parse(data?.agendaID)),
-                          }}
-                          expandIcon={
-                            accordianExpand === JSON.parse(data?.agendaID) ? (
-                              <img
-                                draggable="false"
-                                src={MinusExpand}
-                                className={styles["MinusIcon"]}
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={PlusExpand}
-                                alt=""
-                                className={styles["PlusIcon"]}
-                              />
-                            )
-                          }
-                          aria-controls="panel1a-content"
-                          className="TestAccordian position-relative"
-                        >
-                          <Row>
-                            <Col lg={12} md={12} sm={12} className="mt-2">
-                              <span className={styles["AgendaTitleClass"]}>
-                                {data.agendaTitle.slice(0, 100)}
-                              </span>
-                            </Col>
-                          </Row>
-                        </AccordionSummary>
-
-                        <AccordionDetails key={index}>
-                          <Row>
-                            <Col
-                              sm={12}
-                              lg={12}
-                              md={12}
-                              className={styles["NotesAttachments"]}
-                            >
-                              <section
-                                className={styles["Sizing_Saved_Minutes"]}
-                              >
-                                {data.items.map((Itemsdata, detailIndex) => {
-                                  console.log(
-                                    data,
-                                    "groupedMessagesgroupedMessages"
-                                  );
-                                  return (
-                                    <>
-                                      <div key={detailIndex}>
-                                        <Row className="mt-2">
-                                          <Col
-                                            lg={12}
-                                            md={12}
-                                            sm={12}
-                                            className={styles["Box_Minutes"]}
-                                          >
-                                            <Row>
-                                              <Col lg={8} md={8} sm={8}>
-                                                <Row className="mt-3">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles["Title_File"]
-                                                      }
-                                                    >
-                                                      {expanded ? (
-                                                        <>
-                                                          <span
-                                                            dangerouslySetInnerHTML={{
-                                                              __html:
-                                                                Itemsdata.minutesDetails.substring(
-                                                                  0,
-                                                                  120
-                                                                ),
-                                                            }}
-                                                          ></span>
-                                                          ...
-                                                        </>
-                                                      ) : (
+                        <Row className="w-100">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="mt-2 d-flex align-items-center"
+                          >
+                            <span className="AgendaTitleClass">
+                              {data.agendaTitle.slice(0, 100)}
+                            </span>
+                          </Col>
+                        </Row>
+                      </Accordion.Header>
+                      <Accordion.Body key={index}>
+                        <Row>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className={styles["NotesAttachments"]}
+                          >
+                            <section className={styles["Sizing_Saved_Minutes"]}>
+                              {data.items.map((Itemsdata, detailIndex) => {
+                                console.log(
+                                  data,
+                                  "groupedMessagesgroupedMessages"
+                                );
+                                return (
+                                  <>
+                                    <div key={detailIndex}>
+                                      <Row className="mt-2">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["Box_Minutes"]}
+                                        >
+                                          <Row>
+                                            <Col lg={8} md={8} sm={8}>
+                                              <Row className="mt-3">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles["Title_File"]
+                                                    }
+                                                  >
+                                                    {expanded ? (
+                                                      <>
                                                         <span
                                                           dangerouslySetInnerHTML={{
                                                             __html:
-                                                              Itemsdata.minutesDetails,
+                                                              Itemsdata.minutesDetails.substring(
+                                                                0,
+                                                                120
+                                                              ),
                                                           }}
                                                         ></span>
-                                                      )}
+                                                        ...
+                                                      </>
+                                                    ) : (
+                                                      <span
+                                                        dangerouslySetInnerHTML={{
+                                                          __html:
+                                                            Itemsdata.minutesDetails,
+                                                        }}
+                                                      ></span>
+                                                    )}
 
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Show_more_Styles"
+                                                        ]
+                                                      }
+                                                      onClick={toggleExpansion}
+                                                    >
+                                                      {expanded &&
+                                                      Itemsdata.minutesDetails.substring(
+                                                        0,
+                                                        120
+                                                      )
+                                                        ? t("See-more")
+                                                        : ""}
+                                                    </span>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                        "Date_Minutes_And_time"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {newTimeFormaterAsPerUTCFullDate(
+                                                      Itemsdata.lastUpdatedDate +
+                                                        Itemsdata.lastUpdatedTime ,currentLanguage
+                                                    )}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row className="mt-2">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles["Show_more"]
+                                                    }
+                                                    onClick={() =>
+                                                      handleshowMore(
+                                                        detailIndex
+                                                      )
+                                                    }
+                                                  >
+                                                    {showMoreIndex ===
+                                                    detailIndex
+                                                      ? t("Hide-details")
+                                                      : t("Show-more")}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <FilesMappingAgendaWiseMinutes
+                                                showMoreIndex={showMoreIndex}
+                                                Itemsdata={Itemsdata}
+                                                showMore={showMore}
+                                                detailIndex={detailIndex}
+                                              />
+                                            </Col>
+                                            <Col
+                                              lg={4}
+                                              md={4}
+                                              sm={4}
+                                              className="mt-4"
+                                            >
+                                              <section className="d-flex justify-content-end gap-4">
+                                              <img
+                                                    draggable={false}
+                                                    src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
+                                                    height="39px"
+                                                    width="39px"
+                                                    alt=""
+                                                    className={
+                                                      styles["Profile_minutes"]
+                                                    }
+                                                  />
+                                                  <div  className={`
+                                                     ${styles["Line_heigh"] } ${"d-flex flex-column" } `
+                                                  }>
+                                                  
                                                       <span
                                                         className={
                                                           styles[
-                                                            "Show_more_Styles"
+                                                            "Uploaded_heading"
                                                           ]
                                                         }
-                                                        onClick={
-                                                          toggleExpansion
+                                                      >
+                                                        {t("Uploaded-by")}
+                                                      </span>
+                                                      <span
+                                                        className={
+                                                          styles["Name"]
                                                         }
                                                       >
-                                                        {expanded &&
-                                                        Itemsdata.minutesDetails.substring(
-                                                          0,
-                                                          120
-                                                        )
-                                                          ? t("See-more")
-                                                          : ""}
+                                                        {Itemsdata.userName}
                                                       </span>
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "Date_Minutes_And_time"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {newTimeFormaterAsPerUTCFullDate(
-                                                        Itemsdata.lastUpdatedDate +
-                                                          Itemsdata.lastUpdatedTime
-                                                      ).toString()}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row className="mt-2">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles["Show_more"]
-                                                      }
-                                                      onClick={() =>
-                                                        handleshowMore(
-                                                          detailIndex
-                                                        )
-                                                      }
-                                                    >
-                                                      {showMoreIndex ===
-                                                      detailIndex
-                                                        ? t("Hide-details")
-                                                        : t("Show-more")}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <FilesMappingAgendaWiseMinutes
-                                                  showMoreIndex={showMoreIndex}
-                                                  Itemsdata={Itemsdata}
-                                                  showMore={showMore}
-                                                  detailIndex={detailIndex}
-                                                />
-                                              </Col>
-                                              <Col
-                                                lg={3}
-                                                md={3}
-                                                sm={3}
-                                                className="mt-4"
-                                              >
-                                                <Row className="d-flex justify-content-end">
-                                                  <Col lg={2} md={2} sm={2}>
+                                                  </div>
+                                                   {Number(editorRole.status) ===
+                                                    1 ||
+                                                  Number(editorRole.status) ===
+                                                    11 ||
+                                                  Number(editorRole.status) ===
+                                                    12 ? null : (editorRole.role ===
+                                                      "Organizer" &&
+                                                      Number(
+                                                        editorRole.status
+                                                      ) === 9) ||
+                                                    (Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                      editorRole.role ===
+                                                        "Organizer") ||
+                                                    (editorRole.role ===
+                                                      "Agenda Contributor" &&
+                                                      Number(
+                                                        editorRole.status
+                                                      ) === 9) ||
+                                                    (Number(
+                                                      editorRole.status
+                                                    ) === 10 &&
+                                                      editorRole.role ===
+                                                        "Agenda Contributor") ? (
                                                     <img
                                                       draggable={false}
-                                                      src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
-                                                      height="39px"
-                                                      width="39px"
+                                                      src={EditIcon}
                                                       alt=""
-                                                      className={
-                                                        styles[
-                                                          "Profile_minutes"
-                                                        ]
+                                                      height="21.55px"
+                                                      width="21.55px"
+                                                      className="cursor-pointer mt-2"
+                                                      onClick={() =>
+                                                        handleEditFunc(
+                                                          Itemsdata
+                                                        )
                                                       }
                                                     />
-                                                  </Col>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
-                                                    className={
-                                                      styles["Line_heigh"]
-                                                    }
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Uploaded_heading"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {t("Uploaded-by")}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles["Name"]
-                                                          }
-                                                        >
-                                                          {Itemsdata.userName}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                  <Col
-                                                    lg={4}
-                                                    md={4}
-                                                    sm={4}
-                                                    className="d-flex justify-content-start align-items-center"
-                                                  >
-                                                    {Number(
-                                                      editorRole.status
-                                                    ) === 1 ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) === 11 ||
-                                                    Number(
-                                                      editorRole.status
-                                                    ) ===
-                                                      12 ? null : (editorRole.role ===
-                                                        "Organizer" &&
-                                                        Number(
-                                                          editorRole.status
-                                                        ) === 9) ||
-                                                      (Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
-                                                        editorRole.role ===
-                                                          "Organizer") ||
-                                                      (editorRole.role ===
-                                                        "Agenda Contributor" &&
-                                                        Number(
-                                                          editorRole.status
-                                                        ) === 9) ||
-                                                      (Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
-                                                        editorRole.role ===
-                                                          "Agenda Contributor") ? (
-                                                      <img
-                                                        draggable={false}
-                                                        src={EditIcon}
-                                                        alt=""
-                                                        height="21.55px"
-                                                        width="21.55px"
-                                                        className="cursor-pointer"
-                                                        onClick={() =>
-                                                          handleEditFunc(
-                                                            Itemsdata
-                                                          )
-                                                        }
-                                                      />
-                                                    ) : null}
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </Row>
-                                            {Number(editorRole.status) === 1 ||
-                                            Number(editorRole.status) === 11 ||
-                                            Number(editorRole.status) ===
-                                              12 ? null : (editorRole.role ===
-                                                "Organizer" &&
-                                                Number(editorRole.status) ===
-                                                  9) ||
-                                              (Number(editorRole.status) ===
-                                                10 &&
-                                                editorRole.role ===
-                                                  "Organizer") ||
-                                              (editorRole.role ===
-                                                "Agenda Contributor" &&
-                                                Number(editorRole.status) ===
-                                                  9) ||
-                                              (Number(editorRole.status) ===
-                                                10 &&
-                                                editorRole.role ===
-                                                  "Agenda Contributor") ||
-                                              userID === organizerID ? (
-                                              <img
-                                                draggable={false}
-                                                src={RedCroseeIcon}
-                                                height="20.76px"
-                                                alt=""
-                                                width="20.76px"
-                                                className={
-                                                  styles["RedCrossClass"]
-                                                }
-                                                onClick={() =>
-                                                  handleRemovingTheMinutesAgendaWise(
-                                                    data
-                                                  )
-                                                }
-                                              />
-                                            ) : null}
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    </>
-                                  );
-                                })}
-                              </section>
-                            </Col>
-                          </Row>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Col>
-                  </Row>
-                </div>
+                                                  ) : null}
+                                                
+                                              </section>
+                                            </Col>
+                                          </Row>
+                                          {Number(editorRole.status) === 1 ||
+                                          Number(editorRole.status) === 11 ||
+                                          Number(editorRole.status) ===
+                                            12 ? null : (editorRole.role ===
+                                              "Organizer" &&
+                                              Number(editorRole.status) ===
+                                                9) ||
+                                            (Number(editorRole.status) === 10 &&
+                                              editorRole.role ===
+                                                "Organizer") ||
+                                            (editorRole.role ===
+                                              "Agenda Contributor" &&
+                                              Number(editorRole.status) ===
+                                                9) ||
+                                            (Number(editorRole.status) === 10 &&
+                                              editorRole.role ===
+                                                "Agenda Contributor") ||
+                                            userID === organizerID ? (
+                                            <img
+                                              draggable={false}
+                                              src={RedCroseeIcon}
+                                              height="20.76px"
+                                              alt=""
+                                              width="20.76px"
+                                              className={
+                                                styles["RedCrossClass"]
+                                              }
+                                              onClick={() =>
+                                                handleRemovingTheMinutesAgendaWise(
+                                                  data
+                                                )
+                                              }
+                                            />
+                                          ) : null}
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  </>
+                                );
+                              })}
+                            </section>
+                          </Col>
+                        </Row>
+                      </Accordion.Body>
+                    </Accordion>
+                  </Col>
+                </Row>
               </>
             );
           })}
         </Col>
       </Row>
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button, Paper, Loader } from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useSelector } from "react-redux";
@@ -29,13 +29,14 @@ const PasswordCreationUM = () => {
 
   const passwordRef = useRef();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModalscreateAdditionalModalsData = useSelector(
+    (state) => state.UserManagementModals.createAdditionalModals
+  );
 
   const [errorBar, setErrorBar] = useState(false);
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordStrong, setPasswordStrong] = useState(false);
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
   const [passwordDetails, setPasswordDetails] = useState({
@@ -102,7 +103,6 @@ const PasswordCreationUM = () => {
           ...passwordDetails,
           [name]: value,
         });
-        // setPassword(value);
         let newPassword = encryptPassword(value);
         localStorage.setItem("rememberPasswordValue", newPassword);
       } else {
@@ -110,7 +110,6 @@ const PasswordCreationUM = () => {
           ...passwordDetails,
           [name]: value,
         });
-        // setPassword(value);
         setErrorBar(false);
       }
     } else if (value === "") {
@@ -174,7 +173,7 @@ const PasswordCreationUM = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center mx-auto min-vh-100"
           >
-            <Paper className={styles["createpassword_auth_paper"]}>
+            <span className={styles["createpassword_auth_paper"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                 <Row>
                   <Col
@@ -212,7 +211,6 @@ const PasswordCreationUM = () => {
                         name="Password"
                         ref={passwordRef}
                         value={passwordDetails.Password || ""}
-                        // value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
                         autoComplete="false"
@@ -267,20 +265,6 @@ const PasswordCreationUM = () => {
                     </Col>
                   </Row>
 
-                  {/* <Row className="mb-3">
-                    <Col sm={12} md={12} lg={12} className="d-flex gap-2">
-                      <Checkbox
-                        classNameDiv=""
-                        checked={remeberPassword}
-                        onChange={rememberPasswordCheck}
-                      />
-                      <span
-                        className={styles["Create_password_remember_check"]}
-                      >
-                        {t("Remember-password")}
-                      </span>
-                    </Col>
-                  </Row> */}
                   <Row className="mb-4">
                     <Col
                       sm={12}
@@ -300,8 +284,6 @@ const PasswordCreationUM = () => {
                         onChange={(isValid) => {
                           setPasswordStrong(isValid);
                         }}
-                        // invalidColor="#ff0000"
-                        // validColor="#6172D6"
                         iconSize={"14px"}
                         messages={{
                           minLength: t("Password-has-atleast-8-characters"),
@@ -360,7 +342,7 @@ const PasswordCreationUM = () => {
                   </Row>
                 </Form>
               </Col>
-            </Paper>
+            </span>
           </Col>
           <Col
             lg={8}
@@ -388,8 +370,7 @@ const PasswordCreationUM = () => {
         </Row>
       </Container>
 
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      {UserManagementModals.createAdditionalModals && (
+      {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
     </>

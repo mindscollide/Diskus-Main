@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Select } from "antd";
 import styles from "./Filter-Bar.module.css";
 const { Option } = Select;
@@ -9,7 +9,6 @@ const FilterBar = ({ change, Options, placeholder, defaultValue }) => {
       <Select
         onChange={(value) => change(value)}
         suffixIcon={<i className="icon-list icon-size-one Iconstyle"></i>}
-        // style={Style.FieldStyle}
         className={styles["FieldStyle"]}
         placeholder={placeholder}
         defaultValue={defaultValue}

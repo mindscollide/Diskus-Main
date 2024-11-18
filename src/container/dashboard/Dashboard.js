@@ -3,7 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
-import { Button, Loader, Modal, Notification } from "../../components/elements";
+import {
+  Button,
+  Modal,
+  Notification,
+  NotificationBar,
+  GuestJoinRequest,
+} from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
@@ -20,6 +26,13 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   leaveCallModal,
+  guestJoinPopup,
+  participantWaitingList,
+  participantAcceptandReject,
+  guestLeaveVideoMeeting,
+  participanMuteUnMuteMeeting,
+  participanRaisedUnRaisedHand,
+  participantHideUnhideVideo,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -62,7 +75,6 @@ import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import VerificationFailedIcon from "../../assets/images/failed.png";
 import { GetPendingApprovalsCount } from "../../store/actions/Minutes_action";
-// import io from "socket.io-client";
 import {
   createTaskCommitteeMQTT,
   createTaskGroupMQTT,
@@ -97,7 +109,6 @@ import {
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
-import { NotificationBar } from "../../components/elements";
 import {
   realtimeGroupStatusResponse,
   realtimeGroupResponse,
@@ -149,71 +160,69 @@ import {
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
+import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 
 const Dashboard = () => {
   const location = useLocation();
+
+  const { Sider, Content } = Layout;
+
+  const navigate = useNavigate();
+  //Translation
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+
+  let i18nextLng = localStorage.getItem("i18nextLng");
+
+  // let createrID = 5;
+  let userGUID = localStorage.getItem("userGUID");
+
+  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
+
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
-  const {
-    videoFeatureReducer,
-    assignees,
-    CommitteeReducer,
-    toDoListReducer,
-    getTodosStatus,
-    downloadReducer,
-    todoStatus,
-    uploadReducer,
-    settingReducer,
-    fAQsReducer,
-    meetingIdReducer,
-    calendarReducer,
-    OnBoardModal,
-    postAssigneeComments,
-    VideoChatReducer,
-    minuteofMeetingReducer,
-    countryNamesReducer,
-    GetSubscriptionPackage,
-    Authreducer,
-    roleListReducer,
-    NotesReducer,
-    GroupsReducer,
-    ResolutionReducer,
-    RealtimeNotification,
-    OrganizationBillingReducer,
-    PollsReducer,
-    NewMeetingreducer,
-    LanguageReducer,
-    webViewer,
-    MeetingOrganizersReducer,
-    MeetingAgendaReducer,
-    attendanceMeetingReducer,
-    actionMeetingReducer,
-    AgendaWiseAgendaListReducer,
-    DataRoomReducer,
-    DataRoomFileAndFoldersDetailsReducer,
-    SignatureWorkFlowReducer,
-    UserMangementReducer,
-    MinutesReducer,
-    UserManagementModals,
-  } = useSelector((state) => state);
+  let createrID = localStorage.getItem("userID");
+
+  let currentOrganization = localStorage.getItem("organizationID");
+
+  let currentUserName = localStorage.getItem("name");
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
+  const isInternetDisconnectModalVisible = useSelector(
+    (state) => state.UserManagementModals.internetDisconnectModal
+  );
+  const mobileAppPopUp = useSelector(
+    (state) => state.UserManagementModals.mobileAppPopUp
+  );
+  const IncomingVideoCallFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+  const NormalizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+  );
+  const MaximizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+  );
+  const ShowGuestPopup = useSelector(
+    (state) => state.videoFeatureReducer.ShowGuestPopup
+  );
+  const VideoChatMessagesFlagReducer = useSelector(
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+  );
+  const MinimizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+  );
+  const MeetingStatusEnded = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
 
-  const navigate = useNavigate();
   const [checkInternet, setCheckInternet] = useState(navigator);
-  let createrID = localStorage.getItem("userID");
-  let currentOrganization = localStorage.getItem("organizationID");
-  let currentUserName = localStorage.getItem("name");
-  const { Sider, Content } = Layout;
-  //Translation
-  const { t } = useTranslation();
-
-  // let createrID = 5;
-  const dispatch = useDispatch();
-  let userGUID = localStorage.getItem("userGUID");
-  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -224,18 +233,19 @@ const Dashboard = () => {
 
   //State For Meeting Data
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
+    severity: "error",
   });
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
   const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
-  let Blur = localStorage.getItem("blur");
+  const [handsRaisedCount, setHandsRaisedCount] = useState(0);
+  const [participantsList, setParticipantsList] = useState([]);
+  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
-  const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
-  );
+  let Blur = localStorage.getItem("blur");
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
@@ -254,9 +264,6 @@ const Dashboard = () => {
     dispatch(userLogOutApiFunc(navigate, t));
   };
 
-  const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
-  );
   useEffect(() => {
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
@@ -273,8 +280,6 @@ const Dashboard = () => {
     console.log(data, " MQTT onMessageArrived");
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        // if (data.action && data.payload ) {
-
         if (data.action && data.payload) {
           try {
             if (
@@ -393,10 +398,6 @@ const Dashboard = () => {
                 }
               }
 
-              // let Data2 = {
-              //   UserID: Number(createrID),
-              // };
-              // dispatch(GetUpcomingEventsForMQTT(navigate, Data2, t, false));
               dispatch(mqttCurrentMeetingEnded(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -560,20 +561,6 @@ const Dashboard = () => {
               data.payload.message?.toLowerCase() ===
               "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
             ) {
-              // if (data.viewable) {
-              //   setNotification({
-              //     ...notification,
-              //     notificationShow: true,
-              //     message: changeMQTTJSONOne(
-              //       t("NEW_MEETING_CREATION"),
-              //       "[Place holder]",
-              //       data.payload.meetingTitle.substring(0, 100)
-              //     ),
-              //   });
-              // setNotificationID(id);
-
-              // }
-
               dispatch(meetingAgendaContributorAdded(data.payload));
             } else if (
               data.payload.message
@@ -657,6 +644,46 @@ const Dashboard = () => {
                 );
               }
             } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
+            ) {
+              dispatch(participantWaitingList(data.payload));
+              dispatch(admitGuestUserRequest(data.payload));
+              dispatch(guestJoinPopup(true));
+              // if (data.viewable) {
+              //   setNotification({
+              //     ...notification,
+              //     notificationShow: true,
+              //     message: changeMQTTJSONOne(
+              //       t("MeetingReminderNotification"),
+              //       "[Meeting Title]",
+              //       data.payload.title.substring(0, 100)
+              //     ),
+              //   });
+              //   setNotificationID(id);
+              // }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+            ) {
+              console.log(data.payload, "kashanKashankashanKashan");
+              dispatch(guestLeaveVideoMeeting([data.payload.uid]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MUTE_UNMUTE_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participanMuteUnMuteMeeting([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+            ) {
+              dispatch(participanRaisedUnRaisedHand([data.payload]));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participantHideUnhideVideo([data.payload]));
+            } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
             ) {
@@ -688,15 +715,6 @@ const Dashboard = () => {
               dispatch(meetingParticipantRemoved(data.payload));
 
               if (data.viewable) {
-                // setNotification({
-                //   ...notification,
-                //   notificationShow: true,
-                //   message: changeMQTTJSONOne(
-                //     t("MeetingReminderNotification"),
-                //     "[Meeting Title]",
-                //     data.payload.meetingTitle.substring(0, 100)
-                //   ),
-                // });
                 setNotificationID(id);
               }
             } else if (
@@ -1153,6 +1171,7 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Committee".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_COMMITTEE_CREATION".toLowerCase()
@@ -1257,10 +1276,14 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "Group".toLowerCase()) {
+        console.log(data.action, "actionactionactionaction");
         if (
           data.payload.message.toLowerCase() ===
           "NEW_GROUP_CREATION".toLowerCase()
         ) {
+          console.log(data.payload.message, "actionactionactionaction");
+          console.log(data.viewable, "actionactionactionaction");
+          console.log(data.payload, "actionactionactionaction");
           if (data.viewable) {
             setNotification({
               notificationShow: true,
@@ -1506,7 +1529,6 @@ const Dashboard = () => {
           "UNREAD_MESSAGES_COUNT".toLowerCase()
         ) {
           dispatch(mqttUnreadMessageCount(data.payload));
-          // setNotificationID(id)
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_BROADCAST_MESSAGE".toLowerCase()
@@ -1694,25 +1716,6 @@ const Dashboard = () => {
             });
           }
         }
-        // else if (
-        //   data.payload.message.toLowerCase() ===
-        //   "PUBLISHED_POLL_DELETED".toLowerCase()
-        // ) {
-        //   dispatch(deletePollsMQTT(data.payload));
-        //   setNotificationID(id);
-
-        //   if (data.viewable) {
-        //     setNotification({
-        //       ...notification,
-        //       notificationShow: true,
-        //       message: changeMQTTJSONOne(
-        //         t("PUBLISHED_POLL_DELETED"),
-        //         "[Poll Title]",
-        //         data.payload.pollTitle
-        //       ),
-        //     });
-        //   }
-        // }
       }
       if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
         if (
@@ -1796,7 +1799,7 @@ const Dashboard = () => {
                 CallStatusID: 3,
                 CallTypeID: callTypeID,
               };
-              if (videoFeatureReducer.IncomingVideoCallFlag === true) {
+              if (IncomingVideoCallFlagReducer === true) {
                 dispatch(VideoCallResponse(Data, navigate, t));
               }
             }, timeValue);
@@ -1804,7 +1807,7 @@ const Dashboard = () => {
             return () => clearTimeout(timeoutId);
           } else if (
             callStatus === false &&
-            videoFeatureReducer.IncomingVideoCallFlag === false
+            IncomingVideoCallFlagReducer === false
           ) {
             dispatch(incomingVideoCallFlag(true));
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
@@ -1922,8 +1925,6 @@ const Dashboard = () => {
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           if (Number(data.senderID) !== Number(createrID)) {
             if (callTypeID === 1) {
-              // dispatch(videoOutgoingCallFlag(false))
-              // dispatch(normalizeVideoPanelFlag(false))
             }
             if (Number(createrID) !== data.payload.recepientID) {
               localStorage.setItem("unansweredFlag", true);
@@ -2008,10 +2009,7 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let callerID = JSON.parse(localStorage.getItem("callerID"));
           let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
-          if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
-            callStatus === false
-          ) {
+          if (IncomingVideoCallFlagReducer === true && callStatus === false) {
             let callerID = Number(localStorage.getItem("callerID"));
             let newCallerID = Number(localStorage.getItem("newCallerID"));
             if (callerID === newCallerID) {
@@ -2028,9 +2026,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2046,7 +2044,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === false &&
+            IncomingVideoCallFlagReducer === false &&
             callStatus === true
           ) {
             let callerID = Number(localStorage.getItem("callerID"));
@@ -2065,9 +2063,9 @@ const Dashboard = () => {
             }
             if (activeRoomID === acceptedRoomID) {
               if (
-                videoFeatureReducer.NormalizeVideoFlag === true ||
-                videoFeatureReducer.IncomingVideoCallFlag === true ||
-                videoFeatureReducer.MaximizeVideoFlag === true
+                NormalizeVideoFlag === true ||
+                IncomingVideoCallFlagReducer === true ||
+                MaximizeVideoFlag === true
               ) {
                 setNotification({
                   ...notification,
@@ -2083,7 +2081,7 @@ const Dashboard = () => {
             }
             dispatch(leaveCallModal(false));
           } else if (
-            videoFeatureReducer.IncomingVideoCallFlag === true &&
+            IncomingVideoCallFlagReducer === true &&
             callStatus === true
           ) {
             if (
@@ -2110,14 +2108,6 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
               localStorage.setItem("activeCall", false);
             }
-            // localStorage.setItem('newCallerID', callerID)
-            // localStorage.setItem('initiateVideoCall', false)
-            // setNotification({
-            //   ...notification,
-            //   notificationShow: true,
-            //   message: `Call has been disconnected by ${data.payload.callerName}`,
-            // })
-            // setNotificationID(id)
           }
           dispatch(leaveCallModal(false));
         } else if (
@@ -2125,9 +2115,7 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-          // if (callerID === newCallerID) {
-          //   localStorage.setItem('activeCall', false)
-          // }
+
           localStorage.setItem("newCallerID", callerID);
           localStorage.setItem("initiateVideoCall", false);
 
@@ -2373,6 +2361,19 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+        ) {
+          setHandsRaisedCount(data.payload.handsRaisedCount || 0);
+          setParticipantsList(data.payload.particpantsList || []);
+
+          // Log roomID or raise hand status if available
+          if (data.payload.roomID) {
+            console.log("Room ID:", data.payload.roomID);
+          } else if (data.payload.raiseHand === true) {
+            console.log("Hand Raised:", data.payload.raiseHand);
+          }
         }
       }
     } catch (error) {}
@@ -2403,20 +2404,18 @@ const Dashboard = () => {
     }
   }, [
     newClient,
-    videoFeatureReducer.IncomingVideoCallFlag,
-    videoFeatureReducer.NormalizeVideoFlag,
-    videoFeatureReducer.MaximizeVideoFlag,
+    IncomingVideoCallFlagReducer,
+    NormalizeVideoFlag,
+    MaximizeVideoFlag,
   ]);
 
   useEffect(() => {
-    if (Blur !== undefined && Blur !== null) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
     }
   }, [Blur]);
-
-  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -2446,19 +2445,17 @@ const Dashboard = () => {
     localStorage.setItem("activeOtoChatID", 0);
   }, []);
 
-  let i18nextLng = localStorage.getItem("i18nextLng");
-
   useEffect(() => {
     setCurrentLanguage(i18nextLng);
   }, [i18nextLng]);
 
   useEffect(() => {
     if (
-      meetingIdReducer.MeetingStatusEnded !== null &&
-      meetingIdReducer.MeetingStatusEnded !== undefined &&
-      meetingIdReducer.MeetingStatusEnded.length !== 0
+      MeetingStatusEnded !== null &&
+      MeetingStatusEnded !== undefined &&
+      MeetingStatusEnded.length !== 0
     ) {
-      let endMeetingData = meetingIdReducer?.MeetingStatusEnded?.meeting;
+      let endMeetingData = MeetingStatusEnded?.meeting;
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let isMeetingVideo = localStorage.getItem("isMeetingVideo");
       isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
@@ -2474,7 +2471,7 @@ const Dashboard = () => {
         }
       }
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [MeetingStatusEnded]);
 
   useEffect(() => {
     let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -2495,28 +2492,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
-        {videoFeatureReducer.IncomingVideoCallFlag === true && (
-          <div className='overlay-incoming-videocall' />
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
+        {IncomingVideoCallFlagReducer === true && (
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2524,72 +2522,36 @@ const Dashboard = () => {
             handleClose={closeNotification}
             id={notificationID}
           />
-          {videoFeatureReducer.IncomingVideoCallFlag === true ? (
-            <VideoMaxIncoming />
-          ) : null}
-          {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+
+          {ShowGuestPopup && (
+            <div>
+              <GuestJoinRequest />
+            </div>
+          )}
+          {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
+          {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
-          {videoFeatureReducer.NormalizeVideoFlag === true ||
-          videoFeatureReducer.MinimizeVideoFlag === true ||
-          videoFeatureReducer.MaximizeVideoFlag === true ? (
+          {NormalizeVideoFlag === true ||
+          MinimizeVideoFlag === true ||
+          MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
-          {!navigator.onLine ? (
-            <React.Fragment></React.Fragment>
-          ) : // Check for loading states to determine whether to display loader
-          NewMeetingreducer.Loading ||
-            assignees.Loading ||
-            MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ||
-            CommitteeReducer.Loading ||
-            toDoListReducer.Loading ||
-            todoStatus.Loading ||
-            getTodosStatus.Loading ||
-            MeetingAgendaReducer.Loading ||
-            actionMeetingReducer.Loading ||
-            AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ||
-            attendanceMeetingReducer.Loading ||
-            webViewer.Loading ||
-            LanguageReducer.Loading ||
-            uploadReducer.Loading ||
-            settingReducer.Loading ||
-            fAQsReducer.Loading ||
-            meetingIdReducer.Loading ||
-            calendarReducer.Loading ||
-            OnBoardModal.Loading ||
-            postAssigneeComments.Loading ||
-            VideoChatReducer.Loading ||
-            minuteofMeetingReducer.Loading ||
-            countryNamesReducer.Loading ||
-            GetSubscriptionPackage.Loading ||
-            Authreducer.Loading ||
-            roleListReducer.Loading ||
-            NotesReducer.Loading ||
-            GroupsReducer.Loading ||
-            GroupsReducer.getAllLoading ||
-            ResolutionReducer.Loading ||
-            RealtimeNotification.Loading ||
-            OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ||
-            MinutesReducer.Loading ||
-            DataRoomFileAndFoldersDetailsReducer.Loading ||
-            SignatureWorkFlowReducer.Loading ||
-            UserMangementReducer.Loading ? (
-            <Loader /> // <Loader />
-          ) : null}
           {/* Disconnectivity Modal  */}
-          {isInternetDisconnectModalVisible && <InternetConnectivityModal />}
+          {isInternetDisconnectModalVisible && (
+            <InternetConnectivityModal
+              open={isInternetDisconnectModalVisible}
+            />
+          )}
           <Notification
-            setOpen={setOpen}
-            open={open.flag}
+            open={open.open}
             message={open.message}
+            setOpen={(status) => setOpen({ ...open, open: status.open })}
+            severity={open.severity}
           />
           {cancelModalMeetingDetails && <CancelButtonModal />}
           {roleRoute && (
@@ -2601,25 +2563,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2635,12 +2597,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
@@ -2653,7 +2616,7 @@ const Dashboard = () => {
               }
             />
           )}
-          {UserManagementModals.mobileAppPopUp && <MobileAppPopUpModal />}
+          {mobileAppPopUp && <MobileAppPopUpModal />}
         </Layout>
       </ConfigProvider>
     </>

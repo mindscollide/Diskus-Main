@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  Switch,
-  TextField,
-  Table,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import { Radio } from "antd";
 import styles from "./SelectAgendaModal.module.css";
 import {
@@ -15,7 +9,6 @@ import {
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "./../AV-Images/Cross_Icon.png";
 
@@ -52,7 +45,6 @@ const SelectAgendaModal = ({
     <section>
       <Modal
         show={true}
-        // setShow={dispatch(showVoteAgendaModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         className="SelectAgendaModal"
@@ -82,7 +74,6 @@ const SelectAgendaModal = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Radio.Group
-                  // onChange={(e) => handleRadioChange(index, e.target.value)}
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
                   className="AgendaSelectGroup"
