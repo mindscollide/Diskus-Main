@@ -26,6 +26,10 @@ const Events = () => {
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
 
+  const userProfileData = useSelector(
+    (state) => state.settingReducer?.UserProfileData
+  );
+
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
   );
@@ -37,7 +41,7 @@ const Events = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const [upComingEvents, setUpComingEvents] = useState([]);
-  let getCurrentDate = moment(new Date()).format("DD");
+  const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUTCDateTime = multiDatePickerDateChangIntoUTC(new Date());
@@ -122,6 +126,30 @@ const Events = () => {
     }
   }, [MeetingStatusSocket]);
 
+  useEffect(() => {
+    if (userProfileData !== null) {
+      let settingConfigurations = userProfileData?.configurations;
+      if (
+        settingConfigurations !== null &&
+        settingConfigurations !== undefined &&
+        settingConfigurations.length > 0
+      ) {
+        let findReminingMinutesAgo = settingConfigurations.find(
+          (remainsData, index) =>
+            remainsData?.configKey?.toLowerCase() ===
+            "Join_Meeting_Before_Minutes".toLowerCase()
+        );
+        console.log(
+          findReminingMinutesAgo,
+          "findReminingMinutesAgofindReminingMinutesAgo"
+        );
+        if (findReminingMinutesAgo !== undefined) {
+          setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
+        }
+      }
+    }
+  }, [userProfileData]);
+
   const meetingDashboardCalendarEvent = (data) => {
     // Create a shallow copy of the data object to prevent mutation
     const dashboardData = {
@@ -203,10 +231,6 @@ const Events = () => {
       // Convert milliseconds to minutes
       const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
-      console.log(
-        convertToArabicNumerals(minutesDifference),
-        "minutesDifference"
-      );
       let checkisTodayorActive =
         upcomingEventsData?.meetingDetails?.statusID === 1 ||
         upcomingEventsData?.meetingDetails?.statusID === 10;
@@ -214,10 +238,7 @@ const Events = () => {
       let { isSame } = isSameAsToday(
         `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
       );
-      console.log(
-        { isSame, checkisTodayorActive, flag, indexforUndeline },
-        "isSameisSameisSameisSame"
-      );
+
       return (
         <>
           {isSame ? (
@@ -230,7 +251,7 @@ const Events = () => {
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < 60) ||
+                    minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : `${styles["event-details-block"]}`
@@ -249,7 +270,7 @@ const Events = () => {
               {upcomingEventsData.meetingDetails.statusID === 1 &&
               upcomingEventsData.participantRoleID === 1 ? (
                 upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < 60 ? (
+                minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting-Upcoming"]}
@@ -264,7 +285,7 @@ const Events = () => {
                 ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
                     false &&
                   upcomingEventsData.participantRoleID === 1 &&
-                  minutesDifference < 60 ? (
+                  minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting-Upcoming"]}
@@ -326,7 +347,7 @@ const Events = () => {
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < 60) ||
+                    minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                     : ` ${styles["event-details"]}`
@@ -334,7 +355,7 @@ const Events = () => {
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
-                      minutesDifference < 60) ||
+                      minutesDifference < remainingMinutesAgo) ||
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
@@ -353,7 +374,7 @@ const Events = () => {
                 {upcomingEventsData.meetingDetails.statusID === 1 &&
                 upcomingEventsData.participantRoleID === 1 ? (
                   upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                  minutesDifference < 60 ? (
+                  minutesDifference < remainingMinutesAgo ? (
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting-Upcoming"]}
@@ -366,7 +387,7 @@ const Events = () => {
                       }}
                     />
                   ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                      false && minutesDifference < 60 ? (
+                      false && minutesDifference < remainingMinutesAgo ? (
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting-Upcoming"]}

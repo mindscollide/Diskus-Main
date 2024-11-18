@@ -32,7 +32,7 @@ body[dir="rtl"] .create-Resolution-btn {
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -44,7 +44,7 @@ body[dir="rtl"] .create-Resolution-btn {
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   display: flex;
   justify-content: center;
@@ -58,7 +58,7 @@ body[dir="rtl"] .create-Resolution-btn {
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
   display: flex;
   justify-content: center;
@@ -79,7 +79,7 @@ body[dir="rtl"] .create-Resolution-btn {
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -97,11 +97,11 @@ body[dir="rtl"] .create-Resolution-btn {
 .Resolution-moderator-btn_Active {
   padding: 8px 12px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
+  color: #fff !important;
   border-radius: 4px !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   border: none !important;
 }
 
@@ -129,7 +129,7 @@ body[dir="rtl"] .Resolution-All-btn_Active {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
-  font-weight: 600;
+  font-weight: 600 !important;
 
   border: none !important;
 }
@@ -214,8 +214,7 @@ body[dir="rtl"] .Resolution-closed-btn {
 }
 
 .Resolution-closed-btn_Active {
-  width: 66px !important;
-  height: 31px !important;
+  padding: 6px 12px !important;
   font-size: calc(14px - 20%);
   font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -238,7 +237,7 @@ body[dir="rtl"] .Resolution-closed-btn_Active {
 .Resolution-closed-btn_Active:focus-visible,
 .Resolution-closed-btn_Active:focus {
   padding: 6px 12px !important;
-  font-size: 12px !important;
+  font-size: calc(14px - 20%);
   font-weight: 600;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
@@ -654,8 +653,8 @@ body[dir="rtl"] .decision_text_Pending {
   font-weight: 600;
   font-size: 12px !important;
   color: #5a5a5a !important;
-  margin-right: 18px !important;
   white-space: nowrap !important;
+  text-align: center;
 }
 
 .PLusICon {
@@ -670,10 +669,9 @@ body[dir="rtl"] .PLusICon {
 
 .resolution_date_Decision_date {
   font-weight: 600;
-
+  text-align: center !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
-  margin-left: 20px !important;
 }
 
 .resolution_title {
