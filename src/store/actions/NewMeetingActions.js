@@ -85,6 +85,7 @@ import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/respon
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
+import { isFunction } from "../../commen/functions/utils";
 
 const boardDeckModal = (response) => {
   return {
@@ -2865,8 +2866,7 @@ const setProposedMeetingDateApiFunc = (
                 let userID = localStorage.getItem("userID");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent"
-                );
+                  localStorage.getItem("MeetingPageCurrent");
                 localStorage.setItem("MeetingCurrentView", 2);
 
                 let searchData = {
@@ -3001,9 +3001,8 @@ const SetMeetingResponseApiFunc = (
               );
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = 
-                localStorage.getItem("MeetingPageCurrent"
-              );
+              let meetingPageCurrent =
+                localStorage.getItem("MeetingPageCurrent");
               localStorage.setItem("MeetingCurrentView", 2);
               setViewProposeDatePoll(false);
               let searchData = {
@@ -4978,14 +4977,11 @@ const AddAgendaWiseMinutesApiFunc = (
                   t("Record-saved")
                 )
               );
-              setAgendaOptionValue({
-                value: 0,
-                label: "",
-              });
-              console.log(
-                response.data.responseResult,
-                "GetAllAgendaWiseMinutesApiFunc"
-              );
+              (await isFunction(setAgendaOptionValue)) &&
+                setAgendaOptionValue({
+                  value: 0,
+                  label: "",
+                });
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
