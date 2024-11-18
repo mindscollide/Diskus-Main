@@ -25,7 +25,7 @@ import {
   calculateTotalNotUtilizedDowngradeSubscription,
   calculateTotalReductionDowngradeSubscription,
 } from "../../../../../../commen/functions/TableDataCalculation";
-
+import { convertToArabicNumerals } from "../../../../../../commen/functions/regex";
 const DowngradeSubscription = () => {
   const { t } = useTranslation();
 
@@ -34,6 +34,8 @@ const DowngradeSubscription = () => {
   const dispatch = useDispatch();
 
   const location = useLocation();
+
+  let locale = localStorage.getItem("i18nextLng");
 
   const { subscriptionDetails } = location.state;
 
@@ -210,19 +212,20 @@ const DowngradeSubscription = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
         if (record && record.IsDefaultRow) {
           // Get the total charges only once, assuming you have access to the original data
           const totalCharges = calculateTotalChargesDowngradeSubscription(
             subscriptionDetails.organizationSelectedPackages
           );
           return (
-            <span className={styles["TableheadingTotal"]}>{totalCharges}</span>
+            <span className={styles["TableheadingTotal"]}>
+              {convertToArabicNumerals(totalCharges, locale)}
+            </span>
           );
         } else {
           return (
             <span className={styles["SubscritionNumber_Styles"]}>
-              {record.price}
+              {convertToArabicNumerals(record.price, locale)}
             </span>
           );
         }
@@ -249,13 +252,13 @@ const DowngradeSubscription = () => {
           );
           return (
             <span className={styles["TableheadingTotal"]}>
-              {totalHeadCount}
+              {convertToArabicNumerals(totalHeadCount, locale)}
             </span>
           );
         } else {
           return (
             <span className={styles["SubscritionNumber_Styles"]}>
-              {record.headCount}
+              {convertToArabicNumerals(record.headCount, locale)}
             </span>
           );
         }
@@ -284,13 +287,13 @@ const DowngradeSubscription = () => {
             );
           return (
             <span className={styles["TableheadingTotal"]}>
-              {totalAllotedUsers}
+              {convertToArabicNumerals(totalAllotedUsers, locale)}
             </span>
           );
         } else {
           return (
             <span className={styles["SubscritionNumber_Styles"]}>
-              {record.allotedUsers}
+              {convertToArabicNumerals(record.allotedUsers, locale)}
             </span>
           );
         }
@@ -320,13 +323,16 @@ const DowngradeSubscription = () => {
             );
           return (
             <span className={styles["TableheadingTotal"]}>
-              {totalNotUtilized}
+              {convertToArabicNumerals(totalNotUtilized, locale)}
             </span>
           );
         } else {
           return (
             <span className={styles["SubscritionNumber_Styles"]}>
-              {record.headCount - record.allotedUsers}
+              {convertToArabicNumerals(
+                record.headCount - record.allotedUsers,
+                locale
+              )}
             </span>
           );
         }
@@ -410,7 +416,7 @@ const DowngradeSubscription = () => {
           return (
             <>
               <span className={styles["TableheadingTotal"]}>
-                {totaltransfertowallet}
+                {convertToArabicNumerals(totaltransfertowallet, locale)}
               </span>
             </>
           );
@@ -422,7 +428,7 @@ const DowngradeSubscription = () => {
           return (
             <>
               <span className={styles["SubscritionNumber_Styles"]}>
-                {transferAmount}
+                {convertToArabicNumerals(transferAmount, locale)}
               </span>
             </>
           );
@@ -502,11 +508,15 @@ const DowngradeSubscription = () => {
                 <td>{downgradeDetails.SubscriptionNumber}</td>
                 <td>
                   {formatDateDownGradeSubscription(
-                    downgradeDetails.subscriptionStartDate
+                    downgradeDetails.subscriptionStartDate,
+                    locale
                   )}
                 </td>
                 <td>
-                  {formatDateDownGradeSubscription(downgradeDetails.ExpiryDate)}
+                  {formatDateDownGradeSubscription(
+                    downgradeDetails.ExpiryDate,
+                    locale
+                  )}
                 </td>
                 <td>{downgradeDetails.tenure}</td>
               </tr>

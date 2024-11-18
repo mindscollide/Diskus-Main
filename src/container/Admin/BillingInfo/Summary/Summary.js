@@ -9,7 +9,6 @@ import {
   Notification,
   PaymentActivity,
   Table,
-  Loader,
 } from "../../../../components/elements";
 import {
   cleareMessage,
@@ -20,13 +19,11 @@ import { useNavigate } from "react-router-dom";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
 import {
-  newTimeFormaterAsPerUTCFullDate,
   _justShowDateformat,
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
-import { Record } from "react-bootstrap-icons";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 const Summary = () => {
   const navigate = useNavigate();
@@ -91,7 +88,7 @@ const Summary = () => {
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);

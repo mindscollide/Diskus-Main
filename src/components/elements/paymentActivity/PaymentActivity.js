@@ -1,6 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import styles from "./PaymentActivity.module.css";
 import React from "react";
+import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
 const PaymentActivity = ({
   PaymentActivityTitle,
@@ -12,6 +13,7 @@ const PaymentActivity = ({
   ColTwoValue,
   ColThreeValue,
 }) => {
+  let lang = localStorage.getItem("i18nextLng");
   return (
     <Row>
       <Col
@@ -42,7 +44,7 @@ const PaymentActivity = ({
             <span
               className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
             >
-              {ColOneValue}
+              {convertToArabicNumerals(ColOneValue, lang)}
             </span>{" "}
           </Col>
           <Col sm={12} md={4} lg={4}>
@@ -50,7 +52,7 @@ const PaymentActivity = ({
             <span
               className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
             >
-              {ColTwoValue}
+              {convertToArabicNumerals(ColTwoValue, lang)}
             </span>{" "}
           </Col>
           <Col sm={12} md={4} lg={4}>
@@ -58,7 +60,7 @@ const PaymentActivity = ({
             <span
               className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
             >
-              {ColThreeValue}
+              {convertToArabicNumerals(ColThreeValue, lang)}
             </span>
           </Col>
         </Row>

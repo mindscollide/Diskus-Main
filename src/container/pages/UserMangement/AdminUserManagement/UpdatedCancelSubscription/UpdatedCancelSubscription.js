@@ -277,7 +277,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "Duration",
       key: "Duration",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -309,7 +309,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "EssentialLisences",
       key: "EssentialLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -351,7 +351,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "ProfessionalLisences",
       key: "ProfessionalLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -396,7 +396,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "PremiumLisences",
       key: "PremiumLisences",
       ellipsis: true,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -438,7 +438,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "TotalCharges",
       key: "TotalCharges",
       width: 100,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => {
         try {
@@ -505,7 +505,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "CancelSubscription",
       key: "CancelSubscription",
       width: 100,
-      align: "center",
+      align: Locale === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => {
         try {

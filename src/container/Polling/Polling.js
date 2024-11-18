@@ -562,13 +562,10 @@ const Polling = () => {
       dataIndex: "pollStatus",
       key: "pollStatus",
       width: "78px",
-      align: "left",
+      align: currentLanguage === "en" ? "left" : "right",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown

@@ -1310,6 +1310,15 @@ const Resolution = () => {
     }
   }, [ResolutionReducermqttResolutionClosed]);
 
+  //Scroll for table
+  const scroll = {
+    y: "49vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
+  };
+
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -1632,7 +1641,7 @@ const Resolution = () => {
                           : columnsModerator
                       }
                       className="Resolution_table"
-                      scroll={{ y: "53vh" }}
+                      scroll={scroll}
                       pagination={false}
                       loading={{
                         indicator: (
@@ -1656,6 +1665,7 @@ const Resolution = () => {
                                 <img
                                   draggable="false"
                                   src={EmptyResolution}
+                                  width={200}
                                   alt=""
                                 />
                                 <h2 className={styles["NoResolutionHeading"]}>
@@ -1729,7 +1739,7 @@ const Resolution = () => {
                         : columnsvoters
                     }
                     className="Resolution_table"
-                    scroll={{ y: "53vh" }}
+                    scroll={scroll}
                     pagination={false}
                     loading={{
                       indicator: (
@@ -1753,6 +1763,7 @@ const Resolution = () => {
                               <img
                                 draggable="false"
                                 src={EmptyResolution}
+                                width={200}
                                 alt=""
                               />
                               <h2 className={styles["NoResolutionHeading"]}>

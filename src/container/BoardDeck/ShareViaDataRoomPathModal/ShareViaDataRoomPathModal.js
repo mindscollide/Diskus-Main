@@ -22,7 +22,7 @@ const ShareViaDataRoomPathModal = ({ boardDeckMeetingTitle }) => {
   };
 
   const handleonClickDataRoom = () => {
-    localStorage.setItem("setTableView", 3);
+    localStorage.setItem("setTableView", 1);
     dispatch(getFolderDocumentsApi(navigate, Number(BordDeckFolderID), t, 5));
   };
 

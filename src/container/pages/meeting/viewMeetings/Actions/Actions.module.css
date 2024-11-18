@@ -11,6 +11,10 @@
   color: #fff;
 }
 
+body[dir="rtl"] .Create_Task_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Create_Task_Button:hover,
 .Create_Task_Button:active,
 .Create_Task_Button:focus,
