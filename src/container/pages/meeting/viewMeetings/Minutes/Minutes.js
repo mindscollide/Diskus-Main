@@ -203,18 +203,6 @@ const Minutes = ({
         GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
       );
 
-      // dispatch(
-      //   GetAllAgendaWiseMinutesApiFunc(
-      //     navigate,
-      //     Data,
-      //     t,
-      //     Number(advanceMeetingModalID),
-      //     false,
-      //     false,
-      //     true
-      //   )
-      // );
-
       dispatch(GetMinuteReviewStatsForOrganizerByMeetingId(Data2, navigate, t));
     }
 
