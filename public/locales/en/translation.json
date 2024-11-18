@@ -2294,5 +2294,8 @@
   "this-committee": "this committee?",
   "Unpublished": "Unpublished",
   "No-document-at-the-moment-to-review": "No document at the moment to review",
-  "Proposed": "Proposed"
+  "Proposed": "Proposed",
+  "No-document-to-review": "No document to review",
+  "No-document-awaiting-review-and-signature": "No document awaiting review and signature"
+
 }

@@ -498,10 +498,10 @@ const ReviewSignature = () => {
                         alt=''
                       />
                       <span className={styles["ReviewMinutes_emptyTitle"]}>
-                        {t("Review-minutes")}
+                        {t("No-document-to-review")}
                       </span>
                       <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
-                        {t("No-document-at-the-moment-to-review")}
+                        {t("No-document-awaiting-review-and-signature")}
                       </span>
                     </section>
                   </>
