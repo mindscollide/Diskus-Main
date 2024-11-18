@@ -2240,5 +2240,7 @@
   "Committee-participants-is-required": "Committee participants is required",
   "You-dont-have-any-notes": "You dont have any notes",
   "No-document-to-review": "No document to review",
-  "No-document-awaiting-review-and-signature": "No document awaiting review and signature"
+  "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
+  "Select-group-type": "Select group type",
+  "Requested-by": "Requested by"
 }

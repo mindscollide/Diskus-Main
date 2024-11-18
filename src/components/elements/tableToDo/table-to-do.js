@@ -47,6 +47,7 @@ const CustomTableToDo = ({
         sticky={sticky}
         showHeader={showHeader}
         style={style}
+        bordered={false}
       />
     </>
   );
