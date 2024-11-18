@@ -532,6 +532,7 @@ const AgendaWise = ({
     });
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setFileForSend([]);
     setAgendaOptionValue({
       label: "",
       value: 0,
@@ -920,7 +921,7 @@ const AgendaWise = ({
                 {/* Display agendaTitle once */}
 
                 {/* Map associated minutes within AccordionDetails */}
-                <Row key={data.agendaID} >
+                <Row key={data.agendaID}>
                   <Col lg={12} md={12} sm={12} className={` ${"mt-2"}`}>
                     <Accordion
                       aria-controls="panel1a-content"
@@ -930,7 +931,6 @@ const AgendaWise = ({
                       key={data.agendaID}
                       // onChange={handleChangeExpanded(data?.pK_NotesID)}
                     >
-                     
                       <Accordion.Header
                         onClick={() =>
                           toggleAcordion(JSON.parse(data.agendaID))
@@ -1034,7 +1034,8 @@ const AgendaWise = ({
                                                   >
                                                     {newTimeFormaterAsPerUTCFullDate(
                                                       Itemsdata.lastUpdatedDate +
-                                                        Itemsdata.lastUpdatedTime ,currentLanguage
+                                                        Itemsdata.lastUpdatedTime,
+                                                      currentLanguage
                                                     )}
                                                   </span>
                                                 </Col>
@@ -1072,77 +1073,70 @@ const AgendaWise = ({
                                               className="mt-4"
                                             >
                                               <section className="d-flex justify-content-end gap-4">
-                                              <img
-                                                    draggable={false}
-                                                    src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
-                                                    height="39px"
-                                                    width="39px"
-                                                    alt=""
+                                                <img
+                                                  draggable={false}
+                                                  src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
+                                                  height="39px"
+                                                  width="39px"
+                                                  alt=""
+                                                  className={
+                                                    styles["Profile_minutes"]
+                                                  }
+                                                />
+                                                <div
+                                                  className={`
+                                                     ${
+                                                       styles["Line_heigh"]
+                                                     } ${"d-flex flex-column"} `}
+                                                >
+                                                  <span
                                                     className={
-                                                      styles["Profile_minutes"]
+                                                      styles["Uploaded_heading"]
+                                                    }
+                                                  >
+                                                    {t("Uploaded-by")}
+                                                  </span>
+                                                  <span
+                                                    className={styles["Name"]}
+                                                  >
+                                                    {Itemsdata.userName}
+                                                  </span>
+                                                </div>
+                                                {Number(editorRole.status) ===
+                                                  1 ||
+                                                Number(editorRole.status) ===
+                                                  11 ||
+                                                Number(editorRole.status) ===
+                                                  12 ? null : (editorRole.role ===
+                                                    "Organizer" &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 9) ||
+                                                  (Number(editorRole.status) ===
+                                                    10 &&
+                                                    editorRole.role ===
+                                                      "Organizer") ||
+                                                  (editorRole.role ===
+                                                    "Agenda Contributor" &&
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 9) ||
+                                                  (Number(editorRole.status) ===
+                                                    10 &&
+                                                    editorRole.role ===
+                                                      "Agenda Contributor") ? (
+                                                  <img
+                                                    draggable={false}
+                                                    src={EditIcon}
+                                                    alt=""
+                                                    height="21.55px"
+                                                    width="21.55px"
+                                                    className="cursor-pointer mt-2"
+                                                    onClick={() =>
+                                                      handleEditFunc(Itemsdata)
                                                     }
                                                   />
-                                                  <div  className={`
-                                                     ${styles["Line_heigh"] } ${"d-flex flex-column" } `
-                                                  }>
-                                                  
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Uploaded_heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Uploaded-by")}
-                                                      </span>
-                                                      <span
-                                                        className={
-                                                          styles["Name"]
-                                                        }
-                                                      >
-                                                        {Itemsdata.userName}
-                                                      </span>
-                                                  </div>
-                                                   {Number(editorRole.status) ===
-                                                    1 ||
-                                                  Number(editorRole.status) ===
-                                                    11 ||
-                                                  Number(editorRole.status) ===
-                                                    12 ? null : (editorRole.role ===
-                                                      "Organizer" &&
-                                                      Number(
-                                                        editorRole.status
-                                                      ) === 9) ||
-                                                    (Number(
-                                                      editorRole.status
-                                                    ) === 10 &&
-                                                      editorRole.role ===
-                                                        "Organizer") ||
-                                                    (editorRole.role ===
-                                                      "Agenda Contributor" &&
-                                                      Number(
-                                                        editorRole.status
-                                                      ) === 9) ||
-                                                    (Number(
-                                                      editorRole.status
-                                                    ) === 10 &&
-                                                      editorRole.role ===
-                                                        "Agenda Contributor") ? (
-                                                    <img
-                                                      draggable={false}
-                                                      src={EditIcon}
-                                                      alt=""
-                                                      height="21.55px"
-                                                      width="21.55px"
-                                                      className="cursor-pointer mt-2"
-                                                      onClick={() =>
-                                                        handleEditFunc(
-                                                          Itemsdata
-                                                        )
-                                                      }
-                                                    />
-                                                  ) : null}
-                                                
+                                                ) : null}
                                               </section>
                                             </Col>
                                           </Row>

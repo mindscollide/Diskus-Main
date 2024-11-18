@@ -408,6 +408,8 @@ const Minutes = ({
     }
   };
 
+  console.log(fileAttachments, "fileForSendfileForSendfileForSend");
+  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   const documentUploadingFunc = async (minuteID) => {
     let newFolder = [];
     let newfile = [];
@@ -517,6 +519,7 @@ const Minutes = ({
       },
     });
     setFileAttachments([]);
+    setFileForSend([]);
     setPreviousFileIDs([]);
   };
   //Updating the text of min
@@ -615,9 +618,7 @@ const Minutes = ({
     // dispatch(showUnsaveMinutesFileUpload(true));
     let userID = localStorage.getItem("userID");
     let meetingpageRow = localStorage.getItem("MeetingPageRows");
-    let meetingPageCurrent = 
-      localStorage.getItem("MeetingPageCurrent"
-    );
+    let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
     let currentView = localStorage.getItem("MeetingCurrentView");
     if (agenda) {
       if (
@@ -729,7 +730,7 @@ const Minutes = ({
   };
   console.log(ResponseMessage, "ResponseMessageResponseMessage");
   useEffect(() => {
-    try{
+    try {
       if (
         ResponseMessage.trim() !== "" &&
         ResponseMessage !== t("No-record-found") &&
@@ -744,8 +745,7 @@ const Minutes = ({
       } else {
         dispatch(CleareMessegeNewMeeting());
       }
-    }catch{}
-    
+    } catch {}
   }, [ResponseMessage]);
 
   return (
@@ -998,7 +998,8 @@ const Minutes = ({
                                       >
                                         {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
-                                            data.lastUpdatedTime,currentLanguage
+                                            data.lastUpdatedTime,
+                                          currentLanguage
                                         )}
                                       </span>
                                     </Col>

@@ -502,6 +502,7 @@ const AgendaWise = ({
     });
     setisEdit(false);
     setFileAttachments([]);
+    setFileForSend([]);
     setPreviousFileIDs([]);
   };
   console.log(agendaOptions, "descriptiondescription");

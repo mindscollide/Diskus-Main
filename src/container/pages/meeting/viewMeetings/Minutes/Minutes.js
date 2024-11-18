@@ -576,6 +576,7 @@ const Minutes = ({
     });
     setisEdit(false);
     setFileAttachments([]);
+    setFileForSend([]);
     setPreviousFileIDs([]);
   };
 
