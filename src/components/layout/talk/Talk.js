@@ -177,13 +177,13 @@ const Talk = () => {
       console.log("This Check");
     } else {
       navigate("/DisKus/Minutes");
-      let newData = { sRow: 0, Length: 10 };
-      await dispatch(
-        GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
-      );
-      await dispatch(
-        GetMinuteReviewPendingApprovalsByReviewerId(newData, navigate, t)
-      );
+      // let newData = { sRow: 0, Length: 10 };
+      // await dispatch(
+      //   GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+      // );
+      // await dispatch(
+      //   GetMinuteReviewPendingApprovalsByReviewerId(newData, navigate, t)
+      // );
       dispatch(showCancelModalmeetingDeitals(false));
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));

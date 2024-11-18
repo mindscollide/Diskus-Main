@@ -65,7 +65,7 @@ const Task = () => {
 
       render: (text, record) => {
         return (
-          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
+          <span className="cursor-pointer">{_justShowDateformat(text, )}</span>
         );
       },
     },

@@ -2238,5 +2238,7 @@
   "Failed-to-close-resolution": "Failed to close resolution",
   "Committee-type-committee": "Committee Type *",
   "Committee-participants-is-required": "Committee participants is required",
-  "You-dont-have-any-notes": "You dont have any notes"
+  "You-dont-have-any-notes": "You dont have any notes",
+  "No-document-to-review": "No document to review",
+  "No-document-awaiting-review-and-signature": "No document awaiting review and signature"
 }

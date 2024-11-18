@@ -88,7 +88,7 @@ const Summary = () => {
   //Open Invoice Table State
   const [openInvoiceRecords, setOpenInvoiceRecords] = useState([]);
   useEffect(() => {
-    if (Blur !== undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
