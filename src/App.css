@@ -1050,7 +1050,7 @@ body[dir="rtl"] svg.DatePickerIcon {
   color: #6172d6 !important;
   font-weight: 600;
   font-size: 14px !important;
-  margin-right: -3px !important;
+  margin-right: 0px !important;
 }
 
 .ParticipantAV .ant-table-thead > tr * {

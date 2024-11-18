@@ -209,6 +209,10 @@ body[dir="rtl"] .Card_border2 {
   text-overflow: ellipsis;
 }
 
+body[dir="rtl"] .Name_cards {
+  margin-right: 7px !important;
+}
+
 .Cancell_btn_class {
   font-size: 12px !important;
   padding: 12px 30px !important;
