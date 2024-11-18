@@ -414,7 +414,7 @@ const AgendaWise = ({
         AgendaID: agendaSelect.agendaSelectOptions.id,
         MinuteText: content,
       };
-      dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+      dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t, false));
       setAgendaOptionValue({
         value: 0,
         label: "",
