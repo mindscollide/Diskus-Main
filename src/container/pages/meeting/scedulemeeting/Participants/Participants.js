@@ -204,7 +204,7 @@ const Participants = ({
       });
     });
   };
-
+  console.log(isEditMeeting, "isEditMeetingisEditMeeting")
   const handleCancelingRow = (record) => {
     if (isEditMeeting) {
       if (rspvRows.length === 1) {
