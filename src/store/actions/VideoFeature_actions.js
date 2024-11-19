@@ -250,6 +250,7 @@ const participantAcceptandReject = (response) => {
 };
 
 const guestLeaveVideoMeeting = (response) => {
+  console.log(response, "responseDataDataData");
   return {
     type: actions.GUEST_PARTICIPANT_LEAVE_VIDEO,
     payload: response,
@@ -271,6 +272,7 @@ const participanRaisedUnRaisedHand = (response) => {
 };
 
 const participantHideUnhideVideo = (response) => {
+  console.log(response, "responseresponse");
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
     payload: response,
@@ -302,7 +304,7 @@ const muteUnMuteParticipantMainApi = (
   navigate,
   t,
   data,
-  setParticipantData,
+  setNewParticipants,
   flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -329,7 +331,7 @@ const muteUnMuteParticipantMainApi = (
               navigate,
               t,
               data,
-              setParticipantData,
+              setNewParticipants,
               flag
             )
           );
@@ -345,18 +347,18 @@ const muteUnMuteParticipantMainApi = (
               await dispatch(
                 muteUnmuteSuccess(response.data.responseResult, t("Successful"))
               );
-              setParticipantData((prevState) =>
+              setNewParticipants((prevState) =>
                 prevState.map((stateData) => {
                   // Check if the current participant's UID exists in the MuteUnMuteList
                   const findData = data.MuteUnMuteList.find(
-                    (uidData) => String(uidData.UID) === String(stateData.UID)
+                    (uidData) => String(uidData.guid) === String(stateData.UID)
                   );
                   console.log(findData, flag, "findDatafindData");
                   if (findData !== undefined) {
                     // If found, return a new object with the updated 'isMuted' property
                     return {
                       ...stateData,
-                      isMute: flag, // flag should be a boolean indicating mute/unmute
+                      mute: flag, // flag should be a boolean indicating mute/unmute
                     };
                   }
                   console.log(stateData, "findDatafindData");
@@ -428,10 +430,11 @@ const hideUnHideParticipantGuestMainApi = (
   navigate,
   t,
   data,
-  setParticipantData,
+  setNewParticipants,
   flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log(data, "hdjvdasdvasjvhasjdv");
   return (dispatch) => {
     dispatch(hideUnHideParticipantGuestInit());
     let form = new FormData();
@@ -454,7 +457,7 @@ const hideUnHideParticipantGuestMainApi = (
               navigate,
               t,
               data,
-              setParticipantData,
+              setNewParticipants,
               flag
             )
           );
@@ -474,12 +477,13 @@ const hideUnHideParticipantGuestMainApi = (
                 )
               );
 
-              setParticipantData((prevState) =>
+              setNewParticipants((prevState) =>
                 prevState.map((stateData) => {
-                  if (stateData.UID === data.UIDList[0]) {
+                  console.log(stateData, "stateDatastateDatastateData");
+                  if (stateData.guid === data.UIDList[0]) {
                     return {
                       ...stateData,
-                      hideVideo: flag,
+                      hideCamera: flag,
                     };
                   }
                   return stateData;
@@ -531,6 +535,14 @@ const hideUnHideParticipantGuestMainApi = (
   };
 };
 
+const getParticipantsNewJoin = (response) => {
+  console.log(response, "responseresponseresponse");
+  return {
+    type: actions.GET_MEETING_NEW_PARTICIPANT_JOIN,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -572,4 +584,5 @@ export {
   participantHideUnhideVideo,
   muteUnMuteParticipantMainApi,
   hideUnHideParticipantGuestMainApi,
+  getParticipantsNewJoin,
 };

@@ -2003,7 +2003,7 @@ const NewMeeting = () => {
           if (record.isOrganizer) {
           } else if (record.isParticipant) {
           }
-        } else if (Number(record.status) === 9) {
+        } else if (Number(record.status) === 9 && record.isOrganizer) {
           return (
             <>
               <span className='d-flex justify-content-center'>

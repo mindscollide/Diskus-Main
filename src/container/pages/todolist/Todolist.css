@@ -347,10 +347,11 @@ td.ant-table-column-sort {
   margin-top: 20px;
 }
 .todolist_main_section {
-  min-height: calc(100vh - 10vh);
+  min-height: calc(100vh - 20vh);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden !important;
 }
 .custom-class {
   font-weight: 600;

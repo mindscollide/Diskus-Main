@@ -685,22 +685,22 @@ const AgendaWise = ({
     }
   };
 
-  useEffect(() => {
-    if (
-      ResponseMessage.trim() !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== "" &&
-      ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("List-updated-successfully") &&
-      ResponseMessage !== t("No-data-available")
-    ) {
-      showMessage(ResponseMessage, "success", setOpen);
-      dispatch(CleareMessegeNewMeeting());
-    } else {
-      dispatch(CleareMessegeNewMeeting());
-    }
-  }, [ResponseMessage]);
+  // useEffect(() => {
+  //   if (
+  //     ResponseMessage !== t("No-record-found") &&
+  //     ResponseMessage !== t("No-records-found") &&
+  //     ResponseMessage !== "" &&
+  //     ResponseMessage !== t("No-record-found") &&
+  //     ResponseMessage !== t("List-updated-successfully") &&
+  //     ResponseMessage !== t("No-data-available")
+  //   ) {
+  //     console.log(ResponseMessage, "ResponseMessageResponseMessage");
+  //     showMessage(ResponseMessage, "success", setOpen);
+  //     dispatch(CleareMessegeNewMeeting());
+  //   } else {
+  //     dispatch(CleareMessegeNewMeeting());
+  //   }
+  // }, [ResponseMessage]);
 
   useEffect(() => {
     let Data = {
@@ -2214,8 +2214,6 @@ const AgendaWise = ({
           advanceMeetingModalID={advanceMeetingModalID}
         />
       ) : null}
-
-      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };
