@@ -156,7 +156,7 @@ body[dir="rtl"]
 }
 
 .todolistContainer {
-  height: 91vh;
+  height: 85vh;
   width: 98% !important;
   margin: 0 auto !important;
 }
@@ -347,7 +347,7 @@ td.ant-table-column-sort {
   margin-top: 20px;
 }
 .todolist_main_section {
-  min-height: calc(100vh - 22vh);
+  min-height: calc(100vh - 10vh);
   display: flex;
   flex-direction: column;
   justify-content: space-between;

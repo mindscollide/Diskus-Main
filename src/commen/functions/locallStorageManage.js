@@ -40,7 +40,7 @@ export const localStorageManage = (
       : 1;
 
   const commonData = {
-    i18nextLng: localStorage.getItem("i18nextLng"),
+    i18nextLng: localStorage.getItem("i18nextLng") || "en",
     RSVP: localStorage.getItem("RSVP"),
     DataRoomEmail: localStorage.getItem("DataRoomEmail"),
     meetingStr: localStorage.getItem("meetingStr"),
@@ -48,6 +48,7 @@ export const localStorageManage = (
     meetingMin: localStorage.getItem("meetingMin"),
     meetingprop: localStorage.getItem("meetingprop"),
     mtAgUpdate: localStorage.getItem("mtAgUpdate"),
+    meetingCanc: localStorage.getItem("meetingCanc"),
     poPub: localStorage.getItem("poPub"),
     poUpda: localStorage.getItem("poUpda"),
     UserMeetPropoDatPoll: localStorage.getItem("UserMeetPropoDatPoll"),
@@ -55,8 +56,8 @@ export const localStorageManage = (
     AdOrg: localStorage.getItem("AdOrg"),
     AgCont: localStorage.getItem("AgCont"),
     meetingCanc: localStorage.getItem("meetingCanc"),
-    resVot : localStorage.getItem("resVot"),
-    resNonVot: localStorage.getItem("resNonVot")
+    resVot: localStorage.getItem("resVot"),
+    resNonVot: localStorage.getItem("resNonVot"),
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {
@@ -76,8 +77,6 @@ export const localStorageManage = (
     setErrorBar(false);
     setRememberEmail(RememberEmailLocal);
     setEmail(RememberEmailLocalValue);
-
- 
   } else {
     manageCommonLocalStorage(LoginFlowPageRoute, dispatch, commonData);
 
