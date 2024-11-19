@@ -128,6 +128,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             label: data.role,
             value: data.committeeRoleID,
           });
+          if (data.committeeRoleID === 1) {
+            setCommitteeMembersRolesVal({
+              label: data.role,
+              value: data.committeeRoleID,
+            });
+          }
         });
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }

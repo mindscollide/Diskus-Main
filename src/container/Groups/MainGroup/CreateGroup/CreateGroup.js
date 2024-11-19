@@ -159,10 +159,17 @@ const CreateGroup = ({ setCreategrouppage }) => {
     ) {
       let newRoles = [];
       GroupsReducergetOrganizationGroupRoles.forEach((data, index) => {
+
         newRoles.push({
           value: data.groupRoleID,
           label: data.role,
         });
+        if (data.groupRoleID === 1) {
+          setGroupMembersRolesVal({
+            value: data.groupRoleID,
+            label: data.role,
+          });
+        }
       });
       setGroupMembersRolesOptions(newRoles);
     }
