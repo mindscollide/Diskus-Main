@@ -90,14 +90,17 @@ const Participants = ({
             attendeeAvailability: data.attendeeAvailability,
           });
         });
+        setRowsData(getAllData);
       } else {
+        setRowsData(getAllData);
+
         // IsParticipantsAddFlow;
       }
-
-      setRowsData(getAllData);
+      console.log(getAllData, "getAllDatagetAllDatagetAllData")
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
+  console.log(rowsData, "getAllDatagetAllDatagetAllData")
   const handleNextBtn = () => {
     setAgenda(true);
     setParticipants(false);
@@ -160,7 +163,7 @@ const Participants = ({
         align: "left",
         width: "249px",
         render: (text) => (
-          <label className="column-boldness">{text.participantRole}</label>
+          <label className='column-boldness'>{text.participantRole}</label>
         ),
       },
       {
@@ -172,37 +175,37 @@ const Participants = ({
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
@@ -211,9 +214,9 @@ const Participants = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -252,7 +255,7 @@ const Participants = ({
         align: "left",
         width: "249px",
         render: (text) => (
-          <label className="column-boldness">{text.participantRole}</label>
+          <label className='column-boldness'>{text.participantRole}</label>
         ),
       },
     ];
@@ -291,14 +294,13 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width="274.05px"
-                              alt=""
-                              height="230.96px"
+                              width='274.05px'
+                              alt=''
+                              height='230.96px'
                             />
                           </Col>
                         </Row>
@@ -307,8 +309,7 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-Participant")}
                             </span>
@@ -319,8 +320,7 @@ const Participants = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-agenda-contributors")}
                             </span>
@@ -329,7 +329,7 @@ const Participants = ({
                       </>
                     ),
                   }}
-                  className="Polling_table"
+                  className='Polling_table'
                   rows={rowsData}
                 />
               </Col>
@@ -337,13 +337,12 @@ const Participants = ({
           </Col>
         </Row>
 
-        <Row className="mt-5">
+        <Row className='mt-5'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Meeting_Details"]}

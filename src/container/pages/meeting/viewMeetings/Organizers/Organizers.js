@@ -127,7 +127,7 @@ const Organizers = ({
       {
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
-        align: "left",
+        align: "center",
         ellipsis: true,
         render: (text) => (
           <Row>
@@ -135,10 +135,10 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-3 align-items-center"
+              className="d-flex gap-3 justify-content-center align-items-center"
             >
               <label className="column-boldness">
-                {text === true ? t("Primary") : t("Non-primary")}
+                {text === true ? t("Primary") : t("Secondary")}
               </label>
             </Col>
           </Row>
@@ -352,7 +352,7 @@ const Organizers = ({
     setorganizers(false);
     setRowsData([]);
   };
-
+  console.log(rowsData, "getAllDatagetAllDatagetAllData")
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
       Date: "",
