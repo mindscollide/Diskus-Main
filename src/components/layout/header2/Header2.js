@@ -92,8 +92,12 @@ const Header2 = ({ isVideo }) => {
   const [userProfileModal, setUserProfileModal] = useState(false);
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
+  const [showButtonOfUpgrade, setShowButtonOfUpgrade] = useState(false);
+
   let Blur = localStorage.getItem("blur");
+
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
+
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
@@ -106,6 +110,7 @@ const Header2 = ({ isVideo }) => {
   let currentOrganizationName = localStorage.getItem("organizatioName");
 
   const [show, setShow] = useState(false);
+
   useEffect(() => {
     if (Blur !== null) {
       console.log("Blur", Blur);
@@ -121,6 +126,15 @@ const Header2 = ({ isVideo }) => {
   useEffect(() => {
     if (reload === false) {
       setReload(true);
+    }
+    if (location.pathname.includes("/Admin") === true) {
+      if (showButtonOfUpgrade === false) {
+        setShowButtonOfUpgrade(true);
+      }
+    } else {
+      if (showButtonOfUpgrade) {
+        setShowButtonOfUpgrade(false);
+      }
     }
   }, []);
 
@@ -370,6 +384,7 @@ const Header2 = ({ isVideo }) => {
     };
     dispatch(requestOrganizationExtendApi(navigate, t, data));
   };
+
   const openAdminTab = () => {
     window.open(window.location.origin + "/#/Admin", "_blank");
   };
@@ -697,11 +712,13 @@ const Header2 = ({ isVideo }) => {
                                   )}
                                 </span>
                               </span>
-                              <Button
-                                text={t("Upgrade-now")}
-                                className="UpgradeNowbutton"
-                                onClick={handleShowUpgradedNowModal}
-                              />
+                              {showButtonOfUpgrade && (
+                                <Button
+                                  text={t("Upgrade-now")}
+                                  className="UpgradeNowbutton"
+                                  onClick={handleShowUpgradedNowModal}
+                                />
+                              )}
                             </>
                           )}
                           {(JSON.parse(

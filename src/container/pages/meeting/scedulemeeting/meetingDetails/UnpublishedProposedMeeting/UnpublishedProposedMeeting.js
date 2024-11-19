@@ -886,6 +886,9 @@ const UnpublishedProposedMeeting = ({
           setRow([]);
           setDublicatedrows([]);
         }
+      } else {
+        setRow([]);
+        setDublicatedrows([]);
       }
     } catch (error) {
       // Handle errors here

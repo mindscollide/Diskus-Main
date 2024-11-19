@@ -132,6 +132,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               );
               localStorage.removeItem("signupCurrentPage");
               localStorage.setItem("LoginFlowPageRoute", 4);
+              localStorage.setItem("commingfromSignFlow", true);
               dispatch(LoginFlowRoutes(4));
               navigate("/");
               console.log("Complete");

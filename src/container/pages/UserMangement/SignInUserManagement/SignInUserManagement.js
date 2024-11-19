@@ -131,6 +131,7 @@ const SignInUserManagement = () => {
 
   //Handle Free Trial
   const handleClickFreeTrail = () => {
+    localStorage.setItem("freeTrialButton", true);
     localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
     localStorage.setItem("SignupFlowPageRoute", 2);
