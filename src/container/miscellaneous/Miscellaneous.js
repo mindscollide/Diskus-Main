@@ -22,19 +22,19 @@ const CustomMiscellaneous = () => {
 
   return (
     <>
-      <section className="faqs_container">
+      <section className='faqs_container'>
         {fAQsReducer.AllFAQsData.map((data, index) => {
           return (
             <>
-              <Row className="mb-3" key={index}>
+              <Row className='mb-3' key={index}>
                 <Col lg={7} md={7} xs={7}>
                   <Accordian
                     // defaultActiveKey={"0"}
-                    eventKey="1"
+                    eventKey='1'
                     flush
-                    className={"ABC" + " " + currentLanguage}
+                    className={`${"ABC"} ${currentLanguage}  `}
                     AccordioonHeader={
-                      <Card.Title className="fs-4 FaqsQuestionsStyles">
+                      <Card.Title className='fs-4 FaqsQuestionsStyles'>
                         {data.question}
                       </Card.Title>
                     }
