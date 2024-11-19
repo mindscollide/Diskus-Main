@@ -2496,7 +2496,7 @@ const Dashboard = () => {
       }
     }
   }, []);
-
+console.log("isInternetDisconnectModalVisible",isInternetDisconnectModalVisible)
   return (
     <>
       <ConfigProvider
