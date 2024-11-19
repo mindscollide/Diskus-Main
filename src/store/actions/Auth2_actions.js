@@ -1242,7 +1242,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(LoginFlowRoutes(1));
           dispatch(
             enterPasswordFail(
-              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              t(
+                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              )
             )
           );
           break;
@@ -2384,7 +2386,9 @@ const createPasswordAction = (value, navigate, t) => {
 
           dispatch(
             createPasswordFail(
-              "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              t(
+                "You-have-not-been-assigned-any-license-please-contact-the-admin-for-further-assistance"
+              )
             )
           );
           break;
