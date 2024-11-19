@@ -279,7 +279,8 @@ const VideoPanelNormal = () => {
                       >
                         {/* <VideoCallParticipants /> */}
 
-                        <VideoNewParticipantList />
+                        {/* this is new Host Panel */}
+                        {/* <VideoNewParticipantList /> */}
                       </Col>
                     ) : null}
                     {/* <VideoCallParticipants /> */}

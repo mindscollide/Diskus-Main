@@ -43,7 +43,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.muteUmMuteByHost
   );
 
-  const guesthideunHideByHostDatas = useSelector(
+  const guesthideunHideByHostData = useSelector(
     (state) => state.GuestVideoReducer.hideunHideByHost
   );
 
@@ -125,10 +125,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   }, [guestMuteUnMuteData]);
 
   useEffect(() => {
-    if (guesthideunHideByHostDatas !== null) {
+    if (guesthideunHideByHostData !== null) {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
-        if (guesthideunHideByHostDatas.isVideoHidden === true) {
+        if (guesthideunHideByHostData.isVideoHidden === true) {
           iframe.contentWindow.postMessage("VidOff", "*");
           console.log("isVideoOnisVideoOn");
 
@@ -141,7 +141,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         }
       }
     }
-  }, [guesthideunHideByHostDatas]);
+  }, [guesthideunHideByHostData]);
 
   useEffect(() => {
     const iframe = frameRef.current;

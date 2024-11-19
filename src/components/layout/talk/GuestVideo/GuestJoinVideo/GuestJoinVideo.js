@@ -29,7 +29,14 @@ const GuestJoinVideo = ({
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
   );
-  console.log(guestVideoNavigationData, "guestVideoNavigationData");
+
+  // to get Validate room ID
+  const getValidateStringData = useSelector(
+    (state) => state.GuestVideoReducer.validateStringData
+  );
+
+  console.log(getValidateStringData, "getValidateRoomIdgetValidateRoomId");
+
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const [stream, setStream] = useState(null);
@@ -45,7 +52,12 @@ const GuestJoinVideo = ({
   const [joinName, setJoinName] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
-  console.log(rejoinState, "rejoinStaterejoinState");
+  const [validateRoomId, setValidateRoomId] = useState("");
+  const [validateHostEmail, setValidateHostEmail] = useState("");
+  console.log(
+    { validateRoomId, validateHostEmail },
+    "validateRoomIdvalidateRoomId"
+  );
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
@@ -128,6 +140,17 @@ const GuestJoinVideo = ({
     setErrorMessage(false);
   };
 
+  // extract and set validate room ID into join Meeting
+  useEffect(() => {
+    if (getValidateStringData) {
+      setValidateRoomId(getValidateStringData.roomID || "");
+      setValidateHostEmail(getValidateStringData.hostEmail || "");
+    } else {
+      setValidateRoomId("");
+      setValidateHostEmail("");
+    }
+  }, [getValidateStringData]);
+
   const onJoinNowButton = () => {
     if (joinName === "") {
       setErrorMessage(true);
@@ -141,9 +164,11 @@ const GuestJoinVideo = ({
       sessionStorage.removeItem("isRejoining");
       let data = {
         MeetingId: extractMeetingId,
+        RoomID: validateRoomId,
         GuestName: joinName,
         IsMuted: !isMicEnabled,
         HideVideo: !isWebCamEnabled,
+        HostEmail: validateHostEmail,
       };
       dispatch(joinGuestVideoMainApi(navigate, t, data));
     }

@@ -108,7 +108,7 @@ const GuestVideoCall = () => {
       if (data.action === "Meeting") {
         if (
           data.payload.message.toLowerCase() ===
-          "MEETING_GUEST_JOIN_RESPONSE".toLowerCase()
+          "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
         ) {
           if (data.payload.isAccepted === true) {
             setVideoUrl(data.payload.videoUrl);
@@ -120,7 +120,7 @@ const GuestVideoCall = () => {
           }
         } else if (
           data.payload.message.toLowerCase() ===
-          "REMOVE_PARTICIPANT_FROM_MEETING".toLowerCase()
+          "REMOVED_FROM_MEETING".toLowerCase()
         ) {
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));
@@ -133,10 +133,15 @@ const GuestVideoCall = () => {
           console.log(data.payload, "guestDataGuestData");
         } else if (
           data.payload.message.toLowerCase() ===
+          "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
+        ) {
+          dispatch(guestVideoNavigationScreen(3));
+        } else if (
+          data.payload.message.toLowerCase() ===
           "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
         ) {
           dispatch(hideUnHideVideoByHost(data.payload));
-          console.log(data.payload, "guestDataGuestData");
+          console.log(data.payload, "guestDataGuestDataVideo");
         }
         // below MQTT is imagined will replace this soon
         else if (
