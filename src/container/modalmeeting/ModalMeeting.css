@@ -509,9 +509,9 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
     border-radius: 4px !important;
   }
 
-  .datepicker {
+  /* .datepicker {
     width: 80px !important;
-  }
+  } */
 
   .CreateMeetingDate .rmdp-week-day {
     font-size: 12px !important;

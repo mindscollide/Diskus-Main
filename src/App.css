@@ -3243,7 +3243,7 @@ label.filter.form-label {
   margin-top: -18px !important;
 }
 
-@media screen and (max-width: 1000px) {
+/* @media screen and (max-width: 1000px) {
   [class^="icon-"],
   [class*=" icon-"] {
     font-size: 28px;
@@ -3251,7 +3251,7 @@ label.filter.form-label {
     vertical-align: middle;
     width: 80px !important;
   }
-}
+} */
 
 .settingSwitch .ant-switch .ant-switch-handle {
   width: 12px !important;

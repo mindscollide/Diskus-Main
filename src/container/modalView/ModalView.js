@@ -36,6 +36,7 @@ import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
 import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import {  removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -54,7 +55,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const calendarReducereventsDetails = useSelector(
     (state) => state.calendarReducer.eventsDetails
   );
-
+  console.log(
+    { assigneesViewMeetingDetails, calendarReducereventsDetails },
+    "calendarReducereventsDetailscalendarReducereventsDetails"
+  );
   const assigneesuser = useSelector((state) => state.assignees.user);
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -216,34 +220,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
   };
 
-  //for  Join Meeting Copy Link Button State Check
-
-  useEffect(() => {
-    try {
-      if (Object.keys(assigneesViewMeetingDetails).length > 0) {
-        let check = assigneesViewMeetingDetails.meetingDetails.isVideoCall;
-        let meetingID = Number(
-          assigneesViewMeetingDetails.meetingDetails.pK_MDID
-        );
-        let StatusCheck = assigneesViewMeetingDetails.meetingStatus.pK_MSID;
-
-        if (check) {
-        }
-        setIsVideo(check);
-        setMeetID(meetingID);
-        setMeetStatus(StatusCheck);
-      } else {
-      }
-    } catch (error) {
-      console.log(error, "errorerrorerrorerror");
-    }
-  }, [assigneesViewMeetingDetails]);
-
   // for view data
   useEffect(() => {
     try {
       if (Object.keys(assigneesViewMeetingDetails).length > 0) {
         let viewData = assigneesViewMeetingDetails;
+        console.log(viewData, "viewDataviewDataviewData");
         let reminder = [];
         let meetingAgenAtc = [];
         let minutesOfMeeting = [];
@@ -251,6 +233,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let meetingAgenAtclis = [];
         let rightsButtons = assigneesViewMeetingDetails.meetingAttendees;
         let meetingStatus = assigneesViewMeetingDetails.meetingStatus.status;
+        let StatusCheck = assigneesViewMeetingDetails.meetingStatus.pK_MSID;
+        setMeetStatus(StatusCheck);
         const found = rightsButtons.find(
           (element) => element.user.pK_UID === parseInt(createrID)
         );
@@ -438,7 +422,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ExternalMeetingAttendees: externalMeetingAttendiesList,
           MinutesOfMeeting: minutesOfMeeting,
         });
-
+        setIsVideo(viewData.meetingDetails.isVideoCall);
+        setMeetID(viewData.meetingDetails.pK_MDID);
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
@@ -686,36 +671,32 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       setMeetingDifference(minutesDifference);
     }
   }, [allMeetingDetails]);
-
-  // for list of all assignees
   useEffect(() => {
-    try {
-      if (viewFlag) {
-      } else {
-        setViewFlag(false);
-        dispatch(cleareAssigneesState());
-        setIsDetails(true);
-        setIsMinutes(false);
-        setIsAttachments(false);
-        setIsAgenda(false);
-        setIsAttendees(false);
-        setCreateMeeting({
-          MeetingTitle: "",
-          MeetingDescription: "",
-          MeetingTypeID: 0,
-          MeetingDate: "",
-          MeetingStartTime: "",
-          MeetingEndTime: "",
-          MeetingLocation: "",
-          MeetingReminderID: [],
-          MeetingAgendas: [],
-          MeetingAttendees: [],
-          ExternalMeetingAttendees: [],
-          MinutesOfMeeting: [],
-        });
-      }
-    } catch (error) {}
-  }, [viewFlag]);
+    return () => {
+      dispatch(removeCalenderDataFunc(null));
+      setViewFlag(false);
+      dispatch(cleareAssigneesState());
+      setIsDetails(true);
+      setIsMinutes(false);
+      setIsAttachments(false);
+      setIsAgenda(false);
+      setIsAttendees(false);
+      setCreateMeeting({
+        MeetingTitle: "",
+        MeetingDescription: "",
+        MeetingTypeID: 0,
+        MeetingDate: "",
+        MeetingStartTime: "",
+        MeetingEndTime: "",
+        MeetingLocation: "",
+        MeetingReminderID: [],
+        MeetingAgendas: [],
+        MeetingAttendees: [],
+        ExternalMeetingAttendees: [],
+        MinutesOfMeeting: [],
+      });
+    };
+  }, []);
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -725,16 +706,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       }
     } catch (error) {}
   }, [assigneesuser]);
-
-  // for  list of all assignees  drop down
-  useEffect(() => {
-    try {
-      if (addedParticipantNameList !== undefined) {
-        if (addedParticipantNameList.length > 0) {
-        }
-      }
-    } catch (error) {}
-  }, [addedParticipantNameList]);
 
   const startMeeting = async () => {
     await setViewFlag(false);

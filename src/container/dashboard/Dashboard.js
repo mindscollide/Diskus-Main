@@ -381,7 +381,8 @@ const Dashboard = () => {
                 dispatch(LeaveMeetingVideo(Data, navigate, t, true));
                 if (getMeetingParticipants.length > 0) {
                   let userID = localStorage.getItem("userID");
-                  let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+                  let meetingpageRow =
+                    localStorage.getItem("MeetingPageRows") || 30;
                   let meetingPageCurrent =
                     localStorage.getItem("MeetingPageCurrent") || 1;
                   let searchData = {
@@ -472,7 +473,11 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
+              let newMeetting = {
+                ...data.payload.meeting,
+                talkGroupID: data.payload.talkGroupID,
+              };
+              dispatch(meetingStatusPublishedMqtt(newMeetting));
               setNotificationID(id);
             } else if (
               data.payload.message.toLowerCase() ===

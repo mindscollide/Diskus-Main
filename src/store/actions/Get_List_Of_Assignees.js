@@ -12,7 +12,7 @@ import {
   getAllReminders,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
-import { getCalendarDataResponse } from "../actions/GetDataForCalendar";
+import { getCalendarDataResponse, removeCalenderDataFunc } from "../actions/GetDataForCalendar";
 import {
   searchNewUserMeeting,
   setMeetingByGroupIDApi,
@@ -459,6 +459,7 @@ const ViewMeeting = (
                 } else if (no === 5) {
                   setEditMeetingModal(true);
                 }
+                dispatch(removeCalenderDataFunc(null));
               } catch (error) {
                 console.log(error, "errorerror");
               }

@@ -64,23 +64,28 @@ export const formatValue = (value, locale) => {
 export const convertToArabicNumerals = (input, locale) => {
   console.log(input, "inputinputinputinput");
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   // Check for null or undefined input
-  if (input == null) {
+  if (input == null || input === undefined) {
     return ""; // Return an empty string if input is null or undefined
   }
-  if (input === undefined) {
-    return ""; // Return an empty string if input is null or undefined
+
+  // Convert input to a number and ensure it's valid
+  let number = parseInt(input, 10);
+  if (isNaN(number)) {
+    return ""; // Return an empty string if input is not a valid number
   }
-  // Convert input to a string if it's a number or if it's not already a string
-  const number = input.toString();
+
+  // Pad the number with a leading zero if it's less than 10
+  const paddedNumber = number < 10 ? `0${number}` : number.toString();
 
   // If locale is 'ar', replace digits with Arabic numerals
   if (currentLanguage === "ar") {
-    return number.replace(/\d/g, (digit) =>
-      String.fromCharCode(0x0660 + parseInt(digit))
+    return paddedNumber.replace(/\d/g, (digit) =>
+      String.fromCharCode(0x0660 + parseInt(digit, 10))
     );
   }
 
-  // Return the input as is if locale is not 'ar'
-  return input;
+  // Return the padded number as is if locale is not 'ar'
+  return paddedNumber;
 };
