@@ -82,9 +82,13 @@ const SignupProcessUserManagement = () => {
       }
     } else {
       console.log("SignupFlowPageRoute");
-      localStorage.setItem("SignupFlowPageRoute", 1);
-      setStoredStep(1);
-      dispatch(signUpFlowRoutes(1));
+      let freeTrialButton = localStorage.getItem("freeTrialButton");
+      if (freeTrialButton === null) {
+        localStorage.setItem("SignupFlowPageRoute", 1);
+        setStoredStep(1);
+        dispatch(signUpFlowRoutes(1));
+      } else {
+      }
     }
   }, []);
 

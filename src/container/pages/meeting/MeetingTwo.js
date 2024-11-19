@@ -833,12 +833,6 @@ const NewMeeting = () => {
       setSearchMeeting(false);
       setSearchText("");
       setentereventIcon(false);
-      // setRow([]);
-      // setEdiorRole({
-      //   status: null,
-      //   role: null,
-      //   isPrimaryOrganizer: false,
-      // });
     };
   }, []);
 
