@@ -100,7 +100,9 @@
 .Name_cards {
   font-size: 12px !important;
   color: #5a5a5a;
-  font-weight: 600 !important;
+  overflow: hidden;
+  white-space: nowrap !important;
+  text-overflow: ellipsis;
   margin-left: 5px !important;
 }
 
