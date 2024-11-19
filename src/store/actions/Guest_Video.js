@@ -172,6 +172,8 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase()
                 )
             ) {
+              dispatch(getValidateString(response.data.responseResult));
+              console.log("reponsepreodjfdfds", response.data.responseResult);
               // sessionStorage.setItem("viewState", 1);
               await dispatch(
                 validateEncryptGuestVideoSuccess(
@@ -372,6 +374,7 @@ const admitRejectAttendeeMainApi = (
   let filterGuids = Data.AttendeeResponseList.map(
     (guidMap, index) => guidMap.UID
   );
+  console.log(filterGuids, "filterGuids");
 
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -434,30 +437,29 @@ const admitRejectAttendeeMainApi = (
                   dispatch(participantWaitingListBox(false));
                 }
               }
-
-              let participants = Data.AttendeeResponseList.filter(
-                (partiData, index) => partiData.IsRequestAccepted === true
-              );
-              console.log(participants, "participantsparticipants");
-              if (participants.length > 0) {
+              if (
+                Data.IsRequestAccepted &&
+                Data.AttendeeResponseList.length > 0
+              ) {
                 let roomIds = localStorage.getItem("activeRoomID");
-                let getNames = participants.map((userData) => {
+                let getNames = Data.AttendeeResponseList.map((userData) => {
                   console.log(userData, "userDatauserData");
                   return {
                     Name: userData.Name,
                     UID: userData.UID,
-                    roomIds,
-                    isMute: userData.IsMuted,
-                    hideVideo: userData.HideVideo,
-                    isHandRaise: false,
-                    isGuest: userData.IsGuest,
+                    // roomIds,
+                    roomID: Data.RoomId,
+                    // isMute: userData.IsMuted,
+                    // hideVideo: userData.HideVideo,
+                    // isHandRaise: false,
+                    // isGuest: userData.IsGuest,
                   };
                 });
                 console.log(getNames, "getNamesgetNames");
                 dispatch(setAdmittedParticipant(getNames));
               }
-              dispatch(participantAcceptandReject(filterGuids));
               dispatch(guestJoinPopup(false));
+              dispatch(participantAcceptandReject(filterGuids));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -746,7 +748,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              dispatch(guestLeaveVideoMeeting([data.UID]));
+              dispatch(guestLeaveVideoMeeting(data.UID));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -824,6 +826,7 @@ const guestLeaveMeetingVideoFail = (message) => {
 
 const guestLeaveMeetingVideoApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log(data, "datadatadatadata");
   return (dispatch) => {
     dispatch(guestLeaveMeetingVideoInit());
     let form = new FormData();
@@ -1143,7 +1146,6 @@ const getVideoCallParticipantGuestFail = (message) => {
 };
 
 const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getVideoCallParticipantGuestInit());
     let form = new FormData();
@@ -1156,9 +1158,6 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
       method: "post",
       url: videoApi,
       data: form,
-      // headers: {
-      //   _token: token,
-      // },
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1170,7 +1169,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsForGuest_01".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -1183,7 +1182,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsForGuest_02".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -1193,7 +1192,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsForGuest_03".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -1203,7 +1202,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsForGuest_04".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -1224,6 +1223,13 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
       .catch((response) => {
         dispatch(getVideoCallParticipantGuestFail(t("Something-went-wrong")));
       });
+  };
+};
+
+const getValidateString = (response) => {
+  return {
+    type: actions.GET_VALIDATE_STRING_DATA,
+    response: response,
   };
 };
 
@@ -1249,4 +1255,5 @@ export {
   setVideoCameraGuest,
   setVoiceControleGuest,
   getVideoCallParticipantsGuestMainApi,
+  getValidateString,
 };

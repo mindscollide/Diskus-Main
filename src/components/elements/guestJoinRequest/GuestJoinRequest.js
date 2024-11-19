@@ -28,6 +28,8 @@ const GuestJoinRequest = () => {
   const [loadingAdmit, setLoadingAdmit] = useState(false);
   const [loadingDeny, setLoadingDeny] = useState(false);
 
+  const [getRoomId, setGetRoomId] = useState("");
+
   let roomID = localStorage.getItem("activeRoomID");
   console.log(
     GuestVideoReducer?.admitGuestUserRequestData,
@@ -59,6 +61,14 @@ const GuestJoinRequest = () => {
     "Datatatacatcas"
   );
 
+  useEffect(() => {
+    if (GuestVideoReducer?.admitGuestUserRequestData !== null) {
+      setGetRoomId(GuestVideoReducer.admitGuestUserRequestData.roomID);
+    } else {
+      setGetRoomId("");
+    }
+  }, [GuestVideoReducer?.admitGuestUserRequestData]);
+
   const handleAdmit = (flag) => {
     if (flag === 1) {
       setLoadingAdmit(true); // Admit button
@@ -68,17 +78,13 @@ const GuestJoinRequest = () => {
 
     let Data = {
       MeetingId: meetingID,
-      RoomId: String(roomID),
+      RoomId: String(getRoomId),
+      IsRequestAccepted: flag === 1,
+
       AttendeeResponseList: [
         {
-          Name: name,
           UID: guid,
-          Email: email,
-          // raiseHand: raiseHand,
           UserID: UserID,
-          IsMuted: mute,
-          HideVideo: hideCamera,
-          IsRequestAccepted: flag === 1,
           IsGuest: isGuest,
         },
       ],
@@ -100,13 +106,21 @@ const GuestJoinRequest = () => {
   useEffect(() => {
     const audioElement = new Audio("/Admit-Request.wav");
 
-    audioElement.loop = false;
+    // Play audio after the user has interacted with the page
+    const playAudio = () => {
+      audioElement.loop = false;
+      audioElement.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
+      document.removeEventListener("click", playAudio); // Remove event listener after playing
+    };
 
-    audioElement.play();
+    document.addEventListener("click", playAudio);
 
     return () => {
       audioElement.pause();
       audioElement.currentTime = 0;
+      document.removeEventListener("click", playAudio); // Clean up
     };
   }, []);
 

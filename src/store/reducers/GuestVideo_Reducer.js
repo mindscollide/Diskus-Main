@@ -25,6 +25,7 @@ const initialState = {
   videoCameraGuest: false,
   voiceControle: false,
   getAllParticipantGuest: null,
+  validateStringData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -318,6 +319,7 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
+      console.log(action, "actionsactionsactions");
       return {
         ...state,
         Loading: false,
@@ -345,6 +347,14 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         voiceControle: action.response,
+      };
+    }
+
+    // to get validate room Id from Validate String
+    case actions.GET_VALIDATE_STRING_DATA: {
+      return {
+        ...state,
+        validateStringData: action.response,
       };
     }
     default:

@@ -34,6 +34,7 @@ import {
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
+  getParticipantsNewJoin,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -697,25 +698,31 @@ const Dashboard = () => {
               // }
             } else if (
               data.payload.message.toLowerCase() ===
-              "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+              "VIDEO_PARTICIPANT_LEFT".toLowerCase()
             ) {
-              console.log(data.payload, "kashanKashankashanKashan");
-              dispatch(guestLeaveVideoMeeting([data.payload.uid]));
+              console.log(data.payload, "guestLeaveVideoMeeting");
+              dispatch(guestLeaveVideoMeeting(data.payload.uid));
             } else if (
               data.payload.message.toLowerCase() ===
-              "MUTE_UNMUTE_BY_PARTICIPANT".toLowerCase()
+              "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting([data.payload]));
+              dispatch(participanMuteUnMuteMeeting(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
             ) {
-              dispatch(participanRaisedUnRaisedHand([data.payload]));
+              dispatch(participanRaisedUnRaisedHand(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participantHideUnhideVideo([data.payload]));
+              dispatch(participantHideUnhideVideo(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
+            ) {
+              dispatch(getParticipantsNewJoin(data.payload.newParticipants));
+              console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()

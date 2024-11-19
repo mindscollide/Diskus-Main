@@ -21,6 +21,14 @@ const VideoCallParticipants = () => {
   const { t } = useTranslation();
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
+
+  const admitGuestUserRequestData = useSelector(
+    (state) => state.GuestVideoReducer.admitGuestUserRequestData
+  );
+
+  const [getRoomIdAccept, setGetRoomIdAccept] = useState("");
+  console.log(admitGuestUserRequestData, "admitGuestUserRequestData");
+
   let roomID = localStorage.getItem("activeRoomID");
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
@@ -32,6 +40,15 @@ const VideoCallParticipants = () => {
     // );
     // setPartcipantList(findisExist);
   };
+
+  useEffect(() => {
+    if (admitGuestUserRequestData) {
+      setGetRoomIdAccept(admitGuestUserRequestData.roomID);
+    } else {
+      setGetRoomIdAccept("");
+    }
+  }, [admitGuestUserRequestData]);
+
   useEffect(() => {
     if (videoFeatureReducer.participantWaitingList.length > 0) {
       try {
@@ -47,17 +64,12 @@ const VideoCallParticipants = () => {
   const handleClickAllAcceptAndReject = (flag) => {
     let Data = {
       MeetingId: participantsList[0].meetingID,
-      RoomId: String(roomID),
+      RoomId: String(getRoomIdAccept),
+      IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: participantsList.map((participantData, index) => {
         return {
-          Name: participantData.name,
           UID: participantData.guid,
-          Email: participantData.email,
-          raiseHand: participantData.raiseHand,
           UserID: participantData.userID,
-          IsMuted: participantData.mute,
-          HideVideo: participantData.hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: participantData.isGuest,
         };
       }),
@@ -71,10 +83,9 @@ const VideoCallParticipants = () => {
     console.log(participantInfo, "participantInfo");
     let Data = {
       MeetingId: participantInfo.meetingID,
-      RoomId: String(roomID),
+      RoomId: String(getRoomIdAccept),
       AttendeeResponseList: [
         {
-          Name: participantInfo.name,
           UID: participantInfo.guid,
           Email: participantInfo.email,
           raiseHand: participantInfo.raiseHand,
