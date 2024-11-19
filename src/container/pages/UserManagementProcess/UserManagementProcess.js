@@ -79,9 +79,12 @@ const UserManagementProcess = () => {
         }
       } else {
         console.log("LoginFlowPageRoute");
-        localStorage.setItem("LoginFlowPageRoute", 1);
-        setStoredStep(1);
-        dispatch(LoginFlowRoutes(1));
+        let commingfromSignFlow = localStorage.getItem("commingfromSignFlow");
+        if (commingfromSignFlow === null) {
+          localStorage.setItem("LoginFlowPageRoute", 1);
+          setStoredStep(1);
+          dispatch(LoginFlowRoutes(1));
+        }
       }
     }
   }, []);
