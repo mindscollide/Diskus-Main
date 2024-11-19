@@ -41,6 +41,7 @@ const initialState = {
   hideUndieParticipantList: [],
   muteUnMuteParticipant: [],
   hideUnHideParticipantorGuest: [],
+  getNewParticipantsMeetingJoin: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -82,13 +83,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
     case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
-      let { payload } = action;
-      let filterRemoveWhoLeaveMeeting = state.participantNameDataAccept.filter(
-        (participantData, index) => !payload.includes(participantData.UID)
+      console.log(action, "actionactionactionactionaction");
+      let copyState = [...state.getNewParticipantsMeetingJoin];
+      let newData = copyState.filter(
+        (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
       return {
         ...state,
-        participantNameDataAccept: filterRemoveWhoLeaveMeeting,
+        getNewParticipantsMeetingJoin: newData,
       };
     }
 
@@ -374,20 +376,22 @@ const videoFeatureReducer = (state = initialState, action) => {
       let { payload } = action;
       console.log(
         payload,
-        state.participantNameDataAccept,
+        state.getNewParticipantsMeetingJoin,
         "responseresponseresponse"
       );
-      let updatedParticipantList = state.participantNameDataAccept.map(
+      let updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
         (participantData) => {
+          console.log(participantData, "participantDataparticipantData");
+
           // Find the corresponding participant in the payload using UID
-          let correspondingPayload = payload.find(
-            (payloadData) => payloadData.uid === participantData.UID
-          );
+          let correspondingPayload =
+            payload.uid === participantData.guid ? true : false;
+
           // If a corresponding participant is found in the payload, update the isMute value
           if (correspondingPayload) {
             return {
               ...participantData,
-              isMute: correspondingPayload.isMuted, // Update isMute with the value from the payload
+              mute: payload.isMuted, // Update isMute with the value from the payload
             };
           }
           // If no match is found, return the original participant data
@@ -398,30 +402,41 @@ const videoFeatureReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        participantNameDataAccept: updatedParticipantList,
+        getNewParticipantsMeetingJoin: updatedParticipantList,
       };
     }
 
     case actions.PARTICIPANT_RAISEDUNRAISEDHAND_VIDEO: {
       let { payload } = action;
-      let updatedRaisedParticipant = state.participantNameDataAccept.map(
+      console.log(
+        payload,
+        state.getNewParticipantsMeetingJoin,
+        "getNewParticipantsMeetingJoinRaiseHand"
+      );
+      let updatedRaisedParticipant = state.getNewParticipantsMeetingJoin.map(
         (participantData) => {
-          let handraisedPayload = payload.find(
-            (payloadData) => payloadData.participantGuid === participantData.UID
-          );
+          console.log(participantData, "participantDataparticipantData");
+
+          let handraisedPayload =
+            payload.participantGuid === participantData.guid ? true : false;
           if (handraisedPayload) {
             return {
               ...participantData,
-              isHandRaise: handraisedPayload.isHandRaised,
+              raiseHand: payload.isHandRaised,
             };
           }
+          console.log(handraisedPayload, "handraisedPayloadhandraisedPayload");
           return participantData;
         }
+      );
+      console.log(
+        updatedRaisedParticipant,
+        "handraisedPayloadhandraisedPayload"
       );
 
       return {
         ...state,
-        participantNameDataAccept: updatedRaisedParticipant,
+        getNewParticipantsMeetingJoin: updatedRaisedParticipant,
       };
     }
 
@@ -429,27 +444,37 @@ const videoFeatureReducer = (state = initialState, action) => {
       let { payload } = action;
       console.log(
         payload,
-        state.participantNameDataAccept,
+        state.getNewParticipantsMeetingJoin,
         " hidehidehidheVideoDataa"
       );
-      let updateHideVideo = state.participantNameDataAccept.map(
+      let updateHideVideo = state.getNewParticipantsMeetingJoin.map(
         (hideUnhideData) => {
-          let hideUnHideVideoPayload = payload.find(
-            (payloadData) => payloadData.uid === hideUnhideData.UID
-          );
+          let hideUnHideVideoPayload =
+            payload.uid === hideUnhideData.guid ? true : false;
           if (hideUnHideVideoPayload) {
             return {
               ...hideUnhideData,
-              hideVideo: hideUnHideVideoPayload.isVideoHidden,
+              hideCamera: payload.isVideoHidden,
             };
           }
           return hideUnhideData;
         }
       );
-
+      console.log(updateHideVideo, "updateHideVideoupdateHideVideo");
       return {
         ...state,
-        participantNameDataAccept: updateHideVideo,
+        getNewParticipantsMeetingJoin: updateHideVideo,
+      };
+    }
+
+    case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
+      let getPrevState = [
+        ...state.getNewParticipantsMeetingJoin,
+        ...action.response,
+      ];
+      return {
+        ...state,
+        getNewParticipantsMeetingJoin: getPrevState,
       };
     }
 

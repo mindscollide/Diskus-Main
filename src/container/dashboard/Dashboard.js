@@ -33,6 +33,7 @@ import {
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
+  getParticipantsNewJoin,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -381,7 +382,8 @@ const Dashboard = () => {
                 dispatch(LeaveMeetingVideo(Data, navigate, t, true));
                 if (getMeetingParticipants.length > 0) {
                   let userID = localStorage.getItem("userID");
-                  let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+                  let meetingpageRow =
+                    localStorage.getItem("MeetingPageRows") || 30;
                   let meetingPageCurrent =
                     localStorage.getItem("MeetingPageCurrent") || 1;
                   let searchData = {
@@ -663,25 +665,31 @@ const Dashboard = () => {
               // }
             } else if (
               data.payload.message.toLowerCase() ===
-              "GUEST_PARTICIPANT_LEFT_VIDEO".toLowerCase()
+              "VIDEO_PARTICIPANT_LEFT".toLowerCase()
             ) {
-              console.log(data.payload, "kashanKashankashanKashan");
-              dispatch(guestLeaveVideoMeeting([data.payload.uid]));
+              console.log(data.payload, "guestLeaveVideoMeeting");
+              dispatch(guestLeaveVideoMeeting(data.payload.uid));
             } else if (
               data.payload.message.toLowerCase() ===
-              "MUTE_UNMUTE_BY_PARTICIPANT".toLowerCase()
+              "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting([data.payload]));
+              dispatch(participanMuteUnMuteMeeting(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
             ) {
-              dispatch(participanRaisedUnRaisedHand([data.payload]));
+              dispatch(participanRaisedUnRaisedHand(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participantHideUnhideVideo([data.payload]));
+              dispatch(participantHideUnhideVideo(data.payload));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
+            ) {
+              dispatch(getParticipantsNewJoin(data.payload.newParticipants));
+              console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2486,33 +2494,37 @@ const Dashboard = () => {
       }
     }
   }, []);
-console.log("isInternetDisconnectModalVisible",isInternetDisconnectModalVisible)
+  console.log(
+    "isInternetDisconnectModalVisible",
+    isInternetDisconnectModalVisible
+  );
   return (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -2529,8 +2541,8 @@ console.log("isInternetDisconnectModalVisible",isInternetDisconnectModalVisible)
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -2561,25 +2573,25 @@ console.log("isInternetDisconnectModalVisible",isInternetDisconnectModalVisible)
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -2595,12 +2607,13 @@ console.log("isInternetDisconnectModalVisible",isInternetDisconnectModalVisible)
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

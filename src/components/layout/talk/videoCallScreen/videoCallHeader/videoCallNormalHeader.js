@@ -81,10 +81,17 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.participantNameDataAccept
   );
 
-  console.log(
-    participantAcceptedName,
-    "participantAcceptedNameparticipantAcceptedName"
+  // For acccept Join name participantList
+  const getNewParticipantsMeetingJoin = useSelector(
+    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
+
+  console.log(
+    getNewParticipantsMeetingJoin,
+    "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
+  );
+
+  const [newParticipants, setNewParticipants] = useState([]);
 
   const [participantData, setParticipantData] = useState([]);
 
@@ -92,9 +99,10 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.participantWaitingList
   );
 
-  console.log(participantWaitingList, "participantWaitingList");
+  console.log(newParticipants, "newParticipantsnewParticipants");
 
-  const participantCounter = participantData?.length;
+  const participantCounter = newParticipants?.length;
+  console.log(participantData, "participantCounterparticipantCounter");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -154,6 +162,19 @@ const VideoCallNormalHeader = ({
   });
 
   const leaveModalPopupRef = useRef(null);
+
+  useEffect(() => {
+    if (
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
+    ) {
+      // Extract and set the new participants to state
+      setNewParticipants(getNewParticipantsMeetingJoin);
+    } else {
+      setNewParticipants([]);
+    }
+  }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
     if (meetingUrlData !== null && meetingUrlData !== undefined) {
@@ -425,12 +446,12 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     if (
-      participantAcceptedName !== null &&
-      participantAcceptedName !== undefined &&
-      participantAcceptedName.length > 0
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
     ) {
       // Filter out duplicates based on UID
-      const uniqueParticipants = participantAcceptedName.reduce(
+      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
         (acc, current) => {
           console.log(acc, "datadatdtad");
           // Only add the current participant if its UID is not already in acc
@@ -442,19 +463,19 @@ const VideoCallNormalHeader = ({
         []
       );
 
-      setParticipantData(uniqueParticipants);
+      setNewParticipants(uniqueParticipants);
       console.log(uniqueParticipants, "uniqueParticipants");
     } else {
-      setParticipantData([]);
+      setNewParticipants([]);
     }
-  }, [participantAcceptedName]);
+  }, [getNewParticipantsMeetingJoin]);
 
   // makeLeave or transfer Meeting Host API
   const makeLeaveOnClick = (usersData) => {
     console.log(usersData.UID, "usersDatausersData");
     let data = {
       RoomID: roomID,
-      UID: usersData.UID,
+      UID: usersData.guid,
       UserID: Number(currentUserID),
     };
 
@@ -469,27 +490,28 @@ const VideoCallNormalHeader = ({
       IsMuted: flag,
       MuteUnMuteList: [
         {
-          UID: usersData.UID, // The participant's UID
+          UID: usersData.guid, // The participant's UID
         },
       ],
     };
     dispatch(
-      muteUnMuteParticipantMainApi(navigate, t, data, setParticipantData, flag)
+      muteUnMuteParticipantMainApi(navigate, t, data, setNewParticipants, flag)
     );
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
+    console.log(usersData, "akasdaskhdvasdv");
     let data = {
       RoomID: roomID,
       HideVideo: flag,
-      UIDList: [usersData.UID],
+      UIDList: [usersData.guid],
     };
     dispatch(
       hideUnHideParticipantGuestMainApi(
         navigate,
         t,
         data,
-        setParticipantData,
+        setNewParticipants,
         flag
       )
     );
@@ -500,8 +522,8 @@ const VideoCallNormalHeader = ({
     dispatch(removeParticipantFromVideo(usersData.UID));
     let data = {
       RoomID: roomID,
-      UID: usersData.UID,
-      Name: usersData.Name,
+      UID: usersData.guid,
+      Name: usersData.name,
     };
 
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
@@ -751,8 +773,8 @@ const VideoCallNormalHeader = ({
                               }
                             )
                           : null}
-                        {participantData.length > 0 ? (
-                          participantData.map((usersData, index) => {
+                        {newParticipants.length > 0 ? (
+                          newParticipants.map((usersData, index) => {
                             console.log(usersData, "usersDatausersData");
                             return (
                               <>
@@ -765,9 +787,9 @@ const VideoCallNormalHeader = ({
                                   >
                                     <p className="participant-name">
                                       {/* {currentUserName} */}
-                                      {usersData.Name}
+                                      {usersData?.name}
                                     </p>
-                                    {usersData.isHandRaise === true ? (
+                                    {usersData.raiseHand === true ? (
                                       <>
                                         <img
                                           src={GoldenHandRaised}
@@ -784,7 +806,7 @@ const VideoCallNormalHeader = ({
                                         className="handraised-participant"
                                       />
                                     )}
-                                    {usersData.hideVideo ? (
+                                    {usersData.hideCamera ? (
                                       <img
                                         src={VideoDisable}
                                         width="18px"
@@ -814,7 +836,7 @@ const VideoCallNormalHeader = ({
                                     md={5}
                                     sm={12}
                                   >
-                                    {usersData.isMute ? (
+                                    {usersData.mute ? (
                                       <img
                                         src={MicDisabled}
                                         width={"22px"}
@@ -867,7 +889,7 @@ const VideoCallNormalHeader = ({
                                         >
                                           {t("Remove")}
                                         </Dropdown.Item>
-                                        {usersData.isMute === false ? (
+                                        {usersData.mute === false ? (
                                           <>
                                             <Dropdown.Item
                                               className="participant-dropdown-item"
@@ -896,7 +918,7 @@ const VideoCallNormalHeader = ({
                                             </Dropdown.Item>
                                           </>
                                         )}
-                                        {usersData.hideVideo === false ? (
+                                        {usersData.hideCamera === false ? (
                                           <>
                                             <Dropdown.Item
                                               className="participant-dropdown-item"
