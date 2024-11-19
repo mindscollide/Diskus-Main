@@ -437,12 +437,13 @@ p.Parent-title-heading {
 }
 
 p.minutes-text {
-  font-family: "Montserrat";
+  color: #5a5a5a;
+  font-size: 12px;
   font-style: normal;
   font-weight: 600;
-  font-size: 12px;
-  color: #5a5a5a;
   margin: 0 !important;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 span.bar-line {
@@ -788,3 +789,4 @@ body[dir="rtl"] .popup-agenda-menu {
   overflow: hidden;
   transition: transform 0.5s ease;
 }
+

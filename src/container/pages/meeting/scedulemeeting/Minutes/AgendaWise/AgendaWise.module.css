@@ -344,12 +344,12 @@ body[dir="rtl"] .MinusIcon {
   padding-right: 15px;
 }
 
-
 .notes_accordion {
   border: 1px solid #e1e1e1 !important;
-  border-radius: 4px !important; 
+  border-radius: 4px !important;
 }
 
 .notes_accordion .accordion-header .accordion-button:not(.collapsed) {
   box-shadow: none !important;
 }
+
