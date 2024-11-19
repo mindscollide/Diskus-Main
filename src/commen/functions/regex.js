@@ -62,14 +62,14 @@ export const formatValue = (value, locale) => {
 };
 
 export const convertToArabicNumerals = (input, locale) => {
-  console.log(input, "inputinputinputinput");
+  console.log(input, "convertToArabicNumerals");
   let currentLanguage = localStorage.getItem("i18nextLng");
   // Check for null or undefined input
-  if (input == null) {
-    return ""; // Return an empty string if input is null or undefined
-  }
-  if (input === undefined) {
-    return ""; // Return an empty string if input is null or undefined
+  if (input == null || input === undefined) {
+    // Return "0" in Arabic numerals if locale is 'ar', otherwise return "0"
+    return currentLanguage === "ar" 
+      ? String.fromCharCode(0x0660) 
+      : "0";
   }
   // Convert input to a string if it's a number or if it's not already a string
   const number = input.toString();
@@ -82,5 +82,6 @@ export const convertToArabicNumerals = (input, locale) => {
   }
 
   // Return the input as is if locale is not 'ar'
+  console.log(input, "convertToArabicNumerals");
   return input;
 };

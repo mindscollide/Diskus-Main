@@ -51,16 +51,16 @@ const ReviewMinutes = () => {
     (state) => state.MinutesReducer.CurrentUserPicture
   );
 
-  const RejectCommentModal = useSelector(
+  const RejectCommentModalReducer = useSelector(
     (state) => state.MinutesReducer.rejectCommentModal
   );
-  const EditCommentModal = useSelector(
+  const EditCommentModalReducer = useSelector(
     (state) => state.MinutesReducer.editCommentModal
   );
-  const DeleteCommentModal = useSelector(
+  const DeleteCommentModalReducer = useSelector(
     (state) => state.MinutesReducer.deleteCommentModal
   );
-  const AcceptCommentModal = useSelector(
+  const AcceptCommentModalReducer = useSelector(
     (state) => state.MinutesReducer.acceptCommentModal
   );
   const getallDocumentsForAgendaWiseMinutes = useSelector(
@@ -390,7 +390,7 @@ const ReviewMinutes = () => {
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
     if (minutesToReview !== 0) {
-      setMinutesToReview(minutesToReview - 1);
+      setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
     }
   };
 
@@ -444,7 +444,7 @@ const ReviewMinutes = () => {
       );
     }
   };
-
+  console.log("minutesToReview", minutesToReview);
   useEffect(() => {
     const div = divRef.current;
 
@@ -459,7 +459,7 @@ const ReviewMinutes = () => {
       setMinutesAgenda([]);
       setMinutesAgendaHierarchy([]);
       setMinutesGeneral([]);
-      setMinutesToReview([]);
+      setMinutesToReview(0);
       dispatch(rejectCommentModal(false));
     };
   }, []); // This effect runs once after the component mounts
@@ -658,7 +658,7 @@ const ReviewMinutes = () => {
           "updatedMinutesAgendaupdatedMinutesAgenda"
         );
         setMinutesGeneral(updatedMinutesData);
-        setMinutesToReview(minutesToReview - 1);
+        setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
         const updatedMinuteData = {
           ...minuteDataToReject,
@@ -681,7 +681,7 @@ const ReviewMinutes = () => {
           "updatedMinutesAgendaupdatedMinutesAgenda"
         );
         setMinutesAgenda(updatedMinutesAgenda);
-        setMinutesToReview(minutesToReview - 1);
+        setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
       }
       dispatch(rejectCommentModal(false));
     },
@@ -3709,7 +3709,7 @@ const ReviewMinutes = () => {
           </Row>
         </div>
       </span>
-      {RejectCommentModal ? (
+      {RejectCommentModalReducer && (
         <RejectCommentModal
           handleClickRejectButton={handleClickRejectMinuteBtn}
           // minuteDataToReject={minuteDataToReject}
@@ -3721,8 +3721,8 @@ const ReviewMinutes = () => {
           // currentUserID={currentUserID}
           // deleteCommentLocal={deleteCommentLocal}
         />
-      ) : null}
-      {EditCommentModal ? (
+      )}
+      {EditCommentModalReducer && (
         <EditCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
@@ -3736,8 +3736,8 @@ const ReviewMinutes = () => {
           currentUserName={currentUserName}
           isAgenda={isAgenda}
         />
-      ) : null}
-      {DeleteCommentModal ? (
+      )}
+      {DeleteCommentModalReducer && (
         <DeleteCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
@@ -3755,8 +3755,8 @@ const ReviewMinutes = () => {
           minutesToReview={minutesToReview}
           setMinutesToReview={setMinutesToReview}
         />
-      ) : null}
-      {AcceptCommentModal ? (
+      )}
+      {AcceptCommentModalReducer && (
         <AcceptCommentModal
           minutesAgenda={minutesAgenda}
           setMinutesAgenda={setMinutesAgenda}
@@ -3766,7 +3766,7 @@ const ReviewMinutes = () => {
           setMinutesToReview={setMinutesToReview}
           currentUserID={currentUserID}
         />
-      ) : null}
+      )}
     </section>
   );
 };

@@ -315,6 +315,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           value: data.groupRoleID,
           label: data.role,
         });
+        if (data.groupRoleID === 1) {
+          setGroupMembersRolesVal({
+            value: data.groupRoleID,
+            label: data.role,
+          });
+        }
       });
       setGroupMembersRolesOptions(newRoles);
     }
