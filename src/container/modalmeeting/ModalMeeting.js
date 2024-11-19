@@ -1981,7 +1981,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
   return (
     <>
-      <Container>
         <Modal
           show={show}
           onHide={onHideHandleModal}
@@ -2155,8 +2154,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                   <Row className="createmeetingInput-row mt-1">
                     <Col
                       lg={1}
-                      md={2}
-                      sm={3}
+                      md={1}
+                      sm={12}
                       xs={12}
                       className="CreateMeetingInput"
                     >
@@ -2189,8 +2188,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                     </Col>
                     <Col
                       lg={7}
-                      md={5}
-                      sm={5}
+                      md={7}
+                      sm={12}
                       xs={12}
                       className="location-textbox CreateMeetingInput"
                     >
@@ -2733,7 +2732,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             </>
           }
         />
-      </Container>
       <Notification open={open} setOpen={setOpen} />
     </>
   );

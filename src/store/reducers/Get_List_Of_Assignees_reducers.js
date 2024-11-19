@@ -6,7 +6,7 @@ const initialState = {
   // ResponseCode: "",
   Loading: false,
   NotificationData: [],
-  ViewMeetingDetails: [],
+  ViewMeetingDetails: null,
   CancelMeetingData: [],
   StartMeetingData: [],
   EndMeetingData: [],
@@ -85,7 +85,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        ViewMeetingDetails: [],
+        ViewMeetingDetails: null,
         ResponseMessage: "",
       };
 
@@ -109,7 +109,7 @@ const assigneesReducer = (state = initialState, action) => {
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage
         //     : action.response.responseResult.recordeMessage,
-        ViewMeetingDetails: [],
+        ViewMeetingDetails: null,
         ResponseMessage: action.message,
       };
     case actions.CLEARE_STATE:
@@ -117,7 +117,7 @@ const assigneesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
-        ViewMeetingDetails: [],
+        ViewMeetingDetails: null,
         CancelMeetingData: [],
         StartMeetingData: [],
         EndMeetingData: [],

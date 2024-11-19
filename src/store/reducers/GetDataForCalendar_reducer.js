@@ -141,6 +141,13 @@ const calendarReducer = (state = initialState, action) => {
         microsoftEventDelete: action.response,
       };
     }
+    case actions.REMOVE_CALENDARMEETINGDATA: {
+      console.log(action, "REMOVE_CALENDARMEETINGDATAREMOVE_CALENDARMEETINGDATA")
+      return {
+        ...state,
+        eventsDetails: action.payload,
+      };
+    }
     default:
       return { ...state };
   }

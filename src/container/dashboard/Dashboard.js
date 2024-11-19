@@ -339,67 +339,72 @@ const Dashboard = () => {
                 .toLowerCase()
                 .includes("MEETING_STATUS_EDITED_END".toLowerCase())
             ) {
-              let meetingVideoID = Number(
-                localStorage.getItem("meetingVideoID")
-              );
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("MEETING_STATUS_EDITED_END"),
-                    "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
-                  ),
-                });
-                setNotificationID(id);
-              }
-              if (
-                Number(meetingVideoID) ===
-                Number(data?.payload?.meeting?.pK_MDID)
-              ) {
-                let getMeetingParticipants =
-                  data.payload.meeting.meetingAttendees.filter(
-                    (attendeeData) =>
-                      attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                  );
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(minimizeVideoPanelFlag(false));
-                localStorage.setItem("activeCall", false);
-                localStorage.setItem("isMeeting", false);
-                localStorage.setItem("meetingTitle", "");
-                localStorage.setItem("acceptedRecipientID", 0);
-                localStorage.setItem("acceptedRoomID", 0);
-                localStorage.setItem("activeRoomID", 0);
-                localStorage.setItem("meetingVideoID", 0);
-                localStorage.setItem("MicOff", true);
-                localStorage.setItem("VidOff", true);
-                let Data = {
-                  RoomID: currentMeetingVideoID,
-                  UserGUID: userGUID,
-                };
-                dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-                if (getMeetingParticipants.length > 0) {
-                  let userID = localStorage.getItem("userID");
-                  let meetingpageRow =
-                    localStorage.getItem("MeetingPageRows") || 30;
-                  let meetingPageCurrent =
-                    localStorage.getItem("MeetingPageCurrent") || 1;
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
-                  };
-                  dispatch(searchNewUserMeeting(navigate, searchData, t));
-                }
-              }
+              try {
+                let meetingVideoID = Number(
+                  localStorage.getItem("meetingVideoID")
+                );
 
-              dispatch(mqttCurrentMeetingEnded(data.payload));
+                if (data.viewable) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: changeMQTTJSONOne(
+                      t("MEETING_STATUS_EDITED_END"),
+                      "[Meeting Title]",
+                      data.payload.meetingTitle.substring(0, 100)
+                    ),
+                  });
+                  setNotificationID(id);
+                }
+                if (
+                  Number(meetingVideoID) ===
+                  Number(data?.payload?.meeting?.pK_MDID)
+                ) {
+                  let getMeetingParticipants =
+                    data.payload.meeting.meetingAttendees.filter(
+                      (attendeeData) =>
+                        attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                    );
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                  localStorage.setItem("activeCall", false);
+                  localStorage.setItem("isMeeting", false);
+                  localStorage.setItem("meetingTitle", "");
+                  localStorage.setItem("acceptedRecipientID", 0);
+                  localStorage.setItem("acceptedRoomID", 0);
+                  localStorage.setItem("activeRoomID", 0);
+                  localStorage.setItem("meetingVideoID", 0);
+                  localStorage.setItem("MicOff", true);
+                  localStorage.setItem("VidOff", true);
+                  let Data = {
+                    RoomID: currentMeetingVideoID,
+                    UserGUID: userGUID,
+                  };
+                  dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                  if (getMeetingParticipants.length > 0) {
+                    let userID = localStorage.getItem("userID");
+                    let meetingpageRow =
+                      localStorage.getItem("MeetingPageRows") || 30;
+                    let meetingPageCurrent =
+                      localStorage.getItem("MeetingPageCurrent") || 1;
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings: true,
+                    };
+                    dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  }
+                }
+
+                dispatch(mqttCurrentMeetingEnded(data.payload));
+              } catch (error) {
+                console.log(error);
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()
@@ -474,7 +479,11 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
+              let newMeetting = {
+                ...data.payload.meeting,
+                talkGroupID: data.payload.talkGroupID,
+              };
+              dispatch(meetingStatusPublishedMqtt(newMeetting));
               setNotificationID(id);
             } else if (
               data.payload.message.toLowerCase() ===

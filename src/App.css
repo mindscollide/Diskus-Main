@@ -3243,7 +3243,7 @@ label.filter.form-label {
   margin-top: -18px !important;
 }
 
-@media screen and (max-width: 1000px) {
+/* @media screen and (max-width: 1000px) {
   [class^="icon-"],
   [class*=" icon-"] {
     font-size: 28px;
@@ -3251,7 +3251,7 @@ label.filter.form-label {
     vertical-align: middle;
     width: 80px !important;
   }
-}
+} */
 
 .settingSwitch .ant-switch .ant-switch-handle {
   width: 12px !important;
@@ -7839,10 +7839,22 @@ body.guest-video-call {
 }
 .MQTT_Notification {
   width: 100% !important;
-  padding: 15px 8px !important;
-  height: 81px !important;
+  padding: 15px !important;
+  min-height: 81px !important;
   display: flex !important;
   align-items: center !important;
+  position: relative;
+}
+.MQTT_Notification::before{ 
+  content: "";
+  position: absolute;
+  width: 30px;
+  left: -15px;
+  overflow: hidden;
+  height: 100%;
+  border-top-left-radius: 4px !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border-top-left-radius: 4px !important;
 }
 .MQTT_Notification
   .ant-notification-notice.ant-notification-notice-info
@@ -7850,6 +7862,9 @@ body.guest-video-call {
   border-radius: 4px !important;
 
   z-index: 999999999999 !important;
+}
+.MQTT_Notification .ant-notification-notice-close span svg {
+  color: #5a5a5a !important;
 }
 
 .MQTT_Notification .ant-notification-notice-icon {

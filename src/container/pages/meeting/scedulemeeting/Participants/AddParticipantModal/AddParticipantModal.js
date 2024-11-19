@@ -199,14 +199,13 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={GroupIcon}
-                        alt=""
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
+                        alt=''
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -232,14 +231,13 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={committeeicon}
-                        alt=""
-                        width="21.71px"
-                        height="18.61px"
-                        draggable="false"
+                        alt=''
+                        width='21.71px'
+                        height='18.61px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -265,15 +263,14 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=""
+                        alt=''
                         className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
+                        width='18px'
+                        height='18px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -340,8 +337,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_padding"]}
-              >
+                className={styles["OverAll_padding"]}>
                 <Row>
                   <Col lg={5} md={5} sm={12}>
                     <span className={styles["Add_organization"]}>
@@ -352,26 +348,24 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     lg={7}
                     md={7}
                     sm={12}
-                    className="d-flex justify-content-end"
-                  >
+                    className='d-flex justify-content-end'>
                     <img
                       draggable={false}
                       src={BlackCrossIcon}
-                      alt=""
+                      alt=''
                       className={"cursor-pointer"}
-                      width="16px"
-                      height="16px"
+                      width='16px'
+                      height='16px'
                       onClick={handleCrossIcon}
                     />
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="group-fields d-flex align-items-center gap-2"
-                  >
+                    className='group-fields d-flex align-items-center gap-2'>
                     <Select
                       closeMenuOnSelect={false}
                       onChange={handleSelectValue}
@@ -401,28 +395,30 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                     ? membersParticipants.map((data, index) => {
                         return (
                           <>
-                            <Col lg={6} md={6} sm={12} className="mt-2">
+                            <Col lg={6} md={6} sm={12} className='mt-2'>
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className={styles["OverAll_Padding"]}
-                                >
+                                  className={styles["OverAll_Padding"]}>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className={styles["Card_border2"]}>
-                                        <Col sm={12} md={10} lg={10}>
+                                        <Col
+                                          sm={12}
+                                          md={10}
+                                          lg={10}
+                                          className='d-flex justify-content-start align-items-center'>
                                           <img
                                             draggable={false}
-                                            alt=""
+                                            alt=''
                                             src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                            width="33px"
-                                            height="33px"
+                                            width='33px'
+                                            height='33px'
                                           />
                                           <span
-                                            className={styles["Name_cards"]}
-                                          >
+                                            className={styles["Name_cards"]}>
                                             {data.userName}
                                           </span>
                                         </Col>
@@ -430,10 +426,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                                           <img
                                             draggable={false}
                                             src={CrossIcon}
-                                            alt=""
-                                            width="14px"
-                                            height="14px"
-                                            className="cursor-pointer"
+                                            alt=''
+                                            width='14px'
+                                            height='14px'
+                                            className='cursor-pointer'
                                             onClick={() =>
                                               RemovedParticipant(index)
                                             }
@@ -461,8 +457,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
-              >
+                className='d-flex justify-content-end'>
                 {membersParticipants.length > 0 && (
                   <Button
                     text={t("Done")}

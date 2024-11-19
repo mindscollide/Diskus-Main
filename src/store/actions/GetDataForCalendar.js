@@ -455,7 +455,15 @@ const deleteGoogleEventMQTT = (response) => {
     response: response,
   };
 };
+
+const removeCalenderDataFunc = (response) => {
+  return {
+    type: actions.REMOVE_CALENDARMEETINGDATA,
+    payload: response
+  }
+}
 export {
+  removeCalenderDataFunc,
   getCalendarDataResponse,
   HideNotificationCalendarData,
   getCalendarDataInit,
