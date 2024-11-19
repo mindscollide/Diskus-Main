@@ -10,6 +10,7 @@ import {
   getCalendarDataResponse,
   getEventsDetails,
   getEventsTypes,
+  removeCalenderDataFunc,
 } from "../../store/actions/GetDataForCalendar";
 import {
   forMainCalendar,
@@ -22,7 +23,7 @@ import {
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
-import { clearResponseMessage } from "../../store/actions/Get_List_Of_Assignees";
+import { clearResponseMessage, cleareAssigneesState } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../store/actions/Admin_AddUser";
 import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
@@ -150,6 +151,7 @@ const CalendarPage = () => {
   const viewModalHandler = async (value) => {
     console.log(value, "valuevaluevaluevalues");
     if (value.calendarTypeId === 2) {
+
       if (value.isQuickMeeting === false) {
         let advancemeetingData = {
           id: value.id,
@@ -613,13 +615,7 @@ const CalendarPage = () => {
     }
   }, [microsoftEventDelete]);
 
-  // setting view flag
-  useEffect(() => {
-    if (Object.keys(ViewMeetingDetails).length > 0) {
-      setViewFlag(true);
-    } else {
-    }
-  }, [ViewMeetingDetails]);
+
   useEffect(() => {
     try {
       if (MeetingPublishData !== null) {
