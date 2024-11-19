@@ -749,7 +749,7 @@ const ViewMeetingDetails = ({
                               } ${"grayScaled"}`}
                             />
                             <Button
-                              text={t("Join-Video-Call")}
+                              text={t("Join-video-call")}
                               className={`${
                                 styles["JoinMeetingButton"]
                               } ${"grayScaled"} `}
