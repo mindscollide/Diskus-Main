@@ -57,7 +57,7 @@ body[dir="rtl"] .dashboard_progress_upcomingmeeting div {
 .dashboard_progress_upcomingmeeting_R div {
   background-color: transparent !important;
   border-radius: 25px !important;
-  /* text-align: right; */
+  text-align: right;
   margin-left: 7px;
   padding-right: 30px;
 }
