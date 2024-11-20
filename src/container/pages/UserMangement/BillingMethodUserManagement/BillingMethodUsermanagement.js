@@ -318,7 +318,7 @@ const BillingMethodUsermanagement = () => {
 
   return (
     <Container className={styles["sectionStyling"]}>
-      {SignupPage === 5 ? (
+      {Number(SignupPage) === 5 ? (
         <>
           <Row className="position-relative">
             <Col className={styles["languageSelector"]}>
