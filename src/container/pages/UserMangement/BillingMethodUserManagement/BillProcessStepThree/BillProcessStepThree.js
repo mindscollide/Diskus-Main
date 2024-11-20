@@ -12,7 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 import { calculateTotalsBillingStepper } from "../../../../../commen/functions/TableDataCalculation";
-const BillProcessStepThree = () => {
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
+const BillProcessStepThree = ({setStoredStep}) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -106,20 +107,22 @@ const BillProcessStepThree = () => {
           {t("Package-details")}
         </span>
       ),
-      width: 100,
+      width: 120,
       dataIndex: "name",
       key: "name",
       ellipses: true,
       align: "center",
       render: (text, record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
-
+        console.log(record.name, "namenamenamenamename");
         if (record?.isTotalRow) {
-          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+          return (
+            <span className={styles["ChargesPerLicesense"]}>{t(name)}</span>
+          );
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{record?.name}</span>;
+              <span className={styles["Tableheading"]}>{t(record?.name)}</span>
             </>
           );
         }
@@ -133,14 +136,14 @@ const BillProcessStepThree = () => {
       ),
       dataIndex: "price",
       key: "price",
-      width: 100,
+      width: 130,
       ellipses: true,
       align: "center",
       render: (text, record) => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record?.price}
+              {convertToArabicNumerals(record?.price, currentLanguage)}
             </span>
           </>
         );
@@ -152,7 +155,7 @@ const BillProcessStepThree = () => {
           {t("Number-of-licenses")}
         </span>
       ),
-      width: 100,
+      width: 120,
       dataIndex: "headCount",
       key: "headCount",
       ellipses: true,
@@ -161,7 +164,7 @@ const BillProcessStepThree = () => {
         return (
           <>
             <span className={styles["ChargesPerLicesense"]}>
-              {record?.headCount}
+              {convertToArabicNumerals(record?.headCount, currentLanguage)}
             </span>
           </>
         );
@@ -181,7 +184,7 @@ const BillProcessStepThree = () => {
       key: "Yearlycharges",
       align: "center",
       ellipses: true,
-      width: 100,
+      width: 130,
       render: (text, record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
@@ -189,7 +192,7 @@ const BillProcessStepThree = () => {
           // For the total row, directly use the calculated value
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {Yearlycharges}
+              {convertToArabicNumerals(Yearlycharges, currentLanguage)}
             </span>
           );
         } else {
@@ -197,7 +200,7 @@ const BillProcessStepThree = () => {
           const yearlyCharge = (record?.price * record?.headCount || 0) * 12;
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {yearlyCharge.toLocaleString()}
+              {convertToArabicNumerals(yearlyCharge, currentLanguage)}
             </span>
           );
         }
@@ -221,7 +224,7 @@ const BillProcessStepThree = () => {
         if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {Monthlycharges}
+              {convertToArabicNumerals(Monthlycharges, currentLanguage)}
             </span>
           );
         } else {
@@ -229,7 +232,7 @@ const BillProcessStepThree = () => {
           const MonthlyCharge = record?.price * record?.headCount || 0;
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {MonthlyCharge.toLocaleString()}
+              {convertToArabicNumerals(MonthlyCharge, currentLanguage)}
             </span>
           );
         }
@@ -253,14 +256,14 @@ const BillProcessStepThree = () => {
         if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {Quaterlycharges}
+              {convertToArabicNumerals(Quaterlycharges, currentLanguage)}
             </span>
           );
         } else {
           const QuaterlyCharge = (record?.price * record?.headCount || 0) * 3;
           return (
             <span className={styles["ChargesPerLicesense"]}>
-              {QuaterlyCharge.toLocaleString()}
+              {convertToArabicNumerals(QuaterlyCharge, currentLanguage)}
             </span>
           );
         }
@@ -275,7 +278,17 @@ const BillProcessStepThree = () => {
   const handleChangePackageSelected = () => {
     localStorage.setItem("changePacakgeFlag", true);
     localStorage.setItem("SignupFlowPageRoute", 1);
+    setStoredStep(1)
     dispatch(signUpFlowRoutes(1));
+  };
+
+  //Scroll for table
+  const scroll = {
+    y: "49vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
   };
 
   return (
@@ -293,11 +306,11 @@ const BillProcessStepThree = () => {
               <Col lg={9} md={9} sm={12} xs={12}>
                 <TableToDo
                   column={ColumnsPakageSelection}
-                  className={"Billing_TablePakageSelection"}
+                  className={"package-TablePakageSelection"}
                   rows={[...getAllPakagesData, showTotalValues]}
                   pagination={false}
                   id="PakageDetails"
-                  scroll={{ x: "max-content" }}
+                  scroll={scroll}
                   rowHoverBg="none"
                 />
               </Col>
