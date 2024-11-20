@@ -277,7 +277,7 @@ const VideoPanelNormal = () => {
                             : "ParticipantsWaiting_Out"
                         } ps-0`}
                       >
-                        {/* <VideoCallParticipants /> */}
+                        <VideoCallParticipants />
 
                         {/* this is new Host Panel */}
                         {/* <VideoNewParticipantList /> */}

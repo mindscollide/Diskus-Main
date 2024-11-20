@@ -48,17 +48,13 @@ const VideoCallParticipants = () => {
     let Data = {
       MeetingId: participantsList[0].meetingID,
       RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: participantsList.map((participantData, index) => {
+        console.log(participantData, "mahdahahshahs");
         return {
-          Name: participantData.name,
-          UID: participantData.guid,
-          Email: participantData.email,
-          raiseHand: participantData.raiseHand,
-          UserID: participantData.userID,
-          IsMuted: participantData.mute,
-          HideVideo: participantData.hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: participantData.isGuest,
+          UID: participantData.guid,
+          UserID: participantData.userID,
         };
       }),
     };
@@ -72,17 +68,12 @@ const VideoCallParticipants = () => {
     let Data = {
       MeetingId: participantInfo.meetingID,
       RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: [
         {
-          Name: participantInfo.name,
-          UID: participantInfo.guid,
-          Email: participantInfo.email,
-          raiseHand: participantInfo.raiseHand,
-          UserID: participantInfo.userID,
-          IsMuted: participantInfo.mute,
-          HideVideo: participantInfo.hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: participantInfo.isGuest,
+          UID: participantInfo.guid,
+          UserID: participantInfo.userID,
         },
       ],
     };
