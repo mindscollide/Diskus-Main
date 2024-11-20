@@ -14,7 +14,7 @@ import {
   formatDateToDDMMYYYYDownGradeSubscription,
 } from "../../../../../commen/functions/date_formater";
 import { useLocation, useNavigate } from "react-router-dom";
-import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
+import { convertNumbersInString, convertToArabicNumerals } from "../../../../../commen/functions/regex";
 const CancelSubscriptionAdmin = () => {
   const { t } = useTranslation();
 
@@ -163,7 +163,7 @@ const CancelSubscriptionAdmin = () => {
     organizationPackages.map((subscription) => {
       Data = subscription.organizationSelectedPackages.map((packages) => ({
         Pakagedetails: (
-          <span className={styles["Tableheading"]}>{packages.name}</span>
+          <span className={styles["Tableheading"]}>{t(packages.name)}</span>
         ),
         Chargesperlicense: (
           <span className={styles["ChargesPerLicesense"]}>
@@ -267,7 +267,7 @@ const CancelSubscriptionAdmin = () => {
                   {t("Subscription-number")}
                 </p>
                 <p className={styles["subcriptionvalue_1"]}>
-                  {cancelSubscriptionDetails.SubscriptionNumber}
+                  {convertNumbersInString(cancelSubscriptionDetails.SubscriptionNumber,lang)}
                 </p>
               </Col>
             </Row>

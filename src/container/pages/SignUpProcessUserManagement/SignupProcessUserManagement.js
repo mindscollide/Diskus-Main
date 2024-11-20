@@ -88,6 +88,7 @@ const SignupProcessUserManagement = () => {
         setStoredStep(1);
         dispatch(signUpFlowRoutes(1));
       } else {
+        dispatch(signUpFlowRoutes(storedStep));
       }
     }
   }, []);

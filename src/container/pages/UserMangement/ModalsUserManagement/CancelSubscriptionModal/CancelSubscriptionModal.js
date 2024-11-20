@@ -14,7 +14,6 @@ const CancelSubscriptionModal = () => {
 
   const dispatch = useDispatch();
 
-  const { UserManagementModals } = useSelector((state) => state);
 
   const UserManagementModalscancelSubscriptionModalData = useSelector(
     (state) => state.UserManagementModals.cancelSubscriptionModal
