@@ -148,7 +148,6 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.removeItem("PackageID");
                 localStorage.setItem("minutes", 4);
                 localStorage.setItem("seconds", 60);
-                localStorage.removeItem("SignupFlowPageRoute", 2);
                 localStorage.setItem("SignupFlowPageRoute", 3);
                 dispatch(signUpFlowRoutes(3));
                 // navigate("/Signup");
@@ -186,7 +185,6 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 localStorage.setItem("minutes", 0);
                 localStorage.setItem("seconds", 0);
                 localStorage.removeItem("PackageID");
-                localStorage.removeItem("SignupFlowPageRoute", 2);
                 localStorage.setItem("SignupFlowPageRoute", 3);
                 dispatch(signUpFlowRoutes(3));
                 navigate("/Signup");

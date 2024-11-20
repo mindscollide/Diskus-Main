@@ -130,7 +130,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   // t("User-doesnt-have-saved-devices")
                 )
               );
-              localStorage.removeItem("signupCurrentPage");
+              localStorage.removeItem("SignupFlowPageRoute");
               localStorage.setItem("LoginFlowPageRoute", 4);
               localStorage.setItem("commingfromSignFlow", true);
               dispatch(LoginFlowRoutes(4));

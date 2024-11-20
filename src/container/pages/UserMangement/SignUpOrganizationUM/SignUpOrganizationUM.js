@@ -26,7 +26,7 @@ import { setLoader } from "../../../../store/actions/Auth2_actions";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
-const SignUpOrganizationUM = () => {
+const SignUpOrganizationUM = ({setStoredStep}) => {
   const { t } = useTranslation();
 
   const countryNamesReducerCountryNamesData = useSelector(
@@ -785,17 +785,16 @@ const SignUpOrganizationUM = () => {
     }
   }, [countryNamesReducerCountryNamesData]);
 
-  const onClickLink = () => {
+  const  onClickLink = async() => {
     if (isFreeTrail === true) {
-      localStorage.removeItem("signupCurrentPage");
+      localStorage.removeItem("SignupFlowPageRoute");
       localStorage.setItem("LoginFlowPageRoute", 1);
-      dispatch(LoginFlowRoutes(1));
+     await dispatch(LoginFlowRoutes(1));
       navigate("/");
     } else {
-      localStorage.removeItem("SignupFlowPageRoute", 2);
+      setStoredStep(1)
       localStorage.setItem("SignupFlowPageRoute", 1);
-      dispatch(signUpFlowRoutes(1));
-      // navigate("/Signup");
+      await dispatch(signUpFlowRoutes(1));
     }
   };
 
