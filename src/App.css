@@ -6747,6 +6747,9 @@ td.ant-table-cell.minutesParticipant {
 
 button#RFS-StepButton {
   z-index: 1 !important;
+  font-size: 26px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
 }
 
 /* Specific RTL handling */

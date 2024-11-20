@@ -33,6 +33,18 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     "organizationSubscriptionID"
   );
 
+  // const firstvaue = document.querySelector(".StepButtonContent-0-2-5");
+
+  // const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
+
+  // const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
+
+  // const forthvaue = document.querySelector(".StepButtonContent-d7-0-2-27");
+
+  // const fifthhvaue = document.querySelector(".StepButtonContent-d9-0-2-31");
+
+  // const sixvaue = document.querySelector(".StepButtonContent-d11-0-2-37");
+
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
   const [activeComponent, setActiveComponent] = useState("PakageDetails");
@@ -99,34 +111,16 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
       errorStatus: false,
     },
   });
-  const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
-  const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
-  const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
-  const forthvaue = document.querySelector(".StepButtonContent-d7-0-2-27");
-  const fifthhvaue = document.querySelector(".StepButtonContent-d9-0-2-31");
-  const sixvaue = document.querySelector(".StepButtonContent-d11-0-2-37");
 
   //React Stepper Numbers manuipulation
   useEffect(() => {
-    if (firstvaue) {
-      firstvaue.innerText = "01";
-    }
-    if (forthvaue) {
-      forthvaue.innerText = "01";
-    }
-    if (secondvaue) {
-      secondvaue.innerText = "02";
-    }
-    if (fifthhvaue) {
-      fifthhvaue.innerText = "02";
-    }
-    if (thirdvaue) {
-      thirdvaue.innerText = "03";
-    }
-    if (sixvaue) {
-      sixvaue.innerText = "03";
-    }
-  }, [firstvaue, secondvaue, thirdvaue, forthvaue, fifthhvaue, sixvaue]);
+    const stepButtons = document.querySelectorAll(".step-button");
+    stepButtons.forEach((step, index) => {
+      if (step) {
+        step.innerText = ((index % 3) + 1).toString().padStart(2, "0"); // Append numbers dynamically
+      }
+    });
+  }, []);
 
   // translate Languages start
   const languages = [
@@ -362,6 +356,8 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
                   }}
                 >
                   <Step
+                    className="step-button"
+                    data-step="1"
                     label={
                       <span
                         style={{
@@ -375,6 +371,8 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
                     }
                   />
                   <Step
+                    className="step-button"
+                    data-step="2"
                     label={
                       <span
                         style={{
@@ -388,6 +386,8 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
                     }
                   />
                   <Step
+                    className="step-button"
+                    data-step="3"
                     label={
                       <span
                         style={{
