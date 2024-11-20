@@ -172,6 +172,7 @@ const Stats = () => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
           let checkisbothValueisEqual = bar.max === bar.now;
+          console.log(checkisbothValueisEqual,nowValue,calculateValue,bar,"progressBarData" )
 
           return (
             <ProgressBar

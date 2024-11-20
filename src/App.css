@@ -3287,36 +3287,36 @@ body.blur-background section.ant-layout.positionRelative .container {
 }
 
 li.invalid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
   justify-content: center;
 }
 
 li.valid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center !;
+  align-items: center !important;
 }
 
 .invalid span {
   color: #ff0000 !important;
-  font-weight: bold;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .invalid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .valid span {
-  font-weight: bold;
   color: #6172d6 !important;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .valid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 span.userstatus-signal-enabled {
