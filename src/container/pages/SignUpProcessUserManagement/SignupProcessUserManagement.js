@@ -74,21 +74,34 @@ const SignupProcessUserManagement = () => {
   );
   useEffect(() => {
     // Retrieve current step from local storage
+    let freeTrialButton = localStorage.getItem("freeTrialButton");
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
-      console.log("SignupFlowPageRoute");
       if (storedStep) {
-        console.log("SignupFlowPageRoute");
+        console.log("SignupFlowPageRoute",signUpUserManagementRoute);
+        localStorage.setItem("SignupFlowPageRoute", storedStep);
         dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
       console.log("SignupFlowPageRoute");
-      let freeTrialButton = localStorage.getItem("freeTrialButton");
       if (freeTrialButton === null) {
-        localStorage.setItem("SignupFlowPageRoute", 1);
-        setStoredStep(1);
-        dispatch(signUpFlowRoutes(1));
+        if (UserMangementReducerdefaultRoutingValue) {
+          console.log("SignupFlowPageRoute",UserMangementReducerdefaultRoutingValue);
+          localStorage.setItem(
+            "SignupFlowPageRoute",
+            UserMangementReducerdefaultRoutingValue
+          );
+          setStoredStep(UserMangementReducerdefaultRoutingValue);
+          dispatch(signUpFlowRoutes(UserMangementReducerdefaultRoutingValue));
+        } else {
+          console.log("SignupFlowPageRoute");
+          localStorage.setItem("SignupFlowPageRoute", 1);
+          setStoredStep(1);
+          dispatch(signUpFlowRoutes(1));
+        }
       } else {
+        console.log("SignupFlowPageRoute");
         dispatch(signUpFlowRoutes(storedStep));
+        localStorage.setItem("SignupFlowPageRoute", storedStep);
       }
     }
   }, []);

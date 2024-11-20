@@ -593,7 +593,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_08:
           if (response.data.responseResult.isOrganizationCreator) {
-            dispatch(
+          await  dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
                 t("Organization-is-inactive")
@@ -601,7 +601,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             );
             localStorage.removeItem("LoginFlowPageRoute");
             localStorage.setItem("signupCurrentPage", 5);
-            dispatch(signUpFlowRoutes(5));
+            await dispatch(signUpFlowRoutes(5));
             navigate("/Signup");
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
