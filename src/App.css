@@ -2805,7 +2805,7 @@ input#Participant::placeholder {
   padding: 0px 5px;
   border-spacing: 0 25px !important;
   border-radius: 50px !important;
-  table-layout: inherit !important;
+  table-layout: fixed !important;
   margin-top: -19px !important;
 }
 
