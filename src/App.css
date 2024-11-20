@@ -7523,7 +7523,7 @@ tr.ant-table-row.ant-table-row-level-0.SubscriptionExpiry:last-child:hover {
 
 .SubscriptionExpiryTableStyles .ant-table table {
   border-spacing: 0px 9px !important;
-  table-layout: inherit !important;
+  table-layout: fixed !important;
   background: transparent !important;
 }
 
@@ -7845,7 +7845,7 @@ body.guest-video-call {
   align-items: center !important;
   position: relative;
 }
-.MQTT_Notification::before{ 
+.MQTT_Notification::before {
   content: "";
   position: absolute;
   width: 30px;

@@ -162,11 +162,11 @@ const SubscriptionDetailsUserManagement = () => {
           {t("Subscription-number")}
         </span>
       ),
-      width: 100,
+      width: 150,
       dataIndex: "SubscriptionNumber",
       key: "SubscriptionNumber",
       ellipsis: true,
-      align: Locale === "en" ? "center" : "right",
+      align: Locale === "en" ? "center" : "center",
       render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
@@ -207,9 +207,9 @@ const SubscriptionDetailsUserManagement = () => {
       ),
       dataIndex: "SubscriptionDate",
       key: "SubscriptionDate",
-      width: 100,
+      width: 150,
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: Locale === "en" ? "center" : "right",
       render: (text, record) => {
         try {
           if (record.IsDefaultRow) {
@@ -241,7 +241,7 @@ const SubscriptionDetailsUserManagement = () => {
           {t("Expiry-Date")}
         </span>
       ),
-      width: 100,
+      width: 150,
       ellipsis: true,
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
@@ -276,7 +276,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "Duration",
       key: "Duration",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: Locale === "en" ? "center" : "right",
       width: 100,
       render: (text, record) => {
         try {
@@ -308,7 +308,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "EssentialLicenses",
       key: "EssentialLicenses",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -350,7 +350,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "ProfessionalLicenses",
       key: "ProfessionalLicenses",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -395,7 +395,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "PremiumLicenses",
       key: "PremiumLicenses",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -437,7 +437,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "TotalCharges",
       key: "TotalCharges",
       width: 100,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       ellipsis: true,
       render: (text, record) => {
         try {
@@ -498,7 +498,7 @@ const SubscriptionDetailsUserManagement = () => {
       dataIndex: "DowngradeSubscription",
       key: "DowngradeSubscription",
       width: 100,
-      align: Locale === "en" ? "left" : "right",
+      align: Locale === "en" ? "center" : "right",
       ellipsis: true,
       render: (text, record) => {
         try {
