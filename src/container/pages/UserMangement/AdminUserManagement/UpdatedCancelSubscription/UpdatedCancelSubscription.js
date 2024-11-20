@@ -161,7 +161,7 @@ const UpdatedCancelSubscription = () => {
           {t("Subscription-number")}
         </span>
       ),
-      width: 100,
+      width: 150,
       dataIndex: "SubscriptionNumber",
       key: "SubscriptionNumber",
       ellipsis: true,
@@ -208,7 +208,7 @@ const UpdatedCancelSubscription = () => {
       ),
       dataIndex: "SubscriptionDate",
       key: "SubscriptionDate",
-      width: 100,
+      width: 150,
       ellipsis: true,
       align: "center",
       render: (text, record) => {
@@ -242,7 +242,7 @@ const UpdatedCancelSubscription = () => {
           {t("Expiry-Date")}
         </span>
       ),
-      width: 100,
+      width: 150,
       ellipsis: true,
       dataIndex: "ExpiryDate",
       key: "ExpiryDate",
@@ -277,7 +277,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "Duration",
       key: "Duration",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -309,7 +309,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "EssentialLisences",
       key: "EssentialLisences",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -351,7 +351,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "ProfessionalLisences",
       key: "ProfessionalLisences",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -396,7 +396,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "PremiumLisences",
       key: "PremiumLisences",
       ellipsis: true,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       width: 100,
       render: (text, record) => {
         try {
@@ -438,7 +438,7 @@ const UpdatedCancelSubscription = () => {
       dataIndex: "TotalCharges",
       key: "TotalCharges",
       width: 100,
-      align: Locale === "en" ? "left" : "right",
+      align: "center",
       ellipsis: true,
       render: (text, record) => {
         try {
@@ -504,7 +504,7 @@ const UpdatedCancelSubscription = () => {
       ),
       dataIndex: "CancelSubscription",
       key: "CancelSubscription",
-      width: 100,
+      width: 130,
       align: Locale === "en" ? "left" : "right",
       ellipsis: true,
       render: (text, record) => {
