@@ -69,6 +69,7 @@
 
 .SendButton_SendDocument {
     background-color: #6172d6 !important;
+    border: none !important;
     border-radius: 4px !important; 
     padding: 12px 30px;
     font-size: 12px;
