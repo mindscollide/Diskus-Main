@@ -109,7 +109,6 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
   //React Stepper Numbers manuipulation
   useEffect(() => {
     if (firstvaue) {
-      // Set the new value
       firstvaue.innerText = "01";
     }
     if (forthvaue) {
