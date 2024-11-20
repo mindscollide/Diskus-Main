@@ -48,6 +48,7 @@ const SearchComponent = ({
   searchResultsFields,
   setSearchTabOpen,
 }) => {
+  console.log(searchDataFields, "searchDataFieldssearchDataFields")
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -1584,11 +1585,11 @@ const SearchComponent = ({
                   ? t("Folder")
                   : searchDataFields.isVideos
                   ? t("Videos")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isAudios
                   ? t("Audio")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isImages
                   ? t("Image")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isSites
                   ? t("Sites")
                   : searchDataFields.isDocument &&
                     searchDataFields.isDocument &&

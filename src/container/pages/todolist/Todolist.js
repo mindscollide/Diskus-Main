@@ -1037,6 +1037,7 @@ const TodoList = () => {
                 sortDirections={["descend", "ascend"]}
                 column={columnsToDo}
                 className={"ToDo"}
+                pagination={false}
                 rows={rowsToDo}
                 scroll={scroll}
                 locale={{
@@ -1049,7 +1050,6 @@ const TodoList = () => {
                     </>
                   ), // Set your custom empty text here
                 }}
-                pagination={false}
               />
             </Col>
           </Row>

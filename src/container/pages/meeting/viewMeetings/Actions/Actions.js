@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Table } from "../../../../../components/elements";
+import { Button, Table, TableToDo } from "../../../../../components/elements";
 import { ChevronDown } from "react-bootstrap-icons";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -741,7 +741,7 @@ const Actions = ({
                 <section className={styles["HeightDefined"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <Table
+                      <TableToDo
                         column={ActionsColoumn}
                         scroll={{ y: "46vh", x: "hidden" }}
                         pagination={false}
