@@ -77,15 +77,12 @@ const SignupProcessUserManagement = () => {
     let freeTrialButton = localStorage.getItem("freeTrialButton");
     if (performance.navigation.type === PerformanceNavigation.TYPE_RELOAD) {
       if (storedStep) {
-        console.log("SignupFlowPageRoute",signUpUserManagementRoute);
         localStorage.setItem("SignupFlowPageRoute", storedStep);
         dispatch(signUpFlowRoutes(storedStep));
       }
     } else {
-      console.log("SignupFlowPageRoute");
       if (freeTrialButton === null) {
         if (UserMangementReducerdefaultRoutingValue) {
-          console.log("SignupFlowPageRoute",UserMangementReducerdefaultRoutingValue);
           localStorage.setItem(
             "SignupFlowPageRoute",
             UserMangementReducerdefaultRoutingValue
@@ -93,27 +90,16 @@ const SignupProcessUserManagement = () => {
           setStoredStep(UserMangementReducerdefaultRoutingValue);
           dispatch(signUpFlowRoutes(UserMangementReducerdefaultRoutingValue));
         } else {
-          console.log("SignupFlowPageRoute");
           localStorage.setItem("SignupFlowPageRoute", 1);
           setStoredStep(1);
           dispatch(signUpFlowRoutes(1));
         }
       } else {
-        console.log("SignupFlowPageRoute");
         dispatch(signUpFlowRoutes(storedStep));
         localStorage.setItem("SignupFlowPageRoute", storedStep);
       }
     }
   }, []);
-
-  useEffect(() => {
-    if (signUpUserManagementRoute !== null && signUpUserManagementRoute !== 0) {
-      setStoredStep(signUpUserManagementRoute);
-    } else {
-      setStoredStep(1);
-      localStorage.setItem("SignupFlowPageRoute", 1);
-    }
-  }, [signUpUserManagementRoute]);
   console.log(
     "SignupFlowPageRoute",
     signUpUserManagementRoute,
@@ -347,7 +333,7 @@ const SignupProcessUserManagement = () => {
   if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
     SignupComponent = <PakageDetailsUserManagement />;
   } else if (UserMangementReducerdefaultRoutingValue === 2) {
-    SignupComponent = <SignUpOrganizationUM />;
+    SignupComponent = <SignUpOrganizationUM setStoredStep={setStoredStep}/>;
   } else if (UserMangementReducerdefaultRoutingValue === 3) {
     SignupComponent = <VerifyOTPUM />;
   } else if (UserMangementReducerdefaultRoutingValue === 4) {

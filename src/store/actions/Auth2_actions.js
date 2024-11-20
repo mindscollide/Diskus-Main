@@ -600,7 +600,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
             );
             localStorage.removeItem("LoginFlowPageRoute");
-            localStorage.setItem("signupCurrentPage", 5);
+            localStorage.setItem("SignupFlowPageRoute", 5);
             await dispatch(signUpFlowRoutes(5));
             navigate("/Signup");
           } else {
@@ -1839,7 +1839,7 @@ const verificationEmailOTP = (
                 )
               );
               localStorage.removeItem("LoginFlowPageRoute");
-              localStorage.removeItem("signupCurrentPage");
+              localStorage.removeItem("SignupFlowPageRoute");
               navigate("/");
             }
           } else {
@@ -2301,7 +2301,7 @@ const createPasswordAction = (value, navigate, t) => {
             );
 
             // localStorage.removeItem("LoginFlowPageRoute");
-            // localStorage.setItem("signupCurrentPage", 5);
+            // localStorage.setItem("SignupFlowPageRoute", 5);
             // navigate("/Signup");
 
             localStorage.setItem("SignupFlowPageRoute", 5);
@@ -2328,7 +2328,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
             localStorage.removeItem("LoginFlowPageRoute");
-            localStorage.setItem("signupCurrentPage", 5);
+            localStorage.setItem("SignupFlowPageRoute", 5);
             navigate("/Signup");
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);
@@ -2351,7 +2351,7 @@ const createPasswordAction = (value, navigate, t) => {
               )
             );
             localStorage.removeItem("LoginFlowPageRoute");
-            localStorage.setItem("signupCurrentPage", 5);
+            localStorage.setItem("SignupFlowPageRoute", 5);
             navigate("/Signup");
           } else {
             clearLocalStorageAtloginresponce(dispatch, 2, navigate);

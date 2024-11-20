@@ -318,10 +318,10 @@ export function getLocalStorageItemNonActiveCheck(key) {
 // this is for non active organisation check only
 export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
   if (value === 1) {
-    localStorage.removeItem("signupCurrentPage");
+    localStorage.removeItem("SignupFlowPageRoute");
     localStorage.removeItem("LoginFlowPageRoute");
   } else if (value === 2) {
-    localStorage.removeItem("signupCurrentPage");
+    localStorage.removeItem("SignupFlowPageRoute");
     localStorage.setItem("LoginFlowPageRoute", 1);
     navigate("/");
   } else if (value === 3) {
@@ -329,7 +329,7 @@ export function clearLocalStorageAtloginresponce(dispatch, value, navigate) {
     dispatch(LoginFlowRoutes(2));
     localStorage.setItem("LoginFlowPageRoute", 2);
 
-    // localStorage.removeItem("signupCurrentPage");
+    // localStorage.removeItem("SignupFlowPageRoute");
   } else if (Number(value) === 4) {
     // for User is in Active and Account is Blocked
     dispatch(LoginFlowRoutes(1));
