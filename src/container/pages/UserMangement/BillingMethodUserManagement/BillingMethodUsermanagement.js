@@ -16,7 +16,7 @@ import { validateEmailEnglishAndArabicFormat } from "../../../../commen/function
 import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
-const BillingMethodUsermanagement = () => {
+const BillingMethodUsermanagement = ({ setStoredStep }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -391,7 +391,7 @@ const BillingMethodUsermanagement = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
               {activeStep === 0 && activeComponent === "PakageDetails" ? (
-                <BillProcessStepThree />
+                <BillProcessStepThree setStoredStep={setStoredStep} />
               ) : activeStep === 1 &&
                 activeComponent === "billingContactDetails" ? (
                 <>
