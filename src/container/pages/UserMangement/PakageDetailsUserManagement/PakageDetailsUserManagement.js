@@ -28,6 +28,8 @@ const PakageDetailsUserManagement = () => {
 
   let locale = localStorage.getItem("i18nextLng");
 
+  const ChangeCurrentPakage = localStorage.getItem("changePacakgeFlag");
+
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
   const trialPage = localStorage.getItem("isTrial");
   let changePacakgeFlag = localStorage.getItem("changePacakgeFlag");
@@ -421,7 +423,6 @@ const PakageDetailsUserManagement = () => {
         );
         localStorage.setItem("SignupFlowPageRoute", 2);
         dispatch(signUpFlowRoutes(2));
-        // navigate("/Signup");
       } else if (Boolean(trialPage) === true) {
         let requestData = {
           TenureOfSubscriptionID: Number(tenureOfSuscriptionID),
@@ -443,10 +444,15 @@ const PakageDetailsUserManagement = () => {
     isTotalRow: true,
   };
 
-  //Handle Goback Function
   const onClickLink = () => {
     let token = localStorage.getItem("token");
-    if (token == null) {
+
+    if (ChangeCurrentPakage) {
+      localStorage.setItem("SignupFlowPageRoute", 5);
+      dispatch(signUpFlowRoutes(5));
+      navigate("/Signup");
+      localStorage.setItem("changePacakgeFlag", false);
+    } else if (token == null) {
       dispatch(LoginFlowRoutes(1));
       localStorage.setItem("LoginFlowPageRoute", 1);
       navigate("/");

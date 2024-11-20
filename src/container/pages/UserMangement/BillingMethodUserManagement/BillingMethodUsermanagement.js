@@ -99,6 +99,35 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
       errorStatus: false,
     },
   });
+  const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
+  const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
+  const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
+  const forthvaue = document.querySelector(".StepButtonContent-d7-0-2-27");
+  const fifthhvaue = document.querySelector(".StepButtonContent-d9-0-2-31");
+  const sixvaue = document.querySelector(".StepButtonContent-d11-0-2-37");
+
+  //React Stepper Numbers manuipulation
+  useEffect(() => {
+    if (firstvaue) {
+      // Set the new value
+      firstvaue.innerText = "01";
+    }
+    if (forthvaue) {
+      forthvaue.innerText = "01";
+    }
+    if (secondvaue) {
+      secondvaue.innerText = "02";
+    }
+    if (fifthhvaue) {
+      fifthhvaue.innerText = "02";
+    }
+    if (thirdvaue) {
+      thirdvaue.innerText = "03";
+    }
+    if (sixvaue) {
+      sixvaue.innerText = "03";
+    }
+  }, [firstvaue, secondvaue, thirdvaue, forthvaue, fifthhvaue, sixvaue]);
 
   // translate Languages start
   const languages = [
@@ -293,29 +322,6 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     });
   };
 
-  //React Stepper Numbers manuipulation
-  useEffect(() => {
-    const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
-    const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
-    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
-
-    const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
-
-    if (firstvaue) {
-      // Set the new value
-      firstvaue.innerText = "01";
-    }
-    if (secondvaue) {
-      secondvaue.innerText = "02";
-    }
-    if (thirdvaue) {
-      thirdvaue.innerText = "03";
-    }
-    if (fourthvaue) {
-      fourthvaue.innerText = "04";
-    }
-  }, []);
-
   return (
     <Container className={styles["sectionStyling"]}>
       {Number(SignupPage) === 5 ? (
@@ -345,47 +351,58 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Stepper activeStep={activeStep}>
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 0
-                          ? "billing-contactActive"
-                          : "billing-contact"
-                      }
-                    >
-                      {t("Package-details")}
-                    </span>
-                  }
-                />
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 1
-                          ? "billing-addressActive"
-                          : "billing-address"
-                      }
-                    >
-                      {t("Billing-contact")}
-                    </span>
-                  }
-                />
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 2
-                          ? "package-detailsActive"
-                          : "package-details"
-                      }
-                    >
-                      {t("Billing-address")}
-                    </span>
-                  }
-                />
-              </Stepper>
+              <div className="custom-stepper">
+                <Stepper
+                  activeStep={activeStep}
+                  styleConfig={{
+                    activeBgColor: "#6172d6",
+                    completedBgColor: "rgb(224, 224, 224)",
+                    inactiveBgColor: "rgb(224, 224, 224)",
+                    size: "4rem",
+                    zIndex: "1",
+                  }}
+                >
+                  <Step
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Package-details")}
+                      </span>
+                    }
+                  />
+                  <Step
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Billing-contact")}
+                      </span>
+                    }
+                  />
+                  <Step
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Billing-address")}
+                      </span>
+                    }
+                  />
+                </Stepper>
+              </div>
             </Col>
           </Row>
           <Row>

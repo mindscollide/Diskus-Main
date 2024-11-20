@@ -36,19 +36,8 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-  const UserMangementReducerLoading = useSelector(
-    (state) => state.UserMangementReducer.Loading
-  );
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
   const adminReducerDeleteOrganizationResponseMessageData = useSelector(
     (state) => state.adminReducer.DeleteOrganizationResponseMessage
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
   );
 
   const UserManagementModalsmobileAppPopUpData = useSelector(
@@ -72,8 +61,6 @@ const SignInUserManagement = () => {
     message: "",
     severity: "error",
   });
-
-  console.log(open.message, "messagemessage");
 
   //OnChange For Email
   const emailChangeHandler = (e) => {

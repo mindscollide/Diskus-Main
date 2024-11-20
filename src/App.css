@@ -2805,7 +2805,7 @@ input#Participant::placeholder {
   padding: 0px 5px;
   border-spacing: 0 25px !important;
   border-radius: 50px !important;
-  table-layout: fixed !important;
+  table-layout: inherit !important;
   margin-top: -19px !important;
 }
 
@@ -6698,196 +6698,56 @@ td.ant-table-cell.minutesParticipant {
 /* React Stepper Styles */
 
 /* CSS for the Round Button of Stepper */
-
-/* outer Color Css starts hover state also  */
-.StepButton-d0-0-2-6.active:hover {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-.StepButton-d0-0-2-6.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d2-0-2-12 {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d2-0-2-12.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20 {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20.active:hover {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-/* outer Color Css Ends hover state also  */
-/* Inside Numbers CSS  starts*/
-.StepButtonContent-d1-0-2-7.active {
+.custom-stepper .StepButtonContent-d1-0-2-7 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-.StepButtonContent-d3-0-2-13 {
+.custom-stepper .StepButtonContent-d3-0-2-13 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-.StepButtonContent-d5-0-2-21 {
+.custom-stepper .StepButtonContent-d5-0-2-21 {
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+}
+/* CSS for the Round Button of Stepper */
+.custom-stepper .StepButtonContent-d7-0-2-27 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-/* After Moving to next Step Css Starts */
-.StepButton-d0-0-2-6.completed {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d0-0-2-6.completed:hover {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButtonContent-d1-0-2-7.completed {
+.custom-stepper .StepButtonContent-d9-0-2-31 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
-/* After Moving to next Step Css Ends */
+
+.custom-stepper .StepButtonContent-d11-0-2-37 {
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+}
 
 /* Connector Stepper CSS Starts */
-.Connector-d1-0-2-17 {
+.custom-stepper .Connector-0-2-15 {
   border-color: #e1e1e1 !important;
   border-top-style: dashed !important;
-  margin-top: 18px !important;
-  width: 100% !important;
+  margin-top: 2px !important;
+  margin-left: -24px !important;
+  width: 130% !important;
 }
 
-.Connector-d3-0-2-23 {
-  border-color: #e1e1e1 !important;
-  border-top-style: dashed !important;
-  margin-top: 18px !important;
-  width: 100% !important;
-}
-
-body[dir="rtl"] .Connector-d3-0-2-23 {
-    margin-right: -222% !important;
+/* Specific RTL handling */
+body[dir="rtl"] .custom-stepper .Connector-0-2-15 {
+  margin-right: -163% !important;
 }
 /* Connector Stepper CSS Ends */
-
-/* Inside Numbers CSS  starts*/
-span.billing-contact {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.billing-contactActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-.no-padding-top {
-  padding-top: 0 !important;
-}
-
-span.billing-address {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.billing-addressActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.package-details {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.package-detailsActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.payment-method {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.payment-methodActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-body[dir="rtl"] span.billing-address {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-addressActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.package-details {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.package-detailsActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.payment-method {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.payment-methodActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-contactActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-contact {
-  font-weight: 600 !important;
-}
 
 /* Selecting pakage Details Css Usermangement */
 tr.ant-table-row.ant-table-row-level-0.PakageDetailsTable {
