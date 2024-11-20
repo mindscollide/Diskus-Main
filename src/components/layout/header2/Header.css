@@ -653,3 +653,7 @@ body[dir="rtl"] .UpgradeButtonsClass {
   font-weight: 600;
   color: #5a5a5a;
 }
+
+body[dir="rtl"] a.SignOutOptionMenu.text-black.border-none.FontClass.nav-link {
+  margin-left: 97px !important;
+}
