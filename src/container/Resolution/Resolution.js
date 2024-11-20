@@ -1133,7 +1133,8 @@ const Resolution = () => {
     if (
       ResolutionReducerResponseMessage !== "" &&
       ResolutionReducerResponseMessage !== t("No-data-available") &&
-      ResolutionReducerResponseMessage !== undefined
+      ResolutionReducerResponseMessage !== undefined&&
+      ResolutionReducerResponseMessage !== t("Resolution-details-updated-successfully")
     ) {
       showMessage(ResolutionReducerResponseMessage, "success", setOpen);
       dispatch(clearResponseMessage());

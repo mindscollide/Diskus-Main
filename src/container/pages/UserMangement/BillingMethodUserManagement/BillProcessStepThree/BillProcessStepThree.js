@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 import { calculateTotalsBillingStepper } from "../../../../../commen/functions/TableDataCalculation";
 import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
-const BillProcessStepThree = () => {
+const BillProcessStepThree = ({setStoredStep}) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -278,6 +278,7 @@ const BillProcessStepThree = () => {
   const handleChangePackageSelected = () => {
     localStorage.setItem("changePacakgeFlag", true);
     localStorage.setItem("SignupFlowPageRoute", 1);
+    setStoredStep(1)
     dispatch(signUpFlowRoutes(1));
   };
 
