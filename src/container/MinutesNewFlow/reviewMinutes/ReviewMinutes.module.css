@@ -108,6 +108,7 @@ p.minutes-text {
   font-size: 12px;
   color: #5a5a5a;
   margin: 0 !important;
+  word-wrap: break-word;
 }
 
 p.minutes-text p {

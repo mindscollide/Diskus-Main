@@ -834,7 +834,7 @@ const NewMeeting = () => {
       setSearchText("");
       setentereventIcon(false);
     };
-  }, []);
+  }, [CalendarDashboardEventData]);
 
   useEffect(() => {
     try {
