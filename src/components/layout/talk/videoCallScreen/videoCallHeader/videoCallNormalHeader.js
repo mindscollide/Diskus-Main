@@ -169,6 +169,7 @@ const VideoCallNormalHeader = ({
       getNewParticipantsMeetingJoin !== undefined &&
       getNewParticipantsMeetingJoin.length > 0
     ) {
+      console.log(getNewParticipantsMeetingJoin.length);
       // Extract and set the new participants to state
       setNewParticipants(getNewParticipantsMeetingJoin);
     } else {
@@ -444,31 +445,31 @@ const VideoCallNormalHeader = ({
 
   console.log("Video Feature Reducer", videoFeatureReducer);
 
-  useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      // Filter out duplicates based on UID
-      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
-        (acc, current) => {
-          console.log(acc, "datadatdtad");
-          // Only add the current participant if its UID is not already in acc
-          if (!acc.find((participant) => participant.UID === current.UID)) {
-            acc.push(current);
-          }
-          return acc;
-        },
-        []
-      );
+  // useEffect(() => {
+  //   if (
+  //     getNewParticipantsMeetingJoin !== null &&
+  //     getNewParticipantsMeetingJoin !== undefined &&
+  //     getNewParticipantsMeetingJoin.length > 0
+  //   ) {
+  //     // Filter out duplicates based on UID
+  //     const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
+  //       (acc, current) => {
+  //         console.log(acc, "datadatdtad");
+  //         // Only add the current participant if its UID is not already in acc
+  //         if (!acc.find((participant) => participant.UID === current.UID)) {
+  //           acc.push(current);
+  //         }
+  //         return acc;
+  //       },
+  //       []
+  //     );
 
-      setNewParticipants(uniqueParticipants);
-      console.log(uniqueParticipants, "uniqueParticipants");
-    } else {
-      setNewParticipants([]);
-    }
-  }, [getNewParticipantsMeetingJoin]);
+  //     setNewParticipants(uniqueParticipants);
+  //     console.log(uniqueParticipants, "uniqueParticipants");
+  //   } else {
+  //     setNewParticipants([]);
+  //   }
+  // }, [getNewParticipantsMeetingJoin]);
 
   // makeLeave or transfer Meeting Host API
   const makeLeaveOnClick = (usersData) => {
