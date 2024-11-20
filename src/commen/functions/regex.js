@@ -89,3 +89,29 @@ export const convertToArabicNumerals = (input, locale) => {
   // Return the padded number as is if locale is not 'ar'
   return paddedNumber;
 };
+
+// this take alpha numeric values and convert only numeric value into arabic or english
+export const convertNumbersInString = (inputString, locale) => {
+  const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+  const englishDigits = "0123456789";
+  {console.log("cancelSubscriptionDetails",inputString)}
+
+  // Ensure the input is a string
+  const safeString = String(inputString);
+
+  // Helper function to convert a single digit
+  const convertDigit = (digit, toLocale) => {
+    if (toLocale === "ar") {
+      return arabicDigits[digit];
+    } else if (toLocale === "en") {
+      return englishDigits[digit];
+    }
+  {console.log("cancelSubscriptionDetails",digit)}
+
+    return digit; // Return as is if locale not supported
+  };
+
+  {console.log("cancelSubscriptionDetails",safeString.replace(/\d/g, (match) => convertDigit(match, locale)))}
+  // Convert the entire string
+  return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
+};

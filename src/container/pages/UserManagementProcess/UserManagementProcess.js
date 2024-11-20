@@ -84,6 +84,8 @@ const UserManagementProcess = () => {
           localStorage.setItem("LoginFlowPageRoute", 1);
           setStoredStep(1);
           dispatch(LoginFlowRoutes(1));
+        } else {
+          dispatch(LoginFlowRoutes(storedStep));
         }
       }
     }

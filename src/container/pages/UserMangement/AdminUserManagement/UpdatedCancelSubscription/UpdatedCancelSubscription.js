@@ -287,7 +287,7 @@ const UpdatedCancelSubscription = () => {
             return (
               <>
                 <span className={styles["SubscritionNumber_Styles"]}>
-                  {record.tenure}
+                  {t(record.tenure)}
                 </span>
               </>
             );
