@@ -1838,7 +1838,7 @@ const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
 };
 
 const getVideoCallParticipantsForGuest = {
-  RequestMethod: "ServiceManager.GetVideoCallParticipantsForGuest",
+  RequestMethod: "ServiceManager.GetVideoCallParticipants",
 };
 
 export {

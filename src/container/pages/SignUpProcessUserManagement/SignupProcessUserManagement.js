@@ -339,7 +339,7 @@ const SignupProcessUserManagement = () => {
   } else if (UserMangementReducerdefaultRoutingValue === 4) {
     SignupComponent = <PasswordCreationUM />;
   } else if (UserMangementReducerdefaultRoutingValue === 5) {
-    SignupComponent = <BillingMethodUsermanagement />;
+    SignupComponent = <BillingMethodUsermanagement setStoredStep={setStoredStep}/>;
   } else {
     SignupComponent = null;
     console.log("Errorr in route");

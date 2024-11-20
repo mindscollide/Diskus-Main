@@ -468,6 +468,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
+      console.log(action, "dtadtatatatatattata");
       let getPrevState = [
         ...state.getNewParticipantsMeetingJoin,
         ...action.response,

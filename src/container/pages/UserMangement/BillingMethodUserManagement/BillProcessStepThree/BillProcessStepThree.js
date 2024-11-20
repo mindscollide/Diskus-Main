@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { convertUTCDateToLocalDate } from "../../../../../commen/functions/date_formater";
 import { calculateTotalsBillingStepper } from "../../../../../commen/functions/TableDataCalculation";
 import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
-const BillProcessStepThree = () => {
+const BillProcessStepThree = ({setStoredStep}) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -107,14 +107,14 @@ const BillProcessStepThree = () => {
           {t("Package-details")}
         </span>
       ),
-      width: 100,
+      width: 120,
       dataIndex: "name",
       key: "name",
       ellipses: true,
       align: "center",
       render: (text, record) => {
         const { name } = calculateTotalsBillingStepper(getAllPakagesData);
-
+        console.log(record.name, "namenamenamenamename");
         if (record?.isTotalRow) {
           return (
             <span className={styles["ChargesPerLicesense"]}>{t(name)}</span>
@@ -122,7 +122,7 @@ const BillProcessStepThree = () => {
         } else {
           return (
             <>
-              <span className={styles["Tableheading"]}>{t(record?.name)}</span>;
+              <span className={styles["Tableheading"]}>{t(record?.name)}</span>
             </>
           );
         }
@@ -136,7 +136,7 @@ const BillProcessStepThree = () => {
       ),
       dataIndex: "price",
       key: "price",
-      width: 100,
+      width: 130,
       ellipses: true,
       align: "center",
       render: (text, record) => {
@@ -155,7 +155,7 @@ const BillProcessStepThree = () => {
           {t("Number-of-licenses")}
         </span>
       ),
-      width: 100,
+      width: 120,
       dataIndex: "headCount",
       key: "headCount",
       ellipses: true,
@@ -184,7 +184,7 @@ const BillProcessStepThree = () => {
       key: "Yearlycharges",
       align: "center",
       ellipses: true,
-      width: 100,
+      width: 130,
       render: (text, record) => {
         const { Yearlycharges } =
           calculateTotalsBillingStepper(getAllPakagesData);
@@ -278,7 +278,17 @@ const BillProcessStepThree = () => {
   const handleChangePackageSelected = () => {
     localStorage.setItem("changePacakgeFlag", true);
     localStorage.setItem("SignupFlowPageRoute", 1);
+    setStoredStep(1)
     dispatch(signUpFlowRoutes(1));
+  };
+
+  //Scroll for table
+  const scroll = {
+    y: "49vh",
+    scrollbar: {
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+    },
   };
 
   return (
@@ -296,11 +306,11 @@ const BillProcessStepThree = () => {
               <Col lg={9} md={9} sm={12} xs={12}>
                 <TableToDo
                   column={ColumnsPakageSelection}
-                  className={"Billing_TablePakageSelection"}
+                  className={"package-TablePakageSelection"}
                   rows={[...getAllPakagesData, showTotalValues]}
                   pagination={false}
                   id="PakageDetails"
-                  scroll={{ x: "max-content" }}
+                  scroll={scroll}
                   rowHoverBg="none"
                 />
               </Col>

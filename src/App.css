@@ -2799,7 +2799,7 @@ input#Participant::placeholder {
   padding: 0px 5px;
   border-spacing: 0 25px !important;
   border-radius: 50px !important;
-  table-layout: inherit !important;
+  table-layout: fixed !important;
   margin-top: -19px !important;
 }
 
@@ -6791,6 +6791,10 @@ td.ant-table-cell.minutesParticipant {
   border-top-style: dashed !important;
   margin-top: 18px !important;
   width: 100% !important;
+}
+
+body[dir="rtl"] .Connector-d3-0-2-23 {
+    margin-right: -222% !important;
 }
 /* Connector Stepper CSS Ends */
 
