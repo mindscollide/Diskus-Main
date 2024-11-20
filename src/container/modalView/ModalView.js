@@ -405,7 +405,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingDescription: viewData.meetingDetails.description,
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
-            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime, currentLanguage
           ),
           currentLanguage,
           MeetingStartTime: moment(
@@ -955,7 +955,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       />
                       <Button
                         disableBtn={isVideo && meetStatus === 10 ? false : true}
-                        text={t("Join-Video-Call")}
+                        text={t("Join-video-call")}
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}
                       />

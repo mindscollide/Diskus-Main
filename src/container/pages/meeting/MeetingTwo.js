@@ -1536,8 +1536,7 @@ const NewMeeting = () => {
       key: "status",
       width: "90px",
       ellipsis: true,
-      align: currentLanguage === "en" ? "center" : "right",
-
+      align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
