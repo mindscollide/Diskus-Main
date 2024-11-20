@@ -140,7 +140,7 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
         ) {
-          dispatch(hideUnHideVideoByHost(data.payload));
+          dispatch(hideUnHideVideoByHost([data.payload]));
           console.log(data.payload, "guestDataGuestDataVideo");
         }
         // below MQTT is imagined will replace this soon
