@@ -6743,6 +6743,12 @@ td.ant-table-cell.minutesParticipant {
   width: 130% !important;
 }
 
+/* Customer Stepper Buttons Z index  */
+
+button#RFS-StepButton {
+  z-index: 1 !important;
+}
+
 /* Specific RTL handling */
 body[dir="rtl"] .custom-stepper .Connector-0-2-15 {
   margin-right: -163% !important;
