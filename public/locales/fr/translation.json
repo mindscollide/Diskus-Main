@@ -2300,5 +2300,6 @@
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
   "Select-group-type": "Select group type",
   "Enter-password": "Enter password",
-  "Broadcast-list-created":"Broadcast list created"
+  "Broadcast-list-created": "Broadcast list created",
+  "Edit-shout": "Edit Shout"
 }

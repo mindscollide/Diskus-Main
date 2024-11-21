@@ -1465,6 +1465,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const editShoutFunction = () => {
+    console.log("Click");
     let Data = {
       TalkRequest: {
         BroadcastID: talkStateData.ActiveChatData.id,
@@ -3424,7 +3425,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 {t("Delete-Shout")}
                               </Dropdown.Item>
                               <Dropdown.Item onClick={editShoutFunction}>
-                                {t("Edit-Shout")}
+                                {t("Edit-shout")}
                               </Dropdown.Item>
                             </>
                           )}
