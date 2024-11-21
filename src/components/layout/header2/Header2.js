@@ -41,6 +41,7 @@ import {
   getLocalStorageItemNonActiveCheck,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
+import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ const Header2 = ({ isVideo }) => {
     (state) => state.UserManagementModals.requestExtentionModal
   );
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
+  const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserProfilePic, setCurrentUserProfilePic] = useState(null);
@@ -193,6 +195,10 @@ const Header2 = ({ isVideo }) => {
 
   const openMeetingModal = () => {
     setCreateMeetingModal(true);
+  };
+
+  const openModalAddNote = () => {
+    setModalNoteHeader(true);
   };
   const handleUploadFile = async ({ file }) => {
     navigate("/Diskus/dataroom", { state: file });
@@ -479,6 +485,12 @@ const Header2 = ({ isVideo }) => {
                         >
                           {t("Pending-approvals")}
                         </Nav.Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="d-flex title-className"
+                        onClick={openModalAddNote}
+                      >
+                        <span>{t("Add-a-note")}</span>
                       </Dropdown.Item>
                     </DropdownButton>
                   </div>
@@ -868,6 +880,14 @@ const Header2 = ({ isVideo }) => {
                                 </span>
                               </Nav.Link>
                             </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={openModalAddNote}
+                            >
+                              <span className="New_folder_shortcutkeys">
+                                {t("Add-a-note")}
+                              </span>
+                            </Dropdown.Item>
                           </DropdownButton>
                         )}
                       </div>
@@ -1206,6 +1226,13 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
+      {modalNoteHeader && (
+        <ModalAddNote
+          addNewModal={modalNoteHeader}
+          setAddNewModal={setModalNoteHeader}
+        />
+      )}
+
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
     </>

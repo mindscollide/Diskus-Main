@@ -18,10 +18,7 @@ import {
 import CustomUpload from "../../../components/elements/upload/Upload";
 import { SaveNotesAPI } from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
-import { Tooltip } from "antd";
 import { validateInput } from "../../../commen/functions/regex";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import {
