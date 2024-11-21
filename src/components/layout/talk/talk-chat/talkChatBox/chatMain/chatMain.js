@@ -33,11 +33,9 @@ import {
   DownloadChat,
   EmailChat,
   pushChatData,
-  activeMessage,
   downloadChatEmptyObject,
   DeleteMultipleMessages,
   activeChat,
-  OTOMessageSendSuccess,
   getImageData,
   DownloadTalkFile,
 } from "../../../../../../store/actions/Talk_action";
@@ -183,7 +181,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [emojiActive, setEmojiActive] = useState(false);
   const emojiMenuRef = useRef();
-  const chatMenuRef = useRef(null);
 
   const [chatMenuActive, setChatMenuActive] = useState(false);
 
@@ -209,8 +206,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   });
 
   const [uploadOptions, setUploadOptions] = useState(false);
-
-  const [isRetryFlag, setIsRetryFlag] = useState(false);
 
   // const [chatFeatureActive, setChatFeatureActive] = useState(0);
 
@@ -1026,15 +1021,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setInputChat(true);
   };
 
-  // const chatFeatureSelected = (record, id) => {
-  //   dispatch(activeMessage(record));
-  //   if (chatFeatureActive === id) {
-  //     setChatFeatureActive(0);
-  //   } else {
-  //     setChatFeatureActive(id);
-  //   }
-  // };
-
   const replyFeatureHandler = (record) => {
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
     let senderNameReply;
@@ -1473,7 +1459,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(GetActiveUsersByBroadcastID(navigate, Data, t));
+    setShowEditShoutField(true);
+    setMessageInfo(false);
     setChatMenuActive(false);
+    setForwardMessageUsersSection(false);
+    setShowGroupEdit(false);
+    setShowGroupInfo(false);
   };
 
   const showChatSearchHandler = () => {
@@ -1855,35 +1846,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
-  // useEffect(() => {
-  //
-
-  //   if (
-  //     talkStateData.MessageSendOTO.ResponseMessage !==
-  //       t("User-is-not-in-channel") &&
-  //     talkStateData.MessageSendOTO.ResponseMessage !==
-  //       t("OTO-message-inserted") &&
-  //     talkStateData.MessageSendOTO.ResponseMessage !==
-  //       t("OTO-message-not-inserted") &&
-  //     talkStateData.MessageSendOTO.ResponseMessage !==
-  //       t("Something-went-wrong") &&
-  //     talkStateData.MessageSendOTO.ResponseMessage !== ""
-  //   ) {
-  //     setNotification({
-  //       notificationShow: true,
-  //       message: talkStateData.MessageSendOTO.ResponseMessage,
-  //     });
-  //     setNotificationID(id);
-  //   }
-  //   setTimeout(() => {
-  //     setNotification({
-  //       notificationShow: false,
-  //       message: "",
-  //     });
-  //     dispatch(OTOMessageSendSuccess("", []));
-  //   }, 3000);
-  // }, [talkStateData.MessageSendOTO]);
-
   const uniqueId = generateGUID();
 
   const sendChat = async () => {
@@ -2216,19 +2178,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       }
     }
   };
-
-  let unsentMessageObject =
-    JSON.parse(localStorage.getItem("unsentMessage")) || [];
-  let checkunsentMessageObject = [];
-  // useEffect(() => {
-  //
-
-  //   if (Object.keys(unsentMessageObject).length > 0) {
-  //     if (checkunsentMessageObject !== unsentMessageObject) {
-  //       checkunsentMessageObject = unsentMessageObject;
-  //     }
-  //   }
-  // }, [unsentMessageObject]);
 
   useEffect(() => {
     if (
@@ -2705,6 +2654,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     };
     dispatch(UpdateShoutAll(Data, t, navigate));
+    setShowEditShoutField(false);
   };
 
   useEffect(() => {
@@ -3242,8 +3192,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadTalkFile(navigate, Data, ext, data.fileName, t));
   };
 
-  console.log("All Messages All Messages", allMessages);
-
   return (
     <>
       <div className="positionRelative">
@@ -3522,10 +3470,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                 </Row>
               </>
             ) : null}
-
+            {/* Starting point  */}
             {messageInfo === false &&
             forwardMessageUsersSection === false &&
             showGroupInfo === false &&
+            showEditShoutField === false &&
             showGroupEdit === false ? (
               <>
                 <Row>
@@ -5165,6 +5114,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 onClick={removeFileFunction}
                                 src={CrossIcon}
                                 className="cursor-pointer"
+                                alt=""
                               />
                             </div>
                             <div className="image-thumbnail">
@@ -5172,6 +5122,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 draggable="false"
                                 className="img-cover thumbnailImage"
                                 src={file}
+                                alt=""
                               />
                             </div>
                           </>
@@ -5639,6 +5590,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 src={DocumentIcon}
                                                 className="attachment-icon"
                                                 extension={ext}
+                                                alt=""
                                               />
                                               <p className="chat-upload-text">
                                                 {first}
@@ -5687,6 +5639,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 <img
                                   draggable="false"
                                   src={UploadChatIcon}
+                                  alt=""
                                   onClick={showUploadOptions}
                                 />
                                 {uploadOptions === true ? (
@@ -5721,31 +5674,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         />
                                       </div>
                                     </Tooltip>
-                                    {/* <div className="file-upload-options">
-                                      <label
-                                        className="image-upload"
-                                        htmlFor="sticker-upload"
-                                      >
-                                        <img
-                                          draggable="false"
-                                          src={UploadSticker}
-                                          alt=""
-                                        />
-                                      </label>
-                                      <input
-                                        id="sticker-upload"
-                                        type="file"
-                                        onChange={(event) =>
-                                          handleFileUpload(event, "document")
-                                        }
-                                        onClick={(event) => {
-                                          event.target.value = null;
-                                        }}
-                                        maxfilesize={10000000}
-                                        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
-                                        style={{ display: "none" }}
-                                      />
-                                    </div> */}
+
                                     <Tooltip
                                       placement="topRight"
                                       title={t("Upload-image")}
@@ -5872,6 +5801,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === true &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
+              showEditShoutField === false &&
               showGroupEdit === false ? (
               <div className="talk-screen-innerwrapper">
                 <div className="message-body talk-screen-content">
@@ -5945,6 +5875,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === true &&
               showGroupInfo === false &&
+              showEditShoutField === false &&
               showGroupEdit === false ? (
               <>
                 <Row className="mt-1">
@@ -5956,6 +5887,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       draggable="false"
                       onClick={cancelForwardSection}
                       src={CloseChatIcon}
+                      alt=""
                       width={10}
                       className="cursor-pointer"
                     />
@@ -6014,6 +5946,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         draggable="false"
                                         src={SingleIcon}
                                         width={15}
+                                        alt=""
                                       />
                                     </>
                                   ) : dataItem.messageType === "G" ? (
@@ -6022,6 +5955,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         draggable="false"
                                         src={GroupIcon}
                                         width={15}
+                                        alt=""
                                       />
                                     </>
                                   ) : dataItem.messageType === "B" ? (
@@ -6030,6 +5964,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         draggable="false"
                                         src={ShoutIcon}
                                         width={15}
+                                        alt=""
                                       />
                                     </>
                                   ) : (
@@ -6037,6 +5972,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                       draggable="false"
                                       src={SingleIcon}
                                       width={15}
+                                      alt=""
                                     />
                                   )}
                                 </div>
@@ -6062,6 +5998,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === true &&
+              showEditShoutField === false &&
               showGroupEdit === false ? (
               <>
                 <Row className="mt-1">
@@ -6073,7 +6010,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     className="d-flex justify-content-center"
                   >
                     <div className="chat-groupinfo-icon">
-                      <img draggable="false" src={GroupIcon} width={28} />
+                      <img
+                        draggable="false"
+                        src={GroupIcon}
+                        width={28}
+                        alt=""
+                      />
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
@@ -6083,6 +6025,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -6144,6 +6087,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     draggable="false"
                                     src={SingleIcon}
                                     width={15}
+                                    alt=""
                                   />
                                 </div>
                                 <p className="groupinfo-groupusersname m-0">
@@ -6166,6 +6110,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
+              showEditShoutField === false &&
               showGroupEdit === true ? (
               <>
                 <Row className="mt-1">
@@ -6177,7 +6122,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     className="d-flex justify-content-center"
                   >
                     <div className="chat-groupinfo-icon">
-                      <img draggable="false" src={GroupIcon} width={28} />
+                      <img
+                        draggable="false"
+                        src={GroupIcon}
+                        width={28}
+                        alt=""
+                      />
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
@@ -6187,6 +6137,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -6289,6 +6240,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     draggable="false"
                                     src={SingleIcon}
                                     width={15}
+                                    alt=""
                                   />
                                 </div>
                                 <p className="groupinfo-groupusersname m-0">
@@ -6316,7 +6268,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
-              showGroupEdit === false ? (
+              showGroupEdit === false &&
+              showEditShoutField === true ? (
               <>
                 <Row className="mt-1">
                   <Col lg={4} md={4} sm={12}></Col>
@@ -6327,7 +6280,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     className="d-flex justify-content-center"
                   >
                     <div className="chat-groupinfo-icon">
-                      <img draggable="false" src={ShoutIcon} width={20} />
+                      <img
+                        draggable="false"
+                        src={ShoutIcon}
+                        width={20}
+                        alt=""
+                      />
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
@@ -6336,6 +6294,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
+                      alt=""
                       className="cursor-pointer"
                     />
                   </Col>
@@ -6438,6 +6397,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   <img
                                     draggable="false"
                                     src={SingleIcon}
+                                    alt=""
                                     width={15}
                                   />
                                 </div>
@@ -6456,7 +6416,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <div className="edit-group-button">
                       <Button
                         className=" Ok-btn forward-user"
-                        text="Edit Shout"
+                        text={t("Edit-shout")}
                         onClick={editShoutAll}
                       />
                     </div>
@@ -6469,7 +6429,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       </div>
 
       <NotificationBar
-        iconName={<img draggable="false" src={SecurityIcon} />}
+        iconName={<img draggable="false" src={SecurityIcon} alt="" />}
         notificationMessage={notification.message}
         notificationState={notification.notificationShow}
         setNotification={setNotification}
