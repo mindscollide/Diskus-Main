@@ -1109,6 +1109,7 @@
   "Please-fill-options": "يرجى ملء الخيارات",
   "Published": "نشرت",
   "UnPublished": "لم تنشر",
+  "Unpublished": "لم تنشر",
   "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "هل أنت متأكد؟ إذا نقرت على زر الإغلاق، فسيتم إعادة ضبط البيانات وسيتم إغلاق النموذج.",
   "Options-must-be-more-than-2": "يجب أن تكون الخيارات أكثر من ٢",
   "Please-select-due-date": "الرجاء تحديد تاريخ الاستحقاق",
@@ -2128,6 +2129,7 @@
   "Not-attending": "غير حاضر",
   "Not-responded": "لم يتم الرد",
   "No-agenda-available": "لا يوجد جدول أعمال متاح",
+  "File-size": "حجم الملف",
   "Upgrade-your-experience": "Upgrade Your Experience!",
   "Download-diskus-app-for-a-smoother": "Download the Diskus app for a smoother",
   "And-more-efficient-experience": "and more efficient experience",
@@ -2228,8 +2230,6 @@
   "TDOD_STATUS_DELETED": "Task [Task Title] has been deleted. Refer to task List for details",
   "Proposed": "Proposed",
   "No-document-at-the-moment-to-review": "No document at the moment to review",
-  "Unpublished": "Unpublished",
-  "File-size": "File Size",
   "Notes-you-add-appear-here": "Notes you add appear here",
   "Failed-to-cancel-resolution": "Failed to cancel Resolution",
   "Resolution-closed-successfully": "Resolution Closed Successfully",
@@ -2244,5 +2244,6 @@
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
   "Select-group-type": "Select group type",
   "Requested-by": "Requested by",
-  "Enter-password": "Enter password"
+  "Enter-password": "Enter password",
+  "Broadcast-list-created":"Broadcast list created"
 }
