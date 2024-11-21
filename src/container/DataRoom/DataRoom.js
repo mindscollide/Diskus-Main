@@ -1803,107 +1803,6 @@ const DataRoom = () => {
     setSortedInfo(sorter);
   };
 
-  const handleSortMyDocuments = (pagination, filters, sorter) => {
-    console.log(
-      { filters, sorter },
-      "handleSortMyDocumentshandleSortMyDocuments"
-    );
-    if (sorter.field === "name") {
-      setSortValue(1);
-      if (sorter.order === "ascend") {
-        setIsAscending(false);
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            1,
-            1,
-            false
-          )
-        );
-      } else {
-        setIsAscending(true);
-
-        dispatch(
-          getDocumentsAndFolderApi(navigate, Number(currentView), t, 1, 1, true)
-        );
-      }
-    }
-    if (sorter.field === "modifiedDate") {
-      if (filters.modifiedDate !== null) {
-        let getFilterValue = filters.modifiedDate[0];
-        if (getFilterValue === 2) {
-          setCurrentFilter(t("Last-modified"));
-          setFilterValue(2);
-        } else if (getFilterValue === 3) {
-          setCurrentFilter(t("Last-modified-by-me"));
-          setFilterValue(3);
-        } else if (getFilterValue === 4) {
-          setFilterValue(4);
-          setCurrentFilter(t("Last-open-by-me"));
-        }
-        setSortValue(getFilterValue);
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            1,
-            Number(getFilterValue),
-            isAscending
-          )
-        );
-      } else {
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            1,
-            Number(2),
-            isAscending
-          )
-        );
-      }
-    }
-
-    if (sorter.field === "owner") {
-      setSortValue(5);
-
-      if (sorter.order === "descend" || sorter.order === undefined) {
-        setIsAscending(true);
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            1,
-            Number(5),
-            true
-          )
-        );
-      } else if (sorter.order === "ascend") {
-        setIsAscending(false);
-
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            1,
-            Number(5),
-            false
-          )
-        );
-      }
-    }
-    setFilteredInfo(filters);
-    setSortedInfo(sorter);
-  };
-
- 
-
   const MyRecentTab = [
     {
       title: (
@@ -2451,6 +2350,7 @@ const DataRoom = () => {
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
+  
   const shareWithmeColoumns = [
     {
       title: t("Name"),
