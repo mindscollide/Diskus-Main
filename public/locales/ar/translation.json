@@ -1066,6 +1066,7 @@
   "Chat": "محادثة",
   "Ended": "انتهى",
   "Not-conducted": "لم يتم",
+  "Not Conducted": "لم يتم",
   "Schedule-new-meeting": "جدولة اجتماع جديد",
   "Meeting-details": "تفاصيل الاجتماع",
   "Organizers": "المنظمون",
@@ -2242,5 +2243,6 @@
   "No-document-to-review": "No document to review",
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
   "Select-group-type": "Select group type",
-  "Requested-by": "Requested by"
+  "Requested-by": "Requested by",
+  "Enter-password": "Enter password"
 }

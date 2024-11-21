@@ -1099,6 +1099,7 @@
   "Chat": "Chat",
   "Ended": "Ended",
   "Not-conducted": "Not Conducted",
+  "Not Conducted": "Not Conducted",
   "Schedule-new-meeting": "Schedule New Meeting",
   "Meeting-details": "Meeting Details",
   "Organizers": "Organizers",
@@ -2297,5 +2298,6 @@
   "Proposed": "Proposed",
   "No-document-to-review": "No document to review",
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
-  "Select-group-type": "Select group type"
+  "Select-group-type": "Select group type",
+  "Enter-password": "Enter password"
 }

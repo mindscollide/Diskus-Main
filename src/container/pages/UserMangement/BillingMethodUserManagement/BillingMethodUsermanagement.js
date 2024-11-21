@@ -13,7 +13,10 @@ import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
 import { useDispatch } from "react-redux";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
-import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  paymentInitiateMainApi,
+} from "../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 const BillingMethodUsermanagement = ({ setStoredStep }) => {
@@ -315,6 +318,13 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     });
   };
 
+  //Go Back
+  const onClickLink = () => {
+    dispatch(LoginFlowRoutes(1));
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    navigate("/");
+  };
+
   return (
     <Container className={styles["sectionStyling"]}>
       {Number(SignupPage) === 5 ? (
@@ -431,8 +441,19 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
 
           <Row className="mt-3">
             <Col
-              lg={12}
-              md={12}
+              lg={3}
+              md={3}
+              sm={3}
+              xs={12}
+              className="d-flex justify-content-start"
+            >
+              <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+                {t("Go-back")}
+              </span>
+            </Col>
+            <Col
+              lg={9}
+              md={9}
               sm={12}
               xs={12}
               className="d-flex justify-content-end gap-2"
