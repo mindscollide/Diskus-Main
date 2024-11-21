@@ -2150,7 +2150,7 @@
   "License-US$": "ترخيص بالدّولار الأمريكيّ",
   "Charges-per-license-US$": "رسوم لكل ترخيص بالدولار الأمريكيّ",
   "Yearly-charges-in": "الرُسوم السَّنويَّة بالدولار الأمريكيّ",
-  "Change package details": "تغيير تفاصيل الحزمة",
+  "Change-package-details": "تغيير تفاصيل الحزمة",
   "Deleted": "تم الحذف",
   "Licenses": "الرخصة",
   "Duration": "المدة",
@@ -2248,5 +2248,6 @@
   "Select-group-type": "Select group type",
   "Requested-by": "Requested by",
   "Enter-password": "Enter password",
-  "Broadcast-list-created": "Broadcast list created"
+  "Broadcast-list-created": "Broadcast list created",
+  "Edit-shout": "Edit Shout"
 }
