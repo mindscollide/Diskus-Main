@@ -79,3 +79,15 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: flex-end;
 }
+
+.signUp_goBack {
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer !important;
+  margin: -10px !important;
+  font-weight: 400 !important;
+}
+
+body[dir="rtl"] .signUp_goBack {
+  font-weight: 400 !important;
+}
