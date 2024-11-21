@@ -47,7 +47,7 @@ import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import axios from "axios";
 import { talkApi, talkApiReport } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
-import { retryFlagState } from "./Talk_Feature_actions";
+import { chatBoxActiveFlag, retryFlagState } from "./Talk_Feature_actions";
 
 // Refresh Token Talk Success
 const refreshtokenTalkSuccess = (response, message) => {
@@ -3518,6 +3518,8 @@ const deletShoutFail = (message) => {
 //Get all user chats
 const DeleteShout = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(deletShoutInit());
     let form = new FormData();
@@ -3547,6 +3549,10 @@ const DeleteShout = (navigate, object, t) => {
                 response.data.responseResult.talkResponse,
                 newError
               )
+            );
+            dispatch(chatBoxActiveFlag(false));
+            dispatch(
+              GetAllUserChats(navigate, currentUserId, currentOrganizationId, t)
             );
           } else if (
             response.data.responseResult.responseMessage ===
@@ -3602,6 +3608,8 @@ const updateShoutAllFail = (message) => {
 //Update Shout All
 const UpdateShoutAll = (object, t, navigate) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(updateShoutAllInit());
     let form = new FormData();
@@ -3632,6 +3640,14 @@ const UpdateShoutAll = (object, t, navigate) => {
                 updateShoutAllSuccess(
                   response.data.responseResult.talkResponse,
                   t("Broadcast-list-modified")
+                )
+              );
+              dispatch(
+                GetAllUserChats(
+                  navigate,
+                  currentUserId,
+                  currentOrganizationId,
+                  t
                 )
               );
             } else if (

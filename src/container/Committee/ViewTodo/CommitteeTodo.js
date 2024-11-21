@@ -782,7 +782,14 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
                   scroll={scroll}
                   pagination={false}
                   locale={{
-                    emptyText: emptyText(), // Set your custom empty text here
+                    emptyText: (
+                      <>
+                        <section className="d-flex flex-column align-items-center justify-content-center">
+                          <img src={TodoMessageIcon1} width={"250px"} alt="" />
+                          <span className="NotaskTodolist">{t("No-Task")}</span>
+                        </section>
+                      </>
+                    ),
                   }}
                 />
               </Col>

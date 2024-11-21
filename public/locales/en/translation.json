@@ -747,6 +747,7 @@
   "Owner": "Owner",
   "Last_modified": "Last Modified",
   "File-size": "File Size",
+  "File Size": "File Size",
   "My-document": "My Document",
   "Shared-with-me": "Shared with me",
   "Shared With Me": "Shared with me",
@@ -1099,6 +1100,7 @@
   "Chat": "Chat",
   "Ended": "Ended",
   "Not-conducted": "Not Conducted",
+  "Not Conducted": "Not Conducted",
   "Schedule-new-meeting": "Schedule New Meeting",
   "Meeting-details": "Meeting Details",
   "Organizers": "Organizers",
@@ -2298,5 +2300,9 @@
   "No-document-to-review": "No document to review",
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
   "Select-group-type": "Select group type",
-  "Document-type": "Document type"
+  "Document-type": "Document type",
+  "Enter-password": "Enter password",
+  "Broadcast-list-created": "Broadcast list created",
+  "Edit-shout": "Edit Shout",
+  "Change-package-details": "Change package details"
 }

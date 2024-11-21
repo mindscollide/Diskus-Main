@@ -321,10 +321,10 @@ const ChatHeader = () => {
                             {t("Email")}
                           </span>
                           <span onClick={deleteShoutFunction}>
-                            {"Delete-Shout"}
+                            {t("Delete-Shout")}
                           </span>
                           <span onClick={editShoutFunction}>
-                            {"Edit-Shout"}
+                            {t("Edit-shout")}
                           </span>
                         </>
                       )}

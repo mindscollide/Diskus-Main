@@ -15,7 +15,7 @@ import {
   hasNonEmptyReviewersAgenda,
   allReviewersListsNonEmptyGeneral,
 } from "../functionsAddReviewers";
-import Avatar from "./../../../../../../../assets/images/avatar.png";
+import Avatar from "./../../../../../../../assets/images/DefaultAvatar.png";
 import EditMinute from "./../../Images/Edit-Minute.png";
 
 const SelectMinutes = ({
