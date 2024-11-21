@@ -2297,5 +2297,6 @@
   "Proposed": "Proposed",
   "No-document-to-review": "No document to review",
   "No-document-awaiting-review-and-signature": "No document awaiting review and signature",
-  "Select-group-type": "Select group type"
+  "Select-group-type": "Select group type",
+  "Document-type": "Document type"
 }

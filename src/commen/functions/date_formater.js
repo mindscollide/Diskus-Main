@@ -839,6 +839,16 @@ export function formatDateToMMDDYY(date) {
   const day = date.getDate().toString().padStart(2, "0");
   return `${month}${day}${year}`;
 }
+// this is for return only MMDDYY
+export function formatDateToYYYYMMDD(date) {
+  if (!date || isNaN(date.getTime())) {
+    return ""; // Return an empty string for empty or invalid dates
+  }
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}${month}${day}`;
+}
 
 // Example usage: handling both type and convert it into utc using in data room search
 // "15 September, 2023";

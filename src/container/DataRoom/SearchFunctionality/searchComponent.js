@@ -1304,6 +1304,7 @@ const SearchComponent = ({
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
+
     const formattedStarttDate = dates
       ? new DateObject(dates).format("DD MMMM, YYYY")
       : "";
@@ -1551,7 +1552,7 @@ const SearchComponent = ({
           sm={12}
           className={styles["select-dropdowns-height-DataRoom"]}
         >
-          {searchDataFields.isDocument ||
+          {/* {searchDataFields.isDocument ||
           searchDataFields.isDocument ||
           searchDataFields.isSpreadSheet ||
           searchDataFields.isPresentation ||
@@ -1615,15 +1616,15 @@ const SearchComponent = ({
                 onClick={ClearDocumentsType}
               />
             </div>
-          ) : (
+          ) : ( */}
             <Select
               classNamePrefix={"searchResult_Document"}
               options={OptionsDocument(t)}
-              placeholder={t("Documents")}
+              placeholder={t("Document-type")}
               isSearchable={false}
               onChange={handleChangeDocumentsOptions}
+              menuPortalTarget={document.body}
             />
-          )}
         </Col>
         <Col
           lg={2}
@@ -1631,7 +1632,7 @@ const SearchComponent = ({
           sm={3}
           className={styles["select-dropdowns-height-DataRoom"]}
         >
-          {searchDataFields.StatusID !== 0 ? (
+          {/* {searchDataFields.StatusID !== 0 ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
                 draggable="false"
@@ -1657,15 +1658,16 @@ const SearchComponent = ({
                 onClick={ClearDocumentLocation}
               />
             </div>
-          ) : (
+          ) : ( */}
             <Select
               classNamePrefix={"searchResult_Document"}
               options={optionsLocations(t)}
               placeholder={t("Location")}
               isSearchable={false}
               onChange={handleChangeLocationValue}
+              menuPortalTarget={document.body}
             />
-          )}
+          {/* )} */}
         </Col>
         <Col
           lg={2}
@@ -1673,7 +1675,7 @@ const SearchComponent = ({
           sm={3}
           className={styles["select-dropdowns-height-DataRoom"]}
         >
-          {searchDataFields.isOwnedByMe !== 2 ||
+          {/* {searchDataFields.isOwnedByMe !== 2 ||
           searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -1700,15 +1702,16 @@ const SearchComponent = ({
                 onClick={clearPeopleType}
               />
             </div>
-          ) : (
+          ) : ( */}
             <Select
               options={OptionsOwner(t).concat(transformedOptions)}
               placeholder={t("People")}
               classNamePrefix={"searchResult_Document"}
               onChange={handleChangeStatus}
               isSearchable={false}
+              menuPortalTarget={document.body}
             />
-          )}
+          {/* )} */}
         </Col>
         <Col
           lg={2}
@@ -1716,7 +1719,7 @@ const SearchComponent = ({
           sm={2}
           className={styles["select-dropdowns-height-DataRoom"]}
         >
-          {searchDataFields.LastModifiedStartDate !== "" &&
+          {/* {searchDataFields.LastModifiedStartDate !== "" &&
           searchDataFields.LastModifiedEndDate !== "" ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -1737,7 +1740,7 @@ const SearchComponent = ({
                 onClick={clearLastModified}
               />
             </div>
-          ) : (
+          ) : ( */}
             <Select
               options={optionsLastmodified(t)}
               classNamePrefix={"searchResult_Document"}
@@ -1746,8 +1749,9 @@ const SearchComponent = ({
               }
               onChange={handleChangeLastModifedDate}
               isSearchable={false}
+              menuPortalTarget={document.body}
             />
-          )}
+          {/* )} */}
         </Col>
         <Col
           lg={2}
