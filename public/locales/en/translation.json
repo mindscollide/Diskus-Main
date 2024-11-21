@@ -747,6 +747,7 @@
   "Owner": "Owner",
   "Last_modified": "Last Modified",
   "File-size": "File Size",
+  "File Size": "File Size",
   "My-document": "My Document",
   "Shared-with-me": "Shared with me",
   "Shared With Me": "Shared with me",
@@ -2301,5 +2302,6 @@
   "Select-group-type": "Select group type",
   "Enter-password": "Enter password",
   "Broadcast-list-created": "Broadcast list created",
-  "Edit-shout": "Edit Shout"
+  "Edit-shout": "Edit Shout",
+  "Change-package-details": "Change package details"
 }
