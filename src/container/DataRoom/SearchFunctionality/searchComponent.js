@@ -788,6 +788,7 @@ const SearchComponent = ({
     } else {
     }
   };
+  
   // this is for Location
   const handleChangeLocationValue = (event) => {
     setSearchResultFields((prevState) => ({

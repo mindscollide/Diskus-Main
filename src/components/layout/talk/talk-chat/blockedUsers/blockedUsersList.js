@@ -157,8 +157,8 @@ const BlockedUsersList = () => {
                     <img draggable="false" src={SingleIcon} width={25} />
                   </div>
                 </Col>
-                <Col lg={10} md={10} sm={10} className="bottom-border">
-                  <div className="chat-block blocked-users">
+                <Col lg={10} md={10} sm={10} className="bottom-border  ">
+                  <div className="chat-block blocked-users d-flex align-items-start ">
                     <p className="chat-username blocked-users m-0">
                       {" "}
                       {dataItem.fullName}
