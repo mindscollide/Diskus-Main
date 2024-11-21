@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-
 import { Button, Modal, Notification } from "./../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./UserProfile.module.css";
@@ -32,6 +31,8 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
       OrignalProfilePictureName: "",
     },
   });
+
+  console.log(userProfileEdit.ProfilePicture, "");
   const [nameEnable, setNameEanble] = useState(true);
   const [erorbar, setErrorBar] = useState(false);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -305,6 +306,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
                   >
                     <AvatarEditorComponent
                       pictureObj={userProfileEdit.ProfilePicture}
+                      setUserProfileEdit={setUserProfileEdit}
                     />
                   </Col>
                 </Row>
