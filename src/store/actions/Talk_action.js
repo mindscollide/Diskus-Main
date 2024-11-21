@@ -3550,8 +3550,8 @@ const DeleteShout = (navigate, object, t) => {
                 newError
               )
             );
-            dispatch(chatBoxActiveFlag(false));
-            dispatch(
+            await dispatch(chatBoxActiveFlag(false));
+            await dispatch(
               GetAllUserChats(navigate, currentUserId, currentOrganizationId, t)
             );
           } else if (
@@ -3642,7 +3642,8 @@ const UpdateShoutAll = (object, t, navigate) => {
                   t("Broadcast-list-modified")
                 )
               );
-              dispatch(
+              await dispatch(chatBoxActiveFlag(false));
+              await dispatch(
                 GetAllUserChats(
                   navigate,
                   currentUserId,
