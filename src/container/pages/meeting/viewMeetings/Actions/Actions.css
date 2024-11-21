@@ -1,0 +1,567 @@
+.Create_Task_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  display: flex;
+  align-items: center !important;
+  gap: 5px;
+  border: none;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+body[dir="rtl"] .Create_Task_Button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.Create_Task_Button:hover,
+.Create_Task_Button:active,
+.Create_Task_Button:focus,
+.Create_Task_Button:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  display: flex;
+  gap: 5px;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+.CloneMeetingButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  background: #fff;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.CloneMeetingButton:hover,
+.CloneMeetingButton:active,
+.CloneMeetingButton:focus,
+.CloneMeetingButton:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.SaveButtonActions {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  background: #6172d6;
+  color: #fff !important;
+}
+
+.SaveButtonActions:hover,
+.SaveButtonActions:active,
+.SaveButtonActions:focus,
+.SaveButtonActions:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.ActionsClass {
+  font-size: 12px !important;
+  color: #2197d7 !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  width: 180px !important;
+  white-space: nowrap;
+}
+
+.Meeting_Title {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a;
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  width: 100% !important;
+  white-space: nowrap;
+}
+
+.Empty-State_Heading {
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  font-size: 30px !important;
+}
+
+.EmptyState_SubHeading {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+}
+
+.HeightDefined {
+  height: 54vh !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Cancel_Meeting_Details {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.Action-Date-title {
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  cursor: default !important;
+  user-select: none !important;
+  margin-top: 5px;
+}
+.Action_title {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  cursor: pointer !important;
+  color: #6172d6 !important;
+  white-space: nowrap;
+  user-select: none !important;
+  width: 200px;
+}
+.action-delete-cursor {
+  cursor: pointer !important;
+}
+
+.PaginationStyle-Action-Page {
+  background-color: #fff !important;
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  position: absolute;
+  bottom: 65px;
+  align-items: center;
+}
+
+.FilterResetBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+.ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 8px 10px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  border: none !important;
+}
+
+/* NewActions Css */
+p.todolist-title-col {
+  cursor: pointer;
+  margin: 0px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 200px !important;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600 !important;
+  color: #2197d7 !important;
+}
+
+body[dir="rtl"] .todolist-title-col {
+  font-weight: 600 !important;
+  color: #2197d7 !important;
+}
+
+.blue {
+  color: #6172d6;
+  font-weight: 600 !important;
+}
+
+.orange {
+  color: #d8a709;
+  font-weight: 600 !important;
+}
+
+.yellow {
+  color: yellow;
+  font-weight: 600 !important;
+}
+
+.gray {
+  color: gray;
+  font-weight: 600 !important;
+}
+
+.green {
+  color: green;
+  font-weight: 600 !important;
+}
+
+.todolist-create-btn {
+  width: 145px !important;
+}
+
+body[dir="rtl"] .todolist-create-btn {
+  width: 160px !important;
+}
+
+.todolist-create-btn button {
+  width: 131px;
+  height: 31px;
+  font-size: calc(14px - 20%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  position: relative;
+}
+
+body[dir="rtl"] .todolist-create-btn button {
+  font-weight: 400 !important;
+}
+
+.todolist-create-btn button:focus-visible {
+  box-shadow: none !important;
+}
+
+body[dir="rtl"] .todolist-create-btn button {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+}
+
+.ToDo {
+  overflow-y: auto;
+}
+
+.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+  padding: 3px 3px !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  color: #505050 !important;
+}
+
+.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px !important;
+}
+
+.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  text-align: center;
+}
+
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 4px !important;
+  border-right: 0px !important;
+  text-align: center;
+}
+
+/* for todo pagination focus color */
+
+.ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+  width: 100px !important;
+  min-width: 100px !important;
+}
+
+.ant-tooltip.ant-tooltip-placement-top {
+  display: none !important;
+}
+
+.ant-table-filter-column {
+  display: inline-flex !important;
+}
+
+.ant-radio-input {
+  opacity: 1 !important;
+}
+
+.filter-chevron-icon-todolist {
+  color: #1890ff !important;
+  float: left !important;
+}
+
+.ant-table-column-title {
+  z-index: 0 !important;
+}
+
+.todolistContainer {
+  height: 85vh;
+  width: 98% !important;
+  margin: 0 auto !important;
+}
+
+.ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
+  text-align: center !important;
+}
+
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
+  text-align: center !important;
+}
+
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+  text-align: center !important;
+}
+
+.todolist-heading-size {
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  position: relative;
+  top: 3px;
+}
+
+body[dir="rtl"] .todolist-heading-size {
+  font-weight: 600 !important;
+}
+
+@media screen and (max-width: 900px) {
+  .row-scroll-todolist {
+    position: relative !important;
+    overflow: auto !important;
+    padding: 20px !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .todolist-heading-size {
+    font-size: 15px !important;
+    color: #6172d6 !important;
+    font-weight: 600 !important;
+    margin-top: 2px !important;
+  }
+
+  .todolist-create-btn button {
+    font-size: calc(14px - 20%) !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    border: none !important;
+  }
+}
+
+.iconForDatePicker.margin-right-20 svg.DatePickerIcon {
+  height: 36px !important;
+  width: 33px !important;
+  margin-top: 1px !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  left: 5px !important;
+}
+
+button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
+  margin-top: -3px;
+}
+
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
+  text-align: center !important;
+  padding-right: 0 !important;
+}
+
+body[dir="rtl"] .ArabicStatus {
+  font-weight: 600 !important;
+}
+
+.InProgress {
+  color: #d8a709;
+}
+
+body[dir="rtl"] .InProgress {
+  font-weight: 600 !important;
+}
+
+.Pending {
+  color: #5f78d6;
+}
+
+body[dir="rtl"] .Pending {
+  font-weight: 600 !important;
+}
+
+.Upcoming {
+  color: #f68732;
+}
+
+body[dir="rtl"] .Upcoming {
+  font-weight: 600 !important;
+}
+
+.Cancelled {
+  color: #f16b6b;
+}
+
+body[dir="rtl"] .Cancelled {
+  font-weight: 600 !important;
+}
+
+.Completed {
+  color: #81db86;
+}
+
+body[dir="rtl"] .Completed {
+  font-weight: 600 !important;
+}
+
+.filterValues-dropdown
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  div
+  .rc-virtual-list-holder-inner {
+  display: block !important;
+  width: auto;
+}
+
+.PaginationStyle-TodoList {
+  background-color: #fff !important;
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  align-items: center;
+}
+
+body[dir="rtl"] .PaginationStyle-TodoList {
+  width: auto !important;
+  padding: 8px 10px !important;
+}
+
+.Status-Todo
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  .rc-virtual-list-holder-inner {
+  display: block !important;
+}
+
+td.ant-table-column-sort {
+  background: transparent;
+}
+
+.ToDo .ant-table .ant-table-body {
+  padding-right: 10px;
+}
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder:hover
+  > td {
+  background: none;
+  border: none;
+}
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder
+  > td {
+  border: none;
+}
+.NotaskTodolist {
+  color: #e4e4e4;
+  font-size: 24px;
+  line-height: 1.8;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+}
+.todolist_main_section {
+  min-height: calc(100vh - 20vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden !important;
+}
+.custom-class {
+  font-weight: 600;
+}
