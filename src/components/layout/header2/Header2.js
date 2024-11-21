@@ -32,7 +32,13 @@ import { useLocation } from "react-router-dom";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
-import { Button, Modal, UploadTextField, Loader } from "../../elements";
+import {
+  Button,
+  Modal,
+  UploadTextField,
+  Loader,
+  Notification,
+} from "../../elements";
 import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
@@ -42,6 +48,11 @@ import {
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
+import ModalToDoList from "../../../container/todolistModal/ModalToDoList.js";
+import { showMessage } from "../../elements/snack_bar/utill.js";
+import { ClearNotesResponseMessage } from "../../../store/actions/Notes_actions.js";
+import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees.js";
+import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -82,10 +93,25 @@ const Header2 = ({ isVideo }) => {
   const requestExtentionModal = useSelector(
     (state) => state.UserManagementModals.requestExtentionModal
   );
+
+  const NotesReponseMessege = useSelector(
+    (state) => state.NotesReducer.ResponseMessage
+  );
+
+  const ResponseMessageTodoReducer = useSelector(
+    (state) => state.toDoListReducer.ResponseMessage
+  );
+
+  const ResponseMessageAssigneesReducer = useSelector(
+    (state) => state.assignees.ResponseMessage
+  );
+
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
+  const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
+  const [showTaskModalHeader, setShowModalHeader] = useState(false);
   const [currentUserProfilePic, setCurrentUserProfilePic] = useState(null);
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -112,6 +138,12 @@ const Header2 = ({ isVideo }) => {
   let currentOrganizationName = localStorage.getItem("organizatioName");
 
   const [show, setShow] = useState(false);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
   useEffect(() => {
     if (Blur !== null) {
@@ -154,6 +186,45 @@ const Header2 = ({ isVideo }) => {
       );
     }
   }, [UserProfileData]);
+
+  //Notes Response Messege as per CR
+  useEffect(() => {
+    try {
+      if (
+        NotesReponseMessege !== "" &&
+        NotesReponseMessege !== t("No-data-available")
+      ) {
+        showMessage(NotesReponseMessege, "success", setOpen);
+        dispatch(ClearNotesResponseMessage());
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [NotesReponseMessege]);
+
+  //Todolist tast Response messeges as per CR
+  useEffect(() => {
+    if (
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== undefined &&
+      ResponseMessageTodoReducer !== "" &&
+      ResponseMessageTodoReducer !== t("No-records-found")
+    ) {
+      showMessage(ResponseMessageTodoReducer, "success", setOpen);
+      dispatch(clearResponce());
+    } else if (
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== "" &&
+      ResponseMessageAssigneesReducer !== t("No-records-found") &&
+      ResponseMessageAssigneesReducer !== t("The-meeting-has-been-cancelled")
+    ) {
+      showMessage(ResponseMessageAssigneesReducer, "success", setOpen);
+      dispatch(clearResponseMessage());
+    } else {
+      dispatch(clearResponce());
+      dispatch(clearResponseMessage());
+    }
+  }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
   const forgotPasswordCheck = () => {
     localStorage.setItem("globalPassowrdChecker", true);
@@ -199,6 +270,10 @@ const Header2 = ({ isVideo }) => {
 
   const openModalAddNote = () => {
     setModalNoteHeader(true);
+  };
+
+  const openHeaderCreateTaskModal = () => {
+    setShowModalHeader(true);
   };
   const handleUploadFile = async ({ file }) => {
     navigate("/Diskus/dataroom", { state: file });
@@ -491,6 +566,14 @@ const Header2 = ({ isVideo }) => {
                         onClick={openModalAddNote}
                       >
                         <span>{t("Add-a-note")}</span>
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="d-flex title-className"
+                        onClick={openHeaderCreateTaskModal}
+                      >
+                        <span className="New_folder_shortcutkeys">
+                          {t("Create-a-task")}
+                        </span>
                       </Dropdown.Item>
                     </DropdownButton>
                   </div>
@@ -888,6 +971,14 @@ const Header2 = ({ isVideo }) => {
                                 {t("Add-a-note")}
                               </span>
                             </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex title-className"
+                              onClick={openHeaderCreateTaskModal}
+                            >
+                              <span className="New_folder_shortcutkeys">
+                                {t("Create-a-task")}
+                              </span>
+                            </Dropdown.Item>
                           </DropdownButton>
                         )}
                       </div>
@@ -1232,9 +1323,19 @@ const Header2 = ({ isVideo }) => {
           setAddNewModal={setModalNoteHeader}
         />
       )}
+      {showTaskModalHeader && (
+        <ModalToDoList
+          show={showTaskModalHeader}
+          setShow={setShowModalHeader}
+          updateFlagToDo={updateFlagToDo}
+          setUpdateFlagToDo={setUpdateFlagToDo}
+          className="toDoViewModal"
+        />
+      )}
 
       {UpgradeNowModalReducer && <UpgradeNowModal />}
       {requestExtentionModal && <RequestExtensionModal />}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };
