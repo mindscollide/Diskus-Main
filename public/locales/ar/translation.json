@@ -1407,6 +1407,7 @@
   "Contact": "اتصال",
   "Recent": "مؤخرًا",
   "Video": "فيديو",
+  "Videos": "فيديو",
   "Calling": "الاتصال",
   "Ringing": "رنين",
   "Participant-is-Unavailable": "[Participant] غير متوفر",
@@ -2159,6 +2160,9 @@
   "limited-to-users-meetings-documents-related-to-your-organization-account-please-make-sure-that": "الرجاء تأكيد القيام بذلك",
   "we-do-not-retain-any-backup-of-data-and-will-not-be-able-to-entertain-backup-recovery-request": "نحنُ لا نحتفظ بأي نسخة احتياطيَّة من البيانات ولن نتمكن من قبول طلب استرداد النسخة",
   "account-please-proceed-with-caution-and-at-your-own-risk": "الحساب. يرجى المتابعة بحذر وعلى مسؤوليتك الخاصة",
+  "Anyone": "لأي شخص",
+  "Any": "أي",
+  "Document": "وثيقة",
   "Upgrade-your-experience": "Upgrade Your Experience!",
   "Download-diskus-app-for-a-smoother": "Download the Diskus app for a smoother",
   "And-more-efficient-experience": "and more efficient experience",
@@ -2251,5 +2255,7 @@
   "Enter-password": "Enter password",
   "Broadcast-list-created": "Broadcast list created",
   "Edit-shout": "Edit Shout",
-  "Create-a-task": "Create a task"
+  "Create-a-task": "Create a task",
+  "Folder": "Folder",
+  "Forms": "Forms"
 }
