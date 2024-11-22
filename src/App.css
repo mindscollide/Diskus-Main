@@ -862,15 +862,15 @@ input[type="checkbox"][disabled]+span:after,
 }
 
 .modal-backdrop.show {
-  background: rgba(255, 255, 255, 0.3) !important;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px) !important;
-  opacity: inherit;
+  /* background: rgba(255, 255, 255, 0.3) !important; */
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px) !important;
+  /* opacity: inherit; */
 }
 
-.modal-backdrop.fade {
+/* .modal-backdrop.fade {
   opacity: 1 !important;
-}
+} */
 
 /*other style*/
 .agendas-list {
