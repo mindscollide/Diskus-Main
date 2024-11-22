@@ -128,10 +128,18 @@ const WebNotfication = () => {
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12}>
-          {dummyNotifcation.map((data, index) => {
-            return (
-              <>
+        {dummyNotifcation.map((data, index) => {
+          return (
+            <>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={
+                  index !== dummyNotifcation.length - 1 &&
+                  styles["BackGroundUnreadNotifications"]
+                }
+              >
                 <WebNotificationCard
                   NotificationMessege={data.Messege}
                   NotificationTime={data.Time}
@@ -139,10 +147,10 @@ const WebNotfication = () => {
                 {index !== dummyNotifcation.length - 1 && (
                   <span className={styles["SeperateNotificationLine"]}></span>
                 )}
-              </>
-            );
-          })}
-        </Col>
+              </Col>
+            </>
+          );
+        })}
       </Row>
     </section>
   );
