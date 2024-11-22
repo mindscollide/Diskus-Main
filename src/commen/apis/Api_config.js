@@ -1841,6 +1841,15 @@ const getVideoCallParticipantsForGuest = {
   RequestMethod: "ServiceManager.GetVideoCallParticipants",
 };
 
+const joinMeetingVideoRequest = {
+  RequestMethod: "ServiceManager.JoinMeetingVideoRequest",
+};
+
+// for host waitingList and Participant List
+const getVideoCallParticipantsAndWaitingList = {
+  RequestMethod: "ServiceManager.GetVideoCallParticipantsAndWaitingList",
+};
+
 export {
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   getAllMeetingUsersRSVPDetailsRM,
@@ -2327,4 +2336,6 @@ export {
   hideUnHidePaticipantVideo,
   ProposeNewMeetingSaveParticipants,
   getVideoCallParticipantsForGuest,
+  joinMeetingVideoRequest,
+  getVideoCallParticipantsAndWaitingList,
 };

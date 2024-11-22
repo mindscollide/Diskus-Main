@@ -749,6 +749,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
                 )
               );
               dispatch(guestLeaveVideoMeeting(data.UID));
+              dispatch(removeParticipantFromVideo(data.UID));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1106,6 +1107,7 @@ const muteUnMuteByHost = (response) => {
 };
 
 const hideUnHideVideoByHost = (response) => {
+  console.log(response, "responseresponse");
   return {
     type: actions.HIDE_UNHIDE_VIDEO_BY_HOST,
     response: response,
@@ -1233,6 +1235,29 @@ const getValidateString = (response) => {
   };
 };
 
+const raisedUnRaisedParticipantsGuest = (response) => {
+  return {
+    type: actions.RAISE_UNRAISED_PARTICIPANTS_GUEST,
+    response: response,
+  };
+};
+
+const hideUnHideVideoParticipantsorGuest = (response) => {
+  console.log(response, "firstfirstfirst");
+  return {
+    type: actions.HIDE_UNHIDE_VIDEO_PARTICIPANTS_GUEST,
+    response: response,
+  };
+};
+
+const muteUnMuteParticipantsorGuest = (response) => {
+  console.log(response, "firstfirstfirst");
+  return {
+    type: actions.MUTE_UNMUTE_PARTICIPANTS_GUEST,
+    response: response,
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
@@ -1256,4 +1281,7 @@ export {
   setVoiceControleGuest,
   getVideoCallParticipantsGuestMainApi,
   getValidateString,
+  raisedUnRaisedParticipantsGuest,
+  hideUnHideVideoParticipantsorGuest,
+  muteUnMuteParticipantsorGuest,
 };

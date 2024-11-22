@@ -42,6 +42,11 @@ const initialState = {
   muteUnMuteParticipant: [],
   hideUnHideParticipantorGuest: [],
   getNewParticipantsMeetingJoin: [],
+  getJoinMeetingParticipantorHostrequest: null,
+  MaximizeHostVideoFlag: false,
+  NormalHostVideoFlag: false,
+  maximizeParticipantVideoFlag: false,
+  getVideoParticpantListandWaitingList: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -263,6 +268,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAXIMIZE_VIDEO_PANEL: {
+      console.log(action, "trurururuurururururuu");
       return {
         ...state,
         MaximizeVideoFlag: action.response,
@@ -374,11 +380,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
       let { payload } = action;
-      console.log(
-        payload,
-        state.getNewParticipantsMeetingJoin,
-        "responseresponseresponse"
-      );
+      console.log(payload, "responseresponseresponse");
       let updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
         (participantData) => {
           console.log(participantData, "participantDataparticipantData");
@@ -476,6 +478,82 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         getNewParticipantsMeetingJoin: getPrevState,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getJoinMeetingParticipantorHostrequest: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getJoinMeetingParticipantorHostrequest: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MAX_HOST_VIDEO_CALL_PANEL: {
+      console.log(action, "trurururuurururururuu");
+      return {
+        ...state,
+        MaximizeHostVideoFlag: action.response,
+        NormalHostVideoFlag: false,
+      };
+    }
+
+    case actions.NORMAL_HOST_VIDEO_CALL_PANEL: {
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        NormalHostVideoFlag: action.response,
+      };
+    }
+
+    case actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL: {
+      console.log(action, "trurururuurururururuu");
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        maximizeParticipantVideoFlag: action.response,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getVideoParticpantListandWaitingList: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getVideoParticpantListandWaitingList: [],
+        ResponseMessage: action.message,
       };
     }
 

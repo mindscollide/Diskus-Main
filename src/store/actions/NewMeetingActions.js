@@ -1405,8 +1405,10 @@ const FetchMeetingURLApi = (
               );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
+                console.log("Flag True");
                 dispatch(maximizeVideoPanelFlag(true));
               } else {
+                console.log("Flag False");
                 dispatch(normalizeVideoPanelFlag(true));
               }
               dispatch(videoChatPanel(false));

@@ -57,6 +57,9 @@ import {
   minimizeVideoPanelFlag,
   leaveCallModal,
   participantPopup,
+  maxHostVideoCallPanel,
+  normalHostVideoCallPanel,
+  maxParticipantVideoCallPanel,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -68,14 +71,15 @@ import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMe
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useCallback } from "react";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
-  editorRole,
-  setEdiorRole,
   setDataroomMapFolderId,
   setMeetingMaterial,
 }) => {
@@ -89,7 +93,8 @@ const ViewMeetingDetails = ({
     (state) => state.NewMeetingreducer.ResponseMessage
   );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-  const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
+  const { setEndMeetingConfirmationModal, editorRole, setEdiorRole } =
+    useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
   console.log(
@@ -99,6 +104,18 @@ const ViewMeetingDetails = ({
 
   const guestVideoUrlNotification = useSelector(
     (state) => state.GuestVideoReducer.ResponseMessage
+  );
+
+  const MaximizeHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+  );
+
+  const NormalHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  );
+
+  const maximizeParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
   console.log(
@@ -472,27 +489,57 @@ const ViewMeetingDetails = ({
   };
 
   const joinMeetingCall = () => {
-    if (activeCall === false && isMeeting === false) {
-      let Data = {
-        VideoCallURL: currentMeetingVideoURL,
-      };
-      dispatch(
-        FetchMeetingURLApi(
-          Data,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization,
-          0,
-          meetingDetails.MeetingTitle,
-          advanceMeetingModalID
-        )
-      );
-      localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
-    } else if (activeCall === true && isMeeting === false) {
-      setInitiateVideoModalOto(true);
-      dispatch(callRequestReceivedMQTT({}, ""));
+    console.log(editorRole, "editorRoleeditorRole");
+    // Orgainzer  = 1 ,Participant = 2 , Agenda Contributor = 3,
+    let meetingVideoData = {
+      roleID:
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor"
+          ? 2
+          : 1,
+    };
+    if (meetingVideoData.roleID === 1) {
+      dispatch(maxHostVideoCallPanel(true));
+    } else {
+      dispatch(maxParticipantVideoCallPanel(true));
     }
+    console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
+    localStorage.setItem(
+      "meetingVideoDetails",
+      JSON.stringify(meetingVideoData)
+    );
+    // let Data = {
+    //   VideoCallURL: currentMeetingVideoURL,
+    // };
+    // dispatch(
+    //   FetchMeetingURLApi(
+    //     Data,
+    //     navigate,
+    //     t,
+    //     currentUserID,
+    //     currentOrganization,
+    //     0,
+    //     meetingDetails.MeetingTitle,
+    //     advanceMeetingModalID
+    //   )
+    // );
+    //   localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
+    // } else if (activeCall === true && isMeeting === false) {
+    //   setInitiateVideoModalOto(true);
+    //   dispatch(callRequestReceivedMQTT({}, ""));
+    // }
+  };
+
+  const handleExpandToNormal = () => {
+    dispatch(normalHostVideoCallPanel(true));
+  };
+
+  const handleExpandToMax = () => {
+    dispatch(maxHostVideoCallPanel(true)); // Set Maximize flag to true
+  };
+
+  const handleExpandToParticipantMax = () => {
+    dispatch(maxParticipantVideoCallPanel(true)); // Set Maximize flag to true
   };
 
   const copyToClipboardd = () => {
@@ -733,11 +780,33 @@ const ViewMeetingDetails = ({
                               className={styles["CopyLinkButton"]}
                               onClick={() => copyToClipboardd()}
                             />
-                            <Button
-                              text={t("Join-video-call")}
-                              className={styles["JoinMeetingButton"]}
-                              onClick={joinMeetingCall}
-                            />{" "}
+                            {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
+                              <Button
+                                text="Join Video Call"
+                                className="JoinMeetingButton"
+                                onClick={joinMeetingCall}
+                              />
+                            )}
+                            {/* Max Component */}
+                            {MaximizeHostVideoFlag && (
+                              <MaxHostVideoCallComponent
+                                handleExpandToNormal={handleExpandToNormal}
+                              />
+                            )}
+                            {/* Normal Component */}
+                            {NormalHostVideoFlag && (
+                              <NormalHostVideoCallComponent
+                                handleExpandToMax={handleExpandToMax}
+                              />
+                            )}
+                            {/* Max Participant Component */}
+                            {maximizeParticipantVideoFlag && (
+                              <ParticipantVideoCallComponent
+                                handleExpandToParticipantMax={
+                                  handleExpandToParticipantMax
+                                }
+                              />
+                            )}
                           </>
                         ) : (
                           <>

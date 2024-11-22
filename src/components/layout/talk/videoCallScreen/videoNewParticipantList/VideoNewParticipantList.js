@@ -8,6 +8,7 @@ import UserImage from "../../../../../assets/images/user.png";
 import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
+  participantListWaitingListMainApi,
   participantWaitingListBox,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ import {
   admitRejectAttendeeMainApi,
   removeParticipantFromVideo,
   removeParticipantMeetingMainApi,
+  transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import RaiseHand from "./../../talk-Video/video-images/Raise Hand Purple.svg";
 import MicOn from "./../../talk-Video/video-images/Mic Enabled Purple.svg";
@@ -28,15 +30,35 @@ import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
 
 const VideoNewParticipantList = () => {
+  console.log("VideoNewParticipantList");
+
   const { videoFeatureReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const participantAcceptedName = useSelector(
-    (state) => state.videoFeatureReducer.participantNameDataAccept
+  const participantWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.participantWaitingList
   );
+
+  // For Participant List and waiting List
+  const videoParticpantListandWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  );
+
+  console.log(videoParticpantListandWaitingList, "videoParticpantWaitingList");
+
+  // For acccept Join name participantList
+  const getNewParticipantsMeetingJoin = useSelector(
+    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const [newParticipants, setNewParticipants] = useState([]);
+
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
-  let roomID = localStorage.getItem("activeRoomID");
+  let roomID = localStorage.getItem("newRoomId");
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let HostName = localStorage.getItem("name");
+
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [participantData, setParticipantData] = useState([]);
@@ -48,29 +70,66 @@ const VideoNewParticipantList = () => {
   };
 
   useEffect(() => {
-    if (videoFeatureReducer.participantWaitingList.length > 0) {
-      try {
-        setPartcipantList(videoFeatureReducer.participantWaitingList);
-      } catch (error) {
-        console.log(error, "errorerror");
-      }
-    } else {
-      setPartcipantList([]);
-    }
-  }, [videoFeatureReducer.participantWaitingList]);
+    let data = {
+      RoomID: String(roomID),
+    };
+    dispatch(participantListWaitingListMainApi(navigate, t, data));
+  }, []);
 
   useEffect(() => {
     if (
-      participantAcceptedName !== null &&
-      participantAcceptedName !== undefined &&
-      participantAcceptedName.length > 0
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
+    ) {
+      console.log(
+        getNewParticipantsMeetingJoin,
+        "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
+      );
+      console.log(getNewParticipantsMeetingJoin.length);
+      // Extract and set the new participants to state
+      setNewParticipants(getNewParticipantsMeetingJoin);
+    } else {
+      setNewParticipants([]);
+    }
+  }, [getNewParticipantsMeetingJoin]);
+
+  useEffect(() => {
+    const mergeParticipants = () => {
+      // Combine both lists
+      const combinedList = [
+        ...(videoParticpantListandWaitingList?.waitingParticipants || []),
+        ...(participantWaitingList || []),
+      ];
+
+      // Remove duplicates based on `guid`
+      const uniqueParticipants = combinedList.reduce((acc, participant) => {
+        if (!acc.some((item) => item.guid === participant.guid)) {
+          acc.push(participant);
+        }
+        return acc;
+      }, []);
+
+      setPartcipantList(uniqueParticipants);
+    };
+
+    mergeParticipants();
+  }, [videoParticpantListandWaitingList, participantWaitingList]);
+
+  useEffect(() => {
+    if (
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
     ) {
       // Filter out duplicates based on UID
-      const uniqueParticipants = participantAcceptedName.reduce(
+      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
         (acc, current) => {
           console.log(acc, "datadatdtad");
+          console.log(current, "currentcurrent");
+
           // Only add the current participant if its UID is not already in acc
-          if (!acc.find((participant) => participant.UID === current.UID)) {
+          if (!acc.find((participant) => participant.guid === current.guid)) {
             acc.push(current);
           }
           return acc;
@@ -78,12 +137,23 @@ const VideoNewParticipantList = () => {
         []
       );
 
-      setParticipantData(uniqueParticipants);
+      setNewParticipants(uniqueParticipants);
       console.log(uniqueParticipants, "uniqueParticipants");
     } else {
-      setParticipantData([]);
+      setNewParticipants([]);
     }
-  }, [participantAcceptedName]);
+  }, [getNewParticipantsMeetingJoin]);
+
+  const makeLeaveOnClick = (usersData) => {
+    console.log(usersData.UID, "usersDatausersData");
+    let data = {
+      RoomID: roomID,
+      UID: usersData.guid,
+      UserID: Number(currentUserID),
+    };
+
+    dispatch(transferMeetingHostMainApi(navigate, t, data));
+  };
 
   const muteUnmuteByHost = (usersData, flag) => {
     setMuteGuest(flag);
@@ -92,39 +162,29 @@ const VideoNewParticipantList = () => {
       IsMuted: flag,
       MuteUnMuteList: [
         {
-          UID: usersData.UID, // The participant's UID
+          UID: usersData.guid, // The participant's UID
         },
       ],
     };
-    dispatch(
-      muteUnMuteParticipantMainApi(navigate, t, data, setParticipantData, flag)
-    );
+    dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
+    console.log(usersData, "akasdaskhdvasdv");
     let data = {
       RoomID: roomID,
       HideVideo: flag,
-      UIDList: [usersData.UID],
+      UIDList: [usersData.guid],
     };
-    dispatch(
-      hideUnHideParticipantGuestMainApi(
-        navigate,
-        t,
-        data,
-        setParticipantData,
-        flag
-      )
-    );
+    dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
   };
 
   const removeParticipantMeetingOnClick = (usersData) => {
-    console.log(usersData, "usersData");
-    dispatch(removeParticipantFromVideo(usersData.UID));
+    console.log(usersData, "RemoveUserDataa");
     let data = {
-      RoomID: roomID,
-      UID: usersData.UID,
-      Name: usersData.Name,
+      RoomID: String(roomID),
+      UID: usersData.guid,
+      Name: usersData.name,
     };
 
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
@@ -132,19 +192,15 @@ const VideoNewParticipantList = () => {
 
   const handleClickAllAcceptAndReject = (flag) => {
     let Data = {
-      MeetingId: participantsList[0].meetingID,
+      MeetingId: participantsList[0]?.meetingID,
       RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: participantsList.map((participantData, index) => {
+        console.log(participantData, "mahdahahshahs");
         return {
-          Name: participantData.name,
-          UID: participantData.guid,
-          Email: participantData.email,
-          raiseHand: participantData.raiseHand,
-          UserID: participantData.userID,
-          IsMuted: participantData.mute,
-          HideVideo: participantData.hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: participantData.isGuest,
+          UID: participantData.guid,
+          UserID: participantData.userID,
         };
       }),
     };
@@ -153,22 +209,18 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, true, participantsList)
     );
   };
+
   const handleClickAcceptAndReject = (participantInfo, flag) => {
     console.log(participantInfo, "participantInfo");
     let Data = {
-      MeetingId: participantInfo.meetingID,
+      MeetingId: participantInfo?.meetingID,
       RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: [
         {
-          Name: participantInfo.name,
-          UID: participantInfo.guid,
-          Email: participantInfo.email,
-          raiseHand: participantInfo.raiseHand,
-          UserID: participantInfo.userID,
-          IsMuted: participantInfo.mute,
-          HideVideo: participantInfo.hideCamera,
-          IsRequestAccepted: flag === 1 ? true : false,
           IsGuest: participantInfo.isGuest,
+          UID: participantInfo.guid,
+          UserID: participantInfo.userID,
         },
       ],
     };
@@ -229,7 +281,7 @@ const VideoNewParticipantList = () => {
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                  {t("Abdulla Siddique")}
+                  {HostName}
                 </p>
               </Col>
             </Row>
@@ -264,8 +316,8 @@ const VideoNewParticipantList = () => {
 
         <Col sm={12} md={12} lg={12}>
           <div className={styles["Waiting-New-ParticipantNameList"]}>
-            {participantData.length > 0 ? (
-              participantData.map((usersData, index) => {
+            {newParticipants.length > 0 ? (
+              newParticipants.map((usersData, index) => {
                 console.log(usersData, "usersDatausersData");
                 return (
                   <>
@@ -276,8 +328,8 @@ const VideoNewParticipantList = () => {
                         md={7}
                         sm={12}
                       >
-                        <p className="participant-name">{usersData.Name}</p>
-                        {usersData.isHandRaise === true ? (
+                        <p className="participant-name">{usersData?.name}</p>
+                        {usersData.raiseHand === true ? (
                           <>
                             <img
                               src={GoldenHandRaised}
@@ -294,7 +346,7 @@ const VideoNewParticipantList = () => {
                             className="handraised-participant"
                           />
                         )}
-                        {usersData.hideVideo ? (
+                        {usersData.hideCamera ? (
                           <img
                             src={VideoDisable}
                             width="18px"
@@ -324,7 +376,7 @@ const VideoNewParticipantList = () => {
                         md={5}
                         sm={12}
                       >
-                        {usersData.isMute ? (
+                        {usersData.mute ? (
                           <img
                             src={MicDisabled}
                             width={"22px"}
@@ -353,7 +405,7 @@ const VideoNewParticipantList = () => {
                             >
                               {t("Remove")}
                             </Dropdown.Item>
-                            {usersData.isMute === false ? (
+                            {usersData.mute === false ? (
                               <>
                                 <Dropdown.Item
                                   className="participant-dropdown-item"
@@ -376,7 +428,7 @@ const VideoNewParticipantList = () => {
                                 </Dropdown.Item>
                               </>
                             )}
-                            {usersData.hideVideo === false ? (
+                            {usersData.hideCamera === false ? (
                               <>
                                 <Dropdown.Item
                                   className="participant-dropdown-item"
@@ -423,68 +475,6 @@ const VideoNewParticipantList = () => {
             )}
           </div>
         </Col>
-
-        {/* <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-Participant-HostNameList"]}>
-            <Row>
-              <Col sm={4} md={4} lg={4}>
-                <p className={styles["New-ParticipantList-Name"]}>
-                  {t("Saif Islam")}
-                </p>
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                  <img src={RaiseHand} alt="" height="20px" width="20px" />
-                </p>
-              </Col>
-              <Col sm={3} md={3} lg={3} />
-              <Col sm={2} md={2} lg={2}>
-                <img src={MicOn} alt="" height="20px" width="20px" />
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <img src={Menu} alt="" />
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={4} md={4} lg={4}>
-                <p className={styles["New-ParticipantList-Name"]}>
-                  {t("Saad Fuda")}
-                </p>
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                  <img src={RaiseHand} alt="" height="20px" width="20px" />
-                </p>
-              </Col>
-              <Col sm={3} md={3} lg={3} />
-              <Col sm={2} md={2} lg={2}>
-                <img src={MicOn} alt="" height="20px" width="20px" />
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <img src={Menu} alt="" />
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={4} md={4} lg={4}>
-                <p className={styles["New-ParticipantList-Name"]}>
-                  {t("Ali Mamdani")}
-                </p>
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                  <img src={RaiseHand} alt="" height="20px" width="20px" />
-                </p>
-              </Col>
-              <Col sm={3} md={3} lg={3} />
-              <Col sm={2} md={2} lg={2}>
-                <img src={MicOn} alt="" height="20px" width="20px" />
-              </Col>
-              <Col sm={1} md={1} lg={1}>
-                <img src={Menu} alt="" />
-              </Col>
-            </Row>
-          </div>
-        </Col> */}
 
         {/* Waiting For Entry Title Tab  */}
         <Col sm={12} md={12} lg={12}>

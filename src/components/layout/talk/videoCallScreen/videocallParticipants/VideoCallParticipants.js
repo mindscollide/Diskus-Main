@@ -21,7 +21,7 @@ const VideoCallParticipants = () => {
   const { t } = useTranslation();
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
-  let roomID = localStorage.getItem("activeRoomID");
+  let roomID = localStorage.getItem("newRoomId");
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {

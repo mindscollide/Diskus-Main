@@ -29,6 +29,8 @@ const VideoPanelNormal = () => {
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+  let newRoomID = localStorage.getItem("newRoomId");
+
   localStorage.setItem("VideoView", "Sidebar");
   let callAcceptedRecipientID = Number(
     localStorage.getItem("acceptedRecipientID")
@@ -51,21 +53,39 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
-      let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-      const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-      const extractedBaseURLCaller = extractedUrl(
-        dynamicBaseURLCaller,
-        endIndexBaseURLCaller
-      );
-      setCallerURL(
-        generateURLCaller(
-          extractedBaseURLCaller,
-          currentUserName,
-          initiateCallRoomID
-        )
-      );
+      if (initiateCallRoomID !== null) {
+        let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
+        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+        const extractedBaseURLCaller = extractedUrl(
+          dynamicBaseURLCaller,
+          endIndexBaseURLCaller
+        );
+        setCallerURL(
+          generateURLCaller(
+            extractedBaseURLCaller,
+            currentUserName,
+            initiateCallRoomID
+          )
+        );
+      }
     } catch {}
   }, [initiateCallRoomID]);
+
+  useEffect(() => {
+    try {
+      if (newRoomID !== null) {
+        let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
+        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+        const extractedBaseURLCaller = extractedUrl(
+          dynamicBaseURLCaller,
+          endIndexBaseURLCaller
+        );
+        setCallerURL(
+          generateURLCaller(extractedBaseURLCaller, currentUserName, newRoomID)
+        );
+      }
+    } catch {}
+  }, [newRoomID]);
 
   useEffect(() => {
     try {
@@ -277,10 +297,10 @@ const VideoPanelNormal = () => {
                             : "ParticipantsWaiting_Out"
                         } ps-0`}
                       >
-                        <VideoCallParticipants />
+                        {/* <VideoCallParticipants /> */}
 
                         {/* this is new Host Panel */}
-                        {/* <VideoNewParticipantList /> */}
+                        <VideoNewParticipantList />
                       </Col>
                     ) : null}
                     {/* <VideoCallParticipants /> */}

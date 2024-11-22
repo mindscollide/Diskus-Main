@@ -673,6 +673,14 @@ const Dashboard = () => {
               //   setNotificationID(id);
               // }
             } else if (
+              //when Participant or attendee send Request to Host
+              data.payload.message.toLowerCase() ===
+              "MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST".toLowerCase()
+            ) {
+              dispatch(participantWaitingList(data.payload));
+              dispatch(admitGuestUserRequest(data.payload));
+              dispatch(guestJoinPopup(true));
+            } else if (
               data.payload.message.toLowerCase() ===
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
             ) {
@@ -699,6 +707,18 @@ const Dashboard = () => {
             ) {
               dispatch(getParticipantsNewJoin(data.payload.newParticipants));
               console.log(data.payload, "JOINEDJOINEDJOINED");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
+            ) {
+              dispatch(participanMuteUnMuteMeeting(data.payload));
+              console.log(data.payload, "guestDataGuestData");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
+            ) {
+              dispatch(participantHideUnhideVideo(data.payload));
+              console.log(data.payload, "guestDataGuestDataVideo");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2377,20 +2397,20 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
-        ) {
-          setHandsRaisedCount(data.payload.handsRaisedCount || 0);
-          setParticipantsList(data.payload.particpantsList || []);
-
-          // Log roomID or raise hand status if available
-          if (data.payload.roomID) {
-            console.log("Room ID:", data.payload.roomID);
-          } else if (data.payload.raiseHand === true) {
-            console.log("Hand Raised:", data.payload.raiseHand);
-          }
         }
+        //  else if (
+        //   data.payload.message.toLowerCase() ===
+        //   "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+        // ) {
+        //   setHandsRaisedCount(data.payload.handsRaisedCount || 0);
+        //   setParticipantsList(data.payload.particpantsList || []);
+        //   // Log roomID or raise hand status if available
+        //   if (data.payload.roomID) {
+        //     console.log("Room ID:", data.payload.roomID);
+        //   } else if (data.payload.raiseHand === true) {
+        //     console.log("Hand Raised:", data.payload.raiseHand);
+        //   }
+        // }
       }
     } catch (error) {}
   };
