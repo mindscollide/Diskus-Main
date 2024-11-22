@@ -1,0 +1,14 @@
+.Progress_bar_Loader .ant-progress-text {
+  display: none !important;
+}
+
+.Progress_bar_Loader .ant-progress-inner .ant-progress-bg {
+  height: 13px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important ;
+}
+
+.Progress_bar_Loader .ant-progress-inner {
+  border-radius: 0px !important;
+  background-color: none !important;
+}
