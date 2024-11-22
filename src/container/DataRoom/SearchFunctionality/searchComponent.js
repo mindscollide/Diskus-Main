@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import {
   formatDateToUTC,
   _justShowDateformat,
+  dateConverterIntoUTCForDataroom,
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import {
@@ -42,6 +43,9 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+import { checkFeatureIDAvailability, openDocumentViewer } from "../../../commen/functions/utils";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+
 const SearchComponent = ({
   setSearchDataFields,
   searchDataFields,
@@ -59,6 +63,7 @@ const SearchComponent = ({
   const calendRef = useRef();
   const { DataRoomReducer, assignees } = useSelector((state) => state);
   const [searchAllData, setSearchAllData] = useState([]);
+  console.log(searchAllData, "searchAllDatasearchAllData")
   const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
   const [dateValue, setDateValue] = useState(t("Date-modified"));
@@ -66,6 +71,7 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
+  console.log(assignessList, "assignessListassignessList")
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -85,6 +91,11 @@ const SearchComponent = ({
   let organizationID = localStorage.getItem("organizationID");
 
   console.log({ searchDataFields }, "searchDataFields");
+  useEffect(() => {
+    if(assignees?.user && assignees?.user?.length  === 0) {
+     dispatch(allAssignessList(navigate, t, false));
+    }
+  },[])
 
   const handeClickSortingFunc = async (statusID) => {
     // this is for All Tab and My Document tab
@@ -273,6 +284,22 @@ const SearchComponent = ({
       });
     }
   };
+
+  const handleLinkClick = (e, record) => {
+    e.preventDefault();
+    if (checkFeatureIDAvailability(20)) {
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = record.name.split(".").pop();
+      openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+    }
+  };
   // these are search columns
   const searchColumns = [
     {
@@ -325,7 +352,7 @@ const SearchComponent = ({
                     alt=''
                   />
                   <abbr title={text}>
-                    <span className={stylesss["dataroom_table_heading"]}>
+                    <span className={stylesss["dataroom_table_heading"]}  onClick={(e) => handleLinkClick(e, data)}>
                       {text} <img draggable='false' src={sharedIcon} alt='' />
                     </span>
                   </abbr>
@@ -359,7 +386,7 @@ const SearchComponent = ({
                     alt=''
                   />
 
-                  <abbr title={text}>
+                  <abbr title={text}  onClick={(e) => handleLinkClick(e, data)}>
                     <span className={stylesss["dataroom_table_heading"]}>
                       {text}
                     </span>
@@ -370,7 +397,6 @@ const SearchComponent = ({
           }
         }
       },
-      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
     },
     {
       title: (
@@ -544,7 +570,6 @@ const SearchComponent = ({
   }, [assignees.user]);
 
   // api call onscroll
-  const handleSortMyDocuments = (pagination, filters, sorter) => {};
   const handleScroll = async (e) => {
     if (sRowsData <= totalRecords) {
       await dispatch(dataBehaviour(true));
@@ -1256,13 +1281,16 @@ const SearchComponent = ({
         dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
         break;
       case 2: // Today
-        startDate = new Date(currentDate);
-        endDate = new Date(currentDate);
+        startDate = dateConverterIntoUTCForDataroom(currentDate, 1);
+        endDate = dateConverterIntoUTCForDataroom(currentDate, 2);
         setCustomRangeVisible(false);
         setSearchDataFields({
           ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(currentDate, 2),
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            currentDate,
+            1
+          ),
         });
         data = {
           UserID: parseInt(userID),
@@ -1279,12 +1307,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: startDate,
+          LastModifiedEndDate: endDate,
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1299,6 +1323,7 @@ const SearchComponent = ({
         endDate = new Date(currentDate);
         startDate = new Date(currentDate);
         startDate.setDate(currentDate.getDate() - 7);
+
         setCustomRangeVisible(false);
         setSearchDataFields({
           ...searchDataFields,
@@ -1321,12 +1346,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1362,12 +1383,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1402,12 +1419,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1442,12 +1455,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1543,25 +1552,23 @@ const SearchComponent = ({
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
-    const formattedStarttDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
-    setSelectedStartDate(dates);
+    let startDate = dateConverterIntoUTCForDataroom(new Date(dates), 1);
+
+    setSelectedStartDate(new Date(dates));
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedStartDate: formattedStarttDate,
+      LastModifiedStartDate: startDate,
     });
   };
 
   // this is select for end date
   const handleEndDatePickerChange = (dates) => {
-    const formattedEndtDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
-    setSelectedEndDate(dates);
+    let endDate = dateConverterIntoUTCForDataroom(new Date(dates), 2);
+
+    setSelectedEndDate(new Date());
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedEndDate: formattedEndtDate,
+      LastModifiedEndDate: endDate,
     });
   };
 
@@ -1582,14 +1589,8 @@ const SearchComponent = ({
       isImages: searchDataFields.isImages,
       isAudios: searchDataFields.isAudios,
       isSites: searchDataFields.isSites,
-      LastModifiedStartDate: formatDateToUTC(
-        searchDataFields.LastModifiedStartDate
-      )
-        ? formatDateToUTC(searchDataFields.LastModifiedStartDate)
-        : "",
-      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate)
-        ? formatDateToUTC(searchDataFields.LastModifiedEndDate)
-        : "",
+      LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+      LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
@@ -2068,7 +2069,6 @@ const SearchComponent = ({
               className={"DataRoom_Table"}
               rows={searchAllData}
               pagination={false}
-              onChange={handleSortMyDocuments}
               size={"middle"}
             />
           </InfiniteScroll>

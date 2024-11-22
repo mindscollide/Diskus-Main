@@ -1611,3 +1611,25 @@ export const isSameAsToday = (utcDateString) => {
     formattedDate,
   };
 };
+
+export const dateConverterIntoUTCForDataroom = (newDate, no) => {
+  if (no === 1) {
+    newDate.setHours(0, 0, 0, 0); // Set to 00:00:00 in local time
+  } else {
+    newDate.setHours(23, 58, 59, 0); // Set to 23:58:59 in local time
+  }
+  console.log(newDate, no, "newDatenewDate");
+  // Convert to UTC components
+  const year = newDate.getUTCFullYear();
+  const month = String(newDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const day = String(newDate.getUTCDate()).padStart(2, "0");
+  const hours = String(newDate.getUTCHours()).padStart(2, "0");
+  const minutes = String(newDate.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(newDate.getUTCSeconds()).padStart(2, "0");
+
+  // Combine into the desired format
+  const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
+  console.log(formattedDate, "UTC formatted date");
+  return formattedDate;
+};

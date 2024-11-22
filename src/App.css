@@ -2070,8 +2070,7 @@ p.fileUploadLabel {
 }
 
 .agendaList {
-  height: 475px;
-  /* height    : 350px; */
+  max-height: 50vh !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;

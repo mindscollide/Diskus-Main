@@ -55,7 +55,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const calendarReducereventsDetails = useSelector(
     (state) => state.calendarReducer.eventsDetails
   );
-  
+
   const userProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData
   );
@@ -888,14 +888,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             }
           }}
           show={viewFlag}
-          size='lg'
+          size='md'
           setShow={setViewFlag}
           modalParentClass='modaldialog MeetingView'
           className='MeetingView'
           ButtonTitle={ModalTitle}
           modalBodyClassName='modalMeetingViewBody'
           modalFooterClassName='modalMeetingViewFooter'
-          modalHeaderClassName='modalMeetingViewHeader'
+          modalHeaderClassName='d-none'
           ModalBody={
             <>
               <Row>
@@ -959,24 +959,22 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               </Row>
               {isDetails ? (
                 <>
-                  <Row className='my-4'>
+                  <Row className='mt-4'>
                     <Col
                       lg={6}
                       md={6}
                       xs={6}
-                      className='MontserratRegular d-flex flex-column lh-sm my-3'>
+                      >
                       <span className='MeetingViewDateTimeTextField'>
                         {createMeeting.MeetingDate}
                       </span>
-                      <span className='MeetingViewLocationText_Field'>
-                        {createMeeting.MeetingLocation}
-                      </span>
+                     
                     </Col>
                     <Col
                       lg={6}
                       md={6}
                       xs={6}
-                      className='MontserratRegular d-flex gap-2 align-items-center'>
+                      className='MontserratRegular d-flex gap-2 align-items-start'>
                       <Button
                         disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Copy-link")}
@@ -989,6 +987,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <span className='MeetingViewLocationText_Field'>
+                        {createMeeting.MeetingLocation}
+                      </span>
                     </Col>
                   </Row>
                   <Row>
@@ -1034,8 +1039,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className='margin-top-20'>
-                              <>
+                            <>
+                              <div>
                                 <Row className='mt-4'>
                                   <Col lg={1} md={1} xs={12}>
                                     <span className=' agendaIndex'>
@@ -1106,8 +1111,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                       : null}
                                   </Row>
                                 </div>
-                              </>
-                            </div>
+                              </div>
+                            </>
                           );
                         })
                       : null}
@@ -1261,70 +1266,69 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             </>
           }
           ModalFooter={
-              <>
-        
-                {isOrganizer ? (
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className='d-flex justify-content-end'>
-                      {meetingDifference <= remainingMinutesAgo &&
-                      allMeetingDetails.meetingStatus.status === "1" && isDetails ? (
-                        <Button
-                          onClick={startMeeting}
-                          className={
-                            " btn btn-primary start-meeting-button" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("Start-meeting")}
-                          disableBtn={startMeetingStatus}
-                        />
-                      ) : null}
+            <>
+              {isOrganizer ? (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className='d-flex justify-content-end'>
+                    {meetingDifference <= remainingMinutesAgo &&
+                    allMeetingDetails.meetingStatus.status === "1" &&
+                    isDetails ? (
+                      <Button
+                        onClick={startMeeting}
+                        className={
+                          " btn btn-primary start-meeting-button" +
+                          " " +
+                          currentLanguage
+                        }
+                        text={t("Start-meeting")}
+                        disableBtn={startMeetingStatus}
+                      />
+                    ) : null}
 
-                      {allMeetingDetails.meetingStatus.status === "10" ? (
-                        <Button
-                          onClick={() =>
-                            leaveMeeting(
-                              allMeetingDetails.meetingDetails.pK_MDID
-                            )
-                          }
-                          className={
-                            "  end-meeting-btn_view-org" + " " + currentLanguage
-                          }
-                          text={t("Leave-meeting")}
-                        />
-                      ) : null}
-
-                      {allMeetingDetails.meetingStatus.status === "10" && isDetails ? (
-                        <Button
-                          onClick={endMeeting}
-                          className={
-                            " btn btn-primary end-meeting-btn_view" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("End-meeting")}
-                        />
-                      ) : null}
-                    </Col>
-                  </Row>
-                ) : isParticipant ? (
-                  <>
                     {allMeetingDetails.meetingStatus.status === "10" ? (
                       <Button
                         onClick={() =>
                           leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID)
                         }
-                        className={`end-meeting-btn_view ${currentLanguage}`}
+                        className={
+                          "  end-meeting-btn_view-org" + " " + currentLanguage
+                        }
                         text={t("Leave-meeting")}
                       />
                     ) : null}
-                  </>
-                ) : null}
-              </>
+
+                    {allMeetingDetails.meetingStatus.status === "10" &&
+                    isDetails ? (
+                      <Button
+                        onClick={endMeeting}
+                        className={
+                          " btn btn-primary end-meeting-btn_view" +
+                          " " +
+                          currentLanguage
+                        }
+                        text={t("End-meeting")}
+                      />
+                    ) : null}
+                  </Col>
+                </Row>
+              ) : isParticipant ? (
+                <>
+                  {allMeetingDetails.meetingStatus.status === "10" ? (
+                    <Button
+                      onClick={() =>
+                        leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID)
+                      }
+                      className={`end-meeting-btn_view ${currentLanguage}`}
+                      text={t("Leave-meeting")}
+                    />
+                  ) : null}
+                </>
+              ) : null}
+            </>
           }
         />
         <EndMeetingConfirmationModal
