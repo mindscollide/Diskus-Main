@@ -35,9 +35,36 @@ import MinutesReviewRequest from "../../../../assets/images/Minutes review reque
 import Video from "../../../../assets/images/Video.png";
 import Approval from "../../../../assets/images/Approval.png";
 import Signature from "../../../../assets/images/Signature.png";
+import { Col, Row } from "react-bootstrap";
 
-const WebNotificationCard = () => {
-  return <section>WebNotificationCard</section>;
+const WebNotificationCard = ({ NotificationMessege, NotificationTime }) => {
+  return (
+    <section>
+      <Row className="mt-2">
+        <Col
+          lg={10}
+          md={10}
+          sm={10}
+          className="d-flex align-items-center justify-content-center gap-2"
+        >
+          <img src={AddedInMeeting} width={40} alt="" />
+          <span className={styles["NotificationMessegeUnmarked"]}>
+            {NotificationMessege}
+          </span>
+        </Col>
+        <Col
+          lg={2}
+          md={2}
+          sm={2}
+          className="d-flex justify-content-end align-items-center mt-3"
+        >
+          <span className={styles["NotifcationDateStyles"]}>
+            {NotificationTime}
+          </span>
+        </Col>
+      </Row>
+    </section>
+  );
 };
 
 export default WebNotificationCard;

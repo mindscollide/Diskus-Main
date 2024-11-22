@@ -667,6 +667,10 @@ body[dir="rtl"] a.SignOutOptionMenu.text-black.border-none.FontClass.nav-link {
   align-items: center !important;
 }
 
+body[dir="rtl"] .BellNotificationIconStyles {
+  margin-right: 16px !important;
+}
+
 .NotficationCountSpan {
   width: 17px !important;
   height: 16px !important;
