@@ -2524,11 +2524,11 @@ const Dashboard = () => {
               <Sidebar />
             </Sider>
             <Content>
-              <Row>
+              {/* <Row>
                 <Col lg={12} md={12} sm={12}>
                   <ProgressLoader />
                 </Col>
-              </Row>
+              </Row> */}
               <div className="dashbaord_data">
                 <Outlet />
               </div>

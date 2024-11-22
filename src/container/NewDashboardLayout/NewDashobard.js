@@ -10,7 +10,7 @@ import Task from "./Tasks/Task";
 import RecentActivity from "./RecentActivity/RecentActivity";
 import Notes from "./Notes/Notes";
 import moment from "moment";
-import { Button, Modal, ProgressLoader } from "../../components/elements";
+import { Button, Modal } from "../../components/elements";
 import VerificationFailedIcon from "../../assets/images/failed.png";
 import { useTranslation } from "react-i18next";
 import { setLoader } from "../../store/actions/Auth2_actions";
