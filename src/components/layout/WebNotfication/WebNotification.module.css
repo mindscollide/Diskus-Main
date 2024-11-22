@@ -1,2 +1,11 @@
 .WebNotificationOuterBox {
+  width: 502px !important;
+  height: 655.5px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  position: absolute !important;
+  top: 65px !important;
+  right: 92px !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15) !important;
 }

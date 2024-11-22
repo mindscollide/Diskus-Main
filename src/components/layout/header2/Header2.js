@@ -48,6 +48,7 @@ import { ClearNotesResponseMessage } from "../../../store/actions/Notes_actions.
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 import BellNotificationIcon from "../../../assets/images/BellNotificationIcon.png";
+import WebNotfication from "../WebNotfication/WebNotfication.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -116,7 +117,8 @@ const Header2 = ({ isVideo }) => {
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   const [showButtonOfUpgrade, setShowButtonOfUpgrade] = useState(false);
-
+  //Web Notification state
+  const [showWebNotification, setShowWebNotification] = useState(false);
   let Blur = localStorage.getItem("blur");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
@@ -468,6 +470,10 @@ const Header2 = ({ isVideo }) => {
   // open new dashboard tab in new window for dashboard user
   const openUserTab = () => {
     window.open(window.location.origin + "/#/Diskus/", "_blank");
+  };
+
+  const handleWebNotication = () => {
+    setShowWebNotification(!showWebNotification);
   };
 
   return (
@@ -842,7 +848,6 @@ const Header2 = ({ isVideo }) => {
                 </Row>
                 <Nav className="ml-auto align-items-center">
                   <LanguageSelector />
-
                   <Nav.Link className="me-2">
                     {checkFeatureIDAvailability(1) ||
                     checkFeatureIDAvailability(13) ? (
@@ -979,7 +984,6 @@ const Header2 = ({ isVideo }) => {
                       </div>
                     ) : null}
                   </Nav.Link>
-
                   <Dropdown className="profilebtn-dropdown">
                     <Dropdown.Toggle className="dropdown-toggle">
                       <img
@@ -1199,8 +1203,11 @@ const Header2 = ({ isVideo }) => {
                       </Dropdown.Menu>
                     )}
                   </Dropdown>
-                  {/* Web Notification */}
-                  <span className="position-relative">
+                  {/* Web Notification Bell Icon */}
+                  <span
+                    className="position-relative"
+                    onClick={handleWebNotication}
+                  >
                     <img
                       src={BellNotificationIcon}
                       alt=""
@@ -1208,9 +1215,11 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
+                    {/* Number of Notification Counts */}
                     <span className="NotficationCountSpan">4</span>
                   </span>
-
+                  {/* Web Notification Outer Box */}
+                  {showWebNotification && <WebNotfication />}
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
                     <Nav.Link
                       as={Link}
