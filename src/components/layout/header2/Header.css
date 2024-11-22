@@ -657,3 +657,27 @@ body[dir="rtl"] .UpgradeButtonsClass {
 body[dir="rtl"] a.SignOutOptionMenu.text-black.border-none.FontClass.nav-link {
   margin-left: 97px !important;
 }
+
+.BellNotificationIconStyles {
+  position: relative !important;
+  margin-left: 10px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.NotficationCountSpan {
+  width: 17px !important;
+  height: 16px !important;
+  background: #6172d6 !important;
+  border-radius: 50% !important;
+  color: #fff !important;
+  position: absolute !important;
+  top: -5px !important;
+  left: 31px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 12px !important;
+}
