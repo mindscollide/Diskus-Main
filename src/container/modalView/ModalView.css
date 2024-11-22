@@ -10,11 +10,11 @@
   align-content: center;
 }
 
-.MeetingView .modal-content {
+/* .MeetingView .modal-content {
   height: 620px !important;
   width: 700px !important;
   border-radius: 4px !important;
-}
+} */
 
 .MeetingViewTitleTextField.col-lg-12.col-md-12.col-12 input {
   text-overflow: ellipsis;
@@ -46,11 +46,8 @@ button.dataRoom {
 } */
 
 .modalMeetingViewBody {
-  /* margin: 0 30px !important; */
-  max-height: 75% !important;
-  height: 75% !important;
-  min-height: 75% !important;
-  padding: 0 35px;
+  min-height: 70vh !important;
+  padding: 30px 20px;
 }
 
 .margin-bottom-50 {
