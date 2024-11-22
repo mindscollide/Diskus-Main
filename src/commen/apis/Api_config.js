@@ -1840,8 +1840,15 @@ const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
 const getVideoCallParticipantsForGuest = {
   RequestMethod: "ServiceManager.GetVideoCallParticipants",
 };
-
+const GetSignatureFileAnnotationRM = {
+  RequestMethod: "ServiceManager.GetSignatureFileAnnotation",
+};
+const AddUpdateSignatureFileAnnotationRM = {
+  RequestMethod: "ServiceManager.AddUpdateSignatureFileAnnotation",
+};
 export {
+  GetSignatureFileAnnotationRM,
+  AddUpdateSignatureFileAnnotationRM,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,

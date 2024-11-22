@@ -1206,7 +1206,6 @@ const DataRoom = () => {
       ),
       dataIndex: "name",
       key: "name",
-      sorter: true,
       width: "30%",
       align: "start",
       ellipsis: true,
@@ -1307,7 +1306,6 @@ const DataRoom = () => {
       key: "owner",
       align: "center",
       width: "10%",
-      sortDirections: ["ascend", "descend"],
       onHeaderCell: () => ({
         onClick: () => {
           handeClickSortingFunc(1, 5);
@@ -1364,8 +1362,8 @@ const DataRoom = () => {
       key: "fileSize",
       width: "10%",
       align: "center",
-      sortDirections: ["descend", "ascend"],
       render: (text, record) => {
+        console.log(record, "recordrecordrecordrecord")
         if (record.isFolder) {
           return <Dash />;
         } else {
@@ -2422,7 +2420,6 @@ const DataRoom = () => {
         },
       }),
       render: (text, record) => {
-        console.log(text, "texttexttext");
         if (text !== "") {
           return (
             <span className={styles["dataroom_table_heading"]}>

@@ -238,8 +238,8 @@ const ReviewSignature = () => {
         },
       }),
       render: (text, record) => (
-        <p
-          className={" d-flex align-items-center gap-2 justify-content-center"}>
+        <span
+          className={" d-flex align-items-center gap-2 justify-content-center "}>
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
@@ -248,7 +248,7 @@ const ReviewSignature = () => {
             alt=''
           />
           <span>{text}</span>
-        </p>
+        </span>
       ),
     },
     {

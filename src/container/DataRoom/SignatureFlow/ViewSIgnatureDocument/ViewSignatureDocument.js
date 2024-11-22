@@ -103,7 +103,7 @@ const ViewSignatureDocument = () => {
 
   // === Api calling === //
   async function apiCall(Data) {
-    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, 1));
   }
 
   useEffect(() => {
