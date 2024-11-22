@@ -6,6 +6,7 @@ const initialState = {
   isAgenda: false,
   isAttendees: false,
   modalSteps: false,
+  Loader: true,
 };
 const OnBoardModalStates = (state = initialState, action) => {
   switch (action.type) {
@@ -37,6 +38,12 @@ const OnBoardModalStates = (state = initialState, action) => {
       return {
         ...state,
         isAttendees: action.response,
+      };
+    }
+    case actions.CURRENT_URL_CHECK: {
+      return {
+        ...state,
+        Loader: action.response,
       };
     }
     default:

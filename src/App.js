@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -176,6 +176,7 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
+
   const isLoading = [
     NewMeetingreducer?.Loading,
     auth?.Loading,
@@ -239,6 +240,7 @@ const App = () => {
     // Clean up timeout on component unmount or if `isLoading` changes
     return () => clearTimeout(timer);
   }, [isLoading]);
+
   useEffect(() => {
     if (
       SessionExpireResponseMessage !== null &&
