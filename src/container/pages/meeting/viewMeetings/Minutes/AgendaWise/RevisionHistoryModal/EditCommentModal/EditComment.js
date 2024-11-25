@@ -24,14 +24,21 @@ const EditCommentModal = ({
   const { currentMeetingMinutesToReviewData } = useSelector(
     (state) => state.MinutesReducer
   );
+
+  console.log(
+    currentMeetingMinutesToReviewData,
+    "currentMeetingMinutesToReviewData"
+  );
   const minutesDetails = useSelector(
-    (state) => state.currentMeetingMinutesToReviewData.minutesDetails
+    (state) =>
+      state.MinutesReducer.currentMeetingMinutesToReviewData.minutesDetails
   );
   const minuteID = useSelector(
-    (state) => state.currentMeetingMinutesToReviewData.minuteID
+    (state) => state.MinutesReducer.currentMeetingMinutesToReviewData.minuteID
   );
   const agendaDetails = useSelector(
-    (state) => state.currentMeetingMinutesToReviewData.agendaDetails
+    (state) =>
+      state.MinutesReducer.currentMeetingMinutesToReviewData.agendaDetails
   );
   const cancelEditMinute = () => {
     if (confirmationEdit === false) {

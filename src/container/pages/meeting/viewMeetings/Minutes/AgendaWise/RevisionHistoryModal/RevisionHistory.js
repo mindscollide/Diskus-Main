@@ -113,15 +113,16 @@ const RevisionHistory = ({
   const [minuteDate, setMinuteDate] = useState("");
 
   console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
-  const editMinuteFunction = (data) => {
-    console.log("editMinuteFunctioneditMinuteFunction", data);
+  const editMinuteFunction = (Editdata) => {
+    console.log("editMinuteFunctioneditMinuteFunction", Editdata);
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
-      MinuteID: data.minuteID,
+      MinuteID: Editdata.minuteID,
       IsAgenda: isAgenda,
     };
-    dispatch(GetDataForResendMinuteReview(Data, navigate, t, setEditMinute));
-    dispatch(currentMeetingMinutesToReview(data));
+    dispatch(
+      GetDataForResendMinuteReview(Data, navigate, t, setEditMinute, Editdata)
+    );
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -152,7 +153,7 @@ const RevisionHistory = ({
       setEditMinuteData(GetDataForResendMinuteReviewData.minuteBundle);
     }
   }, [GetDataForResendMinuteReviewData]);
-
+  console.log(editMinute, "editMinuteeditMinuteeditMinuteeditMinute");
   return (
     <Modal
       onHide={
