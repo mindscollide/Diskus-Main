@@ -36,6 +36,10 @@ const Notes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NotesReducer } = useSelector((state) => state);
+
+  const NotesResponseMessege = useSelector(
+    (state) => state.NotesReducer.ResponseMessage
+  );
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -218,20 +222,6 @@ const Notes = () => {
       setExpanded(number);
     }
   };
-
-  useEffect(() => {
-    try {
-      if (
-        NotesReducer.ResponseMessage !== "" &&
-        NotesReducer.ResponseMessage !== t("No-data-available")
-      ) {
-        showMessage(NotesReducer.ResponseMessage, "success", setOpen);
-        dispatch(ClearNotesResponseMessage());
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [NotesReducer.ResponseMessage]);
 
   return (
     <>
