@@ -1204,7 +1204,7 @@ const Header2 = ({ isVideo }) => {
                     )}
                   </Dropdown>
                   {/* Web Notification Bell Icon */}
-                  <span
+                  {/* <span
                     className="position-relative"
                     onClick={handleWebNotication}
                   >
@@ -1215,11 +1215,12 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
-                    {/* Number of Notification Counts */}
                     <span className="NotficationCountSpan">4</span>
-                  </span>
-                  {/* Web Notification Outer Box */}
-                  {showWebNotification && <WebNotfication />}
+                  </span> */}
+                  {/* Web Notification Outer Box Starts */}
+                  {/* {showWebNotification && <WebNotfication />} */}
+                  {/* Web Notification Outer Box End */}
+
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
                     <Nav.Link
                       as={Link}
