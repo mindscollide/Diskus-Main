@@ -34,7 +34,7 @@ const Notification = React.memo(({ open, setOpen }) => {
           icon: icons[severity] || icons.info,
           placement: "topRight",
           onClose: () => setOpen((prev) => ({ ...prev, open: false })),
-          duration: 3,
+          duration: 4,
           closeIcon: <CloseOutlined />,
           className: "snackBar_new",
           style: {

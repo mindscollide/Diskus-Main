@@ -837,7 +837,7 @@ const ViewMeetingDetails = ({
             className="d-flex justify-content-end gap-2"
           >
             <Button
-              text={t("Cancel")}
+              text={t("Back")}
               className={styles["Cancel_Meeting_Details"]}
               onClick={handleCancelMeetingNoPopup}
             />

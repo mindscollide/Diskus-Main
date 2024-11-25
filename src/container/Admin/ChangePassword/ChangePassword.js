@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ChangePassword.module.css";
 import { Container, Row, Col } from "react-bootstrap";
+import "./ChangePassword.css"
 import {
   Button,
   TextField,
-  Loader,
   Modal,
   Notification,
 } from "../../../components/elements";
@@ -209,7 +209,7 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
-                <span className=" color-5a5a5a" style={{ fontSize: "0.5rem" }}>
+                <span className="color-5a5a5a" style={{ fontSize: "0.5rem" }}>
                   ({t("Maximum-password-length-is-25-characters")})
                 </span>
               </Col>
@@ -258,9 +258,9 @@ const ChangePassword = () => {
             <Row className="my-2">
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
-                <p className={"password-must m-0 fw-bold"}>
+                <span className={"password-must"}>
                   {t("Please-ensure")}
-                </p>
+                </span>
                 <PasswordChecklist
                   rules={["minLength", "specialChar", "letter", "match"]}
                   messages={{
@@ -269,8 +269,9 @@ const ChangePassword = () => {
                     letter: t("Password-has-a-letter"),
                     match: t("Passwords-match"),
                   }}
+                  itemClassName={"error_styles_changePassword"}
                   minLength={8}
-                  className={"borderRadius-4"}
+                  className={"borderRadius-4 "}
                   value={Password.newPassword}
                   valueAgain={Password.ConfirmPassword}
                   onChange={(isValid) => {

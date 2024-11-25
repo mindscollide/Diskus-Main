@@ -21,6 +21,8 @@ const initialState = {
   getAllSignatoriesStatusWise: null,
   updateActorBundleStatus: null,
   getDashboardPendingApprovalData: null,
+  getSignatureFileAnnotationResponse: null,
+  addUpdateSignatureFileAnnotationResponse: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -423,6 +425,51 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getDashboardPendingApprovalData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GETSIGNATUREFILEANNOTATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETSIGNATUREFILEANNOTATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSignatureFileAnnotationResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETSIGNATUREFILEANNOTATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSignatureFileAnnotationResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADDUPDATESIGNATUREFILEANNOTATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.ADDUPDATESIGNATUREFILEANNOTATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        addUpdateSignatureFileAnnotationResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.ADDUPDATESIGNATUREFILEANNOTATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        addUpdateSignatureFileAnnotationResponse: null,
         ResponseMessage: action.message,
       };
     }
