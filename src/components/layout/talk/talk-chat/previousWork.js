@@ -4579,7 +4579,7 @@ const TalkChat = () => {
   useEffect(() => {
     if (
       talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage ===
-      "Broadcast-list-created"
+      t("Broadcast-list-created")
     ) {
       setNotification({
         notificationShow: true,

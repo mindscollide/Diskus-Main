@@ -9,6 +9,7 @@ import {
   Notification,
   NotificationBar,
   GuestJoinRequest,
+  ProgressLoader,
 } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
@@ -2552,6 +2553,11 @@ const Dashboard = () => {
               <Sidebar />
             </Sider>
             <Content>
+              {/* <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <ProgressLoader />
+                </Col>
+              </Row> */}
               <div className="dashbaord_data">
                 <Outlet />
               </div>

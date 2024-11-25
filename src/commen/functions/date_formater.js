@@ -839,6 +839,16 @@ export function formatDateToMMDDYY(date) {
   const day = date.getDate().toString().padStart(2, "0");
   return `${month}${day}${year}`;
 }
+// this is for return only MMDDYY
+export function formatDateToYYYYMMDD(date) {
+  if (!date || isNaN(date.getTime())) {
+    return ""; // Return an empty string for empty or invalid dates
+  }
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}${month}${day}`;
+}
 
 // Example usage: handling both type and convert it into utc using in data room search
 // "15 September, 2023";
@@ -1600,4 +1610,26 @@ export const isSameAsToday = (utcDateString) => {
     isSame,
     formattedDate,
   };
+};
+
+export const dateConverterIntoUTCForDataroom = (newDate, no) => {
+  if (no === 1) {
+    newDate.setHours(0, 0, 0, 0); // Set to 00:00:00 in local time
+  } else {
+    newDate.setHours(23, 58, 59, 0); // Set to 23:58:59 in local time
+  }
+  console.log(newDate, no, "newDatenewDate");
+  // Convert to UTC components
+  const year = newDate.getUTCFullYear();
+  const month = String(newDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const day = String(newDate.getUTCDate()).padStart(2, "0");
+  const hours = String(newDate.getUTCHours()).padStart(2, "0");
+  const minutes = String(newDate.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(newDate.getUTCSeconds()).padStart(2, "0");
+
+  // Combine into the desired format
+  const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
+  console.log(formattedDate, "UTC formatted date");
+  return formattedDate;
 };

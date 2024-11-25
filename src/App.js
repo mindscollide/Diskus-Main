@@ -225,20 +225,58 @@ const App = () => {
 
   const [showLoader, setShowLoader] = useState(false);
 
+  // useEffect(() => {
+  //   let timer;
+  //   if (isLoading) {
+  //     // Show loader immediately when any state is loading
+  //     setShowLoader(true);
+  //   } else {
+  //     // Set a timeout to delay hiding the loader
+  //     timer = setTimeout(() => {
+  //       setShowLoader(false);
+  //     }, MIN_LOADER_DISPLAY_TIME);
+  //   }
+  //   // Clean up timeout on component unmount or if `isLoading` changes
+  //   return () => clearTimeout(timer);
+  // }, [isLoading]);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    let timer;
+    let progressInterval;
+
     if (isLoading) {
-      // Show loader immediately when any state is loading
-      setShowLoader(true);
+      setShowLoader(true); // Show loader
+      setProgress(0); // Start progress from 0%
+
+      // Increment progress gradually
+      progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 90) {
+            return prev + 2; // Gradually increase (up to 90%)
+          } else {
+            return prev; // Pause near 90% while still loading
+          }
+        });
+      }, 100); // Adjust speed of increment
     } else {
-      // Set a timeout to delay hiding the loader
-      timer = setTimeout(() => {
-        setShowLoader(false);
-      }, MIN_LOADER_DISPLAY_TIME);
+      // When loading completes, animate from current progress to 100%
+      progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 100) {
+            return prev + 2; // Gradually increase from 90% to 100%
+          } else {
+            clearInterval(progressInterval); // Clear interval at 100%
+            const timeout = setTimeout(() => {
+              setShowLoader(false); // Hide loader after reaching 100%
+            }, 300); // Optional delay to display full progress
+            return () => clearTimeout(timeout);
+          }
+        });
+      }, 50); // Faster increment for the remaining 10%
     }
-    // Clean up timeout on component unmount or if `isLoading` changes
-    return () => clearTimeout(timer);
+    // Cleanup interval when `isLoading` changes or component unmounts
+    return () => clearInterval(progressInterval);
   }, [isLoading]);
+  
   useEffect(() => {
     if (
       SessionExpireResponseMessage !== null &&
@@ -263,7 +301,7 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      {navigator.onLine && showLoader && <Loader />}
+      {navigator.onLine && showLoader && <Loader progress={progress} />}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

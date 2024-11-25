@@ -361,16 +361,7 @@ export const router = createHashRouter(
               </Suspense>
             }
           />
-          <Route
-            path="Minutes"
-            element={
-              <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="Minutes">
-                  <MinutesFlow />
-                </RouteWrapperUser>
-              </Suspense>
-            }
-          />
+
           <Route
             path="todolist"
             element={

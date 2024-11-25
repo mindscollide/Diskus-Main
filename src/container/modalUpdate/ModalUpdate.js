@@ -37,6 +37,7 @@ import {
   cleareAssigneesState,
   CancelMeeting,
   allAssignessList,
+  GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
@@ -917,7 +918,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (checkFlag !== 6 && checkFlag !== 7) {
       await dispatch(allAssignessList(navigate, t, false));
     }
-    // dispatch(GetAllReminders(navigate, t));
+    dispatch(GetAllReminders(navigate, t));
   };
 
   // for list of all assignees

@@ -11,8 +11,9 @@ import { useTranslation } from "react-i18next";
 import { getBase64 } from "../../../commen/functions/getBase64";
 import { PlusLg } from "react-bootstrap-icons";
 import { isBase64 } from "../../../commen/functions/validations";
+import DefaultAvatar from "../../../assets/images/DefaultAvatar.png";
 
-const AvatarEditorComponent = ({ pictureObj }) => {
+const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
@@ -32,6 +33,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
   const handleCancel = () => setPreviewOpen(false);
 
   const uploadProfilePic = ({ file }) => {
+    console.log(file, "filefilefilefile");
     getBase64(file)
       .then((res) => {
         let fileUrL = res.split(",")[1];
@@ -56,6 +58,34 @@ const AvatarEditorComponent = ({ pictureObj }) => {
     setFileList(memoizedFile);
   }, [memoizedFile]);
 
+  //For Removing Profile Picture funtion
+  const onRemovePicture = () => {
+    // Simulate base64 processing for DefaultAvatar
+    fetch(DefaultAvatar)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Image = reader.result.split(",")[1]; // Get the base64 string
+          dispatch(
+            updateUserProfilePicture(
+              navigate,
+              t,
+              "DefaultAvatar.png",
+              base64Image
+            )
+          );
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch((err) =>
+        console.error("Error converting DefaultAvatar to base64:", err)
+      );
+
+    // Reset fileList to empty
+    setFileList([]);
+  };
+
   return (
     <>
       <ImgCrop rotationSlider modalCancel={t("Cancel")} modalOk={t("Ok")}>
@@ -65,7 +95,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
           customRequest={uploadProfilePic}
           onPreview={handlePreview}
           accept="image/png, image/jpeg"
-          onRemove={() => setFileList([])}
+          onRemove={onRemovePicture}
           className={
             fileList.length > 0 && isBase64(fileList[0].url)
               ? "image_uploader_box"

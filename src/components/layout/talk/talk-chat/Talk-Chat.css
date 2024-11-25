@@ -1475,14 +1475,11 @@ body[dir="rtl"] label.ant-checkbox-wrapper.chat-message-checkbox-sender {
   border-radius: 4px;
   background-color: #5f78d6 !important;
   color: #fff !important;
-  position: absolute;
-  right: 0;
-  top: -2px;
   font-size: 10px;
 }
 
 p.chat-username.blocked-users {
-  margin-top: 17px !important;
+  max-width: 145px !important;
 }
 
 .chat-block.blocked-users {

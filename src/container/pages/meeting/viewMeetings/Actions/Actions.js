@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "./Actions.module.css";
+import "./Actions.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Table } from "../../../../../components/elements";
+import { Button, TableToDo } from "../../../../../components/elements";
 import { ChevronDown } from "react-bootstrap-icons";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -289,13 +289,13 @@ const Actions = ({
       <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
           text={"Reset"}
-          className={styles["FilterResetBtn"]}
+          className={"FilterResetBtn"}
           onClick={resetFilter}
         />
         <Button
           text={"Ok"}
           disableBtn={selectedValues.length === 0}
-          className={styles["ResetOkBtn"]}
+          className={"ResetOkBtn"}
           onClick={handleApplyFilter}
         />
       </div>
@@ -317,7 +317,7 @@ const Actions = ({
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "25%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -344,7 +344,7 @@ const Actions = ({
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
               <img src={DescendIcon} alt="" />
@@ -356,7 +356,8 @@ const Actions = ({
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "220px",
+      width: "25%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -393,7 +394,7 @@ const Actions = ({
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
               <img src={DescendIcon} alt="" />
@@ -403,9 +404,10 @@ const Actions = ({
           </span>
         </>
       ),
-      width: "220px",
+      width: "25%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -471,7 +473,7 @@ const Actions = ({
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "10%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -502,7 +504,7 @@ const Actions = ({
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "15%",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -581,7 +583,7 @@ const Actions = ({
       title: "",
       dataIndex: "",
       key: "taskCreator",
-      width: "120px",
+      width: "5%",
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (
@@ -712,6 +714,16 @@ const Actions = ({
     dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
   };
 
+  const scroll = {
+    y: "64vh",
+    scrollbar: {
+      // You can adjust the width and distance as needed
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+      // Other scrollbar options
+    },
+  };
+
   return (
     <section>
       {createaTask ? (
@@ -728,7 +740,7 @@ const Actions = ({
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
                 text={t("Create-task")}
-                className={styles["Create_Task_Button"]}
+                className={"Create_Task_Button"}
                 icon={<img draggable={false} src={addmore} alt="" />}
                 onClick={handleCreateTaskButton}
               />
@@ -738,12 +750,13 @@ const Actions = ({
           <Row>
             <Col lg={12} md={12} sm={12}>
               <>
-                <section className={styles["HeightDefined"]}>
+                <section className={"HeightDefined"}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <Table
+                      <TableToDo
+                        sortDirections={["descend", "ascend"]}
                         column={ActionsColoumn}
-                        scroll={{ y: "46vh", x: "hidden" }}
+                        scroll={scroll}
                         pagination={false}
                         className={"ToDo"}
                         rows={actionsRows}
@@ -771,9 +784,7 @@ const Actions = ({
                                   sm={12}
                                   className="d-flex justify-content-center"
                                 >
-                                  <span
-                                    className={styles["Empty-State_Heading"]}
-                                  >
+                                  <span className={"Empty-State_Heading"}>
                                     {t("Create-tasks-instantly")}
                                   </span>
                                 </Col>
@@ -785,9 +796,7 @@ const Actions = ({
                                   sm={12}
                                   className="d-flex justify-content-center"
                                 >
-                                  <span
-                                    className={styles["EmptyState_SubHeading"]}
-                                  >
+                                  <span className={"EmptyState_SubHeading"}>
                                     {t(
                                       "The-meeting-wrapped-up-lets-dive-into-some-task"
                                     )}
@@ -849,7 +858,7 @@ const Actions = ({
                 >
                   <Button
                     text={t("Cancel")}
-                    className={styles["CloneMeetingButton"]}
+                    className={"CloneMeetingButton"}
                     onClick={handleCancelActionNoPopup}
                   />
 
@@ -859,7 +868,7 @@ const Actions = ({
                     <>
                       <Button
                         text={t("Next")}
-                        className={styles["SaveButtonActions"]}
+                        className={"SaveButtonActions"}
                         onClick={nextTabToPolls}
                       />
                     </>

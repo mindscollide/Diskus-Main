@@ -862,15 +862,15 @@ input[type="checkbox"][disabled]+span:after,
 }
 
 .modal-backdrop.show {
-  background: rgba(255, 255, 255, 0.3) !important;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px) !important;
-  opacity: inherit;
+  /* background: rgba(255, 255, 255, 0.3) !important; */
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px) !important;
+  /* opacity: inherit; */
 }
 
-.modal-backdrop.fade {
+/* .modal-backdrop.fade {
   opacity: 1 !important;
-}
+} */
 
 /*other style*/
 .agendas-list {
@@ -1707,13 +1707,13 @@ i.icon-add-square.uploadfile {
   margin-left: -30px;
 }
 
-.ant-table-wrapper.ToDo
+/* .ant-table-wrapper.ToDo
   .ant-table
   .ant-table-container
   .ant-table-content
   thead.ant-table-thead {
   background: none !important;
-}
+} */
 
 .ant-table-wrapper.Billing_TablePakageSelection
   .ant-table
@@ -1726,13 +1726,7 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
-.ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-tbody
-  > tr
-  > th.ant-table-column-sorters {
-  display: contents !important;
-}
+
 
 .ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
@@ -2076,8 +2070,7 @@ p.fileUploadLabel {
 }
 
 .agendaList {
-  height: 475px;
-  /* height    : 350px; */
+  max-height: 50vh !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;
@@ -2787,12 +2780,12 @@ input#Participant::placeholder {
   height: auto !important;
 }
 
-.ToDo .ant-table table {
+/* .ToDo .ant-table table {
   border-spacing: 0 10px !important;
   border-radius: 50px !important;
   table-layout: fixed !important;
   margin-top: -19px !important;
-}
+} */
 
 .Billing_TablePakageSelection .ant-table table {
   border-spacing: 0 30px !important;
@@ -2805,7 +2798,7 @@ input#Participant::placeholder {
   padding: 0px 5px;
   border-spacing: 0 25px !important;
   border-radius: 50px !important;
-  table-layout: fixed !important;
+  table-layout: inherit !important;
   margin-top: -19px !important;
 }
 
@@ -3287,36 +3280,36 @@ body.blur-background section.ant-layout.positionRelative .container {
 }
 
 li.invalid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
   justify-content: center;
 }
 
 li.valid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center !;
+  align-items: center !important;
 }
 
 .invalid span {
   color: #ff0000 !important;
-  font-weight: bold;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .invalid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .valid span {
-  font-weight: bold;
   color: #6172d6 !important;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .valid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 span.userstatus-signal-enabled {
@@ -4023,7 +4016,7 @@ svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   border-bottom-left-radius: 4px !important;
 }
 
-.ant-notification-notice-message body[dir="rtl"] .ant-table-wrapper.ToDo {
+.ant-notification-notice-description body[dir="rtl"] .ant-table-wrapper.ToDo {
   padding-left: 10px;
   padding-right: 0px;
 }
@@ -4033,7 +4026,7 @@ body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   padding-right: 0px;
 }
 
-.ToDo::-webkit-scrollbar {
+/* .ToDo::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2 !important;
@@ -4043,7 +4036,7 @@ body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
-}
+} */
 
 .Billing_TablePakageSelection::-webkit-scrollbar {
   width: 0.5rem;
@@ -5041,9 +5034,9 @@ body[dir="rtl"]
   padding: 2px 16px !important;
 }
 
-.ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
+/* .ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
   padding: 2px 16px !important;
-}
+} */
 
 .ant-table-wrapper.Billing_TablePakageSelection.ant-table
   .ant-table-thead
@@ -6264,6 +6257,9 @@ textarea {
 .newMeetingTable .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
+.DataRoom_Table .ant-table-column-sorters .ant-table-column-sorter {
+  display: none !important;
+}
 button.grayScaled {
   filter: grayscale(0.8);
   background: #ccc !important;
@@ -6698,196 +6694,65 @@ td.ant-table-cell.minutesParticipant {
 /* React Stepper Styles */
 
 /* CSS for the Round Button of Stepper */
-
-/* outer Color Css starts hover state also  */
-.StepButton-d0-0-2-6.active:hover {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-.StepButton-d0-0-2-6.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d2-0-2-12 {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d2-0-2-12.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20 {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20.active {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d4-0-2-20.active:hover {
-  background: #6172d6 !important;
-  padding: 33px !important;
-  z-index: 1 !important;
-}
-/* outer Color Css Ends hover state also  */
-/* Inside Numbers CSS  starts*/
-.StepButtonContent-d1-0-2-7.active {
+.custom-stepper .StepButtonContent-d1-0-2-7 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-.StepButtonContent-d3-0-2-13 {
+.custom-stepper .StepButtonContent-d3-0-2-13 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-.StepButtonContent-d5-0-2-21 {
+.custom-stepper .StepButtonContent-d5-0-2-21 {
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+}
+/* CSS for the Round Button of Stepper */
+.custom-stepper .StepButtonContent-d7-0-2-27 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
 
-/* After Moving to next Step Css Starts */
-.StepButton-d0-0-2-6.completed {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButton-d0-0-2-6.completed:hover {
-  background-color: rgb(224, 224, 224) !important;
-  font-size: 30px !important;
-  font-weight: 700 !important;
-  z-index: 1 !important;
-}
-
-.StepButtonContent-d1-0-2-7.completed {
+.custom-stepper .StepButtonContent-d9-0-2-31 {
   color: #fff !important;
   font-size: 30px !important;
   font-weight: 700 !important;
 }
-/* After Moving to next Step Css Ends */
+
+.custom-stepper .StepButtonContent-d11-0-2-37 {
+  color: #fff !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+}
 
 /* Connector Stepper CSS Starts */
-.Connector-d1-0-2-17 {
+.custom-stepper .Connector-0-2-15 {
   border-color: #e1e1e1 !important;
   border-top-style: dashed !important;
-  margin-top: 18px !important;
-  width: 100% !important;
+  margin-top: 2px !important;
+  margin-left: -24px !important;
+  width: 130% !important;
 }
 
-.Connector-d3-0-2-23 {
-  border-color: #e1e1e1 !important;
-  border-top-style: dashed !important;
-  margin-top: 18px !important;
-  width: 100% !important;
+/* Customer Stepper Buttons Z index  */
+
+button#RFS-StepButton {
+  z-index: 1 !important;
+  font-size: 26px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
 }
 
-body[dir="rtl"] .Connector-d3-0-2-23 {
-    margin-right: -222% !important;
+/* Specific RTL handling */
+body[dir="rtl"] .custom-stepper .Connector-0-2-15 {
+  margin-right: -163% !important;
 }
 /* Connector Stepper CSS Ends */
-
-/* Inside Numbers CSS  starts*/
-span.billing-contact {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.billing-contactActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-.no-padding-top {
-  padding-top: 0 !important;
-}
-
-span.billing-address {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.billing-addressActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.package-details {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.package-detailsActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.payment-method {
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-span.payment-methodActive {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-}
-
-body[dir="rtl"] span.billing-address {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-addressActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.package-details {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.package-detailsActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.payment-method {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.payment-methodActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-contactActive {
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] span.billing-contact {
-  font-weight: 600 !important;
-}
 
 /* Selecting pakage Details Css Usermangement */
 tr.ant-table-row.ant-table-row-level-0.PakageDetailsTable {
@@ -7843,77 +7708,106 @@ body.guest-video-call {
 }
 .MQTT_Notification {
   width: 100% !important;
-  padding: 15px !important;
-  min-height: 81px !important;
+  padding: 23px 15px !important;
+  height: auto !important;
   display: flex !important;
   align-items: center !important;
   position: relative;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.16) !important;
+  overflow: visible !important;
+  z-index: 0;
+  border-radius: 4px !important;
 }
 .MQTT_Notification::before {
   content: "";
   position: absolute;
-  width: 30px;
+  width: 20px !important;
   left: -15px;
   overflow: hidden;
   height: 100%;
+  z-index: 1;
   border-top-left-radius: 4px !important;
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-top-left-radius: 4px !important;
 }
-.MQTT_Notification
-  .ant-notification-notice.ant-notification-notice-info
-  .ant-notification-notice-closable {
-  border-radius: 4px !important;
 
-  z-index: 999999999999 !important;
+body[dir="rtl"] .MQTT_Notification::before {
+  content: "";
+  position: absolute;
+  width: 20px !important;
+  right: -15px;
+  left: auto;
+  overflow: hidden;
+  height: 100%;
+  z-index: 1;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
 }
+
+
 .MQTT_Notification .ant-notification-notice-close span svg {
   color: #5a5a5a !important;
 }
 
-.MQTT_Notification .ant-notification-notice-icon {
-  font-size: 24px !important;
-  line-height: 24px !important;
-}
+
 
 .MQTT_Notification span.ant-notification-notice-icon img {
   width: 38px !important;
 }
 
-.MQTT_Notification
+/* .MQTT_Notification
   .ant-notification-notice-with-icon
   .ant-notification-notice-description {
-  margin-left: 48px !important;
-  font-size: 14px !important;
-  display: none !important;
-}
-
-.MQTT_Notification
-  .ant-notification-notice-with-icon
-  .ant-notification-notice-message {
   width: 100% !important;
-  margin-left: 60px !important;
-  margin-bottom: 0 !important;
   display: flex !important;
   font-size: 14px !important;
   justify-content: flex-start;
   align-items: center !important;
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  line-height: 1.2 !important
+  ;
+} */
+.MQTT_Notification  .ant-notification-notice-message {
+  display: none !important;
 }
-.MQTT_Notification .ant-notification-notice-message {
-  color: #000 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.MQTT_Notification .ant-notification-notice-description {
+  word-wrap: break-word;
+  text-overflow: unset;
+  display: block;
+  min-width: 400px !important;
+  margin-right: 40px !important;
+  margin-left: 60px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+body[dir="rtl"] .MQTT_Notification .ant-notification-notice-description {
+  word-wrap: break-word;
+  text-overflow: unset;
+  display: block;
+  min-width: 425px !important;
+  margin-right: 60px !important;
+  margin-left: 20px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
 }
 .MQTT_Notification .ant-notification-notice-with-icon {
   display: flex !important;
   align-items: center !important;
+  justify-content: flex-start !important;
 }
 
-body[dir="rtl"] .MQTT_Notification .ant-notification-notice-message {
-  margin-right: 20px !important;
+
+
+.MQTT_Notification .ant-notification-notice-close {
+  top: 25px !important;
+  
+}
+body[dir="rtl"] .MQTT_Notification .ant-notification-notice-close {
+  top: 25px !important;
 }
 
 /* Scedule a meeting  Starts  */

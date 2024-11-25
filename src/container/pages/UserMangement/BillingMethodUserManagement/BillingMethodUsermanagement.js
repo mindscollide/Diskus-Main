@@ -13,7 +13,10 @@ import { useSelector } from "react-redux";
 import ThankForPayment from "../ModalsUserManagement/ThankForPaymentModal/ThankForPayment";
 import { useDispatch } from "react-redux";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
-import { paymentInitiateMainApi } from "../../../../store/actions/UserManagementActions";
+import {
+  LoginFlowRoutes,
+  paymentInitiateMainApi,
+} from "../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 const BillingMethodUsermanagement = ({ setStoredStep }) => {
@@ -32,6 +35,18 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
   let OrganizationSubscriptionID = localStorage.getItem(
     "organizationSubscriptionID"
   );
+
+  // const firstvaue = document.querySelector(".StepButtonContent-0-2-5");
+
+  // const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
+
+  // const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
+
+  // const forthvaue = document.querySelector(".StepButtonContent-d7-0-2-27");
+
+  // const fifthhvaue = document.querySelector(".StepButtonContent-d9-0-2-31");
+
+  // const sixvaue = document.querySelector(".StepButtonContent-d11-0-2-37");
 
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
@@ -99,6 +114,16 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
       errorStatus: false,
     },
   });
+
+  //React Stepper Numbers manuipulation
+  useEffect(() => {
+    const stepButtons = document.querySelectorAll(".step-button");
+    stepButtons.forEach((step, index) => {
+      if (step) {
+        step.innerText = ((index % 3) + 1).toString().padStart(2, "0"); // Append numbers dynamically
+      }
+    });
+  }, []);
 
   // translate Languages start
   const languages = [
@@ -293,28 +318,12 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     });
   };
 
-  //React Stepper Numbers manuipulation
-  useEffect(() => {
-    const firstvaue = document.querySelector(".StepButtonContent-d1-0-2-7");
-    const secondvaue = document.querySelector(".StepButtonContent-d3-0-2-13");
-    const thirdvaue = document.querySelector(".StepButtonContent-d5-0-2-21");
-
-    const fourthvaue = document.querySelector(".StepButtonContent-d7-0-3-27");
-
-    if (firstvaue) {
-      // Set the new value
-      firstvaue.innerText = "01";
-    }
-    if (secondvaue) {
-      secondvaue.innerText = "02";
-    }
-    if (thirdvaue) {
-      thirdvaue.innerText = "03";
-    }
-    if (fourthvaue) {
-      fourthvaue.innerText = "04";
-    }
-  }, []);
+  //Go Back
+  const onClickLink = () => {
+    dispatch(LoginFlowRoutes(1));
+    localStorage.setItem("LoginFlowPageRoute", 1);
+    navigate("/");
+  };
 
   return (
     <Container className={styles["sectionStyling"]}>
@@ -345,47 +354,64 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Stepper activeStep={activeStep}>
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 0
-                          ? "billing-contactActive"
-                          : "billing-contact"
-                      }
-                    >
-                      {t("Package-details")}
-                    </span>
-                  }
-                />
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 1
-                          ? "billing-addressActive"
-                          : "billing-address"
-                      }
-                    >
-                      {t("Billing-contact")}
-                    </span>
-                  }
-                />
-                <Step
-                  label={
-                    <span
-                      className={
-                        activeStep >= 2
-                          ? "package-detailsActive"
-                          : "package-details"
-                      }
-                    >
-                      {t("Billing-address")}
-                    </span>
-                  }
-                />
-              </Stepper>
+              <div className="custom-stepper">
+                <Stepper
+                  activeStep={activeStep}
+                  styleConfig={{
+                    activeBgColor: "#6172d6",
+                    completedBgColor: "rgb(224, 224, 224)",
+                    inactiveBgColor: "rgb(224, 224, 224)",
+                    size: "4rem",
+                    zIndex: "1",
+                  }}
+                >
+                  <Step
+                    className="step-button"
+                    data-step="1"
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Package-details")}
+                      </span>
+                    }
+                  />
+                  <Step
+                    className="step-button"
+                    data-step="2"
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Billing-contact")}
+                      </span>
+                    }
+                  />
+                  <Step
+                    className="step-button"
+                    data-step="3"
+                    label={
+                      <span
+                        style={{
+                          color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {t("Billing-address")}
+                      </span>
+                    }
+                  />
+                </Stepper>
+              </div>
             </Col>
           </Row>
           <Row>
@@ -415,8 +441,19 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
 
           <Row className="mt-3">
             <Col
-              lg={12}
-              md={12}
+              lg={3}
+              md={3}
+              sm={3}
+              xs={12}
+              className="d-flex justify-content-start"
+            >
+              <span onClick={onClickLink} className={styles["signUp_goBack"]}>
+                {t("Go-back")}
+              </span>
+            </Col>
+            <Col
+              lg={9}
+              md={9}
               sm={12}
               xs={12}
               className="d-flex justify-content-end gap-2"

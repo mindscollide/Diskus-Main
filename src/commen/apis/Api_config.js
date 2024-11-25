@@ -1850,7 +1850,15 @@ const getVideoCallParticipantsAndWaitingList = {
   RequestMethod: "ServiceManager.GetVideoCallParticipantsAndWaitingList",
 };
 
+const GetSignatureFileAnnotationRM = {
+  RequestMethod: "ServiceManager.GetSignatureFileAnnotation",
+};
+const AddUpdateSignatureFileAnnotationRM = {
+  RequestMethod: "ServiceManager.AddUpdateSignatureFileAnnotation",
+};
 export {
+  GetSignatureFileAnnotationRM,
+  AddUpdateSignatureFileAnnotationRM,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   getAllMeetingUsersRSVPDetailsRM,
   validateEncryptedStringResolutionRelatedEmailDataRM,

@@ -31,10 +31,17 @@ const showIsAttendeesOnboard = (response) => {
     response: response,
   };
 };
+const currentURLCheck = (response) => {
+  return {
+    type: actions.CURRENT_URL_CHECK,
+    response: response,
+  };
+};
 export {
   showModalOnboard,
   showIsDetailOnboard,
   showIsAgendaOnboard,
   showIsAttendeesOnboard,
   showModalStepsOnboard,
+  currentURLCheck,
 };

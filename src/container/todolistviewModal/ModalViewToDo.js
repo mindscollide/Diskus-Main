@@ -656,7 +656,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 lg={12}
                 className='d-flex justify-content-end'>
                 <Button
-                  className={"cancelButton_createTodo"}
+                  className={"CloseBtn_TaskView"}
                   onClick={handleClose}
                   text={t("Close")}
                 />

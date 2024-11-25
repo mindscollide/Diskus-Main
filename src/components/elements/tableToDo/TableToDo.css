@@ -99,3 +99,35 @@
 .ant-table-wrapper.ApprovalsTable .ant-table .ant-table-tbody > tr > td {
   padding: 12px 0px !important;
 }
+
+.ant-table-wrapper.ToDo .ant-table {
+  background: none !important;
+}
+
+.ToDo .ant-table table {
+  border-spacing: 0 10px !important;
+  border-radius: 50px !important;
+  table-layout: fixed !important;
+  margin-top: -19px !important;
+}
+.ToDo::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ToDo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+}
+.ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
