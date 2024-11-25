@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
@@ -6,6 +6,11 @@ import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen } from "../../../../elements";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
+import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
+import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
+
 import {
   endIndexUrl,
   extractedUrl,
@@ -16,13 +21,19 @@ import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
 import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
+import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
+import { useNavigate } from "react-router-dom";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state
   );
+
+  const { editorRole } = useContext(MeetingContext);
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
   let currentUserID = Number(localStorage.getItem("userID"));
   const { t } = useTranslation();
@@ -38,6 +49,19 @@ const VideoPanelNormal = () => {
   let currentUserName = localStorage.getItem("name");
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
+  const getAllParticipantGuest = useSelector(
+    (state) => state.GuestVideoReducer.getAllParticipantGuest
+  );
+
+  // For acccept Join name participantList
+  const getNewParticipantsMeetingJoin = useSelector(
+    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const [allParticipant, setAllParticipant] = useState([]);
+  const [participantsList, setParticipantsList] = useState([]);
+
+  console.log(participantsList, "participantsListparticipantsList");
   const [callerURL, setCallerURL] = useState("");
   const [participantURL, setParticipantURL] = useState("");
 
@@ -50,6 +74,81 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
+
+  useEffect(() => {
+    let getRoomId = localStorage.getItem("participantRoomId");
+    let Data = {
+      RoomID: String(getRoomId),
+    };
+    dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      getAllParticipantGuest !== null &&
+      getAllParticipantGuest !== undefined &&
+      getAllParticipantGuest.participantList.length > 0
+    ) {
+      setAllParticipant(getAllParticipantGuest.participantList);
+    } else {
+      setAllParticipant([]);
+    }
+  }, [getAllParticipantGuest]);
+
+  useEffect(() => {
+    // Sync allParticipant with participantsList when it updates
+    if (participantsList.length > 0) {
+      setAllParticipant(participantsList);
+    } else {
+      setAllParticipant([]);
+    }
+  }, [participantsList]);
+
+  useEffect(() => {
+    if (
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
+    ) {
+      console.log(
+        getNewParticipantsMeetingJoin,
+        "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
+      );
+      console.log(getNewParticipantsMeetingJoin.length);
+      // Extract and set the new participants to state
+      setParticipantsList(getNewParticipantsMeetingJoin);
+    } else {
+      setParticipantsList([]);
+    }
+  }, [getNewParticipantsMeetingJoin]);
+
+  useEffect(() => {
+    if (
+      getNewParticipantsMeetingJoin !== null &&
+      getNewParticipantsMeetingJoin !== undefined &&
+      getNewParticipantsMeetingJoin.length > 0
+    ) {
+      // Filter out duplicates based on UID
+      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
+        (acc, current) => {
+          console.log(acc, "datadatdtad");
+          console.log(current, "currentcurrent");
+
+          // Only add the current participant if its UID is not already in acc
+          if (!acc.find((participant) => participant.guid === current.guid)) {
+            acc.push(current);
+          }
+          return acc;
+        },
+        []
+      );
+
+      setParticipantsList(uniqueParticipants);
+      console.log(uniqueParticipants, "uniqueParticipants");
+    } else {
+      setParticipantsList([]);
+    }
+  }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
     try {
@@ -300,7 +399,69 @@ const VideoPanelNormal = () => {
                         {/* <VideoCallParticipants /> */}
 
                         {/* this is new Host Panel */}
-                        <VideoNewParticipantList />
+                        {editorRole.role === "Organizer" ? (
+                          <VideoNewParticipantList />
+                        ) : (
+                          <>
+                            <div className="Participants-Lists">
+                              <>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <p className="Participant-name-title">
+                                      {t("Participants")}
+                                    </p>
+                                  </Col>
+                                </Row>
+                                {allParticipant.length > 0 &&
+                                  allParticipant.map((participant, index) => {
+                                    console.log(
+                                      participant,
+                                      "participantparticipantparticipant"
+                                    );
+                                    return (
+                                      <>
+                                        <Row key={participant.guid}>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-flex justify-content-start"
+                                          >
+                                            <p>{participant.name}</p>{" "}
+                                          </Col>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-flex justify-content-end gap-2"
+                                          >
+                                            <img
+                                              src={VideoOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Video Off"
+                                            />
+                                            <img
+                                              src={MicOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Mic Mute"
+                                            />
+                                            <img
+                                              src={Raisehandselected}
+                                              width="20px"
+                                              height="20px"
+                                              alt="raise hand"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </>
+                                    );
+                                  })}
+                              </>
+                            </div>
+                          </>
+                        )}
                       </Col>
                     ) : null}
                     {/* <VideoCallParticipants /> */}

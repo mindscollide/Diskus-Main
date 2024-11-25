@@ -78,8 +78,12 @@ const VideoCallNormalHeader = ({
     (state) => state.NewMeetingreducer.getmeetingURL
   );
 
-  const participantAcceptedName = useSelector(
-    (state) => state.videoFeatureReducer.participantNameDataAccept
+  const videoControlHost = useSelector(
+    (state) => state.videoFeatureReducer.videoControlHost
+  );
+
+  const audioControlHost = useSelector(
+    (state) => state.videoFeatureReducer.audioControlHost
   );
 
   // For acccept Join name participantList

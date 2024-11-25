@@ -18,6 +18,8 @@ import {
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
+  setAudioControlHost,
+  setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import NormalHostVideoCallComponent from "../normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -40,7 +42,10 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
 
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
+  const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
+  const [isMicEnabled, setIsMicEnabled] = useState(true);
+
   console.log(isWebCamEnabled, "isWebCamEnabled");
 
   useEffect(() => {
@@ -74,9 +79,44 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     };
   }, [isWebCamEnabled]);
 
+  // for set Video Web Cam on CLick
+  const toggleAudio = (enable, check) => {
+    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    dispatch(setAudioControlHost(!enable));
+    if (enable) {
+      sessionStorage.setItem("isMicEnabled", true);
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((audioStream) => {
+          // Stop any existing audio tracks before starting a new one
+          if (streamAudio) {
+            streamAudio.getAudioTracks().forEach((track) => track.stop());
+          }
+
+          const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
+          setStreamAudio(newStream);
+          setIsMicEnabled(true);
+        })
+        .catch((error) => {
+          alert("Error accessing microphone: " + error.message);
+        });
+    } else {
+      sessionStorage.setItem("isMicEnabled", false);
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      setIsMicEnabled(false); // Microphone is now disabled
+    }
+  };
   // Toggle Video (Webcam)
-  const toggleVideo = (flag) => {
-    if (flag) {
+  const toggleVideo = (enable) => {
+    sessionStorage.setItem("enableVideo", !enable);
+    dispatch(setVideoControlHost(!enable));
+
+    if (enable) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((videoStream) => {
@@ -115,7 +155,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
-      IsMuted: false,
+      IsMuted: isMicEnabled,
       HideVideo: isWebCamEnabled,
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
@@ -135,15 +175,19 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
             className="d-flex justify-content-end align-items-center gap-2"
           >
             <div className="max-videohost-Icons-state">
-              {/* {micOn ? ( */}
-              <img src={MicOn2} className="cursor-pointer" />
-              {/* ) : (
+              {isMicEnabled ? (
                 <img
                   src={MicOn2}
-                  onClick={() => openMicStatus(true)}
+                  className="cursor-pointer"
+                  onClick={() => toggleAudio(false, 2)}
+                />
+              ) : (
+                <img
+                  src={MicOff}
+                  onClick={() => toggleAudio(true, 1)}
                   className="cursor-pointer"
                 />
-              )} */}
+              )}
             </div>
             <div className="max-videohost-Icons-state">
               {isWebCamEnabled ? (

@@ -2310,6 +2310,9 @@
   "Anyone": "Anyone",
   "Any": "Any",
   "Document": "Document",
-  "Folder":"Folder",
-  "Forms": "Forms"
+  "Folder": "Folder",
+  "Forms": "Forms",
+  "Removed-from-the-meeting": "Removed from the Meeting",
+  "The-host-has-removed-you-from-the-meeting": "The host has removed you from the meeting.",
+  "Close-modal": "Close Modal"
 }

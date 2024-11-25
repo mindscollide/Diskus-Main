@@ -70,13 +70,6 @@ const VideoNewParticipantList = () => {
   };
 
   useEffect(() => {
-    let data = {
-      RoomID: String(roomID),
-    };
-    dispatch(participantListWaitingListMainApi(navigate, t, data));
-  }, []);
-
-  useEffect(() => {
     if (
       getNewParticipantsMeetingJoin !== null &&
       getNewParticipantsMeetingJoin !== undefined &&

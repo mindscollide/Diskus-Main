@@ -9,7 +9,6 @@ import {
   Notification,
   NotificationBar,
   GuestJoinRequest,
-  ProgressLoader,
 } from "../../components/elements";
 import Header2 from "../../components/layout/header2/Header2";
 import { ConfigProvider, Layout } from "antd";
@@ -36,6 +35,7 @@ import {
   participantHideUnhideVideo,
   getParticipantsNewJoin,
   participantVideoNavigationScreen,
+  maxParticipantVideoCallPanel,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -707,8 +707,18 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
             ) {
+              localStorage.setItem(
+                "isHost",
+                data.payload.newParticipants.isHost
+              );
               dispatch(getParticipantsNewJoin(data.payload.newParticipants));
               console.log(data.payload, "JOINEDJOINEDJOINED");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "REMOVED_FROM_MEETING".toLowerCase()
+            ) {
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(participantVideoNavigationScreen(5));
             } else if (
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
@@ -729,6 +739,21 @@ const Dashboard = () => {
                 "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3"
               );
               dispatch(participantVideoNavigationScreen(3));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
+            ) {
+              dispatch(maxParticipantVideoCallPanel(false));
+              dispatch(maximizeVideoPanelFlag(true));
+
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("activeCall", true);
+              localStorage.setItem("isMeetingVideo", true);
+              console.log(data.payload, "hahahahahahhassddsd");
+              localStorage.setItem("participantRoomId", data.payload.roomID);
+              localStorage.setItem("participantUID", data.payload.uid);
+              // dispatch(participantVideoNavigationScreen(3));
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2553,11 +2578,6 @@ const Dashboard = () => {
               <Sidebar />
             </Sider>
             <Content>
-              {/* <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <ProgressLoader />
-                </Col>
-              </Row> */}
               <div className="dashbaord_data">
                 <Outlet />
               </div>

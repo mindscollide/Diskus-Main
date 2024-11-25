@@ -75,6 +75,7 @@ import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallCo
 import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -815,6 +816,9 @@ const ViewMeetingDetails = ({
                               )}
                             {participantVideoNavigationData === 3 && (
                               <MaxParticipantVideoDeniedComponent />
+                            )}
+                            {participantVideoNavigationData === 5 && (
+                              <MaxParticipantVideoRemovedComponent />
                             )}
                           </>
                         ) : (

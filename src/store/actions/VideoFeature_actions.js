@@ -568,18 +568,6 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
                 )
             ) {
-              await dispatch(maxParticipantVideoCallPanel(false));
-              dispatch(maximizeVideoPanelFlag(true));
-              localStorage.setItem("isGuid", response.data.responseResult.guid);
-              await dispatch(
-                getParticipantMeetingJoinSuccess(
-                  t("ScheduleCall Joined and Is host")
-                )
-              );
-              localStorage.setItem("CallType", 2);
-              localStorage.setItem("isMeeting", true);
-              localStorage.setItem("activeCall", true);
-              localStorage.setItem("isMeetingVideo", true);
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               await dispatch(
@@ -797,6 +785,22 @@ const participantVideoNavigationScreen = (response) => {
   };
 };
 
+// SET HOST VIDEO CAMERA
+const setVideoControlHost = (response) => {
+  return {
+    type: actions.SET_MQTT_VIDEO_CONTROLE_HOST,
+    response: response,
+  };
+};
+
+// SET HOST AUDIO CONTROL
+const setAudioControlHost = (response) => {
+  return {
+    type: actions.SET_MQTT_VOICE_CONTROLE_HOST,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -845,4 +849,6 @@ export {
   maxParticipantVideoCallPanel,
   participantListWaitingListMainApi,
   participantVideoNavigationScreen,
+  setVideoControlHost,
+  setAudioControlHost,
 };

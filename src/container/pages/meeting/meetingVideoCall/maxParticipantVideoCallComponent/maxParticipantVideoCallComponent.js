@@ -43,7 +43,10 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
   const [isWaiting, setIsWaiting] = useState(false);
 
   const [stream, setStream] = useState(null);
+  const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
+  const [isMicEnabled, setIsMicEnabled] = useState(true);
+
   console.log(isWebCamEnabled, "isWebCamEnabled");
 
   useEffect(() => {
@@ -76,6 +79,39 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
       }
     };
   }, [isWebCamEnabled]);
+
+  // for set Video Web Cam on CLick
+  const toggleAudio = (enable, check) => {
+    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    // dispatch(setVoiceControleGuest(!enable));
+    if (enable) {
+      sessionStorage.setItem("isMicEnabled", true);
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((audioStream) => {
+          // Stop any existing audio tracks before starting a new one
+          if (streamAudio) {
+            streamAudio.getAudioTracks().forEach((track) => track.stop());
+          }
+
+          const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
+          setStreamAudio(newStream);
+          setIsMicEnabled(true);
+        })
+        .catch((error) => {
+          alert("Error accessing microphone: " + error.message);
+        });
+    } else {
+      sessionStorage.setItem("isMicEnabled", false);
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      setIsMicEnabled(false); // Microphone is now disabled
+    }
+  };
 
   // Toggle Video (Webcam)
   const toggleVideo = (flag) => {
@@ -140,15 +176,19 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
             className="d-flex justify-content-end align-items-center gap-2"
           >
             <div className="max-videoParticipant-Icons-state">
-              {/* {micOn ? ( */}
-              <img src={MicOn2} className="cursor-pointer" />
-              {/* ) : (
+              {isMicEnabled ? (
                 <img
                   src={MicOn2}
-                  onClick={() => openMicStatus(true)}
+                  className="cursor-pointer"
+                  onClick={() => toggleAudio(false, 2)}
+                />
+              ) : (
+                <img
+                  src={MicOff}
+                  onClick={() => toggleAudio(true, 1)}
                   className="cursor-pointer"
                 />
-              )} */}
+              )}
             </div>
             <div className="max-videoParticipant-Icons-state">
               {isWebCamEnabled ? (

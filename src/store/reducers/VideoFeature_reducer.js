@@ -48,6 +48,8 @@ const initialState = {
   maximizeParticipantVideoFlag: false,
   getVideoParticpantListandWaitingList: [],
   participantVideoNavigationData: 1,
+  videoControlHost: false,
+  audioControlHost: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -568,6 +570,19 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         MaximizeHostVideoFlag: false,
         participantVideoNavigationData: action.response,
+      };
+    }
+
+    case actions.SET_MQTT_VIDEO_CONTROLE_HOST: {
+      return {
+        ...state,
+        videoControlHost: action.response,
+      };
+    }
+    case actions.SET_MQTT_VOICE_CONTROLE_HOST: {
+      return {
+        ...state,
+        audioControlHost: action.response,
       };
     }
 
