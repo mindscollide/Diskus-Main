@@ -14,10 +14,7 @@ import ResendMinuteReviewModal from "./ResendForReview/ResendReview";
 import { newDateFormatForMinutes } from "../../../../../../../commen/functions/date_formater";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  GetDataForResendMinuteReview,
-  currentMeetingMinutesToReview,
-} from "../../../../../../../store/actions/Minutes_action";
+import { GetDataForResendMinuteReview } from "../../../../../../../store/actions/Minutes_action";
 
 const RevisionHistory = ({
   showRevisionHistory,
