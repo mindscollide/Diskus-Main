@@ -2310,6 +2310,7 @@
   "Anyone": "Anyone",
   "Any": "Any",
   "Document": "Document",
-  "Folder":"Folder",
-  "Forms": "Forms"
+  "Folder": "Folder",
+  "Forms": "Forms",
+  "Review-document": "Review document"
 }
