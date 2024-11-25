@@ -259,17 +259,17 @@ const NewCalendar = () => {
           setEvents(findData); // Assuming findData is already an array
           setEventsModal(true);
           // Check if the event's pK_MDID matches with MeetingStatusSocket's pK_MDID
-          // findData.forEach((event) => {
-          //   if (
-          //     event.pK_MDID ===
-          //     meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
-          //   ) {
-          //     // Update the statusID to 10
-          //     event.statusID = 10;
-          //     // Dispatch an action to update the global state if needed
-          //     // dispatch(updateEventStatus(event)); // Assuming you have a proper action
-          //   }
-          // });
+          findData.forEach((event) => {
+            if (
+              event.pK_MDID ===
+              meetingIdReducer.MeetingStatusSocket?.meeting?.pK_MDID
+            ) {
+              // Update the statusID to 10
+              event.statusID = 10;
+              // Dispatch an action to update the global state if needed
+              // dispatch(updateEventStatus(event)); // Assuming you have a proper action
+            }
+          });
         } else {
           showMessage("No-events-available-on-this-date", "error", setOpen);
         }

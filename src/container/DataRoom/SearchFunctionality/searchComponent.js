@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import {
   formatDateToUTC,
   _justShowDateformat,
+  dateConverterIntoUTCForDataroom,
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import {
@@ -38,6 +39,13 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import InfiniteScroll from "react-infinite-scroll-component";
+import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+import { checkFeatureIDAvailability, openDocumentViewer } from "../../../commen/functions/utils";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+
 const SearchComponent = ({
   setSearchDataFields,
   searchDataFields,
@@ -48,12 +56,14 @@ const SearchComponent = ({
   searchResultsFields,
   setSearchTabOpen,
 }) => {
+  console.log(searchDataFields, "searchDataFieldssearchDataFields");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const calendRef = useRef();
   const { DataRoomReducer, assignees } = useSelector((state) => state);
   const [searchAllData, setSearchAllData] = useState([]);
+  console.log(searchAllData, "searchAllDatasearchAllData")
   const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
   const [dateValue, setDateValue] = useState(t("Date-modified"));
@@ -61,9 +71,13 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
+  console.log(assignessList, "assignessListassignessList")
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [allDocumentsTitleSorter, setAllDocumentsTitleSorter] = useState(null);
+  const [allOwnerSorter, setAllOwnerSorter] = useState(null);
+  const [allLastModifiedSorter, setAllLastModifiedSorter] = useState(null);
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -77,29 +91,253 @@ const SearchComponent = ({
   let organizationID = localStorage.getItem("organizationID");
 
   console.log({ searchDataFields }, "searchDataFields");
+  useEffect(() => {
+    if(assignees?.user && assignees?.user?.length  === 0) {
+     dispatch(allAssignessList(navigate, t, false));
+    }
+  },[])
+
+  const handeClickSortingFunc = async (statusID) => {
+    // this is for All Tab and My Document tab
+    if (Number(statusID) === 1) {
+      // Document Name Sorter
+      setAllDocumentsTitleSorter((order) => {
+        if (order === "descend") {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: false,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "ascend";
+        } else {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: true,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "descend";
+        }
+      });
+    } else if (Number(statusID) === 2) {
+      //  Owner name sorting
+      setAllOwnerSorter((order) => {
+        if (order === "descend") {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: false,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "ascend";
+        } else {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: true,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "descend";
+        }
+      });
+    } else if (Number(statusID) === 3) {
+      // Last Modified Date Sorter
+      setAllLastModifiedSorter((order) => {
+        if (order === "descend") {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: false,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "ascend";
+        } else {
+          let data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: searchDataFields.StatusID,
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+            LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+            UserIDToSearch: 0,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: false,
+            sRow: 0,
+            Length: 10,
+            SortBy: Number(statusID),
+            isDescending: true,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+          return "descend";
+        }
+      });
+    }
+  };
+
+  const handleLinkClick = (e, record) => {
+    e.preventDefault();
+    if (checkFeatureIDAvailability(20)) {
+      const pdfData = {
+        taskId: record.id,
+        commingFrom: 4,
+        fileName: record.name,
+        attachmentID: record.id,
+        isPermission: record.permissionID,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = record.name.split(".").pop();
+      openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+    }
+  };
   // these are search columns
   const searchColumns = [
     {
-      title: t("Name"),
+      title: (
+        <>
+          <span className='d-flex gap-2'>
+            {t("Name")}{" "}
+            {allDocumentsTitleSorter === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "name",
       key: "name",
-      width: "200px",
+      width: "30%",
       sortDirections: ["descend", "ascend"],
       ellipsis: true,
+      onHeaderCell: () => ({
+        onClick: () => {
+          handeClickSortingFunc(1);
+        },
+      }),
       render: (text, data) => {
         if (data.isShared) {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable="false" src={folderColor} alt="" />
+                <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
                     className={`${
                       stylesss["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text} <img draggable="false" src={sharedIcon} alt="" />
+                    onClick={() => getFolderDocuments(data.id)}>
+                    {text} <img draggable='false' src={sharedIcon} alt='' />
                   </span>
                 </abbr>
               </div>
@@ -107,15 +345,15 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className="d-flex gap-2">
+                <section className='d-flex gap-2'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                   />
                   <abbr title={text}>
-                    <span className={stylesss["dataroom_table_heading"]}>
-                      {text} <img draggable="false" src={sharedIcon} alt="" />
+                    <span className={stylesss["dataroom_table_heading"]}  onClick={(e) => handleLinkClick(e, data)}>
+                      {text} <img draggable='false' src={sharedIcon} alt='' />
                     </span>
                   </abbr>
                 </section>
@@ -126,14 +364,13 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
-                <img draggable="false" src={folderColor} alt="" />
+                <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
                     className={`${
                       stylesss["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
+                    onClick={() => getFolderDocuments(data.id)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -142,14 +379,14 @@ const SearchComponent = ({
           } else {
             return (
               <>
-                <section className="d-flex gap-2">
+                <section className='d-flex gap-2'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={getIconSource(getFileExtension(data.name))}
-                    alt=""
+                    alt=''
                   />
 
-                  <abbr title={text}>
+                  <abbr title={text}  onClick={(e) => handleLinkClick(e, data)}>
                     <span className={stylesss["dataroom_table_heading"]}>
                       {text}
                     </span>
@@ -160,28 +397,54 @@ const SearchComponent = ({
           }
         }
       },
-      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
     },
     {
-      title: t("Owner"),
+      title: (
+        <>
+          <span className='d-flex justify-content-center gap-2'>
+            {t("Owner")}
+            {allOwnerSorter === "descend" ? (
+              <img src={DescendIcon} alt='' />
+            ) : (
+              <img src={AscendIcon} alt='' />
+            )}
+          </span>
+        </>
+      ),
       dataIndex: "owner",
       key: "owner",
-      width: "90px",
+      width: "20%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
-      sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase(),
+      onHeaderCell: () => ({
+        onClick: () => {
+          handeClickSortingFunc(2);
+        },
+      }),
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
     },
     {
-      title: t("Last-modified"),
+      title: (
+        <span className='d-flex justify-content-center align-items-center gap-2'>
+          {t("Last-modified")}
+          {allLastModifiedSorter === "descend" ? (
+            <img src={ArrowUpIcon} alt='' />
+          ) : (
+            <img src={ArrowDownIcon} alt='' />
+          )}
+        </span>
+      ),
       dataIndex: "modifiedDate",
       key: "modifiedDate",
-      width: "110px",
+      width: "20%",
       align: "center",
-      sorter: true,
-      sortOrder: true,
-      sortDirections: ["descend", "ascend"],
+      onHeaderCell: () => ({
+        onClick: () => {
+          handeClickSortingFunc(3);
+        },
+      }),
       render: (text, data) => {
         return (
           <span className={stylesss["dataroom_table_heading"]}>
@@ -194,7 +457,8 @@ const SearchComponent = ({
       title: t("File-size"),
       dataIndex: "fileSize",
       key: "fileSize",
-      width: "90px",
+      width: "15%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <span className={stylesss["ownerName"]}>{`${text} MB`}</span>;
@@ -206,7 +470,8 @@ const SearchComponent = ({
       ),
       dataIndex: "location",
       key: "location",
-      width: "90px",
+      width: "15%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return (
@@ -277,14 +542,14 @@ const SearchComponent = ({
     value: user.pK_UID,
     label: (
       <>
-        <span className="d-flex align-items-center gap-2" key={user.pK_UID}>
+        <span className='d-flex align-items-center gap-2' key={user.pK_UID}>
           <img
-            draggable="false"
+            draggable='false'
             width={"25px"}
-            height="25px"
-            className="rounded-circle  "
+            height='25px'
+            className='rounded-circle  '
             src={`data:image/jpeg;base64,${user.displayProfilePictureName}`}
-            alt=""
+            alt=''
           />
           {user.name}
         </span>
@@ -305,7 +570,6 @@ const SearchComponent = ({
   }, [assignees.user]);
 
   // api call onscroll
-  const handleSortMyDocuments = (pagination, filters, sorter) => {};
   const handleScroll = async (e) => {
     if (sRowsData <= totalRecords) {
       await dispatch(dataBehaviour(true));
@@ -787,6 +1051,7 @@ const SearchComponent = ({
     } else {
     }
   };
+
   // this is for Location
   const handleChangeLocationValue = (event) => {
     setSearchResultFields((prevState) => ({
@@ -1016,13 +1281,16 @@ const SearchComponent = ({
         dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
         break;
       case 2: // Today
-        startDate = new Date(currentDate);
-        endDate = new Date(currentDate);
+        startDate = dateConverterIntoUTCForDataroom(currentDate, 1);
+        endDate = dateConverterIntoUTCForDataroom(currentDate, 2);
         setCustomRangeVisible(false);
         setSearchDataFields({
           ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(currentDate, 2),
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            currentDate,
+            1
+          ),
         });
         data = {
           UserID: parseInt(userID),
@@ -1039,12 +1307,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: startDate,
+          LastModifiedEndDate: endDate,
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1059,6 +1323,7 @@ const SearchComponent = ({
         endDate = new Date(currentDate);
         startDate = new Date(currentDate);
         startDate.setDate(currentDate.getDate() - 7);
+
         setCustomRangeVisible(false);
         setSearchDataFields({
           ...searchDataFields,
@@ -1081,12 +1346,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1122,12 +1383,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1162,12 +1419,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1202,12 +1455,8 @@ const SearchComponent = ({
           isImages: searchDataFields.isImages,
           isAudios: searchDataFields.isAudios,
           isSites: searchDataFields.isSites,
-          LastModifiedStartDate: formatDateToUTC(startDate)
-            ? formatDateToUTC(startDate)
-            : "",
-          LastModifiedEndDate: formatDateToUTC(endDate)
-            ? formatDateToUTC(endDate)
-            : "",
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
@@ -1303,25 +1552,23 @@ const SearchComponent = ({
 
   // this is select for start date
   const handleStartDatePickerChange = (dates) => {
-    const formattedStarttDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
-    setSelectedStartDate(dates);
+    let startDate = dateConverterIntoUTCForDataroom(new Date(dates), 1);
+
+    setSelectedStartDate(new Date(dates));
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedStartDate: formattedStarttDate,
+      LastModifiedStartDate: startDate,
     });
   };
 
   // this is select for end date
   const handleEndDatePickerChange = (dates) => {
-    const formattedEndtDate = dates
-      ? new DateObject(dates).format("DD MMMM, YYYY")
-      : "";
-    setSelectedEndDate(dates);
+    let endDate = dateConverterIntoUTCForDataroom(new Date(dates), 2);
+
+    setSelectedEndDate(new Date());
     setSearchDataFields({
       ...searchDataFields,
-      LastModifiedEndDate: formattedEndtDate,
+      LastModifiedEndDate: endDate,
     });
   };
 
@@ -1342,14 +1589,8 @@ const SearchComponent = ({
       isImages: searchDataFields.isImages,
       isAudios: searchDataFields.isAudios,
       isSites: searchDataFields.isSites,
-      LastModifiedStartDate: formatDateToUTC(
-        searchDataFields.LastModifiedStartDate
-      )
-        ? formatDateToUTC(searchDataFields.LastModifiedStartDate)
-        : "",
-      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate)
-        ? formatDateToUTC(searchDataFields.LastModifiedEndDate)
-        : "",
+      LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+      LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
@@ -1536,21 +1777,20 @@ const SearchComponent = ({
 
   return (
     <>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Search_result_Heading"]}>
             {t("Search-results")}
           </span>
         </Col>
       </Row>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col
           lg={2}
           md={2}
           sm={12}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
-          {searchDataFields.isDocument ||
+          className={styles["select-dropdowns-height-DataRoom"]}>
+          {/* {searchDataFields.isDocument ||
           searchDataFields.isDocument ||
           searchDataFields.isSpreadSheet ||
           searchDataFields.isPresentation ||
@@ -1584,11 +1824,11 @@ const SearchComponent = ({
                   ? t("Folder")
                   : searchDataFields.isVideos
                   ? t("Videos")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isAudios
                   ? t("Audio")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isImages
                   ? t("Image")
-                  : searchDataFields.isVideos
+                  : searchDataFields.isSites
                   ? t("Sites")
                   : searchDataFields.isDocument &&
                     searchDataFields.isDocument &&
@@ -1614,23 +1854,22 @@ const SearchComponent = ({
                 onClick={ClearDocumentsType}
               />
             </div>
-          ) : (
-            <Select
-              classNamePrefix={"searchResult_Document"}
-              options={OptionsDocument(t)}
-              placeholder={t("Documents")}
-              isSearchable={false}
-              onChange={handleChangeDocumentsOptions}
-            />
-          )}
+          ) : ( */}
+          <Select
+            classNamePrefix={"searchResult_Document"}
+            options={OptionsDocument(t)}
+            placeholder={t("Document-type")}
+            isSearchable={false}
+            onChange={handleChangeDocumentsOptions}
+            menuPortalTarget={document.body}
+          />
         </Col>
         <Col
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
-          {searchDataFields.StatusID !== 0 ? (
+          className={styles["select-dropdowns-height-DataRoom"]}>
+          {/* {searchDataFields.StatusID !== 0 ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
                 draggable="false"
@@ -1656,23 +1895,23 @@ const SearchComponent = ({
                 onClick={ClearDocumentLocation}
               />
             </div>
-          ) : (
-            <Select
-              classNamePrefix={"searchResult_Document"}
-              options={optionsLocations(t)}
-              placeholder={t("Location")}
-              isSearchable={false}
-              onChange={handleChangeLocationValue}
-            />
-          )}
+          ) : ( */}
+          <Select
+            classNamePrefix={"searchResult_Document"}
+            options={optionsLocations(t)}
+            placeholder={t("Location")}
+            isSearchable={false}
+            onChange={handleChangeLocationValue}
+            menuPortalTarget={document.body}
+          />
+          {/* )} */}
         </Col>
         <Col
           lg={2}
           md={2}
           sm={3}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
-          {searchDataFields.isOwnedByMe !== 2 ||
+          className={styles["select-dropdowns-height-DataRoom"]}>
+          {/* {searchDataFields.isOwnedByMe !== 2 ||
           searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -1699,23 +1938,23 @@ const SearchComponent = ({
                 onClick={clearPeopleType}
               />
             </div>
-          ) : (
-            <Select
-              options={OptionsOwner(t).concat(transformedOptions)}
-              placeholder={t("People")}
-              classNamePrefix={"searchResult_Document"}
-              onChange={handleChangeStatus}
-              isSearchable={false}
-            />
-          )}
+          ) : ( */}
+          <Select
+            options={OptionsOwner(t).concat(transformedOptions)}
+            placeholder={t("People")}
+            classNamePrefix={"searchResult_Document"}
+            onChange={handleChangeStatus}
+            isSearchable={false}
+            menuPortalTarget={document.body}
+          />
+          {/* )} */}
         </Col>
         <Col
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
-          {searchDataFields.LastModifiedStartDate !== "" &&
+          className={styles["select-dropdowns-height-DataRoom"]}>
+          {/* {searchDataFields.LastModifiedStartDate !== "" &&
           searchDataFields.LastModifiedEndDate !== "" ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
@@ -1736,28 +1975,27 @@ const SearchComponent = ({
                 onClick={clearLastModified}
               />
             </div>
-          ) : (
-            <Select
-              options={optionsLastmodified(t)}
-              classNamePrefix={"searchResult_Document"}
-              placeholder={
-                <span className={styles["placeholder-text"]}>{dateValue}</span>
-              }
-              onChange={handleChangeLastModifedDate}
-              isSearchable={false}
-            />
-          )}
+          ) : ( */}
+          <Select
+            options={optionsLastmodified(t)}
+            classNamePrefix={"searchResult_Document"}
+            placeholder={
+              <span className={styles["placeholder-text"]}>{dateValue}</span>
+            }
+            onChange={handleChangeLastModifedDate}
+            isSearchable={false}
+            menuPortalTarget={document.body}
+          />
+          {/* )} */}
         </Col>
         <Col
           lg={2}
           md={2}
           sm={2}
-          className={styles["select-dropdowns-height-DataRoom"]}
-        >
+          className={styles["select-dropdowns-height-DataRoom"]}>
           <span
             className={styles["Clear_All_btn"]}
-            onClick={handleClearAllSearchOptions}
-          >
+            onClick={handleClearAllSearchOptions}>
             {t("Clear-all")}
           </span>
         </Col>
@@ -1776,7 +2014,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"54vh"}
-            endMessage=""
+            endMessage=''
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -1784,14 +2022,12 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
+                    className='d-flex justify-content-center mt-2'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }
-          >
+            }>
             <GridViewDataRoom
               data={searchAllData}
               optionsforFolder={optionsforFolder(t)}
@@ -1813,7 +2049,7 @@ const SearchComponent = ({
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
             height={"57vh"}
-            endMessage=""
+            endMessage=''
             loader={
               searchAllData.length <= totalRecords && (
                 <Row>
@@ -1821,34 +2057,30 @@ const SearchComponent = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
+                    className='d-flex justify-content-center mt-2'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
-            }
-          >
+            }>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={searchColumns}
               className={"DataRoom_Table"}
               rows={searchAllData}
               pagination={false}
-              onChange={handleSortMyDocuments}
               size={"middle"}
             />
           </InfiniteScroll>
         </>
       ) : (
         <div className={styles["empty-search-state"]}>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center"
-            >
+              className='d-flex justify-content-center'>
               <span className={styles["Message_nofiles"]}>
                 {t("There-are-no-items-here")}
               </span>
@@ -1876,13 +2108,12 @@ const SearchComponent = ({
         }
         ModalBody={
           <>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col
                 lg={6}
                 md={6}
                 sm={12}
-                className={styles["datePickerTodoCreate2"]}
-              >
+                className={styles["datePickerTodoCreate2"]}>
                 <DatePicker
                   format={"DD MMM, YYYY"}
                   render={
@@ -1894,9 +2125,9 @@ const SearchComponent = ({
                   containerClassName={stylesss["datePicker_Container"]}
                   onOpenPickNewDate={true}
                   editable={false}
-                  className="datePickerTodoCreate2"
+                  className='datePickerTodoCreate2'
                   onChange={handleStartDatePickerChange}
-                  inputMode=""
+                  inputMode=''
                   calendar={calendarValue}
                   locale={localValue}
                   ref={calendRef}
@@ -1907,8 +2138,7 @@ const SearchComponent = ({
                 lg={6}
                 md={6}
                 sm={6}
-                className={styles["datePickerTodoCreate2"]}
-              >
+                className={styles["datePickerTodoCreate2"]}>
                 {" "}
                 <DatePicker
                   format={"DD MMM, YYYY"}
@@ -1919,10 +2149,10 @@ const SearchComponent = ({
                     />
                   }
                   containerClassName={stylesss["datePicker_Container"]}
-                  className="datePickerTodoCreate2"
+                  className='datePickerTodoCreate2'
                   onOpenPickNewDate={true}
                   editable={false}
-                  inputMode=""
+                  inputMode=''
                   onChange={handleEndDatePickerChange}
                   calendar={calendarValue}
                   locale={localValue}

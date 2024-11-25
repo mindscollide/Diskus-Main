@@ -17,6 +17,8 @@ import {
   GetAllSignatoriesStatusRM,
   updateActorBundleStatusRM,
   getDashboardPendingApprovalStatsRM,
+  GetSignatureFileAnnotationRM,
+  AddUpdateSignatureFileAnnotationRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -370,7 +372,7 @@ const getWorkFlowByFlodID_fail = (message) => {
   };
 };
 
-const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
+const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getWorkFlowByFlodID_init());
@@ -389,7 +391,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+          dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, route));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -410,9 +412,18 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t) => {
               try {
                 let workfFlowId =
                   response.data.responseResult.workFlow.workFlow.pK_WorkFlow_ID;
+                let creatorID =
+                  response.data.responseResult.workFlow.workFlow.creatorID;
                 let newData = { FK_WorkFlow_ID: Number(workfFlowId) };
                 dispatch(
-                  getAllFieldsByWorkflowIdApi(newData, navigate, t, Data)
+                  getAllFieldsByWorkflowIdApi(
+                    newData,
+                    navigate,
+                    t,
+                    Data,
+                    creatorID,
+                    route
+                  )
                 );
               } catch (error) {
                 console.log(error, "errorerrorerror");
@@ -520,17 +531,30 @@ const addUpdateFieldValueApi = (
                   "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                addAnnoationSignatrueFlow(
-                  navigate,
-                  t,
-                  addAnnoatationofFilesAttachment,
-                  saveSignatureDocument,
-                  status,
-                  sendDocumentData,
-                  UpdateActorBundle
-                )
-              );
+              if (Number(status) === 3) {
+                dispatch(
+                  addUpdateSignatureFileAnnotationApi(
+                    navigate,
+                    t,
+                    addAnnoatationofFilesAttachment,
+
+                    UpdateActorBundle
+                  )
+                );
+              } else {
+                dispatch(
+                  addAnnoationSignatrueFlow(
+                    navigate,
+                    t,
+                    addAnnoatationofFilesAttachment,
+                    saveSignatureDocument,
+                    status,
+                    sendDocumentData,
+                    UpdateActorBundle
+                  )
+                );
+              }
+
               dispatch(
                 addUpdateFieldValue_success(
                   response.data.responseResult,
@@ -649,7 +673,7 @@ const saveSignatureDocumentApi = (
                 );
               }
               console.log({ status }, "statusstatusValue");
-              // window.close();
+              window.close();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -809,6 +833,7 @@ const addAnnotationDataRoom_init = () => {
     type: actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_INIT,
   };
 };
+
 const addAnnotationDataRoom_success = (response, message, loading = false) => {
   return {
     type: actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_SUCCESS,
@@ -817,12 +842,14 @@ const addAnnotationDataRoom_success = (response, message, loading = false) => {
     loading: loading,
   };
 };
+
 const addAnnotationDataRoom_fail = (message) => {
   return {
     type: actions.ADD_ANNOTATION_FILE_SIGNATUREFLOW_FAIL,
     message: message,
   };
 };
+
 const addAnnoationSignatrueFlow = (
   navigate,
   t,
@@ -965,6 +992,7 @@ const addAnnoationSignatrueFlow = (
       });
   };
 };
+
 const getAllFieldsByWorkflowId_init = () => {
   return {
     type: actions.GET_ALL_FIELDS_BY_WORKDFLOW_ID_INIT,
@@ -987,7 +1015,14 @@ const getAllFieldsByWorkflowId_fail = (message) => {
   };
 };
 
-const getAllFieldsByWorkflowIdApi = (newData, navigate, t, Data) => {
+const getAllFieldsByWorkflowIdApi = (
+  newData,
+  navigate,
+  t,
+  Data,
+  creatorID,
+  route
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -1007,7 +1042,16 @@ const getAllFieldsByWorkflowIdApi = (newData, navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllFieldsByWorkflowIdApi(newData, navigate, t, Data));
+          dispatch(
+            getAllFieldsByWorkflowIdApi(
+              newData,
+              navigate,
+              t,
+              Data,
+              creatorID,
+              route
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1024,12 +1068,26 @@ const getAllFieldsByWorkflowIdApi = (newData, navigate, t, Data) => {
                   false
                 )
               );
-              let Data2 = {
-                FileID: Number(Data.FileID),
-                UserID: Number(localStorage.getItem("userID")),
-                OrganizationID: Number(localStorage.getItem("organizationID")),
-              };
-              dispatch(getAnnoationSignatrueFlow(navigate, t, Data2));
+              if (route && Number(route) === 1) {
+                let Data2 = {
+                  FileID: Number(Data.FileID),
+                  UserID: Number(localStorage.getItem("userID")),
+                  OrganizationID: Number(
+                    localStorage.getItem("organizationID")
+                  ),
+                  CreatorID: Number(creatorID),
+                };
+                dispatch(getSignatureFileAnnotationApi(navigate, t, Data2));
+              } else {
+                let Data2 = {
+                  FileID: Number(Data.FileID),
+                  UserID: Number(localStorage.getItem("userID")),
+                  OrganizationID: Number(
+                    localStorage.getItem("organizationID")
+                  ),
+                };
+                dispatch(getAnnoationSignatrueFlow(navigate, t, Data2));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2103,6 +2161,251 @@ const getDashbardPendingApprovalDataApi = (navigate, t) => {
   };
 };
 
+// get Signature File Annotation
+const getSignatureFileAnnotation_init = () => {
+  return {
+    type: actions.GETSIGNATUREFILEANNOTATION_INIT,
+  };
+};
+
+const getSignatureFileAnnotation_success = (
+  response,
+  message,
+  loading = false
+) => {
+  return {
+    type: actions.GETSIGNATUREFILEANNOTATION_SUCCESS,
+    response: response,
+    message: message,
+    loading: loading,
+  };
+};
+
+const getSignatureFileAnnotation_fail = (message) => {
+  return {
+    type: actions.GETSIGNATUREFILEANNOTATION_FAIL,
+    message: message,
+  };
+};
+
+const getSignatureFileAnnotationApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(getSignatureFileAnnotation_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetSignatureFileAnnotationRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getSignatureFileAnnotationApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetSignatureFileAnnotation_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getSignatureFileAnnotation_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetSignatureFileAnnotation_02".toLowerCase()
+                )
+            ) {
+              dispatch(getSignatureFileAnnotation_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetSignatureFileAnnotation_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getSignatureFileAnnotation_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getSignatureFileAnnotation_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getSignatureFileAnnotation_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getSignatureFileAnnotation_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getSignatureFileAnnotation_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Add update Signature File Annotation
+const addUpdateSignatureFileAnnotation_init = () => {
+  return {
+    type: actions.ADDUPDATESIGNATUREFILEANNOTATION_INIT,
+  };
+};
+const addUpdateSignatureFileAnnotation_success = (
+  response,
+  message,
+  loading = false
+) => {
+  return {
+    type: actions.ADDUPDATESIGNATUREFILEANNOTATION_SUCCESS,
+    response: response,
+    message: message,
+    loading: loading,
+  };
+};
+const addUpdateSignatureFileAnnotation_fail = (message) => {
+  return {
+    type: actions.ADDUPDATESIGNATUREFILEANNOTATION_FAIL,
+    message: message,
+  };
+};
+const addUpdateSignatureFileAnnotationApi = (
+  navigate,
+  t,
+  Data,
+  UpdateActorBundle
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(addUpdateSignatureFileAnnotation_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      AddUpdateSignatureFileAnnotationRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            addUpdateSignatureFileAnnotationApi(
+              navigate,
+              t,
+              Data,
+              UpdateActorBundle
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle)
+              );
+              dispatch(
+                addUpdateSignatureFileAnnotation_success(
+                  response.data.responseResult,
+                  t("Record-inserted")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle)
+              );
+              dispatch(
+                addUpdateSignatureFileAnnotation_success(
+                  response.data.responseResult,
+                  t("Record-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateSignatureFileAnnotation_fail(t("No-record-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateSignatureFileAnnotation_fail(t("No-record-updated"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_AddUpdateSignatureFileAnnotation_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateSignatureFileAnnotation_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                addUpdateSignatureFileAnnotation_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              addUpdateSignatureFileAnnotation_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            addUpdateSignatureFileAnnotation_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          addUpdateSignatureFileAnnotation_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 const clearWorkFlowResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -2110,6 +2413,8 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  addUpdateSignatureFileAnnotationApi,
+  getSignatureFileAnnotationApi,
   getDashbardPendingApprovalDataApi,
   UpdateActorBundleStatusApi,
   getAllSignatoriesStatusWise_Api,

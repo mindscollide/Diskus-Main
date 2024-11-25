@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import DikusGIF from "../../../assets/images/Loader.gif";
 import { useSelector } from "react-redux";
+import ProgressLoader from "../ProgressLoader/ProgressLoader";
 
-const Loader = () => {
+const Loader = ({progress}) => {
   const { t } = useTranslation();
   const downloadMessageIndex = useSelector(
     (state) => state.DataRoomReducer.downloadMessage
@@ -37,11 +38,8 @@ const Loader = () => {
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
-
-        const randomIdx = Math.floor(Math.random() * messages.length);
-        setRandomIndex(messages[randomIdx]);
-      
-    
+    const randomIdx = Math.floor(Math.random() * messages.length);
+    setRandomIndex(messages[randomIdx]);
   }, []);
 
   return (
@@ -49,17 +47,18 @@ const Loader = () => {
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <img
+          {/* <img
             src={DikusGIF}
             className={styles["LoadderImageclass"]}
             alt="My GIF Icon"
             draggable="false"
-          />
-          <Row>
+          /> */}
+          <ProgressLoader progress={progress} />
+          {/* <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["Messeges_Styles"]}>{randomIndex}</p>
             </Col>
-          </Row>
+          </Row> */}
         </Col>
       </Row>
     </Container>

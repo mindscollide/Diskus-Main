@@ -12,27 +12,22 @@ const NotificationBar = ({
   id,
 }) => {
   const [api, contextHolder] = notification.useNotification();
-
+  const currentLanguage = localStorage.getItem("i18nextLng") || "en";
   const close = () => {
-    console.log(
-      "Notification was closed. Either the close button was clicked or duration time elapsed."
-    );
     setNotification({
       notificationShow: false,
       message: "",
     });
   };
   const openNotification = () => {
-    console.log(
-      "Notification was closed. Either the close button was clicked or duration time elapsed."
-    );
     api.info({
-      message: notificationMessage,
       description: (
-        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+        <Context.Consumer>
+          {({ name }) => `${notificationMessage}`}
+        </Context.Consumer>
       ),
       className: "MQTT_Notification",
-      placement: "bottomLeft",
+      placement: currentLanguage === "en" ? "bottomLeft" : "bottomRight",
       duration: 4,
       icon: iconName,
       onClose: close,

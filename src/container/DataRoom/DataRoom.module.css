@@ -1308,7 +1308,7 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 }
 
 .FilterResetBtn {
-  padding: 8px 10px !important;
+  padding: 8px 20px !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -1317,7 +1317,7 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 }
 
 .FilterResetBtn:is(:hover, :focus, :active, :focus-visible) {
-  padding: 8px 10px !important;
+  padding: 8px 20px !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -1341,4 +1341,9 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;
+}
+.datemodifiedfilter {
+  max-width:80% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

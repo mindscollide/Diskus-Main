@@ -39,7 +39,9 @@ const SignatureViewer = () => {
     getWorkfFlowByFileId,
     getDataroomAnnotation,
     ResponseMessage,
+    getSignatureFileAnnotationResponse,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
+  console.log(getSignatureFileAnnotationResponse, "getSignatureFileAnnotationResponsegetSignatureFileAnnotationResponse")
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const [Instance, setInstance] = useState(null);
@@ -141,7 +143,7 @@ const SignatureViewer = () => {
 
   // === Api calling === //
   async function apiCall(Data) {
-    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t));
+    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, 1));
     await dispatch(allAssignessList(navigate, t, false));
   }
 
@@ -342,7 +344,7 @@ const SignatureViewer = () => {
 
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
-    if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
+    if (getSignatureFileAnnotationResponse !== null && getSignatureFileAnnotationResponse !== undefined) {
       try {
         let currentUserID =
           localStorage.getItem("userID") !== null
@@ -376,7 +378,7 @@ const SignatureViewer = () => {
           }
         });
         let newProcessXmlForReadOnly = processXmlForReadOnly(
-          getDataroomAnnotation.annotationString,
+          getSignatureFileAnnotationResponse.annotationString,
           ReadArray
         );
 
@@ -400,11 +402,11 @@ const SignatureViewer = () => {
         setPdfResponceData((prevData) => ({
           ...prevData,
           xfdfData: hideFreetextXmlString,
-          attachmentBlob: getDataroomAnnotation.attachmentBlob,
+          attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
         }));
       } catch (error) {}
     }
-  }, [getDataroomAnnotation]);
+  }, [getSignatureFileAnnotationResponse]);
   // === End === //
 
   // === It's triggered when we update the blob file in our local state ===
@@ -617,6 +619,7 @@ const SignatureViewer = () => {
               let addAnnoatationofFilesAttachment = {
                 FileID: Number(docWorkflowID),
                 AnnotationString: afterAddRevertHideFreetextElements,
+                CreatorID: pdfResponceData.creatorID
               };
               let userID =
                 localStorage.getItem("userID") !== null

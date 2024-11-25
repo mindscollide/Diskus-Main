@@ -446,7 +446,6 @@ export const fileFormatforSignatureFlow = [
   "ods",
   "odp",
   "wpf",
-  "txt",
 
   // Image Formats
   "bmp",
@@ -507,7 +506,6 @@ const NewfileFormatforSignatureFlow = [
   "ods",
   "odp",
   "wpf",
-  "txt",
 
   // Image Formats
   "bmp",

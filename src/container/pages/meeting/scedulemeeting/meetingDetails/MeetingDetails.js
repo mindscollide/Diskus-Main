@@ -1530,7 +1530,7 @@ const MeetingDetails = ({
                       }
                       className={styles["Add_Dates_Btn_Class"]}
                       onClick={addRow}
-                      disabled={!isValidRow(rows[rows.length - 1])}
+                      disableBtn={!isValidRow(rows[rows.length - 1]) || rows.length === 5}
                     />
                   </Col>
                 </Row>

@@ -862,15 +862,15 @@ input[type="checkbox"][disabled]+span:after,
 }
 
 .modal-backdrop.show {
-  background: rgba(255, 255, 255, 0.3) !important;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px) !important;
-  opacity: inherit;
+  /* background: rgba(255, 255, 255, 0.3) !important; */
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px) !important;
+  /* opacity: inherit; */
 }
 
-.modal-backdrop.fade {
+/* .modal-backdrop.fade {
   opacity: 1 !important;
-}
+} */
 
 /*other style*/
 .agendas-list {
@@ -1707,13 +1707,13 @@ i.icon-add-square.uploadfile {
   margin-left: -30px;
 }
 
-.ant-table-wrapper.ToDo
+/* .ant-table-wrapper.ToDo
   .ant-table
   .ant-table-container
   .ant-table-content
   thead.ant-table-thead {
   background: none !important;
-}
+} */
 
 .ant-table-wrapper.Billing_TablePakageSelection
   .ant-table
@@ -1726,13 +1726,7 @@ i.icon-add-square.uploadfile {
 .ant-table-wrapper.ToDo .ant-table {
   background: none !important;
 }
-.ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-tbody
-  > tr
-  > th.ant-table-column-sorters {
-  display: contents !important;
-}
+
 
 .ant-table-wrapper.Billing_TablePakageSelection .ant-table {
   background: none !important;
@@ -2076,8 +2070,7 @@ p.fileUploadLabel {
 }
 
 .agendaList {
-  height: 475px;
-  /* height    : 350px; */
+  max-height: 50vh !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;
@@ -2787,12 +2780,12 @@ input#Participant::placeholder {
   height: auto !important;
 }
 
-.ToDo .ant-table table {
+/* .ToDo .ant-table table {
   border-spacing: 0 10px !important;
   border-radius: 50px !important;
   table-layout: fixed !important;
   margin-top: -19px !important;
-}
+} */
 
 .Billing_TablePakageSelection .ant-table table {
   border-spacing: 0 30px !important;
@@ -3287,36 +3280,36 @@ body.blur-background section.ant-layout.positionRelative .container {
 }
 
 li.invalid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
   justify-content: center;
 }
 
 li.valid {
-  padding: 5px 0px;
+  /* padding: 2px 0px; */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center !;
+  align-items: center !important;
 }
 
 .invalid span {
   color: #ff0000 !important;
-  font-weight: bold;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .invalid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .valid span {
-  font-weight: bold;
   color: #6172d6 !important;
-  margin-top: -5px !important;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 body[dir="rtl"] .valid span {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 span.userstatus-signal-enabled {
@@ -4023,7 +4016,7 @@ svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   border-bottom-left-radius: 4px !important;
 }
 
-.ant-notification-notice-message body[dir="rtl"] .ant-table-wrapper.ToDo {
+.ant-notification-notice-description body[dir="rtl"] .ant-table-wrapper.ToDo {
   padding-left: 10px;
   padding-right: 0px;
 }
@@ -4033,7 +4026,7 @@ body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   padding-right: 0px;
 }
 
-.ToDo::-webkit-scrollbar {
+/* .ToDo::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2 !important;
@@ -4043,7 +4036,7 @@ body[dir="rtl"] .ant-table-wrapper.Billing_TablePakageSelection {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
-}
+} */
 
 .Billing_TablePakageSelection::-webkit-scrollbar {
   width: 0.5rem;
@@ -5041,9 +5034,9 @@ body[dir="rtl"]
   padding: 2px 16px !important;
 }
 
-.ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
+/* .ant-table-wrapper.ToDo.ant-table .ant-table-thead > tr > th {
   padding: 2px 16px !important;
-}
+} */
 
 .ant-table-wrapper.Billing_TablePakageSelection.ant-table
   .ant-table-thead
@@ -6262,6 +6255,9 @@ textarea {
   display: none !important;
 }
 .newMeetingTable .ant-table-column-sorters .ant-table-column-sorter {
+  display: none !important;
+}
+.DataRoom_Table .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
 button.grayScaled {
@@ -7712,77 +7708,106 @@ body.guest-video-call {
 }
 .MQTT_Notification {
   width: 100% !important;
-  padding: 15px !important;
-  min-height: 81px !important;
+  padding: 23px 15px !important;
+  height: auto !important;
   display: flex !important;
   align-items: center !important;
   position: relative;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.16) !important;
+  overflow: visible !important;
+  z-index: 0;
+  border-radius: 4px !important;
 }
 .MQTT_Notification::before {
   content: "";
   position: absolute;
-  width: 30px;
+  width: 20px !important;
   left: -15px;
   overflow: hidden;
   height: 100%;
+  z-index: 1;
   border-top-left-radius: 4px !important;
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-top-left-radius: 4px !important;
 }
-.MQTT_Notification
-  .ant-notification-notice.ant-notification-notice-info
-  .ant-notification-notice-closable {
-  border-radius: 4px !important;
 
-  z-index: 999999999999 !important;
+body[dir="rtl"] .MQTT_Notification::before {
+  content: "";
+  position: absolute;
+  width: 20px !important;
+  right: -15px;
+  left: auto;
+  overflow: hidden;
+  height: 100%;
+  z-index: 1;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
 }
+
+
 .MQTT_Notification .ant-notification-notice-close span svg {
   color: #5a5a5a !important;
 }
 
-.MQTT_Notification .ant-notification-notice-icon {
-  font-size: 24px !important;
-  line-height: 24px !important;
-}
+
 
 .MQTT_Notification span.ant-notification-notice-icon img {
   width: 38px !important;
 }
 
-.MQTT_Notification
+/* .MQTT_Notification
   .ant-notification-notice-with-icon
   .ant-notification-notice-description {
-  margin-left: 48px !important;
-  font-size: 14px !important;
-  display: none !important;
-}
-
-.MQTT_Notification
-  .ant-notification-notice-with-icon
-  .ant-notification-notice-message {
   width: 100% !important;
-  margin-left: 60px !important;
-  margin-bottom: 0 !important;
   display: flex !important;
   font-size: 14px !important;
   justify-content: flex-start;
   align-items: center !important;
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  line-height: 1.2 !important
+  ;
+} */
+.MQTT_Notification  .ant-notification-notice-message {
+  display: none !important;
 }
-.MQTT_Notification .ant-notification-notice-message {
-  color: #000 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.MQTT_Notification .ant-notification-notice-description {
+  word-wrap: break-word;
+  text-overflow: unset;
+  display: block;
+  min-width: 400px !important;
+  margin-right: 40px !important;
+  margin-left: 60px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+body[dir="rtl"] .MQTT_Notification .ant-notification-notice-description {
+  word-wrap: break-word;
+  text-overflow: unset;
+  display: block;
+  min-width: 425px !important;
+  margin-right: 60px !important;
+  margin-left: 20px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
 }
 .MQTT_Notification .ant-notification-notice-with-icon {
   display: flex !important;
   align-items: center !important;
+  justify-content: flex-start !important;
 }
 
-body[dir="rtl"] .MQTT_Notification .ant-notification-notice-message {
-  margin-right: 20px !important;
+
+
+.MQTT_Notification .ant-notification-notice-close {
+  top: 25px !important;
+  
+}
+body[dir="rtl"] .MQTT_Notification .ant-notification-notice-close {
+  top: 25px !important;
 }
 
 /* Scedule a meeting  Starts  */

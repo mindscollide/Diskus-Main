@@ -53,6 +53,8 @@ const SendDocumentModal = ({
     const { value } = event.target;
     if (value !== "") {
       setSendMessage(value.trimStart());
+    } else {
+      setSendMessage("");
     }
   };
   return (
@@ -68,8 +70,7 @@ const SendDocumentModal = ({
               sm={12}
               md={12}
               lg={12}
-              className={styles["sendDocument_Heading"]}
-            >
+              className={styles["sendDocument_Heading"]}>
               {t("Send-data-storage-retention-policy")}
             </Col>
             <Col sm={12} md={12} lg={12} className={styles["Email_Heading"]}>
@@ -79,8 +80,7 @@ const SendDocumentModal = ({
               sm={12}
               md={12}
               lg={12}
-              className={styles["signersEmailsData"]}
-            >
+              className={styles["signersEmailsData"]}>
               {signersData.current.length > 0 &&
                 signersData.current.map((signerData, index) => {
                   return (
@@ -100,7 +100,7 @@ const SendDocumentModal = ({
                 + CC
               </span> */}
             </Col>
-            <Col sm={12} md={12} lg={12} className="my-2">
+            <Col sm={12} md={12} lg={12} className='my-2'>
               {/* Message Box */}
               <TextField
                 placeholder={"Message"}
@@ -120,7 +120,7 @@ const SendDocumentModal = ({
             >
               <img src={FolderIcon} /> Signed Document
             </Col> */}
-            <Col sm={12} md={12} lg={12} className="my-2">
+            <Col sm={12} md={12} lg={12} className='my-2'>
               {/* File Name and Save Signed Copy as Input Field */}
               <TextField
                 labelclass={styles["labelClassMessage"]}
@@ -152,7 +152,7 @@ const SendDocumentModal = ({
       }
       ModalFooter={
         <>
-          <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
+          <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
             <Button
               className={styles["SendButton_SendDocument"]}
               text={t("Send")}
