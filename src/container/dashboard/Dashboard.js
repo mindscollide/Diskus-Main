@@ -34,6 +34,7 @@ import {
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
   getParticipantsNewJoin,
+  participantVideoNavigationScreen,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -719,6 +720,14 @@ const Dashboard = () => {
             ) {
               dispatch(participantHideUnhideVideo(data.payload));
               console.log(data.payload, "guestDataGuestDataVideo");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
+            ) {
+              console.log(
+                "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3"
+              );
+              dispatch(participantVideoNavigationScreen(3));
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()

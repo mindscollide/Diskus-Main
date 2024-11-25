@@ -74,6 +74,7 @@ import { showMessage } from "../../../../../components/elements/snack_bar/utill"
 import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -116,6 +117,10 @@ const ViewMeetingDetails = ({
 
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+  );
+
+  const participantVideoNavigationData = useSelector(
+    (state) => state.videoFeatureReducer.participantVideoNavigationData
   );
 
   console.log(
@@ -788,24 +793,28 @@ const ViewMeetingDetails = ({
                               />
                             )}
                             {/* Max Component */}
-                            {MaximizeHostVideoFlag && (
-                              <MaxHostVideoCallComponent
-                                handleExpandToNormal={handleExpandToNormal}
-                              />
-                            )}
-                            {/* Normal Component */}
-                            {NormalHostVideoFlag && (
-                              <NormalHostVideoCallComponent
-                                handleExpandToMax={handleExpandToMax}
-                              />
-                            )}
-                            {/* Max Participant Component */}
-                            {maximizeParticipantVideoFlag && (
-                              <ParticipantVideoCallComponent
-                                handleExpandToParticipantMax={
-                                  handleExpandToParticipantMax
-                                }
-                              />
+                            {participantVideoNavigationData === 1 &&
+                              MaximizeHostVideoFlag && (
+                                <MaxHostVideoCallComponent
+                                  handleExpandToNormal={handleExpandToNormal}
+                                />
+                              )}
+                            {participantVideoNavigationData === 1 &&
+                              NormalHostVideoFlag && (
+                                <NormalHostVideoCallComponent
+                                  handleExpandToMax={handleExpandToMax}
+                                />
+                              )}
+                            {participantVideoNavigationData === 1 &&
+                              maximizeParticipantVideoFlag && (
+                                <ParticipantVideoCallComponent
+                                  handleExpandToParticipantMax={
+                                    handleExpandToParticipantMax
+                                  }
+                                />
+                              )}
+                            {participantVideoNavigationData === 3 && (
+                              <MaxParticipantVideoDeniedComponent />
                             )}
                           </>
                         ) : (

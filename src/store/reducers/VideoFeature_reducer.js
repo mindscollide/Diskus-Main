@@ -47,6 +47,7 @@ const initialState = {
   NormalHostVideoFlag: false,
   maximizeParticipantVideoFlag: false,
   getVideoParticpantListandWaitingList: [],
+  participantVideoNavigationData: 1,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -511,7 +512,8 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         MaximizeHostVideoFlag: action.response,
-        NormalHostVideoFlag: false,
+        NormalHostVideoFlag: false, // Ensure mutual exclusivity
+        maximizeParticipantVideoFlag: false,
       };
     }
 
@@ -520,6 +522,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         MaximizeHostVideoFlag: false,
         NormalHostVideoFlag: action.response,
+        maximizeParticipantVideoFlag: false,
       };
     }
 
@@ -528,6 +531,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         MaximizeHostVideoFlag: false,
+        NormalHostVideoFlag: false,
         maximizeParticipantVideoFlag: action.response,
       };
     }
@@ -554,6 +558,16 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getVideoParticpantListandWaitingList: [],
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PARTICIPANT_VIDEO_SCREEN_NAVIGATION: {
+      // sessionStorage.setItem("viewState", action.response);
+      console.log("Updating participantVideoNavigationData:", action.response);
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        participantVideoNavigationData: action.response,
       };
     }
 

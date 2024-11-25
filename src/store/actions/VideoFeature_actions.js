@@ -568,6 +568,18 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
                 )
             ) {
+              await dispatch(maxParticipantVideoCallPanel(false));
+              dispatch(maximizeVideoPanelFlag(true));
+              localStorage.setItem("isGuid", response.data.responseResult.guid);
+              await dispatch(
+                getParticipantMeetingJoinSuccess(
+                  t("ScheduleCall Joined and Is host")
+                )
+              );
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("activeCall", true);
+              localStorage.setItem("isMeetingVideo", true);
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               await dispatch(
@@ -777,6 +789,14 @@ const participantListWaitingListMainApi = (navigate, t, data) => {
   };
 };
 
+//FOR NAVIGATE PARTICIPANT SCREEN
+const participantVideoNavigationScreen = (response) => {
+  return {
+    type: actions.PARTICIPANT_VIDEO_SCREEN_NAVIGATION,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -824,4 +844,5 @@ export {
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
   participantListWaitingListMainApi,
+  participantVideoNavigationScreen,
 };
