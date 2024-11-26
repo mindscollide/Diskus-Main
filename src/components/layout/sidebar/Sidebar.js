@@ -7,6 +7,11 @@ import { useTranslation } from "react-i18next";
 import ExpandedMenu from "./ExpandedMenu/ExpandedMenu";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -77,6 +82,9 @@ const Sidebar = () => {
     localStorage.setItem("navigateLocation", "Meeting");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -85,6 +93,9 @@ const Sidebar = () => {
     localStorage.setItem("navigateLocation", "todolist");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -93,6 +104,9 @@ const Sidebar = () => {
     localStorage.setItem("navigateLocation", "calendar");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -100,6 +114,9 @@ const Sidebar = () => {
     localStorage.setItem("navigateLocation", "Notes");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
