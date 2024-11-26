@@ -51,8 +51,6 @@ const VideoMain = () => {
     SignatureWorkFlowReducer,
   } = useSelector((state) => state);
 
-  const dispatch = useDispatch();
-  const activeVideoCall = localStorage.getItem("activeCall");
   return (
     <>
       <div
@@ -119,7 +117,6 @@ const VideoMain = () => {
       >
         <VideoCallMinimizeHeader />
       </div>
-      {activeVideoCall === false ? <LeaveVideoIntimationModal /> : null}
     </>
   );
 };

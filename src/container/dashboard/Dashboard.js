@@ -163,6 +163,7 @@ import {
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
+import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScreen/LeaveVideoIntimationModal/LeaveVideoIntimationModal";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -382,7 +383,8 @@ const Dashboard = () => {
                     RoomID: currentMeetingVideoID,
                     UserGUID: userGUID,
                   };
-                  dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                  // dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                  <LeaveVideoIntimationModal />;
                   if (getMeetingParticipants.length > 0) {
                     let userID = localStorage.getItem("userID");
                     let meetingpageRow =
