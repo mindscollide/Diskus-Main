@@ -67,10 +67,7 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
                 )
             ) {
               await dispatch(
-                getAllVideoCallUsersSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getAllVideoCallUsersSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -359,10 +356,7 @@ const GetUserRecentCalls = (Data, navigate, t) => {
                 )
             ) {
               await dispatch(
-                getUserRecentCallsSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getUserRecentCallsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -429,10 +423,7 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
                 )
             ) {
               await dispatch(
-                getUserRecentCallsSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getUserRecentCallsSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -608,10 +599,7 @@ const GetUserMissedCallCount = (navigate, t) => {
                 )
             ) {
               await dispatch(
-                getUserMissedCallCountSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                getUserMissedCallCountSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -734,6 +722,13 @@ const groupCallRecipients = (response) => {
   };
 };
 
+const LeaveInitmationMessegeVideoMeetAction = (response) => {
+  return {
+    type: actions.INTIMATION_MESSEGE_LEAVE_MEETING_VIDEO,
+    response: response,
+  };
+};
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -750,4 +745,5 @@ export {
   LeaveCall,
   missedCallCount,
   groupCallRecipients,
+  LeaveInitmationMessegeVideoMeetAction,
 };
