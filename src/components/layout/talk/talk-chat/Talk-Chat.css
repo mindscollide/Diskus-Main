@@ -987,6 +987,10 @@ body[dir="rtl"]
   width: 18px;
 }
 
+body[dir="rtl"] .chathead-box-icons img {
+  margin-right: 190px !important;
+}
+
 .dropdown-menus-chathead {
   background: #fff;
   border: 1px solid #b6b6b6;
@@ -999,6 +1003,10 @@ body[dir="rtl"]
   top: 18px;
   width: 100px;
   z-index: 9999999;
+}
+
+body[dir="rtl"] .dropdown-menus-chathead {
+  margin-right: 100px !important;
 }
 
 .dropdown-menus-chathead span {
