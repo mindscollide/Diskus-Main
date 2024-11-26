@@ -225,6 +225,10 @@ const Dashboard = () => {
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
 
+  const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
+  );
+
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -2644,6 +2648,9 @@ const Dashboard = () => {
             />
           )}
           {mobileAppPopUp && <MobileAppPopUpModal />}
+          {showInitimationMessegeModalLeaveVideoMeeting && (
+            <LeaveVideoIntimationModal />
+          )}
         </Layout>
       </ConfigProvider>
     </>

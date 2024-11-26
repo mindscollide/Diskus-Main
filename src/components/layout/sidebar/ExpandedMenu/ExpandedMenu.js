@@ -26,8 +26,6 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
-  currentMeetingStatus,
 } from "../../../../store/actions/NewMeetingActions";
 import {
   createCommitteePageFlag,
@@ -41,22 +39,20 @@ import {
   createResolutionModal,
   viewResolutionModal,
 } from "../../../../store/actions/Resolution_actions";
-import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
 
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const navigate = useNavigate();
+
   const [dataroomNavigation, setDataroomNavigation] = useState("dataroom");
   const [groupNavigation, setGroupNavigation] = useState("groups");
   const [committeeNavigation, setCommitteeNavigation] = useState("committee");
   const [resolutionNavigation, setResolutionNavigation] =
     useState("resolution");
   const [pollNavigation, setPollNavigation] = useState("polling");
-
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
@@ -113,13 +109,9 @@ const ExpandedMenu = () => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
         }
       }
     } catch (error) {
@@ -158,13 +150,9 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
+
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       }
     }
     // navigate(`/${groupNavigation}`);
@@ -198,13 +186,9 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
+
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       }
     }
     // navigate(`/${committeeNavigation}`);
@@ -240,13 +224,9 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
+
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       }
     }
     // navigate(`/${resolutionNavigation}`);
@@ -277,13 +257,9 @@ const ExpandedMenu = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
+
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       }
     }
     // navigate(`/${pollNavigation}`);

@@ -21,8 +21,6 @@ import {
   proposeNewMeetingPageFlag,
   viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
-  currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -49,6 +47,7 @@ import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assigne
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 import BellNotificationIcon from "../../../assets/images/BellNotificationIcon.png";
 import WebNotfication from "../WebNotfication/WebNotfication.js";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -299,13 +298,9 @@ const Header2 = ({ isVideo }) => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
+
       if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       }
     }
   };
@@ -333,13 +328,9 @@ const Header2 = ({ isVideo }) => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
         }
       }
     }
@@ -367,13 +358,9 @@ const Header2 = ({ isVideo }) => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
         }
       }
     }
@@ -401,13 +388,9 @@ const Header2 = ({ isVideo }) => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
         }
       }
     }
@@ -435,13 +418,9 @@ const Header2 = ({ isVideo }) => {
         dispatch(viewProposeOrganizerMeetingPageFlag(false));
         dispatch(proposeNewMeetingPageFlag(false));
         dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
+
         if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
         }
       }
     }
