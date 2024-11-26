@@ -626,7 +626,10 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarTodo}
+                    onClick={(event) => {
+                      event.preventDefault(); // Prevents default navigation
+                      handleMeetingSidebarTodo(); // Your custom click handler
+                    }}
                   >
                     <div
                       className="d-flex align-items-center flex-column"
