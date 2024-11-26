@@ -5,35 +5,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./sidebar.css";
 import { useTranslation } from "react-i18next";
 import ExpandedMenu from "./ExpandedMenu/ExpandedMenu";
-import {
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  searchNewUserMeeting,
-  viewMeetingFlag,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
-  uploadGlobalFlag,
-} from "../../../store/actions/NewMeetingActions";
-import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions";
 
 const Sidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const scheduleMeetingPageFlagReducer = useSelector(
