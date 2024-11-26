@@ -14,10 +14,7 @@ import ResendMinuteReviewModal from "./ResendForReview/ResendReview";
 import { newDateFormatForMinutes } from "../../../../../../../commen/functions/date_formater";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  GetDataForResendMinuteReview,
-  currentMeetingMinutesToReview,
-} from "../../../../../../../store/actions/Minutes_action";
+import { GetDataForResendMinuteReview } from "../../../../../../../store/actions/Minutes_action";
 
 const RevisionHistory = ({
   showRevisionHistory,
@@ -113,15 +110,16 @@ const RevisionHistory = ({
   const [minuteDate, setMinuteDate] = useState("");
 
   console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
-  const editMinuteFunction = (data) => {
-    console.log("editMinuteFunctioneditMinuteFunction", data);
+  const editMinuteFunction = (Editdata) => {
+    console.log("editMinuteFunctioneditMinuteFunction", Editdata);
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
-      MinuteID: data.minuteID,
+      MinuteID: Editdata.minuteID,
       IsAgenda: isAgenda,
     };
-    dispatch(GetDataForResendMinuteReview(Data, navigate, t, setEditMinute));
-    dispatch(currentMeetingMinutesToReview(data));
+    dispatch(
+      GetDataForResendMinuteReview(Data, navigate, t, setEditMinute, Editdata)
+    );
   };
 
   const openCloseReviewerDetail = (index) => {
@@ -152,7 +150,7 @@ const RevisionHistory = ({
       setEditMinuteData(GetDataForResendMinuteReviewData.minuteBundle);
     }
   }, [GetDataForResendMinuteReviewData]);
-
+  console.log(editMinute, "editMinuteeditMinuteeditMinuteeditMinute");
   return (
     <Modal
       onHide={

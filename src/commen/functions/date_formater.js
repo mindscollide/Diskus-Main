@@ -1633,3 +1633,17 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   console.log(formattedDate, "UTC formatted date");
   return formattedDate;
 };
+
+//Review Minutes Send Date Format
+
+export const formatDateToUTCWithEndOfDay = (date) => {
+  // Extract the year, month, and day components from the UTC time
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+
+  // Append "235959" to represent the end of the day
+  const utcFormatted = `${year}${month}${day}235959`;
+  console.log(utcFormatted, "utcFormatted with end of day");
+  return utcFormatted;
+};

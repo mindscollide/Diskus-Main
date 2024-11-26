@@ -175,6 +175,7 @@ button.cancelmeetingmodalcancelbtn {
   height: 46px !important;
   background-color: #6172d6 !important;
   border-radius: 4px !important;
+  border: none !important;
 }
 
 button.updatemeetingmodalconfirmationsubmit {
@@ -714,5 +715,5 @@ body[dir="rtl"] .errorMessage {
   color: #f16b6b !important;
 }
 .modal_update_bodyClass {
-  border-bottom: 0px !important
+  border-bottom: 0px !important;
 }

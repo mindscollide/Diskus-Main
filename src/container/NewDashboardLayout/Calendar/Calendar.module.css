@@ -1,4 +1,5 @@
 .dashboard_calendar_empty {
   display: grid;
   place-items: center;
+  margin-top: 20px !important;
 }

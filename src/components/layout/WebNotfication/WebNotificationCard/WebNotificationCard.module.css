@@ -1,0 +1,13 @@
+.NotificationMessegeUnmarked {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 12.19px !important;
+  width: 100% !important;
+}
+
+.NotifcationDateStyles {
+  line-height: 9.75px !important;
+  font-size: 8px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
