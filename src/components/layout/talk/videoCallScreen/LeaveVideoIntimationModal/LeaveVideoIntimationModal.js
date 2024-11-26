@@ -77,6 +77,8 @@ const LeaveVideoIntimationModal = () => {
   //Local States
   const [meetingNavigation, setMeetingNavigation] = useState("Meeting");
   const [todoListNavigation, setTodoListNavigation] = useState("todolist");
+  const [calendarNavigation, setCalendarNavigation] = useState("calendar");
+  const [notesNavigation, setNotesNavigation] = useState("Notes");
 
   //handle NO button
   const handleNoButtonLeaveVideoMeeting = () => {
@@ -190,6 +192,74 @@ const LeaveVideoIntimationModal = () => {
         dispatch(uploadGlobalFlag(false));
       } else {
         setTodoListNavigation("todolist");
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+      }
+    }
+
+    //If Navigating to Calender Tab
+    if (NavigationLocation === "calendar") {
+      let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+      dispatch(currentMeetingStatus(0));
+      if (
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
+      ) {
+        setCalendarNavigation("Meeting");
+        dispatch(showCancelModalmeetingDeitals(true));
+        dispatch(uploadGlobalFlag(false));
+      } else {
+        setCalendarNavigation("calendar");
+        dispatch(showCancelModalmeetingDeitals(false));
+        dispatch(scheduleMeetingPageFlag(false));
+        dispatch(viewProposeDateMeetingPageFlag(false));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+        dispatch(viewProposeOrganizerMeetingPageFlag(false));
+        dispatch(proposeNewMeetingPageFlag(false));
+        dispatch(viewMeetingFlag(false));
+      }
+    }
+
+    //If Navigating to Notes Tab
+    if (NavigationLocation === "Notes") {
+      let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+      let Data = {
+        FK_MDID: currentMeeting,
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+      dispatch(currentMeetingStatus(0));
+      if (
+        (scheduleMeetingPageFlagReducer === true ||
+          viewProposeDateMeetingPageFlagReducer === true ||
+          viewAdvanceMeetingPublishPageFlagReducer === true ||
+          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+          viewProposeOrganizerMeetingPageFlagReducer === true ||
+          proposeNewMeetingPageFlagReducer === true) &&
+        viewMeetingFlagReducer === false
+      ) {
+        setNotesNavigation("Meeting");
+        dispatch(showCancelModalmeetingDeitals(true));
+        dispatch(uploadGlobalFlag(false));
+      } else {
+        setNotesNavigation("Notes");
         dispatch(showCancelModalmeetingDeitals(false));
         dispatch(scheduleMeetingPageFlag(false));
         dispatch(viewProposeDateMeetingPageFlag(false));

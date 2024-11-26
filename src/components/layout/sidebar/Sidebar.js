@@ -64,13 +64,6 @@ const Sidebar = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let userID = localStorage.getItem("userID");
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-  const [calendarNavigation, setCalendarNavigation] = useState("calendar");
-  const [notesNavigation, setNotesNavigation] = useState("Notes");
 
   const sidebarshow = useRef();
 
@@ -121,64 +114,16 @@ const Sidebar = () => {
 
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setCalendarNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "calendar");
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      setCalendarNavigation("calendar");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      }
+    localStorage.setItem("navigateLocation", "calendar");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
     }
   };
 
   const handleMeetingSidebarNotes = () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setNotesNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "Notes");
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      setNotesNavigation("Notes");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      }
+    localStorage.setItem("navigateLocation", "Notes");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
     }
   };
 
