@@ -12,7 +12,7 @@ import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/V
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
-import NormalizeIcon from "../../../../../assets/images/newElements/Normalize-Icon.png";
+import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 
 import {
   getParticipantMeetingJoinMainApi,
@@ -40,6 +40,8 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   let meetingId = localStorage.getItem("currentMeetingID");
   let newVideoUrl = localStorage.getItem("videoCallURL");
 
+  let MeetingTitle = localStorage.getItem("MeetingTitle");
+
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [streamAudio, setStreamAudio] = useState(null);
@@ -47,6 +49,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const [isMicEnabled, setIsMicEnabled] = useState(true);
 
   console.log(isWebCamEnabled, "isWebCamEnabled");
+  console.log(isMicEnabled, "isMicEnabled");
 
   useEffect(() => {
     // Automatically enable the webcam on initial load
@@ -85,7 +88,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     console.log(check, "updatedUrlupdatedUrlupdatedUrl");
     dispatch(setAudioControlHost(!enable));
     if (enable) {
-      sessionStorage.setItem("isMicEnabled", true);
+      localStorage.setItem("isMicEnabled", true);
 
       navigator.mediaDevices
         .getUserMedia({ audio: true })
@@ -103,7 +106,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
           alert("Error accessing microphone: " + error.message);
         });
     } else {
-      sessionStorage.setItem("isMicEnabled", false);
+      localStorage.setItem("isMicEnabled", false);
       if (streamAudio) {
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
@@ -113,10 +116,12 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    sessionStorage.setItem("enableVideo", !enable);
+    // localStorage.setItem("enableVideo", !enable);
     dispatch(setVideoControlHost(!enable));
 
     if (enable) {
+      localStorage.setItem("isWebCamEnabled", true);
+
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((videoStream) => {
@@ -139,7 +144,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
           alert("Error accessing webcam: " + error.message);
         });
     } else {
-      sessionStorage.setItem("isWebCamEnabled", false);
+      localStorage.setItem("isWebCamEnabled", false);
       if (stream) {
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
@@ -166,7 +171,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
       <div className="max-videoHost-panel">
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
-            <p>Meeting Title Is Here</p>
+            <p className="max-Host-title-name">{MeetingTitle}</p>
           </Col>
           <Col
             lg={8}

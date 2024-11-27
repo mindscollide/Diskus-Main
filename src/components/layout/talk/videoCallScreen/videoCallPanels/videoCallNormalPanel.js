@@ -53,9 +53,48 @@ const VideoPanelNormal = () => {
     (state) => state.GuestVideoReducer.getAllParticipantGuest
   );
 
+  console.log(getAllParticipantGuest, "getAllParticipantGuest");
+
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const audioControlHost = useSelector(
+    (state) => state.videoFeatureReducer.audioControlHost
+  );
+
+  const videoControlHost = useSelector(
+    (state) => state.videoFeatureReducer.videoControlHost
+  );
+
+  console.log(audioControlHost, "audioControlHostaudioControlHost");
+
+  // audioControlForParticipant for Participants
+  const audioControlForParticipant = useSelector(
+    (state) => state.videoFeatureReducer.audioControlForParticipant
+  );
+  console.log(audioControlForParticipant, "audioControlForParticipant");
+
+  // Raise Un Raise For Partciipant
+  const raisedUnRaisedParticipant = useSelector(
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+  );
+
+  // videoControlForParticipant for Participants
+  const videoControlForParticipant = useSelector(
+    (state) => state.videoFeatureReducer.videoControlForParticipant
+  );
+  console.log(videoControlForParticipant, "videoControlForParticipant");
+
+  const getParticipantsVideoUrl = useSelector(
+    (state) => state.videoFeatureReducer.getParticipantsVideoUrl
+  );
+  console.log(getParticipantsVideoUrl, "getParticipantsVideoUrl");
+
+  //makeHostNow Reducer
+  const makeHostNow = useSelector(
+    (state) => state.videoFeatureReducer.makeHostNow
   );
 
   const [allParticipant, setAllParticipant] = useState([]);
@@ -69,16 +108,64 @@ const VideoPanelNormal = () => {
 
   const [isScreenActive, setIsScreenActive] = useState(false);
 
+  const [meetingVideoUrl, setMeetingVideoUrl] = useState("");
+  console.log(meetingVideoUrl, "meetingVideoUrlmeetingVideoUrl");
+
+  // for make host
+  const [isMeetingHost, setIsMeetingHost] = useState(null);
+  console.log(isMeetingHost, "isMeetingHostisMeetingHost");
+
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
+
+  let refinedParticipantVideoUrl = localStorage.getItem("refinedVideoUrl");
+  console.log(refinedParticipantVideoUrl, "refinedParticipantVideoUrl");
+
+  // let meetingVideoUrl =
+  //   "https://portal.letsdiskus.com:9414/index.html?UserName=TestParticipant&Type=Join&RoomID=19231&IsMute=false&IsHideCamera=false";
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
 
+  // useEffect(() => {
+  //   try {
+  //     let dynamicUrl = getParticipantsVideoUrl;
+  //     dynamicUrl = dynamicUrl.replace("$ParticipantFullName$", currentUserName);
+  //     dynamicUrl = dynamicUrl.replace(
+  //       "$IsMute$",
+  //       audioControlForParticipant ? "true" : "false"
+  //     );
+  //     dynamicUrl = dynamicUrl.replace(
+  //       "$IsHideCamera$",
+  //       videoControlForParticipant ? "true" : "false"
+  //     );
+  //     setMeetingVideoUrl(dynamicUrl);
+  //   } catch (error) {
+  //     console.error("Error replacing placeholders:", error);
+  //   }
+  // }, [
+  //   audioControlForParticipant,
+  //   videoControlForParticipant,
+  //   currentUserName,
+  //   meetingVideoUrl,
+  // ]);
+
   useEffect(() => {
-    let getRoomId = localStorage.getItem("participantRoomId");
+    if (makeHostNow !== null) {
+      if (
+        currentUserID === makeHostNow.isHostId &&
+        makeHostNow.isHost === true
+      ) {
+        setIsMeetingHost(true);
+      } else {
+        setIsMeetingHost(null);
+      }
+    }
+  }, [makeHostNow]);
+
+  useEffect(() => {
     let Data = {
-      RoomID: String(getRoomId),
+      RoomID: String(newRoomID),
     };
     dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
   }, []);
@@ -95,14 +182,14 @@ const VideoPanelNormal = () => {
     }
   }, [getAllParticipantGuest]);
 
-  useEffect(() => {
-    // Sync allParticipant with participantsList when it updates
-    if (participantsList.length > 0) {
-      setAllParticipant(participantsList);
-    } else {
-      setAllParticipant([]);
-    }
-  }, [participantsList]);
+  // useEffect(() => {
+  //   // Sync allParticipant with participantsList when it updates
+  //   if (participantsList.length > 0) {
+  //     setAllParticipant(participantsList);
+  //   } else {
+  //     setAllParticipant([]);
+  //   }
+  // }, [participantsList]);
 
   useEffect(() => {
     if (
@@ -263,28 +350,69 @@ const VideoPanelNormal = () => {
     localStorage.setItem("VidOff", !isVideoActive);
   };
 
-  useEffect(() => {
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (micStatus !== isMicActive) {
-        console.log("Mic Check");
-        iframe.contentWindow.postMessage("MicOff", "*");
-        setIsMicActive(!isMicActive);
-      }
-    }
-  }, [videoFeatureReducer.NormalizeVideoFlag, isMicActive, micStatus]);
+  // useEffect(() => {
+  //   const iframe = iframeRef.current;
+  //   if (iframe && iframe.contentWindow !== null) {
+  //     if (micStatus !== isMicActive) {
+  //       console.log("Mic Check");
+  //       iframe.contentWindow.postMessage("MicOff", "*");
+  //       setIsMicActive(!isMicActive);
+  //     }
+  //   }
+  // }, [videoFeatureReducer.NormalizeVideoFlag, isMicActive, micStatus]);
 
   useEffect(() => {
-    console.log("Normalize UseEffect Check", vidStatus, isVideoActive);
+    const userRole = localStorage.getItem("userRole");
+    // Determine the control source based on the user role
+    const controlSource =
+      userRole === "Participant"
+        ? audioControlForParticipant
+        : audioControlHost;
+    // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
-      if (vidStatus !== isVideoActive) {
-        console.log("Video Check");
-        iframe.contentWindow.postMessage("VidOff", "*");
-        setIsVideoActive(!isVideoActive);
+      if (controlSource === true) {
+        console.log("Mic Check - Turning Mic Off");
+        iframe.contentWindow.postMessage("MicOff", "*");
+      } else {
+        console.log("Mic Check - Turning Mic On");
+        iframe.contentWindow.postMessage("MicOn", "*");
       }
     }
-  }, [videoFeatureReducer.NormalizeVideoFlag, isVideoActive, vidStatus]);
+  }, [audioControlHost, audioControlForParticipant]);
+
+  // useEffect(() => {
+  //   console.log("Normalize UseEffect Check", vidStatus, isVideoActive);
+  //   const iframe = iframeRef.current;
+  //   if (iframe && iframe.contentWindow !== null) {
+  //     if (vidStatus !== isVideoActive) {
+  //       console.log("Video Check");
+  //       iframe.contentWindow.postMessage("VidOff", "*");
+  //       setIsVideoActive(!isVideoActive);
+  //     }
+  //   }
+  // }, [videoFeatureReducer.NormalizeVideoFlag, isVideoActive, vidStatus]);
+
+  useEffect(() => {
+    console.log("Normalize UseEffect Check", videoControlHost);
+    const userRole = localStorage.getItem("userRole");
+    // Determine the control source based on the user role
+    const controlSource =
+      userRole === "Participant"
+        ? videoControlForParticipant
+        : videoControlHost;
+
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (controlSource === true) {
+        console.log("Video Check - Turning Video Off");
+        iframe.contentWindow.postMessage("VidOff", "*");
+      } else {
+        console.log("Video Check - Turning Video On");
+        iframe.contentWindow.postMessage("VidOn", "*");
+      }
+    }
+  }, [videoControlHost, videoControlForParticipant]);
 
   localStorage.setItem("videoIframe", iframeRef.current);
 
@@ -370,9 +498,14 @@ const VideoPanelNormal = () => {
                         {initiateCallRoomID !== null ||
                         callAcceptedRoomID !== null ? (
                           <iframe
+                            // src={
+                            //   callAcceptedRecipientID === currentUserID
+                            //     ? participantURL
+                            //     : callerURL
+                            // }
                             src={
                               callAcceptedRecipientID === currentUserID
-                                ? participantURL
+                                ? refinedParticipantVideoUrl
                                 : callerURL
                             }
                             ref={iframeRef}
@@ -399,7 +532,7 @@ const VideoPanelNormal = () => {
                         {/* <VideoCallParticipants /> */}
 
                         {/* this is new Host Panel */}
-                        {editorRole.role === "Organizer" ? (
+                        {isMeetingHost !== null && isMeetingHost === true ? (
                           <VideoNewParticipantList />
                         ) : (
                           <>
@@ -435,24 +568,31 @@ const VideoPanelNormal = () => {
                                             sm={12}
                                             className="d-flex justify-content-end gap-2"
                                           >
-                                            <img
-                                              src={VideoOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Video Off"
-                                            />
-                                            <img
-                                              src={MicOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Mic Mute"
-                                            />
-                                            <img
-                                              src={Raisehandselected}
-                                              width="20px"
-                                              height="20px"
-                                              alt="raise hand"
-                                            />
+                                            {videoControlForParticipant ? (
+                                              <img
+                                                src={VideoOff}
+                                                width="20px"
+                                                height="20px"
+                                                alt="Video Off"
+                                              />
+                                            ) : null}
+
+                                            {audioControlForParticipant ? (
+                                              <img
+                                                src={MicOff}
+                                                width="20px"
+                                                height="20px"
+                                                alt="Mic Mute"
+                                              />
+                                            ) : null}
+                                            {raisedUnRaisedParticipant ? (
+                                              <img
+                                                src={Raisehandselected}
+                                                width="20px"
+                                                height="20px"
+                                                alt="raise hand"
+                                              />
+                                            ) : null}
                                           </Col>
                                         </Row>
                                       </>

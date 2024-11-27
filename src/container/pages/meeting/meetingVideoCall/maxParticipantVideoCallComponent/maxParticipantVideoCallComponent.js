@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import ProfileUser from "../../../../../assets/images/Recent Activity Icons/Video/profileIcon.png";
 import { useTranslation } from "react-i18next";
@@ -12,18 +12,23 @@ import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/V
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
-import NormalizeIcon from "../../../../../assets/images/newElements/Normalize-Icon.png";
+import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 
 import {
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
+  setAudioControlForParticipant,
+  setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import NormalHostVideoCallComponent from "../normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import { useNavigate } from "react-router-dom";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
-const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
+const ParticipantVideoCallComponent = ({
+  handleExpandToNormalPanelParticipant,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,8 +40,13 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
     (state) => state.videoFeatureReducer.NormalHostVideoFlag
   );
 
+  const { editorRole } = useContext(MeetingContext);
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
+
   let meetingId = localStorage.getItem("currentMeetingID");
   let newVideoUrl = localStorage.getItem("videoCallURL");
+
+  let participantMeetingTitle = localStorage.getItem("meetingTitle");
 
   const videoRef = useRef(null);
   const [getReady, setGetReady] = useState(false);
@@ -84,9 +94,10 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
   const toggleAudio = (enable, check) => {
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
     console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    dispatch(setAudioControlForParticipant(!enable));
     // dispatch(setVoiceControleGuest(!enable));
     if (enable) {
-      sessionStorage.setItem("isMicEnabled", true);
+      localStorage.setItem("isMicEnabled", true);
 
       navigator.mediaDevices
         .getUserMedia({ audio: true })
@@ -104,7 +115,7 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
           alert("Error accessing microphone: " + error.message);
         });
     } else {
-      sessionStorage.setItem("isMicEnabled", false);
+      localStorage.setItem("isMicEnabled", false);
       if (streamAudio) {
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
@@ -114,8 +125,10 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
   };
 
   // Toggle Video (Webcam)
-  const toggleVideo = (flag) => {
-    if (flag) {
+  const toggleVideo = (enable) => {
+    dispatch(setVideoControlForParticipant(!enable));
+    if (enable) {
+      localStorage.setItem("isWebCamEnabled", true);
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((videoStream) => {
@@ -138,7 +151,7 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
           alert("Error accessing webcam: " + error.message);
         });
     } else {
-      sessionStorage.setItem("isWebCamEnabled", false);
+      localStorage.setItem("isWebCamEnabled", false);
       if (stream) {
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
@@ -151,6 +164,9 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
   };
 
   const joinNewApiVideoCallOnClick = () => {
+    if (editorRole.role === "Participant") {
+      localStorage.setItem("userRole", "Participant");
+    }
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
@@ -167,7 +183,7 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
       <div className="max-videoParticipant-panel">
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
-            <p>Participant Title Is Here</p>
+            <p className="max-participant-title">{participantMeetingTitle}</p>
           </Col>
           <Col
             lg={8}
@@ -201,7 +217,10 @@ const ParticipantVideoCallComponent = ({ handleExpandToParticipantMax }) => {
               <img src={MinimizeIcon} />
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img src={NormalizeIcon} onClick={handleExpandToParticipantMax} />
+              <img
+                src={NormalizeIcon}
+                onClick={handleExpandToNormalPanelParticipant}
+              />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img src={EndCall} />

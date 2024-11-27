@@ -60,6 +60,7 @@ import {
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
+  normalParticipantVideoCallPanel,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -76,6 +77,7 @@ import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideo
 import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -122,6 +124,10 @@ const ViewMeetingDetails = ({
 
   const participantVideoNavigationData = useSelector(
     (state) => state.videoFeatureReducer.participantVideoNavigationData
+  );
+
+  const normalParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
   );
 
   console.log(
@@ -548,6 +554,10 @@ const ViewMeetingDetails = ({
     dispatch(maxParticipantVideoCallPanel(true)); // Set Maximize flag to true
   };
 
+  const handleExpandToNormalPanelParticipant = () => {
+    dispatch(normalParticipantVideoCallPanel(true));
+  };
+
   const copyToClipboardd = () => {
     let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
     if (MeetingData.isVideo === true) {
@@ -809,17 +819,31 @@ const ViewMeetingDetails = ({
                             {participantVideoNavigationData === 1 &&
                               maximizeParticipantVideoFlag && (
                                 <ParticipantVideoCallComponent
+                                  handleExpandToNormalPanelParticipant={
+                                    handleExpandToNormalPanelParticipant
+                                  }
+                                  // handleExpandToParticipantMax={
+                                  //   handleExpandToParticipantMax
+                                  // }
+                                />
+                              )}
+                            {participantVideoNavigationData !== 1 &&
+                              participantVideoNavigationData === 3 && (
+                                <MaxParticipantVideoDeniedComponent />
+                              )}
+                            {participantVideoNavigationData !== 1 &&
+                              participantVideoNavigationData === 5 && (
+                                <MaxParticipantVideoRemovedComponent />
+                              )}
+                            {/* fOR PARTICIPANT NORMAL SCREEN */}
+                            {participantVideoNavigationData === 1 &&
+                              normalParticipantVideoFlag && (
+                                <NormalParticipantVideoComponent
                                   handleExpandToParticipantMax={
                                     handleExpandToParticipantMax
                                   }
                                 />
                               )}
-                            {participantVideoNavigationData === 3 && (
-                              <MaxParticipantVideoDeniedComponent />
-                            )}
-                            {participantVideoNavigationData === 5 && (
-                              <MaxParticipantVideoRemovedComponent />
-                            )}
                           </>
                         ) : (
                           <>

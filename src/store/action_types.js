@@ -3261,3 +3261,27 @@ export const SET_MQTT_VOICE_CONTROLE_HOST = "SET_MQTT_VOICE_CONTROLE_HOST";
 
 // for Host Video Control
 export const SET_MQTT_VIDEO_CONTROLE_HOST = "SET_MQTT_VIDEO_CONTROLE_HOST";
+
+// get Video Url for Participants
+export const GET_VIDEOURL_PARTICIPANT = "GET_VIDEOURL_PARTICIPANT";
+
+// for particiant Voice Control
+export const SET_MQTT_VOICE_PARTICIPANT = "SET_MQTT_VOICE_PARTICIPANT";
+
+//for participant Video Control
+export const SET_MQTT_VIDEO_MEETING_PARTICIPANT =
+  "SET_MQTT_VIDEO_MEETING_PARTICIPANT";
+
+// Raise UnRaised For Participant
+export const SET_RAISED_UNRAISED_PPARTICIPANT =
+  "SET_RAISED_UNRAISED_PPARTICIPANT";
+
+// For participant Normal Video Panel
+export const PARTICIPANT_VIDEO_CALL_NORMAL_PANEL =
+  "PARTICIPANT_VIDEO_CALL_NORMAL_PANEL";
+
+// Check whose is the Host Global State
+export const CHECK_HOST_HOST_NOW = "CHECK_HOST_HOST_NOW";
+
+// Make hoste
+export const MAKE_HOST_HOST_NOW = "MAKE_HOST_HOST_NOW";

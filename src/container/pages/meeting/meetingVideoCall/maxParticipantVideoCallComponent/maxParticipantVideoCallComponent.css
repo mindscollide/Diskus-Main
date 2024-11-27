@@ -106,3 +106,9 @@
   height: 100%;
   position: relative;
 }
+
+.max-participant-title {
+  color: #6172d6 !important;
+  font-size: 20px;
+  font-weight: 600;
+}

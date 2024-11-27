@@ -132,6 +132,11 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
         ) {
+          if (data.payload.isForAll) {
+            // Dispatch to globally mute/unmute participants
+            dispatch(setVoiceControleGuest(true));
+          }
+          // Handle additional logic for individual mute/unmute, if needed
           dispatch(muteUnMuteByHost(data.payload));
           console.log(data.payload, "guestDataGuestData");
         } else if (

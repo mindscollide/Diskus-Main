@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -36,6 +36,12 @@ import {
   getParticipantsNewJoin,
   participantVideoNavigationScreen,
   maxParticipantVideoCallPanel,
+  getVideoUrlForParticipant,
+  setAudioControlForParticipant,
+  setVideoControlForParticipant,
+  setRaisedUnRaisedParticiant,
+  checkHostNow,
+  makeHostNow,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -163,7 +169,11 @@ import {
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
-import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
+import {
+  admitGuestUserRequest,
+  muteUnMuteByHost,
+} from "../../store/actions/Guest_Video";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -190,6 +200,8 @@ const Dashboard = () => {
   let currentOrganization = localStorage.getItem("organizationID");
 
   let currentUserName = localStorage.getItem("name");
+
+  const { editorRole } = useContext(MeetingContext);
 
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
@@ -223,6 +235,18 @@ const Dashboard = () => {
   );
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+
+  const videoControlForParticipant = useSelector(
+    (state) => state.videoFeatureReducer.videoControlForParticipant
+  );
+
+  const audioControlForParticipant = useSelector(
+    (state) => state.videoFeatureReducer.audioControlForParticipant
+  );
+
+  const getNewParticipantsMeetingJoin = useSelector(
+    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -698,6 +722,11 @@ const Dashboard = () => {
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
             ) {
               dispatch(participanRaisedUnRaisedHand(data.payload));
+              if (data.payload.isHandRaised === true) {
+                dispatch(setRaisedUnRaisedParticiant(true));
+              } else {
+                dispatch(setRaisedUnRaisedParticiant(false));
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
@@ -723,13 +752,48 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload));
+              if (data.payload.isForAll) {
+                // Gather all participant UIDs
+                const allUids = getNewParticipantsMeetingJoin.map(
+                  (participant) => {
+                    console.log(participant, "participantparticipant");
+                    // participant.guid;
+                  }
+                );
+
+                // Dispatch action with all UIDs
+                dispatch(
+                  participanMuteUnMuteMeeting({
+                    isMuted: true,
+                    isForAll: true,
+                    uids: allUids, // Include all participant UIDs
+                  })
+                );
+
+                dispatch(setAudioControlForParticipant(true)); // Update global state to mute all
+              } else {
+                // Handle individual mute/unmute
+                dispatch(participanMuteUnMuteMeeting(data.payload));
+
+                if (data.payload.isMuted === true) {
+                  dispatch(setAudioControlForParticipant(true));
+                } else {
+                  dispatch(setAudioControlForParticipant(false));
+                }
+              }
+
               console.log(data.payload, "guestDataGuestData");
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
             ) {
+              //  dispatch(hideUnHideVideoByHost(data.payload));
               dispatch(participantHideUnhideVideo(data.payload));
+              if (data.payload.isVideoHidden === true) {
+                dispatch(setVideoControlForParticipant(true));
+              } else {
+                dispatch(setVideoControlForParticipant(false));
+              }
               console.log(data.payload, "guestDataGuestDataVideo");
             } else if (
               data.payload.message.toLowerCase() ===
@@ -745,15 +809,67 @@ const Dashboard = () => {
             ) {
               dispatch(maxParticipantVideoCallPanel(false));
               dispatch(maximizeVideoPanelFlag(true));
-
+              let currntUsereName = localStorage.getItem("name");
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
+              localStorage.setItem("acceptedRecipientID", data.payload.userID);
               localStorage.setItem("isMeetingVideo", true);
-              console.log(data.payload, "hahahahahahhassddsd");
+              localStorage.setItem(
+                "currentMeetingVideoUrl",
+                data.payload.videoUrl
+              );
+              if (data?.payload?.videoUrl) {
+                // Fetch values from localStorage and Redux
+                const currentParticipantUser = localStorage.getItem("name");
+                // Refine the URL by replacing placeholders
+                const refinedUrl = data.payload.videoUrl
+                  .replace("$ParticipantFullName$", currentParticipantUser)
+                  .replace("$IsMute$", audioControlForParticipant.toString())
+                  .replace(
+                    "$IsHideCamera$",
+                    videoControlForParticipant.toString()
+                  );
+
+                // Store the refined URL in localStorage
+                localStorage.setItem("refinedVideoUrl", refinedUrl);
+              } else {
+                console.error("Invalid data or missing videoUrl in payload");
+              }
+
+              dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
+              console.log(data.payload.videoUrl, "hahahahahahhassddsd");
               localStorage.setItem("participantRoomId", data.payload.roomID);
               localStorage.setItem("participantUID", data.payload.uid);
               // dispatch(participantVideoNavigationScreen(3));
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
+            ) {
+              console.log("New Host Information", data.payload);
+              localStorage.setItem(
+                "isHost",
+                JSON.stringify(data.payload.newHost.isHost)
+              );
+              const newHostUserID = data.payload.newHost.userID;
+
+              dispatch(checkHostNow(newHostUserID));
+              localStorage.setItem("currentHostUserID", newHostUserID);
+              console.log("Host ID set in localStorage: ", newHostUserID);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
+            ) {
+              const meetingHost = {
+                isHost: true,
+                isHostId: Number(localStorage.getItem("userID")),
+              };
+              dispatch(makeHostNow(meetingHost));
+
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()

@@ -1,4 +1,4 @@
-.normal-videoHost-panel {
+.normal-videoParticipant-panel {
   position: fixed;
   height: 50vh;
   bottom: 10px;
@@ -12,7 +12,7 @@
   left: 65px;
 }
 
-.normal-videohost-Icons-state {
+.normal-videoParticipant-Icons-state {
   height: 36px;
   width: 36px;
   display: flex;
@@ -21,21 +21,21 @@
   align-items: center;
 }
 
-.normal-Hostvideo-tag-name {
+.normal-videoParticipant-tag-name {
   background: #5a5a5a;
   border-radius: 10px;
   overflow: hidden;
   border: none;
 }
 
-.video-Normal-host {
+.video-normal-videoParticipant {
   width: 100%;
   object-fit: cover !important;
   max-height: 40vh;
   padding: 10px 0px;
 }
 
-.normal-videoHost-component {
+.normal-videoParticipant-component {
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   flex-direction: column;
@@ -46,13 +46,13 @@
   margin-top: 10px;
 }
 
-.normal-videohost-ready-to-join {
+.normal-videoParticipant-ready-to-join {
   font-size: 30px;
   font-weight: 600;
   color: #5a5a5a;
 }
 
-.normal-videoHost-Join-Now-Btn {
+.normal-videoParticipant-Join-Now-Btn {
   width: 118px;
   height: 39px;
   background-color: #55ce5c;
@@ -63,21 +63,21 @@
   border: none;
 }
 
-.normal-videoHost-waiting-room-class {
+.normal-videoParticipant-waiting-room-class {
   font-weight: 600;
   font-size: 30px;
   color: #6172d6;
   margin-bottom: 1px; /* Adjust the bottom margin to reduce spacing */
 }
 
-.normal-videoHost-organizer-allow-class {
+.normal-videoParticipant-organizer-allow-class {
   font-weight: 600;
   font-size: 20px;
   color: #5a5a5a;
   margin-top: 0; /* Remove any top margin */
 }
 
-.normal-videoHost-left-meeting-text {
+.normal-videoParticipant-left-meeting-text {
   color: #6172d6 !important;
   font-size: 30px;
   font-weight: 600;
@@ -85,13 +85,13 @@
   margin-bottom: 0px;
 }
 
-.normal-videoHost-left-meeting-rejoin-text {
+.normal-videoParticipant-left-meeting-rejoin-text {
   color: #5a5a5a !important;
   font-size: 20px;
   font-weight: 600;
 }
 
-.normal-videoHost-title-name {
+.normal-participant-title {
   color: #6172d6 !important;
   font-size: 20px;
   font-weight: 600;

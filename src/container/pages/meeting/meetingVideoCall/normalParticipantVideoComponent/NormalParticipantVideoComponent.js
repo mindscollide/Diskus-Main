@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import ProfileUser from "../../../../../assets/images/Recent Activity Icons/Video/profileIcon.png";
 import { useTranslation } from "react-i18next";
-import "./NormalHostVideoCallComponent.css";
 import { Button } from "../../../../../components/elements";
 import MicOn2 from "../../../../../assets/images/Recent Activity Icons/Video/MicOn2.png";
 import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
@@ -12,8 +11,9 @@ import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/En
 import { getParticipantMeetingJoinMainApi } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import "./NormalParticipantVideoComponent.css";
 
-const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
+const NormalParticipantVideoComponent = ({ handleExpandToParticipantMax }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,13 +66,12 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
   };
-
   return (
     <Container fluid>
-      <div className="normal-videoHost-panel">
+      <div className="normal-videoParticipant-panel">
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
-            <p className="normal-videoHost-title-name">
+            <p className="normal-participant-title">
               {participantMeetingTitle}
             </p>
           </Col>
@@ -82,7 +81,7 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
             sm={12}
             className="d-flex justify-content-end align-items-center gap-2"
           >
-            <div className="max-videohost-Icons-state">
+            <div className="normal-videoParticipant-Icons-state">
               {/* {micOn ? ( */}
               <img src={MicOn2} className="cursor-pointer" />
               {/* ) : (
@@ -93,20 +92,20 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
                 />
               )} */}
             </div>
-            <div className="max-videohost-Icons-state">
+            <div className="normal-videoParticipant-Icons-state">
               {/* {isVideoOn ? ( */}
               <img src={VideoOn2} />
               {/* ) : (
                 <img src={VideoOn2} onClick={() => openVideoStatus(true)} />
               )} */}
             </div>
-            <div className="max-videohost-Icons-state">
+            <div className="normal-videoParticipant-Icons-state">
               <img src={MinimizeIcon} />
             </div>
-            <div className="max-videohost-Icons-state">
-              <img src={ExpandIcon} onClick={handleExpandToMax} />
+            <div className="normal-videoParticipant-Icons-state">
+              <img src={ExpandIcon} onClick={handleExpandToParticipantMax} />
             </div>
-            <div className="max-videohost-Icons-state">
+            <div className="normal-videoParticipant-Icons-state">
               <img src={EndCall} />
             </div>
           </Col>
@@ -116,7 +115,7 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
             {
               <>
                 <div
-                  className="normal-Hostvideo-tag-name"
+                  className="normal-videoParticipant-tag-name"
                   style={{
                     backgroundImage: `url(${ProfileUser})`,
                     backgroundSize: "33%",
@@ -131,7 +130,10 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
                           position: "relative",
                         }}
                       >
-                        <video ref={videoRef} className="video-Normal-host" />
+                        <video
+                          ref={videoRef}
+                          className="video-normal-videoParticipant"
+                        />
                       </div>
                     </div>
                   </div>
@@ -140,7 +142,7 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
             }
           </Col>
           <Col lg={5} md={5} sm={12}>
-            {/* <div className="normal-videoHost-component">
+            {/* <div className="normal-videoParticipant-component">
               <p className="normal-videoHost-left-meeting-text">
                 {t("You've-left-the-meeting")}
               </p>
@@ -149,10 +151,10 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
               </p>
               <Button
                 text={t("Rejoin")}
-                className="normal-videoHost-Join-Now-Btn"
+                className="normal-videoParticipant-Join-Now-Btn"
               />
             </div> */}
-            {/* <div className="normal-videoHost-component">
+            {/* <div className="normal-videoParticipant-component">
               <p className="normal-videoHost-waiting-room-class">
                 {t("You-are-in-the-waiting-room")}
               </p>
@@ -160,14 +162,14 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
                 {t("The-organizer-will-allow-you-to-join-shortly")}
               </p>
             </div> */}
-            <div className="normal-videoHost-component">
+            <div className="normal-videoParticipant-component">
               <>
-                <p className="normal-videohost-ready-to-join">
+                <p className="normal-videoParticipant-ready-to-join">
                   {t("Ready-to-join")}
                 </p>
                 <Button
                   text={t("Join-now")}
-                  className="normal-videoHost-Join-Now-Btn"
+                  className="normal-videoParticipant-Join-Now-Btn"
                   onClick={joinNewApiVideoCallOnClick}
                 />
               </>
@@ -179,4 +181,4 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
   );
 };
 
-export default NormalHostVideoCallComponent;
+export default NormalParticipantVideoComponent;

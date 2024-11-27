@@ -260,6 +260,7 @@ const guestLeaveVideoMeeting = (response) => {
 };
 
 const participanMuteUnMuteMeeting = (response) => {
+  console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
@@ -593,6 +594,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 "isHost",
                 response.data.responseResult.isHost
               );
+              const meetingHost = {
+                isHost: response.data.responseResult.isHost,
+                isHostId: Number(localStorage.getItem("userID")),
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               localStorage.setItem("isGuid", response.data.responseResult.guid);
               localStorage.setItem(
                 "isEmail",
@@ -787,6 +797,7 @@ const participantVideoNavigationScreen = (response) => {
 
 // SET HOST VIDEO CAMERA
 const setVideoControlHost = (response) => {
+  console.log(response, "datadtadttadtadta");
   return {
     type: actions.SET_MQTT_VIDEO_CONTROLE_HOST,
     response: response,
@@ -795,8 +806,70 @@ const setVideoControlHost = (response) => {
 
 // SET HOST AUDIO CONTROL
 const setAudioControlHost = (response) => {
+  console.log(response, "datadtadttadtadta");
   return {
     type: actions.SET_MQTT_VOICE_CONTROLE_HOST,
+    response: response,
+  };
+};
+
+// Get Video Url For Partcipants
+const getVideoUrlForParticipant = (response) => {
+  console.log(response, "urlurlurlurlurl");
+  return {
+    type: actions.GET_VIDEOURL_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET MQTTT FOR VOICE PARTICIPANT
+const setAudioControlForParticipant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VOICE_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET HOST VIDEO CAMERA
+const setVideoControlForParticipant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET MQTTT FOR VOICE PARTICIPANT
+const setRaisedUnRaisedParticiant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_RAISED_UNRAISED_PPARTICIPANT,
+    response: response,
+  };
+};
+
+//Normal Participant Video Component
+const normalParticipantVideoCallPanel = (response) => {
+  return {
+    type: actions.PARTICIPANT_VIDEO_CALL_NORMAL_PANEL,
+    response: response,
+  };
+};
+
+// CHECK WHOSE IS THE HOST NOW
+const checkHostNow = (response) => {
+  console.log(response, "responseresponseMakeHost");
+  return {
+    type: actions.CHECK_HOST_HOST_NOW,
+    response: response,
+  };
+};
+
+const makeHostNow = (response) => {
+  console.log(response, "responseresponseMakeHost");
+  return {
+    type: actions.MAKE_HOST_HOST_NOW,
     response: response,
   };
 };
@@ -851,4 +924,11 @@ export {
   participantVideoNavigationScreen,
   setVideoControlHost,
   setAudioControlHost,
+  getVideoUrlForParticipant,
+  setVideoControlForParticipant,
+  setAudioControlForParticipant,
+  setRaisedUnRaisedParticiant,
+  normalParticipantVideoCallPanel,
+  checkHostNow,
+  makeHostNow,
 };

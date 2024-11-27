@@ -66,6 +66,8 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.getAllParticipantGuest
   );
 
+  console.log(getAllParticipantGuest, "hideUnHideParticpantorGuest123");
+
   const videoCameraGuest = useSelector(
     (state) => state.GuestVideoReducer.videoCameraGuest
   );

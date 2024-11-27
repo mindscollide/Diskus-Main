@@ -28,6 +28,7 @@ import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
+import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
 
 const VideoNewParticipantList = () => {
   console.log("VideoNewParticipantList");
@@ -45,6 +46,8 @@ const VideoNewParticipantList = () => {
   );
 
   console.log(videoParticpantListandWaitingList, "videoParticpantWaitingList");
+
+  let getRoomId = localStorage.getItem("participantRoomId");
 
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
@@ -68,6 +71,15 @@ const VideoNewParticipantList = () => {
     const { value } = e.target;
     setSearchValue(value);
   };
+
+  useEffect(() => {
+    if (getRoomId !== null) {
+      let Data = {
+        RoomID: String(getRoomId),
+      };
+      dispatch(participantListWaitingListMainApi(Data, navigate, t));
+    }
+  }, []);
 
   useEffect(() => {
     if (
@@ -142,23 +154,40 @@ const VideoNewParticipantList = () => {
     let data = {
       RoomID: roomID,
       UID: usersData.guid,
-      UserID: Number(currentUserID),
+      UserID: usersData.userID,
     };
 
     dispatch(transferMeetingHostMainApi(navigate, t, data));
   };
 
-  const muteUnmuteByHost = (usersData, flag) => {
+  const muteUnmuteByHost = (usersData, flag = true) => {
     setMuteGuest(flag);
-    let data = {
-      RoomID: roomID,
-      IsMuted: flag,
-      MuteUnMuteList: [
-        {
-          UID: usersData.guid, // The participant's UID
-        },
-      ],
-    };
+    let data;
+    if (usersData) {
+      // Mute/Unmute a specific participant
+      data = {
+        RoomID: roomID,
+        IsMuted: flag,
+        MuteUnMuteList: [
+          {
+            UID: usersData.guid, // The participant's UID
+          },
+        ],
+      };
+    } else {
+      // Mute All participants
+      const allUids = newParticipants.map((participant) => ({
+        UID: participant.guid,
+      }));
+
+      data = {
+        RoomID: roomID,
+        IsMuted: true,
+        isForAll: true,
+        MuteUnMuteList: allUids, // Include all UIDs here
+      };
+    }
+
     dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
 
@@ -299,6 +328,7 @@ const VideoNewParticipantList = () => {
                 <Button
                   text={t("Mute-All")}
                   className={styles["Waiting-New-Participant-muteAll"]}
+                  onClick={() => muteUnmuteByHost(null, true)}
                 />
               </Col>
             </Row>
@@ -386,7 +416,7 @@ const VideoNewParticipantList = () => {
                           <Dropdown.Menu>
                             <Dropdown.Item
                               className="participant-dropdown-item"
-                              //   onClick={() => makeLeaveOnClick(usersData)}
+                              onClick={() => makeLeaveOnClick(usersData)}
                             >
                               {t("Make-host")}
                             </Dropdown.Item>

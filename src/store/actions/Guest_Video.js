@@ -21,7 +21,9 @@ import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_g
 import {
   guestJoinPopup,
   guestLeaveVideoMeeting,
+  makeHostNow,
   participantAcceptandReject,
+  participantVideoNavigationScreen,
   participantWaitingListBox,
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
@@ -644,6 +646,11 @@ const transferMeetingHostMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_TransferMeetingHost_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: Number(localStorage.getItem("userID")),
+              };
+              dispatch(makeHostNow(meetingHost));
               await dispatch(
                 transferMeetingHostSuccess(
                   response.data.responseResult,
@@ -750,6 +757,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               );
               dispatch(guestLeaveVideoMeeting(data.UID));
               dispatch(removeParticipantFromVideo(data.UID));
+              dispatch(participantVideoNavigationScreen(1));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
