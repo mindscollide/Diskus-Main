@@ -27,6 +27,7 @@ import {
   GetAllAgendaWiseMinutesApiFunc,
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
+import { isFunction } from "../../commen/functions/utils";
 
 // Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
@@ -2052,7 +2053,14 @@ const getDataForResendMinuteReview_Fail = (message, response) => {
 };
 
 //GetDataForResendMinuteReview
-const GetDataForResendMinuteReview = (Data, navigate, t, setEditMinute) => {
+const GetDataForResendMinuteReview = (
+  Data,
+  navigate,
+  t,
+  setEditMinute,
+  Editdata
+) => {
+  console.log(setEditMinute, "setEditMinutesetEditMinutesetEditMinute");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getDataForResendMinuteReview_Init());
@@ -2072,7 +2080,13 @@ const GetDataForResendMinuteReview = (Data, navigate, t, setEditMinute) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetDataForResendMinuteReview(Data, navigate, t, setEditMinute)
+            GetDataForResendMinuteReview(
+              Data,
+              navigate,
+              t,
+              setEditMinute,
+              Editdata
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2089,7 +2103,8 @@ const GetDataForResendMinuteReview = (Data, navigate, t, setEditMinute) => {
                   t("Record-found")
                 )
               );
-              setEditMinute(true);
+              isFunction(setEditMinute) && setEditMinute(true);
+              dispatch(currentMeetingMinutesToReview(Editdata));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

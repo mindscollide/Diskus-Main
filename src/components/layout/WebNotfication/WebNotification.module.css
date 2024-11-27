@@ -1,0 +1,51 @@
+.WebNotificationOuterBox {
+  width: 452px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  position: absolute !important;
+  top: 65px !important;
+  right: 119px !important;
+  border-radius: 4px !important;
+  padding: 10px 30px !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+body[dir="rtl"] .WebNotificationOuterBox {
+  left: 125px !important;
+  right: auto !important;
+}
+
+.NotificationCateogries {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.WebNotificationOuterBox {
+  height: 75vh !important;
+  overflow-x: hidden !important;
+}
+
+.WebNotificationOuterBox::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.WebNotificationOuterBox::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.SeperateNotificationLine {
+  display: inline-block !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-top: 4px !important;
+}
+
+.BackGroundUnreadNotifications {
+  width: 100% !important;
+  background-color: #f3f3f3 !important ;
+  cursor: pointer !important;
+}

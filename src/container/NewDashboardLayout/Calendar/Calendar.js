@@ -654,9 +654,6 @@ const NewCalendar = () => {
 
   return (
     <>
-      {/* <section className={styles["dashboard_calendar_empty"]}>
-          <Spin />
-        </section> */}
       {calendarReducer.Spinner === true ? (
         <section className={styles["dashboard_calendar_empty"]}>
           <Spin />

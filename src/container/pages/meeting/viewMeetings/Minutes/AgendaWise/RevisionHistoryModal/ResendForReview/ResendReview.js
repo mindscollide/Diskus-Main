@@ -12,6 +12,7 @@ import moment from "moment";
 import DatePicker from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
+  formatDateToUTCWithEndOfDay,
   multiDatePickerDateChangIntoUTC,
   utcConvertintoGMT,
 } from "../../../../../../../../commen/functions/date_formater";
@@ -33,6 +34,10 @@ const ResendMinuteReviewModal = ({
   isAgenda,
   setShowRevisionHistory,
 }) => {
+  console.log(
+    editMinuteData,
+    "minuteDateminuteDateminuteDateminuteDateminuteDate"
+  );
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
@@ -56,7 +61,7 @@ const ResendMinuteReviewModal = ({
       calendRef.current.closeCalendar();
     }
   };
-
+  console.log(minuteDate, "minuteDateminuteDateminuteDate");
   const resendForReview = () => {
     // let updateMinuteData;
 
@@ -65,7 +70,7 @@ const ResendMinuteReviewModal = ({
       Bundle: {
         ID: "0",
         Title: updateMinuteData.MinuteText,
-        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate),
+        BundleDeadline: formatDateToUTCWithEndOfDay(minuteDate),
         ListOfUsers: editMinuteData.actors.map((item) => item.pK_UID),
         Entity: {
           EntityID: editMinuteData.entity.entityID,
@@ -129,8 +134,10 @@ const ResendMinuteReviewModal = ({
     }
   }, [currentLanguage]);
 
+  console.log(editMinuteData.bundleDeadline, "bundleDeadlinebundleDeadline");
+
   useEffect(() => {
-    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "235959");
+    let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "000000");
     setMinuteDate(date);
   }, []);
 
