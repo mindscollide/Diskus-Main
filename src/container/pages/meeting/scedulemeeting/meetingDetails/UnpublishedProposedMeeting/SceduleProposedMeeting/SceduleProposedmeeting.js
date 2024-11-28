@@ -17,6 +17,7 @@ import {
   newTimeFormaterViewPoll,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
+import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
 const SceduleProposedmeeting = ({
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -152,15 +153,15 @@ const SceduleProposedmeeting = ({
           row.selectedProposedDates.length > 0 &&
           row.selectedProposedDates[columnIndex].isSelected
         ) {
-          return total + 1;
+          return convertToArabicNumerals(total + 1);
         }
-        return total;
+        return convertToArabicNumerals(total);
       }, 0);
 
       // Add a zero prefix to the count if it's a single digit
-      return count < 10 ? `0${count}` : count;
+      return count < 10 ? convertToArabicNumerals(`0${count}`) : convertToArabicNumerals(count);
     } else {
-      return "00";
+      return convertToArabicNumerals("00");
     }
   };
 
