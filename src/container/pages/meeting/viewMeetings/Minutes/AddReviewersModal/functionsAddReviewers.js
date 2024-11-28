@@ -1,4 +1,7 @@
-import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  formatDateToYYYYMMDD,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 
 export const handleCheck = (
   checked,
@@ -389,7 +392,7 @@ export function createListOfActionAbleBundle(
           // ID: minute.minuteID.toString(),
           ID: "0",
           Title: "", // Set title as needed
-          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
           ListOfUsers: minute.reviewersList,
           Entity: {
             EntityID: minute.minuteID,
@@ -400,7 +403,7 @@ export function createListOfActionAbleBundle(
         resultList.push({
           ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
           Title: "", // Set title as needed
-          BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+          BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
           ListOfUsers: minute.reviewersList,
           Entity: {
             EntityID: minute.minuteID,
@@ -420,7 +423,7 @@ export function createListOfActionAbleBundle(
             // ID: minute.minuteID.toString(),
             ID: "0",
             Title: "", // Set title as needed
-            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+            BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
             ListOfUsers: minute.reviewersList,
             Entity: {
               EntityID: minute.minuteID,
@@ -432,7 +435,7 @@ export function createListOfActionAbleBundle(
             // ID: minute.minuteID.toString(),
             ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
             Title: "", // Set title as needed
-            BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+            BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
             ListOfUsers: minute.reviewersList,
             Entity: {
               EntityID: minute.minuteID,
@@ -453,7 +456,7 @@ export function createListOfActionAbleBundle(
         // ID: minute.minuteID.toString(),
         ID: "0",
         Title: "", // Set title as needed
-        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+        BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
         ListOfUsers: minute.reviewersList,
         Entity: {
           EntityID: minute.minuteID,
@@ -465,7 +468,7 @@ export function createListOfActionAbleBundle(
         // ID: minute.minuteID.toString(),
         ID: minute.bundleID !== "0" ? String(minute.bundleID) : "0",
         Title: "", // Set title as needed
-        BundleDeadline: multiDatePickerDateChangIntoUTC(minuteDate), // Set bundle deadline as needed
+        BundleDeadline: formatDateToYYYYMMDD(minuteDate) + "235959", // Set bundle deadline as needed
         ListOfUsers: minute.reviewersList,
         Entity: {
           EntityID: minute.minuteID,

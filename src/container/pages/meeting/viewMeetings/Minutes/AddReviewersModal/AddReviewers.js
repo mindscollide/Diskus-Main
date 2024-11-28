@@ -10,9 +10,10 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
+  formatDateToYYYYMMDD,
   multiDatePickerDateChangIntoUTC,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
@@ -120,6 +121,7 @@ const AddReviewers = ({
 
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
     let minuteDateValueFormat = new Date(date);
+    console.log(minuteDateValueFormat, "utcFormattedutcFormattedutcFormatted");
     setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
@@ -139,12 +141,9 @@ const AddReviewers = ({
         WorkFlowTitle: currentMeetingTitle,
         Description: "",
         isDeadline: true,
-        DeadlineDateTime: multiDatePickerDateChangIntoUTC(minuteDate),
+        DeadlineDateTime: formatDateToYYYYMMDD(minuteDate) + "235959",
         ListOfActionAbleBundle: resultedActionableBundle,
       };
-
-      console.log("Save Data", Data);
-      console.log("Save Data", setAddReviewers);
 
       dispatch(SaveMinutesReviewFlow(Data, navigate, t, setAddReviewers));
     }
@@ -224,7 +223,7 @@ const AddReviewers = ({
 
           let date = utcConvertintoGMT(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-              ?.workFlow?.deadlineDatetime + "235959"
+              ?.workFlow?.deadlineDatetime + "000000"
           );
           setMinuteDate(date);
 
