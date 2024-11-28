@@ -707,10 +707,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={(event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      handleMeetingSidebarCalendar(); // Your custom click handler
-                    }}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarCalendar
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarCalendar(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex align-items-center flex-column"
@@ -780,10 +784,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={(event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      handleMeetingSidebarNotes(); // Your custom click handler
-                    }}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarNotes
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarNotes(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex flex-column noteIcon"
