@@ -817,6 +817,8 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
 // this work is create by huzeifa please dont write any thing below thi line
 export const multiDatePickerDateChangIntoUTC = (date) => {
+  console.log(date, "utcFormattedutcFormattedutcFormatted");
+
   // Extract the year, month, and day components from the UTC time
   const year = date.getUTCFullYear();
   const month = String(date.getUTCMonth() + 1).padStart(2, "0");

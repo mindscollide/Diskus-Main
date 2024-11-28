@@ -51,6 +51,7 @@ const Header2 = ({ isVideo }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
+  let ActiveCallFlag = localStorage.getItem("activeCall");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -431,10 +432,14 @@ const Header2 = ({ isVideo }) => {
                               ? "/DisKus/Meeting"
                               : "/DisKus/Minutes"
                           }
-                          onClick={(event) => {
-                            event.preventDefault(); // Prevents default navigation
-                            handleMeetingPendingApprovals(); // Your custom click handler
-                          }}
+                          onClick={
+                            ActiveCallFlag === "false"
+                              ? handleMeetingPendingApprovals
+                              : (event) => {
+                                  event.preventDefault(); // Prevents default navigation
+                                  handleMeetingPendingApprovals(); // Your custom click handler
+                                }
+                          }
                           className="pendingApprovalsNav"
                         >
                           {t("Pending-approvals")}
@@ -545,10 +550,14 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/setting"
                         }
                         className="d-flex text-black FontClass"
-                        onClick={(event) => {
-                          event.preventDefault(); // Prevents default navigation
-                          handleMeetingSidebarSettings(); // Your custom click handler
-                        }}
+                        onClick={
+                          ActiveCallFlag === "false"
+                            ? handleMeetingSidebarSettings
+                            : (event) => {
+                                event.preventDefault(); // Prevents default navigation
+                                handleMeetingSidebarSettings(); // Your custom click handler
+                              }
+                        }
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -573,10 +582,14 @@ const Header2 = ({ isVideo }) => {
                             ? "/DisKus/Meeting"
                             : "/DisKus/faq's"
                         }
-                        onClick={(event) => {
-                          event.preventDefault(); // Prevents default navigation
-                          handleMeetingSidebarFAQ(); // Your custom click handler
-                        }}
+                        onClick={
+                          ActiveCallFlag === "false"
+                            ? handleMeetingSidebarFAQ
+                            : (event) => {
+                                event.preventDefault(); // Prevents default navigation
+                                handleMeetingSidebarFAQ(); // Your custom click handler
+                              }
+                        }
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
@@ -623,10 +636,14 @@ const Header2 = ({ isVideo }) => {
                     ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
-                onClick={(event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarFAQ(); // Your custom click handler
-                }}
+                onClick={
+                  ActiveCallFlag === "false"
+                    ? handleMeetingSidebarFAQ
+                    : (event) => {
+                        event.preventDefault(); // Prevents default navigation
+                        handleMeetingSidebarFAQ(); // Your custom click handler
+                      }
+                }
                 className="mx-3"
               >
                 <img
@@ -659,10 +676,14 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={(event) => {
-                event.preventDefault(); // Prevents default navigation
-                homePageDashboardClick(); // Your custom click handler
-              }}
+              onClick={
+                ActiveCallFlag === "false"
+                  ? homePageDashboardClick
+                  : (event) => {
+                      event.preventDefault(); // Prevents default navigation
+                      homePageDashboardClick(); // Your custom click handler
+                    }
+              }
             >
               <img
                 src={DiskusLogoHeader}
@@ -845,10 +866,14 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/Minutes"
                                 }
-                                onClick={(event) => {
-                                  event.preventDefault(); // Prevents default navigation
-                                  handleMeetingPendingApprovals(); // Your custom click handler
-                                }}
+                                onClick={
+                                  ActiveCallFlag === "false"
+                                    ? handleMeetingPendingApprovals
+                                    : (event) => {
+                                        event.preventDefault(); // Prevents default navigation
+                                        handleMeetingPendingApprovals(); // Your custom click handler
+                                      }
+                                }
                                 className="pendingApprovalsNav"
                               >
                                 <span className="New_folder_shortcutkeys">
@@ -1035,10 +1060,14 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/setting"
                                 }
                                 className="d-flex text-black FontClass"
-                                onClick={(event) => {
-                                  event.preventDefault(); // Prevents default navigation
-                                  handleMeetingSidebarSettings(); // Your custom click handler
-                                }}
+                                onClick={
+                                  ActiveCallFlag === "false"
+                                    ? handleMeetingSidebarSettings
+                                    : (event) => {
+                                        event.preventDefault(); // Prevents default navigation
+                                        handleMeetingSidebarSettings(); // Your custom click handler
+                                      }
+                                }
                               >
                                 {/* Change Password */}
                                 {t("Settings")}
@@ -1066,10 +1095,14 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/faq's"
                                 }
-                                onClick={(event) => {
-                                  event.preventDefault(); // Prevents default navigation
-                                  handleMeetingSidebarFAQ(); // Your custom click handler
-                                }}
+                                onClick={
+                                  ActiveCallFlag === "false"
+                                    ? handleMeetingSidebarFAQ
+                                    : (event) => {
+                                        event.preventDefault(); // Prevents default navigation
+                                        handleMeetingSidebarFAQ(); // Your custom click handler
+                                      }
+                                }
                                 className="d-flex text-black FontClass"
                               >
                                 {/* Change Password */}
@@ -1140,10 +1173,14 @@ const Header2 = ({ isVideo }) => {
                           : "/DisKus/faq's"
                       }
                       className="mx-3"
-                      onClick={(event) => {
-                        event.preventDefault(); // Prevents default navigation
-                        handleMeetingSidebarFAQ(); // Your custom click handler
-                      }}
+                      onClick={
+                        ActiveCallFlag === "false"
+                          ? handleMeetingSidebarFAQ
+                          : (event) => {
+                              event.preventDefault(); // Prevents default navigation
+                              handleMeetingSidebarFAQ(); // Your custom click handler
+                            }
+                      }
                     >
                       <Tooltip placement="topRight" title={t("FAQs")}>
                         <img

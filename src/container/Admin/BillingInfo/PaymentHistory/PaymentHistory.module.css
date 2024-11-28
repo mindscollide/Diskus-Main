@@ -435,3 +435,15 @@ body[dir="rtl"] .NameStylesTable {
 body[dir="rtl"] .DesignationStyles {
   font-weight: 400 !important;
 }
+
+.NoPaymentHistoryMainHeading {
+  font-weight: 700 !important;
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+}
+
+.SubHeadingTaglineNoPaymentHistory {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+}
