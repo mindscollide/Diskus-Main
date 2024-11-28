@@ -387,8 +387,7 @@ const Dashboard = () => {
                     RoomID: currentMeetingVideoID,
                     UserGUID: userGUID,
                   };
-                  // dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-                  <LeaveVideoIntimationModal />;
+                  dispatch(LeaveMeetingVideo(Data, navigate, t, true));
                   if (getMeetingParticipants.length > 0) {
                     let userID = localStorage.getItem("userID");
                     let meetingpageRow =

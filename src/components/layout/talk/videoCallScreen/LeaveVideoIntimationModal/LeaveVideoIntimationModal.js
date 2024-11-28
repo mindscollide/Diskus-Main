@@ -33,11 +33,6 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import {
-  maximizeVideoPanelFlag,
-  minimizeVideoPanelFlag,
-  normalizeVideoPanelFlag,
-} from "../../../../../store/actions/VideoFeature_actions";
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
 
@@ -228,11 +223,11 @@ const LeaveVideoIntimationModal = () => {
           proposeNewMeetingPageFlagReducer === true) &&
         viewMeetingFlagReducer === false
       ) {
-        setCalendarNavigation("Meeting");
+        navigate("/DisKus/Meeting");
         dispatch(showCancelModalmeetingDeitals(true));
         dispatch(uploadGlobalFlag(false));
       } else {
-        setCalendarNavigation("calendar");
+        navigate("/DisKus/calendar");
         dispatch(showCancelModalmeetingDeitals(false));
         dispatch(scheduleMeetingPageFlag(false));
         dispatch(viewProposeDateMeetingPageFlag(false));
@@ -262,11 +257,11 @@ const LeaveVideoIntimationModal = () => {
           proposeNewMeetingPageFlagReducer === true) &&
         viewMeetingFlagReducer === false
       ) {
-        setNotesNavigation("Meeting");
+        navigate("/DisKus/Meeting");
         dispatch(showCancelModalmeetingDeitals(true));
         dispatch(uploadGlobalFlag(false));
       } else {
-        setNotesNavigation("Notes");
+        navigate("/DisKus/Notes");
         dispatch(showCancelModalmeetingDeitals(false));
         dispatch(scheduleMeetingPageFlag(false));
         dispatch(viewProposeDateMeetingPageFlag(false));

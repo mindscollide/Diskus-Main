@@ -698,7 +698,10 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarCalendar}
+                    onClick={(event) => {
+                      event.preventDefault(); // Prevents default navigation
+                      handleMeetingSidebarCalendar(); // Your custom click handler
+                    }}
                   >
                     <div
                       className="d-flex align-items-center flex-column"
@@ -768,7 +771,10 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarNotes}
+                    onClick={(event) => {
+                      event.preventDefault(); // Prevents default navigation
+                      handleMeetingSidebarNotes(); // Your custom click handler
+                    }}
                   >
                     <div
                       className="d-flex flex-column noteIcon"

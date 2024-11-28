@@ -12,7 +12,10 @@ import {
   getAllReminders,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
-import { getCalendarDataResponse, removeCalenderDataFunc } from "../actions/GetDataForCalendar";
+import {
+  getCalendarDataResponse,
+  removeCalenderDataFunc,
+} from "../actions/GetDataForCalendar";
 import {
   searchNewUserMeeting,
   setMeetingByGroupIDApi,
@@ -193,7 +196,8 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
               if (checkFlag === 2) {
                 await dispatch(getCalendarDataResponse(navigate, t, createrID));
               } else if (checkFlag === 4) {
-                let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+                let meetingpageRow =
+                  localStorage.getItem("MeetingPageRows") || 30;
                 let meetingPageCurrent =
                   localStorage.getItem("MeetingPageCurrent") || 1;
                 let currentView = localStorage.getItem("MeetingCurrentView");
@@ -204,7 +208,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
-                  Length:  Number(meetingpageRow),
+                  Length: Number(meetingpageRow),
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
@@ -559,6 +563,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   t("The-meeting-has-been-cancelled")
                 )
               );
+              console.log("valuevaluevalue", value);
               if (value === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                 let Data = {
@@ -596,7 +601,7 @@ const CancelMeeting = (navigate, object, t, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
+                  Length: meetingpageRow ? Number(meetingpageRow) : 50,
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
