@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./LeaveVideoIntimationModal.module.css";
 import { Button, Modal } from "../../../../elements";
 import { useSelector } from "react-redux";
@@ -127,7 +127,6 @@ const LeaveVideoIntimationModal = () => {
   const handleYesButtonLeaveVideoMeeting = () => {
     try {
       //If Navigating to Meeting Tab
-
       if (NavigationLocation === "Meeting") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
@@ -585,6 +584,75 @@ const LeaveVideoIntimationModal = () => {
             dispatch(showCancelModalmeetingDeitals(true));
           } else {
             navigate("/DisKus/setting");
+            dispatch(showCancelModalmeetingDeitals(false));
+            dispatch(scheduleMeetingPageFlag(false));
+            dispatch(viewProposeDateMeetingPageFlag(false));
+            dispatch(viewAdvanceMeetingPublishPageFlag(false));
+            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+            dispatch(viewProposeOrganizerMeetingPageFlag(false));
+            dispatch(proposeNewMeetingPageFlag(false));
+            dispatch(viewMeetingFlag(false));
+          }
+        }
+      }
+
+      //If Navigate to Pending Approval
+      if (NavigationLocation === "Minutes") {
+        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+        if (location.pathname.includes("/Admin") === false) {
+          if (
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
+          ) {
+            navigate("/DisKus/Meeting");
+            dispatch(showCancelModalmeetingDeitals(true));
+          } else {
+            navigate("/DisKus/Minutes");
+            dispatch(showCancelModalmeetingDeitals(false));
+            dispatch(scheduleMeetingPageFlag(false));
+            dispatch(viewProposeDateMeetingPageFlag(false));
+            dispatch(viewAdvanceMeetingPublishPageFlag(false));
+            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+            dispatch(viewProposeOrganizerMeetingPageFlag(false));
+            dispatch(proposeNewMeetingPageFlag(false));
+            dispatch(viewMeetingFlag(false));
+          }
+        }
+      }
+
+      if (NavigationLocation === "faq's") {
+        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+        let Data = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+        dispatch(currentMeetingStatus(0));
+        if (location.pathname.includes("/Admin") === false) {
+          if (
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
+          ) {
+            navigate("/DisKus/Meeting");
+            dispatch(showCancelModalmeetingDeitals(true));
+          } else {
+            navigate("/DisKus/faq's");
             dispatch(showCancelModalmeetingDeitals(false));
             dispatch(scheduleMeetingPageFlag(false));
             dispatch(viewProposeDateMeetingPageFlag(false));
