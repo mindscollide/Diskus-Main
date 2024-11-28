@@ -42,6 +42,21 @@ const initialState = {
   muteUnMuteParticipant: [],
   hideUnHideParticipantorGuest: [],
   getNewParticipantsMeetingJoin: [],
+  getJoinMeetingParticipantorHostrequest: null,
+  MaximizeHostVideoFlag: false,
+  NormalHostVideoFlag: false,
+  maximizeParticipantVideoFlag: false,
+  normalParticipantVideoFlag: false,
+  getVideoParticpantListandWaitingList: [],
+  participantVideoNavigationData: 1,
+  videoControlHost: false,
+  audioControlHost: false,
+  videoControlForParticipant: false,
+  audioControlForParticipant: false,
+  raisedUnRaisedParticipant: false,
+  getParticipantsVideoUrl: null,
+  checkHostNow: null,
+  makeHostNow: null,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -263,6 +278,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAXIMIZE_VIDEO_PANEL: {
+      console.log(action, "trurururuurururururuu");
       return {
         ...state,
         MaximizeVideoFlag: action.response,
@@ -373,32 +389,31 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
-      let { payload } = action;
-      console.log(
-        payload,
-        state.getNewParticipantsMeetingJoin,
-        "responseresponseresponse"
-      );
-      let updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
-        (participantData) => {
-          console.log(participantData, "participantDataparticipantData");
+      const { payload } = action;
 
-          // Find the corresponding participant in the payload using UID
-          let correspondingPayload =
-            payload.uid === participantData.guid ? true : false;
+      if (payload.isForAll) {
+        // Mute/Unmute all participants
+        const updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
+          (participant) => ({
+            ...participant,
+            mute: payload.isMuted,
+          })
+        );
 
-          // If a corresponding participant is found in the payload, update the isMute value
-          if (correspondingPayload) {
-            return {
-              ...participantData,
-              mute: payload.isMuted, // Update isMute with the value from the payload
-            };
-          }
-          // If no match is found, return the original participant data
-          return participantData;
-        }
+        return {
+          ...state,
+          getNewParticipantsMeetingJoin: updatedParticipantList,
+          audioControlForParticipant: payload.isMuted, // Update global state only for "Mute All"
+        };
+      }
+
+      // Individual participant mute/unmute
+      const updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
+        (participant) =>
+          participant.guid === payload.uid
+            ? { ...participant, mute: payload.isMuted }
+            : participant
       );
-      console.log(updatedParticipantList, "updatedParticipantList");
 
       return {
         ...state,
@@ -476,6 +491,170 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         getNewParticipantsMeetingJoin: getPrevState,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getJoinMeetingParticipantorHostrequest: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_MEETING_VIDEO_REQUEST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getJoinMeetingParticipantorHostrequest: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MAX_HOST_VIDEO_CALL_PANEL: {
+      console.log(action, "trurururuurururururuu");
+      return {
+        ...state,
+        MaximizeHostVideoFlag: action.response,
+        NormalHostVideoFlag: false, // Ensure mutual exclusivity
+        maximizeParticipantVideoFlag: false,
+        normalParticipantVideoFlag: false,
+      };
+    }
+
+    case actions.NORMAL_HOST_VIDEO_CALL_PANEL: {
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        NormalHostVideoFlag: action.response,
+        maximizeParticipantVideoFlag: false,
+        normalParticipantVideoFlag: false,
+      };
+    }
+
+    //For Normal Participant Video Call
+    case actions.PARTICIPANT_VIDEO_CALL_NORMAL_PANEL: {
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        NormalHostVideoFlag: false,
+        normalParticipantVideoFlag: action.response,
+        maximizeParticipantVideoFlag: false,
+      };
+    }
+
+    case actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL: {
+      console.log(action, "trurururuurururururuu");
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        NormalHostVideoFlag: false,
+        normalParticipantVideoFlag: false,
+        maximizeParticipantVideoFlag: action.response,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getVideoParticpantListandWaitingList: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getVideoParticpantListandWaitingList: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.PARTICIPANT_VIDEO_SCREEN_NAVIGATION: {
+      // sessionStorage.setItem("viewState", action.response);
+      console.log("Updating participantVideoNavigationData:", action.response);
+      return {
+        ...state,
+        MaximizeHostVideoFlag: false,
+        participantVideoNavigationData: action.response,
+      };
+    }
+
+    case actions.SET_MQTT_VIDEO_CONTROLE_HOST: {
+      return {
+        ...state,
+        videoControlHost: action.response,
+      };
+    }
+    case actions.SET_MQTT_VOICE_CONTROLE_HOST: {
+      return {
+        ...state,
+        audioControlHost: action.response,
+      };
+    }
+
+    // url for participants
+    case actions.GET_VIDEOURL_PARTICIPANT: {
+      console.log("GET_VIDEOURL_PARTICIPANT", action.response);
+
+      return {
+        ...state,
+        getParticipantsVideoUrl: action.response,
+      };
+    }
+
+    case actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT: {
+      console.log("SET_MQTT_VIDEO_MEETING_PARTICIPANT", action.response);
+      return {
+        ...state,
+        videoControlForParticipant: action.response,
+      };
+    }
+    case actions.SET_MQTT_VOICE_PARTICIPANT: {
+      console.log("SET_MQTT_VOICE_PARTICIPANT", action.response);
+      return {
+        ...state,
+        audioControlForParticipant: action.response,
+      };
+    }
+
+    case actions.SET_RAISED_UNRAISED_PPARTICIPANT: {
+      return {
+        ...state,
+        raisedUnRaisedParticipant: action.response,
+      };
+    }
+
+    //Check host Now
+    case actions.CHECK_HOST_HOST_NOW: {
+      return {
+        ...state,
+        checkHostNow: action.response,
+      };
+    }
+
+    //make host Now
+    case actions.MAKE_HOST_HOST_NOW: {
+      return {
+        ...state,
+        makeHostNow: action.response,
       };
     }
 

@@ -335,7 +335,7 @@ const ViewMeetingModal = ({
     ) {
       let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
       if (
-        advanceMeetingModalID === endMeetingData.pK_MDID &&
+        advanceMeetingModalID === endMeetingData?.pK_MDID &&
         endMeetingData.status === "9"
       ) {
         setEdiorRole({ status: null, role: null });

@@ -1,0 +1,114 @@
+.video-max-Participant {
+  width: 100%;
+  object-fit: cover !important;
+  max-height: 77vh;
+  padding: 0px 0px;
+}
+
+.max-videoParticipant-panel {
+  position: fixed;
+  height: 89vh;
+  top: 70px;
+  background-color: #fff !important;
+  border: 1px solid #4adede !important;
+  border-radius: 4px !important;
+  z-index: 99 !important;
+  padding: 10px 40px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  left: 65px;
+}
+
+.max-videoParticipant-component {
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  flex-direction: column;
+  display: flex;
+  height: 96%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.max-videoParticipant-Join-Now-Btn {
+  width: 118px;
+  height: 39px;
+  background-color: #55ce5c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: none;
+}
+
+.max-videoParticipant-ready-to-join {
+  font-size: 30px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.max-videoParticipant-Icons-state {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+}
+
+.max-videoParticipant-tag-name {
+  background: #5a5a5a;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+}
+
+.max-videoParticipant-waiting-room-class {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+  margin-bottom: 1px; /* Adjust the bottom margin to reduce spacing */
+  display: flex;
+  text-align: center !important;
+  align-items: center;
+  padding: 0px 40px;
+}
+
+.max-videoParticipant-organizer-allow-class {
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin-top: 0; /* Remove any top margin */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center !important;
+  padding: 0px 60px;
+}
+
+.max-videoParticipant-left-meeting-text {
+  color: #6172d6 !important;
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center !important;
+  margin-bottom: 0px;
+}
+
+.max-videoParticipant-left-meeting-rejoin-text {
+  color: #5a5a5a !important;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.max-videoParticipant-gradient-sheet {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.max-participant-title {
+  color: #6172d6 !important;
+  font-size: 20px;
+  font-weight: 600;
+}

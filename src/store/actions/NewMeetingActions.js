@@ -76,6 +76,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  participantVideoNavigationScreen,
   videoChatPanel,
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
@@ -1405,8 +1406,10 @@ const FetchMeetingURLApi = (
               );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
+                console.log("Flag True");
                 dispatch(maximizeVideoPanelFlag(true));
               } else {
+                console.log("Flag False");
                 dispatch(normalizeVideoPanelFlag(true));
               }
               dispatch(videoChatPanel(false));
@@ -8925,7 +8928,7 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
-const LeaveMeetingVideo = (Data, navigate, t, flag) => {
+const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     let form = new FormData();
@@ -8942,7 +8945,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveMeetingVideo(Data, navigate, t, flag));
+          dispatch(LeaveMeetingVideo(Data, navigate, t, flag, organizerData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -8952,7 +8955,11 @@ const LeaveMeetingVideo = (Data, navigate, t, flag) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              console.log(flag, typeof flag, "flagflagflag");
+              if (organizerData) {
+                dispatch(participantVideoNavigationScreen(3));
+              } else {
+                console.log(flag, typeof flag, "flagflagflag");
+              }
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
