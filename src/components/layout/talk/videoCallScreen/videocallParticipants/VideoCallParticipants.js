@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   admitRejectAttendeeMainApi,
+  getVideoCallParticipantsGuestMainApi,
   setAdmittedParticipant,
 } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +20,10 @@ const VideoCallParticipants = () => {
   const [meettingID, setMeetingID] = useState(0);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  console.log("Iam Video Call ");
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
-  let roomID = localStorage.getItem("activeRoomID");
+  let roomID = localStorage.getItem("newRoomId");
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {
@@ -32,6 +34,7 @@ const VideoCallParticipants = () => {
     // );
     // setPartcipantList(findisExist);
   };
+
   useEffect(() => {
     if (videoFeatureReducer.participantWaitingList.length > 0) {
       try {

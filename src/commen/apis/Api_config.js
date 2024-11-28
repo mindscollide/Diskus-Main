@@ -1840,6 +1840,16 @@ const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
 const getVideoCallParticipantsForGuest = {
   RequestMethod: "ServiceManager.GetVideoCallParticipants",
 };
+
+const joinMeetingVideoRequest = {
+  RequestMethod: "ServiceManager.JoinMeetingVideoRequest",
+};
+
+// for host waitingList and Participant List
+const getVideoCallParticipantsAndWaitingList = {
+  RequestMethod: "ServiceManager.GetVideoCallParticipantsAndWaitingList",
+};
+
 const GetSignatureFileAnnotationRM = {
   RequestMethod: "ServiceManager.GetSignatureFileAnnotation",
 };
@@ -2334,4 +2344,6 @@ export {
   hideUnHidePaticipantVideo,
   ProposeNewMeetingSaveParticipants,
   getVideoCallParticipantsForGuest,
+  joinMeetingVideoRequest,
+  getVideoCallParticipantsAndWaitingList,
 };

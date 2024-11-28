@@ -26,6 +26,9 @@ const initialState = {
   voiceControle: false,
   getAllParticipantGuest: null,
   validateStringData: null,
+  raiseUnRaisedParticipantorGuest: null,
+  hideUnHideParticpantorGuest: null,
+  muteUnMuteParticpantorGuest: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -273,6 +276,11 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.MUTE_UNMUTE_PARTICIPANT_OR_GUEST: {
+      console.log(
+        action,
+
+        "MUTE_UNMUTE_PARTICIPANT_OR_GUESTMUTE_UNMUTE_PARTICIPANT_OR_GUEST"
+      );
       return {
         ...state,
         muteUmMuteByHost: action.response,
@@ -280,6 +288,7 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.HIDE_UNHIDE_VIDEO_BY_HOST: {
+      console.log(action, "responseresponse");
       return {
         ...state,
         hideunHideByHost: action.response,
@@ -357,6 +366,28 @@ const GuestVideoReducer = (state = initialState, action) => {
         validateStringData: action.response,
       };
     }
+
+    case actions.RAISE_UNRAISED_PARTICIPANTS_GUEST: {
+      return {
+        ...state,
+        raiseUnRaisedParticipantorGuest: action.response,
+      };
+    }
+
+    case actions.HIDE_UNHIDE_VIDEO_PARTICIPANTS_GUEST: {
+      return {
+        ...state,
+        hideUnHideParticpantorGuest: action.response,
+      };
+    }
+
+    case actions.MUTE_UNMUTE_PARTICIPANTS_GUEST: {
+      return {
+        ...state,
+        muteUnMuteParticpantorGuest: action.response,
+      };
+    }
+
     default:
       return { ...state };
   }
