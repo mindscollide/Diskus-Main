@@ -17,6 +17,8 @@ const Sidebar = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let ActiveCallFlag = localStorage.getItem("activeCall");
+  console.log(ActiveCallFlag, "ActiveCallFlagActiveCallFlagActiveCallFlag");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -629,10 +631,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={(event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      handleMeetingSidebarTodo(); // Your custom click handler
-                    }}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarTodo
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarTodo(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex align-items-center flex-column"
