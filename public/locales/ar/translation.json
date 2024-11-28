@@ -2258,5 +2258,6 @@
   "Create-a-task": "Create a task",
   "Folder": "Folder",
   "Forms": "Forms",
-  "Review-document": "Review document"
+  "Review-document": "Review document",
+  "Email-is-not-valid":"Email is not valid"
 }
