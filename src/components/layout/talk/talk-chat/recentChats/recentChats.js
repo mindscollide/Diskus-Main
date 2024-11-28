@@ -1019,6 +1019,7 @@ const RecentChats = () => {
                     <img
                       draggable="false"
                       src={DropDownIcon}
+                      alt=""
                       onClick={() => activateChatHeadMenu(dataItem.id)}
                     />
                     {chatHeadMenuActive === dataItem.id ? (

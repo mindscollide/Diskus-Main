@@ -2315,5 +2315,6 @@
   "Close-modal": "Close Modal",
   "Folder": "Folder",
   "Forms": "Forms",
-  "Review-document": "Review document"
+  "Review-document": "Review document",
+  "Meeting-leave-confirmation": "You are currently in a meeting. Taking this action will leave you from meeting."
 }

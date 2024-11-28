@@ -2261,5 +2261,6 @@
   "The-host-has-removed-you-from-the-meeting": "The host has removed you from the meeting.",
   "Close-modal": "Close Modal",
   "Forms": "Forms",
-  "Review-document": "Review document"
+  "Review-document": "Review document",
+  "Meeting-leave-confirmation": "You are currently in a meeting. Taking this action will leave you from meeting."
 }

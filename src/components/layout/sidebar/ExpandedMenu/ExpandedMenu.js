@@ -11,52 +11,18 @@ import CommitteeImage from "../../../../assets/images/sidebar_icons/Committee.pn
 import PollImage from "../../../../assets/images/sidebar_icons/Polls.png";
 import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.png";
 import styles from "./ExpandMenu.module.css";
-import {
-  createGroupPageFlag,
-  updateGroupPageFlag,
-  viewGroupPageFlag,
-} from "../../../../store/actions/Groups_actions";
-import {
-  showCancelModalmeetingDeitals,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  viewMeetingFlag,
-  uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
-  currentMeetingStatus,
-} from "../../../../store/actions/NewMeetingActions";
-import {
-  createCommitteePageFlag,
-  updateCommitteePageFlag,
-  viewCommitteePageFlag,
-} from "../../../../store/actions/Committee_actions";
-import {
-  resultResolutionFlag,
-  voteResolutionFlag,
-  viewAttachmentFlag,
-  createResolutionModal,
-  viewResolutionModal,
-} from "../../../../store/actions/Resolution_actions";
-import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../../store/actions/VideoFeature_actions";
 
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [dataroomNavigation, setDataroomNavigation] = useState("dataroom");
-  const [groupNavigation, setGroupNavigation] = useState("groups");
-  const [committeeNavigation, setCommitteeNavigation] = useState("committee");
-  const [resolutionNavigation, setResolutionNavigation] =
-    useState("resolution");
-  const [pollNavigation, setPollNavigation] = useState("polling");
-
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
@@ -84,209 +50,57 @@ const ExpandedMenu = () => {
   );
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
-    console.log("Test Dataroom");
-    try {
-      if (
-        (scheduleMeetingsPageFlag === true ||
-          viewProposeDateMeetingsPageFlag === true ||
-          viewAdvanceMeetingsPublishPageFlag === true ||
-          viewAdvanceMeetingsUnpublishPageFlag === true ||
-          viewProposeOrganizerMeetingsPageFlag === true ||
-          proposeNewMeetingsPageFlag === true) &&
-        viewMeetingsFlag === false
-      ) {
-        console.log("Test Dataroom");
-
-        setDataroomNavigation("Meeting");
-        dispatch(showCancelModalmeetingDeitals(true));
-        dispatch(uploadGlobalFlag(false));
-        localStorage.setItem("navigateLocation", "dataroom");
-      } else {
-        console.log("Test Dataroom");
-
-        setDataroomNavigation("dataroom");
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
-        }
-      }
-    } catch (error) {
-      console.log("Test Dataroom");
-      console.log("Test Dataroom", error);
+    localStorage.setItem("navigateLocation", "dataroom");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-
-    // navigate(`/${dataroomNavigation}`);
   };
 
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
-    if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
-    ) {
-      setGroupNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "groups");
-    } else {
-      setGroupNavigation("groups");
-      dispatch(createGroupPageFlag(false));
-      dispatch(updateGroupPageFlag(false));
-      dispatch(viewGroupPageFlag(false));
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "groups");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-    // navigate(`/${groupNavigation}`);
   };
 
   //Committees Sidebar Click
   const handleMeetingSidebarCommittees = () => {
-    if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
-    ) {
-      setCommitteeNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "committee");
-    } else {
-      setCommitteeNavigation("committee");
-      dispatch(createCommitteePageFlag(false));
-      dispatch(updateCommitteePageFlag(false));
-      dispatch(viewCommitteePageFlag(false));
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "committee");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-    // navigate(`/${committeeNavigation}`);
   };
 
   //Resolutions Sidebar Click
   const handleMeetingSidebarResolutions = () => {
-    if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
-    ) {
-      setResolutionNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "resolution");
-    } else {
-      setResolutionNavigation("resolution");
-      dispatch(resultResolutionFlag(false));
-      dispatch(voteResolutionFlag(false));
-      dispatch(viewAttachmentFlag(false));
-      dispatch(createResolutionModal(false));
-      dispatch(viewResolutionModal(false));
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "resolution");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-    // navigate(`/${resolutionNavigation}`);
   };
 
   //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
-    if (
-      (scheduleMeetingsPageFlag === true ||
-        viewProposeDateMeetingsPageFlag === true ||
-        viewAdvanceMeetingsPublishPageFlag === true ||
-        viewAdvanceMeetingsUnpublishPageFlag === true ||
-        viewProposeOrganizerMeetingsPageFlag === true ||
-        proposeNewMeetingsPageFlag === true) &&
-      viewMeetingsFlag === false
-    ) {
-      setPollNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-      localStorage.setItem("navigateLocation", "polling");
-    } else {
-      setPollNavigation("polling");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "polling");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-    // navigate(`/${pollNavigation}`);
   };
 
   return (
@@ -312,7 +126,10 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarDataroom}
+          onClick={(event) => {
+            event.preventDefault(); // Prevents default navigation
+            handleMeetingSidebarDataroom(); // Your custom click handler
+          }}
         >
           <img src={DataroomImage} alt="DataroomIcon" />
           <p>{t("Data-room")}</p>
@@ -323,7 +140,6 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(17) ? (
         <Nav.Link
           as={Link}
-          // to="groups"
           to={
             (scheduleMeetingsPageFlag === true ||
               viewProposeDateMeetingsPageFlag === true ||
@@ -343,7 +159,10 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarGroups}
+          onClick={(event) => {
+            event.preventDefault(); // Prevents default navigation
+            handleMeetingSidebarGroups(); // Your custom click handler
+          }}
         >
           {/* Grouo Icon */}
           <img src={GroupImage} alt="" />
@@ -356,7 +175,6 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(48) ? (
         <Nav.Link
           as={Link}
-          // to="committee"
           to={
             (scheduleMeetingsPageFlag === true ||
               viewProposeDateMeetingsPageFlag === true ||
@@ -376,7 +194,10 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarCommittees}
+          onClick={(event) => {
+            event.preventDefault(); // Prevents default navigation
+            handleMeetingSidebarCommittees(); // Your custom click handler
+          }}
         >
           {/* CommitteeIcon */}
 
@@ -389,7 +210,6 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(18) ? (
         <Nav.Link
           as={Link}
-          // to="resolution"
           to={
             (scheduleMeetingsPageFlag === true ||
               viewProposeDateMeetingsPageFlag === true ||
@@ -409,7 +229,10 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarResolutions}
+          onClick={(event) => {
+            event.preventDefault(); // Prevents default navigation
+            handleMeetingSidebarResolutions(); // Your custom click handler
+          }}
         >
           {/* Resolution Icon */}
           <img src={ResolutionImage} alt="" />
@@ -421,7 +244,6 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(15) ? (
         <Nav.Link
           as={Link}
-          // to="polling"
           to={
             (scheduleMeetingsPageFlag === true ||
               viewProposeDateMeetingsPageFlag === true ||
@@ -441,7 +263,10 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={handleMeetingSidebarPolls}
+          onClick={(event) => {
+            event.preventDefault(); // Prevents default navigation
+            handleMeetingSidebarPolls(); // Your custom click handler
+          }}
         >
           <img src={PollImage} alt="" />
 
