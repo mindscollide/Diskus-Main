@@ -11,8 +11,11 @@ import { useDispatch } from "react-redux";
 import {
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
+  hideUnHideVideoParticipantsorGuest,
   hostEndVideoCallMeeting,
   muteUnMuteByHost,
+  muteUnMuteParticipantsorGuest,
+  raisedUnRaisedParticipantsGuest,
   setVideoCameraGuest,
   setVoiceControleGuest,
   validateEncryptGuestVideoMainApi,
@@ -129,6 +132,11 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
         ) {
+          if (data.payload.isForAll) {
+            // Dispatch to globally mute/unmute participants
+            dispatch(setVoiceControleGuest(true));
+          }
+          // Handle additional logic for individual mute/unmute, if needed
           dispatch(muteUnMuteByHost(data.payload));
           console.log(data.payload, "guestDataGuestData");
         } else if (
@@ -140,7 +148,7 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
         ) {
-          dispatch(hideUnHideVideoByHost([data.payload]));
+          dispatch(hideUnHideVideoByHost(data.payload));
           console.log(data.payload, "guestDataGuestDataVideo");
         }
         // below MQTT is imagined will replace this soon
@@ -149,6 +157,24 @@ const GuestVideoCall = () => {
           "HOST_END_VIDEO_CALL_MEETING".toLowerCase()
         ) {
           dispatch(guestVideoNavigationScreen(4));
+          console.log(data.payload, "guestDataGuestData");
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
+        ) {
+          dispatch(raisedUnRaisedParticipantsGuest(data.payload));
+          console.log(data.payload, "guestDataGuestData");
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
+        ) {
+          dispatch(hideUnHideVideoParticipantsorGuest(data.payload));
+          console.log(data.payload, "guestDataGuestData");
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
+        ) {
+          dispatch(muteUnMuteParticipantsorGuest(data.payload));
           console.log(data.payload, "guestDataGuestData");
         }
       }

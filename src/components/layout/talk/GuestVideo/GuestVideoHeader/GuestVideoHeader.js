@@ -46,10 +46,27 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const guesthideunHideByHostData = useSelector(
     (state) => state.GuestVideoReducer.hideunHideByHost
   );
+  console.log(guesthideunHideByHostData, "guesthideunHideByHostData");
+
+  const raiseUnRaisedGuestorParticipant = useSelector(
+    (state) => state.GuestVideoReducer.raiseUnRaisedParticipantorGuest
+  );
+
+  const hideUnHideParticpantorGuest = useSelector(
+    (state) => state.GuestVideoReducer.hideUnHideParticpantorGuest
+  );
+
+  const muteUnMuteParticpantorGuest = useSelector(
+    (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuest
+  );
+
+  console.log(hideUnHideParticpantorGuest, "hideUnHideParticpantorGuest123");
 
   const getAllParticipantGuest = useSelector(
     (state) => state.GuestVideoReducer.getAllParticipantGuest
   );
+
+  console.log(getAllParticipantGuest, "hideUnHideParticpantorGuest123");
 
   const videoCameraGuest = useSelector(
     (state) => state.GuestVideoReducer.videoCameraGuest
@@ -58,13 +75,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const voiceControle = useSelector(
     (state) => state.GuestVideoReducer.voiceControle
   );
-  console.log(
-    getAllParticipantGuest,
-    "getAllParticipantGuestgetAllParticipantGuest"
-  );
+
   console.log(voiceControle, "voiceControlevoiceControle");
 
   let guestName = sessionStorage.getItem("guestName");
+  let guestUID = sessionStorage.getItem("GuestUserID");
 
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
@@ -76,6 +91,8 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const [allParticipantGuest, setAllParticipantGuest] = useState([]);
   console.log(allParticipantGuest, "allParticipantGuest");
+
+  console.log(isRaiseHand, "isRaiseHandisRaiseHand");
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
@@ -102,11 +119,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   }, [getAllParticipantGuest]);
 
   useEffect(() => {
-    if (guestMuteUnMuteData !== null) {
-      console.log(
-        guestMuteUnMuteData.isMuted,
-        "guestMuteUnMuteDataguestMuteUnMuteData"
-      );
+    if (guestMuteUnMuteData !== null && guestUID === guestMuteUnMuteData.uid) {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
         if (guestMuteUnMuteData.isMuted === true) {
@@ -125,7 +138,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   }, [guestMuteUnMuteData]);
 
   useEffect(() => {
-    if (guesthideunHideByHostData !== null) {
+    if (
+      guesthideunHideByHostData !== null &&
+      guestUID === guesthideunHideByHostData.uid
+    ) {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
         if (guesthideunHideByHostData.isVideoHidden === true) {
@@ -327,32 +343,69 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
-                      console.log(participant, "datadatadatadata");
+                      // for raising hand show on specific participant
+                      const isHandRaisedForParticipant =
+                        raiseUnRaisedGuestorParticipant?.participantGuid ===
+                          participant.guid &&
+                        raiseUnRaisedGuestorParticipant?.isHandRaised;
+
+                      // for show video on specific particpant
+                      const isVideoOff =
+                        hideUnHideParticpantorGuest?.uid === participant.guid &&
+                        hideUnHideParticpantorGuest?.isVideoHidden;
+
+                      // for show Mute on specific particpant
+
+                      const muteParticipants =
+                        muteUnMuteParticpantorGuest?.uid === participant.guid &&
+                        muteUnMuteParticpantorGuest?.isMuted &&
+                        micOn;
+
+                      console.log(
+                        participant,
+                        "participantparticipantparticipant"
+                      );
                       return (
                         <>
                           <Row key={participant.guid}>
                             <Col
-                              lg={7}
-                              md={7}
+                              lg={6}
+                              md={6}
                               sm={12}
                               className="d-flex justify-content-start"
                             >
                               <p>{participant.name}</p>{" "}
                             </Col>
                             <Col
-                              lg={5}
-                              md={5}
+                              lg={6}
+                              md={6}
                               sm={12}
-                              className="d-flex justify-content-end"
+                              className="d-flex justify-content-end gap-2"
                             >
-                              {!participant.raiseHand && (
+                              {isVideoOff && (
                                 <img
-                                  src={RaiseHand}
-                                  width="13px"
-                                  height="16px"
+                                  src={VideoOff}
+                                  width="20px"
+                                  height="20px"
+                                  alt="Video Off"
+                                />
+                              )}
+                              {muteParticipants && (
+                                <img
+                                  src={MicOff}
+                                  width="20px"
+                                  height="20px"
+                                  alt="Mic Mute"
+                                />
+                              )}
+                              {isHandRaisedForParticipant && (
+                                <img
+                                  src={Raisehandselected}
+                                  width="20px"
+                                  height="20px"
                                   alt="raise hand"
                                 />
-                              )}{" "}
+                              )}
                             </Col>
                           </Row>
                         </>

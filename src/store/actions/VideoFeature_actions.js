@@ -1,9 +1,11 @@
 import axios from "axios";
 import {
+  getVideoCallParticipantsAndWaitingList,
   hideUnHidePaticipantVideo,
+  joinMeetingVideoRequest,
   muteUnMuteParticipant,
 } from "../../commen/apis/Api_config";
-import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi, videoApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
@@ -258,6 +260,7 @@ const guestLeaveVideoMeeting = (response) => {
 };
 
 const participanMuteUnMuteMeeting = (response) => {
+  console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
@@ -300,13 +303,7 @@ const muteUnmuteFail = (message) => {
   };
 };
 
-const muteUnMuteParticipantMainApi = (
-  navigate,
-  t,
-  data,
-  setNewParticipants,
-  flag
-) => {
+const muteUnMuteParticipantMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -326,15 +323,7 @@ const muteUnMuteParticipantMainApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            muteUnMuteParticipantMainApi(
-              navigate,
-              t,
-              data,
-              setNewParticipants,
-              flag
-            )
-          );
+          dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -347,26 +336,27 @@ const muteUnMuteParticipantMainApi = (
               await dispatch(
                 muteUnmuteSuccess(response.data.responseResult, t("Successful"))
               );
-              setNewParticipants((prevState) =>
-                prevState.map((stateData) => {
-                  // Check if the current participant's UID exists in the MuteUnMuteList
-                  const findData = data.MuteUnMuteList.find(
-                    (uidData) => String(uidData.guid) === String(stateData.UID)
-                  );
-                  console.log(findData, flag, "findDatafindData");
-                  if (findData !== undefined) {
-                    // If found, return a new object with the updated 'isMuted' property
-                    return {
-                      ...stateData,
-                      mute: flag, // flag should be a boolean indicating mute/unmute
-                    };
-                  }
-                  console.log(stateData, "findDatafindData");
+              // setNewParticipants((prevState) =>
+              //   prevState.map((stateData) => {
+              //     console.log(stateData, "stateDatastateData");
+              //     // Check if the current participant's UID exists in the MuteUnMuteList
+              //     const findData = data.MuteUnMuteList.find(
+              //       (uidData) => String(uidData.UID) === String(stateData.guid)
+              //     );
+              //     console.log(findData, flag, "findDatafindData");
+              //     if (findData !== undefined) {
+              //       // If found, return a new object with the updated 'isMuted' property
+              //       return {
+              //         ...stateData,
+              //         mute: flag, // flag should be a boolean indicating mute/unmute
+              //       };
+              //     }
+              //     console.log(stateData, "findDatafindData");
 
-                  // If not found, return the original stateData
-                  return stateData;
-                })
-              );
+              //     // If not found, return the original stateData
+              //     return stateData;
+              //   })
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -426,13 +416,7 @@ const hideUnHideParticipantGuestFail = (message) => {
   };
 };
 
-const hideUnHideParticipantGuestMainApi = (
-  navigate,
-  t,
-  data,
-  setNewParticipants,
-  flag
-) => {
+const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "hdjvdasdvasjvhasjdv");
   return (dispatch) => {
@@ -452,15 +436,7 @@ const hideUnHideParticipantGuestMainApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            hideUnHideParticipantGuestMainApi(
-              navigate,
-              t,
-              data,
-              setNewParticipants,
-              flag
-            )
-          );
+          dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -477,18 +453,18 @@ const hideUnHideParticipantGuestMainApi = (
                 )
               );
 
-              setNewParticipants((prevState) =>
-                prevState.map((stateData) => {
-                  console.log(stateData, "stateDatastateDatastateData");
-                  if (stateData.guid === data.UIDList[0]) {
-                    return {
-                      ...stateData,
-                      hideCamera: flag,
-                    };
-                  }
-                  return stateData;
-                })
-              );
+              // setNewParticipants((prevState) =>
+              //   prevState.map((stateData) => {
+              //     console.log(stateData, "stateDatastateDatastateData");
+              //     if (stateData.guid === data.UIDList[0]) {
+              //       return {
+              //         ...stateData,
+              //         hideCamera: flag,
+              //       };
+              //     }
+              //     return stateData;
+              //   })
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -543,6 +519,361 @@ const getParticipantsNewJoin = (response) => {
   };
 };
 
+const getParticipantMeetingJoinInit = () => {
+  return {
+    type: actions.JOIN_MEETING_VIDEO_REQUEST_INIT,
+  };
+};
+
+const getParticipantMeetingJoinSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_MEETING_VIDEO_REQUEST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getParticipantMeetingJoinFail = (message) => {
+  return {
+    type: actions.JOIN_MEETING_VIDEO_REQUEST_FAIL,
+    message: message,
+  };
+};
+
+const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getParticipantMeetingJoinInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinMeetingVideoRequest.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
+                )
+            ) {
+              // await dispatch(maxHostVideoCallPanel(false));
+              // dispatch(maximizeVideoPanelFlag(true));
+              await dispatch(
+                getParticipantMeetingJoinSuccess(
+                  response.data.responseResult,
+                  t("Join Request Sent To Host")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_02".toLowerCase()
+                )
+            ) {
+              await dispatch(maxHostVideoCallPanel(false));
+              dispatch(maximizeVideoPanelFlag(true));
+              localStorage.setItem(
+                "newRoomId",
+                response.data.responseResult.roomID
+              );
+              localStorage.setItem(
+                "isHost",
+                response.data.responseResult.isHost
+              );
+              const meetingHost = {
+                isHost: response.data.responseResult.isHost,
+                isHostId: Number(localStorage.getItem("userID")),
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              localStorage.setItem("isGuid", response.data.responseResult.guid);
+              localStorage.setItem(
+                "isEmail",
+                response.data.responseResult.email
+              );
+              await dispatch(
+                getParticipantMeetingJoinSuccess(
+                  t("ScheduleCall Joined and Is host")
+                )
+              );
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("activeCall", true);
+              localStorage.setItem("isMeetingVideo", true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getParticipantMeetingJoinFail(
+                  t("invalid video call url provided")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getParticipantMeetingJoinFail(t("Could not join call"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getParticipantMeetingJoinFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              getParticipantMeetingJoinFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            getParticipantMeetingJoinFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const maxHostVideoCallPanel = (response) => {
+  console.log(response, "responseresponse");
+  return {
+    type: actions.MAX_HOST_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+const normalHostVideoCallPanel = (response) => {
+  return {
+    type: actions.NORMAL_HOST_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+// FOR PARTICIPANT MAX PANEL
+const maxParticipantVideoCallPanel = (response) => {
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+const participantListAndWaitingListInit = () => {
+  return {
+    type: actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT,
+  };
+};
+
+const participantListAndWaitingListSuccess = (response, message) => {
+  return {
+    type: actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const participantListAndWaitingListFail = (message) => {
+  return {
+    type: actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_FAIL,
+    message: message,
+  };
+};
+
+const participantListWaitingListMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(participantListAndWaitingListInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getVideoCallParticipantsAndWaitingList.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(participantListWaitingListMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                participantListAndWaitingListSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                participantListAndWaitingListFail(t("UnSuccessful"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                participantListAndWaitingListFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              participantListAndWaitingListFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            participantListAndWaitingListFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR NAVIGATE PARTICIPANT SCREEN
+const participantVideoNavigationScreen = (response) => {
+  return {
+    type: actions.PARTICIPANT_VIDEO_SCREEN_NAVIGATION,
+    response: response,
+  };
+};
+
+// SET HOST VIDEO CAMERA
+const setVideoControlHost = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VIDEO_CONTROLE_HOST,
+    response: response,
+  };
+};
+
+// SET HOST AUDIO CONTROL
+const setAudioControlHost = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VOICE_CONTROLE_HOST,
+    response: response,
+  };
+};
+
+// Get Video Url For Partcipants
+const getVideoUrlForParticipant = (response) => {
+  console.log(response, "urlurlurlurlurl");
+  return {
+    type: actions.GET_VIDEOURL_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET MQTTT FOR VOICE PARTICIPANT
+const setAudioControlForParticipant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VOICE_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET HOST VIDEO CAMERA
+const setVideoControlForParticipant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT,
+    response: response,
+  };
+};
+
+// SET MQTTT FOR VOICE PARTICIPANT
+const setRaisedUnRaisedParticiant = (response) => {
+  console.log(response, "datadtadttadtadta");
+  return {
+    type: actions.SET_RAISED_UNRAISED_PPARTICIPANT,
+    response: response,
+  };
+};
+
+//Normal Participant Video Component
+const normalParticipantVideoCallPanel = (response) => {
+  return {
+    type: actions.PARTICIPANT_VIDEO_CALL_NORMAL_PANEL,
+    response: response,
+  };
+};
+
+// CHECK WHOSE IS THE HOST NOW
+const checkHostNow = (response) => {
+  console.log(response, "responseresponseMakeHost");
+  return {
+    type: actions.CHECK_HOST_HOST_NOW,
+    response: response,
+  };
+};
+
+const makeHostNow = (response) => {
+  console.log(response, "responseresponseMakeHost");
+  return {
+    type: actions.MAKE_HOST_HOST_NOW,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -585,4 +916,19 @@ export {
   muteUnMuteParticipantMainApi,
   hideUnHideParticipantGuestMainApi,
   getParticipantsNewJoin,
+  getParticipantMeetingJoinMainApi,
+  maxHostVideoCallPanel,
+  normalHostVideoCallPanel,
+  maxParticipantVideoCallPanel,
+  participantListWaitingListMainApi,
+  participantVideoNavigationScreen,
+  setVideoControlHost,
+  setAudioControlHost,
+  getVideoUrlForParticipant,
+  setVideoControlForParticipant,
+  setAudioControlForParticipant,
+  setRaisedUnRaisedParticiant,
+  normalParticipantVideoCallPanel,
+  checkHostNow,
+  makeHostNow,
 };
