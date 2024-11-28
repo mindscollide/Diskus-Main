@@ -48,6 +48,11 @@ import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 import BellNotificationIcon from "../../../assets/images/BellNotificationIcon.png";
 import WebNotfication from "../WebNotfication/WebNotfication.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -276,93 +281,32 @@ const Header2 = ({ isVideo }) => {
   };
 
   const RecentFilesTab = async () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "dataroom");
-    } else {
-      localStorage.setItem("setTableView", 4);
-      navigate("/DisKus/dataroom");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      }
+    localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
-  const homePageDashboardClick = (event) => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        event.preventDefault();
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "home");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-        }
-      }
+  const homePageDashboardClick = () => {
+    localStorage.setItem("navigateLocation", "home");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   const handleMeetingSidebarSettings = () => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "setting");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-        }
-      }
+    localStorage.setItem("navigateLocation", "setting");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -646,7 +590,10 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/setting"
                         }
                         className="d-flex text-black FontClass"
-                        onClick={handleMeetingSidebarSettings}
+                        onClick={(event) => {
+                          event.preventDefault(); // Prevents default navigation
+                          handleMeetingSidebarSettings(); // Your custom click handler
+                        }}
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -751,7 +698,10 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={homePageDashboardClick}
+              onClick={(event) => {
+                event.preventDefault(); // Prevents default navigation
+                homePageDashboardClick(); // Your custom click handler
+              }}
             >
               <img
                 src={DiskusLogoHeader}

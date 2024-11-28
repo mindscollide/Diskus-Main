@@ -67,6 +67,9 @@ const Sidebar = () => {
 
   const handleMoreOptions = () => {
     setShowMore(!showMore);
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
   };
 
   useEffect(() => {
