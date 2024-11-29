@@ -1,0 +1,117 @@
+.MeetingTypeHeading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.MeetingTitleTag {
+  color: #6172d6 !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-top: 5px !important;
+}
+
+.BackGroundPaperEffect {
+  height: auto !important;
+  position: relative;
+  padding: 20px 20px !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
+}
+
+.MeetingDescriptionHeading {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  margin-top: 30px !important;
+}
+
+.MeetingDescription {
+  font-weight: 400 !important;
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+}
+
+.MeetingDescription {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.MeetingDescription::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.MeetingDescription::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.ProposedOnHeading {
+  font-size: 14px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+.BoxCardParticipant {
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 7px 10px !important;
+}
+
+.UserName {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+.SendResponseByDateHeading {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.SendResponseByDate {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: #5a5a5a !important;
+}
+
+.CancelButtonViewProposedMeeting {
+  background: #fff !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+.CancelButtonViewProposedMeeting:is(:hover, :focus, :active, :focus-visible) {
+  background: #fff !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+  cursor: pointer !important;
+}
+
+.ViewProposedMeetingMainHeading {
+  font-size: 25px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+  cursor: pointer !important;
+}

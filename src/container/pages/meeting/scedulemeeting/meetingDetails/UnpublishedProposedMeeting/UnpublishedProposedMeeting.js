@@ -41,6 +41,7 @@ import {
   GetAllProposedMeetingDateApiFunc,
   GetAllSavedparticipantsAPI,
   validateStringUserMeetingProposedDatesPollsApi,
+  ProposedMeetingViewFlagAction,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -344,65 +345,94 @@ const UnpublishedProposedMeeting = ({
       width: "115px",
       align: currentLanguage === "en" ? "left" : "right",
       render: (text, record) => {
+        console.log(record, "currentLanguagecurrentLanguage");
         return (
           <span
             className={styles["meetingTitle_view"]}
             onClick={() => {
-              setEdiorRole({
-                status: record.status,
-                role: record.isParticipant
-                  ? "Participant"
-                  : record.isAgendaContributor
-                  ? "Agenda Contributor"
-                  : "Organizer",
-              });
-              setVideoTalk({
-                isChat: record.isChat,
-                isVideoCall: record.isVideoCall,
-                talkGroupID: record.talkGroupID,
-              });
-              localStorage.setItem("videoCallURL", record.videoCallURL);
-              handleOpenViewModal(record);
-              dispatch(viewMeetingFlag(true));
-              dispatch(
-                GetAllUserChats(
-                  navigate,
-                  parseInt(currentUserId),
-                  parseInt(currentOrganizationId),
-                  t
-                )
-              );
-              let activeChatData = {
-                id: record.talkGroupID,
-                fullName: record.title,
-                imgURL: "",
-                messageBody: "",
-                messageDate: "",
-                notiCount: 0,
-                messageType: "G",
-                isOnline: false,
-                companyName: "",
-                sentDate: "",
-                receivedDate: "",
-                seenDate: "",
-                attachmentLocation: "",
-                senderID: 0,
-                admin: 0,
-                isBlock: 0,
-              };
-              dispatch(activeChat(activeChatData));
-              dispatch(meetingDetailsGlobalFlag(true));
-              dispatch(organizersGlobalFlag(false));
-              dispatch(agendaContributorsGlobalFlag(false));
-              dispatch(participantsGlobalFlag(false));
-              dispatch(agendaGlobalFlag(false));
-              dispatch(meetingMaterialGlobalFlag(false));
-              dispatch(minutesGlobalFlag(false));
-              dispatch(proposedMeetingDatesGlobalFlag(false));
-              dispatch(actionsGlobalFlag(false));
-              dispatch(pollsGlobalFlag(false));
-              dispatch(attendanceGlobalFlag(false));
-              dispatch(uploadGlobalFlag(false));
+              if (record.status === "12") {
+                dispatch(ProposedMeetingViewFlagAction(true));
+                try {
+                  let Data = {
+                    MeetingID: Number(record.pK_MDID),
+                  };
+                  dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      navigate,
+                      t,
+                      Data,
+                      false,
+                      setCurrentMeetingID,
+                      setSceduleMeeting,
+                      setDataroomMapFolderId,
+                      0,
+                      2
+                    )
+                  );
+                  dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
+                  dispatch(
+                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true)
+                  );
+                } catch (error) {
+                  console.log(error, "apis call Error");
+                }
+              } else {
+                setEdiorRole({
+                  status: record.status,
+                  role: record.isParticipant
+                    ? "Participant"
+                    : record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                });
+                setVideoTalk({
+                  isChat: record.isChat,
+                  isVideoCall: record.isVideoCall,
+                  talkGroupID: record.talkGroupID,
+                });
+                localStorage.setItem("videoCallURL", record.videoCallURL);
+                handleOpenViewModal(record);
+                dispatch(viewMeetingFlag(true));
+                dispatch(
+                  GetAllUserChats(
+                    navigate,
+                    parseInt(currentUserId),
+                    parseInt(currentOrganizationId),
+                    t
+                  )
+                );
+                let activeChatData = {
+                  id: record.talkGroupID,
+                  fullName: record.title,
+                  imgURL: "",
+                  messageBody: "",
+                  messageDate: "",
+                  notiCount: 0,
+                  messageType: "G",
+                  isOnline: false,
+                  companyName: "",
+                  sentDate: "",
+                  receivedDate: "",
+                  seenDate: "",
+                  attachmentLocation: "",
+                  senderID: 0,
+                  admin: 0,
+                  isBlock: 0,
+                };
+                dispatch(activeChat(activeChatData));
+                dispatch(meetingDetailsGlobalFlag(true));
+                dispatch(organizersGlobalFlag(false));
+                dispatch(agendaContributorsGlobalFlag(false));
+                dispatch(participantsGlobalFlag(false));
+                dispatch(agendaGlobalFlag(false));
+                dispatch(meetingMaterialGlobalFlag(false));
+                dispatch(minutesGlobalFlag(false));
+                dispatch(proposedMeetingDatesGlobalFlag(false));
+                dispatch(actionsGlobalFlag(false));
+                dispatch(pollsGlobalFlag(false));
+                dispatch(attendanceGlobalFlag(false));
+                dispatch(uploadGlobalFlag(false));
+              }
             }}
           >
             {truncateString(text, 35)}

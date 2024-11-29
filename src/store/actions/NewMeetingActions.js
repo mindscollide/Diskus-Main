@@ -71,7 +71,11 @@ import {
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import { callRequestReceivedMQTT, LeaveCall, LeaveInitmationMessegeVideoMeetAction } from "./VideoMain_actions";
+import {
+  callRequestReceivedMQTT,
+  LeaveCall,
+  LeaveInitmationMessegeVideoMeetAction,
+} from "./VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -87,6 +91,7 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
+import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 
 const boardDeckModal = (response) => {
   return {
@@ -2325,20 +2330,6 @@ const GetAllMeetingDetailsApiFunc = (
                   );
                 } else if (flag === 2) {
                   console.log("Flag for proposed meeting Edit flow only");
-                  // await dispatch(
-                  //   CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  //     navigate,
-                  //     MappedData,
-                  //     t,
-                  //     setDataroomMapFolderId,
-                  //     false,
-                  //     false,
-                  //     false,
-                  //     false,
-                  //     false,
-                  //     true
-                  //   )
-                  // );
                 }
               } else {
                 await dispatch(
@@ -9175,6 +9166,14 @@ const validateStringUserMeetingProposedDatesPollsApi = (
   };
 };
 
+//New Proposed Meeting View Flag Action
+const ProposedMeetingViewFlagAction = (response) => {
+  return {
+    type: actions.PROPOSED_MEETING_VIEW_FLAG,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9350,4 +9349,5 @@ export {
   showShareViaDataRoomPathConfirmation,
   getDashboardMeetingCountMQTT,
   validateStringUserMeetingProposedDatesPollsApi,
+  ProposedMeetingViewFlagAction,
 };

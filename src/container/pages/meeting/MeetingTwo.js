@@ -125,6 +125,7 @@ import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
+import ViewProposedMeetingModal from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/ViewProposedMeetingModal/ViewProposedMeetingModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -219,6 +220,13 @@ const NewMeeting = () => {
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
+
+  //Proposed Meeting View Flag
+  const ProposedMeetViewFlag = useSelector(
+    (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
+  );
+
+  console.log(ProposedMeetViewFlag, "ProposedMeetViewFlagProposedMeetViewFlag");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
@@ -3159,6 +3167,10 @@ const NewMeeting = () => {
             setIsProposedMeetEdit={setIsProposedMeetEdit}
             isProposedMeetEdit={isProposedMeetEdit}
           />
+        ) : ProposedMeetViewFlag ? (
+          <>
+            <ViewProposedMeetingModal />
+          </>
         ) : (
           <>
             <Row className="mt-2">
