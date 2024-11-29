@@ -6,6 +6,7 @@ import VideoPanelNormal from "./videoCallPanels/videoCallNormalPanel";
 import VideoPanelMaximize from "./videoCallPanels/videoCallMaximizePanel";
 import VideoCallMinimizeHeader from "./videoCallHeader/videoCallMinimizeHeader";
 import { leaveCallModal } from "../../../../store/actions/VideoFeature_actions";
+import LeaveVideoIntimationModal from "./LeaveVideoIntimationModal/LeaveVideoIntimationModal";
 
 const VideoMain = () => {
   const {
@@ -49,8 +50,6 @@ const VideoMain = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
   } = useSelector((state) => state);
-
-  const dispatch = useDispatch();
 
   return (
     <>

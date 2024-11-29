@@ -7,7 +7,7 @@ import DikusGIF from "../../../assets/images/Loader.gif";
 import { useSelector } from "react-redux";
 import ProgressLoader from "../ProgressLoader/ProgressLoader";
 
-const Loader = ({progress}) => {
+const Loader = ({ progress }) => {
   const { t } = useTranslation();
   const downloadMessageIndex = useSelector(
     (state) => state.DataRoomReducer.downloadMessage
@@ -53,7 +53,7 @@ const Loader = ({progress}) => {
             alt="My GIF Icon"
             draggable="false"
           /> */}
-          <ProgressLoader progress={progress} />
+          {/* <ProgressLoader progress={progress} /> */}
           {/* <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["Messeges_Styles"]}>{randomIndex}</p>

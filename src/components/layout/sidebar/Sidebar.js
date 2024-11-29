@@ -5,39 +5,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./sidebar.css";
 import { useTranslation } from "react-i18next";
 import ExpandedMenu from "./ExpandedMenu/ExpandedMenu";
-import {
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  searchNewUserMeeting,
-  viewMeetingFlag,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
-  uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
-  currentMeetingStatus,
-} from "../../../store/actions/NewMeetingActions";
-import { showCancelModalmeetingDeitals } from "../../../store/actions/NewMeetingActions";
-import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions";
 
 const Sidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let ActiveCallFlag = localStorage.getItem("activeCall");
+  console.log(ActiveCallFlag, "ActiveCallFlagActiveCallFlagActiveCallFlag");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -66,15 +47,6 @@ const Sidebar = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let userID = localStorage.getItem("userID");
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-  const [meetingNavigation, setMeetingNavigation] = useState("Meeting");
-  const [todoListNavigation, setTodoListNavigation] = useState("todolist");
-  const [calendarNavigation, setCalendarNavigation] = useState("calendar");
-  const [notesNavigation, setNotesNavigation] = useState("Notes");
 
   const sidebarshow = useRef();
 
@@ -99,6 +71,13 @@ const Sidebar = () => {
     setShowMore(!showMore);
   };
 
+  const handleMoreOptionActiveCall = () => {
+    setShowMore(!showMore);
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+  };
+
   useEffect(() => {
     if (Blur !== undefined && Blur !== null) {
       setActivateBlur(true);
@@ -110,190 +89,43 @@ const Sidebar = () => {
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
     localStorage.setItem("navigateLocation", "Meeting");
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setMeetingNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === true
-      ) {
-        if (meetingpageRow !== null && meetingPageCurrent !== null) {
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber: Number(meetingPageCurrent),
-            Length: Number(meetingpageRow),
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
-          };
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
-        } else {
-          let searchData = {
-            Date: "",
-            Title: "",
-            HostName: "",
-            UserID: Number(userID),
-            PageNumber: 1,
-            Length: 50,
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
-          };
-          localStorage.setItem("MeetingPageRows", 30);
-          localStorage.setItem("MeetingPageCurrent", 1);
-          dispatch(searchNewUserMeeting(navigate, searchData, t));
-        }
-        dispatch(viewMeetingFlag(false));
-        dispatch(meetingDetailsGlobalFlag(false));
-        dispatch(organizersGlobalFlag(false));
-        dispatch(agendaContributorsGlobalFlag(false));
-        dispatch(participantsGlobalFlag(false));
-        dispatch(agendaGlobalFlag(false));
-        dispatch(meetingMaterialGlobalFlag(false));
-        dispatch(minutesGlobalFlag(false));
-        dispatch(proposedMeetingDatesGlobalFlag(false));
-        dispatch(actionsGlobalFlag(false));
-        dispatch(pollsGlobalFlag(false));
-        dispatch(attendanceGlobalFlag(false));
-        dispatch(uploadGlobalFlag(false));
-      }
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   // Todo Sidebar Click
   const handleMeetingSidebarTodo = () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setTodoListNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "todolist");
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      setTodoListNavigation("todolist");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "todolist");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setCalendarNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "calendar");
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      setCalendarNavigation("calendar");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "calendar");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   const handleMeetingSidebarNotes = () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      setNotesNavigation("Meeting");
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "Notes");
-      dispatch(uploadGlobalFlag(false));
-    } else {
-      setNotesNavigation("Notes");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "Notes");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -803,7 +635,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarTodo}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarTodo
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarTodo(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex align-items-center flex-column"
@@ -872,7 +711,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarCalendar}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarCalendar
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarCalendar(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex align-items-center flex-column"
@@ -942,7 +788,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={handleMeetingSidebarNotes}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarNotes
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarNotes(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex flex-column noteIcon"
@@ -1056,7 +909,11 @@ const Sidebar = () => {
                           : "m-0 p-0 iconSidebar  position-relative"
                       }
                       ref={sidebarshow}
-                      onClick={handleMoreOptions}
+                      onClick={
+                        ActiveCallFlag === "true"
+                          ? handleMoreOptionActiveCall
+                          : handleMoreOptions
+                      }
                     >
                       <div className="d-flex flex-column" draggable="false">
                         <svg

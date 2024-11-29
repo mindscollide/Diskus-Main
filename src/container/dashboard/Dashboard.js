@@ -169,6 +169,7 @@ import {
   folderSharedMQTT,
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
+import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScreen/LeaveVideoIntimationModal/LeaveVideoIntimationModal";
 import {
   admitGuestUserRequest,
   muteUnMuteByHost,
@@ -235,6 +236,10 @@ const Dashboard = () => {
   );
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
+  );
+
+  const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
   );
 
   const videoControlForParticipant = useSelector(
@@ -2807,6 +2812,9 @@ const Dashboard = () => {
             />
           )}
           {mobileAppPopUp && <MobileAppPopUpModal />}
+          {showInitimationMessegeModalLeaveVideoMeeting && (
+            <LeaveVideoIntimationModal />
+          )}
         </Layout>
       </ConfigProvider>
     </>
