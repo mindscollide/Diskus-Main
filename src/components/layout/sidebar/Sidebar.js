@@ -69,6 +69,10 @@ const Sidebar = () => {
 
   const handleMoreOptions = () => {
     setShowMore(!showMore);
+  };
+
+  const handleMoreOptionActiveCall = () => {
+    setShowMore(!showMore);
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
@@ -707,10 +711,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={(event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      handleMeetingSidebarCalendar(); // Your custom click handler
-                    }}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarCalendar
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarCalendar(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex align-items-center flex-column"
@@ -780,10 +788,14 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconSidebar-active-sidebar"
                         : "m-0 p-0 iconSidebar"
                     }
-                    onClick={(event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      handleMeetingSidebarNotes(); // Your custom click handler
-                    }}
+                    onClick={
+                      ActiveCallFlag === "false"
+                        ? handleMeetingSidebarNotes
+                        : (event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingSidebarNotes(); // Your custom click handler
+                          }
+                    }
                   >
                     <div
                       className="d-flex flex-column noteIcon"
@@ -897,7 +909,11 @@ const Sidebar = () => {
                           : "m-0 p-0 iconSidebar  position-relative"
                       }
                       ref={sidebarshow}
-                      onClick={handleMoreOptions}
+                      onClick={
+                        ActiveCallFlag === "true"
+                          ? handleMoreOptionActiveCall
+                          : handleMoreOptions
+                      }
                     >
                       <div className="d-flex flex-column" draggable="false">
                         <svg

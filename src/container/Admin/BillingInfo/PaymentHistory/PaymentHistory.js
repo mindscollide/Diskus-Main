@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./PaymentHistory.module.css";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import Select from "react-select";
+import PaymentHistoryEmptyScreen from "../../../../assets/images/Payment Hisotory Empty screen.png";
 import {
   Button,
   Checkbox,
   Table,
   Modal,
   Notification,
-  Loader,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
@@ -28,8 +28,9 @@ import moment from "moment";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const EditUser = ({ ModalTitle }) => {
-  const { OrganizationBillingReducer, adminReducer, LanguageReducer } =
-    useSelector((state) => state);
+  const { OrganizationBillingReducer, adminReducer } = useSelector(
+    (state) => state
+  );
   console.log(adminReducer, "adminReduceradminReduceradminReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -456,6 +457,37 @@ const EditUser = ({ ModalTitle }) => {
               className={styles["paymentHistoryTable"]}
               loading={{ indicator: <Spin />, spinning: adminReducer?.Spinner }}
               pagination={false}
+              locale={{
+                emptyText: (
+                  <>
+                    <Row>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className={styles["empty_Resolutions"]}
+                      >
+                        <img
+                          draggable="false"
+                          src={PaymentHistoryEmptyScreen}
+                          width={200}
+                          alt=""
+                        />
+                        <h2 className={styles["NoPaymentHistoryMainHeading"]}>
+                          {t("No-payment-history-yet")}
+                        </h2>
+                        <p
+                          className={
+                            styles["SubHeadingTaglineNoPaymentHistory"]
+                          }
+                        >
+                          {t("Once-you-started-making-payments")}
+                        </p>
+                      </Col>
+                    </Row>
+                  </>
+                ),
+              }}
             />
           </Col>
         </Row>

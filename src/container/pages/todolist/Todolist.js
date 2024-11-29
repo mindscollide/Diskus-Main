@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Col } from "react-bootstrap";
 import {
   ArrowCounterclockwise,
+  CalendarFill,
   ChevronDown,
   Plus,
 } from "react-bootstrap-icons";
@@ -15,11 +16,12 @@ import {
 } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import del from "../../../assets/images/del.png";
 import { Search, ArrowRight, ArrowLeft } from "react-bootstrap-icons";
 import {
   ViewToDoList,
-  clearResponce,
   SearchTodoListApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
@@ -35,7 +37,6 @@ import {
 import Form from "react-bootstrap/Form";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
@@ -47,6 +48,9 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+import moment from "moment";
+import DatePicker from "react-multi-date-picker";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
 const TodoList = () => {
   //For Localization
@@ -55,6 +59,10 @@ const TodoList = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+  const datePickerRef = useRef();
+
+  let dateFormat = "DD/MM/YYYY";
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -76,16 +84,8 @@ const TodoList = () => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
 
-  const ResponseMessageTodoReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage
-  );
-
   const ResponseStatusReducer = useSelector(
     (state) => state.todoStatus.Response
-  );
-
-  const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage
   );
 
   const UpdateTodoStatusMessage = useSelector(
@@ -95,9 +95,11 @@ const TodoList = () => {
   const ResponseMessageTodoStatusReducer = useSelector(
     (state) => state.getTodosStatus.ResponseMessage
   );
+
   const UpdateTodoStatus = useSelector(
     (state) => state.getTodosStatus.UpdateTodoStatus
   );
+
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
   const [originalData, setOriginalData] = useState([]);
@@ -112,6 +114,8 @@ const TodoList = () => {
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
   const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
   const [taskDeadlineSort, setDeadlineSort] = useState(null);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
   const [searchData, setSearchData] = useState({
     Date: "",
     Title: "",
@@ -157,6 +161,19 @@ const TodoList = () => {
       text: t("Deleted"),
     },
   ];
+
+  //arabic Lang UseEffect
+  useEffect(() => {
+    if (currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   // GET TODOS STATUS
   useEffect(() => {
@@ -864,6 +881,24 @@ const TodoList = () => {
     x: rowsToDo.length === 0 ? "hidden" : "auto",
   };
 
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
+  };
+
+  //Custom Icon DatePicer Search todo
+
+  const CustomIcon = () => (
+    <div className="iconForDatePicker margin-right-20">
+      <CalendarFill
+        className="DatePickerIcon"
+        size={34}
+        onClick={handleIconClick}
+      />
+    </div>
+  );
+
   return (
     <>
       <div className="todolistContainer">
@@ -895,22 +930,30 @@ const TodoList = () => {
             />
             {isExpand && (
               <>
-                {currentLanguage === "ar" ? (
+                {/* {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
                     <Form className="d-flex">
-                      {currentLanguage === "ar" ? (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="ar"
-                        />
-                      ) : (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="en"
-                        />
-                      )}
+                      <DatePicker
+                        selected={searchData.Date}
+                        format={dateFormat}
+                        minDate={moment().toDate()}
+                        placeholder="DD/MM/YYYY"
+                        render={<CustomIcon />}
+                        calendarPosition="bottom-right"
+                        editable={true}
+                        className="datePickerTodoCreate2"
+                        onOpenPickNewDate={false}
+                        highlightToday={true}
+                        inputMode=""
+                        showOtherDays
+                        calendar={calendarValue}
+                        locale={localValue}
+                        ref={datePickerRef}
+                        onClick={handleIconClick}
+                        onFocusedDateChange={(value) =>
+                          searchHandlerDate(value)
+                        }
+                      />
                       <TextField
                         width="180px"
                         name="AssignedToName"
@@ -945,58 +988,64 @@ const TodoList = () => {
                       />
                     </Form>
                   </div>
-                ) : (
-                  <div className="expandableMenuSearch">
-                    <Form className="d-flex">
-                      {currentLanguage === "ar" ? (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="ar"
-                        />
-                      ) : (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="en"
-                        />
-                      )}
-                      <TextField
-                        applyClass="form-control2"
-                        width="250px"
-                        name="Title"
-                        value={searchData.Title}
-                        className="mx-2"
-                        placeholder={t("Task")}
-                        labelclass="textFieldSearch"
-                        change={searchHandler}
-                      />
-                      <TextField
-                        applyClass="form-control2"
-                        width="180px"
-                        name="AssignedToName"
-                        value={searchData.AssignedToName}
-                        className="mx-2"
-                        placeholder={t("Assigned-to")}
-                        labelclass="textFieldSearch"
-                        change={searchHandler}
-                      />
-                      <Button
-                        className="btn btn-primary meeting search me-3"
-                        variant={"Primary"}
-                        text={<ArrowRight />}
-                        onClick={search}
-                      />
-                      <Button
-                        className="btn  btn-primary meeting search"
-                        variant={"Primary"}
-                        type="reset"
-                        text={<ArrowCounterclockwise />}
-                        onClick={resetSearchBar}
-                      />
-                    </Form>
-                  </div>
-                )}
+                ) : ( */}
+                <div className="expandableMenuSearch">
+                  <Form className="d-flex">
+                    <DatePicker
+                      selected={searchData.Date}
+                      format={dateFormat}
+                      minDate={moment().toDate()}
+                      placeholder="DD/MM/YYYY"
+                      render={<CustomIcon />}
+                      calendarPosition="bottom-right"
+                      editable={true}
+                      className="datePickerTodoCreate2"
+                      onOpenPickNewDate={false}
+                      highlightToday={true}
+                      inputMode=""
+                      showOtherDays
+                      calendar={calendarValue}
+                      locale={localValue}
+                      ref={datePickerRef}
+                      onClick={handleIconClick}
+                      onFocusedDateChange={(value) => searchHandlerDate(value)}
+                    />
+                    <TextField
+                      applyClass="form-control2"
+                      width="250px"
+                      name="Title"
+                      value={searchData.Title}
+                      className="mx-2"
+                      placeholder={t("Task")}
+                      labelclass="textFieldSearch"
+                      change={searchHandler}
+                    />
+                    <TextField
+                      applyClass="form-control2"
+                      width="180px"
+                      name="AssignedToName"
+                      value={searchData.AssignedToName}
+                      className="mx-2"
+                      placeholder={t("Assigned-to")}
+                      labelclass="textFieldSearch"
+                      change={searchHandler}
+                    />
+                    <Button
+                      className="btn btn-primary meeting search me-3"
+                      variant={"Primary"}
+                      text={<ArrowRight />}
+                      onClick={search}
+                    />
+                    <Button
+                      className="btn  btn-primary meeting search"
+                      variant={"Primary"}
+                      type="reset"
+                      text={<ArrowCounterclockwise />}
+                      onClick={resetSearchBar}
+                    />
+                  </Form>
+                </div>
+                {/* )} */}
               </>
             )}
           </Col>

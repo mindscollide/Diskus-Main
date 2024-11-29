@@ -2014,7 +2014,11 @@ const NewMeeting = () => {
           if (record.isOrganizer) {
           } else if (record.isParticipant) {
           }
-        } else if (Number(record.status) === 9 && record.isOrganizer) {
+        } else if (
+          Number(record.status) === 9 &&
+          record.isOrganizer &&
+          record.isQuickMeeting === false
+        ) {
           return (
             <>
               <span className="d-flex justify-content-center">

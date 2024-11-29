@@ -23,7 +23,7 @@ const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  let ActiveCallFlag = localStorage.getItem("activeCall");
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -126,10 +126,14 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={(event) => {
-            event.preventDefault(); // Prevents default navigation
-            handleMeetingSidebarDataroom(); // Your custom click handler
-          }}
+          onClick={
+            ActiveCallFlag === "false"
+              ? handleMeetingSidebarDataroom
+              : (event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarDataroom(); // Your custom click handler
+                }
+          }
         >
           <img src={DataroomImage} alt="DataroomIcon" />
           <p>{t("Data-room")}</p>
@@ -159,10 +163,14 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={(event) => {
-            event.preventDefault(); // Prevents default navigation
-            handleMeetingSidebarGroups(); // Your custom click handler
-          }}
+          onClick={
+            ActiveCallFlag === "false"
+              ? handleMeetingSidebarGroups
+              : (event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarGroups(); // Your custom click handler
+                }
+          }
         >
           {/* Grouo Icon */}
           <img src={GroupImage} alt="" />
@@ -194,10 +202,14 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={(event) => {
-            event.preventDefault(); // Prevents default navigation
-            handleMeetingSidebarCommittees(); // Your custom click handler
-          }}
+          onClick={
+            ActiveCallFlag === "false"
+              ? handleMeetingSidebarCommittees
+              : (event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarCommittees(); // Your custom click handler
+                }
+          }
         >
           {/* CommitteeIcon */}
 
@@ -229,10 +241,14 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={(event) => {
-            event.preventDefault(); // Prevents default navigation
-            handleMeetingSidebarResolutions(); // Your custom click handler
-          }}
+          onClick={
+            ActiveCallFlag === "false"
+              ? handleMeetingSidebarResolutions
+              : (event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarResolutions(); // Your custom click handler
+                }
+          }
         >
           {/* Resolution Icon */}
           <img src={ResolutionImage} alt="" />
@@ -263,10 +279,14 @@ const ExpandedMenu = () => {
               ? styles.iconItem_active
               : styles.iconItem
           }
-          onClick={(event) => {
-            event.preventDefault(); // Prevents default navigation
-            handleMeetingSidebarPolls(); // Your custom click handler
-          }}
+          onClick={
+            ActiveCallFlag === "false"
+              ? handleMeetingSidebarPolls
+              : (event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarPolls(); // Your custom click handler
+                }
+          }
         >
           <img src={PollImage} alt="" />
 
