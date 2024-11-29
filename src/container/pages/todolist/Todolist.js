@@ -38,6 +38,7 @@ import Form from "react-bootstrap/Form";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
 import {
+  multiDatePickerDateChangIntoUTC,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
@@ -49,7 +50,7 @@ import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import moment from "moment";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
 const TodoList = () => {
@@ -733,13 +734,17 @@ const TodoList = () => {
   }, [ToDoDetails]);
 
   // for search Date handler
-  const searchHandlerDate = (e) => {
+  const searchHandlerDate = (date) => {
+    let DateDate = new Date(date);
+    DateDate.setHours(23, 59, 0, 0); // Set the time to 23:59:00
     setSearchData({
       ...searchData,
-      Date: e.target.value,
+      Date: DateDate,
       UserID: parseInt(createrID),
     });
   };
+
+  console.log(searchData.Date, "searchDatasearchDatasearchData");
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -774,7 +779,7 @@ const TodoList = () => {
     dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
   };
 
-  // for search
+  // for search record in the todolist
   const search = (e) => {
     e.preventDefault();
     if (
@@ -792,11 +797,12 @@ const TodoList = () => {
     } else {
       // make notification for if input fields is empty here
       let newData = {
-        Date: searchData.Date,
+        Date: multiDatePickerDateChangIntoUTC(searchData.Date).slice(0, 8),
         Title: searchData.Title,
         AssignedToName: searchData.AssignedToName,
         UserID: parseInt(createrID),
       };
+      console.log(newData, "newDatanewDatanewData");
       dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     }
   };
@@ -930,65 +936,6 @@ const TodoList = () => {
             />
             {isExpand && (
               <>
-                {/* {currentLanguage === "ar" ? (
-                  <div className="expandableMenuSearch">
-                    <Form className="d-flex">
-                      <DatePicker
-                        selected={searchData.Date}
-                        format={dateFormat}
-                        minDate={moment().toDate()}
-                        placeholder="DD/MM/YYYY"
-                        render={<CustomIcon />}
-                        calendarPosition="bottom-right"
-                        editable={true}
-                        className="datePickerTodoCreate2"
-                        onOpenPickNewDate={false}
-                        highlightToday={true}
-                        inputMode=""
-                        showOtherDays
-                        calendar={calendarValue}
-                        locale={localValue}
-                        ref={datePickerRef}
-                        onClick={handleIconClick}
-                        onFocusedDateChange={(value) =>
-                          searchHandlerDate(value)
-                        }
-                      />
-                      <TextField
-                        width="180px"
-                        name="AssignedToName"
-                        value={searchData.AssignedToName}
-                        className="mx-2 "
-                        placeholder={t("Assigned-to")}
-                        labelclass="textFieldSearch"
-                        change={searchHandler}
-                      />
-                      <TextField
-                        width="250px"
-                        name="Title"
-                        value={searchData.Title}
-                        placeholder={t("Task")}
-                        labelclass="textFieldSearch"
-                        change={searchHandler}
-                      />
-
-                      <Button
-                        className="btn btn-primary meeting search me-3"
-                        variant={"Primary"}
-                        text={<ArrowLeft />}
-                        type="submit"
-                        onClick={search}
-                      />
-                      <Button
-                        className="btn  btn-primary meeting search"
-                        variant={"Primary"}
-                        type="reset"
-                        text={<ArrowCounterclockwise />}
-                        onClick={resetSearchBar}
-                      />
-                    </Form>
-                  </div>
-                ) : ( */}
                 <div className="expandableMenuSearch">
                   <Form className="d-flex">
                     <DatePicker
@@ -1045,7 +992,6 @@ const TodoList = () => {
                     />
                   </Form>
                 </div>
-                {/* )} */}
               </>
             )}
           </Col>
