@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewProposedMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import profile from "../../../../../../../assets/images/profile.svg";
 import { useSelector } from "react-redux";
 import { Button } from "../../../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { ProposedMeetingViewFlagAction } from "../../../../../../../store/actions/NewMeetingActions";
+import { ProposedMeetingViewDateFormatter } from "../../../../../../../commen/functions/date_formater";
 const ViewProposedMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  let locale = localStorage.getItem("i18nextLng");
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -34,7 +34,7 @@ const ViewProposedMeetingModal = () => {
   });
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
-
+  console.log(sendResponseByDate, "sendResponseByDatesendResponseByDate");
   //Meeting Details Data UseEffect
   useEffect(() => {
     try {
@@ -140,7 +140,10 @@ const ViewProposedMeetingModal = () => {
                     {t("Send-response-by")}
                   </span>
                   <span className={styles["SendResponseByDate"]}>
-                    {sendResponseByDate}
+                    {ProposedMeetingViewDateFormatter(
+                      sendResponseByDate.toString(),
+                      locale
+                    )}
                   </span>
                 </div>
               </Col>

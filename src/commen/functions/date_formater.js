@@ -1649,3 +1649,59 @@ export const formatDateToUTCWithEndOfDay = (date) => {
   console.log(utcFormatted, "utcFormatted with end of day");
   return utcFormatted;
 };
+
+//Propose Meeting Dates Formatter
+export function ProposedMeetingViewDateFormatter(inputDate, locale) {
+  console.log(inputDate, "inputDateinputDate");
+  console.log(locale, "inputDateinputDate");
+  // Ensure the input is a string
+  if (typeof inputDate !== "string" || inputDate.length !== 8) {
+    throw new Error("Input must be a string in the format YYYYMMDD");
+  }
+
+  // Extract year, month, and day
+  const year = inputDate.slice(0, 4);
+  const month = parseInt(inputDate.slice(4, 6), 10) - 1; // Convert to zero-based index for Date
+  const day = parseInt(inputDate.slice(6, 8), 10); // Convert to integer
+
+  // Month names for English and Arabic
+  const monthNames = {
+    en: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    ar: [
+      "يناير",
+      "فبراير",
+      "مارس",
+      "أبريل",
+      "مايو",
+      "يونيو",
+      "يوليو",
+      "أغسطس",
+      "سبتمبر",
+      "أكتوبر",
+      "نوفمبر",
+      "ديسمبر",
+    ],
+  };
+
+  // Validate if the locale is supported
+  if (!monthNames[locale]) {
+    throw new Error('Unsupported locale. Supported locales are "en" and "ar".');
+  }
+
+  // Format the output based on the locale
+  const formattedDate = `${day} ${monthNames[locale][month]} ${year}`;
+  return formattedDate;
+}
