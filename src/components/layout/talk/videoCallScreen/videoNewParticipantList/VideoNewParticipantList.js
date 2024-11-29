@@ -47,7 +47,7 @@ const VideoNewParticipantList = () => {
 
   console.log(videoParticpantListandWaitingList, "videoParticpantWaitingList");
 
-  let getRoomId = localStorage.getItem("participantRoomId");
+  let getRoomId = localStorage.getItem("getRoomId");
 
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
@@ -72,14 +72,12 @@ const VideoNewParticipantList = () => {
     setSearchValue(value);
   };
 
-  useEffect(() => {
-    if (getRoomId !== null) {
-      let Data = {
-        RoomID: String(getRoomId),
-      };
-      dispatch(participantListWaitingListMainApi(Data, navigate, t));
-    }
-  }, []);
+  // useEffect(() => {
+  //   let data = {
+  //     RoomID: String(getRoomId),
+  //   };
+  //   dispatch(participantListWaitingListMainApi(navigate, t, data));
+  // }, []);
 
   useEffect(() => {
     if (

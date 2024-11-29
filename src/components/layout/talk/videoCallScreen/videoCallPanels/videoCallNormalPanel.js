@@ -42,6 +42,8 @@ const VideoPanelNormal = () => {
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
   let newRoomID = localStorage.getItem("newRoomId");
 
+  let participantRoomIds = localStorage.getItem("participantRoomId");
+
   localStorage.setItem("VideoView", "Sidebar");
   let callAcceptedRecipientID = Number(
     localStorage.getItem("acceptedRecipientID")
@@ -164,10 +166,19 @@ const VideoPanelNormal = () => {
   }, [makeHostNow]);
 
   useEffect(() => {
-    let Data = {
-      RoomID: String(newRoomID),
-    };
-    dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    if (editorRole.role === "Organizer") {
+      let Data = {
+        RoomID: String(newRoomID),
+      };
+      dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    } else if (editorRole.role === "Participant") {
+      let Data = {
+        RoomID: String(participantRoomIds),
+      };
+      dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    } else {
+      console.log("Nothing");
+    }
   }, []);
 
   useEffect(() => {
@@ -504,8 +515,9 @@ const VideoPanelNormal = () => {
                             //     : callerURL
                             // }
                             src={
-                              callAcceptedRecipientID === currentUserID
-                                ? refinedParticipantVideoUrl
+                              callAcceptedRecipientID === currentUserID &&
+                              editorRole.role === "Participant"
+                                ? refinedParticipantVideoUrl || participantURL
                                 : callerURL
                             }
                             ref={iframeRef}
