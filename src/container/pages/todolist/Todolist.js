@@ -19,7 +19,6 @@ import del from "../../../assets/images/del.png";
 import { Search, ArrowRight, ArrowLeft } from "react-bootstrap-icons";
 import {
   ViewToDoList,
-  clearResponce,
   SearchTodoListApi,
   saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
@@ -35,7 +34,6 @@ import {
 import Form from "react-bootstrap/Form";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
@@ -76,16 +74,8 @@ const TodoList = () => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
 
-  const ResponseMessageTodoReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage
-  );
-
   const ResponseStatusReducer = useSelector(
     (state) => state.todoStatus.Response
-  );
-
-  const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage
   );
 
   const UpdateTodoStatusMessage = useSelector(
@@ -95,9 +85,11 @@ const TodoList = () => {
   const ResponseMessageTodoStatusReducer = useSelector(
     (state) => state.getTodosStatus.ResponseMessage
   );
+
   const UpdateTodoStatus = useSelector(
     (state) => state.getTodosStatus.UpdateTodoStatus
   );
+
   const [isExpand, setExpand] = useState(false);
   const [rowsToDo, setRowToDo] = useState([]);
   const [originalData, setOriginalData] = useState([]);
