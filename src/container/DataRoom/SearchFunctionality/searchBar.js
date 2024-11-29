@@ -1194,12 +1194,12 @@ const SearchBarComponent = ({
       isAudios: searchDataFields.isAudios,
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: formatDateToUTC(
-        searchDataFields.LastModifiedStartDate
+        searchDataFields.LastModifiedStartDate,1
       )
-        ? formatDateToUTC(searchDataFields.LastModifiedStartDate)
+        ? formatDateToUTC(searchDataFields.LastModifiedStartDate,1)
         : "",
-      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate)
-        ? formatDateToUTC(searchDataFields.LastModifiedEndDate)
+      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate,2)
+        ? formatDateToUTC(searchDataFields.LastModifiedEndDate,2)
         : "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
