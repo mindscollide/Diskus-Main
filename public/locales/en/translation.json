@@ -2316,5 +2316,6 @@
   "Folder": "Folder",
   "Forms": "Forms",
   "Review-document": "Review document",
-  "Email-is-not-valid":"Email is not valid"
+  "Email-is-not-valid": "Email is not valid",
+  "Meeting-leave-confirmation": "You are currently in a meeting. Taking this action will leave you from meeting."
 }

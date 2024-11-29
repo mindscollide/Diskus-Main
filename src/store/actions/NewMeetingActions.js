@@ -71,7 +71,7 @@ import {
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import { callRequestReceivedMQTT, LeaveCall } from "./VideoMain_actions";
+import { callRequestReceivedMQTT, LeaveCall, LeaveInitmationMessegeVideoMeetAction } from "./VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -8451,6 +8451,7 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                 UserGUID: userGUID,
               };
               dispatch(LeaveMeetingVideo(Data, navigate, t));
+              dispatch(LeaveInitmationMessegeVideoMeetAction(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

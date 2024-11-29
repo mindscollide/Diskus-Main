@@ -7,7 +7,8 @@
   justify-content: center;
   align-content: center;
   top: 0;
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.3px); /* Lowering the blur effect */
+  opacity: 0.95; /* Adjust opacity for a natural look */
   left: 0;
   z-index: 999999999;
   min-height: 100vh !important;

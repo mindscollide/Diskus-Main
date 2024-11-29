@@ -13,16 +13,7 @@ import { useTranslation } from "react-i18next";
 import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import {
   showCancelModalmeetingDeitals,
-  scheduleMeetingPageFlag,
-  viewProposeDateMeetingPageFlag,
-  viewAdvanceMeetingPublishPageFlag,
-  viewAdvanceMeetingUnpublishPageFlag,
-  viewProposeOrganizerMeetingPageFlag,
-  proposeNewMeetingPageFlag,
-  viewMeetingFlag,
   uploadGlobalFlag,
-  LeaveCurrentMeetingOtherMenus,
-  currentMeetingStatus,
 } from "../../../store/actions/NewMeetingActions";
 import {
   getUserDetails,
@@ -35,7 +26,6 @@ import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 import { Button, Modal, UploadTextField, Notification } from "../../elements";
 import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
-import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
 import {
   checkFeatureIDAvailability,
   getLocalStorageItemNonActiveCheck,
@@ -49,6 +39,12 @@ import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assigne
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 import BellNotificationIcon from "../../../assets/images/BellNotificationIcon.png";
 import WebNotfication from "../WebNotfication/WebNotfication.js";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -277,173 +273,52 @@ const Header2 = ({ isVideo }) => {
   };
 
   const RecentFilesTab = async () => {
-    if (
-      (scheduleMeetingPageFlagReducer === true ||
-        viewProposeDateMeetingPageFlagReducer === true ||
-        viewAdvanceMeetingPublishPageFlagReducer === true ||
-        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-        viewProposeOrganizerMeetingPageFlagReducer === true ||
-        proposeNewMeetingPageFlagReducer === true) &&
-      viewMeetingFlagReducer === false
-    ) {
-      dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "dataroom");
-    } else {
-      localStorage.setItem("setTableView", 4);
-      navigate("/DisKus/dataroom");
-      dispatch(showCancelModalmeetingDeitals(false));
-      dispatch(scheduleMeetingPageFlag(false));
-      dispatch(viewProposeDateMeetingPageFlag(false));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-      let Data = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      if (CurrentMeetingStatus === 10) {
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-      }
+    localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
-  const homePageDashboardClick = (event) => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        event.preventDefault();
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "home");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
-        }
-      }
+  const homePageDashboardClick = () => {
+    localStorage.setItem("navigateLocation", "home");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   const handleMeetingSidebarSettings = () => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "setting");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
-        }
-      }
+    localStorage.setItem("navigateLocation", "setting");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   const handleMeetingPendingApprovals = () => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "Minutes");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
-        }
-      }
+    localStorage.setItem("navigateLocation", "Minutes");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
   const handleMeetingSidebarFAQ = () => {
-    if (location.pathname.includes("/Admin") === false) {
-      if (
-        (scheduleMeetingPageFlagReducer === true ||
-          viewProposeDateMeetingPageFlagReducer === true ||
-          viewAdvanceMeetingPublishPageFlagReducer === true ||
-          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-          viewProposeOrganizerMeetingPageFlagReducer === true ||
-          proposeNewMeetingPageFlagReducer === true) &&
-        viewMeetingFlagReducer === false
-      ) {
-        dispatch(showCancelModalmeetingDeitals(true));
-        localStorage.setItem("navigateLocation", "faq's");
-      } else {
-        dispatch(showCancelModalmeetingDeitals(false));
-        dispatch(scheduleMeetingPageFlag(false));
-        dispatch(viewProposeDateMeetingPageFlag(false));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-        dispatch(viewProposeOrganizerMeetingPageFlag(false));
-        dispatch(proposeNewMeetingPageFlag(false));
-        dispatch(viewMeetingFlag(false));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        if (CurrentMeetingStatus === 10) {
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-          dispatch(currentMeetingStatus(0));
-        }
-      }
+    localStorage.setItem("navigateLocation", "faq's");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
   };
 
@@ -556,7 +431,10 @@ const Header2 = ({ isVideo }) => {
                               ? "/DisKus/Meeting"
                               : "/DisKus/Minutes"
                           }
-                          onClick={handleMeetingPendingApprovals}
+                          onClick={(event) => {
+                            event.preventDefault(); // Prevents default navigation
+                            handleMeetingPendingApprovals(); // Your custom click handler
+                          }}
                           className="pendingApprovalsNav"
                         >
                           {t("Pending-approvals")}
@@ -667,7 +545,10 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/setting"
                         }
                         className="d-flex text-black FontClass"
-                        onClick={handleMeetingSidebarSettings}
+                        onClick={(event) => {
+                          event.preventDefault(); // Prevents default navigation
+                          handleMeetingSidebarSettings(); // Your custom click handler
+                        }}
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -692,7 +573,10 @@ const Header2 = ({ isVideo }) => {
                             ? "/DisKus/Meeting"
                             : "/DisKus/faq's"
                         }
-                        onClick={handleMeetingSidebarFAQ}
+                        onClick={(event) => {
+                          event.preventDefault(); // Prevents default navigation
+                          handleMeetingSidebarFAQ(); // Your custom click handler
+                        }}
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
@@ -739,7 +623,10 @@ const Header2 = ({ isVideo }) => {
                     ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
-                onClick={handleMeetingSidebarFAQ}
+                onClick={(event) => {
+                  event.preventDefault(); // Prevents default navigation
+                  handleMeetingSidebarFAQ(); // Your custom click handler
+                }}
                 className="mx-3"
               >
                 <img
@@ -772,7 +659,10 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={homePageDashboardClick}
+              onClick={(event) => {
+                event.preventDefault(); // Prevents default navigation
+                homePageDashboardClick(); // Your custom click handler
+              }}
             >
               <img
                 src={DiskusLogoHeader}
@@ -955,7 +845,10 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/Minutes"
                                 }
-                                onClick={handleMeetingPendingApprovals}
+                                onClick={(event) => {
+                                  event.preventDefault(); // Prevents default navigation
+                                  handleMeetingPendingApprovals(); // Your custom click handler
+                                }}
                                 className="pendingApprovalsNav"
                               >
                                 <span className="New_folder_shortcutkeys">
@@ -1142,7 +1035,10 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/setting"
                                 }
                                 className="d-flex text-black FontClass"
-                                onClick={handleMeetingSidebarSettings}
+                                onClick={(event) => {
+                                  event.preventDefault(); // Prevents default navigation
+                                  handleMeetingSidebarSettings(); // Your custom click handler
+                                }}
                               >
                                 {/* Change Password */}
                                 {t("Settings")}
@@ -1170,7 +1066,10 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/faq's"
                                 }
-                                onClick={handleMeetingSidebarFAQ}
+                                onClick={(event) => {
+                                  event.preventDefault(); // Prevents default navigation
+                                  handleMeetingSidebarFAQ(); // Your custom click handler
+                                }}
                                 className="d-flex text-black FontClass"
                               >
                                 {/* Change Password */}
@@ -1241,7 +1140,10 @@ const Header2 = ({ isVideo }) => {
                           : "/DisKus/faq's"
                       }
                       className="mx-3"
-                      onClick={handleMeetingSidebarFAQ}
+                      onClick={(event) => {
+                        event.preventDefault(); // Prevents default navigation
+                        handleMeetingSidebarFAQ(); // Your custom click handler
+                      }}
                     >
                       <Tooltip placement="topRight" title={t("FAQs")}>
                         <img
