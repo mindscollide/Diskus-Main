@@ -513,14 +513,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `Title is missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -531,14 +524,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `Start Time is missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -549,14 +535,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `End Time is missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -567,14 +546,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `Presenter is missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -589,14 +561,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `URL is missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -610,14 +575,7 @@ const Agenda = ({
           "error",
           setOpen
         );
-        // setTimeout(
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: `UserID/Note missing in Agenda  ${rowIndex + 1} `,
-        //   }),
-        //   3000
-        // );
+
         isValid = false;
         break;
       }
@@ -636,16 +594,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `Title is missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break;
           }
@@ -659,16 +608,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `Start Date is missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break; // Stop processing if subAgenda startDate is missing
           }
@@ -682,16 +622,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `End Date is missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break; // Stop processing if subAgenda endDate is missing
           }
@@ -705,16 +636,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `Presenter is missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break; // Stop processing if subAgenda presenterID is missing
           }
@@ -733,16 +655,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `URL is missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break;
           }
@@ -760,16 +673,7 @@ const Agenda = ({
               "error",
               setOpen
             );
-            // setTimeout(
-            //   setOpen({
-            //     ...open,
-            //     flag: true,
-            //     message: `UserID/Note missing in Agenda  ${rowIndex + 1}.${
-            //       subIndex + 1
-            //     }`,
-            //   }),
-            //   3000
-            // );
+
             isValid = false;
             break;
           }
@@ -784,8 +688,6 @@ const Agenda = ({
       updateSave(flag);
     }
   };
-
-  console.log("fileForSendAgendafileForSendAgenda", fileForSend);
 
   useEffect(() => {
     if (
@@ -1429,26 +1331,26 @@ const Agenda = ({
 
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "error", setOpen);
+      showMessage(t("Record-saved"), "success", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "error", setOpen);
+      showMessage(t("Record-updated"), "success", setOpen);
     } else if (
       MeetingAgendaReducer.ResponseMessage ===
       t("Agendas-imported-successfully")
     ) {
-      showMessage(t("Agendas-imported-successfully"), "error", setOpen);
+      showMessage(t("Agendas-imported-successfully"), "success", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("No-agendas-exist")) {
       showMessage(t("No-agendas-exist"), "error", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-saved")) {
       showMessage(
         t("Agenda-voting-details-saved-successfully"),
-        "error",
+        "success",
         setOpen
       );
     } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
       showMessage(
         t("Agenda-voting-details-updated-successfully"),
-        "error",
+        "success",
         setOpen
       );
     }

@@ -71,6 +71,34 @@
   padding: 7px 10px !important;
 }
 
+.ScrollerParticipant {
+  height: 40vh !important;
+  margin-top: 8px !important;
+  overflow-x: hidden !important;
+}
+
+.ScrollerParticipant::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ScrollerParticipant::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.BoxCardDate {
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 7px 10px !important;
+}
+
 .UserName {
   font-size: 14px !important;
   font-weight: 600 !important;
