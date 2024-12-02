@@ -8,12 +8,16 @@ import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/V
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
-import { getParticipantMeetingJoinMainApi } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  getParticipantMeetingJoinMainApi,
+  maxParticipantVideoCallPanel,
+  normalParticipantVideoCallPanel,
+} from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./NormalParticipantVideoComponent.css";
 
-const NormalParticipantVideoComponent = ({ handleExpandToParticipantMax }) => {
+const NormalParticipantVideoComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,6 +70,11 @@ const NormalParticipantVideoComponent = ({ handleExpandToParticipantMax }) => {
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
   };
+
+  const onCLickNormaltoMaxParticipantPanel = () => {
+    dispatch(normalParticipantVideoCallPanel(false));
+    dispatch(maxParticipantVideoCallPanel(true));
+  };
   return (
     <Container fluid>
       <div className="normal-videoParticipant-panel">
@@ -103,7 +112,10 @@ const NormalParticipantVideoComponent = ({ handleExpandToParticipantMax }) => {
               <img src={MinimizeIcon} />
             </div>
             <div className="normal-videoParticipant-Icons-state">
-              <img src={ExpandIcon} onClick={handleExpandToParticipantMax} />
+              <img
+                src={ExpandIcon}
+                onClick={onCLickNormaltoMaxParticipantPanel}
+              />
             </div>
             <div className="normal-videoParticipant-Icons-state">
               <img src={EndCall} />

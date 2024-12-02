@@ -42,6 +42,8 @@ import {
   setRaisedUnRaisedParticiant,
   checkHostNow,
   makeHostNow,
+  maxParticipantVideoDenied,
+  maxParticipantVideoRemoved,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -252,6 +254,10 @@ const Dashboard = () => {
 
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const getVideoParticpantListandWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -751,15 +757,26 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "REMOVED_FROM_MEETING".toLowerCase()
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("isMeetingVideo", false);
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               dispatch(maximizeVideoPanelFlag(false));
-              dispatch(participantVideoNavigationScreen(5));
+              dispatch(maxParticipantVideoRemoved(true));
             } else if (
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
               if (data.payload.isForAll) {
                 // Gather all participant UIDs
-                const allUids = getNewParticipantsMeetingJoin.map(
+                const allUids = getVideoParticpantListandWaitingList.map(
                   (participant) => {
                     console.log(participant, "participantparticipant");
                     // participant.guid;
@@ -807,7 +824,8 @@ const Dashboard = () => {
               console.log(
                 "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3"
               );
-              dispatch(participantVideoNavigationScreen(3));
+              dispatch(maxParticipantVideoCallPanel(false));
+              dispatch(maxParticipantVideoDenied(true));
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
@@ -846,6 +864,7 @@ const Dashboard = () => {
               console.log(data.payload.videoUrl, "hahahahahahhassddsd");
               localStorage.setItem("participantRoomId", data.payload.roomID);
               localStorage.setItem("participantUID", data.payload.uid);
+              localStorage.setItem("activeRoomID", data.payload.roomID);
               // dispatch(participantVideoNavigationScreen(3));
             } else if (
               data.payload.message.toLowerCase() ===

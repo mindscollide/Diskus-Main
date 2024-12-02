@@ -47,7 +47,10 @@ const initialState = {
   NormalHostVideoFlag: false,
   maximizeParticipantVideoFlag: false,
   normalParticipantVideoFlag: false,
-  getVideoParticpantListandWaitingList: [],
+  maxParticipantVideoDeniedFlag: false,
+  maxParticipantVideoRemovedFlag: false,
+  getVideoParticpantListandWaitingList: [], // Active participants list
+  waitingParticipantsList: [],
   participantVideoNavigationData: 1,
   videoControlHost: false,
   audioControlHost: false,
@@ -57,31 +60,33 @@ const initialState = {
   getParticipantsVideoUrl: null,
   checkHostNow: null,
   makeHostNow: null,
+  isMicEnabled: true,
+  isWebCamEnabled: true,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ACCEPT_AND_REMOVE_PARTICIPANTS: {
       const { payload } = action; // payload is expected to be an array of uids
-      console.log(payload, state.participantWaitingList, "payloadpayload");
+      console.log(payload, state.waitingParticipantsList, "payloadpayload");
 
       // Filter out participants whose UID is included in the payload array
-      const filteredParticipants = state.participantWaitingList.filter(
+      const filteredParticipants = state.waitingParticipantsList.filter(
         (participant) => !payload.includes(participant.guid)
       );
       console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
 
       return {
         ...state,
-        participantWaitingList: filteredParticipants,
+        waitingParticipantsList: filteredParticipants,
       };
     }
 
     case actions.PARTICIPANT_JOINT_REQUESTS: {
       return {
         ...state,
-        participantWaitingList: [
-          ...state.participantWaitingList,
+        waitingParticipantsList: [
+          ...state.waitingParticipantsList,
           action.response,
         ],
       };
@@ -99,13 +104,13 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
     case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
       console.log(action, "actionactionactionactionaction");
-      let copyState = [...state.getNewParticipantsMeetingJoin];
+      let copyState = [...state.getVideoParticpantListandWaitingList];
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
       return {
         ...state,
-        getNewParticipantsMeetingJoin: newData,
+        getVideoParticpantListandWaitingList: newData,
       };
     }
 
@@ -278,7 +283,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.MAXIMIZE_VIDEO_PANEL: {
-      console.log(action, "trurururuurururururuu");
+      console.log(action, "MAXIMIZE_VIDEO_PANEL");
       return {
         ...state,
         MaximizeVideoFlag: action.response,
@@ -390,34 +395,34 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
       const { payload } = action;
+      console.log("Action Payload:", payload);
 
       if (payload.isForAll) {
         // Mute/Unmute all participants
-        const updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
-          (participant) => ({
+        const updatedParticipantList =
+          state.getVideoParticpantListandWaitingList.map((participant) => ({
             ...participant,
             mute: payload.isMuted,
-          })
-        );
+          }));
 
         return {
           ...state,
-          getNewParticipantsMeetingJoin: updatedParticipantList,
+          getVideoParticpantListandWaitingList: updatedParticipantList,
           audioControlForParticipant: payload.isMuted, // Update global state only for "Mute All"
         };
       }
 
       // Individual participant mute/unmute
-      const updatedParticipantList = state.getNewParticipantsMeetingJoin.map(
-        (participant) =>
+      const updatedParticipantList =
+        state.getVideoParticpantListandWaitingList.map((participant) =>
           participant.guid === payload.uid
             ? { ...participant, mute: payload.isMuted }
             : participant
-      );
+        );
 
       return {
         ...state,
-        getNewParticipantsMeetingJoin: updatedParticipantList,
+        getVideoParticpantListandWaitingList: updatedParticipantList,
       };
     }
 
@@ -425,11 +430,11 @@ const videoFeatureReducer = (state = initialState, action) => {
       let { payload } = action;
       console.log(
         payload,
-        state.getNewParticipantsMeetingJoin,
+        state.getVideoParticpantListandWaitingList,
         "getNewParticipantsMeetingJoinRaiseHand"
       );
-      let updatedRaisedParticipant = state.getNewParticipantsMeetingJoin.map(
-        (participantData) => {
+      let updatedRaisedParticipant =
+        state.getVideoParticpantListandWaitingList.map((participantData) => {
           console.log(participantData, "participantDataparticipantData");
 
           let handraisedPayload =
@@ -442,8 +447,7 @@ const videoFeatureReducer = (state = initialState, action) => {
           }
           console.log(handraisedPayload, "handraisedPayloadhandraisedPayload");
           return participantData;
-        }
-      );
+        });
       console.log(
         updatedRaisedParticipant,
         "handraisedPayloadhandraisedPayload"
@@ -451,7 +455,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        getNewParticipantsMeetingJoin: updatedRaisedParticipant,
+        getVideoParticpantListandWaitingList: updatedRaisedParticipant,
       };
     }
 
@@ -459,10 +463,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       let { payload } = action;
       console.log(
         payload,
-        state.getNewParticipantsMeetingJoin,
+        state.getVideoParticpantListandWaitingList,
         " hidehidehidheVideoDataa"
       );
-      let updateHideVideo = state.getNewParticipantsMeetingJoin.map(
+      let updateHideVideo = state.getVideoParticpantListandWaitingList.map(
         (hideUnhideData) => {
           let hideUnHideVideoPayload =
             payload.uid === hideUnhideData.guid ? true : false;
@@ -478,19 +482,19 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(updateHideVideo, "updateHideVideoupdateHideVideo");
       return {
         ...state,
-        getNewParticipantsMeetingJoin: updateHideVideo,
+        getVideoParticpantListandWaitingList: updateHideVideo,
       };
     }
 
     case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
       console.log(action, "dtadtatatatatattata");
       let getPrevState = [
-        ...state.getNewParticipantsMeetingJoin,
+        ...state.getVideoParticpantListandWaitingList,
         ...action.response,
       ];
       return {
         ...state,
-        getNewParticipantsMeetingJoin: getPrevState,
+        getVideoParticpantListandWaitingList: getPrevState,
       };
     }
 
@@ -524,19 +528,17 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         MaximizeHostVideoFlag: action.response,
-        NormalHostVideoFlag: false, // Ensure mutual exclusivity
-        maximizeParticipantVideoFlag: false,
-        normalParticipantVideoFlag: false,
+        NormalHostVideoFlag: false,
       };
     }
 
     case actions.NORMAL_HOST_VIDEO_CALL_PANEL: {
+      console.log(action, "trurururuurururururuu");
+
       return {
         ...state,
-        MaximizeHostVideoFlag: false,
         NormalHostVideoFlag: action.response,
-        maximizeParticipantVideoFlag: false,
-        normalParticipantVideoFlag: false,
+        MaximizeHostVideoFlag: false,
       };
     }
 
@@ -544,23 +546,39 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.PARTICIPANT_VIDEO_CALL_NORMAL_PANEL: {
       return {
         ...state,
-        MaximizeHostVideoFlag: false,
-        NormalHostVideoFlag: false,
+
         normalParticipantVideoFlag: action.response,
         maximizeParticipantVideoFlag: false,
       };
     }
 
     case actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL: {
-      console.log(action, "trurururuurururururuu");
+      console.log(action, "MAX_PARTICIPANT_VIDEO_CALL_PANEL");
       return {
         ...state,
-        MaximizeHostVideoFlag: false,
-        NormalHostVideoFlag: false,
-        normalParticipantVideoFlag: false,
+
         maximizeParticipantVideoFlag: action.response,
+        normalParticipantVideoFlag: false,
       };
     }
+
+    case actions.MAX_PARTICIPANT_VIDEO_DENIED:
+      console.log(action, "MAX_PARTICIPANT_VIDEO_DENIED");
+
+      return {
+        ...state,
+        maxParticipantVideoDeniedFlag: action.response,
+        maximizeParticipantVideoFlag: false,
+      };
+
+    case actions.MAX_PARTICIPANT_VIDEO_REMOVED:
+      console.log(action, "MAX_PARTICIPANT_VIDEO_REMOVED");
+
+      return {
+        ...state,
+        maxParticipantVideoRemovedFlag: action.response,
+        MaximizeVideoFlag: false,
+      };
 
     case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT: {
       return {
@@ -570,11 +588,13 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_SUCCESS: {
+      console.log("API Response:", action.response);
+
       return {
         ...state,
         Loading: false,
-        getVideoParticpantListandWaitingList: action.response,
-        ResponseMessage: action.message,
+        getVideoParticpantListandWaitingList: action.response.participantList,
+        waitingParticipantsList: action.response.waitingParticipants,
       };
     }
 
@@ -583,6 +603,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getVideoParticpantListandWaitingList: [],
+        waitingParticipantsList: [],
         ResponseMessage: action.message,
       };
     }
@@ -657,6 +678,17 @@ const videoFeatureReducer = (state = initialState, action) => {
         makeHostNow: action.response,
       };
     }
+
+    case actions.MIC_ENABLE_WHEN_HOST_PANEL_MIC_ENABLE:
+      return {
+        ...state,
+        isMicEnabled: action.payload,
+      };
+    case actions.VIDEO_ENABLE_WHEN_HOST_PANEL_VIDEO_ENABLE:
+      return {
+        ...state,
+        isWebCamEnabled: action.payload,
+      };
 
     default:
       return { ...state };

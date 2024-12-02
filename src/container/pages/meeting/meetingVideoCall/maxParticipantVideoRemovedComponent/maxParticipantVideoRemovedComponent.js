@@ -5,7 +5,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import VideoEnd from "../../../../../assets/images/Recent Activity Icons/Video/VideoEnd.png";
 import { Button } from "../../../../../components/elements";
-import { participantVideoNavigationScreen } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  maxParticipantVideoCallPanel,
+  maxParticipantVideoRemoved,
+  participantVideoNavigationScreen,
+} from "../../../../../store/actions/VideoFeature_actions";
 import "./maxParticipantVideoRemovedComponent.css";
 
 const MaxParticipantVideoRemovedComponent = () => {
@@ -14,7 +18,12 @@ const MaxParticipantVideoRemovedComponent = () => {
   const navigate = useNavigate();
 
   const onClickCloseModal = () => {
-    dispatch(participantVideoNavigationScreen(1));
+    dispatch(maxParticipantVideoRemoved(false));
+  };
+
+  const onCLickRejoin = () => {
+    dispatch(maxParticipantVideoRemoved(false));
+    dispatch(maxParticipantVideoCallPanel(true));
   };
 
   return (
@@ -76,6 +85,7 @@ const MaxParticipantVideoRemovedComponent = () => {
                     <Button
                       text={t("Request-to-rejoin")}
                       className="Participant-rejoin-Button-Class"
+                      onClick={onCLickRejoin}
                     />
                   </Col>
                 </Row>

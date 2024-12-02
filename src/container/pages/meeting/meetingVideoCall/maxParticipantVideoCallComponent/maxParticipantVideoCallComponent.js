@@ -17,7 +17,9 @@ import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Vi
 import {
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
+  maxParticipantVideoCallPanel,
   normalHostVideoCallPanel,
+  normalParticipantVideoCallPanel,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -170,12 +172,21 @@ const ParticipantVideoCallComponent = ({
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
-      IsMuted: false,
-      HideVideo: isWebCamEnabled,
+      IsMuted: !isMicEnabled,
+      HideVideo: !isWebCamEnabled,
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     setIsWaiting(true);
     setGetReady(false);
+  };
+
+  const onClickToNormalParticipantPanel = () => {
+    dispatch(maxParticipantVideoCallPanel(false));
+    dispatch(normalParticipantVideoCallPanel(true));
+  };
+
+  const onClickEndVideoCall = () => {
+    dispatch(maxParticipantVideoCallPanel(false));
   };
 
   return (
@@ -219,11 +230,11 @@ const ParticipantVideoCallComponent = ({
             <div className="max-videoParticipant-Icons-state">
               <img
                 src={NormalizeIcon}
-                onClick={handleExpandToNormalPanelParticipant}
+                onClick={onClickToNormalParticipantPanel}
               />
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img src={EndCall} />
+              <img src={EndCall} onClick={onClickEndVideoCall} />
             </div>
           </Col>
         </Row>

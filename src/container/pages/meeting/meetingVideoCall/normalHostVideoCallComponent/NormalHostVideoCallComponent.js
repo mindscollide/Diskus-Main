@@ -6,14 +6,22 @@ import "./NormalHostVideoCallComponent.css";
 import { Button } from "../../../../../components/elements";
 import MicOn2 from "../../../../../assets/images/Recent Activity Icons/Video/MicOn2.png";
 import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
+import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
+import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
-import { getParticipantMeetingJoinMainApi } from "../../../../../store/actions/VideoFeature_actions";
-import { useDispatch } from "react-redux";
+import {
+  getParticipantMeetingJoinMainApi,
+  maxParticipantVideoCallPanel,
+  normalParticipantVideoCallPanel,
+  setAudioControlHost,
+  setVideoControlHost,
+} from "../../../../../store/actions/VideoFeature_actions";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
+const NormalHostVideoCallComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,9 +30,22 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
   let newVideoUrl = localStorage.getItem("videoCallURL");
   let participantMeetingTitle = localStorage.getItem("meetingTitle");
 
+  const isMicEnabledState = useSelector(
+    (state) => state.videoFeatureReducer.isMicEnabled
+  );
+  const isWebCamEnabledState = useSelector(
+    (state) => state.videoFeatureReducer.isWebCamEnabled
+  );
+
+  const isWebCamEnabledTrue =
+    localStorage.getItem("isWebCamEnabled") === "true";
+  const isMicEnabledTrue = localStorage.getItem("isMicEnabled") === "true";
+
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
+  const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
+  const [isMicEnabled, setIsMicEnabled] = useState(true);
 
   useEffect(() => {
     // Automatically enable the webcam on initial load
@@ -57,6 +78,80 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
     };
   }, [isWebCamEnabled]);
 
+  // for set Video Web Cam on CLick
+  const toggleAudio = (enable, check) => {
+    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    dispatch(setAudioControlHost(!enable));
+    if (enable) {
+      localStorage.setItem("isMicEnabled", true);
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((audioStream) => {
+          // Stop any existing audio tracks before starting a new one
+          if (streamAudio) {
+            streamAudio.getAudioTracks().forEach((track) => track.stop());
+          }
+
+          const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
+          setStreamAudio(newStream);
+          setIsMicEnabled(true);
+        })
+        .catch((error) => {
+          alert("Error accessing microphone: " + error.message);
+        });
+    } else {
+      localStorage.setItem("isMicEnabled", false);
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      setIsMicEnabled(false); // Microphone is now disabled
+    }
+  };
+  // Toggle Video (Webcam)
+  const toggleVideo = (enable) => {
+    // localStorage.setItem("enableVideo", !enable);
+    dispatch(setVideoControlHost(!enable));
+
+    if (enable) {
+      localStorage.setItem("isWebCamEnabled", true);
+
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((videoStream) => {
+          // Stop any existing video tracks before starting a new one
+          if (stream) {
+            stream.getVideoTracks().forEach((track) => track.stop());
+          }
+
+          if (videoRef.current) {
+            videoRef.current.srcObject = videoStream;
+            videoRef.current.muted = true;
+            videoRef.current.play().catch((error) => {
+              console.error("Error playing video:", error);
+            });
+          }
+          setStream(videoStream);
+          setIsWebCamEnabled(true);
+        })
+        .catch((error) => {
+          alert("Error accessing webcam: " + error.message);
+        });
+    } else {
+      localStorage.setItem("isWebCamEnabled", false);
+      if (stream) {
+        stream.getVideoTracks().forEach((track) => track.stop());
+        setStream(null); // Clear the stream from state
+        if (videoRef.current) {
+          videoRef.current.srcObject = null; // Clear the video source
+        }
+      }
+      setIsWebCamEnabled(false); // Webcam is now disabled
+    }
+  };
+
   const joinNewApiVideoCallOnClick = () => {
     let data = {
       MeetingId: Number(meetingId),
@@ -65,6 +160,11 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
       HideVideo: isWebCamEnabled,
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+  };
+
+  const onClickNormalToMaxHost = () => {
+    dispatch(normalParticipantVideoCallPanel(false));
+    dispatch(maxParticipantVideoCallPanel(true));
   };
 
   return (
@@ -83,28 +183,32 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
             className="d-flex justify-content-end align-items-center gap-2"
           >
             <div className="max-videohost-Icons-state">
-              {/* {micOn ? ( */}
-              <img src={MicOn2} className="cursor-pointer" />
-              {/* ) : (
+              {isMicEnabledState ? (
                 <img
                   src={MicOn2}
-                  onClick={() => openMicStatus(true)}
+                  className="cursor-pointer"
+                  onClick={() => toggleAudio(false, 2)}
+                />
+              ) : (
+                <img
+                  src={MicOff}
+                  onClick={() => toggleAudio(true, 1)}
                   className="cursor-pointer"
                 />
-              )} */}
+              )}
             </div>
             <div className="max-videohost-Icons-state">
-              {/* {isVideoOn ? ( */}
-              <img src={VideoOn2} />
-              {/* ) : (
-                <img src={VideoOn2} onClick={() => openVideoStatus(true)} />
-              )} */}
+              {isWebCamEnabledState ? (
+                <img src={VideoOn2} onClick={() => toggleVideo(false)} />
+              ) : (
+                <img src={VideoOff} onClick={() => toggleVideo(true)} />
+              )}
             </div>
             <div className="max-videohost-Icons-state">
               <img src={MinimizeIcon} />
             </div>
             <div className="max-videohost-Icons-state">
-              <img src={ExpandIcon} onClick={handleExpandToMax} />
+              <img src={ExpandIcon} onClick={onClickNormalToMaxHost} />
             </div>
             <div className="max-videohost-Icons-state">
               <img src={EndCall} />
@@ -140,26 +244,6 @@ const NormalHostVideoCallComponent = ({ handleExpandToMax }) => {
             }
           </Col>
           <Col lg={5} md={5} sm={12}>
-            {/* <div className="normal-videoHost-component">
-              <p className="normal-videoHost-left-meeting-text">
-                {t("You've-left-the-meeting")}
-              </p>
-              <p className="normal-videoHost-left-meeting-rejoin-text">
-                {t("Want-to-rejoin?-click-here-to-return-to-the-session")}
-              </p>
-              <Button
-                text={t("Rejoin")}
-                className="normal-videoHost-Join-Now-Btn"
-              />
-            </div> */}
-            {/* <div className="normal-videoHost-component">
-              <p className="normal-videoHost-waiting-room-class">
-                {t("You-are-in-the-waiting-room")}
-              </p>
-              <p className="normal-videoHost-organizer-allow-class">
-                {t("The-organizer-will-allow-you-to-join-shortly")}
-              </p>
-            </div> */}
             <div className="normal-videoHost-component">
               <>
                 <p className="normal-videohost-ready-to-join">

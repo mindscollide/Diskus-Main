@@ -37,12 +37,24 @@ import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmation
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
+import {
+  maxHostVideoCallPanel,
+  maxParticipantVideoCallPanel,
+} from "../../store/actions/VideoFeature_actions";
+import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "../pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { editorRole } = useContext(MeetingContext);
 
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails
@@ -59,6 +71,31 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const userProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData
   );
+
+  const MaximizeHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+  );
+
+  const NormalHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  );
+
+  const maximizeParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+  );
+
+  const normalParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+  );
+
+  const maxParticipantVideoDeniedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+  );
+
+  const maxParticipantVideoRemovedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+  );
+
   console.log(
     { assigneesViewMeetingDetails, calendarReducereventsDetails },
     "calendarReducereventsDetailscalendarReducereventsDetails"
@@ -810,25 +847,37 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const joinMeetingCall = () => {
-    if (activeCall === false && isMeeting === false) {
-      let Data = {
-        VideoCallURL: currentMeetingVideoURL,
-      };
-      dispatch(
-        FetchMeetingURLApi(
-          Data,
-          navigate,
-          t,
-          currentUserID,
-          currentOrganization,
-          0,
-          createMeeting.MeetingTitle
-        )
-      );
-      localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
-    } else if (activeCall === true && isMeeting === false) {
-      dispatch(callRequestReceivedMQTT({}, ""));
+    let meetingVideoData = {
+      roleID:
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor"
+          ? 2
+          : 1,
+    };
+    if (meetingVideoData.roleID === 1) {
+      dispatch(maxHostVideoCallPanel(true));
+    } else {
+      dispatch(maxParticipantVideoCallPanel(true));
     }
+    // if (activeCall === false && isMeeting === false) {
+    //   let Data = {
+    //     VideoCallURL: currentMeetingVideoURL,
+    //   };
+    //   dispatch(
+    //     FetchMeetingURLApi(
+    //       Data,
+    //       navigate,
+    //       t,
+    //       currentUserID,
+    //       currentOrganization,
+    //       0,
+    //       createMeeting.MeetingTitle
+    //     )
+    //   );
+    //   localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
+    // } else if (activeCall === true && isMeeting === false) {
+    //   dispatch(callRequestReceivedMQTT({}, ""));
+    // }
   };
   useEffect(() => {
     try {
@@ -978,11 +1027,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         onClick={() => copyToClipboardd()}
                       />
                       <Button
-                        disableBtn={isVideo && meetStatus === 10 ? false : true}
+                        // disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Join-video-call")}
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}
                       />
+
+                      {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
+                      {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
+                      {maximizeParticipantVideoFlag && (
+                        <ParticipantVideoCallComponent />
+                      )}
+                      {normalParticipantVideoFlag && (
+                        <NormalParticipantVideoComponent />
+                      )}
+                      {maxParticipantVideoDeniedFlag && (
+                        <MaxParticipantVideoDeniedComponent />
+                      )}
+                      {maxParticipantVideoRemovedFlag && (
+                        <MaxParticipantVideoRemovedComponent />
+                      )}
                     </Col>
                   </Row>
                   <Row>
@@ -1344,6 +1408,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         />
         <Notification open={open} setOpen={setOpen} />
       </Container>
+
+      {/* Max Component */}
     </>
   );
 };
