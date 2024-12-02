@@ -42,12 +42,16 @@ const VideoPanelNormal = () => {
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
   let newRoomID = localStorage.getItem("newRoomId");
 
+  let participantRoomId = localStorage.getItem("participantRoomId");
+
   localStorage.setItem("VideoView", "Sidebar");
   let callAcceptedRecipientID = Number(
     localStorage.getItem("acceptedRecipientID")
   );
   let currentUserName = localStorage.getItem("name");
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let participantRoomIds = localStorage.getItem("participantRoomId");
 
   const getAllParticipantGuest = useSelector(
     (state) => state.GuestVideoReducer.getAllParticipantGuest
@@ -81,6 +85,8 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
   );
 
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
+
   // videoControlForParticipant for Participants
   const videoControlForParticipant = useSelector(
     (state) => state.videoFeatureReducer.videoControlForParticipant
@@ -100,6 +106,8 @@ const VideoPanelNormal = () => {
   const [allParticipant, setAllParticipant] = useState([]);
   const [participantsList, setParticipantsList] = useState([]);
 
+  console.log(allParticipant, "allParticipantallParticipant");
+
   console.log(participantsList, "participantsListparticipantsList");
   const [callerURL, setCallerURL] = useState("");
   const [participantURL, setParticipantURL] = useState("");
@@ -115,6 +123,8 @@ const VideoPanelNormal = () => {
   const [isMeetingHost, setIsMeetingHost] = useState(null);
   console.log(isMeetingHost, "isMeetingHostisMeetingHost");
 
+  let getMeetingHostInfo = localStorage.getItem("meetinHostInfo");
+
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
 
@@ -126,6 +136,21 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
+
+  const [meetingHostState, setMeetingHostState] = useState(null);
+  useEffect(() => {
+    if (getMeetingHostInfo !== null) {
+      const convertIntoParse = JSON.parse(getMeetingHostInfo);
+      if (
+        currentUserID === convertIntoParse.isHostId &&
+        convertIntoParse.isHost === true
+      ) {
+        setMeetingHostState(true);
+      } else {
+        setMeetingHostState(null);
+      }
+    }
+  }, [getMeetingHostInfo]);
 
   // useEffect(() => {
   //   try {
@@ -164,19 +189,64 @@ const VideoPanelNormal = () => {
   }, [makeHostNow]);
 
   useEffect(() => {
-    let Data = {
-      RoomID: String(newRoomID),
+    console.log("Normalize UseEffect Check", videoControlHost);
+    const userRole = localStorage.getItem("userRole");
+    // Parse `isWebCamEnabled` from localStorage
+    const isWebCamEnabled = localStorage.getItem("isWebCamEnabled") === "true";
+    console.log(isWebCamEnabled, "sadisWebCamEnabledisWebCamEnabled");
+
+    // Determine the control source based on the user role
+    const controlSource =
+      userRole === "Participant"
+        ? videoControlForParticipant
+        : videoControlHost;
+
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (controlSource === true && isWebCamEnabled === false) {
+        console.log("Video Check - Turning Video Off");
+        iframe.contentWindow.postMessage("VidOff", "*");
+      } else {
+        console.log("Video Check - Turning Video On");
+        iframe.contentWindow.postMessage("VidOn", "*");
+      }
+    }
+  }, [videoControlHost, videoControlForParticipant]);
+
+  useEffect(() => {
+    const meetingHost = {
+      isHost: false,
+      isHostId: 0,
     };
-    dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    localStorage.getItem("meetinHostInfo", JSON.stringify(meetingHost));
+    console.log(meetingHost, "meetingHostmeetingHost");
+    if (meetingHost.isHost === false) {
+      let Data = {
+        RoomID: String(participantRoomIds),
+      };
+      dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    }
   }, []);
 
   useEffect(() => {
     if (
       getAllParticipantGuest !== null &&
-      getAllParticipantGuest !== undefined &&
-      getAllParticipantGuest.participantList.length > 0
+      getAllParticipantGuest !== undefined
     ) {
-      setAllParticipant(getAllParticipantGuest.participantList);
+      console.log(
+        getAllParticipantGuest.participantList,
+        "getAllParticipantGuest.participantList"
+      );
+
+      // Filter participants to ensure unique userIDs
+      const uniqueParticipants = getAllParticipantGuest.participantList.filter(
+        (participant, index, self) =>
+          self.findIndex((p) => p.userID === participant.userID) === index
+      );
+
+      console.log(uniqueParticipants, "Filtered Unique Participants");
+
+      setAllParticipant(uniqueParticipants);
     } else {
       setAllParticipant([]);
     }
@@ -393,27 +463,6 @@ const VideoPanelNormal = () => {
   //   }
   // }, [videoFeatureReducer.NormalizeVideoFlag, isVideoActive, vidStatus]);
 
-  useEffect(() => {
-    console.log("Normalize UseEffect Check", videoControlHost);
-    const userRole = localStorage.getItem("userRole");
-    // Determine the control source based on the user role
-    const controlSource =
-      userRole === "Participant"
-        ? videoControlForParticipant
-        : videoControlHost;
-
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (controlSource === true) {
-        console.log("Video Check - Turning Video Off");
-        iframe.contentWindow.postMessage("VidOff", "*");
-      } else {
-        console.log("Video Check - Turning Video On");
-        iframe.contentWindow.postMessage("VidOn", "*");
-      }
-    }
-  }, [videoControlHost, videoControlForParticipant]);
-
   localStorage.setItem("videoIframe", iframeRef.current);
 
   return (
@@ -472,13 +521,22 @@ const VideoPanelNormal = () => {
                   <>
                     <Col
                       lg={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                       md={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                       sm={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                     >
                       <div
@@ -495,14 +553,8 @@ const VideoPanelNormal = () => {
                             : ""
                         }
                       >
-                        {initiateCallRoomID !== null ||
-                        callAcceptedRoomID !== null ? (
+                        {isMeetingHost === false ? (
                           <iframe
-                            // src={
-                            //   callAcceptedRecipientID === currentUserID
-                            //     ? participantURL
-                            //     : callerURL
-                            // }
                             src={
                               callAcceptedRecipientID === currentUserID
                                 ? refinedParticipantVideoUrl
@@ -515,94 +567,118 @@ const VideoPanelNormal = () => {
                             frameBorder="0"
                             allow="camera;microphone;display-capture"
                           />
+                        ) : initiateCallRoomID !== null ||
+                          callAcceptedRoomID !== null ? (
+                          <iframe
+                            src={
+                              callAcceptedRecipientID === currentUserID
+                                ? participantURL
+                                : callerURL
+                            }
+                            ref={iframeRef}
+                            title="Live Video"
+                            width="100%"
+                            height="100%"
+                            frameBorder="0"
+                            allow="camera;microphone;display-capture"
+                          />
                         ) : null}
                       </div>
                     </Col>
-                    {videoFeatureReducer.participantWaitinglistBox ? (
-                      <Col
-                        lg={3}
-                        md={3}
-                        sm={3}
-                        className={`${
-                          videoFeatureReducer.participantWaitinglistBox
-                            ? "ParticipantsWaiting_In"
-                            : "ParticipantsWaiting_Out"
-                        } ps-0`}
-                      >
-                        {/* <VideoCallParticipants /> */}
 
-                        {/* this is new Host Panel */}
-                        {isMeetingHost !== null && isMeetingHost === true ? (
-                          <VideoNewParticipantList />
-                        ) : (
+                    {isMeetingHost === true &&
+                    videoFeatureReducer.participantWaitinglistBox ? (
+                      <>
+                        {videoFeatureReducer.participantWaitinglistBox ? (
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={3}
+                            className={`${
+                              videoFeatureReducer.participantWaitinglistBox
+                                ? "ParticipantsWaiting_In"
+                                : "ParticipantsWaiting_Out"
+                            } ps-0`}
+                          >
+                            {/* <VideoCallParticipants /> */}
+
+                            {/* this is new Host Panel */}
+                            {isMeetingHost !== null &&
+                            isMeetingHost === true ? (
+                              <VideoNewParticipantList />
+                            ) : null}
+                          </Col>
+                        ) : null}
+                      </>
+                    ) : isMeeting === true &&
+                      isMeetingVideo === true &&
+                      !isMeetingHost ? (
+                      <>
+                        <div className="Participants-Lists">
                           <>
-                            <div className="Participants-Lists">
-                              <>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <p className="Participant-name-title">
-                                      {t("Participants")}
-                                    </p>
-                                  </Col>
-                                </Row>
-                                {allParticipant.length > 0 &&
-                                  allParticipant.map((participant, index) => {
-                                    console.log(
-                                      participant,
-                                      "participantparticipantparticipant"
-                                    );
-                                    return (
-                                      <>
-                                        <Row key={participant.guid}>
-                                          <Col
-                                            lg={6}
-                                            md={6}
-                                            sm={12}
-                                            className="d-flex justify-content-start"
-                                          >
-                                            <p>{participant.name}</p>{" "}
-                                          </Col>
-                                          <Col
-                                            lg={6}
-                                            md={6}
-                                            sm={12}
-                                            className="d-flex justify-content-end gap-2"
-                                          >
-                                            {videoControlForParticipant ? (
-                                              <img
-                                                src={VideoOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Video Off"
-                                              />
-                                            ) : null}
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <p className="Participant-name-title">
+                                  {t("Participants")}
+                                </p>
+                              </Col>
+                            </Row>
+                            {allParticipant.length > 0 &&
+                              allParticipant.map((participant, index) => {
+                                console.log(
+                                  participant,
+                                  "participantparticipantparticipant"
+                                );
+                                return (
+                                  <>
+                                    <Row key={participant.guid}>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="d-flex justify-content-start"
+                                      >
+                                        <p>{participant.name}</p>{" "}
+                                      </Col>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={12}
+                                        className="d-flex justify-content-end gap-2"
+                                      >
+                                        {videoControlForParticipant ? (
+                                          <img
+                                            src={VideoOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Video Off"
+                                          />
+                                        ) : null}
 
-                                            {audioControlForParticipant ? (
-                                              <img
-                                                src={MicOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Mic Mute"
-                                              />
-                                            ) : null}
-                                            {raisedUnRaisedParticipant ? (
-                                              <img
-                                                src={Raisehandselected}
-                                                width="20px"
-                                                height="20px"
-                                                alt="raise hand"
-                                              />
-                                            ) : null}
-                                          </Col>
-                                        </Row>
-                                      </>
-                                    );
-                                  })}
-                              </>
-                            </div>
+                                        {audioControlForParticipant ? (
+                                          <img
+                                            src={MicOff}
+                                            width="20px"
+                                            height="20px"
+                                            alt="Mic Mute"
+                                          />
+                                        ) : null}
+                                        {raisedUnRaisedParticipant ? (
+                                          <img
+                                            src={Raisehandselected}
+                                            width="20px"
+                                            height="20px"
+                                            alt="raise hand"
+                                          />
+                                        ) : null}
+                                      </Col>
+                                    </Row>
+                                  </>
+                                );
+                              })}
                           </>
-                        )}
-                      </Col>
+                        </div>
+                      </>
                     ) : null}
                     {/* <VideoCallParticipants /> */}
                   </>

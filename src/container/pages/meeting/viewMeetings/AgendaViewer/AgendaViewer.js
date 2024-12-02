@@ -33,6 +33,8 @@ import {
   minimizeVideoPanelFlag,
   leaveCallModal,
   participantPopup,
+  maxHostVideoCallPanel,
+  maxParticipantVideoCallPanel,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -74,6 +76,12 @@ import {
   recentChatFlag,
 } from "../../../../../store/actions/Talk_Feature_actions";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -121,6 +129,30 @@ const AgendaViewer = ({
 
   const agendaResponseMessage = useSelector(
     (state) => state.MeetingAgendaReducer.ResponseMessage
+  );
+
+  const MaximizeHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+  );
+
+  const NormalHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  );
+
+  const maximizeParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+  );
+
+  const normalParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+  );
+
+  const maxParticipantVideoDeniedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+  );
+
+  const maxParticipantVideoRemovedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
 
   const [menuAgenda, setMenuAgenda] = useState(false);
@@ -542,6 +574,21 @@ const AgendaViewer = ({
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
+  const onClickVideoIconOpenVideo = () => {
+    let meetingVideoData = {
+      roleID:
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor"
+          ? 2
+          : 1,
+    };
+    if (meetingVideoData.roleID === 1) {
+      dispatch(maxHostVideoCallPanel(true));
+    } else {
+      dispatch(maxParticipantVideoCallPanel(true));
+    }
+  };
+
   return (
     <>
       {emptyStateRows === true &&
@@ -631,9 +678,13 @@ const AgendaViewer = ({
                         >
                           <div
                             className={styles["box-agendas-camera"]}
-                            onClick={joinMeetingCall}
+                            // onClick={joinMeetingCall}
                           >
-                            <img src={VideocameraIcon} alt="" />
+                            <img
+                              src={VideocameraIcon}
+                              alt=""
+                              onClick={onClickVideoIconOpenVideo}
+                            />
                           </div>
                         </Tooltip>
                       ) : null}
@@ -956,6 +1007,15 @@ const AgendaViewer = ({
           </>
         }
       />
+
+      {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
+      {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
+      {maximizeParticipantVideoFlag && <ParticipantVideoCallComponent />}
+      {normalParticipantVideoFlag && <NormalParticipantVideoComponent />}
+      {maxParticipantVideoDeniedFlag && <MaxParticipantVideoDeniedComponent />}
+      {maxParticipantVideoRemovedFlag && (
+        <MaxParticipantVideoRemovedComponent />
+      )}
     </>
   );
 };

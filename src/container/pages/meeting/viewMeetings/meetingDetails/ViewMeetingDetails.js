@@ -130,6 +130,14 @@ const ViewMeetingDetails = ({
     (state) => state.videoFeatureReducer.normalParticipantVideoFlag
   );
 
+  const maxParticipantVideoDeniedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+  );
+
+  const maxParticipantVideoRemovedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+  );
+
   console.log(
     guestVideoUrlNotification,
     "guestVideoUrlNotificationguestVideoUrlNotification"
@@ -804,46 +812,24 @@ const ViewMeetingDetails = ({
                               />
                             )}
                             {/* Max Component */}
-                            {participantVideoNavigationData === 1 &&
-                              MaximizeHostVideoFlag && (
-                                <MaxHostVideoCallComponent
-                                  handleExpandToNormal={handleExpandToNormal}
-                                />
-                              )}
-                            {participantVideoNavigationData === 1 &&
-                              NormalHostVideoFlag && (
-                                <NormalHostVideoCallComponent
-                                  handleExpandToMax={handleExpandToMax}
-                                />
-                              )}
-                            {participantVideoNavigationData === 1 &&
-                              maximizeParticipantVideoFlag && (
-                                <ParticipantVideoCallComponent
-                                  handleExpandToNormalPanelParticipant={
-                                    handleExpandToNormalPanelParticipant
-                                  }
-                                  // handleExpandToParticipantMax={
-                                  //   handleExpandToParticipantMax
-                                  // }
-                                />
-                              )}
-                            {participantVideoNavigationData !== 1 &&
-                              participantVideoNavigationData === 3 && (
-                                <MaxParticipantVideoDeniedComponent />
-                              )}
-                            {participantVideoNavigationData !== 1 &&
-                              participantVideoNavigationData === 5 && (
-                                <MaxParticipantVideoRemovedComponent />
-                              )}
-                            {/* fOR PARTICIPANT NORMAL SCREEN */}
-                            {participantVideoNavigationData === 1 &&
-                              normalParticipantVideoFlag && (
-                                <NormalParticipantVideoComponent
-                                  handleExpandToParticipantMax={
-                                    handleExpandToParticipantMax
-                                  }
-                                />
-                              )}
+                            {MaximizeHostVideoFlag && (
+                              <MaxHostVideoCallComponent />
+                            )}
+                            {NormalHostVideoFlag && (
+                              <NormalHostVideoCallComponent />
+                            )}
+                            {maximizeParticipantVideoFlag && (
+                              <ParticipantVideoCallComponent />
+                            )}
+                            {normalParticipantVideoFlag && (
+                              <NormalParticipantVideoComponent />
+                            )}
+                            {maxParticipantVideoDeniedFlag && (
+                              <MaxParticipantVideoDeniedComponent />
+                            )}
+                            {maxParticipantVideoRemovedFlag && (
+                              <MaxParticipantVideoRemovedComponent />
+                            )}
                           </>
                         ) : (
                           <>

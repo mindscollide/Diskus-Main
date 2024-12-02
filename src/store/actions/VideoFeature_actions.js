@@ -569,6 +569,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               await dispatch(
@@ -676,6 +685,8 @@ const maxHostVideoCallPanel = (response) => {
 };
 
 const normalHostVideoCallPanel = (response) => {
+  console.log(response, "True");
+
   return {
     type: actions.NORMAL_HOST_VIDEO_CALL_PANEL,
     response: response,
@@ -686,6 +697,25 @@ const normalHostVideoCallPanel = (response) => {
 const maxParticipantVideoCallPanel = (response) => {
   return {
     type: actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+// For Denied Max Patrticipant Video Compnent
+const maxParticipantVideoDenied = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_DENIED");
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_DENIED,
+    response: response,
+  };
+};
+
+// For Removed Max Patrticipant Video Compnent
+const maxParticipantVideoRemoved = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
+
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_REMOVED,
     response: response,
   };
 };
@@ -711,7 +741,7 @@ const participantListAndWaitingListFail = (message) => {
   };
 };
 
-const participantListWaitingListMainApi = (navigate, t, data) => {
+const participantListWaitingListMainApi = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(participantListAndWaitingListInit());
@@ -720,7 +750,7 @@ const participantListWaitingListMainApi = (navigate, t, data) => {
       "RequestMethod",
       getVideoCallParticipantsAndWaitingList.RequestMethod
     );
-    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestData", JSON.stringify(Data));
 
     axios({
       method: "post",
@@ -733,7 +763,7 @@ const participantListWaitingListMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(participantListWaitingListMainApi(navigate, t, data));
+          dispatch(participantListWaitingListMainApi(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -873,6 +903,14 @@ const makeHostNow = (response) => {
     response: response,
   };
 };
+const setMicState = (isEnabled) => ({
+  type: actions.MIC_ENABLE_WHEN_HOST_PANEL_MIC_ENABLE,
+  payload: isEnabled,
+});
+const setVideoState = (isEnabled) => ({
+  type: actions.VIDEO_ENABLE_WHEN_HOST_PANEL_VIDEO_ENABLE,
+  payload: isEnabled,
+});
 
 export {
   participantAcceptandReject,
@@ -920,6 +958,8 @@ export {
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
+  maxParticipantVideoDenied,
+  maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
   participantVideoNavigationScreen,
   setVideoControlHost,
@@ -931,4 +971,6 @@ export {
   normalParticipantVideoCallPanel,
   checkHostNow,
   makeHostNow,
+  setMicState,
+  setVideoState,
 };

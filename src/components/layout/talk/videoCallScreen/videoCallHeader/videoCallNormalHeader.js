@@ -699,6 +699,35 @@ const VideoCallNormalHeader = ({
     dispatch(hideUnhideSelfMainApi(navigate, t, data));
   };
 
+  const videoHideUnHideForHost = () => {
+    // Set the HideVideo flag based on videoControlForParticipant
+    const flag = !videoControlHost;
+
+    // Prepare data for the API request
+    let data = {
+      RoomID: String(newRoomID),
+      HideVideo: flag, // Set HideVideo to true or false
+      UID: String(newUserGUID),
+    };
+
+    // Dispatch the API request with the data
+    dispatch(hideUnhideSelfMainApi(navigate, t, data));
+  };
+
+  const muteUnMuteForHost = () => {
+    const flag = !audioControlHost;
+
+    // Prepare data for the API request
+    let data = {
+      RoomID: String(newRoomID),
+      IsMuted: flag,
+      UID: String(newUserGUID),
+    };
+
+    // Dispatch the API request with the data
+    dispatch(muteUnMuteSelfMainApi(navigate, t, data));
+  };
+
   const muteUnMuteForParticipant = () => {
     const flag = !audioControlForParticipant;
 
@@ -801,6 +830,7 @@ const VideoCallNormalHeader = ({
                   >
                     <img
                       src={audioControlHost === true ? MicOff : MicOn}
+                      // onClick={muteUnMuteForHost}
                       alt="Mic"
                     />
                   </Tooltip>
@@ -823,6 +853,7 @@ const VideoCallNormalHeader = ({
                   >
                     <img
                       src={videoControlHost === true ? VideoOff : VideoOn}
+                      // onClick={videoHideUnHideForHost}
                       alt="Video"
                     />
                   </Tooltip>

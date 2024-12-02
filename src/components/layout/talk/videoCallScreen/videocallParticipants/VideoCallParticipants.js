@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./VideoCallParticipants.module.css";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCallParticipantWaiting.png";
@@ -14,6 +14,7 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoCallParticipants = () => {
   const { videoFeatureReducer } = useSelector((state) => state);
@@ -24,6 +25,9 @@ const VideoCallParticipants = () => {
   const [participantsList, setPartcipantList] = useState([]);
   console.log(participantsList, "participantsListData");
   let roomID = localStorage.getItem("newRoomId");
+  const { editorRole } = useContext(MeetingContext);
+  console.log(editorRole, "editorRoleeditorRole");
+
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const handleChangeSearchParticipant = (e) => {

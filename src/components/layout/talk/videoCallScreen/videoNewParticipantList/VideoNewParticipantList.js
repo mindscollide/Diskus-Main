@@ -40,24 +40,35 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.participantWaitingList
   );
 
-  // For Participant List and waiting List
-  const videoParticpantListandWaitingList = useSelector(
+  console.log(participantWaitingList, "participantWaitingList");
+
+  const participantList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
+  console.log(participantList, "participantListMainReducer");
 
-  console.log(videoParticpantListandWaitingList, "videoParticpantWaitingList");
+  const waitingParticipants = useSelector(
+    (state) => state.videoFeatureReducer.waitingParticipantsList
+  );
 
-  let getRoomId = localStorage.getItem("participantRoomId");
+  console.log(waitingParticipants, "waitingParticipants");
+
+  let getRoomId = localStorage.getItem("newRoomId");
 
   // For acccept Join name participantList
-  const getNewParticipantsMeetingJoin = useSelector(
-    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
-  );
+  // const getNewParticipantsMeetingJoin = useSelector(
+  //   (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  // );
+
+  const [filteredParticipants, setFilteredParticipants] = useState([]);
+  const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
+    useState([]);
 
   const [newParticipants, setNewParticipants] = useState([]);
 
   const [participantsList, setPartcipantList] = useState([]);
-  console.log(participantsList, "participantsListData");
+  console.log(filteredParticipants, "filteredParticipants");
+  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
   let roomID = localStorage.getItem("newRoomId");
   let currentUserID = Number(localStorage.getItem("userID"));
   let HostName = localStorage.getItem("name");
@@ -73,81 +84,49 @@ const VideoNewParticipantList = () => {
   };
 
   useEffect(() => {
-    if (getRoomId !== null) {
-      let Data = {
-        RoomID: String(getRoomId),
-      };
-      dispatch(participantListWaitingListMainApi(Data, navigate, t));
-    }
+    let Data = {
+      RoomID: String(getRoomId),
+    };
+    dispatch(participantListWaitingListMainApi(Data, navigate, t));
   }, []);
 
+  // Update filteredParticipants based on participantList
   useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      console.log(
-        getNewParticipantsMeetingJoin,
-        "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
-      );
-      console.log(getNewParticipantsMeetingJoin.length);
-      // Extract and set the new participants to state
-      setNewParticipants(getNewParticipantsMeetingJoin);
-    } else {
-      setNewParticipants([]);
-    }
-  }, [getNewParticipantsMeetingJoin]);
+    if (participantList?.length) {
+      const uniqueParticipants = participantList.filter(
+        (participant, index, self) => {
+          console.log(participant, "participantparticipant");
 
-  useEffect(() => {
-    const mergeParticipants = () => {
-      // Combine both lists
-      const combinedList = [
-        ...(videoParticpantListandWaitingList?.waitingParticipants || []),
-        ...(participantWaitingList || []),
-      ];
-
-      // Remove duplicates based on `guid`
-      const uniqueParticipants = combinedList.reduce((acc, participant) => {
-        if (!acc.some((item) => item.guid === participant.guid)) {
-          acc.push(participant);
-        }
-        return acc;
-      }, []);
-
-      setPartcipantList(uniqueParticipants);
-    };
-
-    mergeParticipants();
-  }, [videoParticpantListandWaitingList, participantWaitingList]);
-
-  useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      // Filter out duplicates based on UID
-      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
-        (acc, current) => {
-          console.log(acc, "datadatdtad");
-          console.log(current, "currentcurrent");
-
-          // Only add the current participant if its UID is not already in acc
-          if (!acc.find((participant) => participant.guid === current.guid)) {
-            acc.push(current);
+          // Allow userID === 0 but filter duplicates based on guid
+          if (participant.userID === 0) {
+            return self.findIndex((p) => p.guid === participant.guid) === index;
           }
-          return acc;
-        },
-        []
+
+          // For other userIDs, ensure no duplicates based on userID
+          return (
+            self.findIndex((p) => p.userID === participant.userID) === index
+          );
+        }
       );
 
-      setNewParticipants(uniqueParticipants);
       console.log(uniqueParticipants, "uniqueParticipants");
+
+      setFilteredParticipants(uniqueParticipants);
     } else {
-      setNewParticipants([]);
+      setFilteredParticipants([]);
     }
-  }, [getNewParticipantsMeetingJoin]);
+  }, [participantList]);
+
+  // Update filteredWaitingParticipants based on waitingParticipants
+  useEffect(() => {
+    if (waitingParticipants?.length) {
+      console.log(waitingParticipants, "usersDatausersData");
+
+      setFilteredWaitingParticipants(waitingParticipants);
+    } else {
+      setFilteredWaitingParticipants([]);
+    }
+  }, [waitingParticipants]);
 
   const makeLeaveOnClick = (usersData) => {
     console.log(usersData.UID, "usersDatausersData");
@@ -161,12 +140,12 @@ const VideoNewParticipantList = () => {
   };
 
   const muteUnmuteByHost = (usersData, flag = true) => {
-    setMuteGuest(flag);
     let data;
+
     if (usersData) {
       // Mute/Unmute a specific participant
       data = {
-        RoomID: roomID,
+        RoomID: getRoomId,
         IsMuted: flag,
         MuteUnMuteList: [
           {
@@ -174,30 +153,56 @@ const VideoNewParticipantList = () => {
           },
         ],
       };
+
+      // Update the specific participant's mute state in `newParticipants`
+      setFilteredParticipants((prev) =>
+        prev.map((participant) =>
+          participant.guid === usersData.guid
+            ? { ...participant, mute: flag }
+            : participant
+        )
+      );
     } else {
       // Mute All participants
-      const allUids = newParticipants.map((participant) => ({
+      const allUids = filteredParticipants.map((participant) => ({
         UID: participant.guid,
       }));
 
       data = {
-        RoomID: roomID,
+        RoomID: getRoomId,
         IsMuted: true,
         isForAll: true,
-        MuteUnMuteList: allUids, // Include all UIDs here
+        MuteUnMuteList: allUids,
       };
+
+      // Update mute state for all participants in `newParticipants`
+      setFilteredParticipants((prev) =>
+        prev.map((participant) => ({ ...participant, mute: true }))
+      );
     }
 
+    // Dispatch the action to update Redux state and backend
     dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
     console.log(usersData, "akasdaskhdvasdv");
+
     let data = {
       RoomID: roomID,
       HideVideo: flag,
       UIDList: [usersData.guid],
     };
+
+    // Update the specific participant's hideCamera state in `newParticipants`
+    setFilteredParticipants((prev) =>
+      prev.map((participant) =>
+        participant.guid === usersData.guid
+          ? { ...participant, hideCamera: flag }
+          : participant
+      )
+    );
+
     dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
   };
 
@@ -209,15 +214,19 @@ const VideoNewParticipantList = () => {
       Name: usersData.name,
     };
 
+    setFilteredParticipants((prev) =>
+      prev.filter((participant) => participant.guid !== usersData.guid)
+    );
+
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
   };
 
   const handleClickAllAcceptAndReject = (flag) => {
     let Data = {
-      MeetingId: participantsList[0]?.meetingID,
+      MeetingId: newParticipants[0]?.meetingID,
       RoomId: String(roomID),
       IsRequestAccepted: flag === 1 ? true : false,
-      AttendeeResponseList: participantsList.map((participantData, index) => {
+      AttendeeResponseList: newParticipants.map((participantData, index) => {
         console.log(participantData, "mahdahahshahs");
         return {
           IsGuest: participantData.isGuest,
@@ -228,7 +237,7 @@ const VideoNewParticipantList = () => {
     };
 
     dispatch(
-      admitRejectAttendeeMainApi(Data, navigate, t, true, participantsList)
+      admitRejectAttendeeMainApi(Data, navigate, t, true, newParticipants)
     );
   };
 
@@ -247,7 +256,7 @@ const VideoNewParticipantList = () => {
       ],
     };
     dispatch(
-      admitRejectAttendeeMainApi(Data, navigate, t, false, participantsList)
+      admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
 
@@ -324,13 +333,13 @@ const VideoNewParticipantList = () => {
                   {t("Participants")}
                 </p>
               </Col>
-              <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
+              {/* <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
                 <Button
                   text={t("Mute-All")}
                   className={styles["Waiting-New-Participant-muteAll"]}
                   onClick={() => muteUnmuteByHost(null, true)}
                 />
-              </Col>
+              </Col> */}
             </Row>
           </div>
         </Col>
@@ -339,8 +348,8 @@ const VideoNewParticipantList = () => {
 
         <Col sm={12} md={12} lg={12}>
           <div className={styles["Waiting-New-ParticipantNameList"]}>
-            {newParticipants.length > 0 ? (
-              newParticipants.map((usersData, index) => {
+            {filteredParticipants.length > 0 ? (
+              filteredParticipants.map((usersData, index) => {
                 console.log(usersData, "usersDatausersData");
                 return (
                   <>
@@ -352,6 +361,11 @@ const VideoNewParticipantList = () => {
                         sm={12}
                       >
                         <p className="participant-name">{usersData?.name}</p>
+                        {usersData.isHost ? (
+                          <>
+                            <p className={styles["Host-name"]}>(Host)</p>
+                          </>
+                        ) : null}
                         {usersData.raiseHand === true ? (
                           <>
                             <img
@@ -536,10 +550,11 @@ const VideoNewParticipantList = () => {
                 />
               </Col>
             </Row>
-            {participantsList?.length > 0 &&
-              participantsList.map((data, index) => {
+            {filteredWaitingParticipants.length > 0 &&
+              filteredWaitingParticipants.map((data, index) => {
+                console.log(data, "filteredWaitingParticipants");
                 return (
-                  <Row className="mb-2" key={data.uid}>
+                  <Row className="mb-2" key={data.guid}>
                     <Col
                       sm={5}
                       md={5}

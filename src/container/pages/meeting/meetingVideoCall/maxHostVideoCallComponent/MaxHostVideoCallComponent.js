@@ -19,7 +19,9 @@ import {
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
   setAudioControlHost,
+  setMicState,
   setVideoControlHost,
+  setVideoState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import NormalHostVideoCallComponent from "../normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -36,6 +38,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const NormalHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalHostVideoFlag
   );
+  console.log("maxHostTrueeeee");
 
   let meetingId = localStorage.getItem("currentMeetingID");
   let newVideoUrl = localStorage.getItem("videoCallURL");
@@ -86,6 +89,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const toggleAudio = (enable, check) => {
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
     console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    dispatch(setMicState(enable));
     dispatch(setAudioControlHost(!enable));
     if (enable) {
       localStorage.setItem("isMicEnabled", true);
@@ -116,6 +120,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
+    dispatch(setVideoState(enable));
     // localStorage.setItem("enableVideo", !enable);
     dispatch(setVideoControlHost(!enable));
 
@@ -160,10 +165,19 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
-      IsMuted: isMicEnabled,
-      HideVideo: isWebCamEnabled,
+      IsMuted: !isMicEnabled,
+      HideVideo: !isWebCamEnabled,
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+  };
+
+  const onClickToNormalHostPanel = () => {
+    dispatch(maxHostVideoCallPanel(false));
+    dispatch(normalHostVideoCallPanel(true));
+  };
+
+  const onClickToCloseHostMaxPanel = () => {
+    dispatch(maxHostVideoCallPanel(false));
   };
 
   return (
@@ -205,10 +219,10 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
               <img src={MinimizeIcon} />
             </div>
             <div className="max-videohost-Icons-state">
-              <img src={NormalizeIcon} onClick={handleExpandToNormal} />
+              <img src={NormalizeIcon} onClick={onClickToNormalHostPanel} />
             </div>
             <div className="max-videohost-Icons-state">
-              <img src={EndCall} />
+              <img src={EndCall} onClick={onClickToCloseHostMaxPanel} />
             </div>
           </Col>
         </Row>
@@ -236,48 +250,12 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
                         <video ref={videoRef} className="video-max-host" />
                       </div>
                     </div>
-
-                    {/* <div className="mic-vid-buttons">
-                      {isMicEnabled ? (
-                        <img
-                          src={MicOn}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(false, 2)}
-                        />
-                      ) : (
-                        <img
-                          src={MicOff}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(true, 1)}
-                        />
-                      )}
-                    </div> */}
                   </div>
                 </div>
               </>
             }
           </Col>
           <Col lg={4} md={4} sm={12}>
-            {/* <div className="max-videoHost-component">
-              <p className="max-Hostvideo-left-meeting-text">
-                {t("You've-left-the-meeting")}
-              </p>
-              <p className="max-Hostvideo-left-meeting-rejoin-text">
-                {t("Want-to-rejoin?-click-here-to-return-to-the-session")}
-              </p>
-              <Button
-                text={t("Rejoin")}
-                className="normal-videoHost-Join-Now-Btn"
-              />
-            </div> */}
-            {/* <div className="max-videoHost-component">
-              <p className="max-Hostvideo-waiting-room-class">
-                {t("You-are-in-the-waiting-room")}
-              </p>
-              <p className="max-Hostvideo-organizer-allow-class">
-                {t("The-organizer-will-allow-you-to-join-shortly")}
-              </p>
-            </div> */}
             <div className="max-videoHost-component">
               <>
                 <p className="max-videohost-ready-to-join">
