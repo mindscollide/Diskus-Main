@@ -71,6 +71,7 @@ import {
   Button,
   NotificationBar,
   Modal,
+  Notification,
 } from "../../../../../elements";
 import SecurityIcon from "../../../../../../assets/images/Security-Icon.png";
 import CrossIcon from "../../../../../../assets/images/Cross_Icon.png";
@@ -102,6 +103,7 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { filesUrlTalk } from "../../../../../../commen/apis/Api_ends_points";
 import enUS from "antd/es/date-picker/locale/en_US";
+import { showMessage } from "../../../../../elements/snack_bar/utill";
 
 const ChatMainBody = ({ chatMessageClass }) => {
   const navigate = useNavigate();
@@ -300,6 +302,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
       message: "",
     });
   };
+
+  //Toast Messeges States
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
 
   const autoResize = (event) => {
     const textarea = event.target;
@@ -1176,6 +1185,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const editShoutUsersCheckedHandler = (data, id, index) => {
+    // Check if only one user is left checked
+    if (
+      editShoutUsersChecked.length === 1 &&
+      editShoutUsersChecked.includes(id)
+    ) {
+      showMessage(t("At least one user must be selected."), "error", setOpen);
+      return; // Prevent unchecking the last user
+    }
     if (editShoutUsersChecked.includes(id)) {
       let editGroupUserIndex = editShoutUsersChecked.findIndex(
         (data2) => data2 === id
@@ -6429,7 +6446,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
           </Container>
         </div>
       </div>
-
       <NotificationBar
         iconName={<img draggable="false" src={SecurityIcon} alt="" />}
         notificationMessage={notification.message}
@@ -6438,7 +6454,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
         handleClose={closeNotification}
         id={notificationID}
       />
-
+      {/* Toast Messege Notificaiton Component */}
+      <Notification open={open} setOpen={setOpen} />
       <Modal
         show={showImageModal}
         size="lg"
