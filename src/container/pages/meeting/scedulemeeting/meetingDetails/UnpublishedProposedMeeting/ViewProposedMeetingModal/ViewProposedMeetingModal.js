@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { Button } from "../../../../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { ProposedMeetingViewFlagAction } from "../../../../../../../store/actions/NewMeetingActions";
-import { ProposedMeetingViewDateFormatter } from "../../../../../../../commen/functions/date_formater";
+import {
+  ProposedMeetingDateViewFormat,
+  ProposedMeetingViewDateFormatWithTime,
+} from "../../../../../../../commen/functions/date_formater";
 const ViewProposedMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -34,6 +37,7 @@ const ViewProposedMeetingModal = () => {
   });
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
+  const [meetingProposedDates, setMeetingProposedDates] = useState([]);
   console.log(sendResponseByDate, "sendResponseByDatesendResponseByDate");
   //Meeting Details Data UseEffect
   useEffect(() => {
@@ -69,14 +73,25 @@ const ViewProposedMeetingModal = () => {
     }
   }, [getAllSavedparticipantsData]);
 
+  console.log(
+    getAllProposedDatesData,
+    "getAllProposedDatesDatagetAllProposedDatesData"
+  );
+
   //Getting All Participants Dates Data
   useEffect(() => {
     try {
       if (
+        getAllProposedDatesData &&
         getAllProposedDatesData !== null &&
         getAllProposedDatesData !== undefined
       ) {
+        console.log(
+          getAllProposedDatesData,
+          "sendResponseByDatesendResponseByDate"
+        );
         setSendResponseByDate(getAllProposedDatesData.deadLineDate);
+        setMeetingProposedDates(getAllProposedDatesData.meetingProposedDates);
       } else {
       }
     } catch (error) {
@@ -84,6 +99,7 @@ const ViewProposedMeetingModal = () => {
     }
   }, [getAllProposedDatesData]);
 
+  console.log(meetingProposedDates, "meetingProposedDatesmeetingProposedDates");
   //Handling Cancel Button OnClick
   const hadleCancelButtonClick = () => {
     console.log("Click");
@@ -126,11 +142,24 @@ const ViewProposedMeetingModal = () => {
                 {t("Proposed-on")}
               </span>
               <Row>
-                <Col lg={6} md={6} sm={6}>
-                  <span className={styles["BoxCardParticipant"]}>
-                    03:30 pm - 05:30 pm | 20th May 2024
-                  </span>
-                </Col>
+                {Array.isArray(meetingProposedDates) &&
+                meetingProposedDates.length > 0 ? (
+                  meetingProposedDates.map((dateData, index) => {
+                    const formattedDate = ProposedMeetingViewDateFormatWithTime(
+                      dateData,
+                      locale
+                    );
+                    return (
+                      <Col lg={6} md={6} sm={6} className="mt-2" key={index}>
+                        <span className={styles["BoxCardParticipant"]}>
+                          {formattedDate}
+                        </span>
+                      </Col>
+                    );
+                  })
+                ) : (
+                  <p>No meeting proposed dates available</p>
+                )}
               </Row>
             </div>
             <Row className="mt-3">
@@ -140,10 +169,7 @@ const ViewProposedMeetingModal = () => {
                     {t("Send-response-by")}
                   </span>
                   <span className={styles["SendResponseByDate"]}>
-                    {ProposedMeetingViewDateFormatter(
-                      sendResponseByDate.toString(),
-                      locale
-                    )}
+                    {ProposedMeetingDateViewFormat(sendResponseByDate, locale)}
                   </span>
                 </div>
               </Col>

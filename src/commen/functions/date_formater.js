@@ -1685,22 +1685,35 @@ export const formatDateToUTCWithEndOfDay = (date) => {
   return utcFormatted;
 };
 
-//Propose Meeting Dates Formatter
-export function ProposedMeetingViewDateFormatter(inputDate, locale) {
-  console.log(inputDate, "inputDateinputDate");
-  console.log(locale, "inputDateinputDate");
-  // Ensure the input is a string
-  if (typeof inputDate !== "string" || inputDate.length !== 8) {
-    throw new Error("Input must be a string in the format YYYYMMDD");
+// this is used for data rom search
+export const formatToUTCDateString = (date) => {
+  if (!date) return ""; // Handle empty date cases
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+};
+
+export function ProposedMeetingDateViewFormat(inputDate, language) {
+  console.log(inputDate, "inputDateinputDateinputDateinputDate");
+  // Trim and validate the input
+  const sanitizedInput = inputDate?.trim() || "";
+  if (!sanitizedInput || !/^\d{8}$/.test(sanitizedInput)) {
+    console.warn(`Invalid or missing date. Received: "${inputDate}"`);
+    return language === "ar" ? "تاريخ غير صالح" : "Invalid Date";
   }
 
-  // Extract year, month, and day
-  const year = inputDate.slice(0, 4);
-  const month = parseInt(inputDate.slice(4, 6), 10) - 1; // Convert to zero-based index for Date
-  const day = parseInt(inputDate.slice(6, 8), 10); // Convert to integer
+  const year = sanitizedInput.slice(0, 4);
+  const month = parseInt(sanitizedInput.slice(4, 6), 10) - 1; // Months are 0-indexed
+  const day = parseInt(sanitizedInput.slice(6, 8), 10);
 
-  // Month names for English and Arabic
-  const monthNames = {
+  const date = new Date(year, month, day);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date value.");
+  }
+
+  const months = {
     en: [
       "January",
       "February",
@@ -1731,21 +1744,87 @@ export function ProposedMeetingViewDateFormatter(inputDate, locale) {
     ],
   };
 
-  // Validate if the locale is supported
-  if (!monthNames[locale]) {
-    throw new Error('Unsupported locale. Supported locales are "en" and "ar".');
-  }
+  const ordinalSuffix = (n, lang) => {
+    if (lang === "ar") return `${n}`; // Arabic doesn't use ordinal suffixes
+    const lastDigit = n % 10;
+    if (n >= 11 && n <= 13) return `${n}th`;
+    if (lastDigit === 1) return `${n}st`;
+    if (lastDigit === 2) return `${n}nd`;
+    if (lastDigit === 3) return `${n}rd`;
+    return `${n}th`;
+  };
 
-  // Format the output based on the locale
-  const formattedDate = `${day} ${monthNames[locale][month]} ${year}`;
+  const formattedDate =
+    language === "ar"
+      ? `${day} ${months.ar[month]} ${year}`
+      : `${ordinalSuffix(day, "en")} ${months.en[month]} ${year}`;
+
   return formattedDate;
 }
 
-// this is used for data rom search
-export const formatToUTCDateString = (date) => {
-  if (!date) return ""; // Handle empty date cases
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  return `${year}${month}${day}`;
-};
+export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
+  if (
+    !dateData ||
+    !dateData.proposedDate ||
+    !dateData.startTime ||
+    !dateData.endTime
+  ) {
+    return "";
+  }
+
+  try {
+    // Parse the date
+    const parsedDate = new Date(
+      `${dateData.proposedDate.substring(
+        0,
+        4
+      )}-${dateData.proposedDate.substring(
+        4,
+        6
+      )}-${dateData.proposedDate.substring(6, 8)}`
+    );
+
+    // Parse the times
+    const parsedStartTime = new Date(
+      `1970-01-01T${dateData.startTime.substring(
+        0,
+        2
+      )}:${dateData.startTime.substring(2, 4)}:${dateData.startTime.substring(
+        4,
+        6
+      )}`
+    );
+
+    const parsedEndTime = new Date(
+      `1970-01-01T${dateData.endTime.substring(
+        0,
+        2
+      )}:${dateData.endTime.substring(2, 4)}:${dateData.endTime.substring(
+        4,
+        6
+      )}`
+    );
+
+    // Format the date and times based on the language
+    const dateFormatter = new Intl.DateTimeFormat(lang, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const timeFormatter = new Intl.DateTimeFormat(lang, {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
+    const proposedDate = dateFormatter.format(parsedDate);
+    const startTime = timeFormatter.format(parsedStartTime);
+    const endTime = timeFormatter.format(parsedEndTime);
+
+    return `${startTime} - ${endTime} | ${proposedDate}`;
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "";
+  }
+}
