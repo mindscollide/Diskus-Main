@@ -148,11 +148,10 @@ const Agenda = ({
   }, [GetAdvanceMeetingAgendabyMeetingIDData]);
 
   useEffect(() => {
-    console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
-      showMessage(t("Record-saved"), "error", setOpen);
+      showMessage(t("Record-saved"), "success", setOpen);
     } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
-      showMessage(t("Record-updated"), "error", setOpen);
+      showMessage(t("Record-updated"), "success", setOpen);
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
