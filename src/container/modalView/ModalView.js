@@ -59,10 +59,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const userProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData
   );
-  console.log(
-    { assigneesViewMeetingDetails, calendarReducereventsDetails },
-    "calendarReducereventsDetailscalendarReducereventsDetails"
-  );
+
   const assigneesuser = useSelector((state) => state.assignees.user);
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -170,17 +167,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsMinutes(false);
     setIsAttachments(true);
   };
-  // for reminder id's
-  const optionsWithIDs = [
-    { label: "On starting of meeting", id: 1 },
-    { label: "10 minutes before", id: 2 },
-    { label: "30 minutes before", id: 3 },
-    { label: "1 hour before", id: 4 },
-    { label: "5 hours before", id: 5 },
-    { label: "1 day before", id: 6 },
-    { label: "3 days before", id: 7 },
-    { label: "7 days before", id: 8 },
-  ];
 
   // for all details handler
   const detailsHandler = (e) => {
@@ -283,12 +269,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         viewData.meetingReminders.map((rdata, index) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
-        });
-        let reminderoptionvalue = "";
-        optionsWithIDs.map((opData, index) => {
-          if (opData.id === reminder[0]) {
-            reminderoptionvalue = opData.label;
-          }
         });
         // for meeting attendies
         let List = [];
@@ -492,17 +472,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           let pkid = rdata.pK_MRID;
           reminder.push(pkid);
         });
-        let reminderoptionvalue = "";
-        optionsWithIDs.map((opData, index) => {
-          if (opData.id === reminder[0]) {
-            reminderoptionvalue = opData.label;
-          }
-        });
         // for meeting attendies
         let List = [];
         let emptyList = [];
         try {
-          if (calendarMeetingData.meetingAttendees != undefined) {
+          if (calendarMeetingData.meetingAttendees !== undefined) {
             if (calendarMeetingData.meetingAttendees.length > 0) {
               calendarMeetingData.meetingAttendees.map((meetingdata, index) => {
                 List.push({
@@ -737,11 +711,28 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {}
   }, [assigneesuser]);
 
+  console.log(calendarReducereventsDetails, "meetingDetails");
+  console.log("meetingDetails", assigneesViewMeetingDetails);
   const startMeeting = async () => {
     await setViewFlag(false);
-    let meetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
+    let checkMeetingID = null;
+    if (
+      assigneesViewMeetingDetails?.responseMessage ===
+      "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_01"
+    ) {
+      checkMeetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
+    } else if (
+      calendarReducereventsDetails?.responseMessage ===
+      "Calender_CalenderServiceManager_GetDiskusEventDetails_01"
+    ) {
+      checkMeetingID =
+        calendarReducereventsDetails.diskusCalendarEvent.meetingDetails.pK_MDID;
+    }
+    console.log("meetingDetails", checkMeetingID);
+
+    let meetingID = checkMeetingID;
     let Data = {
-      MeetingID: meetingID,
+      MeetingID: Number(meetingID),
       UserID: parseInt(createrID),
     };
     let Data2 = {
@@ -758,7 +749,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const handleClickEndMeeting = useCallback(async () => {
-    let meetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
+    let checkMeetingID = null;
+    if (
+      assigneesViewMeetingDetails?.responseMessage ===
+      "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_01"
+    ) {
+      checkMeetingID = assigneesViewMeetingDetails.meetingDetails.pK_MDID;
+    } else if (
+      calendarReducereventsDetails?.responseMessage ===
+      "Calender_CalenderServiceManager_GetDiskusEventDetails_01"
+    ) {
+      checkMeetingID =
+        calendarReducereventsDetails.diskusCalendarEvent.meetingDetails.pK_MDID;
+    }
+    let meetingID = checkMeetingID;
     let newData = {
       MeetingID: meetingID,
       StatusID: 9,

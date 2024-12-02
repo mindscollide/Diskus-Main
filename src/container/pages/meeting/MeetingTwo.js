@@ -2609,8 +2609,25 @@ const NewMeeting = () => {
           .toLowerCase()
           .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
       ) {
-        let meetingStatusID = MeetingStatusSocket.meeting.status;
-        let meetingID = MeetingStatusSocket.meeting.pK_MDID;
+        console.log("meetingDetails", MeetingStatusSocket);
+        let statusCheck = 0;
+        let meetingIDCheck = 0;
+
+        if (MeetingStatusSocket.hasOwnProperty("meeting")) {
+          statusCheck = MeetingStatusSocket.meeting.status;
+          meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
+          // If the 'meeting' key exists, do something
+          console.log("Meeting key exists:", MeetingStatusSocket);
+          // Your code for handling when 'meeting' key is present
+        } else {
+          // If the 'meeting' key does not exist, do something else
+          statusCheck = MeetingStatusSocket.meetingStatusID;
+          meetingIDCheck = MeetingStatusSocket.meetingID;
+          console.log("Meeting key does not exist. Handling alternative case.");
+          // Your
+        }
+        let meetingStatusID = statusCheck;
+        let meetingID = meetingIDCheck;
         try {
           setRow((rowsData) => {
             return rowsData.map((item) => {
