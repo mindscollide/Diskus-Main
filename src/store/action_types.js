@@ -3287,3 +3287,6 @@ export const CHECK_HOST_HOST_NOW = "CHECK_HOST_HOST_NOW";
 
 // Make hoste
 export const MAKE_HOST_HOST_NOW = "MAKE_HOST_HOST_NOW";
+
+//New Proposed Meeting View Flag
+export const PROPOSED_MEETING_VIEW_FLAG = "PROPOSED_MEETING_VIEW_FLAG";
