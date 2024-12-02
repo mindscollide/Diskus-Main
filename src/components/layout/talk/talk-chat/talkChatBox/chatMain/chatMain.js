@@ -373,6 +373,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       ?.groupUsers,
   ]);
 
+  //Mutation
   useEffect(() => {
     if (
       talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
@@ -382,10 +383,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
       talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
         .length !== 0
     ) {
-      setShoutAllUsersData(
-        talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
-          ?.broadcastUsers
-      );
+      setShoutAllUsersData([
+        ...talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
+          ?.broadcastUsers,
+      ]);
       const firstShoutUser =
         talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
           ?.broadcastUsers[0];
@@ -441,6 +442,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       .groupUsers,
   ]);
 
+  //Mutation
   useEffect(() => {
     let shoutMembersData =
       talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
@@ -458,7 +460,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
         })
         .map((item) => item.userID);
 
-      setEditShoutUsersChecked(groupMembersArray);
+      setEditShoutUsersChecked([...groupMembersArray]);
     }
   }, [
     talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData

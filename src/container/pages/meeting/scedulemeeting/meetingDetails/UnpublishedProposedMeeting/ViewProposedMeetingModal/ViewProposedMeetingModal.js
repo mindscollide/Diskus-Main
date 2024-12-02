@@ -13,6 +13,7 @@ import {
 const ViewProposedMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  //Getting the Current Language from LocalStorage
   let locale = localStorage.getItem("i18nextLng");
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
@@ -38,7 +39,7 @@ const ViewProposedMeetingModal = () => {
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
   const [meetingProposedDates, setMeetingProposedDates] = useState([]);
-  console.log(sendResponseByDate, "sendResponseByDatesendResponseByDate");
+
   //Meeting Details Data UseEffect
   useEffect(() => {
     try {
@@ -73,11 +74,6 @@ const ViewProposedMeetingModal = () => {
     }
   }, [getAllSavedparticipantsData]);
 
-  console.log(
-    getAllProposedDatesData,
-    "getAllProposedDatesDatagetAllProposedDatesData"
-  );
-
   //Getting All Participants Dates Data
   useEffect(() => {
     try {
@@ -86,10 +82,6 @@ const ViewProposedMeetingModal = () => {
         getAllProposedDatesData !== null &&
         getAllProposedDatesData !== undefined
       ) {
-        console.log(
-          getAllProposedDatesData,
-          "sendResponseByDatesendResponseByDate"
-        );
         setSendResponseByDate(getAllProposedDatesData.deadLineDate);
         setMeetingProposedDates(getAllProposedDatesData.meetingProposedDates);
       } else {
@@ -99,7 +91,6 @@ const ViewProposedMeetingModal = () => {
     }
   }, [getAllProposedDatesData]);
 
-  console.log(meetingProposedDates, "meetingProposedDatesmeetingProposedDates");
   //Handling Cancel Button OnClick
   const hadleCancelButtonClick = () => {
     console.log("Click");
@@ -151,7 +142,7 @@ const ViewProposedMeetingModal = () => {
                     );
                     return (
                       <Col lg={6} md={6} sm={6} className="mt-2" key={index}>
-                        <span className={styles["BoxCardParticipant"]}>
+                        <span className={styles["BoxCardDate"]}>
                           {formattedDate}
                         </span>
                       </Col>
@@ -183,10 +174,15 @@ const ViewProposedMeetingModal = () => {
                   <Row>
                     {partcipatns.length > 0 && partcipatns !== null
                       ? partcipatns.map((data, index) => {
-                          console.log(data, "datadata");
                           return (
                             <>
-                              <Col lg={6} md={6} sm={6} className="mt-2">
+                              <Col
+                                lg={6}
+                                md={6}
+                                sm={6}
+                                key={index}
+                                className={styles["ScrollerParticipant"]}
+                              >
                                 <span className={styles["BoxCardParticipant"]}>
                                   <img
                                     src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
