@@ -483,13 +483,22 @@ const VideoPanelNormal = () => {
                   <>
                     <Col
                       lg={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                       md={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                       sm={
-                        videoFeatureReducer.participantWaitinglistBox ? 9 : 12
+                        isMeetingHost &&
+                        videoFeatureReducer.participantWaitinglistBox
+                          ? 9
+                          : 12
                       }
                     >
                       <div
@@ -515,9 +524,8 @@ const VideoPanelNormal = () => {
                             //     : callerURL
                             // }
                             src={
-                              callAcceptedRecipientID === currentUserID &&
-                              editorRole.role === "Participant"
-                                ? refinedParticipantVideoUrl || participantURL
+                              callAcceptedRecipientID === currentUserID
+                                ? refinedParticipantVideoUrl
                                 : callerURL
                             }
                             ref={iframeRef}

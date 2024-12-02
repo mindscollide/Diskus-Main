@@ -569,6 +569,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               await dispatch(
