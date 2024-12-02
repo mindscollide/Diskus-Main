@@ -70,7 +70,7 @@ body[dir="rtl"] .rmdp-left i {
 .rmdp-week-day {
   color: #6172d6 !important;
   cursor: default !important;
-  font-size: 16px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
 }
 
@@ -411,7 +411,6 @@ body[dir="rtl"] .DataRoomShowBtn {
   margin-left: 0 !important;
 }
 
-
 body[dir="rtl"] i.edit-icon-adminmeeting {
   margin-right: 10px;
 }
@@ -423,8 +422,6 @@ body[dir="rtl"] i.edit-icon-adminmeeting {
 .text-start.ar.col-lg-6.col-md-6.col-sm-6.col-12 {
   text-align: right !important;
 }
-
-
 
 body[dir="rtl"] .eye_icon.valid-feedback {
   display: block;

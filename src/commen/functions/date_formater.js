@@ -855,19 +855,54 @@ export function formatDateToYYYYMMDD(date) {
 // Example usage: handling both type and convert it into utc using in data room search
 // "15 September, 2023";
 // "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
-export function formatDateToUTC(inputDate) {
-  const date = new Date(inputDate);
-
-  if (isNaN(date.getTime())) {
-    // Invalid date string
-    return null;
+export function formatDateToUTC(inputDate, value) {
+  // Validate inputDate
+  if (!inputDate || isNaN(new Date(inputDate).getTime())) {
+    console.error("Invalid input date:", inputDate);
+    throw new RangeError("Invalid date value provided.");
   }
 
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-  const day = date.getUTCDate().toString().padStart(2, "0");
-  const year = date.getUTCFullYear();
+  // Parse and format inputDate
+  const formattedDate = format(new Date(inputDate), "yyyyMMdd");
 
-  return month + day + year;
+  let dateWithTime;
+  if (value === 1) {
+    dateWithTime = `${formattedDate}000000`; // Append start of the day (00:00:00)
+  } else if (value === 2) {
+    dateWithTime = `${formattedDate}235959`; // Append end of the day (23:59:59)
+  } else {
+    dateWithTime = formattedDate; // Default to just the date
+  }
+
+  console.log("Date with Time:", dateWithTime);
+
+  // Extract parts of the date string (yyyyMMddHHmmss)
+  const dateString = dateWithTime.toString();
+  const year = parseInt(dateString.slice(0, 4), 10);
+  const month = parseInt(dateString.slice(4, 6), 10) - 1; // Months are 0-indexed in JavaScript
+  const day = parseInt(dateString.slice(6, 8), 10);
+  const hours = parseInt(dateString.slice(8, 10), 10);
+  const minutes = parseInt(dateString.slice(10, 12), 10);
+  const seconds = parseInt(dateString.slice(12, 14), 10);
+
+  // Create a UTC Date object
+  const utcDate = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
+  console.log("Formatted UTC Date:", utcDate);
+
+  // Format the UTC Date to 'yyyyMMddHHmmss'
+  const formattedYear = utcDate.getUTCFullYear(); // Extract the full year
+  const formattedMonth = (utcDate.getUTCMonth() + 1)
+    .toString()
+    .padStart(2, "0"); // Ensure two-digit month
+  const formattedDay = utcDate.getUTCDate().toString().padStart(2, "0"); // Ensure two-digit day
+  const formattedHours = utcDate.getUTCHours().toString().padStart(2, "0"); // Ensure two-digit hours
+  const formattedMinutes = utcDate.getUTCMinutes().toString().padStart(2, "0"); // Ensure two-digit minutes
+  const formattedSeconds = utcDate.getUTCSeconds().toString().padStart(2, "0"); // Ensure two-digit seconds
+
+  // Combine into 'yyyyMMddHHmmss'
+  const finalDateTime = `${formattedYear}${formattedMonth}${formattedDay}${formattedHours}${formattedMinutes}${formattedSeconds}`;
+  console.log("Formatted UTC DateTime:", finalDateTime);
+  return finalDateTime;
 }
 
 export const utcConvertintoGMT = (date, num) => {
@@ -1649,3 +1684,147 @@ export const formatDateToUTCWithEndOfDay = (date) => {
   console.log(utcFormatted, "utcFormatted with end of day");
   return utcFormatted;
 };
+
+// this is used for data rom search
+export const formatToUTCDateString = (date) => {
+  if (!date) return ""; // Handle empty date cases
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+};
+
+export function ProposedMeetingDateViewFormat(inputDate, language) {
+  console.log(inputDate, "inputDateinputDateinputDateinputDate");
+  // Trim and validate the input
+  const sanitizedInput = inputDate?.trim() || "";
+  if (!sanitizedInput || !/^\d{8}$/.test(sanitizedInput)) {
+    console.warn(`Invalid or missing date. Received: "${inputDate}"`);
+    return language === "ar" ? "تاريخ غير صالح" : "Invalid Date";
+  }
+
+  const year = sanitizedInput.slice(0, 4);
+  const month = parseInt(sanitizedInput.slice(4, 6), 10) - 1; // Months are 0-indexed
+  const day = parseInt(sanitizedInput.slice(6, 8), 10);
+
+  const date = new Date(year, month, day);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date value.");
+  }
+
+  const months = {
+    en: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    ar: [
+      "يناير",
+      "فبراير",
+      "مارس",
+      "أبريل",
+      "مايو",
+      "يونيو",
+      "يوليو",
+      "أغسطس",
+      "سبتمبر",
+      "أكتوبر",
+      "نوفمبر",
+      "ديسمبر",
+    ],
+  };
+
+  const ordinalSuffix = (n, lang) => {
+    if (lang === "ar") return `${n}`; // Arabic doesn't use ordinal suffixes
+    const lastDigit = n % 10;
+    if (n >= 11 && n <= 13) return `${n}th`;
+    if (lastDigit === 1) return `${n}st`;
+    if (lastDigit === 2) return `${n}nd`;
+    if (lastDigit === 3) return `${n}rd`;
+    return `${n}th`;
+  };
+
+  const formattedDate =
+    language === "ar"
+      ? `${day} ${months.ar[month]} ${year}`
+      : `${ordinalSuffix(day, "en")} ${months.en[month]} ${year}`;
+
+  return formattedDate;
+}
+
+export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
+  if (
+    !dateData ||
+    !dateData.proposedDate ||
+    !dateData.startTime ||
+    !dateData.endTime
+  ) {
+    return "";
+  }
+
+  try {
+    // Parse the date
+    const parsedDate = new Date(
+      `${dateData.proposedDate.substring(
+        0,
+        4
+      )}-${dateData.proposedDate.substring(
+        4,
+        6
+      )}-${dateData.proposedDate.substring(6, 8)}`
+    );
+
+    // Parse the times
+    const parsedStartTime = new Date(
+      `1970-01-01T${dateData.startTime.substring(
+        0,
+        2
+      )}:${dateData.startTime.substring(2, 4)}:${dateData.startTime.substring(
+        4,
+        6
+      )}`
+    );
+
+    const parsedEndTime = new Date(
+      `1970-01-01T${dateData.endTime.substring(
+        0,
+        2
+      )}:${dateData.endTime.substring(2, 4)}:${dateData.endTime.substring(
+        4,
+        6
+      )}`
+    );
+
+    // Format the date and times based on the language
+    const dateFormatter = new Intl.DateTimeFormat(lang, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const timeFormatter = new Intl.DateTimeFormat(lang, {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
+    const proposedDate = dateFormatter.format(parsedDate);
+    const startTime = timeFormatter.format(parsedStartTime);
+    const endTime = timeFormatter.format(parsedEndTime);
+
+    return `${startTime} - ${endTime} | ${proposedDate}`;
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "";
+  }
+}

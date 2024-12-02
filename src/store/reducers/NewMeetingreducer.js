@@ -154,6 +154,7 @@ const initialState = {
   validateEncryptedStringUserMeetingProposeDatesPoll: null,
   cancelAgendaSavedModal: false,
   shareViaDataRoomPathConfirmation: false,
+  ProposedMeetingViewFlag: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2514,6 +2515,12 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringUserMeetingProposeDatesPoll: null,
         ResponseMessage: action.message,
+      };
+    }
+    case actions.PROPOSED_MEETING_VIEW_FLAG: {
+      return {
+        ...state,
+        ProposedMeetingViewFlag: action.response,
       };
     }
     default:

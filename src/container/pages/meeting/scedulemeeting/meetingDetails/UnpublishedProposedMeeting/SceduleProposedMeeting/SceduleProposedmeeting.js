@@ -17,6 +17,8 @@ import {
   newTimeFormaterViewPoll,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
+import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
+import BlackCrossIcon from "../../../../../../../assets/images/BlackCrossIconModals.svg";
 const SceduleProposedmeeting = ({
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -45,7 +47,9 @@ const SceduleProposedmeeting = ({
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
 
-  console.log(updateTableRows, "updateTableRowsupdateTableRows");
+  const handleCrossIconClass = () => {
+    dispatch(showSceduleProposedMeeting(false));
+  };
 
   // dispatch Api in useEffect
   useEffect(() => {
@@ -152,15 +156,17 @@ const SceduleProposedmeeting = ({
           row.selectedProposedDates.length > 0 &&
           row.selectedProposedDates[columnIndex].isSelected
         ) {
-          return total + 1;
+          return convertToArabicNumerals(total + 1);
         }
-        return total;
+        return convertToArabicNumerals(total);
       }, 0);
 
       // Add a zero prefix to the count if it's a single digit
-      return count < 10 ? `0${count}` : count;
+      return count < 10
+        ? convertToArabicNumerals(`0${count}`)
+        : convertToArabicNumerals(count);
     } else {
-      return "00";
+      return convertToArabicNumerals("00");
     }
   };
 
@@ -282,9 +288,9 @@ const SceduleProposedmeeting = ({
         show={sceduleproposedMeeting}
         setShow={dispatch(showSceduleProposedMeeting)}
         className={styles["main-modal-class"]}
-        closeButton={true}
         modalBodyClassName={styles["modal-class-width"]}
         modalFooterClassName={"d-block"}
+        modalHeaderClassName={"d-block"}
         onHide={() => {
           dispatch(showSceduleProposedMeeting(false));
         }}
@@ -293,10 +299,18 @@ const SceduleProposedmeeting = ({
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12}>
+              <Col lg={11} md={11} sm={11}>
                 <span className={styles["Scedule_Proposed_meeting_heading"]}>
                   {t("Schedule-proposed-meetings")}
                 </span>
+              </Col>
+              <Col lg={1} md={1} sm={1} className="d-flex justify-content-end">
+                <img
+                  src={BlackCrossIcon}
+                  alt=""
+                  width={15}
+                  onClick={handleCrossIconClass}
+                />
               </Col>
             </Row>
           </>
