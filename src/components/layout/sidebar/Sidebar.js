@@ -19,6 +19,10 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   let ActiveCallFlag = localStorage.getItem("activeCall");
   console.log(ActiveCallFlag, "ActiveCallFlagActiveCallFlagActiveCallFlag");
+  console.log(
+    typeof ActiveCallFlag,
+    "ActiveCallFlagActiveCallFlagActiveCallFlag"
+  );
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -636,7 +640,7 @@ const Sidebar = () => {
                         : "m-0 p-0 iconSidebar"
                     }
                     onClick={
-                      ActiveCallFlag === "false"
+                      ActiveCallFlag === false
                         ? handleMeetingSidebarTodo
                         : (event) => {
                             event.preventDefault(); // Prevents default navigation
