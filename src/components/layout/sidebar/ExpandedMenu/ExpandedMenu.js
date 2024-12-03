@@ -24,7 +24,6 @@ const ExpandedMenu = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  let ActiveCallFlag = localStorage.getItem("activeCall");
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -75,13 +74,16 @@ const ExpandedMenu = () => {
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     localStorage.setItem("navigateLocation", "groups");
-    navigate("/Diskus/groups");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarGroupsNoCall = () => {
+    navigate("/Diskus/groups");
   };
 
   //Polls Sidebar Click
@@ -96,6 +98,10 @@ const ExpandedMenu = () => {
     }
   };
 
+  const handleMeetingSidebarPollsNoCall = () => {
+    navigate("/Diskus/polling");
+  };
+
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
     localStorage.setItem("navigateLocation", "calendar");
@@ -106,6 +112,10 @@ const ExpandedMenu = () => {
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarCalendarNoCall = () => {
+    navigate("/Diskus/calendar");
   };
 
   // Todo Sidebar Click
@@ -120,6 +130,10 @@ const ExpandedMenu = () => {
     }
   };
 
+  const handleMeetingSidebarTodoNoCall = () => {
+    navigate("/Diskus/todolist");
+  };
+
   const handleMeetingSidebarNotes = () => {
     localStorage.setItem("navigateLocation", "Notes");
     navigate("/Diskus/Notes");
@@ -129,6 +143,10 @@ const ExpandedMenu = () => {
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarNotesNoCall = () => {
+    navigate("/Diskus/Notes");
   };
 
   return (
@@ -155,14 +173,17 @@ const ExpandedMenu = () => {
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarCalendar
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarCalendar(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarCalendarNoCall();
+            } else {
+              handleMeetingSidebarCalendar();
+            }
+          }}
         >
           <div
             className="d-flex flex-column justify-content-center align-items-center"
@@ -197,14 +218,17 @@ const ExpandedMenu = () => {
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarGroups
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarGroups(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarGroupsNoCall();
+            } else {
+              handleMeetingSidebarGroups();
+            }
+          }}
         >
           {/* Grouo Icon */}
           <div
@@ -240,14 +264,17 @@ const ExpandedMenu = () => {
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarTodo
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarTodo(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarTodoNoCall();
+            } else {
+              handleMeetingSidebarTodo();
+            }
+          }}
         >
           <div
             className="d-flex flex-column justify-content-center align-items-center"
@@ -282,14 +309,17 @@ const ExpandedMenu = () => {
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarNotes
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarNotes(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarNotesNoCall();
+            } else {
+              handleMeetingSidebarNotes();
+            }
+          }}
         >
           <div
             className="d-flex flex-column justify-content-center align-items-center"
@@ -324,14 +354,17 @@ const ExpandedMenu = () => {
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarPolls
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarPolls(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarPollsNoCall();
+            } else {
+              handleMeetingSidebarPolls();
+            }
+          }}
         >
           <div
             className="d-flex flex-column justify-content-center align-items-center"

@@ -23,12 +23,7 @@ const Sidebar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let ActiveCallFlag = localStorage.getItem("activeCall");
-  console.log(ActiveCallFlag, "ActiveCallFlagActiveCallFlagActiveCallFlag");
-  console.log(
-    typeof ActiveCallFlag,
-    "ActiveCallFlagActiveCallFlagActiveCallFlag"
-  );
+
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -137,31 +132,37 @@ const Sidebar = () => {
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
     localStorage.setItem("navigateLocation", "dataroom");
-    navigate("/Diskus/dataroom");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarDataroomNoCall = () => {
+    navigate("/Diskus/dataroom");
   };
 
   //Resolutions Sidebar Click
   const handleMeetingSidebarResolutions = () => {
     localStorage.setItem("navigateLocation", "resolution");
-    navigate("/Diskus/resolution");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarResolutionsNoCall = () => {
+    localStorage.setItem("navigateLocation", "resolution");
+    navigate("/Diskus/resolution");
   };
 
   //Committees Sidebar Click
   const handleMeetingSidebarCommittees = () => {
     localStorage.setItem("navigateLocation", "committee");
-    navigate("/Diskus/committee");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -170,6 +171,12 @@ const Sidebar = () => {
     }
   };
 
+  const handleMeetingSidebarCommitteesNoCall = () => {
+    localStorage.setItem("navigateLocation", "committee");
+    navigate("/Diskus/committee");
+  };
+
+  console.log("activeCall", CurrentMeetingStatus);
   return (
     <>
       {location.pathname.includes("/Admin") ? (
@@ -652,14 +659,18 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
                     }
-                    onClick={
-                      ActiveCallFlag === false
-                        ? handleMeetingSidebarDataroom
-                        : (event) => {
-                            event.preventDefault(); // Prevents default navigation
-                            handleMeetingSidebarDataroom(); // Your custom click handler
-                          }
-                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const activeCall = JSON.parse(
+                        localStorage.getItem("activeCall")
+                      );
+                      // Explicitly evaluate activeCall
+                      if (activeCall === false) {
+                        handleMeetingSidebarDataroomNoCall();
+                      } else {
+                        handleMeetingSidebarDataroom();
+                      }
+                    }}
                   >
                     <div
                       className="d-flex flex-column justify-content-center align-items-center"
@@ -695,14 +706,19 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
                     }
-                    onClick={
-                      ActiveCallFlag === false
-                        ? handleMeetingSidebarResolutions
-                        : (event) => {
-                            event.preventDefault(); // Prevents default navigation
-                            handleMeetingSidebarResolutions(); // Your custom click handler
-                          }
-                    }
+                    onClick={(e) => {
+                      // Prevent default behavior
+                      e.preventDefault();
+                      const activeCall = JSON.parse(
+                        localStorage.getItem("activeCall")
+                      );
+                      // Explicitly evaluate activeCall
+                      if (activeCall === false) {
+                        handleMeetingSidebarResolutionsNoCall();
+                      } else {
+                        handleMeetingSidebarResolutions();
+                      }
+                    }}
                   >
                     {/* Resolution Icon */}
                     <div
@@ -738,14 +754,19 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
                     }
-                    onClick={
-                      ActiveCallFlag === false
-                        ? handleMeetingSidebarCommittees
-                        : (event) => {
-                            event.preventDefault(); // Prevents default navigation
-                            handleMeetingSidebarCommittees(); // Your custom click handler
-                          }
-                    }
+                    onClick={(e) => {
+                      // Prevent default behavior
+                      e.preventDefault();
+                      const activeCall = JSON.parse(
+                        localStorage.getItem("activeCall")
+                      );
+                      // Explicitly evaluate activeCall
+                      if (activeCall === false) {
+                        handleMeetingSidebarCommitteesNoCall();
+                      } else {
+                        handleMeetingSidebarCommittees();
+                      }
+                    }}
                   >
                     {/* CommitteeIcon */}
                     <div
@@ -776,20 +797,28 @@ const Sidebar = () => {
                       draggable="false"
                       className={
                         showMore ||
-                        location.pathname === "/DisKus/dataroom" ||
+                        location.pathname === "/DisKus/Notes" ||
                         location.pathname === "/DisKus/groups" ||
-                        location.pathname === "/DisKus/committee" ||
-                        location.pathname === "/DisKus/resolution" ||
+                        location.pathname === "/Diskus/todolist" ||
+                        location.pathname === "/Diskus/calendar" ||
                         location.pathname === "/DisKus/polling"
                           ? "m-0 p-0 iconItem_activeSideBarMainShowMore position-relative"
                           : "m-0 p-0 iconItemSideBarMain  position-relative"
                       }
                       ref={sidebarshow}
-                      onClick={
-                        ActiveCallFlag === "false"
-                          ? handleMoreOptions
-                          : handleMoreOptionActiveCall
-                      }
+                      onClick={(e) => {
+                        // Prevent default behavior
+                        e.preventDefault();
+                        const activeCall = JSON.parse(
+                          localStorage.getItem("activeCall")
+                        );
+                        // Explicitly evaluate activeCall
+                        if (activeCall === false) {
+                          handleMoreOptions();
+                        } else {
+                          handleMoreOptionActiveCall();
+                        }
+                      }}
                     >
                       <div
                         className="d-flex flex-column justify-content-center align-items-center"
@@ -800,10 +829,10 @@ const Sidebar = () => {
                           alt="ShowMoreImage"
                           className={
                             showMore ||
-                            location.pathname === "/DisKus/dataroom" ||
+                            location.pathname === "/DisKus/Notes" ||
                             location.pathname === "/DisKus/groups" ||
-                            location.pathname === "/DisKus/committee" ||
-                            location.pathname === "/DisKus/resolution" ||
+                            location.pathname === "/Diskus/calendar" ||
+                            location.pathname === "/Diskus/todolist" ||
                             location.pathname === "/DisKus/polling"
                               ? "m-0 p-0 ForActive"
                               : ""
