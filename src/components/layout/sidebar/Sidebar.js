@@ -95,15 +95,10 @@ const Sidebar = () => {
   }, [showMore]);
 
   const handleMoreOptions = () => {
-    console.log("first");
     setShowMore(!showMore);
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    dispatch(normalizeVideoPanelFlag(false));
   };
 
   const handleMoreOptionActiveCall = () => {
-    console.log("first");
     setShowMore(!showMore);
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));

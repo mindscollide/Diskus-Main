@@ -89,7 +89,6 @@ const ExpandedMenu = () => {
   //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
     localStorage.setItem("navigateLocation", "polling");
-    navigate("/Diskus/polling");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -105,7 +104,6 @@ const ExpandedMenu = () => {
   //Calendar Sidebar Click
   const handleMeetingSidebarCalendar = () => {
     localStorage.setItem("navigateLocation", "calendar");
-    navigate("/Diskus/calendar");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -121,7 +119,6 @@ const ExpandedMenu = () => {
   // Todo Sidebar Click
   const handleMeetingSidebarTodo = () => {
     localStorage.setItem("navigateLocation", "todolist");
-    navigate("/Diskus/todolist");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -136,7 +133,6 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarNotes = () => {
     localStorage.setItem("navigateLocation", "Notes");
-    navigate("/Diskus/Notes");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
