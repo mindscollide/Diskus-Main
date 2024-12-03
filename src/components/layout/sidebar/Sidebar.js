@@ -716,7 +716,7 @@ const Sidebar = () => {
                         : "m-0 p-0 iconSidebar"
                     }
                     onClick={
-                      ActiveCallFlag === "false"
+                      ActiveCallFlag === false
                         ? handleMeetingSidebarCalendar
                         : (event) => {
                             event.preventDefault(); // Prevents default navigation
@@ -793,7 +793,7 @@ const Sidebar = () => {
                         : "m-0 p-0 iconSidebar"
                     }
                     onClick={
-                      ActiveCallFlag === "false"
+                      ActiveCallFlag === false
                         ? handleMeetingSidebarNotes
                         : (event) => {
                             event.preventDefault(); // Prevents default navigation
@@ -914,9 +914,9 @@ const Sidebar = () => {
                       }
                       ref={sidebarshow}
                       onClick={
-                        ActiveCallFlag === "true"
-                          ? handleMoreOptionActiveCall
-                          : handleMoreOptions
+                        ActiveCallFlag === false
+                          ? handleMoreOptions
+                          : handleMoreOptionActiveCall
                       }
                     >
                       <div className="d-flex flex-column" draggable="false">

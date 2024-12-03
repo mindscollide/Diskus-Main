@@ -433,7 +433,7 @@ const Header2 = ({ isVideo }) => {
                               : "/DisKus/Minutes"
                           }
                           onClick={
-                            ActiveCallFlag === "false"
+                            ActiveCallFlag === false
                               ? handleMeetingPendingApprovals
                               : (event) => {
                                   event.preventDefault(); // Prevents default navigation
@@ -551,7 +551,7 @@ const Header2 = ({ isVideo }) => {
                         }
                         className="d-flex text-black FontClass"
                         onClick={
-                          ActiveCallFlag === "false"
+                          ActiveCallFlag === false
                             ? handleMeetingSidebarSettings
                             : (event) => {
                                 event.preventDefault(); // Prevents default navigation
@@ -583,7 +583,7 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/faq's"
                         }
                         onClick={
-                          ActiveCallFlag === "false"
+                          ActiveCallFlag === false
                             ? handleMeetingSidebarFAQ
                             : (event) => {
                                 event.preventDefault(); // Prevents default navigation
@@ -637,7 +637,7 @@ const Header2 = ({ isVideo }) => {
                     : "/DisKus/faq's"
                 }
                 onClick={
-                  ActiveCallFlag === "false"
+                  ActiveCallFlag === false
                     ? handleMeetingSidebarFAQ
                     : (event) => {
                         event.preventDefault(); // Prevents default navigation
@@ -677,7 +677,7 @@ const Header2 = ({ isVideo }) => {
                   : "/Diskus"
               }
               onClick={
-                ActiveCallFlag === "false"
+                ActiveCallFlag === false
                   ? homePageDashboardClick
                   : (event) => {
                       event.preventDefault(); // Prevents default navigation
@@ -867,7 +867,7 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/Minutes"
                                 }
                                 onClick={
-                                  ActiveCallFlag === "false"
+                                  ActiveCallFlag === false
                                     ? handleMeetingPendingApprovals
                                     : (event) => {
                                         event.preventDefault(); // Prevents default navigation
@@ -1061,7 +1061,7 @@ const Header2 = ({ isVideo }) => {
                                 }
                                 className="d-flex text-black FontClass"
                                 onClick={
-                                  ActiveCallFlag === "false"
+                                  ActiveCallFlag === false
                                     ? handleMeetingSidebarSettings
                                     : (event) => {
                                         event.preventDefault(); // Prevents default navigation
@@ -1096,7 +1096,7 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/faq's"
                                 }
                                 onClick={
-                                  ActiveCallFlag === "false"
+                                  ActiveCallFlag === false
                                     ? handleMeetingSidebarFAQ
                                     : (event) => {
                                         event.preventDefault(); // Prevents default navigation
@@ -1174,7 +1174,7 @@ const Header2 = ({ isVideo }) => {
                       }
                       className="mx-3"
                       onClick={
-                        ActiveCallFlag === "false"
+                        ActiveCallFlag === false
                           ? handleMeetingSidebarFAQ
                           : (event) => {
                               event.preventDefault(); // Prevents default navigation
