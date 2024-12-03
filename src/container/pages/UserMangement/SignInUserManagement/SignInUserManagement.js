@@ -181,7 +181,8 @@ const SignInUserManagement = () => {
           <>
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <section className={styles["freetrail_banner"]}>
+                {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
+                {/* <section className={styles["freetrail_banner"]}>
                   <span className={styles["freetrail_heading"]}>
                     {t("Start-your-Free-Trial-now")}
                   </span>
@@ -191,7 +192,7 @@ const SignInUserManagement = () => {
                   >
                     {t("Free-Trial")}
                   </span>
-                </section>
+                </section> */}
               </Col>
             </Row>
             <Row className="position-relative">

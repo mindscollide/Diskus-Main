@@ -169,7 +169,7 @@ const ViewProposedMeetingModal = () => {
               <Col lg={12} md={12} sm={12}>
                 <div className="d-flex flex-column flex-wrap">
                   <span className={styles["SendResponseByDateHeading"]}>
-                    {t("Proposed-on")}
+                    {t("Participants")}
                   </span>
                   <Row>
                     {partcipatns.length > 0 && partcipatns !== null
