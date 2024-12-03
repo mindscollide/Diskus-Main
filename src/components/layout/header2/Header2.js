@@ -225,7 +225,15 @@ const Header2 = ({ isVideo }) => {
   };
 
   const dropDownMenuFunction = () => {
-    setDropdownOpen(!dropdownOpen);
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    if (activeCall) {
+      setDropdownOpen(!dropdownOpen);
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    } else {
+      setDropdownOpen(!dropdownOpen);
+    }
   };
 
   // userProfile handler
@@ -283,6 +291,11 @@ const Header2 = ({ isVideo }) => {
     }
   };
 
+  const RecentFilesTabNoCall = async () => {
+    localStorage.setItem("setTableView", 4);
+    navigate("/DisKus/dataroom");
+  };
+
   const homePageDashboardClick = () => {
     localStorage.setItem("navigateLocation", "home");
     if (CurrentMeetingStatus === 10) {
@@ -291,6 +304,10 @@ const Header2 = ({ isVideo }) => {
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const homePageDashboardClickNoCall = () => {
+    navigate("/DisKus/");
   };
 
   const handleMeetingSidebarSettings = () => {
@@ -676,14 +693,19 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={
-                ActiveCallFlag === false
-                  ? homePageDashboardClick
-                  : (event) => {
-                      event.preventDefault(); // Prevents default navigation
-                      homePageDashboardClick(); // Your custom click handler
-                    }
-              }
+              onClick={(e) => {
+                // Prevent default behavior
+                e.preventDefault();
+                const activeCall = JSON.parse(
+                  localStorage.getItem("activeCall")
+                );
+                // Explicitly evaluate activeCall
+                if (activeCall === false) {
+                  homePageDashboardClickNoCall();
+                } else {
+                  homePageDashboardClick();
+                }
+              }}
             >
               <img
                 src={DiskusLogoHeader}
@@ -839,7 +861,19 @@ const Header2 = ({ isVideo }) => {
                               <>
                                 <Dropdown.Item
                                   className="d-flex title-className"
-                                  onClick={RecentFilesTab}
+                                  onClick={(e) => {
+                                    // Prevent default behavior
+                                    e.preventDefault();
+                                    const activeCall = JSON.parse(
+                                      localStorage.getItem("activeCall")
+                                    );
+                                    // Explicitly evaluate activeCall
+                                    if (activeCall === false) {
+                                      RecentFilesTabNoCall();
+                                    } else {
+                                      RecentFilesTab();
+                                    }
+                                  }}
                                 >
                                   <span className="New_folder_shortcutkeys">
                                     {t("Recently-added-files")}

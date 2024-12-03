@@ -124,6 +124,10 @@ const Sidebar = () => {
     }
   };
 
+  const handleMeetingSidebarClickNoCall = () => {
+    navigate("/Diskus/Meeting");
+  };
+
   //Dataroom Sidebar Click
   const handleMeetingSidebarDataroom = () => {
     localStorage.setItem("navigateLocation", "dataroom");
@@ -620,7 +624,18 @@ const Sidebar = () => {
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
                     }
-                    onClick={handleMeetingSidebarClick}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const activeCall = JSON.parse(
+                        localStorage.getItem("activeCall")
+                      );
+                      // Explicitly evaluate activeCall
+                      if (activeCall === false) {
+                        handleMeetingSidebarClickNoCall();
+                      } else {
+                        handleMeetingSidebarClick();
+                      }
+                    }}
                   >
                     <div
                       className="d-flex flex-column justify-content-center align-items-center"
