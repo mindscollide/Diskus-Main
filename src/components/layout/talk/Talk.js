@@ -173,7 +173,7 @@ const Talk = () => {
       viewMeetingFlagReducer === false
     ) {
       dispatch(showCancelModalmeetingDeitals(true));
-      localStorage.setItem("navigateLocation", "pendingApprovals");
+      localStorage.setItem("navigateLocation", "Minutes");
       console.log("This Check");
     } else {
       navigate("/DisKus/Minutes");

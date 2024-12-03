@@ -8388,8 +8388,9 @@ const LeaveCurrentMeeting = (
 const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
-  let roomID = localStorage.getItem("acceptedRoomID");
-  let userGUID = localStorage.getItem("userGUID");
+  let newRoomID = localStorage.getItem("newRoomId");
+  let newUserGUID = localStorage.getItem("userGUID");
+  let newName = localStorage.getItem("name");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8439,8 +8440,9 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
               localStorage.setItem("MicOff", true);
               localStorage.setItem("VidOff", true);
               let Data = {
-                RoomID: roomID,
-                UserGUID: userGUID,
+                RoomID: String(newRoomID),
+                UserGUID: String(newUserGUID),
+                Name: String(newName),
               };
               dispatch(LeaveMeetingVideo(Data, navigate, t));
               dispatch(LeaveInitmationMessegeVideoMeetAction(false));

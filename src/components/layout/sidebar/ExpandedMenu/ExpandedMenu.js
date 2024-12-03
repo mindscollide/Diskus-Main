@@ -127,7 +127,7 @@ const ExpandedMenu = () => {
               : styles.iconItem
           }
           onClick={
-            ActiveCallFlag === "false"
+            ActiveCallFlag === false
               ? handleMeetingSidebarDataroom
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
@@ -164,7 +164,7 @@ const ExpandedMenu = () => {
               : styles.iconItem
           }
           onClick={
-            ActiveCallFlag === "false"
+            ActiveCallFlag === false
               ? handleMeetingSidebarGroups
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
@@ -203,7 +203,7 @@ const ExpandedMenu = () => {
               : styles.iconItem
           }
           onClick={
-            ActiveCallFlag === "false"
+            ActiveCallFlag === false
               ? handleMeetingSidebarCommittees
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
@@ -242,7 +242,7 @@ const ExpandedMenu = () => {
               : styles.iconItem
           }
           onClick={
-            ActiveCallFlag === "false"
+            ActiveCallFlag === false
               ? handleMeetingSidebarResolutions
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
@@ -280,7 +280,7 @@ const ExpandedMenu = () => {
               : styles.iconItem
           }
           onClick={
-            ActiveCallFlag === "false"
+            ActiveCallFlag === false
               ? handleMeetingSidebarPolls
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
