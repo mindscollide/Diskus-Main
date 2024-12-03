@@ -62,6 +62,7 @@ const initialState = {
   makeHostNow: null,
   isMicEnabled: true,
   isWebCamEnabled: true,
+  getAllParticipantMain: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -108,6 +109,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
+      return {
+        ...state,
+        getVideoParticpantListandWaitingList: newData,
+      };
+    }
+
+    case actions.VIDEO_PARTICIPANT_NON_GUEST_LEFT: {
+      console.log(action, "responseDataDataData");
+      let copyState = [...state.getVideoParticpantListandWaitingList];
+      let newData = copyState.filter(
+        (videoParticipants, index) =>
+          videoParticipants.userID !== action.payload
+      );
+      console.log(newData, "newDatanewDatanewDataasxas");
+
       return {
         ...state,
         getVideoParticpantListandWaitingList: newData,
@@ -405,10 +421,18 @@ const videoFeatureReducer = (state = initialState, action) => {
             mute: payload.isMuted,
           }));
 
+        const newParticipantList = state.getAllParticipantMain.map(
+          (participant) => ({
+            ...participant,
+            mute: payload.isMuted,
+          })
+        );
+
         return {
           ...state,
           getVideoParticpantListandWaitingList: updatedParticipantList,
           audioControlForParticipant: payload.isMuted, // Update global state only for "Mute All"
+          getAllParticipantMain: newParticipantList,
         };
       }
 
@@ -420,9 +444,18 @@ const videoFeatureReducer = (state = initialState, action) => {
             : participant
         );
 
+      // Main participant mute/unmute
+      const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
+        (participant) =>
+          participant.guid === payload.uid
+            ? { ...participant, mute: payload.isMuted }
+            : participant
+      );
+
       return {
         ...state,
         getVideoParticpantListandWaitingList: updatedParticipantList,
+        getAllParticipantMain: getMainMuteUnmuteParticipant,
       };
     }
 
@@ -435,8 +468,6 @@ const videoFeatureReducer = (state = initialState, action) => {
       );
       let updatedRaisedParticipant =
         state.getVideoParticpantListandWaitingList.map((participantData) => {
-          console.log(participantData, "participantDataparticipantData");
-
           let handraisedPayload =
             payload.participantGuid === participantData.guid ? true : false;
           if (handraisedPayload) {
@@ -445,17 +476,30 @@ const videoFeatureReducer = (state = initialState, action) => {
               raiseHand: payload.isHandRaised,
             };
           }
-          console.log(handraisedPayload, "handraisedPayloadhandraisedPayload");
           return participantData;
         });
-      console.log(
-        updatedRaisedParticipant,
-        "handraisedPayloadhandraisedPayload"
+
+      //For main Participant Hand Raised
+      let updateParticipantHandRaised = state.getAllParticipantMain.map(
+        (handRaiseMainarticipant) => {
+          let handRaiseParticipant =
+            payload.participantGuid === handRaiseMainarticipant.guid
+              ? true
+              : false;
+          if (handRaiseParticipant) {
+            return {
+              ...handRaiseMainarticipant,
+              raiseHand: payload.isHandRaised,
+            };
+          }
+          return handRaiseMainarticipant;
+        }
       );
 
       return {
         ...state,
         getVideoParticpantListandWaitingList: updatedRaisedParticipant,
+        getAllParticipantMain: updateParticipantHandRaised,
       };
     }
 
@@ -479,10 +523,54 @@ const videoFeatureReducer = (state = initialState, action) => {
           return hideUnhideData;
         }
       );
+
+      let updateParticipantHideUnHide = state.getAllParticipantMain.map(
+        (hideUnHideParticipant) => {
+          let hideUnHideVideoPayload =
+            payload.uid === hideUnHideParticipant.guid ? true : false;
+          if (hideUnHideVideoPayload) {
+            return {
+              ...hideUnHideParticipant,
+              hideCamera: payload.isVideoHidden,
+            };
+          }
+          return hideUnHideParticipant;
+        }
+      );
       console.log(updateHideVideo, "updateHideVideoupdateHideVideo");
       return {
         ...state,
         getVideoParticpantListandWaitingList: updateHideVideo,
+        getAllParticipantMain: updateParticipantHideUnHide,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_SUCCESS: {
+      console.log(
+        action,
+        "getAllParticipantMain-ForParticipacnt Video Reducer"
+      );
+      return {
+        ...state,
+        Loading: false,
+        getAllParticipantMain: action.response.participantList,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_VIDEO_PARTICIPANTS_FOR_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllParticipantMain: [],
+        ResponseMessage: action.message,
       };
     }
 

@@ -71,12 +71,16 @@ const VideoNewParticipantList = () => {
   console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
   let roomID = localStorage.getItem("newRoomId");
   let currentUserID = Number(localStorage.getItem("userID"));
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+
   let HostName = localStorage.getItem("name");
 
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [participantData, setParticipantData] = useState([]);
   const [muteGuest, setMuteGuest] = useState(false);
+  const [isForAll, setIsForAll] = useState(false);
+  console.log(isForAll, "isForAllisForAll");
 
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
@@ -94,28 +98,17 @@ const VideoNewParticipantList = () => {
   useEffect(() => {
     if (participantList?.length) {
       const uniqueParticipants = participantList.filter(
-        (participant, index, self) => {
-          console.log(participant, "participantparticipant");
-
-          // Allow userID === 0 but filter duplicates based on guid
-          if (participant.userID === 0) {
-            return self.findIndex((p) => p.guid === participant.guid) === index;
-          }
-
-          // For other userIDs, ensure no duplicates based on userID
-          return (
-            self.findIndex((p) => p.userID === participant.userID) === index
-          );
-        }
+        (participant, index, self) =>
+          participant.userID === 0
+            ? self.findIndex((p) => p.guid === participant.guid) === index
+            : self.findIndex((p) => p.userID === participant.userID) === index
       );
-
-      console.log(uniqueParticipants, "uniqueParticipants");
 
       setFilteredParticipants(uniqueParticipants);
     } else {
       setFilteredParticipants([]);
     }
-  }, [participantList]);
+  }, [participantList]); // Ensure it listens to participantList updates
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
@@ -140,12 +133,12 @@ const VideoNewParticipantList = () => {
   };
 
   const muteUnmuteByHost = (usersData, flag = true) => {
-    let data;
+    setMuteGuest(flag);
 
     if (usersData) {
       // Mute/Unmute a specific participant
-      data = {
-        RoomID: getRoomId,
+      const data = {
+        RoomID: roomID,
         IsMuted: flag,
         MuteUnMuteList: [
           {
@@ -153,36 +146,23 @@ const VideoNewParticipantList = () => {
           },
         ],
       };
-
-      // Update the specific participant's mute state in `newParticipants`
-      setFilteredParticipants((prev) =>
-        prev.map((participant) =>
-          participant.guid === usersData.guid
-            ? { ...participant, mute: flag }
-            : participant
-        )
-      );
+      dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
     } else {
-      // Mute All participants
+      // Toggle mute/unmute for all participants
+      setIsForAll(flag); // Update the isForAll state
       const allUids = filteredParticipants.map((participant) => ({
         UID: participant.guid,
       }));
+      console.log(allUids, "allUidsallUids");
 
-      data = {
-        RoomID: getRoomId,
-        IsMuted: true,
-        isForAll: true,
+      const data = {
+        RoomID: roomID,
+        IsMuted: flag,
+        isForAll: flag, // Pass the current flag
         MuteUnMuteList: allUids,
       };
-
-      // Update mute state for all participants in `newParticipants`
-      setFilteredParticipants((prev) =>
-        prev.map((participant) => ({ ...participant, mute: true }))
-      );
+      dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
     }
-
-    // Dispatch the action to update Redux state and backend
-    dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
@@ -223,28 +203,30 @@ const VideoNewParticipantList = () => {
 
   const handleClickAllAcceptAndReject = (flag) => {
     let Data = {
-      MeetingId: newParticipants[0]?.meetingID,
+      MeetingId: filteredWaitingParticipants[0]?.meetingID,
       RoomId: String(roomID),
       IsRequestAccepted: flag === 1 ? true : false,
-      AttendeeResponseList: newParticipants.map((participantData, index) => {
-        console.log(participantData, "mahdahahshahs");
-        return {
-          IsGuest: participantData.isGuest,
-          UID: participantData.guid,
-          UserID: participantData.userID,
-        };
-      }),
+      AttendeeResponseList: filteredWaitingParticipants.map(
+        (participantData, index) => {
+          console.log(participantData, "mahdahahshahs");
+          return {
+            IsGuest: participantData.isGuest,
+            UID: participantData.guid,
+            UserID: participantData.userID,
+          };
+        }
+      ),
     };
 
     dispatch(
-      admitRejectAttendeeMainApi(Data, navigate, t, true, newParticipants)
+      admitRejectAttendeeMainApi(Data, navigate, t, true, filteredParticipants)
     );
   };
 
   const handleClickAcceptAndReject = (participantInfo, flag) => {
     console.log(participantInfo, "participantInfo");
     let Data = {
-      MeetingId: participantInfo?.meetingID,
+      MeetingId: currentMeetingID,
       RoomId: String(roomID),
       IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: [
@@ -333,13 +315,13 @@ const VideoNewParticipantList = () => {
                   {t("Participants")}
                 </p>
               </Col>
-              {/* <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
+              <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
                 <Button
-                  text={t("Mute-All")}
+                  text={isForAll ? t("Unmute-All") : t("Mute-All")}
                   className={styles["Waiting-New-Participant-muteAll"]}
-                  onClick={() => muteUnmuteByHost(null, true)}
+                  onClick={() => muteUnmuteByHost(null, !isForAll)}
                 />
-              </Col> */}
+              </Col>
             </Row>
           </div>
         </Col>
