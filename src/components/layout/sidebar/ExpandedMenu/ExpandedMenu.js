@@ -5,11 +5,11 @@ import { Nav } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import DataroomImage from "../../../../assets/images/sidebar_icons/Dataroom.png";
 import GroupImage from "../../../../assets/images/sidebar_icons/Group.png";
-import CommitteeImage from "../../../../assets/images/sidebar_icons/Committee.png";
 import PollImage from "../../../../assets/images/sidebar_icons/Polls.png";
-import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.png";
+import CalenderImage from "../../../../assets/images/sidebar_icons/NewCalenderSideBar.png";
+import NotesImage from "../../../../assets/images/sidebar_icons/NewNotesSideBar.png";
+import TaskImage from "../../../../assets/images/sidebar_icons/NewTaskSideBar.png";
 import styles from "./ExpandMenu.module.css";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
@@ -23,6 +23,7 @@ const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   let ActiveCallFlag = localStorage.getItem("activeCall");
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
@@ -48,42 +49,33 @@ const ExpandedMenu = () => {
   const viewMeetingsFlag = useSelector(
     (state) => state.NewMeetingreducer.viewMeetingFlag
   );
-  //Dataroom Sidebar Click
-  const handleMeetingSidebarDataroom = () => {
-    localStorage.setItem("navigateLocation", "dataroom");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
-  };
+
+  const scheduleMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const viewProposeDateMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+  );
+  const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+  const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+  );
+  const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+  );
+  const proposeNewMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+  );
+  const viewMeetingFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewMeetingFlag
+  );
 
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     localStorage.setItem("navigateLocation", "groups");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
-  };
-
-  //Committees Sidebar Click
-  const handleMeetingSidebarCommittees = () => {
-    localStorage.setItem("navigateLocation", "committee");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
-  };
-
-  //Resolutions Sidebar Click
-  const handleMeetingSidebarResolutions = () => {
-    localStorage.setItem("navigateLocation", "resolution");
+    navigate("/Diskus/groups");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -95,6 +87,42 @@ const ExpandedMenu = () => {
   //Polls Sidebar Click
   const handleMeetingSidebarPolls = () => {
     localStorage.setItem("navigateLocation", "polling");
+    navigate("/Diskus/polling");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  //Calendar Sidebar Click
+  const handleMeetingSidebarCalendar = () => {
+    localStorage.setItem("navigateLocation", "calendar");
+    navigate("/Diskus/calendar");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  // Todo Sidebar Click
+  const handleMeetingSidebarTodo = () => {
+    localStorage.setItem("navigateLocation", "todolist");
+    navigate("/Diskus/todolist");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarNotes = () => {
+    localStorage.setItem("navigateLocation", "Notes");
+    navigate("/Diskus/Notes");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -105,38 +133,44 @@ const ExpandedMenu = () => {
 
   return (
     <Nav className={styles.iconGrid}>
-      {checkFeatureIDAvailability(13) ? (
+      {/* Calendar Menu */}
+      {checkFeatureIDAvailability(7) ? (
         <Nav.Link
           as={Link}
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
               ? "/DisKus/Meeting"
-              : "/DisKus/dataroom"
+              : "/DisKus/calendar"
           }
-          draggable="false"
+          eventKey="link-5"
           className={
-            location.pathname === "/DisKus/dataroom" ||
-            location.pathname === "/Diskus/dataroom"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/calendar" ||
+            location.pathname === "/Diskus/calendar"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
           onClick={
             ActiveCallFlag === false
-              ? handleMeetingSidebarDataroom
+              ? handleMeetingSidebarCalendar
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarDataroom(); // Your custom click handler
+                  handleMeetingSidebarCalendar(); // Your custom click handler
                 }
           }
         >
-          <img src={DataroomImage} alt="DataroomIcon" />
-          <p>{t("Data-room")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={CalenderImage} alt="CalenderImage" />
+            <p>{t("Calendar")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
@@ -160,8 +194,8 @@ const ExpandedMenu = () => {
           className={
             location.pathname === "/DisKus/groups" ||
             location.pathname === "/Diskus/groups"
-              ? styles.iconItem_active
-              : styles.iconItem
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
           onClick={
             ActiveCallFlag === false
@@ -173,86 +207,97 @@ const ExpandedMenu = () => {
           }
         >
           {/* Grouo Icon */}
-          <img src={GroupImage} alt="" />
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={GroupImage} alt="" />
 
-          <p>{t("Groups")}</p>
+            <p>{t("Groups")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
-      {/* Committee */}
-      {checkFeatureIDAvailability(48) ? (
+      {/* Todo Menu */}
+      {checkFeatureIDAvailability(14) ? (
         <Nav.Link
           as={Link}
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
               ? "/DisKus/Meeting"
-              : "/DisKus/committee"
+              : "/DisKus/todolist"
           }
-          disabled={false}
-          draggable="false"
+          eventKey="link-3"
           className={
-            location.pathname === "/DisKus/committee" ||
-            location.pathname === "/Diskus/committee"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/todolist" ||
+            location.pathname === "/Diskus/todolist"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
           onClick={
             ActiveCallFlag === false
-              ? handleMeetingSidebarCommittees
+              ? handleMeetingSidebarTodo
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarCommittees(); // Your custom click handler
+                  handleMeetingSidebarTodo(); // Your custom click handler
                 }
           }
         >
-          {/* CommitteeIcon */}
-
-          <img src={CommitteeImage} alt="" />
-          <p>{t("Committees")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={TaskImage} alt="TaskImage" />
+            <p>{t("Tasks")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
-      {/* Resolution */}
-      {checkFeatureIDAvailability(18) ? (
+      {/* Note*/}
+      {checkFeatureIDAvailability(6) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/resolution"
-          }
           disabled={false}
-          draggable="false"
+          to={
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/Notes"
+          }
+          eventKey="link-4"
           className={
-            location.pathname === "/DisKus/resolution" ||
-            location.pathname === "/Diskus/resolution"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/Notes" ||
+            location.pathname === "/Diskus/Notes"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
           onClick={
             ActiveCallFlag === false
-              ? handleMeetingSidebarResolutions
+              ? handleMeetingSidebarNotes
               : (event) => {
                   event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarResolutions(); // Your custom click handler
+                  handleMeetingSidebarNotes(); // Your custom click handler
                 }
           }
         >
-          {/* Resolution Icon */}
-          <img src={ResolutionImage} alt="" />
-          <p>{t("Resolutions")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={NotesImage} alt="NotesImage" />
+            <p>{t("Notes")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
@@ -276,8 +321,8 @@ const ExpandedMenu = () => {
           className={
             location.pathname === "/DisKus/polling" ||
             location.pathname === "/Diskus/polling"
-              ? styles.iconItem_active
-              : styles.iconItem
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
           onClick={
             ActiveCallFlag === false
@@ -288,9 +333,13 @@ const ExpandedMenu = () => {
                 }
           }
         >
-          <img src={PollImage} alt="" />
-
-          <p>{t("Polls")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={PollImage} alt="" />
+            <p>{t("Polls")}</p>
+          </div>
         </Nav.Link>
       ) : null}
     </Nav>
