@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   getVideoCallParticipantsAndWaitingList,
+  getVideoCallParticipantsForGuest,
   hideUnHidePaticipantVideo,
   joinMeetingVideoRequest,
   muteUnMuteParticipant,
@@ -912,6 +913,112 @@ const setVideoState = (isEnabled) => ({
   payload: isEnabled,
 });
 
+const participantLeaveVideoMeeting = (response) => {
+  console.log(response, "responseDataDataData");
+  return {
+    type: actions.VIDEO_PARTICIPANT_NON_GUEST_LEFT,
+    payload: response,
+  };
+};
+
+const getVideoCallParticipantInit = () => {
+  return {
+    type: actions.GET_VIDEO_PARTICIPANTS_FOR_INIT,
+  };
+};
+
+const getVideoCallParticipantSuccess = (response, message) => {
+  return {
+    type: actions.GET_VIDEO_PARTICIPANTS_FOR_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getVideoCallParticipantFail = (message) => {
+  return {
+    type: actions.GET_VIDEO_PARTICIPANTS_FOR_FAIL,
+    message: message,
+  };
+};
+
+const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
+  return (dispatch) => {
+    dispatch(getVideoCallParticipantInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getVideoCallParticipantsForGuest.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: videoApi,
+      data: form,
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getVideoCallParticipantSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getVideoCallParticipantFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getVideoCallParticipantFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getVideoCallParticipantFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              getVideoCallParticipantFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            getVideoCallParticipantFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getVideoCallParticipantFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -973,4 +1080,6 @@ export {
   makeHostNow,
   setMicState,
   setVideoState,
+  participantLeaveVideoMeeting,
+  getVideoCallParticipantsMainApi,
 };

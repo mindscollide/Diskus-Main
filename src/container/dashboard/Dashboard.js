@@ -44,6 +44,7 @@ import {
   makeHostNow,
   maxParticipantVideoDenied,
   maxParticipantVideoRemoved,
+  participantLeaveVideoMeeting,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -722,7 +723,11 @@ const Dashboard = () => {
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
             ) {
               console.log(data.payload, "guestLeaveVideoMeeting");
-              dispatch(guestLeaveVideoMeeting(data.payload.uid));
+              if (data.payload.isGuest) {
+                dispatch(guestLeaveVideoMeeting(data.payload.uid));
+              } else {
+                dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
@@ -742,6 +747,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
             ) {
+              console.log(data.payload, "Partiicpantdatapayload");
               dispatch(participantHideUnhideVideo(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -776,7 +782,7 @@ const Dashboard = () => {
             ) {
               if (data.payload.isForAll) {
                 // Gather all participant UIDs
-                const allUids = getVideoParticpantListandWaitingList.map(
+                const allUids = getNewParticipantsMeetingJoin.map(
                   (participant) => {
                     console.log(participant, "participantparticipant");
                     // participant.guid;

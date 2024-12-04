@@ -369,7 +369,7 @@ const admitRejectAttendeeMainApi = (
   navigate,
   t,
   flag,
-  participantsList,
+  filteredParticipants,
   setLoadingAdmit,
   setLoadingDeny
 ) => {
@@ -401,7 +401,7 @@ const admitRejectAttendeeMainApi = (
               navigate,
               t,
               flag,
-              participantsList,
+              filteredParticipants,
               setLoadingAdmit,
               setLoadingDeny
             )
@@ -433,8 +433,8 @@ const admitRejectAttendeeMainApi = (
               } else if (flag === false) {
                 // when flag is false then after click on accept singly participantWaitinglistbox close if they have length 1
                 if (
-                  participantsList !== undefined &&
-                  participantsList.length === 1
+                  filteredParticipants !== undefined &&
+                  filteredParticipants.length === 1
                 ) {
                   dispatch(participantWaitingListBox(false));
                 }
@@ -1266,6 +1266,14 @@ const muteUnMuteParticipantsorGuest = (response) => {
   };
 };
 
+const participantHideUnhideVideo = (response) => {
+  console.log(response, "responseresponse");
+  return {
+    type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
+    payload: response,
+  };
+};
+
 export {
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
@@ -1292,4 +1300,5 @@ export {
   raisedUnRaisedParticipantsGuest,
   hideUnHideVideoParticipantsorGuest,
   muteUnMuteParticipantsorGuest,
+  participantHideUnhideVideo,
 };

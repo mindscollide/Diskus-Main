@@ -346,6 +346,32 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
+      console.log("Handling PARTICIPANT_HIDEUNHIDE_VIDEO:", action.payload);
+
+      // Safely handle null `getAllParticipantGuest`
+      const updatedParticipants =
+        state.getAllParticipantGuest?.participantList?.map((participant) =>
+          participant.guid === action.payload.uid
+            ? { ...participant, isVideoHidden: action.payload.isVideoHidden }
+            : participant
+        ) || [];
+
+      console.log("Updated Participants:", updatedParticipants);
+
+      return {
+        ...state,
+        getAllParticipantGuest: state.getAllParticipantGuest
+          ? {
+              ...state.getAllParticipantGuest,
+              participantList: updatedParticipants,
+            }
+          : {
+              participantList: updatedParticipants,
+            },
+      };
+    }
+
     case actions.SET_MQTT_VIDEO_CAMERA_GUEST: {
       return {
         ...state,
