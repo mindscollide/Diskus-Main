@@ -246,7 +246,6 @@ const Header2 = ({ isVideo }) => {
   };
 
   //Customer Information Modal
-
   const handleModalCustomerInformation = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -330,6 +329,10 @@ const Header2 = ({ isVideo }) => {
     }
   };
 
+  const handleMeetingPendingApprovalsNoCall = () => {
+    navigate("/DisKus/Minutes");
+  };
+
   const handleMeetingSidebarFAQ = () => {
     localStorage.setItem("navigateLocation", "faq's");
     if (CurrentMeetingStatus === 10) {
@@ -338,6 +341,10 @@ const Header2 = ({ isVideo }) => {
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
     }
+  };
+
+  const handleMeetingSidebarFAQNoCall = () => {
+    navigate("/DisKus/faq's");
   };
 
   // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
@@ -449,14 +456,19 @@ const Header2 = ({ isVideo }) => {
                               ? "/DisKus/Meeting"
                               : "/DisKus/Minutes"
                           }
-                          onClick={
-                            ActiveCallFlag === false
-                              ? handleMeetingPendingApprovals
-                              : (event) => {
-                                  event.preventDefault(); // Prevents default navigation
-                                  handleMeetingPendingApprovals(); // Your custom click handler
-                                }
-                          }
+                          onClick={(e) => {
+                            // Prevent default behavior
+                            e.preventDefault();
+                            const activeCall = JSON.parse(
+                              localStorage.getItem("activeCall")
+                            );
+                            // Explicitly evaluate activeCall
+                            if (activeCall === false) {
+                              handleMeetingPendingApprovalsNoCall();
+                            } else {
+                              handleMeetingPendingApprovals();
+                            }
+                          }}
                           className="pendingApprovalsNav"
                         >
                           {t("Pending-approvals")}
@@ -599,14 +611,20 @@ const Header2 = ({ isVideo }) => {
                             ? "/DisKus/Meeting"
                             : "/DisKus/faq's"
                         }
-                        onClick={
-                          ActiveCallFlag === false
-                            ? handleMeetingSidebarFAQ
-                            : (event) => {
-                                event.preventDefault(); // Prevents default navigation
-                                handleMeetingSidebarFAQ(); // Your custom click handler
-                              }
-                        }
+                        // here FAQ
+                        onClick={(e) => {
+                          // Prevent default behavior
+                          e.preventDefault();
+                          const activeCall = JSON.parse(
+                            localStorage.getItem("activeCall")
+                          );
+                          // Explicitly evaluate activeCall
+                          if (activeCall === false) {
+                            handleMeetingSidebarFAQNoCall();
+                          } else {
+                            handleMeetingSidebarFAQ();
+                          }
+                        }}
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
@@ -653,14 +671,19 @@ const Header2 = ({ isVideo }) => {
                     ? "/DisKus/Meeting"
                     : "/DisKus/faq's"
                 }
-                onClick={
-                  ActiveCallFlag === false
-                    ? handleMeetingSidebarFAQ
-                    : (event) => {
-                        event.preventDefault(); // Prevents default navigation
-                        handleMeetingSidebarFAQ(); // Your custom click handler
-                      }
-                }
+                onClick={(e) => {
+                  // Prevent default behavior
+                  e.preventDefault();
+                  const activeCall = JSON.parse(
+                    localStorage.getItem("activeCall")
+                  );
+                  // Explicitly evaluate activeCall
+                  if (activeCall === false) {
+                    handleMeetingSidebarFAQNoCall();
+                  } else {
+                    handleMeetingSidebarFAQ();
+                  }
+                }}
                 className="mx-3"
               >
                 <img
@@ -900,14 +923,19 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/Minutes"
                                 }
-                                onClick={
-                                  ActiveCallFlag === false
-                                    ? handleMeetingPendingApprovals
-                                    : (event) => {
-                                        event.preventDefault(); // Prevents default navigation
-                                        handleMeetingPendingApprovals(); // Your custom click handler
-                                      }
-                                }
+                                onClick={(e) => {
+                                  // Prevent default behavior
+                                  e.preventDefault();
+                                  const activeCall = JSON.parse(
+                                    localStorage.getItem("activeCall")
+                                  );
+                                  // Explicitly evaluate activeCall
+                                  if (activeCall === false) {
+                                    handleMeetingPendingApprovalsNoCall();
+                                  } else {
+                                    handleMeetingPendingApprovals();
+                                  }
+                                }}
                                 className="pendingApprovalsNav"
                               >
                                 <span className="New_folder_shortcutkeys">
@@ -1129,14 +1157,19 @@ const Header2 = ({ isVideo }) => {
                                     ? "/DisKus/Meeting"
                                     : "/DisKus/faq's"
                                 }
-                                onClick={
-                                  ActiveCallFlag === false
-                                    ? handleMeetingSidebarFAQ
-                                    : (event) => {
-                                        event.preventDefault(); // Prevents default navigation
-                                        handleMeetingSidebarFAQ(); // Your custom click handler
-                                      }
-                                }
+                                onClick={(e) => {
+                                  // Prevent default behavior
+                                  e.preventDefault();
+                                  const activeCall = JSON.parse(
+                                    localStorage.getItem("activeCall")
+                                  );
+                                  // Explicitly evaluate activeCall
+                                  if (activeCall === false) {
+                                    handleMeetingSidebarFAQNoCall();
+                                  } else {
+                                    handleMeetingSidebarFAQ();
+                                  }
+                                }}
                                 className="d-flex text-black FontClass"
                               >
                                 {/* Change Password */}
@@ -1207,14 +1240,19 @@ const Header2 = ({ isVideo }) => {
                           : "/DisKus/faq's"
                       }
                       className="mx-3"
-                      onClick={
-                        ActiveCallFlag === false
-                          ? handleMeetingSidebarFAQ
-                          : (event) => {
-                              event.preventDefault(); // Prevents default navigation
-                              handleMeetingSidebarFAQ(); // Your custom click handler
-                            }
-                      }
+                      onClick={(e) => {
+                        // Prevent default behavior
+                        e.preventDefault();
+                        const activeCall = JSON.parse(
+                          localStorage.getItem("activeCall")
+                        );
+                        // Explicitly evaluate activeCall
+                        if (activeCall === false) {
+                          handleMeetingSidebarFAQNoCall();
+                        } else {
+                          handleMeetingSidebarFAQ();
+                        }
+                      }}
                     >
                       <Tooltip placement="topRight" title={t("FAQs")}>
                         <img
