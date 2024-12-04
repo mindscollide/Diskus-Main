@@ -34,6 +34,8 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
 
   const [barChartData, setBarChartData] = useState([]);
 
+  console.log(barChartData, "barChartDatabarChartDatabarChartData");
+
   const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
 
   const colorCodes = [
@@ -329,6 +331,8 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                           },
                           vAxis: {
                             title: "Votes",
+                            format: "0", // Ensures whole numbers on the Y-axis
+                            ticks: [0, 1, 2, 3, 4, 5], // Define specific tick marks if needed
                           },
                           legend: { position: "none" },
                           colors: [

@@ -170,11 +170,6 @@ const ViewVoteModal = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   let Data = { AgendaVotingID: 1, MeetingID: 1785 };
-  //   dispatch(ViewAgendaVotingResults(Data, navigate, t));
-  // }, []);
-
   useEffect(() => {
     if (
       ViewAgendaVotingResultData !== null &&
@@ -321,6 +316,8 @@ const ViewVoteModal = () => {
                           },
                           vAxis: {
                             title: "Votes",
+                            format: "0", // Ensures whole numbers on the Y-axis
+                            ticks: [0, 1, 2, 3, 4, 5], // Define specific tick marks if needed
                           },
                           legend: { position: "none" },
                           colors: [
