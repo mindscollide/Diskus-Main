@@ -51,7 +51,6 @@ const Header2 = ({ isVideo }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
-  let ActiveCallFlag = localStorage.getItem("activeCall");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -319,6 +318,10 @@ const Header2 = ({ isVideo }) => {
     }
   };
 
+  const handleMeetingSidebarSettingsNoCall = () => {
+    navigate("/DisKus/setting");
+  };
+
   const handleMeetingPendingApprovals = () => {
     localStorage.setItem("navigateLocation", "Minutes");
     if (CurrentMeetingStatus === 10) {
@@ -579,14 +582,19 @@ const Header2 = ({ isVideo }) => {
                             : "/DisKus/setting"
                         }
                         className="d-flex text-black FontClass"
-                        onClick={
-                          ActiveCallFlag === false
-                            ? handleMeetingSidebarSettings
-                            : (event) => {
-                                event.preventDefault(); // Prevents default navigation
-                                handleMeetingSidebarSettings(); // Your custom click handler
-                              }
-                        }
+                        onClick={(e) => {
+                          // Prevent default behavior
+                          e.preventDefault();
+                          const activeCall = JSON.parse(
+                            localStorage.getItem("activeCall")
+                          );
+                          // Explicitly evaluate activeCall
+                          if (activeCall === false) {
+                            handleMeetingSidebarSettingsNoCall();
+                          } else {
+                            handleMeetingSidebarSettings();
+                          }
+                        }}
                       >
                         {/* Change Password */}
                         {t("Settings")}
@@ -1122,14 +1130,19 @@ const Header2 = ({ isVideo }) => {
                                     : "/DisKus/setting"
                                 }
                                 className="d-flex text-black FontClass"
-                                onClick={
-                                  ActiveCallFlag === false
-                                    ? handleMeetingSidebarSettings
-                                    : (event) => {
-                                        event.preventDefault(); // Prevents default navigation
-                                        handleMeetingSidebarSettings(); // Your custom click handler
-                                      }
-                                }
+                                onClick={(e) => {
+                                  // Prevent default behavior
+                                  e.preventDefault();
+                                  const activeCall = JSON.parse(
+                                    localStorage.getItem("activeCall")
+                                  );
+                                  // Explicitly evaluate activeCall
+                                  if (activeCall === false) {
+                                    handleMeetingSidebarSettingsNoCall();
+                                  } else {
+                                    handleMeetingSidebarSettings();
+                                  }
+                                }}
                               >
                                 {/* Change Password */}
                                 {t("Settings")}
