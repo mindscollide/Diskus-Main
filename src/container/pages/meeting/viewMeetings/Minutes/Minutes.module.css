@@ -665,6 +665,8 @@ p.minutes-text {
   font-size: 12px;
   color: #5a5a5a;
   margin: 0 !important;
+  overflow-wrap: break-word !important;
+  max-width: 100% !important;
 }
 
 span.bar-line {
