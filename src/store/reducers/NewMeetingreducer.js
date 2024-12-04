@@ -155,6 +155,7 @@ const initialState = {
   cancelAgendaSavedModal: false,
   shareViaDataRoomPathConfirmation: false,
   ProposedMeetingViewFlag: false,
+  LeaveMeetingSidebarModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2521,6 +2522,12 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         ProposedMeetingViewFlag: action.response,
+      };
+    }
+    case actions.LEAVE_MODAL_SIDEBAR: {
+      return {
+        ...state,
+        LeaveMeetingSidebarModal: action.response,
       };
     }
     default:

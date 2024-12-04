@@ -1177,6 +1177,14 @@ const SearchBarComponent = ({
   };
 
   // this is search button handler of serach modal
+  console.log(
+    searchDataFields.LastModifiedStartDate,
+    "searchDocumentsAndFoldersApi"
+  );
+  console.log(
+    searchDataFields.LastModifiedEndDate,
+    "searchDocumentsAndFoldersApi"
+  );
   const handleSearch = async () => {
     let data = {
       UserID: parseInt(userID),
@@ -1193,13 +1201,11 @@ const SearchBarComponent = ({
       isImages: searchDataFields.isImages,
       isAudios: searchDataFields.isAudios,
       isSites: searchDataFields.isSites,
-      LastModifiedStartDate: formatDateToUTC(
-        searchDataFields.LastModifiedStartDate,1
-      )
-        ? formatDateToUTC(searchDataFields.LastModifiedStartDate,1)
+      LastModifiedStartDate: searchDataFields.LastModifiedStartDate
+        ? formatDateToUTC(searchDataFields.LastModifiedStartDate, 1)
         : "",
-      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate,2)
-        ? formatDateToUTC(searchDataFields.LastModifiedEndDate,2)
+      LastModifiedEndDate: searchDataFields.LastModifiedEndDate
+        ? formatDateToUTC(searchDataFields.LastModifiedEndDate, 2)
         : "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
@@ -1209,6 +1215,8 @@ const SearchBarComponent = ({
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
+    console.log(data, "searchDocumentsAndFoldersApi");
+    console.log("searchDocumentsAndFoldersApi");
     await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     setSelectedStartDate(null);
     setSelectedEndDate(null);
