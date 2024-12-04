@@ -91,12 +91,12 @@ const VideoCallNormalHeader = ({
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
   // For acccept Join name participantList
-  const getNewParticipantsMeetingJoin = useSelector(
-    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  const getVideoParticpantListandWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
 
   console.log(
-    getNewParticipantsMeetingJoin,
+    getVideoParticpantListandWaitingList,
     "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
   );
 
@@ -142,7 +142,7 @@ const VideoCallNormalHeader = ({
 
   console.log(newParticipants, "newParticipantsnewParticipants");
 
-  const participantCounter = getNewParticipantsMeetingJoin?.length;
+  const participantCounter = getVideoParticpantListandWaitingList?.length;
   console.log(participantData, "participantCounterparticipantCounter");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -166,6 +166,7 @@ const VideoCallNormalHeader = ({
   // Participant room Id and usrrGuid
   let participantRoomIds = localStorage.getItem("participantRoomId");
   let participantUID = localStorage.getItem("participantUID");
+  console.log({ participantRoomIds, participantUID }, "participantRoomIds");
 
   let callTypeID = Number(localStorage.getItem("callTypeID"));
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
@@ -309,6 +310,8 @@ const VideoCallNormalHeader = ({
         CallTypeID: callTypeID,
       };
       dispatch(LeaveCall(Data, navigate, t));
+      console.log("Not End 1");
+
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
@@ -320,12 +323,22 @@ const VideoCallNormalHeader = ({
       localStorage.removeItem("isHost");
       localStorage.removeItem("isNewHost");
     } else if (isMeeting === true) {
-      let Data = {
-        RoomID: String(newRoomID),
-        UserGUID: String(newUserGUID),
-        Name: String(newName),
-      };
-      dispatch(LeaveMeetingVideo(Data, navigate, t));
+      const meetHostFlag = JSON.parse(localStorage.getItem("meetingHostInfo"));
+      if (meetHostFlag?.isHost) {
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+      } else {
+        let Data = {
+          RoomID: String(participantRoomIds),
+          UserGUID: String(participantUID),
+          Name: String(newName),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
@@ -566,92 +579,6 @@ const VideoCallNormalHeader = ({
 
   console.log("Video Feature Reducer", videoFeatureReducer);
 
-  // useEffect(() => {
-  //   if (
-  //     getNewParticipantsMeetingJoin !== null &&
-  //     getNewParticipantsMeetingJoin !== undefined &&
-  //     getNewParticipantsMeetingJoin.length > 0
-  //   ) {
-  //     // Filter out duplicates based on UID
-  //     const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
-  //       (acc, current) => {
-  //         console.log(acc, "datadatdtad");
-  //         console.log(current, "currentcurrent");
-
-  //         // Only add the current participant if its UID is not already in acc
-  //         if (!acc.find((participant) => participant.guid === current.guid)) {
-  //           acc.push(current);
-  //         }
-  //         return acc;
-  //       },
-  //       []
-  //     );
-
-  //     setNewParticipants(uniqueParticipants);
-  //     console.log(uniqueParticipants, "uniqueParticipants");
-  //   } else {
-  //     setNewParticipants([]);
-  //   }
-  // }, [getNewParticipantsMeetingJoin]);
-
-  // makeLeave or transfer Meeting Host API
-  // const makeLeaveOnClick = (usersData) => {
-  //   console.log(usersData.UID, "usersDatausersData");
-  //   let data = {
-  //     RoomID: roomID,
-  //     UID: usersData.guid,
-  //     UserID: Number(currentUserID),
-  //   };
-
-  //   dispatch(transferMeetingHostMainApi(navigate, t, data));
-  // };
-
-  // make Host mute for guest or participant
-  // const muteUnmuteByHost = (usersData, flag) => {
-  //   setMuteGuest(flag);
-  //   let data = {
-  //     RoomID: roomID,
-  //     IsMuted: flag,
-  //     MuteUnMuteList: [
-  //       {
-  //         UID: usersData.guid, // The participant's UID
-  //       },
-  //     ],
-  //   };
-  //   dispatch(
-  //     muteUnMuteParticipantMainApi(navigate, t, data, setNewParticipants, flag)
-  //   );
-  // };
-
-  // const hideUnHideVideoParticipantByHost = (usersData, flag) => {
-  //   console.log(usersData, "akasdaskhdvasdv");
-  //   let data = {
-  //     RoomID: roomID,
-  //     HideVideo: flag,
-  //     UIDList: [usersData.guid],
-  //   };
-  //   dispatch(
-  //     hideUnHideParticipantGuestMainApi(
-  //       navigate,
-  //       t,
-  //       data,
-  //       setNewParticipants,
-  //       flag
-  //     )
-  //   );
-  // };
-
-  // const removeParticipantMeetingOnClick = (usersData) => {
-  //   console.log(usersData, "RemoveUserDataa");
-  //   let data = {
-  //     RoomID: String(roomID),
-  //     UID: usersData.guid,
-  //     Name: usersData.name,
-  //   };
-
-  //   dispatch(removeParticipantMeetingMainApi(navigate, t, data));
-  // };
-
   //Audio COntrol FOr Host
   const disableMicHost = () => {
     // Dispatch an action to toggle the mic state
@@ -830,7 +757,7 @@ const VideoCallNormalHeader = ({
                   >
                     <img
                       src={audioControlHost === true ? MicOff : MicOn}
-                      // onClick={muteUnMuteForHost}
+                      onClick={muteUnMuteForHost}
                       alt="Mic"
                     />
                   </Tooltip>
@@ -853,7 +780,7 @@ const VideoCallNormalHeader = ({
                   >
                     <img
                       src={videoControlHost === true ? VideoOff : VideoOn}
-                      // onClick={videoHideUnHideForHost}
+                      onClick={videoHideUnHideForHost}
                       alt="Video"
                     />
                   </Tooltip>

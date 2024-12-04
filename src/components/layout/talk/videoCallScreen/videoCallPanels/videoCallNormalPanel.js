@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
+import { getVideoCallParticipantsMainApi } from "../../../../../store/actions/VideoFeature_actions";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -54,14 +55,28 @@ const VideoPanelNormal = () => {
   let participantRoomIds = localStorage.getItem("participantRoomId");
 
   const getAllParticipantGuest = useSelector(
-    (state) => state.GuestVideoReducer.getAllParticipantGuest
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
   console.log(getAllParticipantGuest, "getAllParticipantGuest");
 
+  const muteUnMuteParticipantList = useSelector(
+    (state) => state.videoFeatureReducer.muteUnMuteParticipantList
+  );
+
+  console.log(muteUnMuteParticipantList, "muteUnMuteParticipantList");
+
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const getVideoParticpantListandWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  );
+  console.log(
+    getVideoParticpantListandWaitingList,
+    "getNewParticipantsMeetingJoin"
   );
 
   const audioControlHost = useSelector(
@@ -72,7 +87,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.videoControlHost
   );
 
-  console.log(audioControlHost, "audioControlHostaudioControlHost");
+  console.log(videoControlHost, "videoControlHostvideoControlHost");
 
   // audioControlForParticipant for Participants
   const audioControlForParticipant = useSelector(
@@ -152,29 +167,6 @@ const VideoPanelNormal = () => {
     }
   }, [getMeetingHostInfo]);
 
-  // useEffect(() => {
-  //   try {
-  //     let dynamicUrl = getParticipantsVideoUrl;
-  //     dynamicUrl = dynamicUrl.replace("$ParticipantFullName$", currentUserName);
-  //     dynamicUrl = dynamicUrl.replace(
-  //       "$IsMute$",
-  //       audioControlForParticipant ? "true" : "false"
-  //     );
-  //     dynamicUrl = dynamicUrl.replace(
-  //       "$IsHideCamera$",
-  //       videoControlForParticipant ? "true" : "false"
-  //     );
-  //     setMeetingVideoUrl(dynamicUrl);
-  //   } catch (error) {
-  //     console.error("Error replacing placeholders:", error);
-  //   }
-  // }, [
-  //   audioControlForParticipant,
-  //   videoControlForParticipant,
-  //   currentUserName,
-  //   meetingVideoUrl,
-  // ]);
-
   useEffect(() => {
     if (makeHostNow !== null) {
       if (
@@ -224,33 +216,31 @@ const VideoPanelNormal = () => {
       let Data = {
         RoomID: String(participantRoomIds),
       };
-      dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+      dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
     }
   }, []);
 
   useEffect(() => {
-    if (
-      getAllParticipantGuest !== null &&
-      getAllParticipantGuest !== undefined
-    ) {
-      console.log(
-        getAllParticipantGuest.participantList,
-        "getAllParticipantGuest.participantList"
-      );
-
-      // Filter participants to ensure unique userIDs
-      const uniqueParticipants = getAllParticipantGuest.participantList.filter(
-        (participant, index, self) =>
-          self.findIndex((p) => p.userID === participant.userID) === index
-      );
-
-      console.log(uniqueParticipants, "Filtered Unique Participants");
-
-      setAllParticipant(uniqueParticipants);
+    if (getAllParticipantGuest?.length) {
+      setAllParticipant(getAllParticipantGuest);
     } else {
       setAllParticipant([]);
     }
   }, [getAllParticipantGuest]);
+
+  useEffect(() => {
+    if (getVideoParticpantListandWaitingList?.length) {
+      setAllParticipant((prev) => {
+        const combined = [...prev, ...getVideoParticpantListandWaitingList];
+        // Filter duplicates by checking the unique identifier, e.g., `guid`
+        const uniqueParticipants = combined.filter(
+          (participant, index, self) =>
+            index === self.findIndex((p) => p.guid === participant.guid)
+        );
+        return uniqueParticipants;
+      });
+    }
+  }, [getVideoParticpantListandWaitingList]);
 
   // useEffect(() => {
   //   // Sync allParticipant with participantsList when it updates
@@ -646,7 +636,7 @@ const VideoPanelNormal = () => {
                                         sm={12}
                                         className="d-flex justify-content-end gap-2"
                                       >
-                                        {videoControlForParticipant ? (
+                                        {participant.hideCamera ? (
                                           <img
                                             src={VideoOff}
                                             width="20px"
@@ -655,7 +645,7 @@ const VideoPanelNormal = () => {
                                           />
                                         ) : null}
 
-                                        {audioControlForParticipant ? (
+                                        {participant.mute ? (
                                           <img
                                             src={MicOff}
                                             width="20px"
@@ -663,7 +653,7 @@ const VideoPanelNormal = () => {
                                             alt="Mic Mute"
                                           />
                                         ) : null}
-                                        {raisedUnRaisedParticipant ? (
+                                        {participant.raiseHand ? (
                                           <img
                                             src={Raisehandselected}
                                             width="20px"
