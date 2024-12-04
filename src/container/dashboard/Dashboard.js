@@ -176,6 +176,7 @@ import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScr
 import {
   admitGuestUserRequest,
   muteUnMuteByHost,
+  setVoiceControleGuest,
 } from "../../store/actions/Guest_Video";
 import { MeetingContext } from "../../context/MeetingContext";
 
@@ -809,7 +810,7 @@ const Dashboard = () => {
                     uids: allUids, // Include all participant UIDs
                   })
                 );
-
+                dispatch(setVoiceControleGuest(data.payload.isMuted));
                 dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
               } else {
                 // Handle individual mute/unmute
@@ -817,8 +818,10 @@ const Dashboard = () => {
 
                 if (data.payload.isMuted === true) {
                   dispatch(setAudioControlForParticipant(true));
+                  dispatch(setVoiceControleGuest(true));
                 } else {
                   dispatch(setAudioControlForParticipant(false));
+                  dispatch(setVoiceControleGuest(false));
                 }
               }
 
