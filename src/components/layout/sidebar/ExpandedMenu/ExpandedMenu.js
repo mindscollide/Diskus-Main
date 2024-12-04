@@ -5,11 +5,11 @@ import { Nav } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import DataroomImage from "../../../../assets/images/sidebar_icons/Dataroom.png";
 import GroupImage from "../../../../assets/images/sidebar_icons/Group.png";
-import CommitteeImage from "../../../../assets/images/sidebar_icons/Committee.png";
 import PollImage from "../../../../assets/images/sidebar_icons/Polls.png";
-import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.png";
+import CalenderImage from "../../../../assets/images/sidebar_icons/NewCalenderSideBar.png";
+import NotesImage from "../../../../assets/images/sidebar_icons/NewNotesSideBar.png";
+import TaskImage from "../../../../assets/images/sidebar_icons/NewTaskSideBar.png";
 import styles from "./ExpandMenu.module.css";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
@@ -23,7 +23,7 @@ const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  let ActiveCallFlag = localStorage.getItem("activeCall");
+  const navigate = useNavigate();
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -48,16 +48,28 @@ const ExpandedMenu = () => {
   const viewMeetingsFlag = useSelector(
     (state) => state.NewMeetingreducer.viewMeetingFlag
   );
-  //Dataroom Sidebar Click
-  const handleMeetingSidebarDataroom = () => {
-    localStorage.setItem("navigateLocation", "dataroom");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
-  };
+
+  const scheduleMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const viewProposeDateMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+  );
+  const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+  const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+  );
+  const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+  );
+  const proposeNewMeetingPageFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+  );
+  const viewMeetingFlagReducer = useSelector(
+    (state) => state.NewMeetingreducer.viewMeetingFlag
+  );
 
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
@@ -70,26 +82,8 @@ const ExpandedMenu = () => {
     }
   };
 
-  //Committees Sidebar Click
-  const handleMeetingSidebarCommittees = () => {
-    localStorage.setItem("navigateLocation", "committee");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
-  };
-
-  //Resolutions Sidebar Click
-  const handleMeetingSidebarResolutions = () => {
-    localStorage.setItem("navigateLocation", "resolution");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
-    }
+  const handleMeetingSidebarGroupsNoCall = () => {
+    navigate("/Diskus/groups");
   };
 
   //Polls Sidebar Click
@@ -103,40 +97,97 @@ const ExpandedMenu = () => {
     }
   };
 
+  const handleMeetingSidebarPollsNoCall = () => {
+    navigate("/Diskus/polling");
+  };
+
+  //Calendar Sidebar Click
+  const handleMeetingSidebarCalendar = () => {
+    localStorage.setItem("navigateLocation", "calendar");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarCalendarNoCall = () => {
+    navigate("/Diskus/calendar");
+  };
+
+  // Todo Sidebar Click
+  const handleMeetingSidebarTodo = () => {
+    localStorage.setItem("navigateLocation", "todolist");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarTodoNoCall = () => {
+    navigate("/Diskus/todolist");
+  };
+
+  const handleMeetingSidebarNotes = () => {
+    localStorage.setItem("navigateLocation", "Notes");
+    if (CurrentMeetingStatus === 10) {
+      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+    }
+  };
+
+  const handleMeetingSidebarNotesNoCall = () => {
+    navigate("/Diskus/Notes");
+  };
+
   return (
     <Nav className={styles.iconGrid}>
-      {checkFeatureIDAvailability(13) ? (
+      {/* Calendar Menu */}
+      {checkFeatureIDAvailability(7) ? (
         <Nav.Link
           as={Link}
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
               ? "/DisKus/Meeting"
-              : "/DisKus/dataroom"
+              : "/DisKus/calendar"
           }
-          draggable="false"
+          eventKey="link-5"
           className={
-            location.pathname === "/DisKus/dataroom" ||
-            location.pathname === "/Diskus/dataroom"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/calendar" ||
+            location.pathname === "/Diskus/calendar"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarDataroom
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarDataroom(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarCalendarNoCall();
+            } else {
+              handleMeetingSidebarCalendar();
+            }
+          }}
         >
-          <img src={DataroomImage} alt="DataroomIcon" />
-          <p>{t("Data-room")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={CalenderImage} alt="CalenderImage" />
+            <p>{t("Calendar")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
@@ -160,99 +211,119 @@ const ExpandedMenu = () => {
           className={
             location.pathname === "/DisKus/groups" ||
             location.pathname === "/Diskus/groups"
-              ? styles.iconItem_active
-              : styles.iconItem
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarGroups
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarGroups(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarGroupsNoCall();
+            } else {
+              handleMeetingSidebarGroups();
+            }
+          }}
         >
           {/* Grouo Icon */}
-          <img src={GroupImage} alt="" />
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={GroupImage} alt="" />
 
-          <p>{t("Groups")}</p>
+            <p>{t("Groups")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
-      {/* Committee */}
-      {checkFeatureIDAvailability(48) ? (
+      {/* Todo Menu */}
+      {checkFeatureIDAvailability(14) ? (
         <Nav.Link
           as={Link}
           to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
               ? "/DisKus/Meeting"
-              : "/DisKus/committee"
+              : "/DisKus/todolist"
           }
-          disabled={false}
-          draggable="false"
+          eventKey="link-3"
           className={
-            location.pathname === "/DisKus/committee" ||
-            location.pathname === "/Diskus/committee"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/todolist" ||
+            location.pathname === "/Diskus/todolist"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarCommittees
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarCommittees(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarTodoNoCall();
+            } else {
+              handleMeetingSidebarTodo();
+            }
+          }}
         >
-          {/* CommitteeIcon */}
-
-          <img src={CommitteeImage} alt="" />
-          <p>{t("Committees")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={TaskImage} alt="TaskImage" />
+            <p>{t("Tasks")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
-      {/* Resolution */}
-      {checkFeatureIDAvailability(18) ? (
+      {/* Note*/}
+      {checkFeatureIDAvailability(6) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/resolution"
-          }
           disabled={false}
-          draggable="false"
+          to={
+            (scheduleMeetingPageFlagReducer === true ||
+              viewProposeDateMeetingPageFlagReducer === true ||
+              viewAdvanceMeetingPublishPageFlagReducer === true ||
+              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+              viewProposeOrganizerMeetingPageFlagReducer === true ||
+              proposeNewMeetingPageFlagReducer === true) &&
+            viewMeetingFlagReducer === false
+              ? "/DisKus/Meeting"
+              : "/DisKus/Notes"
+          }
+          eventKey="link-4"
           className={
-            location.pathname === "/DisKus/resolution" ||
-            location.pathname === "/Diskus/resolution"
-              ? styles.iconItem_active
-              : styles.iconItem
+            location.pathname === "/DisKus/Notes" ||
+            location.pathname === "/Diskus/Notes"
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarResolutions
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarResolutions(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarNotesNoCall();
+            } else {
+              handleMeetingSidebarNotes();
+            }
+          }}
         >
-          {/* Resolution Icon */}
-          <img src={ResolutionImage} alt="" />
-          <p>{t("Resolutions")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={NotesImage} alt="NotesImage" />
+            <p>{t("Notes")}</p>
+          </div>
         </Nav.Link>
       ) : null}
 
@@ -276,21 +347,28 @@ const ExpandedMenu = () => {
           className={
             location.pathname === "/DisKus/polling" ||
             location.pathname === "/Diskus/polling"
-              ? styles.iconItem_active
-              : styles.iconItem
+              ? styles.iconItem_activeExpandedMenu
+              : styles.iconItemExpandedMenu
           }
-          onClick={
-            ActiveCallFlag === false
-              ? handleMeetingSidebarPolls
-              : (event) => {
-                  event.preventDefault(); // Prevents default navigation
-                  handleMeetingSidebarPolls(); // Your custom click handler
-                }
-          }
+          onClick={(e) => {
+            // Prevent default behavior
+            e.preventDefault();
+            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+            // Explicitly evaluate activeCall
+            if (activeCall === false) {
+              handleMeetingSidebarPollsNoCall();
+            } else {
+              handleMeetingSidebarPolls();
+            }
+          }}
         >
-          <img src={PollImage} alt="" />
-
-          <p>{t("Polls")}</p>
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            draggable="false"
+          >
+            <img src={PollImage} alt="" />
+            <p>{t("Polls")}</p>
+          </div>
         </Nav.Link>
       ) : null}
     </Nav>

@@ -172,32 +172,43 @@ const ViewProposedMeetingModal = () => {
                     {t("Participants")}
                   </span>
                   <Row>
-                    {partcipatns.length > 0 && partcipatns !== null
-                      ? partcipatns.map((data, index) => {
-                          return (
-                            <>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={6}
-                                key={index}
-                                className={styles["ScrollerParticipant"]}
-                              >
-                                <span className={styles["BoxCardParticipant"]}>
-                                  <img
-                                    src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                    alt=""
-                                    width={25}
-                                  />
-                                  <span className={styles["UserName"]}>
-                                    {data.userName}
-                                  </span>
-                                </span>
-                              </Col>
-                            </>
-                          );
-                        })
-                      : null}
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["ScrollerParticipant"]}
+                    >
+                      <Row>
+                        {partcipatns.length > 0 && partcipatns !== null
+                          ? partcipatns.map((data, index) => {
+                              return (
+                                <>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={6}
+                                    key={index}
+                                    className="mt-3"
+                                  >
+                                    <span
+                                      className={styles["BoxCardParticipant"]}
+                                    >
+                                      <img
+                                        src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                        alt=""
+                                        width={25}
+                                      />
+                                      <span className={styles["UserName"]}>
+                                        {data.userName}
+                                      </span>
+                                    </span>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                      </Row>
+                    </Col>
                   </Row>
                 </div>
               </Col>
