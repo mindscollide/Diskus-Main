@@ -9188,6 +9188,14 @@ const ProposedMeetingViewFlagAction = (response) => {
   };
 };
 
+//New Proposed Meeting View Flag Action
+const LeaveMeetingSideBarModalAction = (response) => {
+  return {
+    type: actions.LEAVE_MODAL_SIDEBAR,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9364,4 +9372,5 @@ export {
   getDashboardMeetingCountMQTT,
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
+  LeaveMeetingSideBarModalAction,
 };

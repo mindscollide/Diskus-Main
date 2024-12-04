@@ -17,6 +17,8 @@ import ResolutionImage from "../../../assets/images/sidebar_icons/Resolution.png
 import CommitteeImage from "../../../assets/images/sidebar_icons/Committee.png";
 import MeetingImage from "../../../assets/images/sidebar_icons/NewMeetingSVGSideBar.png";
 import NewShowMoreIcon from "../../../assets/images/sidebar_icons/NewSideBarShowMoreIcon.png";
+import { LeaveMeetingSideBarModalAction } from "../../../store/actions/NewMeetingActions";
+import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -70,7 +72,9 @@ const Sidebar = () => {
   const viewMeetingsFlag = useSelector(
     (state) => state.NewMeetingreducer.viewMeetingFlag
   );
-
+  const LeaveMeetingSideBarModalTrigger = useSelector(
+    (state) => state.NewMeetingreducer.LeaveMeetingSidebarModal
+  );
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
@@ -123,9 +127,13 @@ const Sidebar = () => {
       dispatch(normalizeVideoPanelFlag(false));
     }
   };
-
+  console.log(viewMeetingsFlag, "viewMeetingsFlagviewMeetingsFlag");
   const handleMeetingSidebarClickNoCall = () => {
-    navigate("/Diskus/Meeting");
+    if (viewMeetingsFlag) {
+      dispatch(LeaveMeetingSideBarModalAction(true));
+    } else {
+      navigate("/Diskus/Meeting");
+    }
   };
 
   //Dataroom Sidebar Click
@@ -867,6 +875,7 @@ const Sidebar = () => {
           <Col sm={11} className={""}></Col>
         </Row>
       )}
+      {LeaveMeetingSideBarModalTrigger && <LeaveMeetingModalSideBar />}
     </>
   );
 };
