@@ -251,12 +251,7 @@ const VideoNewParticipantList = () => {
       }
     >
       <Row>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className="d-flex justify-content-between "
-        >
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-between">
           <span className={styles["Waiting-New-Participant-List_box_title"]}>
             {t("People")}
           </span>
@@ -269,9 +264,12 @@ const VideoNewParticipantList = () => {
         <Col sm={12} md={12} lg={12}>
           <TextField
             placeholder={"Search"}
-            applyClass={"waitingParticipantsSearchField"}
-            change={handleChangeSearchParticipant}
-            value={searchValue}
+            // applyClass={"waitingParticipantsSearchField"}
+            className={styles["text-field-searchclass"]}
+            onClick={(e) => e.stopPropagation()}
+            onFocus={(e) => console.log("Focused!")}
+            // change={handleChangeSearchParticipant}
+            // value={searchValue}
           />
         </Col>
 
