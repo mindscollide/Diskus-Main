@@ -856,6 +856,8 @@ export function formatDateToYYYYMMDD(date) {
 // "15 September, 2023";
 // "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
 export function formatDateToUTC(inputDate, value) {
+  console.log(inputDate, "inputDateinputDate");
+  console.log(value, "inputDateinputDate");
   // Validate inputDate
   if (!inputDate || isNaN(new Date(inputDate).getTime())) {
     console.error("Invalid input date:", inputDate);
@@ -866,7 +868,9 @@ export function formatDateToUTC(inputDate, value) {
   const formattedDate = format(new Date(inputDate), "yyyyMMdd");
 
   let dateWithTime;
-  if (value === 1) {
+  if (inputDate === "") {
+    return (dateWithTime = "");
+  } else if (value === 1) {
     dateWithTime = `${formattedDate}000000`; // Append start of the day (00:00:00)
   } else if (value === 2) {
     dateWithTime = `${formattedDate}235959`; // Append end of the day (23:59:59)
