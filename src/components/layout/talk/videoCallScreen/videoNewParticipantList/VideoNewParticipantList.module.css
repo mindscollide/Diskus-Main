@@ -22,6 +22,11 @@
   overflow-y: scroll !important;
 }
 
+.text-field-searchclass {
+  position: relative;
+  z-index: 10;
+}
+
 .Waiting-New-Participant-List_box_title {
   font-size: 12px;
   font-weight: 600;

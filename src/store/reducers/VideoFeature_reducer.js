@@ -119,8 +119,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(action, "responseDataDataData");
       let copyState = [...state.getVideoParticpantListandWaitingList];
       let newData = copyState.filter(
-        (videoParticipants, index) =>
-          videoParticipants.userID !== action.payload
+        (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
       console.log(newData, "newDatanewDatanewDataasxas");
 
@@ -413,7 +412,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       const { payload } = action;
       console.log("Action Payload:", payload);
 
+      // Ensure proper use of isForAll
       if (payload.isForAll) {
+        if (typeof payload.isMuted !== "boolean") {
+          console.error(
+            "Invalid isMuted value for a global mute/unmute action."
+          );
+          return state; // Return unchanged state if invalid
+        }
+
         // Mute/Unmute all participants
         const updatedParticipantList =
           state.getVideoParticpantListandWaitingList.map((participant) => ({
@@ -437,6 +444,11 @@ const videoFeatureReducer = (state = initialState, action) => {
       }
 
       // Individual participant mute/unmute
+      if (!payload.uid) {
+        console.error("Missing uid for individual mute/unmute action.");
+        return state; // Return unchanged state if uid is not provided
+      }
+
       const updatedParticipantList =
         state.getVideoParticpantListandWaitingList.map((participant) =>
           participant.guid === payload.uid
@@ -444,7 +456,6 @@ const videoFeatureReducer = (state = initialState, action) => {
             : participant
         );
 
-      // Main participant mute/unmute
       const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
         (participant) =>
           participant.guid === payload.uid

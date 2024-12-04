@@ -257,8 +257,21 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
 
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
+  );
+  console.log(
+    getAllParticipantMain,
+    "getAllParticipantMaingetAllParticipantMain"
+  );
+
   const getVideoParticpantListandWaitingList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  );
+
+  console.log(
+    getVideoParticpantListandWaitingList,
+    "getAllParticipantMaingetAllParticipantMain"
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -782,23 +795,22 @@ const Dashboard = () => {
             ) {
               if (data.payload.isForAll) {
                 // Gather all participant UIDs
-                const allUids = getNewParticipantsMeetingJoin.map(
-                  (participant) => {
-                    console.log(participant, "participantparticipant");
-                    // participant.guid;
-                  }
+                const allUids = getVideoParticpantListandWaitingList.map(
+                  (participant) => participant.guid
                 );
+
+                console.log(allUids, "allUidsallUids");
 
                 // Dispatch action with all UIDs
                 dispatch(
                   participanMuteUnMuteMeeting({
-                    isMuted: true,
+                    isMuted: data.payload.isMuted,
                     isForAll: true,
                     uids: allUids, // Include all participant UIDs
                   })
                 );
 
-                dispatch(setAudioControlForParticipant(true)); // Update global state to mute all
+                dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
               } else {
                 // Handle individual mute/unmute
                 dispatch(participanMuteUnMuteMeeting(data.payload));
