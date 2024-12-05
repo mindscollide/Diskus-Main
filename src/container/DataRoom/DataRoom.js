@@ -3293,15 +3293,13 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
     DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
-  console.log(
-    SignatureResponseMessage,
-    "SignatureResponseMessageSignatureResponseMessage"
-  );
+
   useEffect(() => {
     if (
       SignatureResponseMessage !== "" &&
       SignatureResponseMessage !== undefined &&
-      SignatureResponseMessage !== null
+      SignatureResponseMessage !== null &&
+      SignatureResponseMessage !== t("Created-successfully")
     ) {
       showMessage(SignatureResponseMessage, "success", setOpen);
       dispatch(clearWorkFlowResponseMessage());
