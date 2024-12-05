@@ -573,6 +573,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
+                isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
@@ -607,6 +608,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               const meetingHost = {
                 isHost: response.data.responseResult.isHost,
                 isHostId: Number(localStorage.getItem("userID")),
+                isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem(

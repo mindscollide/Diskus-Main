@@ -780,6 +780,7 @@ const Dashboard = () => {
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
+                isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("isMeeting", false);
@@ -810,7 +811,6 @@ const Dashboard = () => {
                     uids: allUids, // Include all participant UIDs
                   })
                 );
-                dispatch(setVoiceControleGuest(data.payload.isMuted));
                 dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
               } else {
                 // Handle individual mute/unmute
@@ -818,10 +818,8 @@ const Dashboard = () => {
 
                 if (data.payload.isMuted === true) {
                   dispatch(setAudioControlForParticipant(true));
-                  dispatch(setVoiceControleGuest(true));
                 } else {
                   dispatch(setAudioControlForParticipant(false));
-                  dispatch(setVoiceControleGuest(false));
                 }
               }
 
@@ -908,6 +906,7 @@ const Dashboard = () => {
               const meetingHost = {
                 isHost: true,
                 isHostId: Number(localStorage.getItem("userID")),
+                isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
 

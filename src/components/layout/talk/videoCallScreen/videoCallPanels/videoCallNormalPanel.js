@@ -216,6 +216,7 @@ const VideoPanelNormal = () => {
     // Parse `isWebCamEnabled` from localStorage
     const isWebCamEnabled = localStorage.getItem("isWebCamEnabled") === "true";
     console.log(isWebCamEnabled, "sadisWebCamEnabledisWebCamEnabled");
+    const enableVideo = localStorage.getItem("enableVideo");
 
     // Determine the control source based on the user role
     const controlSource =
@@ -225,7 +226,7 @@ const VideoPanelNormal = () => {
 
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
-      if (controlSource === true && isWebCamEnabled === false) {
+      if (controlSource === true || enableVideo) {
         console.log("Video Check - Turning Video Off");
         iframe.contentWindow.postMessage("VidOff", "*");
       } else {
@@ -239,6 +240,7 @@ const VideoPanelNormal = () => {
     const meetingHost = {
       isHost: false,
       isHostId: 0,
+      isDashboardVideo: true,
     };
     localStorage.getItem("meetinHostInfo", JSON.stringify(meetingHost));
     console.log(meetingHost, "meetingHostmeetingHost");
@@ -641,75 +643,6 @@ const VideoPanelNormal = () => {
                               {isMeetingHost && <VideoNewParticipantList />}
                             </Col>
                           ) : null}
-                        </>
-                      ) : isMeeting === true &&
-                        isMeetingVideo === true &&
-                        !isMeetingHost ? (
-                        <>
-                          <div className="Participants-Lists">
-                            <>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <p className="Participant-name-title">
-                                    {t("Participants")}
-                                  </p>
-                                </Col>
-                              </Row>
-                              {allParticipant.length > 0 &&
-                                allParticipant.map((participant, index) => {
-                                  console.log(
-                                    participant,
-                                    "participantparticipantparticipant"
-                                  );
-                                  return (
-                                    <>
-                                      <Row key={participant.guid}>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={12}
-                                          className="d-flex justify-content-start"
-                                        >
-                                          <p>{participant.name}</p>{" "}
-                                        </Col>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={12}
-                                          className="d-flex justify-content-end gap-2"
-                                        >
-                                          {participant.hideCamera ? (
-                                            <img
-                                              src={VideoOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Video Off"
-                                            />
-                                          ) : null}
-
-                                          {participant.mute ? (
-                                            <img
-                                              src={MicOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Mic Mute"
-                                            />
-                                          ) : null}
-                                          {participant.raiseHand ? (
-                                            <img
-                                              src={Raisehandselected}
-                                              width="20px"
-                                              height="20px"
-                                              alt="raise hand"
-                                            />
-                                          ) : null}
-                                        </Col>
-                                      </Row>
-                                    </>
-                                  );
-                                })}
-                            </>
-                          </div>
                         </>
                       ) : null}
                       {/* <VideoCallParticipants /> */}

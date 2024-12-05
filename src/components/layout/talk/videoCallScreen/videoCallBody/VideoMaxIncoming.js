@@ -108,6 +108,12 @@ const VideoMaxIncoming = () => {
   // }, [])
 
   const acceptCall = () => {
+    const meetingHost = {
+      isHost: false,
+      isHostId: 0,
+      isDashboardVideo: false,
+    };
+    localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
     let Data = {
       ReciepentID: currentUserId,
       RoomID: activeCallState === true ? activeRoomID : incomingRoomID,

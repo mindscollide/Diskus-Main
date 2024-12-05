@@ -195,6 +195,7 @@ const VideoPanelBodyRecent = () => {
 
   const otoVideoCall = (data) => {
     setRecentCallRecipientData(data);
+    console.log(data, "datadatadatadata");
     if (activeCall === false) {
       if (data.callType.callTypeID === 1) {
         let Data = {
@@ -205,6 +206,12 @@ const VideoPanelBodyRecent = () => {
           CallTypeID: 1,
           OrganizationID: currentOrganization,
         };
+        const meetingHost = {
+          isHost: false,
+          isHostId: 0,
+          isDashboardVideo: false,
+        };
+        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
         localStorage.setItem("CallType", Data.CallTypeID);
         localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
@@ -219,6 +226,12 @@ const VideoPanelBodyRecent = () => {
         data.callType.callTypeID === 2 ||
         data.callType.callTypeID === 3
       ) {
+        const meetingHost = {
+          isHost: false,
+          isHostId: 0,
+          isDashboardVideo: false,
+        };
+        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
         const recipientIds =
           data.callerID !== currentUserID ? [data.callerID] : [];
 

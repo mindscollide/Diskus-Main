@@ -8,7 +8,7 @@
   z-index: 9;
   padding-top: 25px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.6);
+  background: #707070 !important;
   backdrop-filter: blur(15px);
 }
 
@@ -39,6 +39,11 @@
 
 .calling-title-max-call {
   text-align: center;
+}
+
+.button-img {
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .button-img-max-call {
