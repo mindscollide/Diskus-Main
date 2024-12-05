@@ -1835,7 +1835,7 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
 
 //Web Notification Date Formatter
 
-export function WebNotficationDateFormatter(input) {
+export function WebNotficationDateFormatter(input, locale) {
   // Ensure the input is a string and has the expected length
   if (typeof input !== "string" || input.length !== 14) {
     throw new Error("Invalid datetime format. Expected a 14-character string.");
@@ -1855,12 +1855,42 @@ export function WebNotficationDateFormatter(input) {
   const hours12 = date.getHours() % 12 || 12; // Convert to 12-hour format
   const ampm = date.getHours() >= 12 ? "pm" : "am";
 
-  // Format the final date string
-  const formattedDate = `${String(day).padStart(2, "0")}-${date.toLocaleString(
-    "en-US",
-    { month: "short" }
-  )}-${String(year).substring(2)}`;
-  const formattedTime = `${hours12}:${minute} ${ampm}`;
+  if (locale === "ar") {
+    // Arabic formatting
+    const arabicFormatter = new Intl.DateTimeFormat("ar-SA", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+      hour: "numeric",
+      minute: "numeric",
+      hourCycle: "h12",
+    });
 
-  return `${formattedTime} | ${formattedDate}`;
+    const arabicDateParts = arabicFormatter.formatToParts(date);
+    const formattedTime = `${arabicDateParts
+      .filter((part) => part.type === "hour" || part.type === "minute")
+      .map((part) => part.value)
+      .join(":")} ${
+      arabicDateParts.find((part) => part.type === "dayPeriod")?.value
+    }`;
+
+    const formattedDate = `${
+      arabicDateParts.find((part) => part.type === "day")?.value
+    }-${arabicDateParts.find((part) => part.type === "month")?.value}-${
+      arabicDateParts.find((part) => part.type === "year")?.value
+    }`;
+
+    return `${formattedTime} | ${formattedDate}`;
+  } else {
+    // Default to English formatting
+    const formattedDate = `${String(day).padStart(
+      2,
+      "0"
+    )}-${date.toLocaleString("en-US", { month: "short" })}-${String(
+      year
+    ).substring(2)}`;
+    const formattedTime = `${hours12}:${minute} ${ampm}`;
+
+    return `${formattedTime} | ${formattedDate}`;
+  }
 }

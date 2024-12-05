@@ -42,10 +42,13 @@ const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,
   maxCharacters = 105,
+  index,
+  length,
 }) => {
+  //Current Language
+  let Lang = localStorage.getItem("i18nextLng");
   //Local States
   const [truncatedMessage, setTruncatedMessage] = useState("");
-
   //UseEffect for Truncating the Text According to need without using webkitt solution for Text truncation
   useEffect(() => {
     if (NotificationMessege.length > maxCharacters) {
@@ -66,7 +69,7 @@ const WebNotificationCard = ({
           sm={12}
           className="d-flex align-items-center justify-content-center gap-2"
         >
-          <img src={AddedInMeeting} width={40} alt="" />
+          <img src={AddedInMeeting} width={46} alt="" />
           <span className={styles["NotificationMessegeUnmarked"]}>
             {truncatedMessage}
           </span>
@@ -75,9 +78,11 @@ const WebNotificationCard = ({
       <Row>
         <Col lg={12} md={12} sm={12} className="d-flex flex-column flex-wrap">
           <span className={styles["NotifcationDateStyles"]}>
-            {WebNotficationDateFormatter(NotificationTime)}
+            {WebNotficationDateFormatter(NotificationTime, Lang)}
           </span>
-          <span className={styles["SeperateNotificationLine"]}></span>
+          {index !== length - 1 ? (
+            <span className={styles["SeperateNotificationLine"]}></span>
+          ) : null}
         </Col>
       </Row>
     </section>

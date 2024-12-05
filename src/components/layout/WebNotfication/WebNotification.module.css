@@ -43,6 +43,12 @@ body[dir="rtl"] .WebNotificationOuterBox {
   cursor: pointer !important;
 }
 
+.BackGroundreadNotifications {
+  width: 100% !important;
+  background-color: #fff !important ;
+  cursor: pointer !important;
+}
+
 .NotificationCategories {
   font-weight: 600 !important;
   font-size: 12px !important;

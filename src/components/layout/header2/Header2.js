@@ -121,7 +121,7 @@ const Header2 = ({ isVideo }) => {
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
-
+  const [totalCountNotification, setTotalCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
@@ -190,8 +190,13 @@ const Header2 = ({ isVideo }) => {
         getAllNotificationData !== null &&
         getAllNotificationData !== undefined
       ) {
+        console.log(
+          getAllNotificationData.totalCount,
+          "getAllNotificationDatagetAllNotificationData"
+        );
         //Used Spread Operator to prevent State Mutation
         setwebNotificationData([...getAllNotificationData.notifications]);
+        setTotalCountNotification(getAllNotificationData.totalCount);
       }
     } catch (error) {
       console.log(error);
@@ -1261,7 +1266,9 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
-                    <span className="NotficationCountSpan">4</span>
+                    <span className="NotficationCountSpan">
+                      {totalCountNotification}
+                    </span>
                   </span>
                   {/* Web Notification Outer Box Starts */}
                   {showWebNotification && (

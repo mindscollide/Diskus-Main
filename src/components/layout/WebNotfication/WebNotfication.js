@@ -98,17 +98,19 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
           >
             {webNotificationData.map((data, index) => (
               <Row
-                key={data.id} // Use a unique identifier for the key
+                key={index}
                 className={
                   index !== webNotificationData.length - 1
                     ? styles["BackGroundUnreadNotifications"]
-                    : "" // Apply the class only if it's not the last item
+                    : styles["BackGroundreadNotifications"] // Apply the class only if it's not the last item
                 }
               >
                 <Col lg={12} md={12} sm={12}>
                   <WebNotificationCard
                     NotificationMessege={data.description}
                     NotificationTime={data.sentDateTime}
+                    index={index}
+                    length={webNotificationData.length}
                   />
                 </Col>
               </Row>
