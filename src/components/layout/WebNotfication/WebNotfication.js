@@ -27,9 +27,9 @@ const WebNotfication = ({ webNotificationData }) => {
                   NotificationMessege={data.Messege}
                   NotificationTime={data.Time}
                 />
-                {index !== webNotificationData.length - 1 && (
-                  <span className={styles["SeperateNotificationLine"]}></span>
-                )}
+                {/* {index !== webNotificationData.length - 1 && (
+
+                )} */}
               </Col>
             </>
           );

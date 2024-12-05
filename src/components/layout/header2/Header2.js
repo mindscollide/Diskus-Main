@@ -186,7 +186,7 @@ const Header2 = ({ isVideo }) => {
     {
       Messege:
         "Routine Check start in 30 mins. Go to Meeting Details to run through any attachments before the meeting you must ensure your presence in the meeting will be appreciated",
-      Time: "12:13 pm",
+      Time: "10:48 am | 09-Dec-24",
     },
     {
       Messege:

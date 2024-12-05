@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import styles from "./WebNotificationCard.module.css";
 import AddedInMeeting from "../../../../assets/images/Added in meeting.png";
 import MeetingUpdated from "../../../../assets/images/Meeting Updated.png";
@@ -35,12 +36,11 @@ import MinutesReviewRequest from "../../../../assets/images/Minutes review reque
 import Video from "../../../../assets/images/Video.png";
 import Approval from "../../../../assets/images/Approval.png";
 import Signature from "../../../../assets/images/Signature.png";
-import { Col, Row } from "react-bootstrap";
 
 const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,
-  maxCharacters = 90,
+  maxCharacters = 100,
 }) => {
   //Local States
   const [truncatedMessage, setTruncatedMessage] = useState("");
@@ -56,14 +56,13 @@ const WebNotificationCard = ({
     }
   }, [NotificationMessege, maxCharacters]);
 
-  console.log(NotificationMessege, "NotificationMessege");
   return (
     <section>
       <Row className="mt-2">
         <Col
-          lg={10}
-          md={10}
-          sm={10}
+          lg={12}
+          md={12}
+          sm={12}
           className="d-flex align-items-center justify-content-center gap-2"
         >
           <img src={AddedInMeeting} width={40} alt="" />
@@ -71,15 +70,13 @@ const WebNotificationCard = ({
             {truncatedMessage}
           </span>
         </Col>
-        <Col
-          lg={2}
-          md={2}
-          sm={2}
-          className="d-flex justify-content-end align-items-center mt-3"
-        >
+      </Row>
+      <Row>
+        <Col lg={12} md={12} sm={12} className="d-flex flex-column flex-wrap">
           <span className={styles["NotifcationDateStyles"]}>
             {NotificationTime}
           </span>
+          <span className={styles["SeperateNotificationLine"]}></span>
         </Col>
       </Row>
     </section>

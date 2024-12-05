@@ -37,13 +37,6 @@ body[dir="rtl"] .WebNotificationOuterBox {
   margin-left: -15px;
 }
 
-.SeperateNotificationLine {
-  display: inline-block !important;
-  width: 100% !important;
-  border: 1px solid #e1e1e1 !important;
-  margin-top: 4px !important;
-}
-
 .BackGroundUnreadNotifications {
   width: 100% !important;
   background-color: #f3f3f3 !important ;
