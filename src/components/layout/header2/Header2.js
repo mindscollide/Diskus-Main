@@ -1216,7 +1216,7 @@ const Header2 = ({ isVideo }) => {
                     )}
                   </Dropdown>
                   {/* Web Notification Bell Icon */}
-                  {/* <span
+                  <span
                     className="position-relative"
                     onClick={handleWebNotication}
                   >
@@ -1228,9 +1228,9 @@ const Header2 = ({ isVideo }) => {
                       className="BellNotificationIconStyles"
                     />
                     <span className="NotficationCountSpan">4</span>
-                  </span> */}
+                  </span>
                   {/* Web Notification Outer Box Starts */}
-                  {/* {showWebNotification && <WebNotfication />} */}
+                  {showWebNotification && <WebNotfication />}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
