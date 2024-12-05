@@ -182,7 +182,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     if (iframe.contentWindow !== null) {
       console.log("Sending message...");
       setMicOn(voiceControle);
-      if (voiceControle) {
+      if (voiceControle === true) {
         iframe.contentWindow.postMessage("MicOff", "*");
         console.log("isVideoOnisVideoOn");
       } else {

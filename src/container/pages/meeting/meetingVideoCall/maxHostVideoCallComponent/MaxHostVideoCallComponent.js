@@ -121,7 +121,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
     dispatch(setVideoState(enable));
-    // localStorage.setItem("enableVideo", !enable);
+    localStorage.setItem("enableVideo", !enable);
     dispatch(setVideoControlHost(!enable));
 
     if (enable) {

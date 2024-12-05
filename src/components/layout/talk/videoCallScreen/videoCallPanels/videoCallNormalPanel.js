@@ -24,6 +24,12 @@ import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticip
 import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import { getVideoCallParticipantsMainApi } from "../../../../../store/actions/VideoFeature_actions";
+import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import MaxHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import ParticipantVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -53,6 +59,30 @@ const VideoPanelNormal = () => {
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantRoomIds = localStorage.getItem("participantRoomId");
+
+  const MaximizeHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+  );
+
+  const NormalHostVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  );
+
+  const maximizeParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+  );
+
+  const normalParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+  );
+
+  const maxParticipantVideoDeniedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+  );
+
+  const maxParticipantVideoRemovedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+  );
 
   const getAllParticipantGuest = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
@@ -186,6 +216,7 @@ const VideoPanelNormal = () => {
     // Parse `isWebCamEnabled` from localStorage
     const isWebCamEnabled = localStorage.getItem("isWebCamEnabled") === "true";
     console.log(isWebCamEnabled, "sadisWebCamEnabledisWebCamEnabled");
+    const enableVideo = localStorage.getItem("enableVideo");
 
     // Determine the control source based on the user role
     const controlSource =
@@ -195,7 +226,7 @@ const VideoPanelNormal = () => {
 
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
-      if (controlSource === true && isWebCamEnabled === false) {
+      if (controlSource === true || enableVideo) {
         console.log("Video Check - Turning Video Off");
         iframe.contentWindow.postMessage("VidOff", "*");
       } else {
@@ -209,6 +240,7 @@ const VideoPanelNormal = () => {
     const meetingHost = {
       isHost: false,
       isHostId: 0,
+      isDashboardVideo: true,
     };
     localStorage.getItem("meetinHostInfo", JSON.stringify(meetingHost));
     console.log(meetingHost, "meetingHostmeetingHost");
@@ -440,6 +472,7 @@ const VideoPanelNormal = () => {
       }
     }
   }, [audioControlHost, audioControlForParticipant]);
+  console.log("hell");
 
   // useEffect(() => {
   //   console.log("Normalize UseEffect Check", vidStatus, isVideoActive);
@@ -457,244 +490,187 @@ const VideoPanelNormal = () => {
 
   return (
     <>
-      <Row>
-        <Col sm={12} md={12} lg={12}>
-          <div
-            className={
-              videoFeatureReducer.NormalizeVideoFlag === true &&
-              videoFeatureReducer.MinimizeVideoFlag === false &&
-              videoFeatureReducer.MaximizeVideoFlag === false &&
-              videoFeatureReducer.VideoChatPanel === true
-                ? "videoCallScreen"
-                : videoFeatureReducer.NormalizeVideoFlag === true &&
-                  videoFeatureReducer.MinimizeVideoFlag === false &&
-                  videoFeatureReducer.MaximizeVideoFlag === false &&
-                  videoFeatureReducer.VideoChatPanel === false
-                ? "videoCallScreen more-zindex"
-                : videoFeatureReducer.NormalizeVideoFlag === false &&
-                  videoFeatureReducer.MinimizeVideoFlag === false &&
-                  videoFeatureReducer.MaximizeVideoFlag === true &&
-                  videoFeatureReducer.VideoChatPanel === true
-                ? "max-video-panel"
-                : videoFeatureReducer.NormalizeVideoFlag === false &&
-                  videoFeatureReducer.MinimizeVideoFlag === false &&
-                  videoFeatureReducer.MaximizeVideoFlag === true &&
-                  videoFeatureReducer.VideoChatPanel === false
-                ? "max-video-panel more-zindex"
-                : ""
-            }
-          >
-            {VideoMainReducer.FullLoader === true ? (
-              <>
-                <LoaderPanelVideoScreen
-                  message={t(
-                    "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
-                  )}
-                />
-              </>
-            ) : (
-              <>
-                <VideoCallNormalHeader
-                  screenShareButton={handleScreenShareButton}
-                  layoutCurrentChange={layoutCurrentChange}
-                  isScreenActive={isScreenActive}
-                  disableMic={disableMicFunction}
-                  disableVideo={disableVideoFunction}
-                  isVideoActive={isVideoActive}
-                  isMicActive={isMicActive}
-                  showTile={showTile}
-                />
-                {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
-                  <VideoOutgoing />
-                ) : null}
-                <Row>
-                  <>
-                    <Col
-                      lg={
-                        isMeetingHost &&
-                        videoFeatureReducer.participantWaitinglistBox
-                          ? 9
-                          : 12
-                      }
-                      md={
-                        isMeetingHost &&
-                        videoFeatureReducer.participantWaitinglistBox
-                          ? 9
-                          : 12
-                      }
-                      sm={
-                        isMeetingHost &&
-                        videoFeatureReducer.participantWaitinglistBox
-                          ? 9
-                          : 12
-                      }
-                    >
-                      <div
-                        className={
-                          videoFeatureReducer.NormalizeVideoFlag === true &&
-                          videoFeatureReducer.MinimizeVideoFlag === false &&
-                          videoFeatureReducer.MaximizeVideoFlag === false
-                            ? "normal-avatar"
-                            : videoFeatureReducer.NormalizeVideoFlag ===
-                                false &&
-                              videoFeatureReducer.MinimizeVideoFlag === false &&
-                              videoFeatureReducer.MaximizeVideoFlag === true
-                            ? "normal-avatar-large"
-                            : ""
+      {MaximizeHostVideoFlag ? (
+        <MaxHostVideoCallComponent />
+      ) : NormalHostVideoFlag ? (
+        <NormalHostVideoCallComponent />
+      ) : maximizeParticipantVideoFlag ? (
+        <ParticipantVideoCallComponent />
+      ) : normalParticipantVideoFlag ? (
+        <NormalParticipantVideoComponent />
+      ) : maxParticipantVideoDeniedFlag ? (
+        <MaxParticipantVideoDeniedComponent />
+      ) : maxParticipantVideoRemovedFlag ? (
+        <MaxParticipantVideoRemovedComponent />
+      ) : (
+        <Row>
+          <Col sm={12} md={12} lg={12}>
+            <div
+              className={
+                videoFeatureReducer.NormalizeVideoFlag === true &&
+                videoFeatureReducer.MinimizeVideoFlag === false &&
+                videoFeatureReducer.MaximizeVideoFlag === false &&
+                videoFeatureReducer.VideoChatPanel === true
+                  ? "videoCallScreen"
+                  : videoFeatureReducer.NormalizeVideoFlag === true &&
+                    videoFeatureReducer.MinimizeVideoFlag === false &&
+                    videoFeatureReducer.MaximizeVideoFlag === false &&
+                    videoFeatureReducer.VideoChatPanel === false
+                  ? "videoCallScreen more-zindex"
+                  : videoFeatureReducer.NormalizeVideoFlag === false &&
+                    videoFeatureReducer.MinimizeVideoFlag === false &&
+                    videoFeatureReducer.MaximizeVideoFlag === true &&
+                    videoFeatureReducer.VideoChatPanel === true
+                  ? "max-video-panel"
+                  : videoFeatureReducer.NormalizeVideoFlag === false &&
+                    videoFeatureReducer.MinimizeVideoFlag === false &&
+                    videoFeatureReducer.MaximizeVideoFlag === true &&
+                    videoFeatureReducer.VideoChatPanel === false
+                  ? "max-video-panel more-zindex"
+                  : ""
+              }
+            >
+              {VideoMainReducer.FullLoader === true ? (
+                <>
+                  <LoaderPanelVideoScreen
+                    message={t(
+                      "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
+                    )}
+                  />
+                </>
+              ) : (
+                <>
+                  <VideoCallNormalHeader
+                    screenShareButton={handleScreenShareButton}
+                    layoutCurrentChange={layoutCurrentChange}
+                    isScreenActive={isScreenActive}
+                    disableMic={disableMicFunction}
+                    disableVideo={disableVideoFunction}
+                    isVideoActive={isVideoActive}
+                    isMicActive={isMicActive}
+                    showTile={showTile}
+                  />
+                  {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
+                    <VideoOutgoing />
+                  ) : null}
+                  <Row>
+                    <>
+                      <Col
+                        lg={
+                          isMeetingHost &&
+                          videoFeatureReducer.participantWaitinglistBox
+                            ? 9
+                            : 12
+                        }
+                        md={
+                          isMeetingHost &&
+                          videoFeatureReducer.participantWaitinglistBox
+                            ? 9
+                            : 12
+                        }
+                        sm={
+                          isMeetingHost &&
+                          videoFeatureReducer.participantWaitinglistBox
+                            ? 9
+                            : 12
                         }
                       >
-                        {isMeetingHost === false ? (
-                          <iframe
-                            src={
-                              callAcceptedRecipientID === currentUserID
-                                ? refinedParticipantVideoUrl
-                                : callerURL
-                            }
-                            ref={iframeRef}
-                            title="Live Video"
-                            width="100%"
-                            height="100%"
-                            frameBorder="0"
-                            allow="camera;microphone;display-capture"
-                          />
-                        ) : initiateCallRoomID !== null ||
-                          callAcceptedRoomID !== null ? (
-                          <iframe
-                            src={
-                              callAcceptedRecipientID === currentUserID
-                                ? participantURL
-                                : callerURL
-                            }
-                            ref={iframeRef}
-                            title="Live Video"
-                            width="100%"
-                            height="100%"
-                            frameBorder="0"
-                            allow="camera;microphone;display-capture"
-                          />
-                        ) : null}
-                      </div>
-                    </Col>
-
-                    {isMeetingHost === true &&
-                    videoFeatureReducer.participantWaitinglistBox ? (
-                      <>
-                        {videoFeatureReducer.participantWaitinglistBox ? (
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={3}
-                            className={`${
-                              videoFeatureReducer.participantWaitinglistBox
-                                ? "ParticipantsWaiting_In"
-                                : "ParticipantsWaiting_Out"
-                            } ps-0`}
-                          >
-                            {/* <VideoCallParticipants /> */}
-
-                            {/* this is new Host Panel */}
-                            {isMeetingHost !== null &&
-                            isMeetingHost === true ? (
-                              <VideoNewParticipantList />
-                            ) : null}
-                          </Col>
-                        ) : null}
-                      </>
-                    ) : isMeeting === true &&
-                      isMeetingVideo === true &&
-                      !isMeetingHost ? (
-                      <>
-                        <div className="Participants-Lists">
-                          <>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <p className="Participant-name-title">
-                                  {t("Participants")}
-                                </p>
-                              </Col>
-                            </Row>
-                            {allParticipant.length > 0 &&
-                              allParticipant.map((participant, index) => {
-                                console.log(
-                                  participant,
-                                  "participantparticipantparticipant"
-                                );
-                                return (
-                                  <>
-                                    <Row key={participant.guid}>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={12}
-                                        className="d-flex justify-content-start"
-                                      >
-                                        <p>{participant.name}</p>{" "}
-                                      </Col>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={12}
-                                        className="d-flex justify-content-end gap-2"
-                                      >
-                                        {participant.hideCamera ? (
-                                          <img
-                                            src={VideoOff}
-                                            width="20px"
-                                            height="20px"
-                                            alt="Video Off"
-                                          />
-                                        ) : null}
-
-                                        {participant.mute ? (
-                                          <img
-                                            src={MicOff}
-                                            width="20px"
-                                            height="20px"
-                                            alt="Mic Mute"
-                                          />
-                                        ) : null}
-                                        {participant.raiseHand ? (
-                                          <img
-                                            src={Raisehandselected}
-                                            width="20px"
-                                            height="20px"
-                                            alt="raise hand"
-                                          />
-                                        ) : null}
-                                      </Col>
-                                    </Row>
-                                  </>
-                                );
-                              })}
-                          </>
+                        <div
+                          className={
+                            videoFeatureReducer.NormalizeVideoFlag === true &&
+                            videoFeatureReducer.MinimizeVideoFlag === false &&
+                            videoFeatureReducer.MaximizeVideoFlag === false
+                              ? "normal-avatar"
+                              : videoFeatureReducer.NormalizeVideoFlag ===
+                                  false &&
+                                videoFeatureReducer.MinimizeVideoFlag ===
+                                  false &&
+                                videoFeatureReducer.MaximizeVideoFlag === true
+                              ? "normal-avatar-large"
+                              : ""
+                          }
+                        >
+                          {isMeetingHost === false ? (
+                            <iframe
+                              src={
+                                callAcceptedRecipientID === currentUserID
+                                  ? refinedParticipantVideoUrl
+                                  : callerURL
+                              }
+                              ref={iframeRef}
+                              title="Live Video"
+                              width="100%"
+                              height="100%"
+                              frameBorder="0"
+                              allow="camera;microphone;display-capture"
+                            />
+                          ) : initiateCallRoomID !== null ||
+                            callAcceptedRoomID !== null ? (
+                            <iframe
+                              src={
+                                callAcceptedRecipientID === currentUserID
+                                  ? participantURL
+                                  : callerURL
+                              }
+                              ref={iframeRef}
+                              title="Live Video"
+                              width="100%"
+                              height="100%"
+                              frameBorder="0"
+                              allow="camera;microphone;display-capture"
+                            />
+                          ) : null}
                         </div>
-                      </>
-                    ) : null}
-                    {/* <VideoCallParticipants /> */}
-                  </>
-                </Row>
-                <Row>
-                  <Col lg={8} md={8} sm={12}></Col>
-                  <Col lg={4} md={4} sm={12}>
-                    {/* {videoFeatureReducer.VideoChatNormalFlag === true ? (
+                      </Col>
+
+                      {isMeetingHost === true &&
+                      videoFeatureReducer.participantWaitinglistBox ? (
+                        <>
+                          {videoFeatureReducer.participantWaitinglistBox ? (
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className={`${
+                                videoFeatureReducer.participantWaitinglistBox
+                                  ? "ParticipantsWaiting_In"
+                                  : "ParticipantsWaiting_Out"
+                              } ps-0`}
+                            >
+                              {/* <VideoCallParticipants /> */}
+
+                              {/* this is new Host Panel */}
+                              {isMeetingHost && <VideoNewParticipantList />}
+                            </Col>
+                          ) : null}
+                        </>
+                      ) : null}
+                      {/* <VideoCallParticipants /> */}
+                    </>
+                  </Row>
+                  <Row>
+                    <Col lg={8} md={8} sm={12}></Col>
+                    <Col lg={4} md={4} sm={12}>
+                      {/* {videoFeatureReducer.VideoChatNormalFlag === true ? (
                       <VideoPanelNormalChat />
                     ) : null} */}
 
-                    {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
-                      <VideoPanelNormalAgenda />
-                    ) : null}
+                      {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
+                        <VideoPanelNormalAgenda />
+                      ) : null}
 
-                    {videoFeatureReducer.VideoMinutesMeetingNormalFlag ===
-                    true ? (
-                      <VideoPanelNormalMinutesMeeting />
-                    ) : null}
-                  </Col>
-                </Row>
-              </>
-            )}
-          </div>
-        </Col>
-      </Row>
+                      {videoFeatureReducer.VideoMinutesMeetingNormalFlag ===
+                      true ? (
+                        <VideoPanelNormalMinutesMeeting />
+                      ) : null}
+                    </Col>
+                  </Row>
+                </>
+              )}
+            </div>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };
