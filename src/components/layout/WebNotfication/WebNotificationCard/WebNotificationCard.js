@@ -40,7 +40,7 @@ import Signature from "../../../../assets/images/Signature.png";
 const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,
-  maxCharacters = 100,
+  maxCharacters = 105,
 }) => {
   //Local States
   const [truncatedMessage, setTruncatedMessage] = useState("");
@@ -57,7 +57,7 @@ const WebNotificationCard = ({
   }, [NotificationMessege, maxCharacters]);
 
   return (
-    <section>
+    <section className={styles["CardSectionInner"]}>
       <Row className="mt-2">
         <Col
           lg={12}

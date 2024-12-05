@@ -179,9 +179,7 @@ const Header2 = ({ isVideo }) => {
       console.log(error, "errorerrorerror");
     }
   }, []);
-
   //Extracting the data for Web Notification
-
   const [webNotificationData, setwebNotificationData] = useState([
     {
       Messege:
@@ -299,6 +297,7 @@ const Header2 = ({ isVideo }) => {
       Time: "09:03 am",
     },
   ]);
+
   useEffect(() => {
     try {
       if (
