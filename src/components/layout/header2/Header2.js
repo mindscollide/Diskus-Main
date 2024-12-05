@@ -45,6 +45,7 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../store/actions/VideoFeature_actions.js";
+import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -96,6 +97,10 @@ const Header2 = ({ isVideo }) => {
 
   const ResponseMessageAssigneesReducer = useSelector(
     (state) => state.assignees.ResponseMessage
+  );
+
+  const getAllNotificationData = useSelector(
+    (state) => state.settingReducer.diskusWebNotificationData
   );
 
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
@@ -162,6 +167,149 @@ const Header2 = ({ isVideo }) => {
       if (showButtonOfUpgrade) {
         setShowButtonOfUpgrade(false);
       }
+    }
+  }, []);
+
+  //Web Notification API Calling
+  useEffect(() => {
+    try {
+      let data = { sRow: 0, eRow: 10 };
+      dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, []);
+
+  //Extracting the data for Web Notification
+
+  const [webNotificationData, setwebNotificationData] = useState([
+    {
+      Messege:
+        "Routine Check start in 30 mins. Go to Meeting Details to run through any attachments before the meeting you must ensure your presence in the meeting will be appreciated",
+      Time: "12:13 pm",
+    },
+    {
+      Messege:
+        "Mr. Yaqoob added an attachment to your meeting, Finance Breakdown.",
+      Time: "10:48 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+    {
+      Messege:
+        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
+      Time: "09:03 am",
+    },
+  ]);
+  useEffect(() => {
+    try {
+      if (
+        getAllNotificationData &&
+        getAllNotificationData !== null &&
+        getAllNotificationData !== undefined
+      ) {
+        console.log(getAllNotificationData, "getAllNotificationData");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
@@ -1230,7 +1378,9 @@ const Header2 = ({ isVideo }) => {
                     <span className="NotficationCountSpan">4</span>
                   </span>
                   {/* Web Notification Outer Box Starts */}
-                  {showWebNotification && <WebNotfication />}
+                  {showWebNotification && (
+                    <WebNotfication webNotificationData={webNotificationData} />
+                  )}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (

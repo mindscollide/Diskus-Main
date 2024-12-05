@@ -295,7 +295,7 @@ const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
   };
 };
 
-export default {
+export {
   getUserNotificationSetting,
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,

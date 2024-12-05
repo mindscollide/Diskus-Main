@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./WebNotificationCard.module.css";
 import AddedInMeeting from "../../../../assets/images/Added in meeting.png";
 import MeetingUpdated from "../../../../assets/images/Meeting Updated.png";
@@ -37,7 +37,26 @@ import Approval from "../../../../assets/images/Approval.png";
 import Signature from "../../../../assets/images/Signature.png";
 import { Col, Row } from "react-bootstrap";
 
-const WebNotificationCard = ({ NotificationMessege, NotificationTime }) => {
+const WebNotificationCard = ({
+  NotificationMessege,
+  NotificationTime,
+  maxCharacters = 90,
+}) => {
+  //Local States
+  const [truncatedMessage, setTruncatedMessage] = useState("");
+
+  //UseEffect for Truncating the Text According to need without using webkitt solution for Text truncation
+  useEffect(() => {
+    if (NotificationMessege.length > maxCharacters) {
+      setTruncatedMessage(
+        NotificationMessege.substring(0, maxCharacters) + "..."
+      );
+    } else {
+      setTruncatedMessage(NotificationMessege);
+    }
+  }, [NotificationMessege, maxCharacters]);
+
+  console.log(NotificationMessege, "NotificationMessege");
   return (
     <section>
       <Row className="mt-2">
@@ -49,7 +68,7 @@ const WebNotificationCard = ({ NotificationMessege, NotificationTime }) => {
         >
           <img src={AddedInMeeting} width={40} alt="" />
           <span className={styles["NotificationMessegeUnmarked"]}>
-            {NotificationMessege}
+            {truncatedMessage}
           </span>
         </Col>
         <Col
