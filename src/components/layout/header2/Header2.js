@@ -120,6 +120,8 @@ const Header2 = ({ isVideo }) => {
   const [showButtonOfUpgrade, setShowButtonOfUpgrade] = useState(false);
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
+  const [webNotificationData, setwebNotificationData] = useState([]);
+
   let Blur = localStorage.getItem("blur");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
@@ -180,123 +182,6 @@ const Header2 = ({ isVideo }) => {
     }
   }, []);
   //Extracting the data for Web Notification
-  const [webNotificationData, setwebNotificationData] = useState([
-    {
-      Messege:
-        "Routine Check start in 30 mins. Go to Meeting Details to run through any attachments before the meeting you must ensure your presence in the meeting will be appreciated",
-      Time: "10:48 am | 09-Dec-24",
-    },
-    {
-      Messege:
-        "Mr. Yaqoob added an attachment to your meeting, Finance Breakdown.",
-      Time: "10:48 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-    {
-      Messege:
-        "Board Member Executive Meetings  added on 16:00, 24th May, 2020. ",
-      Time: "09:03 am",
-    },
-  ]);
 
   useEffect(() => {
     try {
@@ -305,13 +190,15 @@ const Header2 = ({ isVideo }) => {
         getAllNotificationData !== null &&
         getAllNotificationData !== undefined
       ) {
-        console.log(getAllNotificationData, "getAllNotificationData");
+        //Used Spread Operator to prevent State Mutation
+        setwebNotificationData([...getAllNotificationData.notifications]);
       }
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [getAllNotificationData]);
 
+  console.log(webNotificationData, "webNotificationData");
   useEffect(() => {
     if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -1378,7 +1265,10 @@ const Header2 = ({ isVideo }) => {
                   </span>
                   {/* Web Notification Outer Box Starts */}
                   {showWebNotification && (
-                    <WebNotfication webNotificationData={webNotificationData} />
+                    <WebNotfication
+                      webNotificationData={webNotificationData}
+                      setwebNotificationData={setwebNotificationData}
+                    />
                   )}
                   {/* Web Notification Outer Box End */}
 

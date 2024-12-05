@@ -1832,3 +1832,35 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
     return "";
   }
 }
+
+//Web Notification Date Formatter
+
+export function WebNotficationDateFormatter(input) {
+  // Ensure the input is a string and has the expected length
+  if (typeof input !== "string" || input.length !== 14) {
+    throw new Error("Invalid datetime format. Expected a 14-character string.");
+  }
+
+  const year = input.substring(0, 4);
+  const month = input.substring(4, 6);
+  const day = input.substring(6, 8);
+  const hour = parseInt(input.substring(8, 10), 10);
+  const minute = input.substring(10, 12);
+  const second = input.substring(12, 14);
+
+  // Create a Date object
+  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
+
+  // Format hours and minutes for 12-hour clock
+  const hours12 = date.getHours() % 12 || 12; // Convert to 12-hour format
+  const ampm = date.getHours() >= 12 ? "pm" : "am";
+
+  // Format the final date string
+  const formattedDate = `${String(day).padStart(2, "0")}-${date.toLocaleString(
+    "en-US",
+    { month: "short" }
+  )}-${String(year).substring(2)}`;
+  const formattedTime = `${hours12}:${minute} ${ampm}`;
+
+  return `${formattedTime} | ${formattedDate}`;
+}

@@ -9,12 +9,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting";
 import { Spin } from "antd";
-const WebNotfication = ({ webNotificationData }) => {
+const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
+  console.log(webNotificationData, "webNotificationDatawebNotificationData");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  console.log(webNotificationData, "webNotificationData");
-  const [notifications, setNotifications] = useState([]);
   const [sRowsData, setSRowsData] = useState(0);
   const [totalRecords, setTotalRecords] = useState(webNotificationData.length);
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,7 @@ const WebNotfication = ({ webNotificationData }) => {
     />
   );
 
-  // Function to fetch more data from the hardcoded webNotificationData
+  // Function to fetch more data from webNotificationData
   const fetchNotifications = () => {
     if (sRowsData < totalRecords) {
       setLoading(true);
@@ -39,7 +38,22 @@ const WebNotfication = ({ webNotificationData }) => {
           sRowsData,
           sRowsData + 8
         );
-        setNotifications((prev) => [...prev, ...newNotifications]);
+
+        setwebNotificationData((prev) => {
+          // Combine the current data with new data, ensuring uniqueness
+          const combinedData = [
+            ...prev,
+            ...newNotifications.filter(
+              (notification) =>
+                !prev.some(
+                  (existingNotification) =>
+                    existingNotification.id === notification.id
+                )
+            ),
+          ];
+          return combinedData;
+        });
+
         setSRowsData((prev) => prev + 8); // Increment row count
         setLoading(false);
       }, 1000); // Simulating a delay of 1 second
@@ -60,9 +74,9 @@ const WebNotfication = ({ webNotificationData }) => {
       <Row>
         <Col lg={12}>
           <InfiniteScroll
-            dataLength={notifications.length}
+            dataLength={webNotificationData.length}
             next={fetchNotifications} // Trigger fetch when reaching the bottom
-            hasMore={notifications.length < totalRecords} // Continue fetching until limit
+            hasMore={webNotificationData.length < totalRecords} // Continue fetching until limit
             loader={
               loading && (
                 <Row>
@@ -82,19 +96,19 @@ const WebNotfication = ({ webNotificationData }) => {
               overflowX: "hidden",
             }}
           >
-            {notifications.map((data, index) => (
+            {webNotificationData.map((data, index) => (
               <Row
-                key={index}
+                key={data.id} // Use a unique identifier for the key
                 className={
-                  index !== notifications.length - 1
+                  index !== webNotificationData.length - 1
                     ? styles["BackGroundUnreadNotifications"]
                     : "" // Apply the class only if it's not the last item
                 }
               >
                 <Col lg={12} md={12} sm={12}>
                   <WebNotificationCard
-                    NotificationMessege={data.Messege}
-                    NotificationTime={data.Time}
+                    NotificationMessege={data.description}
+                    NotificationTime={data.sentDateTime}
                   />
                 </Col>
               </Row>
