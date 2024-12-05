@@ -44,6 +44,7 @@ const WebNotificationCard = ({
   maxCharacters = 105,
   index,
   length,
+  NotificaitonID,
 }) => {
   //Current Language
   let Lang = localStorage.getItem("i18nextLng");
@@ -69,7 +70,87 @@ const WebNotificationCard = ({
           sm={12}
           className="d-flex align-items-center justify-content-center gap-2"
         >
-          <img src={AddedInMeeting} width={46} alt="" />
+          {/* Icons According to Unique Notification ID  */}
+          {NotificaitonID === 1 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 2 ? (
+            <img src={MeetingUpdated} width={46} alt="" />
+          ) : NotificaitonID === 3 ? (
+            <img src={MeetingUpdated} width={46} alt="" />
+          ) : NotificaitonID === 4 ? (
+            <img src={MeetingEnded} width={46} alt="" />
+          ) : NotificaitonID === 5 ? (
+            <img src={MeetingEnded} width={46} alt="" />
+          ) : NotificaitonID === 6 ? (
+            <img src={RemoveFromMeeting} width={46} alt="" />
+          ) : NotificaitonID === 7 ? (
+            <img src={MinutesReviewRequest} width={46} alt="" />
+          ) : NotificaitonID === 8 ? (
+            <img src={MinutesReviewRequest} width={46} alt="" />
+          ) : NotificaitonID === 9 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 10 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 11 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 12 ? (
+            <img src={PollCreated} width={46} alt="" />
+          ) : NotificaitonID === 13 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 14 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 15 ? (
+            <img src={MeetingCreated} width={46} alt="" />
+          ) : NotificaitonID === 16 ? (
+            <img src={GroupCreated} width={46} alt="" />
+          ) : NotificaitonID === 17 ? (
+            <img src={GroupCreated} width={46} alt="" />
+          ) : NotificaitonID === 18 ? (
+            <img src={GroupCreated} width={46} alt="" />
+          ) : NotificaitonID === 19 ? (
+            <img src={GroupCreated} width={46} alt="" />
+          ) : NotificaitonID === 20 ? (
+            <img src={GroupCreated} width={46} alt="" />
+          ) : NotificaitonID === 21 ? (
+            <img src={CommitteesCreated} width={46} alt="" />
+          ) : NotificaitonID === 22 ? (
+            <img src={CommitteesCreated} width={46} alt="" />
+          ) : NotificaitonID === 23 ? (
+            <img src={CommitteesCreated} width={46} alt="" />
+          ) : NotificaitonID === 24 ? (
+            <img src={CommitteesCreated} width={46} alt="" />
+          ) : NotificaitonID === 25 ? (
+            <img src={CommitteesCreated} width={46} alt="" />
+          ) : NotificaitonID === 26 ? (
+            <img src={ResolutionCreated} width={46} alt="" />
+          ) : NotificaitonID === 27 ? (
+            <img src={ResolutionCreated} width={46} alt="" />
+          ) : NotificaitonID === 28 ? (
+            <img src={ResolutionCreated} width={46} alt="" />
+          ) : NotificaitonID === 29 ? (
+            <img src={PollCreated} width={46} alt="" />
+          ) : NotificaitonID === 30 ? (
+            <img src={PollCreated} width={46} alt="" />
+          ) : NotificaitonID === 31 ? (
+            <img src={PollResult} width={46} alt="" />
+          ) : NotificaitonID === 33 ? (
+            <img src={FolderShared} width={46} alt="" />
+          ) : NotificaitonID === 34 ? (
+            <img src={FolderShared} width={46} alt="" />
+          ) : NotificaitonID === 35 ? (
+            <img src={FolderShared} width={46} alt="" />
+          ) : NotificaitonID === 36 ? (
+            <img src={FolderShared} width={46} alt="" />
+          ) : NotificaitonID === 37 ? (
+            <img src={FolderDeleted} width={46} alt="" />
+          ) : NotificaitonID === 38 ? (
+            <img src={FolderDeleted} width={46} alt="" />
+          ) : NotificaitonID === 39 ? (
+            <img src={FolderDeleted} width={46} alt="" />
+          ) : NotificaitonID === 40 ? (
+            <img src={FolderDeleted} width={46} alt="" />
+          ) : null}
+
           <span className={styles["NotificationMessegeUnmarked"]}>
             {truncatedMessage}
           </span>

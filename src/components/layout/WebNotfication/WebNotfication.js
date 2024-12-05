@@ -111,6 +111,7 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
                     NotificationTime={data.sentDateTime}
                     index={index}
                     length={webNotificationData.length}
+                    NotificaitonID={data.notificationID}
                   />
                 </Col>
               </Row>
