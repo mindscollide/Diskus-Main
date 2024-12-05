@@ -23,7 +23,12 @@ import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
-import { getVideoCallParticipantsMainApi } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  getVideoCallParticipantsMainApi,
+  toggleParticipantsVisibility,
+} from "../../../../../store/actions/VideoFeature_actions";
+import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
+
 import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import MaxHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
@@ -148,6 +153,10 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.makeHostNow
   );
 
+  const participantsVisible = useSelector(
+    (state) => state.videoFeatureReducer.participantsVisible
+  );
+
   const [allParticipant, setAllParticipant] = useState([]);
   const [participantsList, setParticipantsList] = useState([]);
 
@@ -244,7 +253,11 @@ const VideoPanelNormal = () => {
     };
     localStorage.getItem("meetinHostInfo", JSON.stringify(meetingHost));
     console.log(meetingHost, "meetingHostmeetingHost");
-    if (meetingHost.isHost === false) {
+    if (
+      isMeeting &&
+      meetingHost.isHost === false &&
+      meetingHost.isDashboardVideo === true
+    ) {
       let Data = {
         RoomID: String(participantRoomIds),
       };
@@ -474,6 +487,10 @@ const VideoPanelNormal = () => {
   }, [audioControlHost, audioControlForParticipant]);
   console.log("hell");
 
+  const closeParticipantsList = () => {
+    dispatch(toggleParticipantsVisibility(false));
+  };
+
   // useEffect(() => {
   //   console.log("Normalize UseEffect Check", vidStatus, isVideoActive);
   //   const iframe = iframeRef.current;
@@ -643,6 +660,88 @@ const VideoPanelNormal = () => {
                               {isMeetingHost && <VideoNewParticipantList />}
                             </Col>
                           ) : null}
+                        </>
+                      ) : isMeeting === true &&
+                        isMeetingVideo === true &&
+                        !isMeetingHost ? (
+                        <>
+                          {participantsVisible && (
+                            <div className="Participants-Lists">
+                              <>
+                                <Row>
+                                  <Col lg={10} md={10} sm={10}>
+                                    <p className="Participant-name-title">
+                                      {t("Participants")}
+                                    </p>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <img
+                                      draggable={false}
+                                      src={BlackCrossIcon}
+                                      alt=""
+                                      className={"cursor-pointer"}
+                                      width="8px"
+                                      height="8px"
+                                      onClick={closeParticipantsList}
+                                    />
+                                  </Col>
+                                </Row>
+                                {allParticipant.length > 0 &&
+                                  allParticipant.map((participant, index) => {
+                                    console.log(
+                                      participant,
+                                      "participantparticipantparticipant"
+                                    );
+                                    return (
+                                      <>
+                                        <Row key={participant.guid}>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-flex justify-content-start"
+                                          >
+                                            <p>{participant.name}</p>{" "}
+                                          </Col>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="d-flex justify-content-end gap-2"
+                                          >
+                                            {participant.hideCamera ? (
+                                              <img
+                                                src={VideoOff}
+                                                width="20px"
+                                                height="20px"
+                                                alt="Video Off"
+                                              />
+                                            ) : null}
+
+                                            {participant.mute ? (
+                                              <img
+                                                src={MicOff}
+                                                width="20px"
+                                                height="20px"
+                                                alt="Mic Mute"
+                                              />
+                                            ) : null}
+                                            {participant.raiseHand ? (
+                                              <img
+                                                src={Raisehandselected}
+                                                width="20px"
+                                                height="20px"
+                                                alt="raise hand"
+                                              />
+                                            ) : null}
+                                          </Col>
+                                        </Row>
+                                      </>
+                                    );
+                                  })}
+                              </>
+                            </div>
+                          )}
                         </>
                       ) : null}
                       {/* <VideoCallParticipants /> */}

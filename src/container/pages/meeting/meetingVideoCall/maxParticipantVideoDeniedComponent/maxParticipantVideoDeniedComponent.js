@@ -5,6 +5,7 @@ import RejectImage from "../../../../../assets/images/Recent Activity Icons/Vide
 import "./maxParticipantVideoDeniedComponent.css";
 import { useDispatch } from "react-redux";
 import { maxParticipantVideoDenied } from "../../../../../store/actions/VideoFeature_actions";
+import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 
 const MaxParticipantVideoDeniedComponent = () => {
   const { t } = useTranslation();
@@ -19,8 +20,21 @@ const MaxParticipantVideoDeniedComponent = () => {
       <Container fluid>
         <div className="max-Participant-Reject-Videopanel">
           <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-              <p onClick={onClickCLose}>X</p>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end mt-2"
+            >
+              <img
+                draggable={false}
+                src={BlackCrossIcon}
+                alt=""
+                className={"cursor-pointer"}
+                width="12px"
+                height="12px"
+                onClick={onClickCLose}
+              />
             </Col>
           </Row>
           <Row>

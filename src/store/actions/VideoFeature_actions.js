@@ -1021,6 +1021,13 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
   };
 };
 
+const toggleParticipantsVisibility = (isVisible) => {
+  return {
+    type: actions.TOGGLE_PARTICIPANTS_VISIBILITY,
+    payload: isVisible,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1084,4 +1091,5 @@ export {
   setVideoState,
   participantLeaveVideoMeeting,
   getVideoCallParticipantsMainApi,
+  toggleParticipantsVisibility,
 };
