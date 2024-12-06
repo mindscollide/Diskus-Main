@@ -119,6 +119,27 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   }, [getAllParticipantGuest]);
 
   useEffect(() => {
+    if (
+      guestMuteUnMuteData &&
+      guestMuteUnMuteData.isForAll &&
+      guestMuteUnMuteData.isMuted !== undefined
+    ) {
+      const iframe = frameRef.current;
+      if (iframe.contentWindow) {
+        // Update the microphone state based on host's action
+        if (guestMuteUnMuteData.isMuted) {
+          iframe.contentWindow.postMessage("MicOff", "*");
+          setMicOn(true); // Mic is off (muted)
+        } else {
+          iframe.contentWindow.postMessage("MicOn", "*");
+          setMicOn(false); // Mic is on (unmuted)
+        }
+      }
+    }
+  }, [guestMuteUnMuteData]);
+
+  // for only single Mute
+  useEffect(() => {
     if (guestMuteUnMuteData !== null && guestUID === guestMuteUnMuteData.uid) {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {

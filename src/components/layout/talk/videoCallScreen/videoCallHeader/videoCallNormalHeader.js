@@ -24,6 +24,8 @@ import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
 import CallEndRedIcon from "./../../talk-Video/video-images/Call End Red.svg";
 import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
 import RaiseHand from "./../../talk-Video/video-images/Raise Hand Purple.svg";
+import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
+
 import LowerHand from "./../../talk-Video/video-images/Raise Hand White.svg";
 import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
 import CloseNotification from "../../../../../assets/images/Close-Notification.png";
@@ -51,6 +53,7 @@ import {
   setVideoControlForParticipant,
   setAudioControlForParticipant,
   setRaisedUnRaisedParticiant,
+  toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -142,7 +145,6 @@ const VideoCallNormalHeader = ({
 
   console.log(newParticipants, "newParticipantsnewParticipants");
 
-  const participantCounter = getVideoParticpantListandWaitingList?.length;
   console.log(participantData, "participantCounterparticipantCounter");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -215,6 +217,27 @@ const VideoCallNormalHeader = ({
   const [micEnableHost, setMicEnableHost] = useState(null);
 
   const [isMeetingHost, setIsMeetingHost] = useState(null);
+
+  const [participantCounterList, setParticipantCounterList] = useState([]);
+  console.log(participantCounterList, "participantCounterList");
+
+  const participantCounter = participantCounterList?.length;
+
+  // for show Participant popUp only
+  // Update filteredParticipants based on participantList
+  useEffect(() => {
+    console.log("hell");
+    if (getVideoParticpantListandWaitingList?.length) {
+      const uniqueParticipants = getVideoParticpantListandWaitingList.filter(
+        (participant, index, self) =>
+          self.findIndex((p) => p.userID === participant.userID) === index
+      );
+
+      setParticipantCounterList(uniqueParticipants);
+    } else {
+      setParticipantCounterList([]);
+    }
+  }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
     // This will only run when the component mounts and fetches the value from localStorage
@@ -302,6 +325,7 @@ const VideoCallNormalHeader = ({
 
   const openVideoPanel = () => {
     dispatch(leaveCallModal(true));
+    dispatch(toggleParticipantsVisibility(false));
   };
 
   const endCallParticipant = () => {
@@ -335,6 +359,8 @@ const VideoCallNormalHeader = ({
         };
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       } else {
+        dispatch(toggleParticipantsVisibility(false));
+
         let Data = {
           RoomID: String(participantRoomIds),
           UserGUID: String(participantUID),
@@ -428,6 +454,7 @@ const VideoCallNormalHeader = ({
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
         // dispatch(participantPopup(true));
+        dispatch(toggleParticipantsVisibility(true));
         dispatch(participantWaitingListBox(true));
         setAddParticipantPopup(false);
       } else {
@@ -448,6 +475,7 @@ const VideoCallNormalHeader = ({
 
   const cancelLeaveCallOption = () => {
     dispatch(leaveCallModal(false));
+    dispatch(toggleParticipantsVisibility(false));
   };
 
   // for Host leave Call
@@ -477,8 +505,8 @@ const VideoCallNormalHeader = ({
     } else if (getDashboardVideo.isDashboardVideo === false) {
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: roomID,
-        IsCaller: false,
+        RoomID: initiateRoomID,
+        IsCaller: true,
         CallTypeID: currentCallType,
       };
       dispatch(LeaveCall(Data, navigate, t));
@@ -537,8 +565,8 @@ const VideoCallNormalHeader = ({
     ) {
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: roomID,
-        IsCaller: false,
+        RoomID: initiateRoomID,
+        IsCaller: true,
         CallTypeID: callTypeID,
       };
       dispatch(LeaveCall(Data, navigate, t));
@@ -739,6 +767,10 @@ const VideoCallNormalHeader = ({
     };
 
     dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+  };
+
+  const onClickCLoseParticipantPanel = () => {
+    dispatch(toggleParticipantsVisibility(false));
   };
 
   return (
@@ -1321,7 +1353,7 @@ const VideoCallNormalHeader = ({
                     <img
                       src={
                         raisedUnRaisedParticipant === true
-                          ? GoldenHandRaised
+                          ? Raisehandselected
                           : RaiseHand
                       }
                       onClick={raiseUnRaiseForParticipant}
@@ -1694,7 +1726,7 @@ const VideoCallNormalHeader = ({
                 ) : null
               } */}
 
-                <div
+                {/* <div
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? "grayScaleImage position-relative"
@@ -1783,7 +1815,7 @@ const VideoCallNormalHeader = ({
                       </div>
                     </div>
                   ) : null}
-                </div>
+                </div> */}
 
                 {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
                   <div
@@ -1907,7 +1939,7 @@ const VideoCallNormalHeader = ({
                     onClick={leaveCall}
                   />
 
-                  <Button
+                  {/* <Button
                     className="leave-meeting-options__btn leave-meeting-gray-button"
                     text={
                       currentCallType === 1
@@ -1915,7 +1947,7 @@ const VideoCallNormalHeader = ({
                         : t("End-call-for-everyone")
                     }
                     onClick={leaveCall}
-                  />
+                  /> */}
 
                   <Button
                     className="leave-meeting-options__btn leave-meeting-gray-button"
@@ -1925,17 +1957,19 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={t("Leave-call")}
-                    onClick={participantLeaveCall}
-                  />
+                  <div onClick={onClickCLoseParticipantPanel}>
+                    <Button
+                      className="leave-meeting-options__btn leave-meeting-red-button"
+                      text={t("Leave-call")}
+                      onClick={participantLeaveCall}
+                    />
 
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    text="Cancel"
-                    onClick={closeVideoPanel}
-                  />
+                    <Button
+                      className="leave-meeting-options__btn leave-meeting-gray-button"
+                      text="Cancel"
+                      onClick={closeVideoPanel}
+                    />
+                  </div>
                 </>
               )}
             </div>

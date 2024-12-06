@@ -143,28 +143,38 @@ const VideoNewParticipantList = () => {
   };
 
   const muteUnmuteByHost = (usersData, flag = true) => {
-    console.log("hell");
+    console.log(usersData, "usersData");
     setMuteGuest(flag);
 
     if (usersData) {
       // Mute/Unmute a specific participant
-      const data = {
-        RoomID: roomID,
-        IsMuted: flag,
-        MuteUnMuteList: [
-          {
-            UID: usersData.guid, // The participant's UID
-          },
-        ],
-      };
-      dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
+      if (!usersData.isHost) {
+        // Exclude hosts from muting
+        const data = {
+          RoomID: roomID,
+          IsMuted: flag,
+          MuteUnMuteList: [
+            {
+              UID: usersData.guid, // The participant's UID
+            },
+          ],
+        };
+        dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
+      } else {
+        console.log("Cannot mute/unmute host.");
+      }
     } else {
       // Toggle mute/unmute for all participants
       setIsForAll(flag); // Update the isForAll state
-      const allUids = filteredParticipants.map((participant) => ({
-        UID: participant.guid,
-      }));
-      console.log(allUids, "allUidsallUids");
+
+      // Exclude hosts from the mute/unmute list
+      const allUids = filteredParticipants
+        .filter((participant) => !participant.isHost) // Filter out hosts
+        .map((participant) => ({
+          UID: participant.guid,
+        }));
+
+      console.log(allUids, "allUids after excluding hosts");
 
       const data = {
         RoomID: roomID,

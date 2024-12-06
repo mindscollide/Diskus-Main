@@ -63,6 +63,7 @@ const initialState = {
   isMicEnabled: true,
   isWebCamEnabled: true,
   getAllParticipantMain: [],
+  participantsVisible: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -121,11 +122,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
-      console.log(newData, "newDatanewDatanewDataasxas");
+      let updatedList = state.getAllParticipantMain.filter(
+        (guest) => guest.guid !== action.payload
+      );
+      console.log(updatedList, "newDatanewDatanewDataasxas");
 
       return {
         ...state,
         getVideoParticpantListandWaitingList: newData,
+        getAllParticipantMain: updatedList,
       };
     }
 
@@ -280,6 +285,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         VideoMinutesOpenFlag: action.response,
+      };
+    }
+
+    case actions.TOGGLE_PARTICIPANTS_VISIBILITY: {
+      return {
+        ...state,
+        participantsVisible: action.payload,
       };
     }
 

@@ -132,33 +132,6 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
         ) {
-          // if (data.payload.isForAll) {
-          //   // Gather all participant UIDs
-          //   const allUids = getVideoParticpantListandWaitingList.map(
-          //     (participant) => participant.guid
-          //   );
-
-          //   console.log(allUids, "allUidsallUids");
-
-          //   // Dispatch action with all UIDs
-          //   dispatch(
-          //     participanMuteUnMuteMeeting({
-          //       isMuted: data.payload.isMuted,
-          //       isForAll: true,
-          //       uids: allUids, // Include all participant UIDs
-          //     })
-          //   );
-          //   dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
-          // } else {
-          //   // Handle individual mute/unmute
-          //   dispatch(participanMuteUnMuteMeeting(data.payload));
-
-          //   if (data.payload.isMuted === true) {
-          //     dispatch(setAudioControlForParticipant(true));
-          //   } else {
-          //     dispatch(setAudioControlForParticipant(false));
-          //   }
-          // }
           if (data.payload.isForAll) {
             // Dispatch to globally mute/unmute participants
             dispatch(setVoiceControleGuest(true));

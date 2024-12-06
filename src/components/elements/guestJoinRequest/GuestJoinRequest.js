@@ -20,6 +20,10 @@ const GuestJoinRequest = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let roomID = localStorage.getItem("newRoomId");
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+
   const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
   const { GuestVideoReducer, videoFeatureReducer } = useSelector(
     (state) => state
@@ -28,9 +32,12 @@ const GuestJoinRequest = () => {
   const [loadingAdmit, setLoadingAdmit] = useState(false);
   const [loadingDeny, setLoadingDeny] = useState(false);
 
+  const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
+    useState([]);
+
   const [getRoomId, setGetRoomId] = useState("");
 
-  let roomID = localStorage.getItem("activeRoomID");
+  // let roomID = localStorage.getItem("activeRoomID");
   console.log(
     GuestVideoReducer?.admitGuestUserRequestData,
     "waitingOnParticipantwaitingOnParticipant"
@@ -69,6 +76,23 @@ const GuestJoinRequest = () => {
     }
   }, [GuestVideoReducer?.admitGuestUserRequestData]);
 
+  // Update filteredWaitingParticipants based on waitingParticipants
+  useEffect(() => {
+    console.log("hell");
+    if (videoFeatureReducer.waitingParticipantsList?.length) {
+      console.log(
+        videoFeatureReducer.waitingParticipantsList,
+        "usersDatausersData"
+      );
+
+      setFilteredWaitingParticipants(
+        videoFeatureReducer.waitingParticipantsList
+      );
+    } else {
+      setFilteredWaitingParticipants([]);
+    }
+  }, [videoFeatureReducer.waitingParticipantsList]);
+
   const handleAdmit = (flag) => {
     if (flag === 1) {
       setLoadingAdmit(true); // Admit button
@@ -77,17 +101,19 @@ const GuestJoinRequest = () => {
     }
 
     let Data = {
-      MeetingId: meetingID,
-      RoomId: String(getRoomId),
-      IsRequestAccepted: flag === 1,
-
-      AttendeeResponseList: [
-        {
-          UID: guid,
-          UserID: UserID,
-          IsGuest: isGuest,
-        },
-      ],
+      MeetingId: filteredWaitingParticipants[0]?.meetingID,
+      RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
+      AttendeeResponseList: filteredWaitingParticipants.map(
+        (participantData, index) => {
+          console.log(participantData, "mahdahahshahs");
+          return {
+            IsGuest: participantData.isGuest,
+            UID: participantData.guid,
+            UserID: participantData.userID,
+          };
+        }
+      ),
     };
 
     dispatch(
@@ -131,19 +157,19 @@ const GuestJoinRequest = () => {
 
   useEffect(() => {
     if (
-      videoFeatureReducer.participantWaitingList !== undefined &&
-      videoFeatureReducer.participantWaitingList !== null &&
-      videoFeatureReducer.participantWaitingList.length > 0
+      videoFeatureReducer.waitingParticipantsList !== undefined &&
+      videoFeatureReducer.waitingParticipantsList !== null &&
+      videoFeatureReducer.waitingParticipantsList.length > 0
     ) {
       try {
-        setWaitingOnParticipant(videoFeatureReducer.participantWaitingList);
+        setWaitingOnParticipant(videoFeatureReducer.waitingParticipantsList);
       } catch (error) {
         setWaitingOnParticipant([]);
       }
     } else {
       setWaitingOnParticipant([]);
     }
-  }, [videoFeatureReducer.participantWaitingList]);
+  }, [videoFeatureReducer.waitingParticipantsList]);
 
   return (
     <div className={styles["box-positioning"]}>
