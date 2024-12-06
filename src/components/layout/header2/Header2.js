@@ -169,36 +169,54 @@ const Header2 = ({ isVideo }) => {
       }
     }
   }, []);
-
+  const [loading, setLoading] = useState(false); // Loading state
   // Web Notification API Calling
+  // Fetch initial notifications on mount
   useEffect(() => {
-    try {
-      let data = { sRow: 0, eRow: 8 }; // Initial fetch
-      dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-    } catch (error) {
-      console.log(error, "errorerrorerror");
-    }
+    const fetchInitialData = async () => {
+      try {
+        setLoading(true);
+        const data = { sRow: 0, eRow: 8 }; // Initial fetch
+        await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+      } catch (error) {
+        console.error("Error fetching initial notifications:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInitialData();
   }, []);
 
   // Extracting the data for Web Notification
+  // Update notifications on getAllNotificationData change
   useEffect(() => {
-    try {
-      if (
-        getAllNotificationData &&
-        getAllNotificationData !== null &&
-        getAllNotificationData !== undefined
-      ) {
-        console.log(
-          getAllNotificationData.totalCount,
-          "getAllNotificationDatagetAllNotificationData"
-        );
-        setwebNotificationData([...getAllNotificationData.notifications]); // Update state with fetched notifications
-        setTotalCountNotification(getAllNotificationData.totalCount); // Optional
-      }
-    } catch (error) {
-      console.log(error);
+    if (
+      getAllNotificationData &&
+      getAllNotificationData.notifications &&
+      getAllNotificationData.notifications.length
+    ) {
+      setwebNotificationData((prevData) => [
+        ...prevData,
+        ...getAllNotificationData.notifications,
+      ]);
+      setTotalCountNotification(getAllNotificationData.totalCount);
     }
   }, [getAllNotificationData]);
+
+  // Fetch additional notifications on scroll
+  const fetchNotifications = async () => {
+    if (loading || webNotificationData.length >= totalCountNotification) return;
+
+    setLoading(true);
+    try {
+      const data = { sRow: webNotificationData.length, eRow: 8 };
+      await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+    } catch (error) {
+      console.error("Error fetching more notifications:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   console.log(webNotificationData, "webNotificationData");
   useEffect(() => {
@@ -1272,6 +1290,9 @@ const Header2 = ({ isVideo }) => {
                     <WebNotfication
                       webNotificationData={webNotificationData}
                       setwebNotificationData={setwebNotificationData}
+                      totalCountNotification={totalCountNotification}
+                      fetchNotifications={fetchNotifications}
+                      loading={loading}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

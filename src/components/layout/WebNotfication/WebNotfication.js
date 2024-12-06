@@ -4,22 +4,16 @@ import { Col, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
 import WebNotificationCard from "./WebNotificationCard/WebNotificationCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting";
 import { Spin } from "antd";
-const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
+
+const WebNotfication = ({
+  webNotificationData,
+  fetchNotifications,
+  totalCountNotification,
+  loading,
+}) => {
   console.log(webNotificationData, "webNotificationData");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  const [sRowsData, setSRowsData] = useState(webNotificationData.length); // Start with current data length
-  const [loading, setLoading] = useState(false); // Loading state
-  const [hasMore, setHasMore] = useState(true); // Indicates if more data is available
-
+  console.log(loading, "webNotificationData");
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -28,47 +22,6 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
       spin
     />
   );
-
-  // Function to fetch notifications from the API
-  const fetchNotifications = async () => {
-    if (loading || !hasMore) return; // Prevent multiple calls or unnecessary fetches
-
-    setLoading(true);
-    const data = { sRow: webNotificationData.length, eRow: 8 }; // Adjust rows for pagination
-
-    try {
-      const response = await dispatch(
-        DiskusWebNotificationActionMethodAPI(navigate, t, data)
-      );
-
-      if (response && response.notifications) {
-        const newNotifications = response.notifications.filter(
-          (newNotification) =>
-            !webNotificationData.some(
-              (existingNotification) =>
-                existingNotification.id === newNotification.id
-            )
-        );
-
-        // Append new notifications if they exist
-        if (newNotifications.length > 0) {
-          setwebNotificationData((prev) => [...prev, ...newNotifications]);
-          setSRowsData((prev) => prev + newNotifications.length); // Increment the starting row
-        }
-
-        // Check if we've loaded all data
-        if (newNotifications.length < 8) {
-          setHasMore(false); // No more data to fetch
-        }
-      } else {
-        setHasMore(false); // No data returned
-      }
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
@@ -80,9 +33,9 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
       <Row>
         <Col lg={12}>
           <InfiniteScroll
-            dataLength={webNotificationData.length}
-            next={fetchNotifications} // Trigger fetch on scroll
-            hasMore={hasMore} // Fetch more if there are records left
+            dataLength={webNotificationData.length} // Current data length
+            next={fetchNotifications} // Fetch more data
+            hasMore={webNotificationData.length < totalCountNotification} // Stop if all data loaded
             loader={
               loading && (
                 <Row>
@@ -97,14 +50,12 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
                 </Row>
               )
             }
-            height={"68vh"}
-            style={{
-              overflowX: "hidden",
-            }}
+            height="68vh"
+            style={{ overflowX: "hidden" }}
           >
             {webNotificationData.map((data, index) => (
               <Row
-                key={data.notificationID || index} // Unique key for each notification
+                key={data.notificationID || `notification-${index}`} // Ensure a unique key
                 className={
                   index !== webNotificationData.length - 1
                     ? styles["BackGroundUnreadNotifications"]
