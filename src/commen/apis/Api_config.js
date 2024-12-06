@@ -1856,6 +1856,16 @@ const GetSignatureFileAnnotationRM = {
 const AddUpdateSignatureFileAnnotationRM = {
   RequestMethod: "ServiceManager.AddUpdateSignatureFileAnnotation",
 };
+
+//Web Notfication
+const DiskusWebNotification = {
+  RequestMethod: "ServiceManager.GetUserWebNotifications",
+};
+
+const DiskusWebNotificationMarkAsRead = {
+  RequestMethod: "ServiceManager.MarkNotificationsAsRead",
+};
+
 export {
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
@@ -2346,4 +2356,6 @@ export {
   getVideoCallParticipantsForGuest,
   joinMeetingVideoRequest,
   getVideoCallParticipantsAndWaitingList,
+  DiskusWebNotification,
+  DiskusWebNotificationMarkAsRead,
 };

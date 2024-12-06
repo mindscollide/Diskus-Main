@@ -59,11 +59,12 @@ const PollDetails = () => {
   }, [PollsReducerviewVotes]);
 
   const handleClosed = async () => {
-    let data = {
-      PollID: pollId,
-      UserID: parseInt(userID),
-    };
-    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+    dispatch(viewVotesDetailsModal(false));
+    // let data = {
+    //   PollID: pollId,
+    //   UserID: parseInt(userID),
+    // };
+    // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
   };
 
   return (

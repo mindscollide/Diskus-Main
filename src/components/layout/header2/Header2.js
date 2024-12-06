@@ -45,6 +45,7 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../store/actions/VideoFeature_actions.js";
+import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -98,6 +99,10 @@ const Header2 = ({ isVideo }) => {
     (state) => state.assignees.ResponseMessage
   );
 
+  const getAllNotificationData = useSelector(
+    (state) => state.settingReducer.diskusWebNotificationData
+  );
+
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
@@ -115,6 +120,8 @@ const Header2 = ({ isVideo }) => {
   const [showButtonOfUpgrade, setShowButtonOfUpgrade] = useState(false);
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
+  const [webNotificationData, setwebNotificationData] = useState([]);
+  const [totalCountNotification, setTotalCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
@@ -165,6 +172,38 @@ const Header2 = ({ isVideo }) => {
     }
   }, []);
 
+  //Web Notification API Calling
+  useEffect(() => {
+    try {
+      let data = { sRow: 0, eRow: 10 };
+      dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, []);
+  //Extracting the data for Web Notification
+
+  useEffect(() => {
+    try {
+      if (
+        getAllNotificationData &&
+        getAllNotificationData !== null &&
+        getAllNotificationData !== undefined
+      ) {
+        console.log(
+          getAllNotificationData.totalCount,
+          "getAllNotificationDatagetAllNotificationData"
+        );
+        //Used Spread Operator to prevent State Mutation
+        setwebNotificationData([...getAllNotificationData.notifications]);
+        setTotalCountNotification(getAllNotificationData.totalCount);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getAllNotificationData]);
+
+  console.log(webNotificationData, "webNotificationData");
   useEffect(() => {
     if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -1227,10 +1266,17 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
-                    <span className="NotficationCountSpan">4</span>
+                    <span className="NotficationCountSpan">
+                      {totalCountNotification}
+                    </span>
                   </span> */}
                   {/* Web Notification Outer Box Starts */}
-                  {/* {showWebNotification && <WebNotfication />} */}
+                  {/* {showWebNotification && (
+                    <WebNotfication
+                      webNotificationData={webNotificationData}
+                      setwebNotificationData={setwebNotificationData}
+                    />
+                  )} */}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
