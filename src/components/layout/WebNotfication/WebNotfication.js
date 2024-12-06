@@ -67,7 +67,7 @@ const WebNotfication = ({
             webNotificationData !== undefined ? (
               webNotificationData.map((data, index) => (
                 <Row
-                  key={data.notificationID || `notification-${index}`} // Ensure a unique key
+                  key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
                   className={
                     unReadCountNotification > 0
                       ? styles["BackGroundUnreadNotifications"]
