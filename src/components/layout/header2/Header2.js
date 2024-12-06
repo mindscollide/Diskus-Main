@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Navbar, DropdownButton, Row, Col } from "react-bootstrap";
 import { Tooltip } from "antd";
@@ -45,13 +45,18 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../store/actions/VideoFeature_actions.js";
-import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
+import {
+  DiskusWebNotificationActionMethodAPI,
+  DiskusWebNotificationMarkAsReadAPI,
+} from "../../../store/actions/UpdateUserNotificationSetting.js";
+import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
+  const WebNotificationBell = useRef();
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -103,6 +108,8 @@ const Header2 = ({ isVideo }) => {
     (state) => state.settingReducer.diskusWebNotificationData
   );
 
+  console.log(getAllNotificationData, "getAllNotificationData");
+
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
@@ -122,7 +129,32 @@ const Header2 = ({ isVideo }) => {
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
+  const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
+
+  //OnClick Function for OutSide Click WebNotification
+  const handleOutsideClick = (event) => {
+    if (
+      WebNotificationBell.current &&
+      !WebNotificationBell.current.contains(event.target) &&
+      showWebNotification
+    ) {
+      setShowWebNotification(false);
+      //API Call Mark As Read
+      if (getAllNotificationData.unReadCount > 0) {
+        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+        let data = { ReadOnDateTime: currentDateTime };
+        dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+      }
+    }
+  };
+  //Event Handler for Outside Click of Web Notification Window
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [showWebNotification]);
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -132,8 +164,6 @@ const Header2 = ({ isVideo }) => {
   const hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
   const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
   let currentLanguage = localStorage.getItem("i18nextLng");
-
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   let currentOrganizationName = localStorage.getItem("organizatioName");
 
@@ -172,38 +202,57 @@ const Header2 = ({ isVideo }) => {
     }
   }, []);
 
-  //Web Notification API Calling
+  // Web Notification API Calling
   useEffect(() => {
-    try {
-      let data = { sRow: 0, eRow: 10 };
-      dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-    } catch (error) {
-      console.log(error, "errorerrorerror");
-    }
-  }, []);
-  //Extracting the data for Web Notification
-
-  useEffect(() => {
-    try {
-      if (
-        getAllNotificationData &&
-        getAllNotificationData !== null &&
-        getAllNotificationData !== undefined
-      ) {
-        console.log(
-          getAllNotificationData.totalCount,
-          "getAllNotificationDatagetAllNotificationData"
-        );
-        //Used Spread Operator to prevent State Mutation
-        setwebNotificationData([...getAllNotificationData.notifications]);
-        setTotalCountNotification(getAllNotificationData.totalCount);
+    const fetchInitialData = async () => {
+      try {
+        const data = { sRow: 0, eRow: 8 }; // Initial fetch data from API
+        await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+      } catch (error) {
+        console.error("Error fetching initial notifications:", error);
       }
-    } catch (error) {
-      console.log(error);
+    };
+    fetchInitialData();
+  }, []);
+  const [isReadNotification, setIsReadNotification] = useState(false);
+  // Extracting the data for Web Notifications From API
+  useEffect(() => {
+    if (
+      getAllNotificationData &&
+      getAllNotificationData.notifications &&
+      getAllNotificationData.notifications.length
+    ) {
+      //Stores the previous notification in the same state
+      setwebNotificationData((prevData) => [
+        ...prevData,
+        ...getAllNotificationData.notifications,
+      ]);
+      //Total Count of notificaiton
+      setTotalCountNotification(getAllNotificationData.totalCount);
+      // Total Count of Unread Notification
+      setUnReadCountNotification(getAllNotificationData.unReadCount);
+
+      //Mapping for Reading the Notification
+      getAllNotificationData.notifications.map((isReadData, index) => {
+        console.log(isReadData, "isReadDataisReadData");
+        setIsReadNotification(isReadData.isRead);
+      });
     }
   }, [getAllNotificationData]);
 
-  console.log(webNotificationData, "webNotificationData");
+  // Fetch additional Web Notifications on scroll
+  const fetchNotifications = async () => {
+    // Prevent API call if loading is already true or all data has been fetched
+    if (webNotificationData.length >= totalCountNotification) return;
+
+    try {
+      const data = { sRow: webNotificationData.length, eRow: 8 };
+      await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
+    } catch (error) {
+      console.error("Error fetching more notifications:", error);
+    }
+  };
+
   useEffect(() => {
     if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -1255,9 +1304,10 @@ const Header2 = ({ isVideo }) => {
                     )}
                   </Dropdown>
                   {/* Web Notification Bell Icon */}
-                  {/* <span
+                  <span
                     className="position-relative"
                     onClick={handleWebNotication}
+                    ref={WebNotificationBell}
                   >
                     <img
                       src={BellNotificationIcon}
@@ -1267,16 +1317,19 @@ const Header2 = ({ isVideo }) => {
                       className="BellNotificationIconStyles"
                     />
                     <span className="NotficationCountSpan">
-                      {totalCountNotification}
+                      {unReadCountNotification}
                     </span>
-                  </span> */}
+                  </span>
                   {/* Web Notification Outer Box Starts */}
-                  {/* {showWebNotification && (
+                  {showWebNotification && (
                     <WebNotfication
                       webNotificationData={webNotificationData}
                       setwebNotificationData={setwebNotificationData}
+                      totalCountNotification={totalCountNotification}
+                      fetchNotifications={fetchNotifications}
+                      isReadNotification={isReadNotification}
                     />
-                  )} */}
+                  )}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (

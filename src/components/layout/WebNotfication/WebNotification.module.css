@@ -54,3 +54,13 @@ body[dir="rtl"] .WebNotificationOuterBox {
   font-size: 12px !important;
   color: #5a5a5a !important;
 }
+
+.NotificationEmptyState {
+  color: #a2a2a2 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+.TopMargin {
+  margin-top: 164px !important;
+}

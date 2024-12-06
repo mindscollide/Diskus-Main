@@ -198,7 +198,7 @@ const DiskusWebNotificationMarkAsReadInit = () => {
 
 const DiskusWebNotificationMarkAsReadSuccess = (response, message) => {
   return {
-    type: actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_INIT,
+    type: actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_SUCCESS,
     response: response,
     message: message,
   };
@@ -206,7 +206,7 @@ const DiskusWebNotificationMarkAsReadSuccess = (response, message) => {
 
 const DiskusWebNotificationMarkAsReadFail = (message) => {
   return {
-    type: actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_INIT,
+    type: actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_FAIL,
     message: message,
   };
 };

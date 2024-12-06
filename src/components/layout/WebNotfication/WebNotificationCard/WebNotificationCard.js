@@ -149,7 +149,9 @@ const WebNotificationCard = ({
             <img src={FolderDeleted} width={46} alt="" />
           ) : NotificaitonID === 40 ? (
             <img src={FolderDeleted} width={46} alt="" />
-          ) : null}
+          ) : (
+            <img src={MeetingCreated} width={46} alt="" />
+          )}
 
           <span className={styles["NotificationMessegeUnmarked"]}>
             {truncatedMessage}
