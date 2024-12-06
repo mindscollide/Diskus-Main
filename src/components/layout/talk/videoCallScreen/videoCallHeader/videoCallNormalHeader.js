@@ -807,7 +807,7 @@ const VideoCallNormalHeader = ({
                   </Tooltip>
                 </div>
                 <div
-                  onClick={disableVideoHost}
+                  // onClick={disableVideoHost}
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? "grayScaleImage"

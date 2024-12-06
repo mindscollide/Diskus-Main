@@ -8962,8 +8962,8 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
-              localStorage.setItem("isWebCamEnabled", true);
-              localStorage.setItem("isMicEnabled", true);
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (

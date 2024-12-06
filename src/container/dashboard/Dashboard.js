@@ -786,10 +786,10 @@ const Dashboard = () => {
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
-              localStorage.setItem("isWebCamEnabled", true);
-              localStorage.setItem("isMicEnabled", true);
-              dispatch(setAudioControlForParticipant(true));
-              dispatch(setVideoControlForParticipant(true));
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
+              dispatch(setAudioControlForParticipant(false));
+              dispatch(setVideoControlForParticipant(false));
 
               localStorage.setItem(
                 "meetinHostInfo",
