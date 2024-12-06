@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./WebNotification.module.css";
 import { Col, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -16,6 +16,7 @@ const WebNotfication = ({
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
   );
+
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
