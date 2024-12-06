@@ -8957,6 +8957,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
+                isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem(

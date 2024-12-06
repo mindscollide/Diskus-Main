@@ -36,6 +36,12 @@ const VideoNewParticipantList = () => {
   const { videoFeatureReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  let roomID = localStorage.getItem("newRoomId");
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+
+  let HostName = localStorage.getItem("name");
   const participantWaitingList = useSelector(
     (state) => state.videoFeatureReducer.participantWaitingList
   );
@@ -65,17 +71,10 @@ const VideoNewParticipantList = () => {
     useState([]);
 
   const [newParticipants, setNewParticipants] = useState([]);
-
   const [participantsList, setPartcipantList] = useState([]);
   console.log(filteredParticipants, "filteredParticipants");
   console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
-  let roomID = localStorage.getItem("newRoomId");
-  let currentUserID = Number(localStorage.getItem("userID"));
-  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
-  let HostName = localStorage.getItem("name");
-
-  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
   const [participantData, setParticipantData] = useState([]);
   const [muteGuest, setMuteGuest] = useState(false);
@@ -85,9 +84,17 @@ const VideoNewParticipantList = () => {
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
     setSearchValue(value);
+
+    // Filter participants based on the search value
+    const filtered = participantList.filter((participant) =>
+      participant.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setFilteredParticipants(filtered);
   };
 
   useEffect(() => {
+    console.log("hell");
     let Data = {
       RoomID: String(getRoomId),
     };
@@ -96,6 +103,7 @@ const VideoNewParticipantList = () => {
 
   // Update filteredParticipants based on participantList
   useEffect(() => {
+    console.log("hell");
     if (participantList?.length) {
       const uniqueParticipants = participantList.filter(
         (participant, index, self) =>
@@ -112,6 +120,7 @@ const VideoNewParticipantList = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
+    console.log("hell");
     if (waitingParticipants?.length) {
       console.log(waitingParticipants, "usersDatausersData");
 
@@ -122,6 +131,7 @@ const VideoNewParticipantList = () => {
   }, [waitingParticipants]);
 
   const makeLeaveOnClick = (usersData) => {
+    console.log("hell");
     console.log(usersData.UID, "usersDatausersData");
     let data = {
       RoomID: roomID,
@@ -133,6 +143,7 @@ const VideoNewParticipantList = () => {
   };
 
   const muteUnmuteByHost = (usersData, flag = true) => {
+    console.log("hell");
     setMuteGuest(flag);
 
     if (usersData) {
@@ -166,6 +177,7 @@ const VideoNewParticipantList = () => {
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
+    console.log("hell");
     console.log(usersData, "akasdaskhdvasdv");
 
     let data = {
@@ -187,6 +199,7 @@ const VideoNewParticipantList = () => {
   };
 
   const removeParticipantMeetingOnClick = (usersData) => {
+    console.log("hell");
     console.log(usersData, "RemoveUserDataa");
     let data = {
       RoomID: String(roomID),
@@ -202,6 +215,7 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAllAcceptAndReject = (flag) => {
+    console.log("hell");
     let Data = {
       MeetingId: filteredWaitingParticipants[0]?.meetingID,
       RoomId: String(roomID),
@@ -224,6 +238,7 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAcceptAndReject = (participantInfo, flag) => {
+    console.log("hell");
     console.log(participantInfo, "participantInfo");
     let Data = {
       MeetingId: currentMeetingID,
@@ -241,7 +256,7 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
-
+  console.log("hell");
   return (
     <section
       className={
@@ -261,159 +276,152 @@ const VideoNewParticipantList = () => {
             style={{ display: "block", objectFit: "cover" }}
           />
         </Col>
+      </Row>
+      <Row>
         <Col sm={12} md={12} lg={12}>
           <TextField
             placeholder={"Search"}
-            // applyClass={"waitingParticipantsSearchField"}
-            className={styles["text-field-searchclass"]}
-            onClick={(e) => e.stopPropagation()}
-            onFocus={(e) => console.log("Focused!")}
-            // change={handleChangeSearchParticipant}
-            // value={searchValue}
+            applyClass={"waitingParticipantsSearchField"}
+            // className={styles["text-field-searchclass"]}
+            change={handleChangeSearchParticipant}
+            value={searchValue}
           />
         </Col>
+      </Row>
+      {/* Hosts Title Tab  */}
+      <Col sm={12} md={12} lg={12}>
+        <div className={styles["Waiting-New-Participant-hosttab"]}>
+          <Row>
+            <Col sm={12} md={12} lg={12}>
+              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+                {t("Hosts")}
+              </p>
+            </Col>
+          </Row>
+        </div>
+      </Col>
 
-        {/* Hosts Title Tab  */}
-        <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-Participant-hosttab"]}>
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                  {t("Hosts")}
-                </p>
-              </Col>
-            </Row>
-          </div>
-        </Col>
+      {/* Host Name List */}
+      <Col sm={12} md={12} lg={12}>
+        <div className={styles["Waiting-New-Participant-HostNameList"]}>
+          <Row>
+            <Col sm={12} md={12} lg={12}>
+              <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
+                {HostName}
+              </p>
+            </Col>
+          </Row>
+        </div>
+      </Col>
 
-        {/* Host Name List */}
-        <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-Participant-HostNameList"]}>
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                  {HostName}
-                </p>
-              </Col>
-            </Row>
-          </div>
-        </Col>
+      {/* Participant Mute All */}
+      <Col sm={12} md={12} lg={12}>
+        <div className={styles["Waiting-New-Participant-hosttab"]}>
+          <Row>
+            <Col sm={6} md={6} lg={6} className="d-flex justify-content-start">
+              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+                {t("Participants")}
+              </p>
+            </Col>
+            <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
+              <Button
+                text={isForAll ? t("Unmute-All") : t("Mute-All")}
+                className={styles["Waiting-New-Participant-muteAll"]}
+                onClick={() => muteUnmuteByHost(null, !isForAll)}
+              />
+            </Col>
+          </Row>
+        </div>
+      </Col>
 
-        {/* Participant Mute All */}
-        <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-Participant-hosttab"]}>
-            <Row>
-              <Col
-                sm={6}
-                md={6}
-                lg={6}
-                className="d-flex justify-content-start"
-              >
-                <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                  {t("Participants")}
-                </p>
-              </Col>
-              <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
-                <Button
-                  text={isForAll ? t("Unmute-All") : t("Mute-All")}
-                  className={styles["Waiting-New-Participant-muteAll"]}
-                  onClick={() => muteUnmuteByHost(null, !isForAll)}
-                />
-              </Col>
-            </Row>
-          </div>
-        </Col>
+      {/* Participants Name List */}
 
-        {/* Participants Name List */}
-
-        <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-ParticipantNameList"]}>
-            {filteredParticipants.length > 0 ? (
-              filteredParticipants.map((usersData, index) => {
-                console.log(usersData, "usersDatausersData");
-                return (
-                  <>
-                    <Row className="hostBorder m-0">
-                      <Col
-                        className="p-0 d-flex align-items-center"
-                        lg={7}
-                        md={7}
-                        sm={12}
-                      >
-                        <p className="participant-name">{usersData?.name}</p>
-                        {usersData.isHost ? (
-                          <>
-                            <p className={styles["Host-name"]}>(Host)</p>
-                          </>
-                        ) : null}
-                        {usersData.raiseHand === true ? (
-                          <>
-                            <img
-                              src={GoldenHandRaised}
-                              alt=""
-                              width={"22px"}
-                              height={"22px"}
-                              className="handraised-participant"
-                            />
-                          </>
-                        ) : (
+      <Col sm={12} md={12} lg={12}>
+        <div className={styles["Waiting-New-ParticipantNameList"]}>
+          {filteredParticipants.length > 0 ? (
+            filteredParticipants.map((usersData, index) => {
+              console.log(usersData, "usersDatausersData");
+              return (
+                <>
+                  <Row className="hostBorder m-0">
+                    <Col
+                      className="p-0 d-flex align-items-center"
+                      lg={7}
+                      md={7}
+                      sm={12}
+                    >
+                      <p className="participant-name">{usersData?.name}</p>
+                      {usersData.isHost ? (
+                        <>
+                          <p className={styles["Host-name"]}>(Host)</p>
+                        </>
+                      ) : null}
+                      {usersData.raiseHand === true ? (
+                        <>
                           <img
-                            src={MenuRaiseHand}
+                            src={GoldenHandRaised}
                             alt=""
+                            width={"22px"}
+                            height={"22px"}
                             className="handraised-participant"
                           />
-                        )}
-                        {usersData.hideCamera ? (
-                          <img
-                            src={VideoDisable}
-                            width="18px"
-                            height="18px"
-                            alt=""
-                            className="handraised-participant"
-                          />
-                        ) : (
-                          <img
-                            src={VideoOn}
-                            width="18px"
-                            height="18px"
-                            alt=""
-                            className="handraised-participant"
-                          />
-                        )}
-                      </Col>
+                        </>
+                      ) : (
+                        <img
+                          src={MenuRaiseHand}
+                          alt=""
+                          className="handraised-participant"
+                        />
+                      )}
+                      {usersData.hideCamera ? (
+                        <img
+                          src={VideoDisable}
+                          width="18px"
+                          height="18px"
+                          alt=""
+                          className="handraised-participant"
+                        />
+                      ) : (
+                        <img
+                          src={VideoOn}
+                          width="18px"
+                          height="18px"
+                          alt=""
+                          className="handraised-participant"
+                        />
+                      )}
+                    </Col>
 
-                      <Col
-                        className="
+                    <Col
+                      className="
                         d-flex
                         justify-content-end
                         align-items-baseline
                         gap-2
                         p-0"
-                        lg={5}
-                        md={5}
-                        sm={12}
-                      >
-                        {usersData.mute ? (
-                          <img
-                            src={MicDisabled}
-                            width={"22px"}
-                            height={"22px"}
-                          />
-                        ) : (
-                          <img src={MicOnEnabled} />
-                        )}
+                      lg={5}
+                      md={5}
+                      sm={12}
+                    >
+                      {usersData.mute ? (
+                        <img src={MicDisabled} width={"22px"} height={"22px"} />
+                      ) : (
+                        <img src={MicOnEnabled} />
+                      )}
 
-                        <Dropdown>
-                          <Dropdown.Toggle className="participant-toggle">
-                            <img src={Menu} alt="" />
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                            <Dropdown.Item
-                              className="participant-dropdown-item"
-                              onClick={() => makeLeaveOnClick(usersData)}
-                            >
-                              {t("Make-host")}
-                            </Dropdown.Item>
+                      <Dropdown>
+                        <Dropdown.Toggle className="participant-toggle">
+                          <img src={Menu} alt="" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            className="participant-dropdown-item"
+                            onClick={() => makeLeaveOnClick(usersData)}
+                          >
+                            {t("Make-host")}
+                          </Dropdown.Item>
+
+                          {usersData.isHost === false ? (
                             <Dropdown.Item
                               className="participant-dropdown-item"
                               onClick={() =>
@@ -422,160 +430,160 @@ const VideoNewParticipantList = () => {
                             >
                               {t("Remove")}
                             </Dropdown.Item>
-                            {usersData.mute === false ? (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() =>
-                                    muteUnmuteByHost(usersData, true)
-                                  }
-                                >
-                                  {t("Mute")}
-                                </Dropdown.Item>
-                              </>
-                            ) : (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() =>
-                                    muteUnmuteByHost(usersData, false)
-                                  }
-                                >
-                                  {t("UnMute")}
-                                </Dropdown.Item>
-                              </>
-                            )}
-                            {usersData.hideCamera === false ? (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() => {
-                                    hideUnHideVideoParticipantByHost(
-                                      usersData,
-                                      true
-                                    );
-                                  }}
-                                >
-                                  {t("Hide-video")}
-                                </Dropdown.Item>
-                              </>
-                            ) : (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() => {
-                                    hideUnHideVideoParticipantByHost(
-                                      usersData,
-                                      false
-                                    );
-                                  }}
-                                >
-                                  {t("UnHide-video")}
-                                </Dropdown.Item>
-                              </>
-                            )}
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </Col>
-                    </Row>
-                  </>
-                );
-              })
-            ) : (
-              <>
-                <Row>
-                  <Col className="d-flex justify-content-center align-item-center">
-                    <p>{t("No-participant")}</p>
-                  </Col>
-                </Row>
-              </>
-            )}
-          </div>
-        </Col>
-
-        {/* Waiting For Entry Title Tab  */}
-        <Col sm={12} md={12} lg={12}>
-          <div className={styles["Waiting-New-Participant-hosttab"]}>
-            <Row>
-              <Col sm={12} md={12} lg={12}>
-                <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                  {t("Waiting-for-entry")}
-                </p>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-
-        <Col sm={12} md={12} lg={12}>
-          <div
-            className={
-              videoFeatureReducer.NormalizeVideoFlag
-                ? styles["AcceptAndDeniedManual_Nor"]
-                : styles["AcceptAndDeniedManual"]
-            }
-          >
-            <Row className="mb-3">
-              <Col sm={6} md={6} lg={6}>
-                <Button
-                  className={styles["Waiting-New-Participant-denyAllBtn"]}
-                  text={t("Deny-all")}
-                  onClick={() => handleClickAllAcceptAndReject(2)}
-                />
-              </Col>
-              <Col sm={6} md={6} lg={6}>
-                <Button
-                  className={styles["Waiting-New-Participant-AcceptAllBtn"]}
-                  text={t("Allow-all")}
-                  onClick={() => handleClickAllAcceptAndReject(1)}
-                />
-              </Col>
-            </Row>
-            {filteredWaitingParticipants.length > 0 &&
-              filteredWaitingParticipants.map((data, index) => {
-                console.log(data, "filteredWaitingParticipants");
-                return (
-                  <Row className="mb-2" key={data.guid}>
-                    <Col
-                      sm={5}
-                      md={5}
-                      lg={5}
-                      className="d-flex align-items-center gap-2"
-                    >
-                      <img
-                        src={UserImage}
-                        className={styles["participantImage"]}
-                      />
-                      <span className={styles["participant_name"]}>
-                        {data.name}
-                      </span>
-                    </Col>
-                    <Col
-                      sm={7}
-                      md={7}
-                      lg={7}
-                      className="d-flex align-items-center gap-2"
-                    >
-                      <Button
-                        className={
-                          styles["Waiting-New-Participant-denyAllBtn-small"]
-                        }
-                        text={t("Deny")}
-                        onClick={() => handleClickAcceptAndReject(data, 2)}
-                      />
-                      <Button
-                        className={
-                          styles["Waiting-New-Participant-AcceptAllBtn-small"]
-                        }
-                        text={t("Allow")}
-                        onClick={() => handleClickAcceptAndReject(data, 1)}
-                      />
+                          ) : null}
+                          {usersData.mute === false ? (
+                            <>
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() =>
+                                  muteUnmuteByHost(usersData, true)
+                                }
+                              >
+                                {t("Mute")}
+                              </Dropdown.Item>
+                            </>
+                          ) : (
+                            <>
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() =>
+                                  muteUnmuteByHost(usersData, false)
+                                }
+                              >
+                                {t("UnMute")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                          {usersData.hideCamera === false ? (
+                            <>
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() => {
+                                  hideUnHideVideoParticipantByHost(
+                                    usersData,
+                                    true
+                                  );
+                                }}
+                              >
+                                {t("Hide-video")}
+                              </Dropdown.Item>
+                            </>
+                          ) : (
+                            <>
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() => {
+                                  hideUnHideVideoParticipantByHost(
+                                    usersData,
+                                    false
+                                  );
+                                }}
+                              >
+                                {t("UnHide-video")}
+                              </Dropdown.Item>
+                            </>
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </Col>
                   </Row>
-                );
-              })}
-          </div>
-        </Col>
-      </Row>
+                </>
+              );
+            })
+          ) : (
+            <>
+              <Row>
+                <Col className="d-flex justify-content-center align-item-center">
+                  <p>{t("No-participant")}</p>
+                </Col>
+              </Row>
+            </>
+          )}
+        </div>
+      </Col>
+
+      {/* Waiting For Entry Title Tab  */}
+      <Col sm={12} md={12} lg={12}>
+        <div className={styles["Waiting-New-Participant-hosttab"]}>
+          <Row>
+            <Col sm={12} md={12} lg={12}>
+              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+                {t("Waiting-for-entry")}
+              </p>
+            </Col>
+          </Row>
+        </div>
+      </Col>
+
+      <Col sm={12} md={12} lg={12}>
+        <div
+          className={
+            videoFeatureReducer.NormalizeVideoFlag
+              ? styles["AcceptAndDeniedManual_Nor"]
+              : styles["AcceptAndDeniedManual"]
+          }
+        >
+          <Row className="mb-3">
+            <Col sm={6} md={6} lg={6}>
+              <Button
+                className={styles["Waiting-New-Participant-denyAllBtn"]}
+                text={t("Deny-all")}
+                onClick={() => handleClickAllAcceptAndReject(2)}
+              />
+            </Col>
+            <Col sm={6} md={6} lg={6}>
+              <Button
+                className={styles["Waiting-New-Participant-AcceptAllBtn"]}
+                text={t("Allow-all")}
+                onClick={() => handleClickAllAcceptAndReject(1)}
+              />
+            </Col>
+          </Row>
+          {filteredWaitingParticipants.length > 0 &&
+            filteredWaitingParticipants.map((data, index) => {
+              console.log(data, "filteredWaitingParticipants");
+              return (
+                <Row className="mb-2" key={data.guid}>
+                  <Col
+                    sm={5}
+                    md={5}
+                    lg={5}
+                    className="d-flex align-items-center gap-2"
+                  >
+                    <img
+                      src={UserImage}
+                      className={styles["participantImage"]}
+                    />
+                    <span className={styles["participant_name"]}>
+                      {data.name}
+                    </span>
+                  </Col>
+                  <Col
+                    sm={7}
+                    md={7}
+                    lg={7}
+                    className="d-flex align-items-center gap-2"
+                  >
+                    <Button
+                      className={
+                        styles["Waiting-New-Participant-denyAllBtn-small"]
+                      }
+                      text={t("Deny")}
+                      onClick={() => handleClickAcceptAndReject(data, 2)}
+                    />
+                    <Button
+                      className={
+                        styles["Waiting-New-Participant-AcceptAllBtn-small"]
+                      }
+                      text={t("Allow")}
+                      onClick={() => handleClickAcceptAndReject(data, 1)}
+                    />
+                  </Col>
+                </Row>
+              );
+            })}
+        </div>
+      </Col>
     </section>
   );
 };

@@ -91,30 +91,7 @@ const FullScreenAgendaModal = ({
 
   const { talkStateData } = useSelector((state) => state);
 
-  const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
-  );
-
-  const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
-  );
-
-  const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
-  );
-
-  const normalParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
-  );
-
-  const maxParticipantVideoDeniedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
-  );
-
-  const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
-  );
-
+  console.log("Agenda View Full");
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -150,6 +127,7 @@ const FullScreenAgendaModal = ({
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
   useEffect(() => {
+    console.log("Agenda View Full");
     if (rows.length !== 0) {
       const anyCanViewTrue = rows.some((row) => row.canView);
       setEmptyStateRows(!anyCanViewTrue);
@@ -161,6 +139,7 @@ const FullScreenAgendaModal = ({
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   const leaveCallHost = () => {
+    console.log("Agenda View Full");
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
@@ -201,6 +180,7 @@ const FullScreenAgendaModal = ({
   };
 
   const leaveCallParticipant = () => {
+    console.log("Agenda View Full");
     let roomID = localStorage.getItem("acceptedRoomID");
     let Data = {
       OrganizationID: currentOrganization,
@@ -265,28 +245,34 @@ const FullScreenAgendaModal = ({
   };
 
   const menuPopupAgenda = () => {
+    console.log("Agenda View Full");
     setMenuAgendaFull(!menuAgendaFull);
   };
 
   const participantModal = () => {
+    console.log("Agenda View Full");
     setParticipantInfoView(!participantInfoView);
   };
 
   const printModal = () => {
+    console.log("Agenda View Full");
     dispatch(printAgenda(true));
     setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const exportModal = () => {
+    console.log("Agenda View Full");
     dispatch(exportAgenda(true));
     setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const shareEmailModal = () => {
+    console.log("Agenda View Full");
     setShareEmailView(!shareEmailView);
   };
 
   const groupChatInitiation = (talkGroupID) => {
+    console.log("Agenda View Full");
     if (
       talkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
@@ -337,6 +323,7 @@ const FullScreenAgendaModal = ({
   };
 
   const leaveMeeting = () => {
+    console.log("Agenda View Full");
     let leaveMeetingData = {
       FK_MDID: currentMeeting,
       DateTime: getCurrentDateTimeUTC(),
@@ -356,6 +343,8 @@ const FullScreenAgendaModal = ({
   };
 
   const handleOutsideClick = (event) => {
+    console.log("Agenda View Full");
+    event.preventDefault();
     if (
       closeMenuAgenda.current &&
       !closeMenuAgenda.current.contains(event.target) &&
@@ -366,6 +355,7 @@ const FullScreenAgendaModal = ({
   };
 
   useEffect(() => {
+    console.log("Agenda View Full");
     document.addEventListener("click", handleOutsideClick);
     return () => {
       document.removeEventListener("click", handleOutsideClick);
@@ -373,6 +363,7 @@ const FullScreenAgendaModal = ({
   }, [menuAgendaFull]);
 
   const onClickVideoIconOpenVideo = () => {
+    console.log("Agenda View Full");
     let meetingVideoData = {
       roleID:
         editorRole.role === "Participant" ||
@@ -746,16 +737,6 @@ const FullScreenAgendaModal = ({
               }
             />
           </section>
-          {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
-          {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
-          {maximizeParticipantVideoFlag && <ParticipantVideoCallComponent />}
-          {normalParticipantVideoFlag && <NormalParticipantVideoComponent />}
-          {maxParticipantVideoDeniedFlag && (
-            <MaxParticipantVideoDeniedComponent />
-          )}
-          {maxParticipantVideoRemovedFlag && (
-            <MaxParticipantVideoRemovedComponent />
-          )}
         </section>
       }
     />
