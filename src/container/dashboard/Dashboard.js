@@ -785,12 +785,29 @@ const Dashboard = () => {
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
+              localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("isWebCamEnabled", true);
+              localStorage.setItem("isMicEnabled", true);
+              dispatch(setAudioControlForParticipant(true));
+              dispatch(setVideoControlForParticipant(true));
+
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(maxParticipantVideoRemoved(true));
+              // Participant room Id and usrrGuid
+              let participantRoomIds =
+                localStorage.getItem("participantRoomId");
+              let participantUID = localStorage.getItem("participantUID");
+              let newName = localStorage.getItem("name");
+              let Data = {
+                RoomID: String(participantRoomIds),
+                UserGUID: String(participantUID),
+                Name: String(newName),
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
             } else if (
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
@@ -816,11 +833,7 @@ const Dashboard = () => {
                 // Handle individual mute/unmute
                 dispatch(participanMuteUnMuteMeeting(data.payload));
 
-                if (data.payload.isMuted === true) {
-                  dispatch(setAudioControlForParticipant(true));
-                } else {
-                  dispatch(setAudioControlForParticipant(false));
-                }
+                dispatch(setAudioControlForParticipant(data.payload.isMuted));
               }
 
               console.log(data.payload, "guestDataGuestData");
@@ -862,16 +875,15 @@ const Dashboard = () => {
                 data.payload.videoUrl
               );
               if (data?.payload?.videoUrl) {
+                let videoFlag = audioControlForParticipant ? false : true;
+                let audioFlag = videoControlForParticipant ? false : true;
                 // Fetch values from localStorage and Redux
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
                 const refinedUrl = data.payload.videoUrl
                   .replace("$ParticipantFullName$", currentParticipantUser)
-                  .replace("$IsMute$", audioControlForParticipant.toString())
-                  .replace(
-                    "$IsHideCamera$",
-                    videoControlForParticipant.toString()
-                  );
+                  .replace("$IsMute$", audioFlag.toString())
+                  .replace("$IsHideCamera$", videoFlag.toString());
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);
