@@ -864,7 +864,6 @@ const Dashboard = () => {
             ) {
               dispatch(maxParticipantVideoCallPanel(false));
               dispatch(maximizeVideoPanelFlag(true));
-              let currntUsereName = localStorage.getItem("name");
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
@@ -876,12 +875,33 @@ const Dashboard = () => {
               );
               if (data?.payload?.videoUrl) {
                 // Fetch values from localStorage and Redux
+                console.log("isMeetingVideo", audioControlForParticipant);
+                console.log("isMeetingVideo", videoControlForParticipant);
+                let videoControlForParticipantLoacl = JSON.parse(
+                  localStorage.getItem("isWebCamEnabled")
+                );
+                let audioControlForParticipantLocal = JSON.parse(
+                  localStorage.getItem("isMicEnabled")
+                );
+                dispatch(
+                  setAudioControlForParticipant(audioControlForParticipantLocal)
+                );
+                dispatch(
+                  setVideoControlForParticipant(videoControlForParticipantLoacl)
+                );
+
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
                 const refinedUrl = data.payload.videoUrl
                   .replace("$ParticipantFullName$", currentParticipantUser)
-                  .replace("$IsMute$", audioControlForParticipant.toString())
-                  .replace("$IsHideCamera$", videoControlForParticipant.toString());
+                  .replace(
+                    "$IsMute$",
+                    audioControlForParticipantLocal.toString()
+                  )
+                  .replace(
+                    "$IsHideCamera$",
+                    videoControlForParticipantLoacl.toString()
+                  );
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);

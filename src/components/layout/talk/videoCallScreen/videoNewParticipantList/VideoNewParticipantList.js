@@ -388,7 +388,7 @@ const VideoNewParticipantList = () => {
                         />
                       )}
                       {usersData.isHost ? (
-                        !JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
+                        JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
                           <img
                             draggable="false"
                             src={VideoDisable}
@@ -407,7 +407,7 @@ const VideoNewParticipantList = () => {
                             className="handraised-participant"
                           />
                         )
-                      ) : !usersData.hideCamera ? (
+                      ) : usersData.hideCamera ? (
                         <img
                           draggable="false"
                           src={VideoDisable}
@@ -440,7 +440,7 @@ const VideoNewParticipantList = () => {
                       sm={12}
                     >
                       {usersData.isHost ? (
-                        !JSON.parse(localStorage.getItem("isMicEnabled")) ? (
+                        JSON.parse(localStorage.getItem("isMicEnabled")) ? (
                           <img
                             draggable="false"
                             src={MicDisabled}
@@ -457,7 +457,7 @@ const VideoNewParticipantList = () => {
                             alt="Microphone Enabled"
                           />
                         )
-                      ) : !usersData.mute ? (
+                      ) : usersData.mute ? (
                         <img
                           draggable="false"
                           src={MicDisabled}

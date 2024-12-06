@@ -48,8 +48,8 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [streamAudio, setStreamAudio] = useState(null);
-  const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
-  const [isMicEnabled, setIsMicEnabled] = useState(true);
+  const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
 
   useEffect(() => {
@@ -224,16 +224,16 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
               {isMicEnabled ? (
                 <img
                   draggable="false"
-                  src={MicOn2}
+                  src={MicOff}
                   className="cursor-pointer"
-                  onClick={() => toggleAudio(false, 2)}
+                  onClick={() => toggleAudio(false)}
                   alt=""
                 />
               ) : (
                 <img
                   draggable="false"
-                  src={MicOff}
-                  onClick={() => toggleAudio(true, 1)}
+                  src={MicOn2 }
+                  onClick={() => toggleAudio(true)}
                   className="cursor-pointer"
                   alt=""
                 />
