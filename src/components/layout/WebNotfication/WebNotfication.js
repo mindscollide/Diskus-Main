@@ -8,11 +8,10 @@ import { Spin } from "antd";
 import { useSelector } from "react-redux";
 
 const WebNotfication = ({
-  webNotificationData,
-  fetchNotifications,
-  totalCountNotification,
+  webNotificationData, // All Web Notification that Includes or Notification Data
+  fetchNotifications, // Scrolling Function on Lazy Loading
+  totalCountNotification, // Total number of Notification
 }) => {
-  console.log(webNotificationData, "webNotificationData");
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading

@@ -52,6 +52,7 @@ const Header2 = ({ isVideo }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
+  const WebNotificationBell = useRef();
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -123,9 +124,8 @@ const Header2 = ({ isVideo }) => {
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
-  //Handling OutSideClick FOr WebNOtification
-  const WebNotificationBell = useRef();
 
+  //OnClick Function for OutSide Click WebNotification
   const handleOutsideClick = (event) => {
     if (
       WebNotificationBell.current &&
@@ -133,15 +133,17 @@ const Header2 = ({ isVideo }) => {
       showWebNotification
     ) {
       setShowWebNotification(false);
+      //API Call Mark As Read
     }
   };
-
+  //Event Handler for Outside Click of Web Notification Window
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [showWebNotification]);
+
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
