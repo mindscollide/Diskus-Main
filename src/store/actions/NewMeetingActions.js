@@ -8949,11 +8949,6 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              if (organizerData) {
-                dispatch(participantVideoNavigationScreen(3));
-              } else {
-                console.log(flag, typeof flag, "flagflagflag");
-              }
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -8966,6 +8961,9 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               );
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
+              localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("isWebCamEnabled", true);
+              localStorage.setItem("isMicEnabled", true);
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
