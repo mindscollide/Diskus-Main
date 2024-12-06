@@ -189,10 +189,12 @@ const Header2 = ({ isVideo }) => {
       getAllNotificationData.notifications &&
       getAllNotificationData.notifications.length
     ) {
+      //Stores the previous notification in the same state
       setwebNotificationData((prevData) => [
         ...prevData,
         ...getAllNotificationData.notifications,
       ]);
+      //Total Count of notificaiton
       setTotalCountNotification(getAllNotificationData.totalCount);
     }
   }, [getAllNotificationData]);

@@ -61,9 +61,8 @@ const WebNotfication = ({
               <Row
                 key={data.notificationID || `notification-${index}`} // Ensure a unique key
                 className={
-                  index !== webNotificationData.length - 1
-                    ? styles["BackGroundUnreadNotifications"]
-                    : styles["BackGroundreadNotifications"]
+                  styles["BackGroundUnreadNotifications"]
+                  // : styles["BackGroundreadNotifications"]
                 }
               >
                 <Col lg={12} md={12} sm={12}>
