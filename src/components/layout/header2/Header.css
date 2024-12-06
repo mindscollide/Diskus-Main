@@ -683,5 +683,5 @@ body[dir="rtl"] .BellNotificationIconStyles {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
 }

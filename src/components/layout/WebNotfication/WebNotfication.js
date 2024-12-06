@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./WebNotification.module.css";
 import { Col, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
 import WebNotificationCard from "./WebNotificationCard/WebNotificationCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting";
 import { Spin } from "antd";
-const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
-  console.log(webNotificationData, "webNotificationDatawebNotificationData");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [sRowsData, setSRowsData] = useState(0);
-  const [totalRecords, setTotalRecords] = useState(webNotificationData.length);
-  const [loading, setLoading] = useState(false);
+import { useSelector } from "react-redux";
+import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
+import { useTranslation } from "react-i18next";
 
+const WebNotfication = ({
+  webNotificationData, // All Web Notification that Includes or Notification Data
+  fetchNotifications, // Scrolling Function on Lazy Loading
+  totalCountNotification, // Total number of Notification
+  isReadNotification, //IsRead Notification Flag
+}) => {
+  console.log(isReadNotification, "isReadNotification");
+  console.log(webNotificationData, "isReadNotification");
+  const { t } = useTranslation();
+  //Global Loader From Setting Reducer
+  const WebNotificaitonLoader = useSelector(
+    (state) => state.settingReducer.Loading
+  );
+
+  //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -26,59 +32,24 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
       spin
     />
   );
-
-  // Function to fetch more data from webNotificationData
-  const fetchNotifications = () => {
-    if (sRowsData < totalRecords) {
-      setLoading(true);
-
-      // Simulate a delay like an API call (optional)
-      setTimeout(() => {
-        const newNotifications = webNotificationData.slice(
-          sRowsData,
-          sRowsData + 8
-        );
-
-        setwebNotificationData((prev) => {
-          // Combine the current data with new data, ensuring uniqueness
-          const combinedData = [
-            ...prev,
-            ...newNotifications.filter(
-              (notification) =>
-                !prev.some(
-                  (existingNotification) =>
-                    existingNotification.id === notification.id
-                )
-            ),
-          ];
-          return combinedData;
-        });
-
-        setSRowsData((prev) => prev + 8); // Increment row count
-        setLoading(false);
-      }, 1000); // Simulating a delay of 1 second
-    }
-  };
-
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
-
+  console.log(webNotificationData, "WebNotificationOuterBox");
   return (
     <section className={styles["WebNotificationOuterBox"]}>
       <Row className="mt-2">
-        <Col lg={12}>
-          <span className={styles["NotificationCategories"]}>Today</span>
+        <Col lg={12} md={12} sm={12}>
+          {webNotificationData.length > 0 && (
+            <span className={styles["NotificationCategories"]}>Today</span>
+          )}
         </Col>
       </Row>
       <Row>
         <Col lg={12}>
           <InfiniteScroll
-            dataLength={webNotificationData.length}
-            next={fetchNotifications} // Trigger fetch when reaching the bottom
-            hasMore={webNotificationData.length < totalRecords} // Continue fetching until limit
+            dataLength={webNotificationData.length} // Current data length
+            next={fetchNotifications} // Fetch more data
+            hasMore={webNotificationData.length < totalCountNotification} // Stop if all data loaded
             loader={
-              loading && (
+              WebNotificaitonLoader && (
                 <Row>
                   <Col
                     sm={12}
@@ -91,31 +62,50 @@ const WebNotfication = ({ webNotificationData, setwebNotificationData }) => {
                 </Row>
               )
             }
-            height={"68vh"}
-            style={{
-              overflowX: "hidden",
-            }}
+            height="68vh"
+            style={{ overflowX: "hidden" }}
           >
-            {webNotificationData.map((data, index) => (
-              <Row
-                key={index}
-                className={
-                  index !== webNotificationData.length - 1
-                    ? styles["BackGroundUnreadNotifications"]
-                    : styles["BackGroundreadNotifications"] // Apply the class only if it's not the last item
-                }
-              >
-                <Col lg={12} md={12} sm={12}>
-                  <WebNotificationCard
-                    NotificationMessege={data.description}
-                    NotificationTime={data.sentDateTime}
-                    index={index}
-                    length={webNotificationData.length}
-                    NotificaitonID={data.notificationID}
-                  />
-                </Col>
-              </Row>
-            ))}
+            {webNotificationData.length > 0 &&
+            webNotificationData !== undefined ? (
+              webNotificationData.map((data, index) => (
+                <Row
+                  key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
+                  className={
+                    isReadNotification === true
+                      ? styles["BackGroundreadNotifications"]
+                      : styles["BackGroundUnreadNotifications"]
+                  }
+                >
+                  <Col lg={12} md={12} sm={12}>
+                    <WebNotificationCard
+                      NotificationMessege={data.description}
+                      NotificationTime={data.sentDateTime}
+                      index={index}
+                      length={webNotificationData.length}
+                      NotificaitonID={data.notificationID}
+                    />
+                  </Col>
+                </Row>
+              ))
+            ) : (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
+                    <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                      <img
+                        src={BellIconNotificationEmptyState}
+                        width="155.35px"
+                        height="111px"
+                        alt=""
+                      />
+                      <span className={styles["NotificationEmptyState"]}>
+                        {t("You-have-no-notifications")}
+                      </span>
+                    </div>
+                  </Col>
+                </Row>
+              </>
+            )}
           </InfiniteScroll>
         </Col>
       </Row>
