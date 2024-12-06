@@ -182,7 +182,7 @@ const Header2 = ({ isVideo }) => {
     fetchInitialData();
   }, []);
 
-  // Extracting the data for Web Notification
+  // Extracting the data for Web Notifications From API
   useEffect(() => {
     if (
       getAllNotificationData &&
@@ -197,7 +197,7 @@ const Header2 = ({ isVideo }) => {
     }
   }, [getAllNotificationData]);
 
-  // Fetch additional notifications on scroll
+  // Fetch additional Web Notifications on scroll
   const fetchNotifications = async () => {
     // Prevent API call if loading is already true or all data has been fetched
     if (webNotificationData.length >= totalCountNotification) return;

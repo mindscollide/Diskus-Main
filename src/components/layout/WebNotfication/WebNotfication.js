@@ -12,10 +12,11 @@ const WebNotfication = ({
   fetchNotifications,
   totalCountNotification,
 }) => {
+  //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
   );
-  console.log(webNotificationData, "webNotificationData");
+  //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
       style={{
