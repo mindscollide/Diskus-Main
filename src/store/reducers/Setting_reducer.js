@@ -29,6 +29,8 @@ const initialState = {
   recentActivityDataFromMQTT: [],
   microsoftToken: null,
   microsftRevokeToken: null,
+  diskusWebNotificationData: null,
+  diskusNotificationMarkAsRead: null,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -42,7 +44,7 @@ const settingReducer = (state = initialState, action) => {
     case actions.GETSETTING_SUCCESS: {
       return {
         ...state,
-        Loading: action.loader?action.loader:false,
+        Loading: action.loader ? action.loader : false,
         UserProfileData: action.response,
         ResponseMessage: action.message,
       };
@@ -435,6 +437,55 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         microsftRevokeToken: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Diskus Web Notifications
+    case actions.DISKUS_WEB_NOTIFICATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DISKUS_WEB_NOTIFICATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        diskusWebNotificationData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DISKUS_WEB_NOTIFICATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        diskusWebNotificationData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        diskusNotificationMarkAsRead: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        diskusNotificationMarkAsRead: null,
         ResponseMessage: action.message,
       };
     }

@@ -724,10 +724,10 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollModal(false));
-              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(viewVotesDetailsModal(true));
               await dispatch(globalFlag(false));
               await dispatch(setVotePollModal(false));
-              await dispatch(setviewpollProgressModal(true));
+              await dispatch(setviewpollProgressModal(false));
             } else if (parseInt(check) === 4) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));

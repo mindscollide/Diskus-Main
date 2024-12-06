@@ -885,6 +885,16 @@ const Resolution = () => {
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
+        console.log(data.votingDeadline, "renderrender");
+        // Get the current date in "YYYYMMDDHHmmss" format
+        const now = new Date();
+        const currentDateString =
+          now.getFullYear().toString() +
+          String(now.getMonth() + 1).padStart(2, "0") + // Month is 0-based
+          String(now.getDate()).padStart(2, "0") +
+          String(now.getHours()).padStart(2, "0") +
+          String(now.getMinutes()).padStart(2, "0") +
+          String(now.getSeconds()).padStart(2, "0");
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
@@ -900,13 +910,17 @@ const Resolution = () => {
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              return (
-                <Button
-                  text={t("Vote")}
-                  className={styles["Resolution-vote-btn"]}
-                  onClick={() => getVoteDetailHandler(data.resolutionID, data)}
-                />
-              );
+              if (currentDateString <= data.votingDeadline) {
+                return (
+                  <Button
+                    text={t("Vote")}
+                    className={styles["Resolution-vote-btn"]}
+                    onClick={() =>
+                      getVoteDetailHandler(data.resolutionID, data)
+                    }
+                  />
+                );
+              }
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
@@ -1133,8 +1147,9 @@ const Resolution = () => {
     if (
       ResolutionReducerResponseMessage !== "" &&
       ResolutionReducerResponseMessage !== t("No-data-available") &&
-      ResolutionReducerResponseMessage !== undefined&&
-      ResolutionReducerResponseMessage !== t("Resolution-details-updated-successfully")
+      ResolutionReducerResponseMessage !== undefined &&
+      ResolutionReducerResponseMessage !==
+        t("Resolution-details-updated-successfully")
     ) {
       showMessage(ResolutionReducerResponseMessage, "success", setOpen);
       dispatch(clearResponseMessage());
@@ -1752,7 +1767,6 @@ const Resolution = () => {
                       ),
                       spinning: ResolutionReducerLoading,
                     }}
-                    
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (
