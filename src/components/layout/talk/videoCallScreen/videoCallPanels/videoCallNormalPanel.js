@@ -185,8 +185,8 @@ const VideoPanelNormal = () => {
   let refinedParticipantVideoUrl = localStorage.getItem("refinedVideoUrl");
   console.log(refinedParticipantVideoUrl, "refinedParticipantVideoUrl");
 
-  // let meetingVideoUrl =
-  //   "https://portal.letsdiskus.com:9414/index.html?UserName=TestParticipant&Type=Join&RoomID=19231&IsMute=false&IsHideCamera=false";
+  const meetingVideoUrlNew =
+    "https://localhost:3000/#/index.html?UserName=Ali Raza M&Type=Join&RoomID=19564&IsMute=false&IsHideCamera=false";
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
@@ -609,11 +609,7 @@ const VideoPanelNormal = () => {
                         >
                           {isMeetingHost === false ? (
                             <iframe
-                              src={
-                                callAcceptedRecipientID === currentUserID
-                                  ? refinedParticipantVideoUrl
-                                  : callerURL
-                              }
+                              src={refinedParticipantVideoUrl}
                               ref={iframeRef}
                               title="Live Video"
                               width="100%"
@@ -657,7 +653,10 @@ const VideoPanelNormal = () => {
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
-                              {isMeetingHost && <VideoNewParticipantList />}
+                              {isMeetingHost &&
+                                videoFeatureReducer.participantWaitinglistBox && (
+                                  <VideoNewParticipantList />
+                                )}
                             </Col>
                           ) : null}
                         </>

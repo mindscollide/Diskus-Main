@@ -145,7 +145,6 @@ const VideoCallNormalHeader = ({
 
   console.log(newParticipants, "newParticipantsnewParticipants");
 
-  const participantCounter = getVideoParticpantListandWaitingList?.length;
   console.log(participantData, "participantCounterparticipantCounter");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -218,6 +217,27 @@ const VideoCallNormalHeader = ({
   const [micEnableHost, setMicEnableHost] = useState(null);
 
   const [isMeetingHost, setIsMeetingHost] = useState(null);
+
+  const [participantCounterList, setParticipantCounterList] = useState([]);
+  console.log(participantCounterList, "participantCounterList");
+
+  const participantCounter = participantCounterList?.length;
+
+  // for show Participant popUp only
+  // Update filteredParticipants based on participantList
+  useEffect(() => {
+    console.log("hell");
+    if (getVideoParticpantListandWaitingList?.length) {
+      const uniqueParticipants = getVideoParticpantListandWaitingList.filter(
+        (participant, index, self) =>
+          self.findIndex((p) => p.userID === participant.userID) === index
+      );
+
+      setParticipantCounterList(uniqueParticipants);
+    } else {
+      setParticipantCounterList([]);
+    }
+  }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
     // This will only run when the component mounts and fetches the value from localStorage
