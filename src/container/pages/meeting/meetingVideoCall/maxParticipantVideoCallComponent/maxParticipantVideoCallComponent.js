@@ -63,47 +63,69 @@ const ParticipantVideoCallComponent = ({
   console.log(isWebCamEnabled, "isWebCamEnabled");
 
   useEffect(() => {
-    // Automatically enable the webcam on initial load
-    if (isWebCamEnabled) {
-      const mediaDevices = navigator.mediaDevices;
-      mediaDevices
-        ?.getUserMedia({
-          video: true,
-          audio: true,
-        })
-        .then((stream) => {
-          const video = videoRef.current;
-          if (video) {
-            video.srcObject = stream;
-            video.muted = true;
-            video.play();
+    // Enable webcam and microphone when isWebCamEnabled is true
+    const enableWebCamAndMic = async () => {
+      try {
+        if (isWebCamEnabled) {
+          // Access video and audio streams
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+
+          // Set up video playback
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.muted = true;
+            await videoRef.current.play();
           }
-          setStream(stream); // Store the stream to disable later
-          setIsWebCamEnabled(true); // Webcam is now enabled
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+
+          localStorage.setItem("isWebCamEnabled", true);
+          setStream(stream); // Store the video and audio stream
+
+          // Handle microphone setup
+          const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+          if (streamAudio) {
+            // Stop any existing audio tracks
+            streamAudio.getTracks().forEach((track) => track.stop());
+          }
+          localStorage.setItem("isMicEnabled", true);
+          setStreamAudio(audioStream);
+        }
+      } catch (error) {
+        alert(`Error accessing media devices: ${error.message}`);
+      }
+    };
+
+    enableWebCamAndMic();
+
+    // Cleanup on unmount or when isWebCamEnabled changes
     return () => {
-      // Cleanup on unmount
       if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+        stream.getVideoTracks().forEach((track) => track.stop());
+
+        // Clear the stream from state
+        setStream(null);
+
+        // Clear the video source
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
+      }
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null);
       }
     };
   }, [isWebCamEnabled]);
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
-    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
-    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
-    dispatch(setAudioControlForParticipant(!enable));
-    // dispatch(setVoiceControleGuest(!enable));
+    dispatch(setAudioControlForParticipant(enable));
+    localStorage.setItem("isMicEnabled", enable);
     if (enable) {
-      localStorage.setItem("isMicEnabled", true);
-
       navigator.mediaDevices
-        .getUserMedia({ audio: true })
+        .getUserMedia({ audio: enable })
         .then((audioStream) => {
           // Stop any existing audio tracks before starting a new one
           if (streamAudio) {
@@ -112,28 +134,28 @@ const ParticipantVideoCallComponent = ({
 
           const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
           setStreamAudio(newStream);
-          setIsMicEnabled(true);
+          setIsMicEnabled(enable);
         })
         .catch((error) => {
           alert("Error accessing microphone: " + error.message);
         });
     } else {
-      localStorage.setItem("isMicEnabled", false);
+      localStorage.setItem("isMicEnabled", enable);
       if (streamAudio) {
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
-      setIsMicEnabled(false); // Microphone is now disabled
+      setIsMicEnabled(enable); // Microphone is now disabled
     }
   };
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    dispatch(setVideoControlForParticipant(!enable));
+    dispatch(setVideoControlForParticipant(enable));
+    localStorage.setItem("isWebCamEnabled", enable);
     if (enable) {
-      localStorage.setItem("isWebCamEnabled", true);
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({ video: enable })
         .then((videoStream) => {
           // Stop any existing video tracks before starting a new one
           if (stream) {
@@ -142,19 +164,18 @@ const ParticipantVideoCallComponent = ({
 
           if (videoRef.current) {
             videoRef.current.srcObject = videoStream;
-            videoRef.current.muted = true;
+            videoRef.current.muted = enable;
             videoRef.current.play().catch((error) => {
               console.error("Error playing video:", error);
             });
           }
           setStream(videoStream);
-          setIsWebCamEnabled(true);
+          setIsWebCamEnabled(enable);
         })
         .catch((error) => {
           alert("Error accessing webcam: " + error.message);
         });
     } else {
-      localStorage.setItem("isWebCamEnabled", false);
       if (stream) {
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
@@ -162,7 +183,7 @@ const ParticipantVideoCallComponent = ({
           videoRef.current.srcObject = null; // Clear the video source
         }
       }
-      setIsWebCamEnabled(false); // Webcam is now disabled
+      setIsWebCamEnabled(enable); // Webcam is now disabled
     }
   };
 
@@ -213,36 +234,57 @@ const ParticipantVideoCallComponent = ({
             <div className="max-videoParticipant-Icons-state">
               {isMicEnabled ? (
                 <img
+                  dragable="false"
                   src={MicOn2}
                   className="cursor-pointer"
                   onClick={() => toggleAudio(false, 2)}
+                  alt=""
                 />
               ) : (
                 <img
+                  dragable="false"
                   src={MicOff}
                   onClick={() => toggleAudio(true, 1)}
                   className="cursor-pointer"
+                  alt=""
                 />
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
               {isWebCamEnabled ? (
-                <img src={VideoOn2} onClick={() => toggleVideo(false)} />
+                <img
+                  dragable="false"
+                  src={VideoOn2}
+                  onClick={() => toggleVideo(false)}
+                  alt=""
+                />
               ) : (
-                <img src={VideoOff} onClick={() => toggleVideo(true)} />
+                <img
+                  dragable="false"
+                  src={VideoOff}
+                  onClick={() => toggleVideo(true)}
+                  alt=""
+                />
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img src={MinimizeIcon} />
+              <img dragable="false" src={MinimizeIcon} alt="" />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
+                dragable="false"
                 src={isNormalPanel ? ExpandIcon : NormalizeIcon}
                 onClick={onClickToNormalParticipantPanel}
+                alt=""
               />
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img src={EndCall} onClick={onClickEndVideoCall} />
+              <img
+                dragable="false"
+                src={EndCall}
+                onClick={onClickEndVideoCall}
+                alt=""
+              />
             </div>
           </Col>
         </Row>
@@ -280,13 +322,13 @@ const ParticipantVideoCallComponent = ({
 
                     {/* <div className="mic-vid-buttons">
                       {isMicEnabled ? (
-                        <img
+                        <img dragable="false"
                           src={MicOn}
                           className="cursor-pointer"
                           onClick={() => toggleAudio(false, 2)}
                         />
                       ) : (
-                        <img
+                        <img dragable="false"
                           src={MicOff}
                           className="cursor-pointer"
                           onClick={() => toggleAudio(true, 1)}

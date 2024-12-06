@@ -141,12 +141,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.makeHostNow
   );
 
-  console.log(audioControlHost, typeof "audioControlHost");
-
-  console.log(newParticipants, "newParticipantsnewParticipants");
-
-  console.log(participantData, "participantCounterparticipantCounter");
-
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
@@ -220,9 +214,13 @@ const VideoCallNormalHeader = ({
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
   console.log(participantCounterList, "participantCounterList");
+  const leaveModalPopupRef = useRef(null);
 
   const participantCounter = participantCounterList?.length;
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   // for show Participant popUp only
   // Update filteredParticipants based on participantList
   useEffect(() => {
@@ -240,20 +238,6 @@ const VideoCallNormalHeader = ({
   }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
-    // This will only run when the component mounts and fetches the value from localStorage
-    const micEnabled = localStorage.getItem("isMicEnabled");
-    setMicEnableHost(micEnabled);
-    console.log(micEnabled, typeof "micEnabledNewDatattatat"); // Log the value and its type
-  }, []);
-
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-
-  const leaveModalPopupRef = useRef(null);
-
-  useEffect(() => {
     if (makeHostNow !== null) {
       if (
         currentUserID === makeHostNow.isHostId &&
@@ -266,23 +250,6 @@ const VideoCallNormalHeader = ({
     }
   }, [makeHostNow]);
 
-  // useEffect(() => {
-  //   if (
-  //     getNewParticipantsMeetingJoin !== null &&
-  //     getNewParticipantsMeetingJoin !== undefined &&
-  //     getNewParticipantsMeetingJoin.length > 0
-  //   ) {
-  //     console.log(
-  //       getNewParticipantsMeetingJoin,
-  //       "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
-  //     );
-  //     console.log(getNewParticipantsMeetingJoin.length);
-  //     // Extract and set the new participants to state
-  //     setNewParticipants(getNewParticipantsMeetingJoin);
-  //   } else {
-  //     setNewParticipants([]);
-  //   }
-  // }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
     if (meetingUrlData !== null && meetingUrlData !== undefined) {
@@ -632,11 +599,11 @@ const VideoCallNormalHeader = ({
     }, 3000);
   };
 
-  useEffect(() => {}, [
-    VideoMainReducer.VideoRecipentData.userName,
-    callerNameInitiate,
-    callerName,
-  ]);
+  // useEffect(() => {}, [
+  //   VideoMainReducer.VideoRecipentData.userName,
+  //   callerNameInitiate,
+  //   callerName,
+  // ]);
 
   useEffect(() => {
     // Use setTimeout to hide the notification after 4 seconds
@@ -704,7 +671,7 @@ const VideoCallNormalHeader = ({
 
   const videoHideUnHideForParticipant = () => {
     // Set the HideVideo flag based on videoControlForParticipant
-    const flag = !videoControlForParticipant;
+    const flag = videoControlForParticipant;
 
     // Prepare data for the API request
     let data = {
@@ -747,7 +714,7 @@ const VideoCallNormalHeader = ({
   };
 
   const muteUnMuteForParticipant = () => {
-    const flag = !audioControlForParticipant;
+    const flag = audioControlForParticipant;
 
     let data = {
       RoomID: String(participantRoomIds),
@@ -1279,13 +1246,13 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      audioControlForParticipant === true
-                        ? t("Enable-mic")
-                        : t("Disable-mic")
+                      audioControlForParticipant 
+                        ? t("Disable-mic")
+                        : t("Enable-mic")
                     }
                   >
                     <img
-                      src={audioControlForParticipant === true ? MicOff : MicOn}
+                      src={audioControlForParticipant  ? MicOn : MicOff}
                       onClick={muteUnMuteForParticipant}
                       alt="Mic"
                     />
@@ -1304,14 +1271,14 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      videoControlForParticipant === true
-                        ? t("Disable-video")
-                        : t("Enable-video")
+                      videoControlForParticipant 
+                        ? t("Enable-video")
+                        : t("Disable-video")
                     }
                   >
                     <img
                       src={
-                        videoControlForParticipant === true ? VideoOff : VideoOn
+                        videoControlForParticipant ? VideoOn : VideoOff
                       }
                       onClick={videoHideUnHideForParticipant}
                       alt="Video"
