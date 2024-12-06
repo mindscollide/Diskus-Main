@@ -194,8 +194,8 @@ const ParticipantVideoCallComponent = ({
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
-      IsMuted: !isMicEnabled,
-      HideVideo: !isWebCamEnabled,
+      IsMuted: isMicEnabled,
+      HideVideo: isWebCamEnabled,
     };
     dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     setIsWaiting(true);

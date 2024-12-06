@@ -219,6 +219,7 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
+    console.log("toggleAudio",audioControlHost)
     const controlSource =
       userRole === "Participant"
         ? audioControlForParticipant
@@ -238,6 +239,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
+    console.log("toggleAudio",videoControlHost)
     // Determine the control source based on the user role
     const controlSource =
       userRole === "Participant"

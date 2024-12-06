@@ -25,6 +25,8 @@ import {
   participantAcceptandReject,
   participantVideoNavigationScreen,
   participantWaitingListBox,
+  setAudioControlHost,
+  setVideoControlHost,
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
 
@@ -970,6 +972,8 @@ const muteUnMuteSelfMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
                 )
             ) {
+              await dispatch(setAudioControlHost(data.IsMuted));
+              localStorage.setItem("isMicEnabled", data.IsMuted);
               await dispatch(
                 muteUnmuteSelfSuccess(
                   response.data.responseResult,
@@ -1063,6 +1067,8 @@ const hideUnhideSelfMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_HideUnHideVideo_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("isWebCamEnabled", data.HideVideo);
+              await dispatch(setVideoControlHost(data.HideVideo));
               await dispatch(
                 hideUnhideSelfSuccess(
                   response.data.responseResult,

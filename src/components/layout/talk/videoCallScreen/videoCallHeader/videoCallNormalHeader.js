@@ -162,8 +162,6 @@ const VideoCallNormalHeader = ({
   // Participant room Id and usrrGuid
   let participantRoomIds = localStorage.getItem("participantRoomId");
   let participantUID = localStorage.getItem("participantUID");
-  console.log({ participantRoomIds, participantUID }, "participantRoomIds");
-
   let callTypeID = Number(localStorage.getItem("callTypeID"));
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
   let callerObject = localStorage.getItem("callerStatusObject");
@@ -249,7 +247,6 @@ const VideoCallNormalHeader = ({
       }
     }
   }, [makeHostNow]);
-
 
   useEffect(() => {
     if (meetingUrlData !== null && meetingUrlData !== undefined) {
@@ -640,14 +637,14 @@ const VideoCallNormalHeader = ({
   //Audio COntrol FOr Host
   const disableMicHost = () => {
     // Dispatch an action to toggle the mic state
-    dispatch(setAudioControlHost(!audioControlHost));
+    dispatch(setAudioControlHost(audioControlHost));
     console.log("audioControlHost", audioControlHost);
   };
 
   // VideoControl For Host
   const disableVideoHost = () => {
     // Dispatch an action to toggle the video state
-    dispatch(setVideoControlHost(!videoControlHost));
+    dispatch(setVideoControlHost(videoControlHost));
     console.log("videoControlHost", videoControlHost);
   };
 
@@ -684,10 +681,10 @@ const VideoCallNormalHeader = ({
     dispatch(hideUnhideSelfMainApi(navigate, t, data));
   };
 
-  const videoHideUnHideForHost = () => {
+  const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
-    const flag = !videoControlHost;
-
+    // const flag = videoControlHost;
+    console.log("videoHideUnHideForHost", flag);
     // Prepare data for the API request
     let data = {
       RoomID: String(newRoomID),
@@ -699,8 +696,9 @@ const VideoCallNormalHeader = ({
     dispatch(hideUnhideSelfMainApi(navigate, t, data));
   };
 
-  const muteUnMuteForHost = () => {
-    const flag = !audioControlHost;
+  const muteUnMuteForHost = (flag) => {
+    // const flag = audioControlHost;
+    console.log("videoHideUnHideForHost", flag);
 
     // Prepare data for the API request
     let data = {
@@ -812,14 +810,12 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      audioControlHost === true
-                        ? t("Enable-mic")
-                        : t("Disable-mic")
+                      audioControlHost ? t("Disable-mic") : t("Enable-mic")
                     }
                   >
                     <img
-                      src={audioControlHost === true ? MicOff : MicOn}
-                      onClick={muteUnMuteForHost}
+                      src={audioControlHost ? MicOn : MicOff}
+                      onClick={()=>muteUnMuteForHost(audioControlHost?false:true)}
                       alt="Mic"
                     />
                   </Tooltip>
@@ -841,8 +837,10 @@ const VideoCallNormalHeader = ({
                     }
                   >
                     <img
-                      src={videoControlHost === true ? VideoOff : VideoOn}
-                      onClick={videoHideUnHideForHost}
+                      src={videoControlHost ? VideoOn : VideoOff}
+                      onClick={() =>
+                        videoHideUnHideForHost(videoControlHost ? false : true)
+                      }
                       alt="Video"
                     />
                   </Tooltip>
@@ -1246,13 +1244,13 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      audioControlForParticipant 
+                      audioControlForParticipant
                         ? t("Disable-mic")
                         : t("Enable-mic")
                     }
                   >
                     <img
-                      src={audioControlForParticipant  ? MicOn : MicOff}
+                      src={audioControlForParticipant ? MicOn : MicOff}
                       onClick={muteUnMuteForParticipant}
                       alt="Mic"
                     />
@@ -1271,15 +1269,13 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      videoControlForParticipant 
+                      videoControlForParticipant
                         ? t("Enable-video")
                         : t("Disable-video")
                     }
                   >
                     <img
-                      src={
-                        videoControlForParticipant ? VideoOn : VideoOff
-                      }
+                      src={videoControlForParticipant ? VideoOn : VideoOff}
                       onClick={videoHideUnHideForParticipant}
                       alt="Video"
                     />

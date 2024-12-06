@@ -52,8 +52,8 @@ const initialState = {
   getVideoParticpantListandWaitingList: [], // Active participants list
   waitingParticipantsList: [],
   participantVideoNavigationData: 1,
-  videoControlHost: false,
-  audioControlHost: false,
+  videoControlHost: true,
+  audioControlHost: true,
   videoControlForParticipant: true,
   audioControlForParticipant: true,
   raisedUnRaisedParticipant: false,
