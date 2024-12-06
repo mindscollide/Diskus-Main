@@ -127,6 +127,7 @@ const Header2 = ({ isVideo }) => {
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
+  const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
 
   //OnClick Function for OutSide Click WebNotification
@@ -225,7 +226,9 @@ const Header2 = ({ isVideo }) => {
         ...getAllNotificationData.notifications,
       ]);
       //Total Count of notificaiton
-      setTotalCountNotification(getAllNotificationData.unReadCount);
+      setTotalCountNotification(getAllNotificationData.totalCount);
+      // Total Count of Unread Notification
+      setUnReadCountNotification(getAllNotificationData.unReadCount);
     }
   }, [getAllNotificationData]);
 
@@ -1306,7 +1309,7 @@ const Header2 = ({ isVideo }) => {
                       className="BellNotificationIconStyles"
                     />
                     <span className="NotficationCountSpan">
-                      {totalCountNotification}
+                      {unReadCountNotification}
                     </span>
                   </span>
                   {/* Web Notification Outer Box Starts */}
@@ -1316,6 +1319,7 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
+                      unReadCountNotification={unReadCountNotification}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

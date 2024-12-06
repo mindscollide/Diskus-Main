@@ -13,6 +13,7 @@ const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   fetchNotifications, // Scrolling Function on Lazy Loading
   totalCountNotification, // Total number of Notification
+  unReadCountNotification, // Count of Unread Notification
 }) => {
   const { t } = useTranslation();
   //Global Loader From Setting Reducer
@@ -68,8 +69,9 @@ const WebNotfication = ({
                 <Row
                   key={data.notificationID || `notification-${index}`} // Ensure a unique key
                   className={
-                    styles["BackGroundUnreadNotifications"]
-                    // : styles["BackGroundreadNotifications"]
+                    unReadCountNotification > 0
+                      ? styles["BackGroundUnreadNotifications"]
+                      : styles["BackGroundreadNotifications"]
                   }
                 >
                   <Col lg={12} md={12} sm={12}>
