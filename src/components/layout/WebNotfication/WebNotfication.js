@@ -6,12 +6,15 @@ import WebNotificationCard from "./WebNotificationCard/WebNotificationCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Spin } from "antd";
 import { useSelector } from "react-redux";
+import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
+import { useTranslation } from "react-i18next";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   fetchNotifications, // Scrolling Function on Lazy Loading
   totalCountNotification, // Total number of Notification
 }) => {
+  const { t } = useTranslation();
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
@@ -30,8 +33,10 @@ const WebNotfication = ({
   return (
     <section className={styles["WebNotificationOuterBox"]}>
       <Row className="mt-2">
-        <Col lg={12}>
-          <span className={styles["NotificationCategories"]}>Today</span>
+        <Col lg={12} md={12} sm={12}>
+          {webNotificationData.length > 0 && (
+            <span className={styles["NotificationCategories"]}>Today</span>
+          )}
         </Col>
       </Row>
       <Row>
@@ -57,25 +62,46 @@ const WebNotfication = ({
             height="68vh"
             style={{ overflowX: "hidden" }}
           >
-            {webNotificationData.map((data, index) => (
-              <Row
-                key={data.notificationID || `notification-${index}`} // Ensure a unique key
-                className={
-                  styles["BackGroundUnreadNotifications"]
-                  // : styles["BackGroundreadNotifications"]
-                }
-              >
-                <Col lg={12} md={12} sm={12}>
-                  <WebNotificationCard
-                    NotificationMessege={data.description}
-                    NotificationTime={data.sentDateTime}
-                    index={index}
-                    length={webNotificationData.length}
-                    NotificaitonID={data.notificationID}
-                  />
-                </Col>
-              </Row>
-            ))}
+            {webNotificationData.length > 0 &&
+            webNotificationData !== undefined ? (
+              webNotificationData.map((data, index) => (
+                <Row
+                  key={data.notificationID || `notification-${index}`} // Ensure a unique key
+                  className={
+                    styles["BackGroundUnreadNotifications"]
+                    // : styles["BackGroundreadNotifications"]
+                  }
+                >
+                  <Col lg={12} md={12} sm={12}>
+                    <WebNotificationCard
+                      NotificationMessege={data.description}
+                      NotificationTime={data.sentDateTime}
+                      index={index}
+                      length={webNotificationData.length}
+                      NotificaitonID={data.notificationID}
+                    />
+                  </Col>
+                </Row>
+              ))
+            ) : (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
+                    <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                      <img
+                        src={BellIconNotificationEmptyState}
+                        width="155.35px"
+                        height="111px"
+                        alt=""
+                      />
+                      <span className={styles["NotificationEmptyState"]}>
+                        {t("You-have-no-notifications")}
+                      </span>
+                    </div>
+                  </Col>
+                </Row>
+              </>
+            )}
           </InfiniteScroll>
         </Col>
       </Row>
