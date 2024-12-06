@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Navbar, DropdownButton, Row, Col } from "react-bootstrap";
 import { Tooltip } from "antd";
@@ -123,7 +123,25 @@ const Header2 = ({ isVideo }) => {
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
+  //Handling OutSideClick FOr WebNOtification
+  const WebNotificationBell = useRef();
 
+  const handleOutsideClick = (event) => {
+    if (
+      WebNotificationBell.current &&
+      !WebNotificationBell.current.contains(event.target) &&
+      showWebNotification
+    ) {
+      setShowWebNotification(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [showWebNotification]);
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
@@ -169,6 +187,7 @@ const Header2 = ({ isVideo }) => {
       }
     }
   }, []);
+
   // Web Notification API Calling
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -1266,6 +1285,7 @@ const Header2 = ({ isVideo }) => {
                   <span
                     className="position-relative"
                     onClick={handleWebNotication}
+                    ref={WebNotificationBell}
                   >
                     <img
                       src={BellNotificationIcon}
