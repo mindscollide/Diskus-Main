@@ -58,6 +58,7 @@ const ParticipantVideoCallComponent = ({
   const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
   const [isMicEnabled, setIsMicEnabled] = useState(true);
+  const [isNormalPanel, setIsNormalPanel] = useState(false);
 
   console.log(isWebCamEnabled, "isWebCamEnabled");
 
@@ -181,8 +182,9 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickToNormalParticipantPanel = () => {
-    dispatch(maxParticipantVideoCallPanel(false));
-    dispatch(normalParticipantVideoCallPanel(true));
+    setIsNormalPanel((prevState) => !prevState);
+    // dispatch(maxParticipantVideoCallPanel(false));
+    // dispatch(normalParticipantVideoCallPanel(true));
   };
 
   const onClickEndVideoCall = () => {
@@ -191,7 +193,13 @@ const ParticipantVideoCallComponent = ({
 
   return (
     <Container fluid>
-      <div className="max-videoParticipant-panel">
+      <div
+        className={
+          isNormalPanel
+            ? "max-videoParticipantsvideo-panel"
+            : "max-videoParticipant-panel"
+        }
+      >
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
             <p className="max-participant-title">{participantMeetingTitle}</p>
@@ -229,7 +237,7 @@ const ParticipantVideoCallComponent = ({
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
-                src={NormalizeIcon}
+                src={isNormalPanel ? ExpandIcon : NormalizeIcon}
                 onClick={onClickToNormalParticipantPanel}
               />
             </div>
@@ -248,7 +256,7 @@ const ParticipantVideoCallComponent = ({
                     backgroundImage: `url(${ProfileUser})`,
                     backgroundSize: "33%",
                     backgroundRepeat: "no-repeat",
-                    height: "78vh",
+                    height: isNormalPanel ? "44vh" : "78vh",
                     backgroundPosition: "center center",
                   }}
                 >
@@ -261,7 +269,11 @@ const ParticipantVideoCallComponent = ({
                       >
                         <video
                           ref={videoRef}
-                          className="video-max-Participant"
+                          className={
+                            isNormalPanel
+                              ? "video-max-videoParticipantsvideo-panel"
+                              : "video-max-Participant"
+                          }
                         />
                       </div>
                     </div>

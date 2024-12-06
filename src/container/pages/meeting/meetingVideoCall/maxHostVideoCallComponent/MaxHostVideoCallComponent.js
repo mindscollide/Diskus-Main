@@ -51,7 +51,9 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
   const [isMicEnabled, setIsMicEnabled] = useState(true);
 
-  console.log(isWebCamEnabled, "isWebCamEnabled");
+  const [isNormalPanel, setIsNormalPanel] = useState(false);
+
+  console.log(isNormalPanel, "isNormalPanel");
   console.log(isMicEnabled, "isMicEnabled");
 
   useEffect(() => {
@@ -172,8 +174,9 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
 
   const onClickToNormalHostPanel = () => {
-    dispatch(maxHostVideoCallPanel(false));
-    dispatch(normalHostVideoCallPanel(true));
+    setIsNormalPanel((prevState) => !prevState); // Toggle the state
+    // dispatch(maxHostVideoCallPanel(false));
+    // dispatch(normalHostVideoCallPanel(true));
   };
 
   const onClickToCloseHostMaxPanel = () => {
@@ -182,7 +185,13 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
 
   return (
     <Container fluid>
-      <div className="max-videoHost-panel">
+      <div
+        className={
+          isNormalPanel
+            ? "max-videoParticipants-new-panel"
+            : "max-videoHost-panel"
+        }
+      >
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
             <p className="max-Host-title-name">{MeetingTitle}</p>
@@ -219,7 +228,10 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
               <img src={MinimizeIcon} />
             </div>
             <div className="max-videohost-Icons-state">
-              <img src={NormalizeIcon} onClick={onClickToNormalHostPanel} />
+              <img
+                src={isNormalPanel ? ExpandIcon : NormalizeIcon}
+                onClick={onClickToNormalHostPanel}
+              />
             </div>
             <div className="max-videohost-Icons-state">
               <img src={EndCall} onClick={onClickToCloseHostMaxPanel} />
@@ -236,7 +248,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
                     backgroundImage: `url(${ProfileUser})`,
                     backgroundSize: "33%",
                     backgroundRepeat: "no-repeat",
-                    height: "78vh",
+                    height: isNormalPanel ? "44vh" : "78vh",
                     backgroundPosition: "center center",
                   }}
                 >
@@ -247,7 +259,14 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
                           position: "relative",
                         }}
                       >
-                        <video ref={videoRef} className="video-max-host" />
+                        <video
+                          ref={videoRef}
+                          className={
+                            isNormalPanel
+                              ? "video-max-Participant-new"
+                              : "video-max-host"
+                          }
+                        />
                       </div>
                     </div>
                   </div>
@@ -256,7 +275,13 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
             }
           </Col>
           <Col lg={4} md={4} sm={12}>
-            <div className="max-videoHost-component">
+            <div
+              className={
+                isNormalPanel
+                  ? "max-videoHostcomponent-panel"
+                  : "max-videoHost-component"
+              }
+            >
               <>
                 <p className="max-videohost-ready-to-join">
                   {t("Ready-to-join")}
