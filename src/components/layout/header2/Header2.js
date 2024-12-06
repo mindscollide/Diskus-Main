@@ -169,26 +169,20 @@ const Header2 = ({ isVideo }) => {
       }
     }
   }, []);
-  const [loading, setLoading] = useState(false); // Loading state
   // Web Notification API Calling
-  // Fetch initial notifications on mount
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        setLoading(true);
         const data = { sRow: 0, eRow: 8 }; // Initial fetch
         await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
       } catch (error) {
         console.error("Error fetching initial notifications:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchInitialData();
   }, []);
 
   // Extracting the data for Web Notification
-  // Update notifications on getAllNotificationData change
   useEffect(() => {
     if (
       getAllNotificationData &&
@@ -205,20 +199,17 @@ const Header2 = ({ isVideo }) => {
 
   // Fetch additional notifications on scroll
   const fetchNotifications = async () => {
-    if (loading || webNotificationData.length >= totalCountNotification) return;
+    // Prevent API call if loading is already true or all data has been fetched
+    if (webNotificationData.length >= totalCountNotification) return;
 
-    setLoading(true);
     try {
       const data = { sRow: webNotificationData.length, eRow: 8 };
       await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
     } catch (error) {
       console.error("Error fetching more notifications:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  console.log(webNotificationData, "webNotificationData");
   useEffect(() => {
     if (UserProfileData === undefined || UserProfileData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -1292,7 +1283,6 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
-                      loading={loading}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

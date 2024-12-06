@@ -5,15 +5,17 @@ import { LoadingOutlined } from "@ant-design/icons";
 import WebNotificationCard from "./WebNotificationCard/WebNotificationCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Spin } from "antd";
+import { useSelector } from "react-redux";
 
 const WebNotfication = ({
   webNotificationData,
   fetchNotifications,
   totalCountNotification,
-  loading,
 }) => {
+  const WebNotificaitonLoader = useSelector(
+    (state) => state.settingReducer.Loading
+  );
   console.log(webNotificationData, "webNotificationData");
-  console.log(loading, "webNotificationData");
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -37,7 +39,7 @@ const WebNotfication = ({
             next={fetchNotifications} // Fetch more data
             hasMore={webNotificationData.length < totalCountNotification} // Stop if all data loaded
             loader={
-              loading && (
+              WebNotificaitonLoader && (
                 <Row>
                   <Col
                     sm={12}
