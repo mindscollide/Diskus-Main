@@ -173,7 +173,7 @@ const Header2 = ({ isVideo }) => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const data = { sRow: 0, eRow: 8 }; // Initial fetch
+        const data = { sRow: 0, eRow: 8 }; // Initial fetch data from API
         await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
       } catch (error) {
         console.error("Error fetching initial notifications:", error);
