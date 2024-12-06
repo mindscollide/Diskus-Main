@@ -407,7 +407,7 @@ const VideoNewParticipantList = () => {
                             className="handraised-participant"
                           />
                         )
-                      ) : usersData.hideCamera ? (
+                      ) : !usersData.hideCamera ? (
                         <img
                           draggable="false"
                           src={VideoDisable}
@@ -457,7 +457,7 @@ const VideoNewParticipantList = () => {
                             alt="Microphone Enabled"
                           />
                         )
-                      ) : usersData.mute ? (
+                      ) : !usersData.mute ? (
                         <img
                           draggable="false"
                           src={MicDisabled}

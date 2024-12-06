@@ -25,7 +25,9 @@ import {
   participantAcceptandReject,
   participantVideoNavigationScreen,
   participantWaitingListBox,
+  setAudioControlForParticipant,
   setAudioControlHost,
+  setVideoControlForParticipant,
   setVideoControlHost,
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
@@ -947,7 +949,7 @@ const muteUnmuteSelfFail = (message) => {
   };
 };
 
-const muteUnMuteSelfMainApi = (navigate, t, data) => {
+const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
   return (dispatch) => {
     dispatch(muteUnmuteSelfInit());
     let form = new FormData();
@@ -962,7 +964,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(muteUnMuteSelfMainApi(navigate, t, data));
+          dispatch(muteUnMuteSelfMainApi(navigate, t, data, check));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -972,7 +974,11 @@ const muteUnMuteSelfMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
                 )
             ) {
-              await dispatch(setAudioControlHost(data.IsMuted));
+              if (check === 1) {
+                await dispatch(setAudioControlHost(data.IsMuted));
+              } else if (check === 2) {
+                dispatch(setAudioControlForParticipant(data.IsMuted));
+              }
               localStorage.setItem("isMicEnabled", data.IsMuted);
               await dispatch(
                 muteUnmuteSelfSuccess(
@@ -1039,7 +1045,7 @@ const hideUnhideSelfFail = (message) => {
   };
 };
 
-const hideUnhideSelfMainApi = (navigate, t, data) => {
+const hideUnhideSelfMainApi = (navigate, t, data, check) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(hideUnhideSelfInit());
@@ -1057,7 +1063,7 @@ const hideUnhideSelfMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(hideUnhideSelfMainApi(navigate, t, data));
+          dispatch(hideUnhideSelfMainApi(navigate, t, data, check));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1068,7 +1074,11 @@ const hideUnhideSelfMainApi = (navigate, t, data) => {
                 )
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
-              await dispatch(setVideoControlHost(data.HideVideo));
+              if (check === 1) {
+                await dispatch(setVideoControlHost(data.HideVideo));
+              } else if (check === 2) {
+                dispatch(setVideoControlForParticipant(data.HideVideo));
+              }
               await dispatch(
                 hideUnhideSelfSuccess(
                   response.data.responseResult,

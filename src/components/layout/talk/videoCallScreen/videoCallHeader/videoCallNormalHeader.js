@@ -648,27 +648,13 @@ const VideoCallNormalHeader = ({
     console.log("videoControlHost", videoControlHost);
   };
 
-  // VideoControl For Participant
-  const disableVideoForParticipant = () => {
-    dispatch(setVideoControlForParticipant(!videoControlForParticipant));
-    console.log("videoControlForParticipant", videoControlForParticipant);
-  };
-
-  // Audio Control For Participant
-  const disableAudioForParticipant = () => {
-    dispatch(setAudioControlForParticipant(!audioControlForParticipant));
-    console.log("videoControlForParticipant", audioControlForParticipant);
-  };
-
   // Raised Hand UnHand Control For Participant
   const disableRaisedHandForParticipant = () => {
     dispatch(setRaisedUnRaisedParticiant(!raisedUnRaisedParticipant));
     console.log("raisedUnRaisedParticipant", raisedUnRaisedParticipant);
   };
 
-  const videoHideUnHideForParticipant = () => {
-    // Set the HideVideo flag based on videoControlForParticipant
-    const flag = videoControlForParticipant;
+  const videoHideUnHideForParticipant = (flag) => {
 
     // Prepare data for the API request
     let data = {
@@ -678,7 +664,7 @@ const VideoCallNormalHeader = ({
     };
 
     // Dispatch the API request with the data
-    dispatch(hideUnhideSelfMainApi(navigate, t, data));
+    dispatch(hideUnhideSelfMainApi(navigate, t, data,2));
   };
 
   const videoHideUnHideForHost = (flag) => {
@@ -711,8 +697,8 @@ const VideoCallNormalHeader = ({
     dispatch(muteUnMuteSelfMainApi(navigate, t, data));
   };
 
-  const muteUnMuteForParticipant = () => {
-    const flag = audioControlForParticipant;
+  const muteUnMuteForParticipant = (flag) => {
+    // const flag = audioControlForParticipant;
 
     let data = {
       RoomID: String(participantRoomIds),
@@ -720,7 +706,7 @@ const VideoCallNormalHeader = ({
       UID: String(participantUID),
     };
     // Dispatch the API call with the structured request data
-    dispatch(muteUnMuteSelfMainApi(navigate, t, data));
+    dispatch(muteUnMuteSelfMainApi(navigate, t, data,2));
   };
 
   const raiseUnRaiseForParticipant = () => {
@@ -1232,7 +1218,7 @@ const VideoCallNormalHeader = ({
               {" "}
               <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
                 <div
-                  onClick={disableAudioForParticipant}
+                  // onClick={disableAudioForParticipant}
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? "grayScaleImage"
@@ -1250,14 +1236,14 @@ const VideoCallNormalHeader = ({
                     }
                   >
                     <img
-                      src={audioControlForParticipant ? MicOn : MicOff}
-                      onClick={muteUnMuteForParticipant}
+                      src={audioControlForParticipant ?MicOff  :MicOn }
+                      onClick={()=>muteUnMuteForParticipant(audioControlForParticipant?false:true)}
                       alt="Mic"
                     />
                   </Tooltip>
                 </div>
                 <div
-                  onClick={disableVideoForParticipant}
+                  // onClick={disableVideoForParticipant}
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? "grayScaleImage"
@@ -1275,8 +1261,8 @@ const VideoCallNormalHeader = ({
                     }
                   >
                     <img
-                      src={videoControlForParticipant ? VideoOn : VideoOff}
-                      onClick={videoHideUnHideForParticipant}
+                      src={videoControlForParticipant ?VideoOff  :VideoOn }
+                      onClick={()=>videoHideUnHideForParticipant(videoControlForParticipant?false:true)}
                       alt="Video"
                     />
                   </Tooltip>

@@ -7,7 +7,6 @@ import { Button } from "../../../../../components/elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOn2 from "../../../../../assets/images/Recent Activity Icons/Video/MicOn2.png";
-import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn.png";
 import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
@@ -16,15 +15,11 @@ import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Vi
 
 import {
   getParticipantMeetingJoinMainApi,
-  maxHostVideoCallPanel,
   maxParticipantVideoCallPanel,
-  normalHostVideoCallPanel,
-  normalParticipantVideoCallPanel,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
-import NormalHostVideoCallComponent from "../normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import { useNavigate } from "react-router-dom";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 
@@ -56,8 +51,8 @@ const ParticipantVideoCallComponent = ({
 
   const [stream, setStream] = useState(null);
   const [streamAudio, setStreamAudio] = useState(null);
-  const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
-  const [isMicEnabled, setIsMicEnabled] = useState(true);
+  const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
 
   console.log(isWebCamEnabled, "isWebCamEnabled");
@@ -66,7 +61,7 @@ const ParticipantVideoCallComponent = ({
     // Enable webcam and microphone when isWebCamEnabled is true
     const enableWebCamAndMic = async () => {
       try {
-        if (isWebCamEnabled) {
+        if (!isWebCamEnabled) {
           // Access video and audio streams
           const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
@@ -80,7 +75,7 @@ const ParticipantVideoCallComponent = ({
             await videoRef.current.play();
           }
 
-          localStorage.setItem("isWebCamEnabled", true);
+          localStorage.setItem("isWebCamEnabled", false);
           setStream(stream); // Store the video and audio stream
 
           // Handle microphone setup
@@ -89,7 +84,7 @@ const ParticipantVideoCallComponent = ({
             // Stop any existing audio tracks
             streamAudio.getTracks().forEach((track) => track.stop());
           }
-          localStorage.setItem("isMicEnabled", true);
+          localStorage.setItem("isMicEnabled", false);
           setStreamAudio(audioStream);
         }
       } catch (error) {
@@ -120,12 +115,12 @@ const ParticipantVideoCallComponent = ({
   }, [isWebCamEnabled]);
 
   // for set Video Web Cam on CLick
-  const toggleAudio = (enable, check) => {
+  const toggleAudio = (enable) => {
     dispatch(setAudioControlForParticipant(enable));
     localStorage.setItem("isMicEnabled", enable);
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
-        .getUserMedia({ audio: enable })
+        .getUserMedia({ audio: true })
         .then((audioStream) => {
           // Stop any existing audio tracks before starting a new one
           if (streamAudio) {
@@ -140,7 +135,6 @@ const ParticipantVideoCallComponent = ({
           alert("Error accessing microphone: " + error.message);
         });
     } else {
-      localStorage.setItem("isMicEnabled", enable);
       if (streamAudio) {
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
@@ -153,9 +147,9 @@ const ParticipantVideoCallComponent = ({
   const toggleVideo = (enable) => {
     dispatch(setVideoControlForParticipant(enable));
     localStorage.setItem("isWebCamEnabled", enable);
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
-        .getUserMedia({ video: enable })
+        .getUserMedia({ video: true })
         .then((videoStream) => {
           // Stop any existing video tracks before starting a new one
           if (stream) {
@@ -164,7 +158,7 @@ const ParticipantVideoCallComponent = ({
 
           if (videoRef.current) {
             videoRef.current.srcObject = videoStream;
-            videoRef.current.muted = enable;
+            videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
               console.error("Error playing video:", error);
             });
@@ -235,16 +229,16 @@ const ParticipantVideoCallComponent = ({
               {isMicEnabled ? (
                 <img
                   dragable="false"
-                  src={MicOn2}
+                  src={MicOff}
                   className="cursor-pointer"
-                  onClick={() => toggleAudio(false, 2)}
+                  onClick={() => toggleAudio(false)}
                   alt=""
                 />
               ) : (
                 <img
                   dragable="false"
-                  src={MicOff}
-                  onClick={() => toggleAudio(true, 1)}
+                  src={MicOn2}
+                  onClick={() => toggleAudio(true)}
                   className="cursor-pointer"
                   alt=""
                 />
@@ -254,14 +248,14 @@ const ParticipantVideoCallComponent = ({
               {isWebCamEnabled ? (
                 <img
                   dragable="false"
-                  src={VideoOn2}
+                  src={VideoOff}
                   onClick={() => toggleVideo(false)}
                   alt=""
                 />
               ) : (
                 <img
                   dragable="false"
-                  src={VideoOff}
+                  src={VideoOn2}
                   onClick={() => toggleVideo(true)}
                   alt=""
                 />

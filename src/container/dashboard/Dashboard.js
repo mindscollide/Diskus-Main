@@ -875,15 +875,13 @@ const Dashboard = () => {
                 data.payload.videoUrl
               );
               if (data?.payload?.videoUrl) {
-                let videoFlag = audioControlForParticipant ? false : true;
-                let audioFlag = videoControlForParticipant ? false : true;
                 // Fetch values from localStorage and Redux
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
                 const refinedUrl = data.payload.videoUrl
                   .replace("$ParticipantFullName$", currentParticipantUser)
-                  .replace("$IsMute$", audioFlag.toString())
-                  .replace("$IsHideCamera$", videoFlag.toString());
+                  .replace("$IsMute$", audioControlForParticipant.toString())
+                  .replace("$IsHideCamera$", videoControlForParticipant.toString());
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);

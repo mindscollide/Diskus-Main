@@ -56,7 +56,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     // Enable webcam and microphone when isWebCamEnabled is true
     const enableWebCamAndMic = async () => {
       try {
-        if (isWebCamEnabled) {
+        if (!isWebCamEnabled) {
           // Access video and audio streams
           const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
@@ -70,7 +70,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
             await videoRef.current.play();
           }
 
-          localStorage.setItem("isWebCamEnabled", true);
+          localStorage.setItem("isWebCamEnabled", false);
           setStream(stream); // Store the video and audio stream
 
           // Handle microphone setup
@@ -79,7 +79,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
             // Stop any existing audio tracks
             streamAudio.getTracks().forEach((track) => track.stop());
           }
-          localStorage.setItem("isMicEnabled", true);
+          localStorage.setItem("isMicEnabled", false);
           setStreamAudio(audioStream);
         }
       } catch (error) {
@@ -110,13 +110,13 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   }, [isWebCamEnabled]);
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
-    console.log("toggleAudio",enable)
+    console.log("toggleAudio", enable);
     dispatch(setMicState(enable));
     dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
-        .getUserMedia({ audio: enable })
+        .getUserMedia({ audio: true })
         .then((audioStream) => {
           // Stop any existing audio tracks before starting a new one
           if (streamAudio) {
@@ -140,12 +140,12 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    console.log("toggleAudio",enable)
+    console.log("toggleAudio", enable);
     dispatch(setVideoState(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     dispatch(setVideoControlHost(enable));
 
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((videoStream) => {
@@ -180,8 +180,8 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
   };
 
   const joinNewApiVideoCallOnClick = () => {
-    console.log("toggleAudio",isMicEnabled)
-    console.log("toggleAudio",isWebCamEnabled)
+    console.log("toggleAudio", isMicEnabled);
+    console.log("toggleAudio", isWebCamEnabled);
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
@@ -243,14 +243,14 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
               {isWebCamEnabled ? (
                 <img
                   draggable="false"
-                  src={VideoOn2}
+                  src={VideoOff}
                   onClick={() => toggleVideo(false)}
                   alt=""
                 />
               ) : (
                 <img
                   draggable="false"
-                  src={VideoOff}
+                  src={VideoOn2}
                   onClick={() => toggleVideo(true)}
                   alt=""
                 />
