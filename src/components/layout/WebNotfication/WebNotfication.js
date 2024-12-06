@@ -13,8 +13,10 @@ const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   fetchNotifications, // Scrolling Function on Lazy Loading
   totalCountNotification, // Total number of Notification
-  unReadCountNotification, // Count of Unread Notification
+  isReadNotification, //IsRead Notification Flag
 }) => {
+  console.log(isReadNotification, "isReadNotification");
+  console.log(webNotificationData, "isReadNotification");
   const { t } = useTranslation();
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
@@ -30,7 +32,7 @@ const WebNotfication = ({
       spin
     />
   );
-
+  console.log(webNotificationData, "WebNotificationOuterBox");
   return (
     <section className={styles["WebNotificationOuterBox"]}>
       <Row className="mt-2">
@@ -69,9 +71,9 @@ const WebNotfication = ({
                 <Row
                   key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
                   className={
-                    unReadCountNotification > 0
-                      ? styles["BackGroundUnreadNotifications"]
-                      : styles["BackGroundreadNotifications"]
+                    isReadNotification === true
+                      ? styles["BackGroundreadNotifications"]
+                      : styles["BackGroundUnreadNotifications"]
                   }
                 >
                   <Col lg={12} md={12} sm={12}>

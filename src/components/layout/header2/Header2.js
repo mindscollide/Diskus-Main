@@ -108,6 +108,8 @@ const Header2 = ({ isVideo }) => {
     (state) => state.settingReducer.diskusWebNotificationData
   );
 
+  console.log(getAllNotificationData, "getAllNotificationData");
+
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
@@ -212,7 +214,7 @@ const Header2 = ({ isVideo }) => {
     };
     fetchInitialData();
   }, []);
-
+  const [isReadNotification, setIsReadNotification] = useState(false);
   // Extracting the data for Web Notifications From API
   useEffect(() => {
     if (
@@ -229,6 +231,12 @@ const Header2 = ({ isVideo }) => {
       setTotalCountNotification(getAllNotificationData.totalCount);
       // Total Count of Unread Notification
       setUnReadCountNotification(getAllNotificationData.unReadCount);
+
+      //Mapping for Reading the Notification
+      getAllNotificationData.notifications.map((isReadData, index) => {
+        console.log(isReadData, "isReadDataisReadData");
+        setIsReadNotification(isReadData.isRead);
+      });
     }
   }, [getAllNotificationData]);
 
@@ -1319,7 +1327,7 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
-                      unReadCountNotification={unReadCountNotification}
+                      isReadNotification={isReadNotification}
                     />
                   )}
                   {/* Web Notification Outer Box End */}
