@@ -12,6 +12,7 @@ const WebNotfication = ({
   fetchNotifications,
   totalCountNotification,
 }) => {
+  console.log(webNotificationData, "webNotificationData");
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
