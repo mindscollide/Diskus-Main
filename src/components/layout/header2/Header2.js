@@ -133,8 +133,6 @@ const Header2 = ({ isVideo }) => {
   const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-
   let currentOrganizationName = localStorage.getItem("organizatioName");
 
   const [show, setShow] = useState(false);
@@ -172,17 +170,17 @@ const Header2 = ({ isVideo }) => {
     }
   }, []);
 
-  //Web Notification API Calling
+  // Web Notification API Calling
   useEffect(() => {
     try {
-      let data = { sRow: 0, eRow: 10 };
+      let data = { sRow: 0, eRow: 8 }; // Initial fetch
       dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
   }, []);
-  //Extracting the data for Web Notification
 
+  // Extracting the data for Web Notification
   useEffect(() => {
     try {
       if (
@@ -194,9 +192,8 @@ const Header2 = ({ isVideo }) => {
           getAllNotificationData.totalCount,
           "getAllNotificationDatagetAllNotificationData"
         );
-        //Used Spread Operator to prevent State Mutation
-        setwebNotificationData([...getAllNotificationData.notifications]);
-        setTotalCountNotification(getAllNotificationData.totalCount);
+        setwebNotificationData([...getAllNotificationData.notifications]); // Update state with fetched notifications
+        setTotalCountNotification(getAllNotificationData.totalCount); // Optional
       }
     } catch (error) {
       console.log(error);
@@ -1255,7 +1252,7 @@ const Header2 = ({ isVideo }) => {
                     )}
                   </Dropdown>
                   {/* Web Notification Bell Icon */}
-                  {/* <span
+                  <span
                     className="position-relative"
                     onClick={handleWebNotication}
                   >
@@ -1269,14 +1266,14 @@ const Header2 = ({ isVideo }) => {
                     <span className="NotficationCountSpan">
                       {totalCountNotification}
                     </span>
-                  </span> */}
+                  </span>
                   {/* Web Notification Outer Box Starts */}
-                  {/* {showWebNotification && (
+                  {showWebNotification && (
                     <WebNotfication
                       webNotificationData={webNotificationData}
                       setwebNotificationData={setwebNotificationData}
                     />
-                  )} */}
+                  )}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (
