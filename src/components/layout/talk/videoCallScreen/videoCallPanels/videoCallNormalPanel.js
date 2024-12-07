@@ -250,7 +250,7 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
-  }, [ audioControlForParticipant]);
+  }, [audioControlForParticipant]);
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     console.log("toggleAudio", videoControlHost);
@@ -265,7 +265,7 @@ const VideoPanelNormal = () => {
       }
     }
   }, [videoControlForParticipant]);
-  
+
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     console.log("toggleAudio", videoControlHost);

@@ -115,6 +115,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   );
 
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  console.log(meetingHostData, "meetingHostDatameetingHostData");
 
   const closeVideoPanel = () => {
     dispatch(leaveCallModal(false));
@@ -333,7 +334,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   return (
     <>
       {" "}
-      {meetingHostData.isHost && meetingHostData.isDashboardVideo ? (
+      {meetingHostData !== null &&
+      meetingHostData.isHost === true &&
+      meetingHostData.isDashboardVideo === true ? (
         <>
           <div className="videoCallGroupScreen-minmizeVideoCall">
             <Row className="m-0 height100 align-items-center">
@@ -680,7 +683,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             </Row>
           </div>
         </>
-      ) : !meetingHostData.isHost && meetingHostData.isDashboardVideo ? (
+      ) : meetingHostData.isHost === false &&
+        meetingHostData.isDashboardVideo === true ? (
         <>
           <div className="videoCallGroupScreen-minmizeVideoCall">
             <Row className="m-0 height100 align-items-center">
@@ -770,7 +774,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         }
                       >
                         <img
-                          src={videoControlForParticipant ? VideoOffHost : VideoOn}
+                          src={
+                            videoControlForParticipant ? VideoOffHost : VideoOn
+                          }
                           onClick={() =>
                             videoHideUnHideForParticipant(
                               videoControlForParticipant ? false : true
@@ -795,13 +801,17 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       <Tooltip
                         placement="topRight"
                         title={
-                          audioControlForParticipant ? t("Enable-mic") : t("Disable-mic")
+                          audioControlForParticipant
+                            ? t("Enable-mic")
+                            : t("Disable-mic")
                         }
                       >
                         <img
                           src={audioControlForParticipant ? MicOffHost : MicOn}
                           onClick={() =>
-                            muteUnMuteForParticipant(audioControlForParticipant ? false : true)
+                            muteUnMuteForParticipant(
+                              audioControlForParticipant ? false : true
+                            )
                           }
                           alt="Mic"
                         />
