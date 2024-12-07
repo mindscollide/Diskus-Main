@@ -265,6 +265,7 @@ const VideoPanelNormal = () => {
       }
     }
   }, [videoControlForParticipant]);
+  
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     console.log("toggleAudio", videoControlHost);

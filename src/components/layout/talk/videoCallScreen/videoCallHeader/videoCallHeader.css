@@ -468,6 +468,16 @@ span.participants-counter {
   cursor: pointer;
 }
 
+.for-host-active-state-minimize {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
 .gap-10 {
   gap: 10px !important;
 }
