@@ -222,14 +222,10 @@ const VideoPanelNormal = () => {
     const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
     console.log("toggleAudio", audioControlHost);
-    const controlSource =
-      userRole === "Participant"
-        ? audioControlForParticipant
-        : audioControlHost;
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
-      if (controlSource === true) {
+      if (audioControlHost === true) {
         console.log("Mic Check - Turning Mic Off");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
@@ -237,20 +233,30 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
-  }, [audioControlHost, audioControlForParticipant]);
+  }, [audioControlHost]);
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
-    console.log("toggleAudio", videoControlHost);
     // Determine the control source based on the user role
-    const controlSource =
-      userRole === "Participant"
-        ? videoControlForParticipant
-        : videoControlHost;
-
+    console.log("toggleAudio", audioControlForParticipant);
+    // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
-      if (controlSource === true) {
+      if (audioControlForParticipant === true) {
+        console.log("Mic Check - Turning Mic Off");
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        console.log("Mic Check - Turning Mic On");
+        iframe.contentWindow.postMessage("MicOff", "*");
+      }
+    }
+  }, [ audioControlForParticipant]);
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    console.log("toggleAudio", videoControlHost);
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (videoControlForParticipant === true) {
         console.log("Video Check - Turning Video Off");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
@@ -258,8 +264,21 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
-  }, [videoControlHost, videoControlForParticipant]);
-
+  }, [videoControlForParticipant]);
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    console.log("toggleAudio", videoControlHost);
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (videoControlHost === true) {
+        console.log("Video Check - Turning Video Off");
+        iframe.contentWindow.postMessage("VidOn", "*");
+      } else {
+        console.log("Video Check - Turning Video On");
+        iframe.contentWindow.postMessage("VidOff", "*");
+      }
+    }
+  }, [videoControlHost]);
   useEffect(() => {
     if (getAllParticipantGuest?.length) {
       setAllParticipant(getAllParticipantGuest);

@@ -828,12 +828,27 @@ const Dashboard = () => {
                     uids: allUids, // Include all participant UIDs
                   })
                 );
-                dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
+                let isGuid = localStorage.getItem("isGuid");
+
+                if (data.payload.uid === isGuid) {
+                  dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
+                }
               } else {
                 // Handle individual mute/unmute
                 dispatch(participanMuteUnMuteMeeting(data.payload));
+                let isGuid = localStorage.getItem("isGuid");
 
-                dispatch(setAudioControlForParticipant(data.payload.isMuted));
+                if (data.payload.uid === isGuid) {
+                  if (data.payload.isMuted === true) {
+                    dispatch(
+                      setAudioControlForParticipant(data.payload.isMuted)
+                    );
+                  } else {
+                    dispatch(
+                      setAudioControlForParticipant(data.payload.isMuted)
+                    );
+                  }
+                }
               }
 
               console.log(data.payload, "guestDataGuestData");
@@ -843,21 +858,37 @@ const Dashboard = () => {
             ) {
               //  dispatch(hideUnHideVideoByHost(data.payload));
               dispatch(participantHideUnhideVideo(data.payload));
-              if (data.payload.isVideoHidden === true) {
-                dispatch(setVideoControlForParticipant(true));
-              } else {
-                dispatch(setVideoControlForParticipant(false));
+              let isGuid = localStorage.getItem("isGuid");
+
+              if (data.payload.uid === isGuid) {
+                if (data.payload.isVideoHidden === true) {
+                  dispatch(setVideoControlForParticipant(true));
+                } else {
+                  dispatch(setVideoControlForParticipant(false));
+                }
               }
+
               console.log(data.payload, "guestDataGuestDataVideo");
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
             ) {
-              console.log(
-                "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3"
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
               );
-              dispatch(maxParticipantVideoCallPanel(false));
-              dispatch(maxParticipantVideoDenied(true));
+              let userIDCurrent = Number(localStorage.getItem("userID"));
+
+              console.log(
+                "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3",
+                data.payload
+              );
+              if (
+                currentMeetingID === data.payload.userID &&
+                userIDCurrent === data.payload.meetingID
+              ) {
+                dispatch(maxParticipantVideoCallPanel(false));
+                dispatch(maxParticipantVideoDenied(true));
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()

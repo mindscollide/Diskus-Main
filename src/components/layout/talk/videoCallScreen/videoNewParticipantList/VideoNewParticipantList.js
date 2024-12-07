@@ -474,83 +474,84 @@ const VideoNewParticipantList = () => {
                           alt="Microphone Enabled"
                         />
                       )}
-
-                      <Dropdown>
-                        <Dropdown.Toggle className="participant-toggle">
-                          <img draggable="false" src={Menu} alt="" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <Dropdown.Item
-                            className="participant-dropdown-item"
-                            onClick={() => makeLeaveOnClick(usersData)}
-                          >
-                            {t("Make-host")}
-                          </Dropdown.Item>
-
-                          {usersData.isHost === false ? (
+                      {!usersData.isHost && (
+                        <Dropdown>
+                          <Dropdown.Toggle className="participant-toggle">
+                            <img draggable="false" src={Menu} alt="" />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
                             <Dropdown.Item
                               className="participant-dropdown-item"
-                              onClick={() =>
-                                removeParticipantMeetingOnClick(usersData)
-                              }
+                              onClick={() => makeLeaveOnClick(usersData)}
                             >
-                              {t("Remove")}
+                              {t("Make-host")}
                             </Dropdown.Item>
-                          ) : null}
-                          {usersData.mute === false ? (
-                            <>
+
+                            {usersData.isHost === false ? (
                               <Dropdown.Item
                                 className="participant-dropdown-item"
                                 onClick={() =>
-                                  muteUnmuteByHost(usersData, true)
+                                  removeParticipantMeetingOnClick(usersData)
                                 }
                               >
-                                {t("Mute")}
+                                {t("Remove")}
                               </Dropdown.Item>
-                            </>
-                          ) : (
-                            <>
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() =>
-                                  muteUnmuteByHost(usersData, false)
-                                }
-                              >
-                                {t("UnMute")}
-                              </Dropdown.Item>
-                            </>
-                          )}
-                          {usersData.hideCamera === false ? (
-                            <>
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() => {
-                                  hideUnHideVideoParticipantByHost(
-                                    usersData,
-                                    true
-                                  );
-                                }}
-                              >
-                                {t("Hide-video")}
-                              </Dropdown.Item>
-                            </>
-                          ) : (
-                            <>
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() => {
-                                  hideUnHideVideoParticipantByHost(
-                                    usersData,
-                                    false
-                                  );
-                                }}
-                              >
-                                {t("UnHide-video")}
-                              </Dropdown.Item>
-                            </>
-                          )}
-                        </Dropdown.Menu>
-                      </Dropdown>
+                            ) : null}
+                            {usersData.mute === false ? (
+                              <>
+                                <Dropdown.Item
+                                  className="participant-dropdown-item"
+                                  onClick={() =>
+                                    muteUnmuteByHost(usersData, true)
+                                  }
+                                >
+                                  {t("Mute")}
+                                </Dropdown.Item>
+                              </>
+                            ) : (
+                              <>
+                                <Dropdown.Item
+                                  className="participant-dropdown-item"
+                                  onClick={() =>
+                                    muteUnmuteByHost(usersData, false)
+                                  }
+                                >
+                                  {t("UnMute")}
+                                </Dropdown.Item>
+                              </>
+                            )}
+                            {usersData.hideCamera === false ? (
+                              <>
+                                <Dropdown.Item
+                                  className="participant-dropdown-item"
+                                  onClick={() => {
+                                    hideUnHideVideoParticipantByHost(
+                                      usersData,
+                                      true
+                                    );
+                                  }}
+                                >
+                                  {t("Hide-video")}
+                                </Dropdown.Item>
+                              </>
+                            ) : (
+                              <>
+                                <Dropdown.Item
+                                  className="participant-dropdown-item"
+                                  onClick={() => {
+                                    hideUnHideVideoParticipantByHost(
+                                      usersData,
+                                      false
+                                    );
+                                  }}
+                                >
+                                  {t("UnHide-video")}
+                                </Dropdown.Item>
+                              </>
+                            )}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
                     </Col>
                   </Row>
                 </>
