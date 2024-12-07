@@ -158,6 +158,7 @@ const VideoCallNormalHeader = ({
   let newRoomID = localStorage.getItem("newRoomId");
   let newUserGUID = localStorage.getItem("isGuid");
   let newName = localStorage.getItem("name");
+  console.log(newRoomID, "newRoomIDnewRoomID");
 
   // Participant room Id and usrrGuid
   let participantRoomIds = localStorage.getItem("participantRoomId");
@@ -634,8 +635,6 @@ const VideoCallNormalHeader = ({
 
   console.log("Video Feature Reducer", videoFeatureReducer);
 
-
-
   // VideoControl For Host
   const disableVideoHost = () => {
     // Dispatch an action to toggle the video state
@@ -673,7 +672,7 @@ const VideoCallNormalHeader = ({
     };
 
     // Dispatch the API request with the data
-    dispatch(hideUnhideSelfMainApi(navigate, t, data,1));
+    dispatch(hideUnhideSelfMainApi(navigate, t, data, 1));
   };
 
   const muteUnMuteForHost = (flag) => {
@@ -688,7 +687,7 @@ const VideoCallNormalHeader = ({
     };
 
     // Dispatch the API request with the data
-    dispatch(muteUnMuteSelfMainApi(navigate, t, data,1));
+    dispatch(muteUnMuteSelfMainApi(navigate, t, data, 1));
   };
 
   const muteUnMuteForParticipant = (flag) => {
@@ -790,8 +789,7 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      audioControlHost ?   t("Enable-mic")
-                      : t("Disable-mic")
+                      audioControlHost ? t("Enable-mic") : t("Disable-mic")
                     }
                   >
                     <img
@@ -816,11 +814,11 @@ const VideoCallNormalHeader = ({
                   <Tooltip
                     placement="topRight"
                     title={
-                      videoControlHost ?t("Enable-video")  : t("Disable-video")
+                      videoControlHost ? t("Enable-video") : t("Disable-video")
                     }
                   >
                     <img
-                      src={videoControlHost ? VideoOff  : VideoOn}
+                      src={videoControlHost ? VideoOff : VideoOn}
                       onClick={() =>
                         videoHideUnHideForHost(videoControlHost ? false : true)
                       }

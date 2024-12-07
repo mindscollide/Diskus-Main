@@ -61,6 +61,7 @@ import {
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
   normalParticipantVideoCallPanel,
+  getParticipantMeetingJoinMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -509,19 +510,22 @@ const ViewMeetingDetails = ({
   };
 
   const joinMeetingCall = () => {
-    console.log(editorRole, "editorRoleeditorRole");
-    // Orgainzer  = 1 ,Participant = 2 , Agenda Contributor = 3,
+    const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    console.log(meetingHost, "editorRoleeditorRole");
+    // Orgainzer  = 10 ,Participant = 2 , Agenda Contributor = 3,
     let meetingVideoData = {
-      roleID:
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor"
-          ? 2
-          : 1,
+      roleID: editorRole.role === "Participant" ? 2 : 10,
     };
-    if (meetingVideoData.roleID === 1) {
-      dispatch(maxHostVideoCallPanel(true));
-    } else {
+    if (meetingVideoData.roleID === 2) {
       dispatch(maxParticipantVideoCallPanel(true));
+    } else {
+      let data = {
+        MeetingId: Number(currentMeetingID),
+        VideoCallURL: String(currentMeetingVideoURL),
+        IsMuted: false,
+        HideVideo: false,
+      };
+      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     }
     console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
     localStorage.setItem(

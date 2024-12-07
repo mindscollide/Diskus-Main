@@ -38,6 +38,7 @@ import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
+  getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
   maxParticipantVideoCallPanel,
 } from "../../store/actions/VideoFeature_actions";
@@ -106,6 +107,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
+  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [getMeetID, setMeetID] = useState(0);
@@ -855,17 +857,22 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const joinMeetingCall = () => {
+    console.log("Agenda View Full");
     let meetingVideoData = {
-      roleID:
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor"
-          ? 2
-          : 1,
+      roleID: editorRole.role === "Participant" ? 2 : 10,
     };
-    if (meetingVideoData.roleID === 1) {
-      dispatch(maxHostVideoCallPanel(true));
-    } else {
+    console.log(meetingVideoData, "meetingVideoData");
+
+    if (meetingVideoData.roleID === 2) {
       dispatch(maxParticipantVideoCallPanel(true));
+    } else {
+      let data = {
+        MeetingId: Number(currentMeeting),
+        VideoCallURL: String(currentMeetingVideoURL),
+        IsMuted: false,
+        HideVideo: false,
+      };
+      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     }
     // if (activeCall === false && isMeeting === false) {
     //   let Data = {

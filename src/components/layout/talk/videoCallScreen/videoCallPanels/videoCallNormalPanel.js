@@ -35,6 +35,7 @@ import ParticipantVideoCallComponent from "../../../../../container/pages/meetin
 import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const VideoPanelNormal = () => {
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantRoomIds = localStorage.getItem("participantRoomId");
+  const newUserGUID = localStorage.getItem("isGuid");
 
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
@@ -177,7 +179,7 @@ const VideoPanelNormal = () => {
   const [isMeetingHost, setIsMeetingHost] = useState(false);
   console.log(isMeetingHost, "isMeetingHostisMeetingHost");
 
-  let getMeetingHostInfo = localStorage.getItem("meetinHostInfo");
+  let getMeetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
 
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
@@ -219,7 +221,7 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
-    console.log("toggleAudio",audioControlHost)
+    console.log("toggleAudio", audioControlHost);
     const controlSource =
       userRole === "Participant"
         ? audioControlForParticipant
@@ -239,7 +241,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
-    console.log("toggleAudio",videoControlHost)
+    console.log("toggleAudio", videoControlHost);
     // Determine the control source based on the user role
     const controlSource =
       userRole === "Participant"
@@ -644,9 +646,7 @@ const VideoPanelNormal = () => {
                             </Col>
                           ) : null}
                         </>
-                      ) : isMeeting === true &&
-                        isMeetingVideo === true &&
-                        !isMeetingHost ? (
+                      ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
                         <>
                           {participantsVisible && (
                             <div className="Participants-Lists">
@@ -727,7 +727,6 @@ const VideoPanelNormal = () => {
                           )}
                         </>
                       ) : null}
-                      {/* <VideoCallParticipants /> */}
                     </>
                   </Row>
                   <Row>

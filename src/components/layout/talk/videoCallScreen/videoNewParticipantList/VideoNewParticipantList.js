@@ -452,8 +452,8 @@ const VideoNewParticipantList = () => {
                           <img
                             draggable="false"
                             src={MicOnEnabled}
-                            width="22px"
-                            height="22px"
+                            width="18px"
+                            height="18px"
                             alt="Microphone Enabled"
                           />
                         )
@@ -469,8 +469,8 @@ const VideoNewParticipantList = () => {
                         <img
                           draggable="false"
                           src={MicOnEnabled}
-                          width="22px"
-                          height="22px"
+                          width="18px"
+                          height="18px"
                           alt="Microphone Enabled"
                         />
                       )}
