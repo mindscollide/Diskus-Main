@@ -108,9 +108,6 @@ const WebNotfication = ({
             )} */}
             {webNotificationData !== undefined ? (
               webNotificationData.map((data, index) => {
-                console.log("Notification Data:", data); // Log each notification data
-                console.log("datadatadatadata", data.isRead); // Log each notification data
-                console.log("datadatadatadata", typeof data.isRead); // Log each notification data
                 return (
                   <Row
                     key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
