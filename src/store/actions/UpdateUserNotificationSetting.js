@@ -216,8 +216,7 @@ const DiskusWebNotificationMarkAsReadAPI = (
   navigate,
   t,
   data,
-  setUnReadCountNotification,
-  setIsClosedMarkAsRead
+  setUnReadCountNotification
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -241,8 +240,7 @@ const DiskusWebNotificationMarkAsReadAPI = (
               navigate,
               t,
               data,
-              setUnReadCountNotification,
-              setIsClosedMarkAsRead
+              setUnReadCountNotification
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -263,9 +261,6 @@ const DiskusWebNotificationMarkAsReadAPI = (
               //For Bring Notification Count to Zero
               (await isFunction(setUnReadCountNotification)) &&
                 setUnReadCountNotification(0);
-              //Marking notification as Read
-              (await isFunction(setIsClosedMarkAsRead)) &&
-                setIsClosedMarkAsRead(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

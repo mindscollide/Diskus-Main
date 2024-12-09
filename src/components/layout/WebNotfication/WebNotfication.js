@@ -15,8 +15,6 @@ const WebNotfication = ({
   setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
   fetchNotifications, // Scrolling Function on Lazy Loading,
-  isClosedMarkAsRead, // Mark as read after Api hit state,
-  setIsClosedMarkAsRead,
 }) => {
   const { t } = useTranslation();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -65,10 +63,6 @@ const WebNotfication = ({
         return isDuplicate ? prevData : [newNotification, ...prevData];
       });
     }
-
-    return () => {
-      setIsClosedMarkAsRead(false);
-    };
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
@@ -133,7 +127,7 @@ const WebNotfication = ({
                 <Row
                   key={data.notificationID || `notification-today-${index}`}
                   className={
-                    data.isRead || isClosedMarkAsRead
+                    data.isRead
                       ? styles["BackGroundreadNotifications"]
                       : styles["BackGroundUnreadNotifications"]
                   }
@@ -166,7 +160,7 @@ const WebNotfication = ({
                       data.notificationID || `notification-previous-${index}`
                     }
                     className={
-                      data.isRead || isClosedMarkAsRead
+                      data.isRead
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }

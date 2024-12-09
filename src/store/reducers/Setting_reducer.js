@@ -32,6 +32,7 @@ const initialState = {
   diskusWebNotificationData: null,
   diskusNotificationMarkAsRead: null,
   realTimeNotificationCountGlobalData: null,
+  realTimeIsReadFlag: false,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -497,6 +498,7 @@ const settingReducer = (state = initialState, action) => {
         realTimeNotificationCountGlobalData: action.response,
       };
     }
+
     default:
       return {
         ...state,

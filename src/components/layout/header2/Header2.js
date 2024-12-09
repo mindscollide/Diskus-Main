@@ -133,7 +133,6 @@ const Header2 = ({ isVideo }) => {
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
-  const [isClosedMarkAsRead, setIsClosedMarkAsRead] = useState(false);
   let Blur = localStorage.getItem("blur");
   console.log(getAllNotificationData, "getAllNotificationData");
   //OnClick Function for OutSide Click WebNotification
@@ -154,8 +153,7 @@ const Header2 = ({ isVideo }) => {
               navigate,
               t,
               data,
-              setUnReadCountNotification,
-              setIsClosedMarkAsRead
+              setUnReadCountNotification
             )
           );
         }
@@ -228,7 +226,10 @@ const Header2 = ({ isVideo }) => {
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
-  console.log(webNotificationData, "GlobalUnreadCountNotificaitonFromMqtt");
+  console.log(
+    GlobalUnreadCountNotificaitonFromMqtt,
+    "GlobalUnreadCountNotificaitonFromMqtt"
+  );
 
   // Web Notification API Calling
   useEffect(() => {
@@ -1350,8 +1351,6 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
-                      isClosedMarkAsRead={isClosedMarkAsRead}
-                      setIsClosedMarkAsRead={setIsClosedMarkAsRead}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

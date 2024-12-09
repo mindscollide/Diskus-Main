@@ -179,7 +179,10 @@ import {
   setVoiceControleGuest,
 } from "../../store/actions/Guest_Video";
 import { MeetingContext } from "../../context/MeetingContext";
-import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
+import {
+  DiskusGlobalDataIsReadFlag,
+  DiskusGlobalUnreadNotificationCount,
+} from "../../store/actions/UpdateUserNotificationSetting";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -2626,7 +2629,6 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "Web_Notification".toLowerCase()
         ) {
-          console.log("i am here");
           dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
           setNotificationID(id);
         }
