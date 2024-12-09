@@ -156,9 +156,9 @@ const WebNotfication = ({
                       data.notificationID || `notification-previous-${index}`
                     }
                     className={
-                      data.isRead === false
-                        ? styles["BackGroundUnreadNotifications"]
-                        : styles["BackGroundreadNotifications"]
+                      data.isRead || isClosedMarkAsRead
+                        ? styles["BackGroundreadNotifications"]
+                        : styles["BackGroundUnreadNotifications"]
                     }
                   >
                     <Col lg={12} md={12} sm={12}>
