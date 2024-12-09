@@ -8,6 +8,7 @@ import { Spin } from "antd";
 import { useSelector } from "react-redux";
 import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -18,6 +19,7 @@ const WebNotfication = ({
   console.log(isReadNotification, "isReadNotification");
   console.log(webNotificationData, "isReadNotification");
   const { t } = useTranslation();
+  const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
@@ -32,15 +34,28 @@ const WebNotfication = ({
       spin
     />
   );
-  console.log(webNotificationData, "WebNotificationOuterBox");
+
+  //Grouping of Notification on Todays and Previous Categories
+  const groupedNotifications = webNotificationData.reduce(
+    (acc, notification) => {
+      const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD from sentDateTime
+      if (notificationDate === todayDate) {
+        acc.today.push(notification);
+      } else {
+        acc.previous.push(notification);
+      }
+      return acc;
+    },
+    { today: [], previous: [] }
+  );
   return (
     <section className={styles["WebNotificationOuterBox"]}>
       <Row className="mt-2">
-        <Col lg={12} md={12} sm={12}>
-          {webNotificationData.length > 0 && (
+        {groupedNotifications.today.length > 0 && (
+          <Col lg={12} md={12} sm={12}>
             <span className={styles["NotificationCategories"]}>Today</span>
-          )}
-        </Col>
+          </Col>
+        )}
       </Row>
       <Row>
         <Col lg={12}>
@@ -65,11 +80,11 @@ const WebNotfication = ({
             height="68vh"
             style={{ overflowX: "hidden" }}
           >
-            {webNotificationData.length > 0 &&
-            webNotificationData !== undefined ? (
-              webNotificationData.map((data, index) => (
+            {/* Render "Today" Notifications */}
+            {groupedNotifications.today.length > 0 &&
+              groupedNotifications.today.map((data, index) => (
                 <Row
-                  key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
+                  key={data.notificationID || `notification-today-${index}`}
                   className={
                     data.isRead === false
                       ? styles["BackGroundUnreadNotifications"]
@@ -81,30 +96,65 @@ const WebNotfication = ({
                       NotificationMessege={data.description}
                       NotificationTime={data.sentDateTime}
                       index={index}
-                      length={webNotificationData.length}
+                      length={groupedNotifications.today.length}
                       NotificaitonID={data.notificationID}
                     />
                   </Col>
                 </Row>
-              ))
-            ) : (
+              ))}
+
+            {/* Render "Previous" Header and Notifications */}
+            {groupedNotifications.previous.length > 0 && (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                    <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-                      <img
-                        src={BellIconNotificationEmptyState}
-                        width="155.35px"
-                        height="111px"
-                        alt=""
-                      />
-                      <span className={styles["NotificationEmptyState"]}>
-                        {t("You-have-no-notifications")}
-                      </span>
-                    </div>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["NotificationCategories"]}>
+                      Previous
+                    </span>
                   </Col>
                 </Row>
+                {groupedNotifications.previous.map((data, index) => (
+                  <Row
+                    key={
+                      data.notificationID || `notification-previous-${index}`
+                    }
+                    className={
+                      data.isRead === false
+                        ? styles["BackGroundUnreadNotifications"]
+                        : styles["BackGroundreadNotifications"]
+                    }
+                  >
+                    <Col lg={12} md={12} sm={12}>
+                      <WebNotificationCard
+                        NotificationMessege={data.description}
+                        NotificationTime={data.sentDateTime}
+                        index={index}
+                        length={groupedNotifications.previous.length}
+                        NotificaitonID={data.notificationID}
+                      />
+                    </Col>
+                  </Row>
+                ))}
               </>
+            )}
+
+            {/* No Notifications */}
+            {webNotificationData.length === 0 && (
+              <Row>
+                <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
+                  <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                    <img
+                      src={BellIconNotificationEmptyState}
+                      width="155.35px"
+                      height="111px"
+                      alt=""
+                    />
+                    <span className={styles["NotificationEmptyState"]}>
+                      {t("You-have-no-notifications")}
+                    </span>
+                  </div>
+                </Col>
+              </Row>
             )}
           </InfiniteScroll>
         </Col>
