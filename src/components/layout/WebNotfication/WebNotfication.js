@@ -35,10 +35,7 @@ const WebNotfication = ({
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
-  console.log(
-    GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
-  );
+  console.log(webNotificationData, "GlobalUnreadCountNotificaitonFromMqtt");
 
   //Spinner Styles in Lazy Loading
   const antIcon = (
@@ -50,7 +47,7 @@ const WebNotfication = ({
     />
   );
 
-  //Real Time data For Notification For Appending in  webNotificationData
+  // Real-time data for notification appending in webNotificationData
   useEffect(() => {
     if (
       GlobalUnreadCountNotificaitonFromMqtt &&
@@ -59,8 +56,14 @@ const WebNotfication = ({
       const newNotification =
         GlobalUnreadCountNotificaitonFromMqtt.notificationData;
 
-      // Prepending  the new notification to the state
-      setwebNotificationData((prevData) => [newNotification, ...prevData]);
+      // Prepending the new notification to the state while ensuring uniqueness
+      setwebNotificationData((prevData) => {
+        const isDuplicate = prevData.some(
+          (notification) =>
+            notification.notificationID === newNotification.notificationID
+        );
+        return isDuplicate ? prevData : [newNotification, ...prevData];
+      });
     }
 
     return () => {
@@ -68,9 +71,15 @@ const WebNotfication = ({
     };
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
-  // Group Notifications whenever webNotificationData changes
+  // Group notifications whenever webNotificationData changes
   useEffect(() => {
-    const groupNotificationsData = webNotificationData.reduce(
+    const uniqueNotifications = Array.from(
+      new Map(
+        webNotificationData.map((item) => [item.notificationID, item])
+      ).values()
+    );
+
+    const groupNotificationsData = uniqueNotifications.reduce(
       (acc, notification) => {
         const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
         if (notificationDate === todayDate) {
@@ -82,6 +91,7 @@ const WebNotfication = ({
       },
       { today: [], previous: [] }
     );
+
     setGroupedNotifications(groupNotificationsData);
   }, [webNotificationData, todayDate]);
 
