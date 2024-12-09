@@ -1835,7 +1835,7 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
 
 //Web Notification Date Formatter
 
-export function WebNotficationDateFormatter(input, locale) {
+export function WebNotificationDateFormatter(input, locale) {
   // Ensure the input is a string and has the expected length
   if (typeof input !== "string" || input.length !== 14) {
     throw new Error("Invalid datetime format. Expected a 14-character string.");
@@ -1844,16 +1844,38 @@ export function WebNotficationDateFormatter(input, locale) {
   const year = input.substring(0, 4);
   const month = input.substring(4, 6);
   const day = input.substring(6, 8);
-  const hour = parseInt(input.substring(8, 10), 10);
+  const hour = input.substring(8, 10);
   const minute = input.substring(10, 12);
   const second = input.substring(12, 14);
 
+  // Format the input into an ISO date string
+  const isoDateString = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+
   // Create a Date object
-  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
+  let date = new Date(isoDateString);
+  if (isNaN(date)) {
+    throw new Error("Invalid date created from input.");
+  }
+
+  // Adjust the date to GMT+5 by adding 5 hours
+  date = new Date(date.getTime() + 5 * 60 * 60 * 1000);
+
+  // Get today's date in GMT+5
+  const today = new Date(new Date().getTime() + 5 * 60 * 60 * 1000);
+  const isToday =
+    date.getUTCFullYear() === today.getUTCFullYear() &&
+    date.getUTCMonth() === today.getUTCMonth() &&
+    date.getUTCDate() === today.getUTCDate();
 
   // Format hours and minutes for 12-hour clock
-  const hours12 = date.getHours() % 12 || 12; // Convert to 12-hour format
-  const ampm = date.getHours() >= 12 ? "pm" : "am";
+  const hours12 = date.getUTCHours() % 12 || 12; // Convert to 12-hour format
+  const ampm = date.getUTCHours() >= 12 ? "pm" : "am";
+
+  if (isToday) {
+    // Only show time if it's today's date
+    const formattedTime = `${hours12}:${minute} ${ampm}`;
+    return formattedTime;
+  }
 
   if (locale === "ar") {
     // Arabic formatting
