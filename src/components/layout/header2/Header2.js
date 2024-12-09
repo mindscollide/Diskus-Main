@@ -108,7 +108,10 @@ const Header2 = ({ isVideo }) => {
     (state) => state.settingReducer.diskusWebNotificationData
   );
 
-  console.log(getAllNotificationData, "getAllNotificationData");
+  //Getting Global unRead  Count Notification From MQTT
+  const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData
+  );
 
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
@@ -130,6 +133,7 @@ const Header2 = ({ isVideo }) => {
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
+  const [isClosedMarkAsRead, setIsClosedMarkAsRead] = useState(false);
   let Blur = localStorage.getItem("blur");
   console.log(getAllNotificationData, "getAllNotificationData");
   //OnClick Function for OutSide Click WebNotification
@@ -142,10 +146,18 @@ const Header2 = ({ isVideo }) => {
       setShowWebNotification(false);
       //API Call Mark As Read
       if (getAllNotificationData !== null) {
-        if (getAllNotificationData.unReadCount > 0) {
+        if (unReadCountNotification > 0) {
           const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
           let data = { ReadOnDateTime: currentDateTime };
-          dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+          dispatch(
+            DiskusWebNotificationMarkAsReadAPI(
+              navigate,
+              t,
+              data,
+              setUnReadCountNotification,
+              setIsClosedMarkAsRead
+            )
+          );
         }
       }
     }
@@ -205,10 +217,6 @@ const Header2 = ({ isVideo }) => {
   }, []);
 
   //Web Notfication Real Time Data
-  //Getting Global unRead  Count Notification From MQTT
-  const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
-    (state) => state.settingReducer.realTimeNotificationCountGlobalData
-  );
 
   //Real Time data For Notification
   useEffect(() => {
@@ -1342,6 +1350,7 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
+                      isClosedMarkAsRead={isClosedMarkAsRead}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

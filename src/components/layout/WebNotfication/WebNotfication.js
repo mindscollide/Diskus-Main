@@ -14,7 +14,8 @@ const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
-  fetchNotifications, // Scrolling Function on Lazy Loading
+  fetchNotifications, // Scrolling Function on Lazy Loading,
+  isClosedMarkAsRead, // Mark as read after Api hit state
 }) => {
   const { t } = useTranslation();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -112,9 +113,9 @@ const WebNotfication = ({
                 <Row
                   key={data.notificationID || `notification-today-${index}`}
                   className={
-                    data.isRead === false
-                      ? styles["BackGroundUnreadNotifications"]
-                      : styles["BackGroundreadNotifications"]
+                    data.isRead || isClosedMarkAsRead
+                      ? styles["BackGroundreadNotifications"]
+                      : styles["BackGroundUnreadNotifications"]
                   }
                 >
                   <Col lg={12} md={12} sm={12}>
