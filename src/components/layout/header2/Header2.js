@@ -131,7 +131,7 @@ const Header2 = ({ isVideo }) => {
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
-
+  console.log(getAllNotificationData, "getAllNotificationData");
   //OnClick Function for OutSide Click WebNotification
   const handleOutsideClick = (event) => {
     if (
@@ -141,10 +141,12 @@ const Header2 = ({ isVideo }) => {
     ) {
       setShowWebNotification(false);
       //API Call Mark As Read
-      if (getAllNotificationData.unReadCount > 0) {
-        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
-        let data = { ReadOnDateTime: currentDateTime };
-        dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+      if (getAllNotificationData !== null) {
+        if (getAllNotificationData.unReadCount > 0) {
+          const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+          let data = { ReadOnDateTime: currentDateTime };
+          dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+        }
       }
     }
   };
@@ -1309,6 +1311,7 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
+
                     <span className="NotficationCountSpan">
                       {unReadCountNotification}
                     </span>
