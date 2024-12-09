@@ -65,15 +65,15 @@ const WebNotfication = ({
             height="68vh"
             style={{ overflowX: "hidden" }}
           >
-            {/* {webNotificationData.length > 0 &&
+            {webNotificationData.length > 0 &&
             webNotificationData !== undefined ? (
               webNotificationData.map((data, index) => (
                 <Row
                   key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
                   className={
-                    data.isRead === "false"
-                      ? styles["BackGroundreadNotifications"]
-                      : styles["BackGroundUnreadNotifications"]
+                    data.isRead === false
+                      ? styles["BackGroundUnreadNotifications"]
+                      : styles["BackGroundreadNotifications"]
                   }
                 >
                   <Col lg={12} md={12} sm={12}>
@@ -87,48 +87,6 @@ const WebNotfication = ({
                   </Col>
                 </Row>
               ))
-            ) : (
-              <>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                    <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
-                      <img
-                        src={BellIconNotificationEmptyState}
-                        width="155.35px"
-                        height="111px"
-                        alt=""
-                      />
-                      <span className={styles["NotificationEmptyState"]}>
-                        {t("You-have-no-notifications")}
-                      </span>
-                    </div>
-                  </Col>
-                </Row>
-              </>
-            )} */}
-            {webNotificationData !== undefined ? (
-              webNotificationData.map((data, index) => {
-                return (
-                  <Row
-                    key={data.notificationID || `notification-${index}`} // Key can be both index or Notification_ID
-                    className={
-                      data.isRead === false
-                        ? styles["BackGroundUnreadNotifications"]
-                        : styles["BackGroundreadNotifications"]
-                    }
-                  >
-                    <Col lg={12} md={12} sm={12}>
-                      <WebNotificationCard
-                        NotificationMessege={data.description}
-                        NotificationTime={data.sentDateTime}
-                        index={index}
-                        length={webNotificationData.length}
-                        NotificaitonID={data.notificationID}
-                      />
-                    </Col>
-                  </Row>
-                );
-              })
             ) : (
               <>
                 <Row>
