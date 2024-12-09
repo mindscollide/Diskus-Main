@@ -108,7 +108,10 @@ const Header2 = ({ isVideo }) => {
     (state) => state.settingReducer.diskusWebNotificationData
   );
 
-  console.log(getAllNotificationData, "getAllNotificationData");
+  //Getting Global unRead  Count Notification From MQTT
+  const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData
+  );
 
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
@@ -128,10 +131,14 @@ const Header2 = ({ isVideo }) => {
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
+  console.log(
+    webNotificationData,
+    "webNotificationDatawebNotificationDatawebNotificationData"
+  );
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
-
+  console.log(getAllNotificationData, "getAllNotificationData");
   //OnClick Function for OutSide Click WebNotification
   const handleOutsideClick = (event) => {
     if (
@@ -141,10 +148,20 @@ const Header2 = ({ isVideo }) => {
     ) {
       setShowWebNotification(false);
       //API Call Mark As Read
-      if (getAllNotificationData.unReadCount > 0) {
-        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
-        let data = { ReadOnDateTime: currentDateTime };
-        dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+      if (getAllNotificationData !== null) {
+        if (unReadCountNotification > 0) {
+          const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+          let data = { ReadOnDateTime: currentDateTime };
+          dispatch(
+            DiskusWebNotificationMarkAsReadAPI(
+              navigate,
+              t,
+              data,
+              setUnReadCountNotification,
+              setwebNotificationData
+            )
+          );
+        }
       }
     }
   };
@@ -202,6 +219,23 @@ const Header2 = ({ isVideo }) => {
     }
   }, []);
 
+  //Web Notfication Real Time Data
+
+  //Real Time data For Notification
+  useEffect(() => {
+    if (
+      GlobalUnreadCountNotificaitonFromMqtt &&
+      GlobalUnreadCountNotificaitonFromMqtt.notificationData
+    ) {
+      setUnReadCountNotification((prevCount) => prevCount + 1);
+    }
+  }, [GlobalUnreadCountNotificaitonFromMqtt]);
+
+  console.log(
+    GlobalUnreadCountNotificaitonFromMqtt,
+    "GlobalUnreadCountNotificaitonFromMqtt"
+  );
+
   // Web Notification API Calling
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -214,7 +248,7 @@ const Header2 = ({ isVideo }) => {
     };
     fetchInitialData();
   }, []);
-  const [isReadNotification, setIsReadNotification] = useState(false);
+
   // Extracting the data for Web Notifications From API
   useEffect(() => {
     if (
@@ -231,12 +265,6 @@ const Header2 = ({ isVideo }) => {
       setTotalCountNotification(getAllNotificationData.totalCount);
       // Total Count of Unread Notification
       setUnReadCountNotification(getAllNotificationData.unReadCount);
-
-      //Mapping for Reading the Notification
-      getAllNotificationData.notifications.map((isReadData, index) => {
-        console.log(isReadData, "isReadDataisReadData");
-        setIsReadNotification(isReadData.isRead);
-      });
     }
   }, [getAllNotificationData]);
 
@@ -1316,6 +1344,7 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
+
                     <span className="NotficationCountSpan">
                       {unReadCountNotification}
                     </span>
@@ -1327,7 +1356,6 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
-                      isReadNotification={isReadNotification}
                     />
                   )}
                   {/* Web Notification Outer Box End */}
