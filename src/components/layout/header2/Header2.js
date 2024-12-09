@@ -131,6 +131,10 @@ const Header2 = ({ isVideo }) => {
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
+  console.log(
+    webNotificationData,
+    "webNotificationDatawebNotificationDatawebNotificationData"
+  );
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   let Blur = localStorage.getItem("blur");
@@ -153,7 +157,8 @@ const Header2 = ({ isVideo }) => {
               navigate,
               t,
               data,
-              setUnReadCountNotification
+              setUnReadCountNotification,
+              setwebNotificationData
             )
           );
         }
