@@ -1351,6 +1351,7 @@ const Header2 = ({ isVideo }) => {
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
                       isClosedMarkAsRead={isClosedMarkAsRead}
+                      setIsClosedMarkAsRead={setIsClosedMarkAsRead}
                     />
                   )}
                   {/* Web Notification Outer Box End */}

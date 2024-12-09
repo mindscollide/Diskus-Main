@@ -2622,10 +2622,6 @@ const Dashboard = () => {
       }
       //Web Notification
       if (data.action.toLowerCase() === "WEBNOTIFICATION".toLowerCase()) {
-        console.log("i am here");
-        console.log(data, "i am here");
-        console.log(data.action, "i am here");
-        console.log(data.payload, "i am here");
         if (
           data.payload.message.toLowerCase() ===
           "Web_Notification".toLowerCase()

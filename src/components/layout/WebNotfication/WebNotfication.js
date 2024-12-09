@@ -15,7 +15,8 @@ const WebNotfication = ({
   setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
   fetchNotifications, // Scrolling Function on Lazy Loading,
-  isClosedMarkAsRead, // Mark as read after Api hit state
+  isClosedMarkAsRead, // Mark as read after Api hit state,
+  setIsClosedMarkAsRead,
 }) => {
   const { t } = useTranslation();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -32,6 +33,11 @@ const WebNotfication = ({
   //Global Data State
   const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
+  );
+
+  console.log(
+    GlobalUnreadCountNotificaitonFromMqtt,
+    "GlobalUnreadCountNotificaitonFromMqtt"
   );
 
   //Spinner Styles in Lazy Loading
@@ -56,6 +62,10 @@ const WebNotfication = ({
       // Prepending  the new notification to the state
       setwebNotificationData((prevData) => [newNotification, ...prevData]);
     }
+
+    return () => {
+      setIsClosedMarkAsRead(false);
+    };
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group Notifications whenever webNotificationData changes
