@@ -52,8 +52,8 @@ const WebNotfication = ({
       const newNotification =
         GlobalUnreadCountNotificaitonFromMqtt.notificationData;
 
-      // Append the new notification to the state
-      setwebNotificationData((prevData) => [...prevData, newNotification]);
+      // Prepending  the new notification to the state
+      setwebNotificationData((prevData) => [newNotification, ...prevData]);
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
