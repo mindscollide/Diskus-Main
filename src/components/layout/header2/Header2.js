@@ -205,15 +205,9 @@ const Header2 = ({ isVideo }) => {
   }, []);
 
   //Web Notfication Real Time Data
-
   //Getting Global unRead  Count Notification From MQTT
   const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
-  );
-
-  console.log(
-    GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
   );
 
   //Real Time data For Notification
@@ -222,13 +216,6 @@ const Header2 = ({ isVideo }) => {
       GlobalUnreadCountNotificaitonFromMqtt &&
       GlobalUnreadCountNotificaitonFromMqtt.notificationData
     ) {
-      const newNotification =
-        GlobalUnreadCountNotificaitonFromMqtt.notificationData;
-
-      // Append the new notification to the state
-      setwebNotificationData((prevData) => [...prevData, newNotification]);
-      //Update the number of count on real basis
-      // Update the unread count
       setUnReadCountNotification((prevCount) => prevCount + 1);
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
@@ -247,6 +234,7 @@ const Header2 = ({ isVideo }) => {
     };
     fetchInitialData();
   }, []);
+
   // Extracting the data for Web Notifications From API
   useEffect(() => {
     if (

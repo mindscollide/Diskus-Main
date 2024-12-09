@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./WebNotification.module.css";
 import { Col, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -12,18 +12,25 @@ import moment from "moment";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
-  fetchNotifications, // Scrolling Function on Lazy Loading
+  setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
-  isReadNotification, //IsRead Notification Flag
+  fetchNotifications, // Scrolling Function on Lazy Loading
 }) => {
-  console.log(isReadNotification, "isReadNotification");
-  console.log(webNotificationData, "isReadNotification");
   const { t } = useTranslation();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
+  const [groupedNotifications, setGroupedNotifications] = useState({
+    today: [],
+    previous: [],
+  });
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
+  );
+
+  //Global Data State
+  const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
   //Spinner Styles in Lazy Loading
@@ -36,19 +43,37 @@ const WebNotfication = ({
     />
   );
 
-  //Grouping of Notification on Todays and Previous Categories
-  const groupedNotifications = webNotificationData.reduce(
-    (acc, notification) => {
-      const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD from sentDateTime
-      if (notificationDate === todayDate) {
-        acc.today.push(notification);
-      } else {
-        acc.previous.push(notification);
-      }
-      return acc;
-    },
-    { today: [], previous: [] }
-  );
+  //Real Time data For Notification For Appending in  webNotificationData
+  useEffect(() => {
+    if (
+      GlobalUnreadCountNotificaitonFromMqtt &&
+      GlobalUnreadCountNotificaitonFromMqtt.notificationData
+    ) {
+      const newNotification =
+        GlobalUnreadCountNotificaitonFromMqtt.notificationData;
+
+      // Append the new notification to the state
+      setwebNotificationData((prevData) => [...prevData, newNotification]);
+    }
+  }, [GlobalUnreadCountNotificaitonFromMqtt]);
+
+  // Group Notifications whenever webNotificationData changes
+  useEffect(() => {
+    const groupNotificationsData = webNotificationData.reduce(
+      (acc, notification) => {
+        const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
+        if (notificationDate === todayDate) {
+          acc.today.push(notification);
+        } else {
+          acc.previous.push(notification);
+        }
+        return acc;
+      },
+      { today: [], previous: [] }
+    );
+    setGroupedNotifications(groupNotificationsData);
+  }, [webNotificationData, todayDate]);
+
   return (
     <section className={styles["WebNotificationOuterBox"]}>
       <Row className="mt-2">
@@ -61,9 +86,9 @@ const WebNotfication = ({
       <Row>
         <Col lg={12}>
           <InfiniteScroll
-            dataLength={webNotificationData.length} // Current data length
-            next={fetchNotifications} // Fetch more data
-            hasMore={webNotificationData.length < totalCountNotification} // Stop if all data loaded
+            dataLength={webNotificationData.length}
+            next={fetchNotifications}
+            hasMore={webNotificationData.length < totalCountNotification}
             loader={
               WebNotificaitonLoader && (
                 <Row>
