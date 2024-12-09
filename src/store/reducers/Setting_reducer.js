@@ -31,6 +31,7 @@ const initialState = {
   microsftRevokeToken: null,
   diskusWebNotificationData: null,
   diskusNotificationMarkAsRead: null,
+  realTimeNotificationCountGlobalData: null,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -487,6 +488,13 @@ const settingReducer = (state = initialState, action) => {
         Loading: false,
         diskusNotificationMarkAsRead: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REAL_TIME_UNREAD_NOTIFICATION_COUNT: {
+      return {
+        ...state,
+        realTimeNotificationCountGlobalData: action.response,
       };
     }
     default:

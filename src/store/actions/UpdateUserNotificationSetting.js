@@ -295,8 +295,17 @@ const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
   };
 };
 
+//Diskus Global Unread Notification Count
+const DiskusGlobalUnreadNotificationCount = (response) => {
+  return {
+    type: actions.REAL_TIME_UNREAD_NOTIFICATION_COUNT,
+    response: response,
+  };
+};
+
 export {
   getUserNotificationSetting,
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,
+  DiskusGlobalUnreadNotificationCount,
 };

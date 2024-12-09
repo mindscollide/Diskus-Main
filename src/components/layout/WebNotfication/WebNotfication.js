@@ -20,6 +20,7 @@ const WebNotfication = ({
   console.log(webNotificationData, "isReadNotification");
   const { t } = useTranslation();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
+
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
