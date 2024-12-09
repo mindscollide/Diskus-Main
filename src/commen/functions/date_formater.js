@@ -1872,9 +1872,28 @@ export function WebNotificationDateFormatter(input, locale) {
   const ampm = date.getUTCHours() >= 12 ? "pm" : "am";
 
   if (isToday) {
-    // Only show time if it's today's date
-    const formattedTime = `${hours12}:${minute} ${ampm}`;
-    return formattedTime;
+    if (locale === "ar") {
+      // Arabic time formatting for today
+      const arabicFormatter = new Intl.DateTimeFormat("ar-SA", {
+        hour: "numeric",
+        minute: "numeric",
+        hourCycle: "h12",
+      });
+
+      const arabicTimeParts = arabicFormatter.formatToParts(date);
+      const formattedTime = `${arabicTimeParts
+        .filter((part) => part.type === "hour" || part.type === "minute")
+        .map((part) => part.value)
+        .join(":")} ${
+        arabicTimeParts.find((part) => part.type === "dayPeriod")?.value
+      }`;
+
+      return formattedTime;
+    } else {
+      // English time formatting for today
+      const formattedTime = `${hours12}:${minute} ${ampm}`;
+      return formattedTime;
+    }
   }
 
   if (locale === "ar") {
