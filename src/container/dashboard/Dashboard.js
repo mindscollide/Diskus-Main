@@ -893,9 +893,13 @@ const Dashboard = () => {
                 data.payload
               );
               if (
-                currentMeetingID === data.payload.userID &&
-                userIDCurrent === data.payload.meetingID
+                Number(currentMeetingID) === Number(data.payload.meetingID ) &&
+                Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                console.log(
+                  "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3",
+                  data.payload
+                );
                 dispatch(maxParticipantVideoCallPanel(false));
                 dispatch(maxParticipantVideoDenied(true));
               }
