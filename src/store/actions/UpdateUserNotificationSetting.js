@@ -8,6 +8,7 @@ import {
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
+import { isFunction } from "../../commen/functions/utils";
 
 const updateusernotificationinit = () => {
   return {
@@ -211,7 +212,13 @@ const DiskusWebNotificationMarkAsReadFail = (message) => {
   };
 };
 
-const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
+const DiskusWebNotificationMarkAsReadAPI = (
+  navigate,
+  t,
+  data,
+  setUnReadCountNotification,
+  setwebNotificationData
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(DiskusWebNotificationMarkAsReadInit());
@@ -229,7 +236,15 @@ const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(DiskusWebNotificationMarkAsReadAPI(navigate, t, data));
+          dispatch(
+            DiskusWebNotificationMarkAsReadAPI(
+              navigate,
+              t,
+              data,
+              setUnReadCountNotification,
+              setwebNotificationData
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -245,6 +260,19 @@ const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              //For Bring Notification Count to Zero
+              (await isFunction(setUnReadCountNotification)) &&
+                setUnReadCountNotification(0);
+              (await isFunction(setwebNotificationData)) &&
+                // Assuming webNotificationData is your state
+                setwebNotificationData((prevData) =>
+                  prevData.map(
+                    (notification) =>
+                      notification.isRead === false
+                        ? { ...notification, isRead: true } // Update isRead to true
+                        : notification // Keep as is
+                  )
+                );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -295,8 +323,17 @@ const DiskusWebNotificationMarkAsReadAPI = (navigate, t, data) => {
   };
 };
 
+//Diskus Global Unread Notification Count
+const DiskusGlobalUnreadNotificationCount = (response) => {
+  return {
+    type: actions.REAL_TIME_UNREAD_NOTIFICATION_COUNT,
+    response: response,
+  };
+};
+
 export {
   getUserNotificationSetting,
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,
+  DiskusGlobalUnreadNotificationCount,
 };

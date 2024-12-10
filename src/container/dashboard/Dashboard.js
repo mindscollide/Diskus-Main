@@ -179,6 +179,10 @@ import {
   setVoiceControleGuest,
 } from "../../store/actions/Guest_Video";
 import { MeetingContext } from "../../context/MeetingContext";
+import {
+  DiskusGlobalDataIsReadFlag,
+  DiskusGlobalUnreadNotificationCount,
+} from "../../store/actions/UpdateUserNotificationSetting";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -330,7 +334,7 @@ const Dashboard = () => {
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log(data, " MQTT onMessageArrived");
+    console.log(data, "MQTT onMessageArrived");
     try {
       if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
         if (data.action && data.payload) {
@@ -2667,6 +2671,16 @@ const Dashboard = () => {
         //     console.log("Hand Raised:", data.payload.raiseHand);
         //   }
         // }
+      }
+      //Web Notification
+      if (data.action.toLowerCase() === "WEBNOTIFICATION".toLowerCase()) {
+        if (
+          data.payload.message.toLowerCase() ===
+          "Web_Notification".toLowerCase()
+        ) {
+          dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
+          setNotificationID(id);
+        }
       }
     } catch (error) {}
   };
