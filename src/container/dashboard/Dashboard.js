@@ -733,9 +733,15 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST".toLowerCase()
             ) {
-              dispatch(participantWaitingList(data.payload));
-              dispatch(admitGuestUserRequest(data.payload));
-              dispatch(guestJoinPopup(true));
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+
+              if (isMeetingVideo) {
+                dispatch(participantWaitingList(data.payload));
+                dispatch(admitGuestUserRequest(data.payload));
+                dispatch(guestJoinPopup(true));
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
