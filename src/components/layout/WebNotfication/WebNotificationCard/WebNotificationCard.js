@@ -36,7 +36,10 @@ import MinutesReviewRequest from "../../../../assets/images/Minutes review reque
 import Video from "../../../../assets/images/Video.png";
 import Approval from "../../../../assets/images/Approval.png";
 import Signature from "../../../../assets/images/Signature.png";
-import { WebNotficationDateFormatter } from "../../../../commen/functions/date_formater";
+import {
+  WebNotficationDateFormatter,
+  WebNotificationDateFormatter,
+} from "../../../../commen/functions/date_formater";
 
 const WebNotificationCard = ({
   NotificationMessege,
@@ -161,7 +164,7 @@ const WebNotificationCard = ({
       <Row>
         <Col lg={12} md={12} sm={12} className="d-flex flex-column flex-wrap">
           <span className={styles["NotifcationDateStyles"]}>
-            {WebNotficationDateFormatter(NotificationTime, Lang)}
+            {WebNotificationDateFormatter(NotificationTime, Lang)}
           </span>
           {index !== length - 1 ? (
             <span className={styles["SeperateNotificationLine"]}></span>
