@@ -2268,7 +2268,7 @@ const Dashboard = () => {
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
           if (callerID === newCallerID) {
-            localStorage.setItem("activeCall", false);
+            // localStorage.setItem("activeCall", false);
           }
           localStorage.setItem("newCallerID", callerID);
           dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));

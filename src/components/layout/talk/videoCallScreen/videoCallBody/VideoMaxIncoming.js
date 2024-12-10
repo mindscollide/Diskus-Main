@@ -88,6 +88,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false);
       audioElement.pause();
       audioElement.currentTime = 0;
+    console.log("busyCall")
     }, timeValue);
 
     // Clear the timer if isTimerRunning becomes false
@@ -108,6 +109,7 @@ const VideoMaxIncoming = () => {
   // }, [])
 
   const acceptCall = () => {
+    console.log("busyCall")
     const meetingHost = {
       isHost: false,
       isHostId: 0,
@@ -128,6 +130,7 @@ const VideoMaxIncoming = () => {
   };
 
   const endAndAccept = async () => {
+    console.log("busyCall")
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: acceptedRoomID,
@@ -149,6 +152,7 @@ const VideoMaxIncoming = () => {
   };
 
   const rejectCall = () => {
+    console.log("busyCall")
     let Data = {
       ReciepentID: currentUserId,
       RoomID: incomingRoomID,
@@ -157,11 +161,13 @@ const VideoMaxIncoming = () => {
     };
     dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
+    console.log("busyCall")
     localStorage.setItem("activeCall", false);
     setIsTimerRunning(false);
   };
 
   const busyCall = () => {
+    console.log("busyCall")
     let Data = {
       ReciepentID: currentUserId,
       RoomID: activeRoomID,
@@ -242,7 +248,9 @@ const VideoMaxIncoming = () => {
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <div className="calling-title-max-call">
-                  <p className="calling-text-max-call">Calling...</p>
+                  <p className="calling-text-max-call">
+                    {t("Calling") + "..."}
+                  </p>
                 </div>
               </Col>
             </Row>
@@ -265,7 +273,7 @@ const VideoMaxIncoming = () => {
                               ? "button-active-img"
                               : "button-img"
                           }
-                          icon={<img src={BusyIcon} width={50} />}
+                          icon={<img src={BusyIcon} width={50} alt="" />}
                           onClick={busyCall}
                           style={{ paddingBottom: "0" }}
                         />
@@ -276,7 +284,7 @@ const VideoMaxIncoming = () => {
                               : "incoming-text"
                           }
                         >
-                          Busy
+                          {t("Busy")}
                         </span>
                       </div>
                     </>
@@ -285,10 +293,10 @@ const VideoMaxIncoming = () => {
                       <div className="incoming-action">
                         <Button
                           className="button-img-max-call"
-                          icon={<img src={videoEndIcon} width={50} />}
+                          icon={<img src={videoEndIcon} width={50} alt="" />}
                           onClick={rejectCall}
                         />
-                        <span className="incoming-text">Reject</span>
+                        <span className="incoming-text">{t("Reject")}</span>
                       </div>
                     </>
                   )}
@@ -317,7 +325,7 @@ const VideoMaxIncoming = () => {
                               ? "button-active-img"
                               : "button-img"
                           }
-                          icon={<img src={videoAttendIcon} width={50} />}
+                          icon={<img src={videoAttendIcon} width={50} alt="" />}
                           onClick={endAndAccept}
                         />
                         <span
@@ -327,7 +335,7 @@ const VideoMaxIncoming = () => {
                               : "incoming-text"
                           }
                         >
-                          End & Accept
+                          {t("End-&-accept")}
                         </span>
                       </div>
                     </>
@@ -336,10 +344,10 @@ const VideoMaxIncoming = () => {
                       <div className="incoming-action">
                         <Button
                           className="button-img"
-                          icon={<img src={videoAttendIcon} width={50} />}
+                          icon={<img src={videoAttendIcon} width={50} alt="" />}
                           onClick={acceptCall}
                         />
-                        <span className="incoming-text">Accept</span>
+                        <span className="incoming-text">{t("Accept")}</span>
                       </div>
                     </>
                   )}
