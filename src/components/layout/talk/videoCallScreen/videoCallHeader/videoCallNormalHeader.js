@@ -627,10 +627,15 @@ const VideoCallNormalHeader = ({
   }, [VideoMainReducer.GroupCallRecipientsData]);
 
   useEffect(() => {
-    if (callerObject !== undefined && callerObject !== null) {
-      let callerObjectObj = JSON.parse(callerObject);
-      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
-    }
+    try {
+      if (
+        callerObject !== undefined &&
+        (callerObject !== null) & (callerObject?.length > 0)
+      ) {
+        let callerObjectObj = JSON.parse(callerObject);
+        setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
+      }
+    } catch {}
   }, [callerObject]);
 
   console.log("Video Feature Reducer", videoFeatureReducer);

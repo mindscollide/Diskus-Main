@@ -16,6 +16,11 @@ import {
   incomingVideoCallFlag,
   normalizeVideoPanelFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  LeaveCurrentMeeting,
+  LeaveMeetingVideo,
+} from "../../../../../store/actions/NewMeetingActions";
+import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -88,7 +93,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false);
       audioElement.pause();
       audioElement.currentTime = 0;
-    console.log("busyCall")
+      console.log("busyCall");
     }, timeValue);
 
     // Clear the timer if isTimerRunning becomes false
@@ -109,7 +114,7 @@ const VideoMaxIncoming = () => {
   // }, [])
 
   const acceptCall = () => {
-    console.log("busyCall")
+    console.log("busyCall");
     const meetingHost = {
       isHost: false,
       isHostId: 0,
@@ -130,29 +135,88 @@ const VideoMaxIncoming = () => {
   };
 
   const endAndAccept = async () => {
-    console.log("busyCall")
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: acceptedRoomID,
-      IsCaller: callerID === currentUserId ? true : false,
-      CallTypeID: callTypeID,
-    };
-    await dispatch(LeaveCall(Data, navigate, t));
-    localStorage.setItem("isCaller", false);
-    let Data2 = {
-      ReciepentID: currentUserId,
-      RoomID: activeRoomID,
-      CallStatusID: 1,
-      CallTypeID: callTypeID,
-    };
-    dispatch(VideoCallResponse(Data2, navigate, t));
-    dispatch(incomingVideoCallFlag(false));
-    setIsTimerRunning(false);
-    localStorage.setItem("isMeetingVideo", false);
+    console.log("busyCall");
+    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    let isMeeting = localStorage.getItem("isMeeting");
+    if (isMeeting) {
+      if (isMeetingVideo) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("newName");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+        let leaveMeetingData = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        await dispatch(
+          LeaveCurrentMeeting(navigate, t, leaveMeetingData, false, false)
+        );
+        localStorage.setItem("activeOtoChatID", 0);
+        localStorage.setItem("initiateVideoCall", false);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.setItem("meetingVideoID", 0);
+        localStorage.setItem("newCallerID", 0);
+        localStorage.setItem("callerStatusObject", []);
+        localStorage.setItem("meetingTitle", "");
+        localStorage.removeItem("MeetingCurrentView");
+        localStorage.removeItem("videoCallURL");
+        localStorage.removeItem("currentMeetingID");
+        localStorage.removeItem("newRoomId");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("VideoView");
+        localStorage.removeItem("videoIframe");
+        localStorage.removeItem("CallType");
+        let Data2 = {
+          ReciepentID: currentUserId,
+          RoomID: activeRoomID,
+          CallStatusID: 1,
+          CallTypeID: callTypeID,
+        };
+        dispatch(VideoCallResponse(Data2, navigate, t));
+        dispatch(incomingVideoCallFlag(false));
+        setIsTimerRunning(false);
+      } else {
+        let Data2 = {
+          ReciepentID: currentUserId,
+          RoomID: activeRoomID,
+          CallStatusID: 1,
+          CallTypeID: callTypeID,
+        };
+        dispatch(VideoCallResponse(Data2, navigate, t));
+        dispatch(incomingVideoCallFlag(false));
+        setIsTimerRunning(false);
+      }
+    } else {
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: acceptedRoomID,
+        IsCaller: callerID === currentUserId ? true : false,
+        CallTypeID: callTypeID,
+      };
+      await dispatch(LeaveCall(Data, navigate, t));
+      localStorage.setItem("isCaller", false);
+      let Data2 = {
+        ReciepentID: currentUserId,
+        RoomID: activeRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data2, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      setIsTimerRunning(false);
+    }
   };
 
   const rejectCall = () => {
-    console.log("busyCall")
+    console.log("busyCall");
     let Data = {
       ReciepentID: currentUserId,
       RoomID: incomingRoomID,
@@ -161,13 +225,13 @@ const VideoMaxIncoming = () => {
     };
     dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
-    console.log("busyCall")
+    console.log("busyCall");
     localStorage.setItem("activeCall", false);
     setIsTimerRunning(false);
   };
 
   const busyCall = () => {
-    console.log("busyCall")
+    console.log("busyCall");
     let Data = {
       ReciepentID: currentUserId,
       RoomID: activeRoomID,

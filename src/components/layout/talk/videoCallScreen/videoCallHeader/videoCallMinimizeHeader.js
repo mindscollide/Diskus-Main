@@ -258,10 +258,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   useEffect(() => {}, [localMicStatus, localVidStatus]);
 
   useEffect(() => {
-    if (callerObject !== undefined && callerObject !== null) {
-      let callerObjectObj = JSON.parse(callerObject);
-      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
-    }
+    try {
+      if (
+        callerObject !== undefined &&
+        (callerObject !== null) & (callerObject?.length > 0)
+      ) {
+        let callerObjectObj = JSON.parse(callerObject);
+        setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
+      }
+    } catch {}
   }, [callerObject]);
 
   useEffect(() => {
@@ -770,7 +775,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         }
                       >
                         <img
-                          src={videoControlForParticipant ? VideoOffHost : VideoOn}
+                          src={
+                            videoControlForParticipant ? VideoOffHost : VideoOn
+                          }
                           onClick={() =>
                             videoHideUnHideForParticipant(
                               videoControlForParticipant ? false : true
@@ -795,13 +802,17 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       <Tooltip
                         placement="topRight"
                         title={
-                          audioControlForParticipant ? t("Enable-mic") : t("Disable-mic")
+                          audioControlForParticipant
+                            ? t("Enable-mic")
+                            : t("Disable-mic")
                         }
                       >
                         <img
                           src={audioControlForParticipant ? MicOffHost : MicOn}
                           onClick={() =>
-                            muteUnMuteForParticipant(audioControlForParticipant ? false : true)
+                            muteUnMuteForParticipant(
+                              audioControlForParticipant ? false : true
+                            )
                           }
                           alt="Mic"
                         />
