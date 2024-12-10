@@ -142,31 +142,19 @@ const VideoMaxIncoming = () => {
       if (isMeetingVideo) {
         let newRoomID = localStorage.getItem("newRoomId");
         let newUserGUID = localStorage.getItem("isGuid");
-        let newName = localStorage.getItem("newName");
+        let newName = localStorage.getItem("name");
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(newUserGUID),
           Name: String(newName),
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let leaveMeetingData = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        await dispatch(
-          LeaveCurrentMeeting(navigate, t, leaveMeetingData, false, false)
-        );
         localStorage.setItem("activeOtoChatID", 0);
         localStorage.setItem("initiateVideoCall", false);
         localStorage.setItem("activeRoomID", 0);
         localStorage.setItem("meetingVideoID", 0);
         localStorage.setItem("newCallerID", 0);
-        localStorage.setItem("callerStatusObject", []);
-        localStorage.setItem("meetingTitle", "");
-        localStorage.removeItem("MeetingCurrentView");
-        localStorage.removeItem("videoCallURL");
-        localStorage.removeItem("currentMeetingID");
+        localStorage.setItem("callerStatusObject", JSON.stringify([]));
         localStorage.removeItem("newRoomId");
         localStorage.removeItem("isHost");
         localStorage.removeItem("isGuid");
@@ -184,6 +172,28 @@ const VideoMaxIncoming = () => {
         dispatch(incomingVideoCallFlag(false));
         setIsTimerRunning(false);
       } else {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        localStorage.setItem("activeOtoChatID", 0);
+        localStorage.setItem("initiateVideoCall", false);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.setItem("meetingVideoID", 0);
+        localStorage.setItem("newCallerID", 0);
+        localStorage.setItem("callerStatusObject", JSON.stringify([]));
+        localStorage.removeItem("newRoomId");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("VideoView");
+        localStorage.removeItem("videoIframe");
+        localStorage.removeItem("CallType");
         let Data2 = {
           ReciepentID: currentUserId,
           RoomID: activeRoomID,
