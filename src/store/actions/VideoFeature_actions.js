@@ -620,6 +620,10 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 "isEmail",
                 response.data.responseResult.email
               );
+              localStorage.setItem(
+                "hostUrl",
+                response.data.responseResult.videoURL
+              );
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   t("ScheduleCall Joined and Is host")
