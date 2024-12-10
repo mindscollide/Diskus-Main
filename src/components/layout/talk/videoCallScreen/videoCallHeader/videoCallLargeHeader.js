@@ -51,6 +51,7 @@ const VideoCallLargeHeader = () => {
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
+    console.log("busyCall")
     localStorage.setItem("activeCall", false);
   };
 
@@ -58,15 +59,16 @@ const VideoCallLargeHeader = () => {
     <Row className="mt-2 mb-0">
       <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3">
         {isActiveIcon ? (
-          <img width={30} src={ActiveChat} onClick={onClickCloseChatHandler} />
+          <img width={30} src={ActiveChat} onClick={onClickCloseChatHandler} alt=""/>
         ) : (
           <img
             width={30}
             src={ChatNonActive}
             onClick={onClickCloseChatHandler}
+            alt=""
           />
         )}
-        <img src={CallEndRedIcon} onClick={closeVideoPanel} />
+        <img src={CallEndRedIcon} onClick={closeVideoPanel} alt=""/>
         <img
           width={20}
           src={MinimizeIcon}

@@ -171,7 +171,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
       localStorage.setItem("isFirstLogin", response.authToken.isFirstLogIn);
       localStorage.setItem("activeOtoChatID", 0);
-      localStorage.setItem("activeCall", false);
+    console.log("busyCall")
+    localStorage.setItem("activeCall", false);
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
       localStorage.setItem("isMeeting", false);
