@@ -53,40 +53,40 @@ const WebNotfication = ({
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {
     if (
-      GlobalUnreadCountNotificaitonFromMqtt &&
+      Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
       GlobalUnreadCountNotificaitonFromMqtt.length > 0
     ) {
+      // Iterate over each notification object in the array
+      const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
+        (notification) => notification.notificationData
+      );
+
+      // Prepending the new notifications to the state while ensuring uniqueness
       setwebNotificationData((prevData) => {
-        const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.filter(
+        const newData = newNotifications.filter(
           (newNotification) =>
             !prevData.some(
-              (notification) =>
-                notification.notificationID === newNotification.notificationID
+              (existingNotification) =>
+                existingNotification.notificationID ===
+                newNotification.notificationID
             )
         );
-        return [...newNotifications, ...prevData];
+        return [...newData, ...prevData]; // Add new unique notifications to the front of the list
       });
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
   useEffect(() => {
-    if (!webNotificationData || webNotificationData.length === 0) {
-      setGroupedNotifications({ today: [], previous: [] });
-      return;
-    }
-
     const uniqueNotifications = Array.from(
       new Map(
-        webNotificationData
-          .filter((item) => item && item.notificationID) // Ensure valid notifications
-          .map((item) => [item.notificationID, item])
+        webNotificationData.map((item) => [item.notificationID, item])
       ).values()
     );
 
     const groupNotificationsData = uniqueNotifications.reduce(
       (acc, notification) => {
-        const notificationDate = notification?.sentDateTime?.slice(0, 8); // Safely access sentDateTime
+        const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
         if (notificationDate === todayDate) {
           acc.today.push(notification);
         } else {

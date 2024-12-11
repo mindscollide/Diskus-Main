@@ -131,14 +131,10 @@ const Header2 = ({ isVideo }) => {
   //Web Notification state
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
-  console.log(
-    webNotificationData,
-    "webNotificationDatawebNotificationDatawebNotificationData"
-  );
   const [totalCountNotification, setTotalCountNotification] = useState(0);
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
+  const [prevArrayLength, setPrevArrayLength] = useState(0);
   let Blur = localStorage.getItem("blur");
-  console.log(getAllNotificationData, "getAllNotificationData");
   //OnClick Function for OutSide Click WebNotification
   const handleOutsideClick = (event) => {
     if (
@@ -225,8 +221,6 @@ const Header2 = ({ isVideo }) => {
     "GlobalUnreadCountNotificaitonFromMqtt"
   );
   //Real Time data For Notification
-  const [prevArrayLength, setPrevArrayLength] = useState(0);
-
   useEffect(() => {
     if (
       Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
