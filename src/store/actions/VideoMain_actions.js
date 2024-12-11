@@ -260,15 +260,22 @@ const VideoCallResponse = (Data, navigate, t) => {
                   "Video_VideoServiceManager_VideoCallResponse_01".toLowerCase()
                 )
             ) {
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: false,
-              };
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
+              console.log(Data, "responsedataresponseResult");
+              // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2 
+              if (Data.CallStatusID === 1) {
+                const meetingHost = {
+                  isHost: false,
+                  isHostId: 0,
+                  isDashboardVideo: false,
+                };
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+              } else {
+                console.log(Data, "CheckCheck");
+              }
+
               await dispatch(
                 videoCallResponseSuccess(
                   response.data.responseResult,

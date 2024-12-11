@@ -2090,12 +2090,12 @@ const Dashboard = () => {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
           };
-          const meetingHost = {
-            isHost: false,
-            isHostId: 0,
-            isDashboardVideo: false,
-          };
-          localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+          // const meetingHost = {
+          //   isHost: false,
+          //   isHostId: 0,
+          //   isDashboardVideo: false,
+          // };
+          // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
           dispatch(CallRequestReceived(Dataa, navigate, t));
           if (callStatus === true) {
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
@@ -2247,7 +2247,7 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message:  t("The-call-was-unanswered"),
+              message: t("The-call-was-unanswered"),
             });
             setNotificationID(id);
             let existingData =
@@ -2279,13 +2279,13 @@ const Dashboard = () => {
               if (!isMeetingVideo) {
                 localStorage.setItem("activeCall", false);
               }
-            }else{
+            } else {
               localStorage.setItem("activeCall", false);
             }
           }
           dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
-        dispatch(normalizeVideoPanelFlag(false));
-        dispatch(videoOutgoingCallFlag(false));
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(videoOutgoingCallFlag(false));
           localStorage.setItem("initiateVideoCall", false);
         } else if (
           data.payload.message.toLowerCase() ===
