@@ -76,16 +76,16 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (
-      CommitteeReducer.ArcheivedCommittees !== null &&
-      CommitteeReducer.ArcheivedCommittees !== undefined &&
+      CommitteeReducer.ArcheivedCommittees &&
+      CommitteeReducer.ArcheivedCommittees.committees &&
       CommitteeReducer.ArcheivedCommittees.committees.length > 0
     ) {
-      let newArr = [];
       setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
-      CommitteeReducer.ArcheivedCommittees.committees.map((data) => {
-        newArr.push(data);
-      });
-      setGetCommitteeData(newArr);
+
+      // Use the spread operator to create a new array to avoid state mutations
+      const newArr = [...CommitteeReducer.ArcheivedCommittees.committees];
+
+      setGetCommitteeData(newArr); // Update the state with the new array
     }
   }, [CommitteeReducer.ArcheivedCommittees]);
 

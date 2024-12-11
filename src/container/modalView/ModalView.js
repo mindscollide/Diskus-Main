@@ -102,11 +102,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   );
 
   const assigneesuser = useSelector((state) => state.assignees.user);
-  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let currentUserID = Number(localStorage.getItem("userID"));
-  let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
-  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
   const [getMeetID, setMeetID] = useState(0);
   const [isDetails, setIsDetails] = useState(true);
@@ -454,6 +449,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
+    return () => {
+      localStorage.removeItem("QuicMeetingOperations");
+    };
   }, [assigneesViewMeetingDetails]);
 
   useEffect(() => {

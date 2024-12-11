@@ -462,6 +462,9 @@ const ViewMeeting = (
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (no === 5) {
                   setEditMeetingModal(true);
+                } else if (no === 6) {
+                  setViewFlag(true);
+                  dispatch(scheduleMeetingPageFlag(false));
                 }
                 dispatch(removeCalenderDataFunc(null));
               } catch (error) {

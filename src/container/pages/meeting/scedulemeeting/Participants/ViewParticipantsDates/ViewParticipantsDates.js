@@ -70,21 +70,45 @@ const ViewParticipantsDates = ({
   };
 
   const callApis = async () => {
-    let Data = {
-      MeetingID: Number(currentMeetingID),
-    };
-    await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
-    await dispatch(
-      GetAllMeetingDetailsApiFunc(
-        navigate,
-        t,
-        Data,
-        false,
-        setCurrentMeetingID,
-        setSceduleMeeting,
-        setDataroomMapFolderId
-      )
+    let NotificationClickProposedMeetingFlag = JSON.parse(
+      localStorage.getItem("ProposedMeetingOperations")
     );
+    let NotificationClickMeetingID = localStorage.getItem(
+      "NotificationClickMeetingID"
+    );
+    if (NotificationClickProposedMeetingFlag) {
+      let Data = {
+        MeetingID: Number(NotificationClickMeetingID),
+      };
+      await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId
+        )
+      );
+    } else {
+      let Data = {
+        MeetingID: Number(currentMeetingID),
+      };
+      await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          false,
+          setCurrentMeetingID,
+          setSceduleMeeting,
+          setDataroomMapFolderId
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -93,6 +117,8 @@ const ViewParticipantsDates = ({
       localStorage.removeItem("viewProposeDatePollMeetingID");
       setCurrentMeetingID(null);
       setDataroomMapFolderId(null);
+      localStorage.removeItem("ProposedMeetingOperations");
+      localStorage.removeItem("NotificationClickMeetingID");
     };
   }, []);
 

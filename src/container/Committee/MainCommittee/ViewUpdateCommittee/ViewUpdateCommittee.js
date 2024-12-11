@@ -15,6 +15,9 @@ import { useSelector } from "react-redux";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  let NotificationClickCommitteeID = localStorage.getItem(
+    "NotifcationClickViewCommitteeID"
+  );
   const [committeeStatus, setCommitteeStatus] = useState(null);
   const getCommitteeByCommitteeID = useSelector(
     (state) => state.CommitteeReducer.getCommitteeByCommitteeID
@@ -28,17 +31,40 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   );
   useEffect(() => {
     try {
-      if (ViewCommitteeID !== null) {
-        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-        let Data = {
-          CommitteeID: Number(ViewCommitteeID),
-          OrganizationId: OrganizationID,
-        };
-        dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+      if (ViewCommitteeID !== null || NotificationClickCommitteeID !== null) {
+        if (
+          JSON.parse(
+            localStorage.getItem("NotificationClickCommitteeOperations")
+          ) === true
+        ) {
+          //For Notification Click Redirection User Logic
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: Number(NotificationClickCommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+        } else {
+          // Normal Card Title Click View Logic
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: Number(ViewCommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+        }
       }
     } catch (error) {
       console.log(error, "error");
     }
+    return () => {
+      localStorage.removeItem("NotificationClickCommitteeOperations");
+      localStorage.removeItem("NotifcationClickViewCommitteeID");
+    };
   }, [ViewCommitteeID]);
 
   const handleClose = () => {
