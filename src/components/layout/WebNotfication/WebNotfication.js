@@ -144,6 +144,23 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 3) {
+      //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 4) {
     } else if (NotificationData.notificationActionID === 5) {
     } else if (NotificationData.notificationActionID === 6) {
