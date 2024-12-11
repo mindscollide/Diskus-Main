@@ -455,6 +455,16 @@ const NewMeeting = () => {
               ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
             );
           }
+          //Notification if Published Advance meeting is Triggered
+          if (
+            JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) ===
+            true
+          ) {
+            console.log("AdvanceOperations");
+            setViewAdvanceMeetingModal(true);
+            dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            dispatch(scheduleMeetingPageFlag(false));
+          }
         } else {
           console.log("QuicMeetingOperations");
           let searchData = {
@@ -501,6 +511,15 @@ const NewMeeting = () => {
           await dispatch(
             ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
           );
+        }
+        //Notification if Published Advance meeting is Triggered
+        if (
+          JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true
+        ) {
+          console.log("AdvanceOperations");
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
         }
       }
     } catch (error) {
