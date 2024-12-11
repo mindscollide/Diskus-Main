@@ -760,7 +760,9 @@ const VideoPanelNormal = () => {
                                 </>
                               ) : (
                                 <>
-                                  {console.log("iframeiframe", isMeetingHost)}
+                                  {console.log("mqtt", refinedParticipantVideoUrl)}
+                                  {console.log("mqtt", participantURL)}
+                                  {console.log("mqtt", callerURL)}
                                   <iframe
                                     src={refinedParticipantVideoUrl}
                                     ref={iframeRef}
