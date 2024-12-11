@@ -220,21 +220,24 @@ const Header2 = ({ isVideo }) => {
   }, []);
 
   //Web Notfication Real Time Data
-
-  //Real Time data For Notification
-  useEffect(() => {
-    if (
-      GlobalUnreadCountNotificaitonFromMqtt &&
-      GlobalUnreadCountNotificaitonFromMqtt.notificationData
-    ) {
-      setUnReadCountNotification((prevCount) => prevCount + 1);
-    }
-  }, [GlobalUnreadCountNotificaitonFromMqtt]);
-
   console.log(
     GlobalUnreadCountNotificaitonFromMqtt,
     "GlobalUnreadCountNotificaitonFromMqtt"
   );
+  //Real Time data For Notification
+  const [prevArrayLength, setPrevArrayLength] = useState(0);
+
+  useEffect(() => {
+    if (
+      Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
+      GlobalUnreadCountNotificaitonFromMqtt.length > prevArrayLength
+    ) {
+      const newObjectsCount =
+        GlobalUnreadCountNotificaitonFromMqtt.length - prevArrayLength;
+      setUnReadCountNotification((prevCount) => prevCount + newObjectsCount);
+      setPrevArrayLength(GlobalUnreadCountNotificaitonFromMqtt.length); // Update the tracked length
+    }
+  }, [GlobalUnreadCountNotificaitonFromMqtt, prevArrayLength]);
 
   // Web Notification API Calling
   useEffect(() => {

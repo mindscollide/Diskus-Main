@@ -35,7 +35,10 @@ const WebNotfication = ({
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
-  console.log(webNotificationData, "GlobalUnreadCountNotificaitonFromMqtt");
+  console.log(
+    GlobalUnreadCountNotificaitonFromMqtt,
+    "GlobalUnreadCountNotificaitonFromMqtt"
+  );
 
   //Spinner Styles in Lazy Loading
   const antIcon = (
@@ -51,33 +54,39 @@ const WebNotfication = ({
   useEffect(() => {
     if (
       GlobalUnreadCountNotificaitonFromMqtt &&
-      GlobalUnreadCountNotificaitonFromMqtt.notificationData
+      GlobalUnreadCountNotificaitonFromMqtt.length > 0
     ) {
-      const newNotification =
-        GlobalUnreadCountNotificaitonFromMqtt.notificationData;
-
-      // Prepending the new notification to the state while ensuring uniqueness
       setwebNotificationData((prevData) => {
-        const isDuplicate = prevData.some(
-          (notification) =>
-            notification.notificationID === newNotification.notificationID
+        const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.filter(
+          (newNotification) =>
+            !prevData.some(
+              (notification) =>
+                notification.notificationID === newNotification.notificationID
+            )
         );
-        return isDuplicate ? prevData : [newNotification, ...prevData];
+        return [...newNotifications, ...prevData];
       });
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
   useEffect(() => {
+    if (!webNotificationData || webNotificationData.length === 0) {
+      setGroupedNotifications({ today: [], previous: [] });
+      return;
+    }
+
     const uniqueNotifications = Array.from(
       new Map(
-        webNotificationData.map((item) => [item.notificationID, item])
+        webNotificationData
+          .filter((item) => item && item.notificationID) // Ensure valid notifications
+          .map((item) => [item.notificationID, item])
       ).values()
     );
 
     const groupNotificationsData = uniqueNotifications.reduce(
       (acc, notification) => {
-        const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
+        const notificationDate = notification?.sentDateTime?.slice(0, 8); // Safely access sentDateTime
         if (notificationDate === todayDate) {
           acc.today.push(notification);
         } else {
