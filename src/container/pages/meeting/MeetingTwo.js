@@ -420,6 +420,7 @@ const NewMeeting = () => {
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          console.log(meetingpageRow, "QuicMeetingOperations");
           let searchData = {
             Date: "",
             Title: "",
@@ -446,9 +447,16 @@ const NewMeeting = () => {
             JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
           ) {
             console.log("QuicMeetingOperations");
-            setViewFlag(true);
+            let NotificationClickQuickMeetingID = localStorage.getItem(
+              "NotificationQuickMeetingID"
+            );
+            let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
+            await dispatch(
+              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+            );
           }
         } else {
+          console.log("QuicMeetingOperations");
           let searchData = {
             Date: "",
             Title: "",
@@ -472,6 +480,7 @@ const NewMeeting = () => {
           }
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
+
         if (
           localStorage.getItem("meetingprop") !== null ||
           localStorage.getItem("UserMeetPropoDatPoll") !== null
@@ -479,6 +488,19 @@ const NewMeeting = () => {
           localStorage.setItem("MeetingCurrentView", 2);
         } else {
           localStorage.setItem("MeetingCurrentView", 1);
+        }
+        //Notification Trigger of Quick Meeting published
+        if (
+          JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+        ) {
+          console.log("QuicMeetingOperations");
+          let NotificationClickQuickMeetingID = localStorage.getItem(
+            "NotificationQuickMeetingID"
+          );
+          let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
+          await dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
         }
       }
     } catch (error) {
@@ -1210,40 +1232,19 @@ const NewMeeting = () => {
         }
       } else {
         if (isQuickMeeting) {
-          if (
-            JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
-          ) {
-            let NotificationClickQuickMeetingID = localStorage.getItem(
-              "NotificationQuickMeetingID"
-            );
-            let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
-            await dispatch(
-              ViewMeeting(
-                navigate,
-                Data,
-                t,
-                setViewFlag,
-                setEditFlag,
-                setSceduleMeeting,
-                1
-              )
-            );
-            // setViewFlag(true);
-          } else {
-            let Data = { MeetingID: id };
-            await dispatch(
-              ViewMeeting(
-                navigate,
-                Data,
-                t,
-                setViewFlag,
-                setEditFlag,
-                setSceduleMeeting,
-                1
-              )
-            );
-            // setViewFlag(true);
-          }
+          let Data = { MeetingID: id };
+          await dispatch(
+            ViewMeeting(
+              navigate,
+              Data,
+              t,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              1
+            )
+          );
+          // setViewFlag(true);
         } else {
           setAdvanceMeetingModalID(id);
           setViewAdvanceMeetingModal(true);
