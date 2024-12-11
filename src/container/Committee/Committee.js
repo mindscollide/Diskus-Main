@@ -136,6 +136,14 @@ const Committee = () => {
       ) {
         setShowModal(true);
       }
+      if (
+        JSON.parse(
+          localStorage.getItem("NotificationClickCommitteeOperations")
+        ) === true
+      ) {
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
+      }
     } catch (error) {
       console.log(error, "error");
     }

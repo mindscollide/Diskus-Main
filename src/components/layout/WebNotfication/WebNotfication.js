@@ -97,6 +97,7 @@ const WebNotfication = ({
     console.log(NotificationData, "NotificationDataNotificationData");
     //PayLoad For Groups
     let PayLoadData = JSON.parse(NotificationData.payloadData);
+    console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
     } else if (NotificationData.notificationActionID === 2) {
     } else if (NotificationData.notificationActionID === 3) {
@@ -147,6 +148,13 @@ const WebNotfication = ({
       navigate("/Diskus/committee");
       localStorage.setItem("NotificationClickCommitteeArchived", true);
     } else if (NotificationData.notificationActionID === 24) {
+      //Notificaiton For Committee InActive
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
     } else if (NotificationData.notificationActionID === 25) {
     } else if (NotificationData.notificationActionID === 26) {
     } else if (NotificationData.notificationActionID === 27) {
