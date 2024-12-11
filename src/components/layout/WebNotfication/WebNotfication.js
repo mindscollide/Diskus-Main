@@ -94,6 +94,7 @@ const WebNotfication = ({
 
   //Handle Click Notification
   const HandleClickNotfication = (NotificationData) => {
+    console.log(NotificationData, "NotificationDataNotificationData");
     //PayLoad For Groups
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     if (NotificationData.notificationActionID === 1) {
@@ -113,7 +114,7 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 15) {
     } else if (NotificationData.notificationActionID === 16) {
       navigate("/Diskus/groups");
-      //open Archinved Modal Also in this
+      //open ViewMode Modal Also in this
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 17) {
@@ -123,6 +124,10 @@ const WebNotfication = ({
       //open Archinved Modal Also in this
       localStorage.setItem("NotificationClickArchivedGroup", true);
     } else if (NotificationData.notificationActionID === 19) {
+      navigate("/Diskus/groups");
+      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 20) {
     } else if (NotificationData.notificationActionID === 21) {
     } else if (NotificationData.notificationActionID === 22) {
