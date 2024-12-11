@@ -374,7 +374,19 @@ const NewMeeting = () => {
     },
   ];
 
+  // Notification rediredirection for proposed
   useEffect(() => {
+    if (
+      JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
+    ) {
+      setViewProposeDatePoll(true);
+      dispatch(viewProposeDateMeetingPageFlag(true));
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(proposeNewMeetingPageFlag(false));
+      dispatch(viewMeetingFlag(false));
+    }
     return () => {
       setBoarddeckOptions({
         selectall: false,

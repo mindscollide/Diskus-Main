@@ -120,6 +120,10 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 11) {
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
+      //Notification For Proposed Meeting Request
+      navigate("/Diskus/Meeting");
+      localStorage.setItem("ProposedMeetingOperations", true);
+      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 14) {
     } else if (NotificationData.notificationActionID === 15) {
     } else if (NotificationData.notificationActionID === 16) {
