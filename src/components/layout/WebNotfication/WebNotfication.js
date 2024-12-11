@@ -129,6 +129,10 @@ const WebNotfication = ({
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 20) {
+      navigate("/Diskus/groups");
+      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 21) {
     } else if (NotificationData.notificationActionID === 22) {
     } else if (NotificationData.notificationActionID === 23) {
