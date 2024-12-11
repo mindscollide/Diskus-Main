@@ -722,18 +722,33 @@ const VideoPanelNormal = () => {
                         >
                           <>
                             <>
-                              {isMeeting ? (
+                              {isMeetingHost ? (
                                 <>
+                                  {console.log("iframeiframe", isMeetingHost)}
+                                  {console.log("iframeiframe", participantURL)}
+                                  {console.log(
+                                    "iframeiframe",
+                                    typeof participantURL
+                                  )}
+                                  {console.log("iframeiframe", callerURL)}
+                                  {console.log(
+                                    "iframeiframe",
+                                    typeof callerURL
+                                  )}
+                                  {console.log(
+                                    "iframeiframe",
+                                    callAcceptedRecipientID === currentUserID
+                                  )}
+                                  {console.log("iframeiframe", currentUserID)}
+                                  {console.log(
+                                    "iframeiframe",
+                                    callAcceptedRecipientID
+                                  )}
                                   <iframe
                                     src={
-                                      isMeetingVideo &&
                                       callAcceptedRecipientID === currentUserID
                                         ? participantURL
-                                        : isMeetingVideo &&
-                                          callAcceptedRecipientID !==
-                                            currentUserID
-                                        ? callerURL
-                                        : null
+                                        : callerURL
                                     }
                                     ref={iframeRef}
                                     title="Live Video"
@@ -747,15 +762,7 @@ const VideoPanelNormal = () => {
                                 <>
                                   {console.log("iframeiframe", isMeetingHost)}
                                   <iframe
-                                    src={
-                                      refinedParticipantVideoUrl
-                                        ? refinedParticipantVideoUrl
-                                        : participantURL
-                                        ? participantURL
-                                        : callerURL
-                                        ? callerURL
-                                        : null
-                                    }
+                                    src={refinedParticipantVideoUrl}
                                     ref={iframeRef}
                                     title="Live Video"
                                     width="100%"
