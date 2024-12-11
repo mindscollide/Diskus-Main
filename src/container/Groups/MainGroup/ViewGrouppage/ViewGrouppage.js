@@ -22,19 +22,35 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const dispatch = useDispatch();
   const [groupStatus, setGroupStatus] = useState(null);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-
+  let NotificationClickViewGroupID = localStorage.getItem(
+    "NotifcationClickViewGroupID"
+  );
+  console.log(NotificationClickViewGroupID, "NotificationClickViewGroupID");
   const [currentViewGroup, setCurrentViewGroup] = useState(
     viewGroupTab !== undefined && viewGroupTab !== 0 ? viewGroupTab : 1
   );
 
   useEffect(() => {
     try {
-      if (ViewGroupID !== null) {
-        dispatch(getbyGroupID(navigate, ViewGroupID, t));
+      if (ViewGroupID !== null || NotificationClickViewGroupID !== null) {
+        if (
+          JSON.parse(
+            localStorage.getItem("NotificationClickAddedIntoGroup")
+          ) === true
+        ) {
+          dispatch(getbyGroupID(navigate, NotificationClickViewGroupID, t));
+        } else {
+          dispatch(getbyGroupID(navigate, ViewGroupID, t));
+        }
       }
     } catch (error) {
       console.log(error, "error");
     }
+
+    return () => {
+      localStorage.removeItem("NotifcationClickViewGroupID");
+      localStorage.removeItem("NotificationClickAddedIntoGroup");
+    };
   }, []);
 
   const handleClose = () => {

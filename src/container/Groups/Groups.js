@@ -131,9 +131,26 @@ const Groups = () => {
     dispatch(viewGroupPageFlag(false));
     localStorage.removeItem("groupsArCurrent");
     localStorage.removeItem("ViewGroupID");
-
+    if (
+      JSON.parse(localStorage.getItem("NotificationClickArchivedGroup")) ===
+      true
+    ) {
+      setShowModal(true);
+    }
+    if (
+      JSON.parse(localStorage.getItem("NotificationClickAddedIntoGroup")) ===
+      true
+    ) {
+      // For Notification Added in the Group
+      setViewGroupPage(true);
+      dispatch(viewGroupPageFlag(true));
+    }
     localStorage.setItem("groupsCurrent", 1);
     dispatch(getGroups(navigate, t, 1));
+    return () => {
+      setShowModal(false);
+      localStorage.removeItem("NotificationClickArchivedGroup", false);
+    };
   }, []);
 
   useEffect(() => {

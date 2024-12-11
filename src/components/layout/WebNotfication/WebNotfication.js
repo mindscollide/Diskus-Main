@@ -94,7 +94,8 @@ const WebNotfication = ({
 
   //Handle Click Notification
   const HandleClickNotfication = (NotificationData) => {
-    console.log(NotificationData, "NotificationDataNotificationData");
+    //PayLoad For Groups
+    let PayLoadData = JSON.parse(NotificationData.payloadData);
     if (NotificationData.notificationActionID === 1) {
     } else if (NotificationData.notificationActionID === 2) {
     } else if (NotificationData.notificationActionID === 3) {
@@ -111,9 +112,16 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 14) {
     } else if (NotificationData.notificationActionID === 15) {
     } else if (NotificationData.notificationActionID === 16) {
+      navigate("/Diskus/groups");
+      //open Archinved Modal Also in this
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 17) {
       navigate("/Diskus/groups");
     } else if (NotificationData.notificationActionID === 18) {
+      navigate("/Diskus/groups");
+      //open Archinved Modal Also in this
+      localStorage.setItem("NotificationClickArchivedGroup", true);
     } else if (NotificationData.notificationActionID === 19) {
     } else if (NotificationData.notificationActionID === 20) {
     } else if (NotificationData.notificationActionID === 21) {
