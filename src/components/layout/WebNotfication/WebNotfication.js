@@ -125,6 +125,10 @@ const WebNotfication = ({
       localStorage.setItem("ProposedMeetingOperations", true);
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 14) {
+      //Notification When slot is selected by the participant.
+      navigate("/Diskus/Meeting");
+      localStorage.setItem("ProposedMeetingOperations", true);
+      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 15) {
     } else if (NotificationData.notificationActionID === 16) {
       //Notificaiton For Added in Group
