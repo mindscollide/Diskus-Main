@@ -170,8 +170,13 @@ const WebNotfication = ({
       //Notification for Added as Non-Voter in the resolution
       navigate("/Diskus/resolution");
     } else if (NotificationData.notificationActionID === 28) {
+      //Resolution Descision Announced
     } else if (NotificationData.notificationActionID === 29) {
+      //Notification for Poll has been Created submit your response
+      navigate("/Diskus/polling");
     } else if (NotificationData.notificationActionID === 30) {
+      //Notification for Poll has been Updated submit your response
+      navigate("/Diskus/polling");
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
