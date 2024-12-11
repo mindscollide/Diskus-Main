@@ -339,9 +339,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   return (
     <>
       {" "}
-      {meetingHostData !== null &&
-      meetingHostData.isHost === true &&
-      meetingHostData.isDashboardVideo === true ? (
+      {meetingHostData?.isHost && meetingHostData?.isDashboardVideo ? (
         <>
           <div className="videoCallGroupScreen-minmizeVideoCall">
             <Row className="m-0 height100 align-items-center">
@@ -688,8 +686,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             </Row>
           </div>
         </>
-      ) : meetingHostData.isHost === false &&
-        meetingHostData.isDashboardVideo === true ? (
+      ) : !meetingHostData?.isHost && meetingHostData?.isDashboardVideo ? (
         <>
           <div className="videoCallGroupScreen-minmizeVideoCall">
             <Row className="m-0 height100 align-items-center">
@@ -1042,330 +1039,343 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             </Row>
           </div>
         </>
-      ) : (
-        <div className="videoCallGroupScreen-minmizeVideoCall">
-          <Row className="m-0 height100 align-items-center">
-            {(currentCallType === 2 || callTypeID === 2) &&
-            meetingTitle === "" ? (
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="cursor-pointer"
-                onClick={() => {
-                  dispatch(normalizeVideoPanelFlag(true));
-                  dispatch(minimizeVideoPanelFlag(false));
-                }}
-              >
-                <p className="title-heading">{t("Group-call")}</p>
-              </Col>
-            ) : (currentCallType === 2 || callTypeID === 2) &&
-              meetingTitle !== "" ? (
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="mt-1 cursor-pointer"
-                onClick={() => {
-                  dispatch(normalizeVideoPanelFlag(true));
-                  dispatch(minimizeVideoPanelFlag(false));
-                }}
-              >
-                <p className="title-heading">{meetingTitle}</p>
-              </Col>
-            ) : (
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="mt-1 cursor-pointer"
-                onClick={() => {
-                  dispatch(normalizeVideoPanelFlag(true));
-                  dispatch(minimizeVideoPanelFlag(false));
-                }}
-              >
-                <p className="title-heading">
-                  {currentUserName !==
-                    VideoMainReducer.VideoRecipentData.userName &&
-                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                  initiateVideoCallFlag === true
-                    ? VideoMainReducer.VideoRecipentData.userName ||
-                      VideoMainReducer.VideoRecipentData.recipients[0].userName
-                    : currentUserName !==
-                        VideoMainReducer.VideoRecipentData.userName &&
-                      Object.keys(VideoMainReducer.VideoRecipentData).length >
-                        0 &&
-                      initiateVideoCallFlag === false
-                    ? VideoMainReducer.VideoRecipentData.userName ||
-                      VideoMainReducer.VideoRecipentData.recipients[0].userName
-                    : Object.keys(VideoMainReducer.VideoRecipentData).length ===
-                      0
-                    ? callerName
-                    : null}
-                </p>
-              </Col>
-            )}
+      ) : !meetingHostData?.isHost && !meetingHostData?.isDashboardVideo ? (
+        <>
+          <div className="videoCallGroupScreen-minmizeVideoCall">
+            <Row className="m-0 height100 align-items-center">
+              {(currentCallType === 2 || callTypeID === 2) &&
+              meetingTitle === "" ? (
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    dispatch(normalizeVideoPanelFlag(true));
+                    dispatch(minimizeVideoPanelFlag(false));
+                  }}
+                >
+                  <p className="title-heading">{t("Group-call")}</p>
+                </Col>
+              ) : (currentCallType === 2 || callTypeID === 2) &&
+                meetingTitle !== "" ? (
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="mt-1 cursor-pointer"
+                  onClick={() => {
+                    dispatch(normalizeVideoPanelFlag(true));
+                    dispatch(minimizeVideoPanelFlag(false));
+                  }}
+                >
+                  <p className="title-heading">{meetingTitle}</p>
+                </Col>
+              ) : (
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className="mt-1 cursor-pointer"
+                  onClick={() => {
+                    dispatch(normalizeVideoPanelFlag(true));
+                    dispatch(minimizeVideoPanelFlag(false));
+                  }}
+                >
+                  <p className="title-heading">
+                    {currentUserName !==
+                      VideoMainReducer.VideoRecipentData.userName &&
+                    Object.keys(VideoMainReducer.VideoRecipentData).length >
+                      0 &&
+                    initiateVideoCallFlag === true
+                      ? VideoMainReducer.VideoRecipentData.userName ||
+                        VideoMainReducer.VideoRecipentData.recipients[0]
+                          .userName
+                      : currentUserName !==
+                          VideoMainReducer.VideoRecipentData.userName &&
+                        Object.keys(VideoMainReducer.VideoRecipentData).length >
+                          0 &&
+                        initiateVideoCallFlag === false
+                      ? VideoMainReducer.VideoRecipentData.userName ||
+                        VideoMainReducer.VideoRecipentData.recipients[0]
+                          .userName
+                      : Object.keys(VideoMainReducer.VideoRecipentData)
+                          .length === 0
+                      ? callerName
+                      : null}
+                  </p>
+                </Col>
+              )}
 
-            <Col lg={6} md={6} sm={12}>
-              <div className="d-flex gap-10 justify-content-end">
-                <div>
-                  <div
-                    onClick={() => toggleVideo(!localVidStatus)}
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? "minimize grayScaleImage"
-                        : !localVidStatus
-                        ? "minimize active-state-minimize"
-                        : "minimize inactive-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        localVidStatus ? t("Disable-video") : t("Enable-video")
+              <Col lg={6} md={6} sm={12}>
+                <div className="d-flex gap-10 justify-content-end">
+                  <div>
+                    <div
+                      onClick={() => toggleVideo(!localVidStatus)}
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "minimize grayScaleImage"
+                          : !localVidStatus
+                          ? "minimize active-state-minimize"
+                          : "minimize inactive-state"
                       }
                     >
-                      <img
-                        src={localVidStatus ? VideoOn : VideoOff}
-                        alt="Video"
-                      />
-                    </Tooltip>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          localVidStatus
+                            ? t("Disable-video")
+                            : t("Enable-video")
+                        }
+                      >
+                        <img
+                          src={localVidStatus ? VideoOn : VideoOff}
+                          alt="Video"
+                        />
+                      </Tooltip>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div
-                    onClick={() => toggleMic(!localMicStatus)}
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? "minimize grayScaleImage"
-                        : !localMicStatus
-                        ? "minimize active-state-minimize"
-                        : "minimize inactive-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        localMicStatus ? t("Disable-mic") : t("Enable-mic")
+                  <div>
+                    <div
+                      onClick={() => toggleMic(!localMicStatus)}
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? "minimize grayScaleImage"
+                          : !localMicStatus
+                          ? "minimize active-state-minimize"
+                          : "minimize inactive-state"
                       }
                     >
-                      <img src={localMicStatus ? MicOn : MicOff} alt="Mic" />
-                    </Tooltip>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          localMicStatus ? t("Disable-mic") : t("Enable-mic")
+                        }
+                      >
+                        <img src={localMicStatus ? MicOn : MicOff} alt="Mic" />
+                      </Tooltip>
+                    </div>
                   </div>
-                </div>
-                {callerID === currentUserID &&
-                (callTypeID === 2 || currentCallType === 2) ? (
-                  <div
-                    className="position-relative"
-                    ref={participantPopupDisable}
-                  >
-                    {videoFeatureReducer.MinimizeParticipantPopupFlag ===
-                    true ? (
-                      <>
-                        <div className="minimize active-state-minimize">
-                          <Tooltip
-                            placement="bottomLeft"
-                            title={t("Participants")}
-                          >
-                            <img
-                              src={ActiveParticipantIcon}
-                              alt="Active Participants"
-                              onClick={closeParticipantHandler}
-                            />
-                          </Tooltip>
-                          <div className="minimize-participants-list">
-                            <Row className="m-0">
-                              <Col className="p-0" lg={8} md={8} sm={12}>
-                                <p className="participant-name">
-                                  {currentUserName}
-                                </p>
-                              </Col>
-                              <Col className="p-0" lg={4} md={4} sm={12}>
-                                <p className="participant-state">Host</p>
-                              </Col>
-                            </Row>
-                            {currentParticipants !== undefined &&
-                            currentParticipants !== null &&
-                            currentParticipants.length > 0
-                              ? currentParticipants.map(
-                                  (participantData, index) => {
-                                    console.log(
-                                      "participantStatus",
-                                      participantStatus[0]
-                                    );
-                                    const matchingStatus =
-                                      participantStatus[0].find(
-                                        (status) =>
-                                          status.RecipientID ===
-                                            participantData.userID &&
-                                          status.RoomID === initiateRoomID
+                  {callerID === currentUserID &&
+                  (callTypeID === 2 || currentCallType === 2) ? (
+                    <div
+                      className="position-relative"
+                      ref={participantPopupDisable}
+                    >
+                      {videoFeatureReducer.MinimizeParticipantPopupFlag ===
+                      true ? (
+                        <>
+                          <div className="minimize active-state-minimize">
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={t("Participants")}
+                            >
+                              <img
+                                src={ActiveParticipantIcon}
+                                alt="Active Participants"
+                                onClick={closeParticipantHandler}
+                              />
+                            </Tooltip>
+                            <div className="minimize-participants-list">
+                              <Row className="m-0">
+                                <Col className="p-0" lg={8} md={8} sm={12}>
+                                  <p className="participant-name">
+                                    {currentUserName}
+                                  </p>
+                                </Col>
+                                <Col className="p-0" lg={4} md={4} sm={12}>
+                                  <p className="participant-state">Host</p>
+                                </Col>
+                              </Row>
+                              {currentParticipants !== undefined &&
+                              currentParticipants !== null &&
+                              currentParticipants.length > 0
+                                ? currentParticipants.map(
+                                    (participantData, index) => {
+                                      console.log(
+                                        "participantStatus",
+                                        participantStatus[0]
                                       );
-                                    return (
-                                      <Row className="m-0" key={index}>
-                                        <Col
-                                          className="p-0"
-                                          lg={8}
-                                          md={8}
-                                          sm={12}
-                                        >
-                                          <p className="participant-name">
-                                            {participantData.userName}
-                                          </p>
-                                        </Col>
-                                        <Col
-                                          className="p-0"
-                                          lg={4}
-                                          md={4}
-                                          sm={12}
-                                        >
-                                          <p className="participant-state">
-                                            {matchingStatus
-                                              ? matchingStatus.CallStatus
-                                              : "Calling..."}
-                                          </p>
-                                        </Col>
-                                      </Row>
-                                    );
-                                  }
-                                )
-                              : null}
+                                      const matchingStatus =
+                                        participantStatus[0].find(
+                                          (status) =>
+                                            status.RecipientID ===
+                                              participantData.userID &&
+                                            status.RoomID === initiateRoomID
+                                        );
+                                      return (
+                                        <Row className="m-0" key={index}>
+                                          <Col
+                                            className="p-0"
+                                            lg={8}
+                                            md={8}
+                                            sm={12}
+                                          >
+                                            <p className="participant-name">
+                                              {participantData.userName}
+                                            </p>
+                                          </Col>
+                                          <Col
+                                            className="p-0"
+                                            lg={4}
+                                            md={4}
+                                            sm={12}
+                                          >
+                                            <p className="participant-state">
+                                              {matchingStatus
+                                                ? matchingStatus.CallStatus
+                                                : "Calling..."}
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      );
+                                    }
+                                  )
+                                : null}
+                            </div>
                           </div>
-                        </div>
-                        <span className="participants-counter">3</span>
-                      </>
-                    ) : (
-                      <>
-                        <div
-                          className={
-                            videoFeatureReducer.LeaveCallModalFlag === true
-                              ? "minimize grayScaleImage"
-                              : "minimize inactive-state"
-                          }
-                        >
-                          <Tooltip
-                            placement="bottomLeft"
-                            title={t("Participants")}
+                          <span className="participants-counter">3</span>
+                        </>
+                      ) : (
+                        <>
+                          <div
+                            className={
+                              videoFeatureReducer.LeaveCallModalFlag === true
+                                ? "minimize grayScaleImage"
+                                : "minimize inactive-state"
+                            }
                           >
+                            <Tooltip
+                              placement="bottomLeft"
+                              title={t("Participants")}
+                            >
+                              <img
+                                src={ParticipantIcon}
+                                onClick={closeParticipantHandler}
+                                alt="Active Participants"
+                              />
+                            </Tooltip>
+                          </div>
+                          <span className="participants-counter">3</span>
+                        </>
+                      )}
+                    </div>
+                  ) : null}
+                  <div className="position-relative">
+                    {videoFeatureReducer.LeaveCallModalFlag === true &&
+                    callerID === currentUserID ? (
+                      <>
+                        <div className="minimize active-state-end">
+                          <Tooltip placement="bottomLeft" title={t("Cancel")}>
                             <img
-                              src={ParticipantIcon}
-                              onClick={closeParticipantHandler}
-                              alt="Active Participants"
+                              onClick={cancelLeaveCallOption}
+                              src={CallEndRedIcon}
+                              alt="End Call"
+                              className="cursor-pointer"
                             />
                           </Tooltip>
                         </div>
-                        <span className="participants-counter">3</span>
+                        {videoFeatureReducer.LeaveCallModalFlag === true ? (
+                          <div className="minimize-leave-meeting-options leave-meeting-options-position">
+                            <div className="leave-meeting-options__inner">
+                              <Button
+                                className="leave-meeting-options__btn leave-meeting-red-button"
+                                text={t("Leave-call")}
+                                onClick={minimizeLeaveCall}
+                              />
+
+                              <Button
+                                className="leave-meeting-options__btn leave-meeting-gray-button"
+                                text={
+                                  currentCallType === 1
+                                    ? t("End-call")
+                                    : t("End-call-for-everyone")
+                                }
+                                onClick={minimizeLeaveCall}
+                              />
+
+                              <Button
+                                className="leave-meeting-options__btn leave-meeting-gray-button"
+                                text="Cancel"
+                                onClick={closeVideoPanel}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                       </>
-                    )}
-                  </div>
-                ) : null}
-                <div className="position-relative">
-                  {videoFeatureReducer.LeaveCallModalFlag === true &&
-                  callerID === currentUserID ? (
-                    <>
-                      <div className="minimize active-state-end">
-                        <Tooltip placement="bottomLeft" title={t("Cancel")}>
+                    ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
+                        callerID === currentUserID) ||
+                      callerID === 0 ? (
+                      <Tooltip placement="bottomLeft" title={t("End-call")}>
+                        <div className="minimize inactive-state">
                           <img
-                            onClick={cancelLeaveCallOption}
                             src={CallEndRedIcon}
+                            onClick={openVideoPanel}
                             alt="End Call"
                             className="cursor-pointer"
                           />
-                        </Tooltip>
-                      </div>
-                      {videoFeatureReducer.LeaveCallModalFlag === true ? (
-                        <div className="minimize-leave-meeting-options leave-meeting-options-position">
-                          <div className="leave-meeting-options__inner">
-                            <Button
-                              className="leave-meeting-options__btn leave-meeting-red-button"
-                              text={t("Leave-call")}
-                              onClick={minimizeLeaveCall}
-                            />
-
-                            <Button
-                              className="leave-meeting-options__btn leave-meeting-gray-button"
-                              text={
-                                currentCallType === 1
-                                  ? t("End-call")
-                                  : t("End-call-for-everyone")
-                              }
-                              onClick={minimizeLeaveCall}
-                            />
-
-                            <Button
-                              className="leave-meeting-options__btn leave-meeting-gray-button"
-                              text="Cancel"
-                              onClick={closeVideoPanel}
-                            />
-                          </div>
                         </div>
-                      ) : null}
-                    </>
-                  ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
-                      callerID === currentUserID) ||
-                    callerID === 0 ? (
-                    <Tooltip placement="bottomLeft" title={t("End-call")}>
-                      <div className="minimize inactive-state">
+                      </Tooltip>
+                    ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+                      callerID !== currentUserID ? (
+                      <Tooltip placement="bottomLeft" title={t("End-call")}>
                         <img
                           src={CallEndRedIcon}
-                          onClick={openVideoPanel}
+                          onClick={minimizeEndCallParticipant}
                           alt="End Call"
                           className="cursor-pointer"
                         />
+                      </Tooltip>
+                    ) : null}
+                  </div>
+                  <div>
+                    <Tooltip
+                      placement="bottomLeft"
+                      title={t("Normalize-screen")}
+                    >
+                      <div
+                        className={
+                          videoFeatureReducer.LeaveCallModalFlag === true
+                            ? "minimize grayScaleImage"
+                            : "minimize inactive-state"
+                        }
+                      >
+                        <img
+                          src={MinToNormalIcon}
+                          onClick={normalizePanel}
+                          className="min-to-normal-icon cursor-pointer"
+                          alt="Normalize Panel"
+                        />
                       </div>
                     </Tooltip>
-                  ) : videoFeatureReducer.LeaveCallModalFlag === false &&
-                    callerID !== currentUserID ? (
-                    <Tooltip placement="bottomLeft" title={t("End-call")}>
-                      <img
-                        src={CallEndRedIcon}
-                        onClick={minimizeEndCallParticipant}
-                        alt="End Call"
-                        className="cursor-pointer"
-                      />
+                  </div>
+                  <div>
+                    <Tooltip
+                      placement="bottomLeft"
+                      title={t("Maximize-screen")}
+                    >
+                      <div
+                        className={
+                          videoFeatureReducer.LeaveCallModalFlag === true
+                            ? "minimize grayScaleImage"
+                            : "minimize inactive-state"
+                        }
+                      >
+                        <img
+                          src={ExpandIcon}
+                          onClick={maximizePanel}
+                          className="min-to-max-icon cursor-pointer"
+                          alt="Maximize"
+                        />
+                      </div>
                     </Tooltip>
-                  ) : null}
+                  </div>
                 </div>
-                <div>
-                  <Tooltip placement="bottomLeft" title={t("Normalize-screen")}>
-                    <div
-                      className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
-                          ? "minimize grayScaleImage"
-                          : "minimize inactive-state"
-                      }
-                    >
-                      <img
-                        src={MinToNormalIcon}
-                        onClick={normalizePanel}
-                        className="min-to-normal-icon cursor-pointer"
-                        alt="Normalize Panel"
-                      />
-                    </div>
-                  </Tooltip>
-                </div>
-                <div>
-                  <Tooltip placement="bottomLeft" title={t("Maximize-screen")}>
-                    <div
-                      className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
-                          ? "minimize grayScaleImage"
-                          : "minimize inactive-state"
-                      }
-                    >
-                      <img
-                        src={ExpandIcon}
-                        onClick={maximizePanel}
-                        className="min-to-max-icon cursor-pointer"
-                        alt="Maximize"
-                      />
-                    </div>
-                  </Tooltip>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      )}
+              </Col>
+            </Row>
+          </div>
+        </>
+      ) : null}
     </>
   );
 };

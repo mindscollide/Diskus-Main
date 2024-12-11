@@ -893,7 +893,7 @@ const Dashboard = () => {
                 data.payload
               );
               if (
-                Number(currentMeetingID) === Number(data.payload.meetingID ) &&
+                Number(currentMeetingID) === Number(data.payload.meetingID) &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
                 console.log(
@@ -2090,6 +2090,12 @@ const Dashboard = () => {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
           };
+          const meetingHost = {
+            isHost: false,
+            isHostId: 0,
+            isDashboardVideo: false,
+          };
+          localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
           dispatch(CallRequestReceived(Dataa, navigate, t));
           if (callStatus === true) {
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));

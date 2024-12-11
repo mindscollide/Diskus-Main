@@ -162,6 +162,7 @@ const VideoMaxIncoming = () => {
         localStorage.removeItem("VideoView");
         localStorage.removeItem("videoIframe");
         localStorage.removeItem("CallType");
+
         let Data2 = {
           ReciepentID: currentUserId,
           RoomID: activeRoomID,

@@ -778,7 +778,7 @@ const VideoCallNormalHeader = ({
           ) : null}
         </Col>
         <>
-          {isMeetingHost !== null && isMeetingHost === true ? (
+          {getMeetingHostInfo.isHost ? (
             <>
               <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
                 <div
@@ -1212,8 +1212,9 @@ const VideoCallNormalHeader = ({
                 ) : null}
               </Col>
             </>
-          ) : getDashboardVideo &&
-            getDashboardVideo.isDashboardVideo === true ? (
+          ) : getMeetingHostInfo &&
+            !getMeetingHostInfo.isHost &&
+            getMeetingHostInfo.isDashboardVideo === true ? (
             <>
               {" "}
               <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
@@ -1570,8 +1571,9 @@ const VideoCallNormalHeader = ({
                 ) : null}
               </Col>
             </>
-          ) : getDashboardVideo &&
-            getDashboardVideo.isDashboardVideo === false ? (
+          ) : getMeetingHostInfo &&
+            !getMeetingHostInfo.isHost &&
+            getMeetingHostInfo.isDashboardVideo === false ? (
             <>
               <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
                 <div

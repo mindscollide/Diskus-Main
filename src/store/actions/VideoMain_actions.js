@@ -260,6 +260,15 @@ const VideoCallResponse = (Data, navigate, t) => {
                   "Video_VideoServiceManager_VideoCallResponse_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: false,
+              };
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               await dispatch(
                 videoCallResponseSuccess(
                   response.data.responseResult,
