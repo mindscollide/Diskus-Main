@@ -156,6 +156,13 @@ const WebNotfication = ({
         PayLoadData.CommitteeID
       );
     } else if (NotificationData.notificationActionID === 25) {
+      //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
     } else if (NotificationData.notificationActionID === 26) {
     } else if (NotificationData.notificationActionID === 27) {
     } else if (NotificationData.notificationActionID === 28) {
