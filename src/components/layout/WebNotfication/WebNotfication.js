@@ -113,28 +113,35 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 14) {
     } else if (NotificationData.notificationActionID === 15) {
     } else if (NotificationData.notificationActionID === 16) {
+      //Notificaiton For Added in Group
       navigate("/Diskus/groups");
       //open ViewMode Modal Also in this
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 17) {
+      //Notificaiton For Removed From Group
       navigate("/Diskus/groups");
     } else if (NotificationData.notificationActionID === 18) {
+      //Notificaiton For Groups Archived
       navigate("/Diskus/groups");
       //open Archinved Modal Also in this
       localStorage.setItem("NotificationClickArchivedGroup", true);
     } else if (NotificationData.notificationActionID === 19) {
+      //Notificaiton For Groups InActivated
       navigate("/Diskus/groups");
       //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 20) {
+      //Notificaiton For Groups Activated
       navigate("/Diskus/groups");
       //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 21) {
     } else if (NotificationData.notificationActionID === 22) {
+      //Notificaiton For Removed From Committee
+      navigate("/Diskus/committee");
     } else if (NotificationData.notificationActionID === 23) {
     } else if (NotificationData.notificationActionID === 24) {
     } else if (NotificationData.notificationActionID === 25) {
