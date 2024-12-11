@@ -393,19 +393,33 @@ const VideoPanelNormal = () => {
   //   } catch {}
   // }, [callAcceptedRoomID]);
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     console.log(initiateCallRoomID, "mqtt");
     try {
       if (initiateCallRoomID !== null) {
+        console.log(initiateCallRoomID, "mqtt");
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
         const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
         const extractedBaseURLCaller = extractedUrl(
           dynamicBaseURLCaller,
           endIndexBaseURLCaller
         );
-        if (isMeetingHost) {
-          setCallerURL(urlFormeetingapi);
+        if (isMeeting) {
+          console.log(initiateCallRoomID, "mqtt");
+          if (isMeetingHost) {
+            console.log(initiateCallRoomID, "mqtt");
+            setCallerURL(urlFormeetingapi);
+          } else {
+            console.log(initiateCallRoomID, "mqtt");
+            setCallerURL(
+              generateURLCaller(
+                extractedBaseURLCaller,
+                currentUserName,
+                initiateCallRoomID
+              )
+            );
+          }
         } else {
+          console.log(initiateCallRoomID, "mqtt");
           setCallerURL(
             generateURLCaller(
               extractedBaseURLCaller,
@@ -708,33 +722,18 @@ const VideoPanelNormal = () => {
                         >
                           <>
                             <>
-                              {isMeetingHost ? (
+                              {isMeeting ? (
                                 <>
-                                  {console.log("iframeiframe", isMeetingHost)}
-                                  {console.log("iframeiframe", participantURL)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    typeof participantURL
-                                  )}
-                                  {console.log("iframeiframe", callerURL)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    typeof callerURL
-                                  )}
-                                  {console.log(
-                                    "iframeiframe",
-                                    callAcceptedRecipientID === currentUserID
-                                  )}
-                                  {console.log("iframeiframe", currentUserID)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    callAcceptedRecipientID
-                                  )}
                                   <iframe
                                     src={
+                                      isMeetingVideo &&
                                       callAcceptedRecipientID === currentUserID
                                         ? participantURL
-                                        : callerURL
+                                        : isMeetingVideo &&
+                                          callAcceptedRecipientID !==
+                                            currentUserID
+                                        ? callerURL
+                                        : null
                                     }
                                     ref={iframeRef}
                                     title="Live Video"
@@ -748,7 +747,15 @@ const VideoPanelNormal = () => {
                                 <>
                                   {console.log("iframeiframe", isMeetingHost)}
                                   <iframe
-                                    src={refinedParticipantVideoUrl}
+                                    src={
+                                      refinedParticipantVideoUrl
+                                        ? refinedParticipantVideoUrl
+                                        : participantURL
+                                        ? participantURL
+                                        : callerURL
+                                        ? callerURL
+                                        : null
+                                    }
                                     ref={iframeRef}
                                     title="Live Video"
                                     width="100%"

@@ -2291,9 +2291,10 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_RINGING".toLowerCase()
         ) {
-          dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
-          localStorage.setItem("initiateVideoCall", true);
+          localStorage.setItem("initiateCallRoomID", data.payload.roomID);
           localStorage.setItem("ringerRoomId", data.payload.roomID);
+          localStorage.setItem("initiateVideoCall", true);
+          dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           let newData = {
