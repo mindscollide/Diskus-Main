@@ -143,6 +143,9 @@ const WebNotfication = ({
       //Notificaiton For Removed From Committee
       navigate("/Diskus/committee");
     } else if (NotificationData.notificationActionID === 23) {
+      //Notificaiton For  Committee Archived
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeArchived", true);
     } else if (NotificationData.notificationActionID === 24) {
     } else if (NotificationData.notificationActionID === 25) {
     } else if (NotificationData.notificationActionID === 26) {
