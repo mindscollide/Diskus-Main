@@ -389,6 +389,7 @@ const NewMeeting = () => {
         video: false,
         Agenda: false,
       });
+      setViewFlag(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -440,6 +441,13 @@ const NewMeeting = () => {
             await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
           }
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          //Notification Trigger of Quick Meeting published
+          if (
+            JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+          ) {
+            console.log("QuicMeetingOperations");
+            setViewFlag(true);
+          }
         } else {
           let searchData = {
             Date: "",
@@ -1202,19 +1210,40 @@ const NewMeeting = () => {
         }
       } else {
         if (isQuickMeeting) {
-          let Data = { MeetingID: id };
-          await dispatch(
-            ViewMeeting(
-              navigate,
-              Data,
-              t,
-              setViewFlag,
-              setEditFlag,
-              setSceduleMeeting,
-              1
-            )
-          );
-          // setViewFlag(true);
+          if (
+            JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+          ) {
+            let NotificationClickQuickMeetingID = localStorage.getItem(
+              "NotificationQuickMeetingID"
+            );
+            let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
+            await dispatch(
+              ViewMeeting(
+                navigate,
+                Data,
+                t,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting,
+                1
+              )
+            );
+            // setViewFlag(true);
+          } else {
+            let Data = { MeetingID: id };
+            await dispatch(
+              ViewMeeting(
+                navigate,
+                Data,
+                t,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting,
+                1
+              )
+            );
+            // setViewFlag(true);
+          }
         } else {
           setAdvanceMeetingModalID(id);
           setViewAdvanceMeetingModal(true);

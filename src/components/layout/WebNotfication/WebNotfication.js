@@ -108,6 +108,10 @@ const WebNotfication = ({
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
+      //Notification For Meeting Created And Published For Participant
+      navigate("/Diskus/Meeting");
+      localStorage.setItem("QuicMeetingOperations", true);
+      localStorage.setItem("NotificationQuickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 2) {
     } else if (NotificationData.notificationActionID === 3) {
     } else if (NotificationData.notificationActionID === 4) {
