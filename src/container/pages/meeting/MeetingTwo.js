@@ -83,6 +83,7 @@ import {
   meetingParticipantAdded,
   meetingParticipantRemoved,
   boardDeckModal,
+  showSceduleProposedMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -374,19 +375,7 @@ const NewMeeting = () => {
     },
   ];
 
-  // Notification rediredirection for proposed
   useEffect(() => {
-    if (
-      JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
-    ) {
-      setViewProposeDatePoll(true);
-      dispatch(viewProposeDateMeetingPageFlag(true));
-      dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      dispatch(viewProposeOrganizerMeetingPageFlag(false));
-      dispatch(proposeNewMeetingPageFlag(false));
-      dispatch(viewMeetingFlag(false));
-    }
     return () => {
       setBoarddeckOptions({
         selectall: false,
@@ -416,68 +405,77 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
 
+  //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
-      if (meetingpageRow !== null && meetingPageCurrent !== null) {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: Number(meetingPageCurrent),
-          Length: Number(meetingpageRow),
-          PublishedMeetings:
-            MeetingProp !== null
-              ? false
-              : UserMeetPropoDatPoll !== null
-              ? false
-              : true,
-        };
-        if (
-          getALlMeetingTypes.length === 0 &&
-          Object.keys(getALlMeetingTypes).length === 0
-        ) {
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        }
-        console.log("Test is calling or not");
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      } else {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            MeetingProp !== null
-              ? false
-              : UserMeetPropoDatPoll !== null
-              ? false
-              : true,
-        };
-
-        if (
-          getALlMeetingTypes.length === 0 &&
-          Object.keys(getALlMeetingTypes).length === 0
-        ) {
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        }
-        console.log("Test is calling or not");
-
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      }
       if (
-        localStorage.getItem("meetingprop") !== null ||
-        localStorage.getItem("UserMeetPropoDatPoll") !== null
+        JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
-        localStorage.setItem("MeetingCurrentView", 2);
+        console.log("ProposedMeetingOperations");
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+        setViewProposeDatePoll(true);
+        dispatch(proposedMeetingDatesGlobalFlag(true));
+        dispatch(viewProposeDateMeetingPageFlag(true));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
-        localStorage.setItem("MeetingCurrentView", 1);
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings:
+              MeetingProp !== null
+                ? false
+                : UserMeetPropoDatPoll !== null
+                ? false
+                : true,
+          };
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        } else {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              MeetingProp !== null
+                ? false
+                : UserMeetPropoDatPoll !== null
+                ? false
+                : true,
+          };
+
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        }
+        if (
+          localStorage.getItem("meetingprop") !== null ||
+          localStorage.getItem("UserMeetPropoDatPoll") !== null
+        ) {
+          localStorage.setItem("MeetingCurrentView", 2);
+        } else {
+          localStorage.setItem("MeetingCurrentView", 1);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -3102,6 +3100,7 @@ const NewMeeting = () => {
       }
     }
   }, [meetingReminderNotification]);
+
   return (
     <>
       <section className={styles["NewMeeting_container"]}>
