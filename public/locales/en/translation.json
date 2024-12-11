@@ -2322,5 +2322,6 @@
   "Once-you-started-making-payments": "Once you start making payments, you’ll see your transaction history here. Stay tuned!",
   "View-proposed-meeting": "View Proposed Meeting",
   "Created-successfully": "Created Successfully",
-  "You-have-no-notifications": "You have no notifications"
+  "You-have-no-notifications": "You have no notifications",
+  "The-call-was-unanswered":"The call was unanswered"
 }

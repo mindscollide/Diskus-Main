@@ -2235,16 +2235,19 @@ const Dashboard = () => {
           "VIDEO_CALL_UNANSWERED".toLowerCase()
         ) {
           let callTypeID = Number(localStorage.getItem("callTypeID"));
+          let callerID = Number(localStorage.getItem("callerID"));
+          let newCallerID = Number(localStorage.getItem("newCallerID"));
+          let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+          let isMeeting = localStorage.getItem("isMeeting");
+          localStorage.setItem("newCallerID", callerID);
           if (Number(data.senderID) !== Number(createrID)) {
-            if (callTypeID === 1) {
-            }
             if (Number(createrID) !== data.payload.recepientID) {
               localStorage.setItem("unansweredFlag", true);
             }
             setNotification({
               ...notification,
               notificationShow: true,
-              message: `The call was unanswered`,
+              message:  t("The-call-was-unanswered"),
             });
             setNotificationID(id);
             let existingData =
@@ -2271,13 +2274,18 @@ const Dashboard = () => {
               JSON.stringify(existingData)
             );
           }
-          let callerID = Number(localStorage.getItem("callerID"));
-          let newCallerID = Number(localStorage.getItem("newCallerID"));
           if (callerID === newCallerID) {
-            // localStorage.setItem("activeCall", false);
+            if (isMeeting) {
+              if (!isMeetingVideo) {
+                localStorage.setItem("activeCall", false);
+              }
+            }else{
+              localStorage.setItem("activeCall", false);
+            }
           }
-          localStorage.setItem("newCallerID", callerID);
           dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(videoOutgoingCallFlag(false));
           localStorage.setItem("initiateVideoCall", false);
         } else if (
           data.payload.message.toLowerCase() ===
