@@ -167,6 +167,8 @@ const WebNotfication = ({
       //Notification for Added as Voter in the resolution
       navigate("/Diskus/resolution");
     } else if (NotificationData.notificationActionID === 27) {
+      //Notification for Added as Non-Voter in the resolution
+      navigate("/Diskus/resolution");
     } else if (NotificationData.notificationActionID === 28) {
     } else if (NotificationData.notificationActionID === 29) {
     } else if (NotificationData.notificationActionID === 30) {
