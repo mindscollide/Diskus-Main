@@ -164,6 +164,8 @@ const WebNotfication = ({
         PayLoadData.CommitteeID
       );
     } else if (NotificationData.notificationActionID === 26) {
+      //Notification for Added as Voter in the resolution
+      navigate("/Diskus/resolution");
     } else if (NotificationData.notificationActionID === 27) {
     } else if (NotificationData.notificationActionID === 28) {
     } else if (NotificationData.notificationActionID === 29) {
