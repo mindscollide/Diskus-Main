@@ -371,6 +371,8 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 37) {
     } else if (NotificationData.notificationActionID === 38) {
     } else if (NotificationData.notificationActionID === 39) {
+      // Notification For Deleted a Folder as viewer
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 40) {
       // Notification For Deleted a file as viewer
       navigate("/Diskus/dataroom");
