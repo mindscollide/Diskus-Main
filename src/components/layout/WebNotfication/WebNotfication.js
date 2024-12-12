@@ -369,7 +369,11 @@ const WebNotfication = ({
       localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
       localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
     } else if (NotificationData.notificationActionID === 37) {
+      // Notification For Deleted a Folder as Editor
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 38) {
+      // Notification For Deleted a File as Editor
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 39) {
       // Notification For Deleted a Folder as viewer
       navigate("/Diskus/dataroom");
