@@ -205,6 +205,8 @@ const WebNotfication = ({
         PayLoadData.MeetingID
       );
     } else if (NotificationData.notificationActionID === 8) {
+      //Notification for Being Removed As a reviwer in Minutes review
+      navigate("/Diskus/Minutes");
     } else if (NotificationData.notificationActionID === 9) {
     } else if (NotificationData.notificationActionID === 10) {
     } else if (NotificationData.notificationActionID === 11) {
