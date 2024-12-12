@@ -38,6 +38,9 @@ const ParticipantVideoCallComponent = ({
     (state) => state.videoFeatureReducer.NormalHostVideoFlag
   );
 
+  const getJoinMeetingParticipantorHostrequest = useSelector(
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+  );
   const { editorRole } = useContext(MeetingContext);
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
@@ -182,7 +185,7 @@ const ParticipantVideoCallComponent = ({
     }
   };
 
-  const joinNewApiVideoCallOnClick = () => {
+  const joinNewApiVideoCallOnClick = async () => {
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
     }
@@ -192,7 +195,7 @@ const ParticipantVideoCallComponent = ({
       IsMuted: isMicEnabled,
       HideVideo: isWebCamEnabled,
     };
-    dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+    await dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     setIsWaiting(true);
     setGetReady(false);
   };
@@ -204,8 +207,13 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickEndVideoCall = async () => {
-    let roomID = localStorage.getItem("acceptedRoomID");
-    let userGUID = localStorage.getItem("userGUID");
+    console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
+    let userGUID = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.guid
+      : 0;
+    let roomID = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.roomID
+      : 0;
     if (isWaiting) {
       let Data = {
         RoomID: roomID,

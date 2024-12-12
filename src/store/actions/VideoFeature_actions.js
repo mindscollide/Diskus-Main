@@ -585,7 +585,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,
-                  t("Join Request Sent To Host")
+                  t("Join-request-sent-to-host")
                 )
               );
             } else if (
@@ -630,7 +630,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               );
               await dispatch(
                 getParticipantMeetingJoinSuccess(
-                  t("ScheduleCall Joined and Is host")
+                  t("ScheduleCall-joined-and-is-host")
                 )
               );
             } else if (
@@ -642,7 +642,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
             ) {
               await dispatch(
                 getParticipantMeetingJoinFail(
-                  t("invalid video call url provided")
+                  t("invalid-video-call-url-provided")
                 )
               );
             } else if (
@@ -653,7 +653,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 )
             ) {
               await dispatch(
-                getParticipantMeetingJoinFail(t("Could not join call"))
+                getParticipantMeetingJoinFail(t("Could-not-join-call"))
               );
             } else if (
               response.data.responseResult.responseMessage
