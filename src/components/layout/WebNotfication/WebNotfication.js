@@ -225,6 +225,13 @@ const WebNotfication = ({
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 21) {
+      //Notification for being Added in the Committee
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
     } else if (NotificationData.notificationActionID === 22) {
       //Notificaiton For Removed From Committee
       navigate("/Diskus/committee");
