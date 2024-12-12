@@ -311,15 +311,6 @@ const VideoPanelNormal = () => {
     }
   }, [getVideoParticpantListandWaitingList]);
 
-  // useEffect(() => {
-  //   // Sync allParticipant with participantsList when it updates
-  //   if (participantsList.length > 0) {
-  //     setAllParticipant(participantsList);
-  //   } else {
-  //     setAllParticipant([]);
-  //   }
-  // }, [participantsList]);
-
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
     if (
@@ -359,45 +350,6 @@ const VideoPanelNormal = () => {
     }
   }, [getNewParticipantsMeetingJoin]);
 
-  // useEffect(() => {
-  //   try {
-  //     if (initiateCallRoomID !== null) {
-  //       let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-  //       const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-  //       const extractedBaseURLCaller = extractedUrl(
-  //         dynamicBaseURLCaller,
-  //         endIndexBaseURLCaller
-  //       );
-  //       setCallerURL(
-  //         generateURLCaller(
-  //           extractedBaseURLCaller,
-  //           currentUserName,
-  //           initiateCallRoomID
-  //         )
-  //       );
-  //     }
-  //   } catch {}
-  // }, [initiateCallRoomID]);
-
-  // useEffect(() => {
-  //   try {
-  //     if (callAcceptedRoomID !== null) {
-  //       let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-  //       const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-  //       const extractedBaseURLCaller = extractedUrl(
-  //         dynamicBaseURLCaller,
-  //         endIndexBaseURLCaller
-  //       );
-  //       setCallerURL(
-  //         generateURLCaller(
-  //           extractedBaseURLCaller,
-  //           currentUserName,
-  //           callAcceptedRoomID
-  //         )
-  //       );
-  //     }
-  //   } catch {}
-  // }, [callAcceptedRoomID]);
 
   useEffect(() => {
     console.log(initiateCallRoomID, "mqtt");
@@ -474,7 +426,7 @@ const VideoPanelNormal = () => {
               generateURLCaller(
                 extractedBaseURLCaller,
                 currentUserName,
-                newRoomID
+                newRoomID===0?activeRoomID:newRoomID
               )
             );
           }
@@ -483,7 +435,7 @@ const VideoPanelNormal = () => {
             generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
-              newRoomID
+              newRoomID===0?activeRoomID:newRoomID
             ),
             "mqtt"
           );
@@ -491,7 +443,7 @@ const VideoPanelNormal = () => {
             generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
-              newRoomID
+              newRoomID===0?activeRoomID:newRoomID
             )
           );
         }
