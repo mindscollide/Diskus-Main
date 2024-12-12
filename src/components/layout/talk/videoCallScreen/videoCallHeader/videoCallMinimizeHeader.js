@@ -199,9 +199,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeetingVideo", false);
     } else if (isMeeting === true) {
+      let newName = localStorage.getItem("name");
       let Data = {
         RoomID: roomID,
         UserGUID: userGUID,
+        Name: String(newName),
       };
       dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));

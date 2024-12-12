@@ -8323,10 +8323,12 @@ const LeaveCurrentMeeting = (
                   dispatch(viewAdvanceMeetingPublishPageFlag(false));
                   dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                 }
+                let newName = localStorage.getItem("name");
 
                 let Data = {
                   RoomID: roomID,
                   UserGUID: userGUID,
+                  Name: String(newName),
                 };
                 if (roomID !== "0" && userGUID !== null) {
                   dispatch(normalizeVideoPanelFlag(false));

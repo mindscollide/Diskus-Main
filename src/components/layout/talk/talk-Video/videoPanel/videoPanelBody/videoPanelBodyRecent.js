@@ -345,7 +345,7 @@ const VideoPanelBodyRecent = () => {
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", false);
   };
-  
+
   const leaveCallParticipantOto = () => {
     let roomID = localStorage.getItem("acceptedRoomID");
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));

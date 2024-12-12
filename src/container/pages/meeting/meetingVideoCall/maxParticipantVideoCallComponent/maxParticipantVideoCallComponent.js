@@ -214,10 +214,13 @@ const ParticipantVideoCallComponent = ({
     let roomID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.roomID
       : 0;
+    let newName = localStorage.getItem("name");
+
     if (isWaiting) {
       let Data = {
         RoomID: roomID,
         UserGUID: userGUID,
+        Name: String(newName),
       };
       await dispatch(LeaveMeetingVideo(Data, navigate, t));
       dispatch(maxParticipantVideoCallPanel(false));

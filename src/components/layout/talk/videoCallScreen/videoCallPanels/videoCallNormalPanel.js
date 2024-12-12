@@ -35,7 +35,6 @@ import ParticipantVideoCallComponent from "../../../../../container/pages/meetin
 import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
-import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();

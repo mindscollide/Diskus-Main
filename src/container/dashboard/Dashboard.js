@@ -246,7 +246,9 @@ const Dashboard = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
-
+  const waitingParticipantsList = useSelector(
+    (state) => state.videoFeatureReducer.waitingParticipantsList
+  );
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
     (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
   );
@@ -416,6 +418,7 @@ const Dashboard = () => {
                   Number(meetingVideoID) ===
                   Number(data?.payload?.meeting?.pK_MDID)
                 ) {
+                  let newName = localStorage.getItem("name");
                   let getMeetingParticipants =
                     data.payload.meeting.meetingAttendees.filter(
                       (attendeeData) =>
@@ -436,6 +439,7 @@ const Dashboard = () => {
                   let Data = {
                     RoomID: currentMeetingVideoID,
                     UserGUID: userGUID,
+                    Name: String(newName),
                   };
                   dispatch(LeaveMeetingVideo(Data, navigate, t, true));
                   if (getMeetingParticipants.length > 0) {
