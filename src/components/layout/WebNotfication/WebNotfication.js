@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -17,6 +18,7 @@ const WebNotfication = ({
   fetchNotifications, // Scrolling Function on Lazy Loading,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
   const [groupedNotifications, setGroupedNotifications] = useState({
     today: [],
@@ -33,7 +35,10 @@ const WebNotfication = ({
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
-  console.log(webNotificationData, "GlobalUnreadCountNotificaitonFromMqtt");
+  console.log(
+    GlobalUnreadCountNotificaitonFromMqtt,
+    "GlobalUnreadCountNotificaitonFromMqtt"
+  );
 
   //Spinner Styles in Lazy Loading
   const antIcon = (
@@ -48,19 +53,25 @@ const WebNotfication = ({
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {
     if (
-      GlobalUnreadCountNotificaitonFromMqtt &&
-      GlobalUnreadCountNotificaitonFromMqtt.notificationData
+      Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
+      GlobalUnreadCountNotificaitonFromMqtt.length > 0
     ) {
-      const newNotification =
-        GlobalUnreadCountNotificaitonFromMqtt.notificationData;
+      // Iterate over each notification object in the array
+      const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
+        (notification) => notification.notificationData
+      );
 
-      // Prepending the new notification to the state while ensuring uniqueness
+      // Prepending the new notifications to the state while ensuring uniqueness
       setwebNotificationData((prevData) => {
-        const isDuplicate = prevData.some(
-          (notification) =>
-            notification.notificationID === newNotification.notificationID
+        const newData = newNotifications.filter(
+          (newNotification) =>
+            !prevData.some(
+              (existingNotification) =>
+                existingNotification.notificationID ===
+                newNotification.notificationID
+            )
         );
-        return isDuplicate ? prevData : [newNotification, ...prevData];
+        return [...newData, ...prevData]; // Add new unique notifications to the front of the list
       });
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
@@ -87,7 +98,183 @@ const WebNotfication = ({
     );
 
     setGroupedNotifications(groupNotificationsData);
+    console.log(groupNotificationsData, "groupNotificationsData");
   }, [webNotificationData, todayDate]);
+
+  //Handle Click Notification
+  const HandleClickNotfication = (NotificationData) => {
+    console.log(NotificationData, "NotificationDataNotificationData");
+    //PayLoad For Groups
+    let PayLoadData = JSON.parse(NotificationData.payloadData);
+    console.log(PayLoadData, "PayLoadData");
+    if (NotificationData.notificationActionID === 1) {
+      //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
+    } else if (NotificationData.notificationActionID === 2) {
+      //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
+    } else if (NotificationData.notificationActionID === 3) {
+      //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
+    } else if (NotificationData.notificationActionID === 4) {
+      //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
+    } else if (NotificationData.notificationActionID === 5) {
+    } else if (NotificationData.notificationActionID === 6) {
+    } else if (NotificationData.notificationActionID === 7) {
+    } else if (NotificationData.notificationActionID === 8) {
+    } else if (NotificationData.notificationActionID === 9) {
+    } else if (NotificationData.notificationActionID === 10) {
+    } else if (NotificationData.notificationActionID === 11) {
+    } else if (NotificationData.notificationActionID === 12) {
+    } else if (NotificationData.notificationActionID === 13) {
+      //Notification For Proposed Meeting Request
+      navigate("/Diskus/Meeting");
+      localStorage.setItem("ProposedMeetingOperations", true);
+      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
+    } else if (NotificationData.notificationActionID === 14) {
+      //Notification When slot is selected by the participant.
+      navigate("/Diskus/Meeting");
+      localStorage.setItem("ProposedMeetingOperations", true);
+      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
+    } else if (NotificationData.notificationActionID === 15) {
+    } else if (NotificationData.notificationActionID === 16) {
+      //Notificaiton For Added in Group
+      navigate("/Diskus/groups");
+      //open ViewMode Modal Also in this
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+    } else if (NotificationData.notificationActionID === 17) {
+      //Notificaiton For Removed From Group
+      navigate("/Diskus/groups");
+    } else if (NotificationData.notificationActionID === 18) {
+      //Notificaiton For Groups Archived
+      navigate("/Diskus/groups");
+      //open Archinved Modal Also in this
+      localStorage.setItem("NotificationClickArchivedGroup", true);
+    } else if (NotificationData.notificationActionID === 19) {
+      //Notificaiton For Groups InActivated
+      navigate("/Diskus/groups");
+      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+    } else if (NotificationData.notificationActionID === 20) {
+      //Notificaiton For Groups Activated
+      navigate("/Diskus/groups");
+      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+      localStorage.setItem("NotificationClickAddedIntoGroup", true);
+      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+    } else if (NotificationData.notificationActionID === 21) {
+    } else if (NotificationData.notificationActionID === 22) {
+      //Notificaiton For Removed From Committee
+      navigate("/Diskus/committee");
+    } else if (NotificationData.notificationActionID === 23) {
+      //Notificaiton For  Committee Archived
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeArchived", true);
+    } else if (NotificationData.notificationActionID === 24) {
+      //Notificaiton For Committee InActive
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
+    } else if (NotificationData.notificationActionID === 25) {
+      //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
+    } else if (NotificationData.notificationActionID === 26) {
+      //Notification for Added as Voter in the resolution
+      navigate("/Diskus/resolution");
+    } else if (NotificationData.notificationActionID === 27) {
+      //Notification for Added as Non-Voter in the resolution
+      navigate("/Diskus/resolution");
+    } else if (NotificationData.notificationActionID === 28) {
+      //Resolution Descision Announced
+    } else if (NotificationData.notificationActionID === 29) {
+      //Notification for Poll has been Created submit your response
+      navigate("/Diskus/polling");
+    } else if (NotificationData.notificationActionID === 30) {
+      //Notification for Poll has been Updated submit your response
+      navigate("/Diskus/polling");
+    } else if (NotificationData.notificationActionID === 31) {
+    } else if (NotificationData.notificationActionID === 32) {
+    } else if (NotificationData.notificationActionID === 33) {
+    } else if (NotificationData.notificationActionID === 34) {
+    } else if (NotificationData.notificationActionID === 35) {
+    } else if (NotificationData.notificationActionID === 36) {
+    } else if (NotificationData.notificationActionID === 37) {
+    } else if (NotificationData.notificationActionID === 38) {
+    } else if (NotificationData.notificationActionID === 39) {
+    } else if (NotificationData.notificationActionID === 40) {
+    } else {
+    }
+  };
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
@@ -131,6 +318,7 @@ const WebNotfication = ({
                       ? styles["BackGroundreadNotifications"]
                       : styles["BackGroundUnreadNotifications"]
                   }
+                  onClick={() => HandleClickNotfication(data)}
                 >
                   <Col lg={12} md={12} sm={12}>
                     <WebNotificationCard
@@ -164,6 +352,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
+                    onClick={() => HandleClickNotfication(data)}
                   >
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard

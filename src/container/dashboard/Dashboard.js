@@ -2703,6 +2703,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "Web_Notification".toLowerCase()
         ) {
+          console.log(data.payload, "datapayload");
           dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
           setNotificationID(id);
         }

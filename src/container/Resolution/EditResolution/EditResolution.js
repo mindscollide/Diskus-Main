@@ -220,6 +220,11 @@ const EditResolution = ({ setCancelresolution }) => {
     ResolutionStatus: "",
   });
 
+  console.log(
+    editResolutionData.FK_ResolutionStatusID,
+    "FK_ResolutionStatusID"
+  );
+
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t, true));
     dispatch(getAllResolutionStatus(navigate, t, true));
@@ -1547,7 +1552,6 @@ const EditResolution = ({ setCancelresolution }) => {
         value={value}
         onChange={onChange}
         className={"input-with-icon"}
-      
       />
     );
   }

@@ -218,34 +218,73 @@ const ViewMeetingDetails = ({
   });
 
   const callApiOnComponentMount = async () => {
-    let Data = {
-      MeetingID:
-        advanceMeetingModalID === "0" ||
-        advanceMeetingModalID === 0 ||
-        advanceMeetingModalID === null ||
-        advanceMeetingModalID === undefined
-          ? currentMeetingID
-          : Number(advanceMeetingModalID),
-    };
-    await dispatch(
-      GetAllMeetingDetailsApiFunc(
-        navigate,
-        t,
-        Data,
-        true,
-        setAdvanceMeetingModalID,
-        setViewAdvanceMeetingModal,
-        setDataroomMapFolderId
-      )
-    );
-    dispatch(
-      GetAllUserChats(
-        navigate,
-        parseInt(currentUserID),
-        parseInt(currentOrganization),
-        t
-      )
-    );
+    //Notification if Published Advance meeting is Triggered
+    if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
+      let AdvanceNotificationClickMeetingID = localStorage.getItem(
+        "NotificationAdvanceMeetingID"
+      );
+      console.log(
+        AdvanceNotificationClickMeetingID,
+        "NotificationDataNotificationData"
+      );
+      let Data = {
+        MeetingID:
+          advanceMeetingModalID === "0" ||
+          advanceMeetingModalID === 0 ||
+          advanceMeetingModalID === null ||
+          advanceMeetingModalID === undefined
+            ? Number(AdvanceNotificationClickMeetingID)
+            : Number(advanceMeetingModalID),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          true,
+          setAdvanceMeetingModalID,
+          setViewAdvanceMeetingModal,
+          setDataroomMapFolderId
+        )
+      );
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserID),
+          parseInt(currentOrganization),
+          t
+        )
+      );
+    } else {
+      let Data = {
+        MeetingID:
+          advanceMeetingModalID === "0" ||
+          advanceMeetingModalID === 0 ||
+          advanceMeetingModalID === null ||
+          advanceMeetingModalID === undefined
+            ? currentMeetingID
+            : Number(advanceMeetingModalID),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          navigate,
+          t,
+          Data,
+          true,
+          setAdvanceMeetingModalID,
+          setViewAdvanceMeetingModal,
+          setDataroomMapFolderId
+        )
+      );
+      dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserID),
+          parseInt(currentOrganization),
+          t
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -280,6 +319,8 @@ const ViewMeetingDetails = ({
         IsVideoCall: false,
         TalkGroupID: 0,
       });
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationAdvanceMeetingID");
       dispatch(cleareAllState());
     };
   }, []);

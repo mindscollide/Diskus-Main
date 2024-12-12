@@ -31,7 +31,7 @@ const initialState = {
   microsftRevokeToken: null,
   diskusWebNotificationData: null,
   diskusNotificationMarkAsRead: null,
-  realTimeNotificationCountGlobalData: null,
+  realTimeNotificationCountGlobalData: [],
   realTimeIsReadFlag: false,
 };
 
@@ -491,11 +491,14 @@ const settingReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    //this state will take the previous object also that are currently unread and will accumulate the newly coming objects also
     case actions.REAL_TIME_UNREAD_NOTIFICATION_COUNT: {
       return {
         ...state,
-        realTimeNotificationCountGlobalData: action.response,
+        realTimeNotificationCountGlobalData: [
+          ...state.realTimeNotificationCountGlobalData,
+          action.response,
+        ],
       };
     }
 

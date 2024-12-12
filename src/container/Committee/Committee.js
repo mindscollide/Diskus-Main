@@ -47,12 +47,11 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 
 const Committee = () => {
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
-  
+
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
@@ -119,6 +118,7 @@ const Committee = () => {
   const [showModal, setShowModal] = useState(false);
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
+
   useEffect(() => {
     try {
       if (currentPage !== null) {
@@ -128,9 +128,29 @@ const Committee = () => {
         localStorage.setItem("CocurrentPage", 1);
         dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
       }
+      //For Notification Redirections
+      if (
+        JSON.parse(
+          localStorage.getItem("NotificationClickCommitteeArchived")
+        ) === true
+      ) {
+        setShowModal(true);
+      }
+      if (
+        JSON.parse(
+          localStorage.getItem("NotificationClickCommitteeOperations")
+        ) === true
+      ) {
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
+      }
     } catch (error) {
       console.log(error, "error");
     }
+    return () => {
+      localStorage.removeItem("NotificationClickCommitteeArchived");
+      setShowModal(false);
+    };
   }, []);
 
   useEffect(() => {

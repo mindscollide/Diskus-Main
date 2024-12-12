@@ -318,7 +318,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let user = meetingAttendeesList;
         let emptyList = [];
         try {
-          if (viewData.meetingAttendees != undefined) {
+          if (viewData.meetingAttendees !== undefined) {
             if (viewData.meetingAttendees.length > 0) {
               viewData.meetingAttendees.map((meetingdata, index) => {
                 List.push({
@@ -456,6 +456,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
+    return () => {
+      localStorage.removeItem("QuicMeetingOperations");
+    };
   }, [assigneesViewMeetingDetails]);
 
   useEffect(() => {

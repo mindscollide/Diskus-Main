@@ -83,6 +83,7 @@ import {
   meetingParticipantAdded,
   meetingParticipantRemoved,
   boardDeckModal,
+  showSceduleProposedMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -388,6 +389,7 @@ const NewMeeting = () => {
         video: false,
         Agenda: false,
       });
+      setViewFlag(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -404,68 +406,125 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
 
+  //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
-      if (meetingpageRow !== null && meetingPageCurrent !== null) {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: Number(meetingPageCurrent),
-          Length: Number(meetingpageRow),
-          PublishedMeetings:
-            MeetingProp !== null
-              ? false
-              : UserMeetPropoDatPoll !== null
-              ? false
-              : true,
-        };
-        if (
-          getALlMeetingTypes.length === 0 &&
-          Object.keys(getALlMeetingTypes).length === 0
-        ) {
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        }
-        console.log("Test is calling or not");
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      } else {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            MeetingProp !== null
-              ? false
-              : UserMeetPropoDatPoll !== null
-              ? false
-              : true,
-        };
-
-        if (
-          getALlMeetingTypes.length === 0 &&
-          Object.keys(getALlMeetingTypes).length === 0
-        ) {
-          await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-        }
-        console.log("Test is calling or not");
-
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      }
       if (
-        localStorage.getItem("meetingprop") !== null ||
-        localStorage.getItem("UserMeetPropoDatPoll") !== null
+        JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
-        localStorage.setItem("MeetingCurrentView", 2);
+        console.log("ProposedMeetingOperations");
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+        setViewProposeDatePoll(true);
+        dispatch(proposedMeetingDatesGlobalFlag(true));
+        dispatch(viewProposeDateMeetingPageFlag(true));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
-        localStorage.setItem("MeetingCurrentView", 1);
+        if (meetingpageRow !== null && meetingPageCurrent !== null) {
+          console.log(meetingpageRow, "QuicMeetingOperations");
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: Number(meetingPageCurrent),
+            Length: Number(meetingpageRow),
+            PublishedMeetings:
+              MeetingProp !== null
+                ? false
+                : UserMeetPropoDatPoll !== null
+                ? false
+                : true,
+          };
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+          //Notification Trigger of Quick Meeting published
+          if (
+            JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+          ) {
+            console.log("QuicMeetingOperations");
+            let NotificationClickQuickMeetingID = localStorage.getItem(
+              "NotificationQuickMeetingID"
+            );
+            let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
+            await dispatch(
+              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+            );
+          }
+          //Notification if Published Advance meeting is Triggered
+          if (
+            JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) ===
+            true
+          ) {
+            console.log("AdvanceOperations");
+            setViewAdvanceMeetingModal(true);
+            dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            dispatch(scheduleMeetingPageFlag(false));
+          }
+        } else {
+          console.log("QuicMeetingOperations");
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              MeetingProp !== null
+                ? false
+                : UserMeetPropoDatPoll !== null
+                ? false
+                : true,
+          };
+
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        }
+
+        if (
+          localStorage.getItem("meetingprop") !== null ||
+          localStorage.getItem("UserMeetPropoDatPoll") !== null
+        ) {
+          localStorage.setItem("MeetingCurrentView", 2);
+        } else {
+          localStorage.setItem("MeetingCurrentView", 1);
+        }
+        //Notification Trigger of Quick Meeting published
+        if (
+          JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+        ) {
+          console.log("QuicMeetingOperations");
+          let NotificationClickQuickMeetingID = localStorage.getItem(
+            "NotificationQuickMeetingID"
+          );
+          let Data = { MeetingID: Number(NotificationClickQuickMeetingID) };
+          await dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        }
+        //Notification if Published Advance meeting is Triggered
+        if (
+          JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true
+        ) {
+          console.log("AdvanceOperations");
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -3090,6 +3149,7 @@ const NewMeeting = () => {
       }
     }
   }, [meetingReminderNotification]);
+
   return (
     <>
       <section className={styles["NewMeeting_container"]}>
