@@ -2458,11 +2458,27 @@ const DataRoom = () => {
         Number(NotificationClickFileID)
       );
     }
+
+    //For Folder View Rights
+    if (
+      JSON.parse(
+        localStorage.getItem("DataRoomOperationsForFolderViewerRights")
+      ) === true
+    ) {
+      let NotificaitonClickFolderID = localStorage.getItem(
+        "NotificationClickFolderID"
+      );
+      dispatch(
+        getFolderDocumentsApi(navigate, Number(NotificaitonClickFolderID), t)
+      );
+    }
     return () => {
       localStorage.removeItem("DataRoomOperations");
       localStorage.removeItem("NotificationClickFileID");
       localStorage.removeItem("NotificationClickFileName");
       localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+      localStorage.removeItem("DataRoomOperationsForFolderViewerRights");
+      localStorage.removeItem("NotificationClickFolderID");
     };
   }, []);
 

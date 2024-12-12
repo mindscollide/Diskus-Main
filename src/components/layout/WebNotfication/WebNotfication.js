@@ -359,7 +359,15 @@ const WebNotfication = ({
       localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
       localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 35) {
+      //Notification for sharing folder as a viewer
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
     } else if (NotificationData.notificationActionID === 36) {
+      //Notification for sharing folder as a Editor
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
     } else if (NotificationData.notificationActionID === 37) {
     } else if (NotificationData.notificationActionID === 38) {
     } else if (NotificationData.notificationActionID === 39) {
