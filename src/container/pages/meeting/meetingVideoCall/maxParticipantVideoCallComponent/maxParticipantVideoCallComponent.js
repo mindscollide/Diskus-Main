@@ -100,20 +100,18 @@ const ParticipantVideoCallComponent = ({
 
     // Cleanup on unmount or when isWebCamEnabled changes
     return () => {
-      if (stream) {
-        stream.getVideoTracks().forEach((track) => track.stop());
-
-        // Clear the stream from state
-        setStream(null);
-
-        // Clear the video source
-        if (videoRef.current) {
-          videoRef.current.srcObject = null;
-        }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null; // Clear the video source
       }
+
+      // Stop video stream
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
+      // Stop audio stream
       if (streamAudio) {
-        streamAudio.getAudioTracks().forEach((track) => track.stop());
-        setStreamAudio(null);
+        streamAudio.getTracks().forEach((track) => track.stop());
       }
     };
   }, [isWebCamEnabled]);
@@ -207,6 +205,13 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickEndVideoCall = async () => {
+    if (stream) {
+      stream.getVideoTracks().forEach((track) => track.stop());
+      setStream(null); // Clear the stream from state
+      if (videoRef.current) {
+        videoRef.current.srcObject = null; // Clear the video source
+      }
+    }
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
