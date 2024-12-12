@@ -690,6 +690,7 @@ const LeaveCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_LeaveCall_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("callTypeID",0)
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage

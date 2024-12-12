@@ -15,6 +15,10 @@ import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {
   incomingVideoCallFlag,
   normalizeVideoPanelFlag,
+  setAudioControlForParticipant,
+  setAudioControlHost,
+  setVideoControlForParticipant,
+  setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import {
   LeaveCurrentMeeting,
@@ -149,6 +153,12 @@ const VideoMaxIncoming = () => {
           Name: String(newName),
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(setAudioControlHost(false));
+        await dispatch(setAudioControlForParticipant(false));
+        await dispatch(setVideoControlHost(false));
+        await dispatch(setVideoControlForParticipant(false));
+        localStorage.setItem("isMicEnabled", false);
+        localStorage.setItem("isWebCamEnabled", false);
         localStorage.setItem("activeOtoChatID", 0);
         localStorage.setItem("initiateVideoCall", false);
         localStorage.setItem("activeRoomID", 0);

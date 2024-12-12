@@ -82,6 +82,10 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   participantVideoNavigationScreen,
+  setAudioControlForParticipant,
+  setAudioControlHost,
+  setVideoControlForParticipant,
+  setVideoControlHost,
   videoChatPanel,
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
@@ -8966,7 +8970,10 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
-
+              await dispatch(setAudioControlHost(false));
+              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
+              await dispatch(setVideoControlForParticipant(false));
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
