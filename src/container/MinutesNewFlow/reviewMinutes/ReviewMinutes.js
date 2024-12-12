@@ -515,6 +515,7 @@ const ReviewMinutes = () => {
     return () => {
       localStorage.removeItem("MinutesOperations");
       localStorage.removeItem("NotificationClickMinutesMeetingID");
+      dispatch(reviewMinutesPage(false));
     };
   }, []);
 
