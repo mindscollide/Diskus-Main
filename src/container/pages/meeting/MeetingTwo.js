@@ -412,12 +412,43 @@ const NewMeeting = () => {
       if (
         JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
-        console.log("ProposedMeetingOperations");
         dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
         setViewProposeDatePoll(true);
         dispatch(proposedMeetingDatesGlobalFlag(true));
         dispatch(viewProposeDateMeetingPageFlag(true));
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      } else if (
+        JSON.parse(
+          localStorage.getItem("ProposedMeetOperationsDateSelected")
+        ) === true
+      ) {
+        const storedDate = localStorage.getItem(
+          "ProposedMeetOperationsDateSelectedSendResponseByDate"
+        );
+
+        // Get the current date in "YYYYMMDD" format
+        const currentDate = new Date();
+        const formattedCurrentDate = `${currentDate.getFullYear()}${String(
+          currentDate.getMonth() + 1
+        ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
+        console.log(storedDate, "storedDatestoredDatestoredDate");
+        console.log(formattedCurrentDate, "storedDatestoredDatestoredDate");
+        // Compare stored date with the current date
+        if (storedDate <= formattedCurrentDate) {
+          console.log("Stored date is less than the current date.");
+          // If the polls are not Expired then move to voting page
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(true);
+          dispatch(proposedMeetingDatesGlobalFlag(true));
+          dispatch(viewProposeDateMeetingPageFlag(true));
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        } else {
+          //Other wise Move to Proposed meeting listing page
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(false);
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(viewProposeDateMeetingPageFlag(false));
+        }
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           console.log(meetingpageRow, "QuicMeetingOperations");

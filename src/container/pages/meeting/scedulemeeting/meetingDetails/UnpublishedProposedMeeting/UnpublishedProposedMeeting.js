@@ -855,6 +855,20 @@ const UnpublishedProposedMeeting = ({
     },
   ];
 
+  //If You redirect from notification Flow when the polls has been expired in Proposed meeting dates
+  useEffect(() => {
+    if (
+      JSON.parse(localStorage.getItem("ProposedMeetOperationsDateSelected")) ===
+      true
+    ) {
+      localStorage.removeItem("ProposedMeetOperationsDateSelectedMeetID");
+      localStorage.removeItem(
+        "ProposedMeetOperationsDateSelectedSendResponseByDate"
+      );
+      localStorage.removeItem("ProposedMeetOperationsDateSelected");
+    }
+  }, []);
+
   useEffect(() => {
     if (allMeetingsSocketData !== null) {
       let tableRowsData = [...rows];
