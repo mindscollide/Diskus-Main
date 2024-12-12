@@ -52,7 +52,11 @@ const VideoPanelNormal = () => {
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
   let newRoomID = localStorage.getItem("newRoomId");
+  let activeRoomID = localStorage.getItem("activeRoomID");
+
   console.log(newRoomID, "newRoomIDnewRoomID");
+
+  console.log(activeRoomID, "activeRoomIDactiveRoomID");
 
   let participantRoomId = localStorage.getItem("participantRoomId");
 
@@ -190,6 +194,8 @@ const VideoPanelNormal = () => {
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
 
   let refinedParticipantVideoUrl = localStorage.getItem("refinedVideoUrl");
+  let refinedURLCheck = JSON.parse(localStorage.getItem("refinedVideoGiven"));
+
   let urlFormeetingapi = localStorage.getItem("hostUrl");
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
@@ -392,17 +398,19 @@ const VideoPanelNormal = () => {
   //     }
   //   } catch {}
   // }, [callAcceptedRoomID]);
+
   useEffect(() => {
     console.log(initiateCallRoomID, "mqtt");
     try {
       if (initiateCallRoomID !== null) {
         console.log(initiateCallRoomID, "mqtt");
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-        const extractedBaseURLCaller = extractedUrl(
-          dynamicBaseURLCaller,
-          endIndexBaseURLCaller
-        );
+        const endIndexBaseURLCaller = dynamicBaseURLCaller
+          ? endIndexUrl(dynamicBaseURLCaller)
+          : "";
+        const extractedBaseURLCaller = endIndexBaseURLCaller
+          ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
+          : "";
         if (isMeeting) {
           console.log(initiateCallRoomID, "mqtt");
           if (isMeetingHost) {
@@ -433,16 +441,17 @@ const VideoPanelNormal = () => {
   }, [initiateCallRoomID]);
 
   useEffect(() => {
-    console.log(initiateCallRoomID, "mqtt");
+    console.log(localStorage.getItem("newRoomId"), "mqtt");
     try {
-      if (newRoomID !== null) {
+      if (localStorage.getItem("newRoomId") !== null) {
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+        const endIndexBaseURLCaller = dynamicBaseURLCaller
+          ? endIndexUrl(dynamicBaseURLCaller)
+          : "";
         let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-        const extractedBaseURLCaller = extractedUrl(
-          dynamicBaseURLCaller,
-          endIndexBaseURLCaller
-        );
+        const extractedBaseURLCaller = endIndexBaseURLCaller
+          ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
+          : "";
         console.log(dynamicBaseURLCaller, "mqtt");
         console.log(endIndexBaseURLCaller, "mqtt");
         console.log(extractedBaseURLCaller, "mqtt");
@@ -499,11 +508,12 @@ const VideoPanelNormal = () => {
       );
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
-      const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
-      const extractedBaseURLCaller = extractedUrl(
-        dynamicBaseURLCaller,
-        endIndexBaseURLCaller
-      );
+      const endIndexBaseURLCaller = dynamicBaseURLCaller
+        ? endIndexUrl(dynamicBaseURLCaller)
+        : "";
+      const extractedBaseURLCaller = endIndexBaseURLCaller
+        ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
+        : "";
       // let randomGuestName = generateRandomGuest();
       console.log(endIndexBaseURLCaller, "mqtt");
       console.log(extractedBaseURLCaller, "mqtt");
@@ -722,33 +732,34 @@ const VideoPanelNormal = () => {
                         >
                           <>
                             <>
-                              {isMeetingHost ? (
+                              {console.log("iframeiframe", isMeetingHost)}
+                              {console.log("iframeiframe", participantURL)}
+                              {console.log(
+                                "iframeiframe",
+                                typeof participantURL
+                              )}
+                              {console.log("iframeiframe", callerURL)}
+                              {console.log("iframeiframe", typeof callerURL)}
+                              {console.log(
+                                "iframeiframe",
+                                callAcceptedRecipientID === currentUserID
+                              )}
+                              {console.log("iframeiframe", currentUserID)}
+                              {console.log(
+                                "iframeiframe",
+                                callAcceptedRecipientID
+                              )}
+
+                              {console.log("mqtt", refinedParticipantVideoUrl)}
+                              {console.log("mqtt", participantURL)}
+                              {console.log("mqtt", callerURL)}
+                              {refinedURLCheck ? (
                                 <>
-                                  {console.log("iframeiframe", isMeetingHost)}
-                                  {console.log("iframeiframe", participantURL)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    typeof participantURL
-                                  )}
-                                  {console.log("iframeiframe", callerURL)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    typeof callerURL
-                                  )}
-                                  {console.log(
-                                    "iframeiframe",
-                                    callAcceptedRecipientID === currentUserID
-                                  )}
-                                  {console.log("iframeiframe", currentUserID)}
-                                  {console.log(
-                                    "iframeiframe",
-                                    callAcceptedRecipientID
-                                  )}
                                   <iframe
                                     src={
-                                      callAcceptedRecipientID === currentUserID
-                                        ? participantURL
-                                        : callerURL
+                                      !meetingHost.isHost
+                                        ? refinedParticipantVideoUrl
+                                        : null
                                     }
                                     ref={iframeRef}
                                     title="Live Video"
@@ -759,20 +770,19 @@ const VideoPanelNormal = () => {
                                   />
                                 </>
                               ) : (
-                                <>
-                                  {console.log("mqtt", refinedParticipantVideoUrl)}
-                                  {console.log("mqtt", participantURL)}
-                                  {console.log("mqtt", callerURL)}
-                                  <iframe
-                                    src={refinedParticipantVideoUrl}
-                                    ref={iframeRef}
-                                    title="Live Video"
-                                    width="100%"
-                                    height="100%"
-                                    frameBorder="0"
-                                    allow="camera;microphone;display-capture"
-                                  />
-                                </>
+                                <iframe
+                                  src={
+                                    callAcceptedRecipientID === currentUserID
+                                      ? participantURL
+                                      : callerURL
+                                  }
+                                  ref={iframeRef}
+                                  title="Live Video"
+                                  width="100%"
+                                  height="100%"
+                                  frameBorder="0"
+                                  allow="camera;microphone;display-capture"
+                                />
                               )}
 
                               {/* {console.log(

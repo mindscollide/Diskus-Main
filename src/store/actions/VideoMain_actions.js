@@ -261,7 +261,7 @@ const VideoCallResponse = (Data, navigate, t) => {
                 )
             ) {
               console.log(Data, "responsedataresponseResult");
-              // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2 
+              // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               if (Data.CallStatusID === 1) {
                 const meetingHost = {
                   isHost: false,

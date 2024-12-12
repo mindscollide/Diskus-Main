@@ -1327,7 +1327,7 @@ const VideoCallNormalHeader = ({
                     </Tooltip>
                   </div>
 
-                  <div
+                  {/* <div
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
                         ? "grayScaleImage"
@@ -1341,7 +1341,7 @@ const VideoCallNormalHeader = ({
                         alt="Copy Link"
                       />
                     </Tooltip>
-                  </div>
+                  </div> */}
 
                   {videoFeatureReducer.MaximizeVideoFlag === true ? (
                     <div
