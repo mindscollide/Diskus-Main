@@ -197,6 +197,8 @@ const WebNotfication = ({
         navigate("/Diskus/Meeting");
       }
     } else if (NotificationData.notificationActionID === 7) {
+      //Notification for being added as a minute reviewer
+      navigate("/Diskus/Minutes");
     } else if (NotificationData.notificationActionID === 8) {
     } else if (NotificationData.notificationActionID === 9) {
     } else if (NotificationData.notificationActionID === 10) {
