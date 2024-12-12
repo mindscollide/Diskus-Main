@@ -449,9 +449,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
-    return () => {
-      localStorage.removeItem("QuicMeetingOperations");
-    };
   }, [assigneesViewMeetingDetails]);
 
   useEffect(() => {
@@ -937,6 +934,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
             ) {
               setViewFlag(false);
+              localStorage.removeItem("QuicMeetingOperations");
+              localStorage.removeItem("NotificationQuickMeetingID");
             } else {
               if (
                 allMeetingDetails.meetingStatus.status === "10" ||
