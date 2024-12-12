@@ -122,6 +122,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
+      let copyState2 = [...state.waitingParticipantsList];
+      let newData2 = copyState2.filter(
+        (videoParticipants, index) => videoParticipants.guid !== action.payload
+      );
       let updatedList = state.getAllParticipantMain.filter(
         (guest) => guest.guid !== action.payload
       );
@@ -129,6 +133,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
       return {
         ...state,
+        waitingParticipantsList:newData2,
         getVideoParticpantListandWaitingList: newData,
         getAllParticipantMain: updatedList,
       };

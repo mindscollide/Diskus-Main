@@ -742,15 +742,19 @@ const Dashboard = () => {
               );
 
               if (isMeetingVideo) {
-                dispatch(participantWaitingList(data.payload));
-                dispatch(admitGuestUserRequest(data.payload));
+                if (data.payload.isGuest) {
+                  dispatch(admitGuestUserRequest(data.payload));
+                } else {
+                  dispatch(participantWaitingList(data.payload));
+                }
                 dispatch(guestJoinPopup(true));
               }
             } else if (
               data.payload.message.toLowerCase() ===
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
             ) {
-              console.log(data.payload, "guestLeaveVideoMeeting");
+              console.log(data.payload, "mqtt");
+              console.log(waitingParticipantsList, "mqtt");
               if (data.payload.isGuest) {
                 dispatch(guestLeaveVideoMeeting(data.payload.uid));
               } else {
