@@ -180,6 +180,15 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 5) {
+      //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 6) {
       //Notification For being removed from  Meeting
       if (PayLoadData.IsQuickMeeting === true) {
