@@ -347,6 +347,11 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
+      //Notification For Being File shared to you as viewer
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperations", true);
+      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 34) {
     } else if (NotificationData.notificationActionID === 35) {
     } else if (NotificationData.notificationActionID === 36) {
