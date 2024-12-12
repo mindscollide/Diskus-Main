@@ -208,8 +208,59 @@ const WebNotfication = ({
       //Notification for Being Removed As a reviwer in Minutes review
       navigate("/Diskus/Minutes");
     } else if (NotificationData.notificationActionID === 9) {
+      //Notification For Added as An Participant
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 10) {
+      //Notification For Added as An Organizer
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 11) {
+      //Notification For Added as An Agenda Contributor
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
       //Notification For Proposed Meeting Request
