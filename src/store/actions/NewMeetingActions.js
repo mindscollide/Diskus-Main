@@ -8962,6 +8962,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               );
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);

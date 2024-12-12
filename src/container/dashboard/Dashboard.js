@@ -796,6 +796,7 @@ const Dashboard = () => {
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               dispatch(setAudioControlForParticipant(false));
@@ -950,6 +951,7 @@ const Dashboard = () => {
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);
+                localStorage.setItem("refinedVideoGiven", true);
               } else {
                 console.error("Invalid data or missing videoUrl in payload");
               }
