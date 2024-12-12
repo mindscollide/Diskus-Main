@@ -181,6 +181,12 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 5) {
     } else if (NotificationData.notificationActionID === 6) {
+      //Notification For being removed from  Meeting
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+      } else {
+        navigate("/Diskus/Meeting");
+      }
     } else if (NotificationData.notificationActionID === 7) {
     } else if (NotificationData.notificationActionID === 8) {
     } else if (NotificationData.notificationActionID === 9) {
