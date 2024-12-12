@@ -22,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const ParticipantVideoCallComponent = ({
   handleExpandToNormalPanelParticipant,
@@ -202,8 +203,19 @@ const ParticipantVideoCallComponent = ({
     // dispatch(normalParticipantVideoCallPanel(true));
   };
 
-  const onClickEndVideoCall = () => {
-    dispatch(maxParticipantVideoCallPanel(false));
+  const onClickEndVideoCall = async () => {
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let userGUID = localStorage.getItem("userGUID");
+    if (isWaiting) {
+      let Data = {
+        RoomID: roomID,
+        UserGUID: userGUID,
+      };
+      await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      dispatch(maxParticipantVideoCallPanel(false));
+    } else {
+      dispatch(maxParticipantVideoCallPanel(false));
+    }
   };
 
   return (
@@ -262,14 +274,14 @@ const ParticipantVideoCallComponent = ({
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img dragable="false" src={MinimizeIcon} alt="" />
+              <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
                 src={isNormalPanel ? ExpandIcon : NormalizeIcon}
                 onClick={onClickToNormalParticipantPanel}
-                alt=""
+                alt="ExpandIcon"
               />
             </div>
             <div className="max-videoParticipant-Icons-state">
@@ -277,7 +289,7 @@ const ParticipantVideoCallComponent = ({
                 dragable="false"
                 src={EndCall}
                 onClick={onClickEndVideoCall}
-                alt=""
+                alt="EndCall"
               />
             </div>
           </Col>
