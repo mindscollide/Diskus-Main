@@ -284,6 +284,12 @@ const ViewParticipantsDates = ({
   };
 
   const handleSave = () => {
+    let NotificationClickProposedMeetingFlag = JSON.parse(
+      localStorage.getItem("ProposedMeetingOperations")
+    );
+    let NotificationClickMeetingID = localStorage.getItem(
+      "NotificationClickMeetingID"
+    );
     let findIsanySelected = prposedData.some(
       (data, index) => data.isSelected === true
     );
@@ -298,7 +304,10 @@ const ViewParticipantsDates = ({
         });
       });
       let Data = {
-        MeetingID: currentMeetingID,
+        MeetingID:
+          NotificationClickProposedMeetingFlag === true
+            ? Number(NotificationClickMeetingID)
+            : currentMeetingID,
         ProposedDates: defaultarr,
       };
       dispatch(
@@ -317,7 +326,10 @@ const ViewParticipantsDates = ({
         }
       });
       let Data = {
-        MeetingID: currentMeetingID,
+        MeetingID:
+          NotificationClickProposedMeetingFlag === true
+            ? Number(NotificationClickMeetingID)
+            : currentMeetingID,
         ProposedDates: newarr,
       };
 
