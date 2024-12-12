@@ -353,6 +353,11 @@ const WebNotfication = ({
       localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
       localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 34) {
+      //Notification For Being File shared to you as Editor
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
+      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 35) {
     } else if (NotificationData.notificationActionID === 36) {
     } else if (NotificationData.notificationActionID === 37) {
