@@ -466,22 +466,56 @@ const ReviewMinutes = () => {
 
   useEffect(() => {
     try {
-      let allAgendaWiseDocs = {
-        MDID: currentMeetingMinutesToReviewData?.meetingID,
-      };
-      let Data = {
-        MeetingID: currentMeetingMinutesToReviewData?.meetingID,
-      };
-      dispatch(
-        AllDocumentsForAgendaWiseMinutesApiFunc(navigate, allAgendaWiseDocs, t)
-      );
+      //If the User Been Redirected By Clicking on the Notification that has been Added as a reviewer in the Particular meeting minutes
+      if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
+        let NotificationClickMeetingMinutesID = localStorage.getItem(
+          "NotificationClickMinutesMeetingID"
+        );
+        let allAgendaWiseDocs = {
+          MDID: Number(NotificationClickMeetingMinutesID),
+        };
+        let Data = {
+          MeetingID: Number(NotificationClickMeetingMinutesID),
+        };
+        dispatch(
+          AllDocumentsForAgendaWiseMinutesApiFunc(
+            navigate,
+            allAgendaWiseDocs,
+            t
+          )
+        );
 
-      dispatch(
-        DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
-      );
+        dispatch(
+          DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+        );
 
-      dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+      } else {
+        let allAgendaWiseDocs = {
+          MDID: currentMeetingMinutesToReviewData?.meetingID,
+        };
+        let Data = {
+          MeetingID: currentMeetingMinutesToReviewData?.meetingID,
+        };
+        dispatch(
+          AllDocumentsForAgendaWiseMinutesApiFunc(
+            navigate,
+            allAgendaWiseDocs,
+            t
+          )
+        );
+
+        dispatch(
+          DocumentsOfMeetingGenralMinutesApiFunc(navigate, allAgendaWiseDocs, t)
+        );
+
+        dispatch(GetMinutesForReviewerByMeetingId(Data, navigate, t));
+      }
     } catch {}
+    return () => {
+      localStorage.removeItem("MinutesOperations");
+      localStorage.removeItem("NotificationClickMinutesMeetingID");
+    };
   }, []);
 
   useEffect(() => {

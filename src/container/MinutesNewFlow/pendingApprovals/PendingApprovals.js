@@ -324,6 +324,11 @@ const PendingApproval = () => {
     let Data = { sRow: 0, Length: 10 };
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
     dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
+    // Notification Click Rendering if Clicked on Notification Added you as Reviewer
+    if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
+      dispatch(reviewMinutesPage(true));
+      dispatch(pendingApprovalPage(false));
+    }
   }, []);
 
   useEffect(() => {

@@ -199,6 +199,11 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 7) {
       //Notification for being added as a minute reviewer
       navigate("/Diskus/Minutes");
+      localStorage.setItem("MinutesOperations", true);
+      localStorage.setItem(
+        "NotificationClickMinutesMeetingID",
+        PayLoadData.MeetingID
+      );
     } else if (NotificationData.notificationActionID === 8) {
     } else if (NotificationData.notificationActionID === 9) {
     } else if (NotificationData.notificationActionID === 10) {
