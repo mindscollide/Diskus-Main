@@ -1071,6 +1071,14 @@ const globalStateForVideoStream = (response) => {
   };
 };
 
+//FOR GLOBAL NAVIGATORE VIDEO STREAM
+const globalNavigatorVideoStream = (response) => {
+  return {
+    type: actions.GLOBAL_NAVIGATORE_VIDEO_STREAM,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1137,4 +1145,5 @@ export {
   toggleParticipantsVisibility,
   globalStateForAudioStream,
   globalStateForVideoStream,
+  globalNavigatorVideoStream,
 };
