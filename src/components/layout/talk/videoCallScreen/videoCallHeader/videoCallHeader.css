@@ -139,6 +139,17 @@ img.normalize-Icon-Large {
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
 }
 
+body[dir="rtl"] .leave-meeting-options {
+  background: rgb(255, 255, 255);
+  border-radius: 3px;
+  padding: 16px;
+  position: absolute;
+  width: 215px;
+  top: 40px;
+  left: 10px !important;
+  right: auto !important;
+}
+
 .minimize-leave-meeting-options {
   background: #fff;
   border-radius: 3px;
@@ -453,12 +464,80 @@ span.participants-counter {
   font-weight: 600;
 }
 
+span.participants-counter-For-Host {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+span.participants-counter-For-Host-waiting-counter {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  background: #55ce5c !important;
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+body[dir="rtl"] span.participants-counter-For-Host {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: auto;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+body[dir="rtl"] span.participants-counter-For-Host-waiting-counter {
+  position: absolute;
+  top: 0;
+  left: -17px;
+  right: auto;
+  background: #55ce5c !important;
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
 .minimize {
   margin: 0 !important;
 }
 
 .active-state-minimize {
   background: #fff;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.for-host-active-state-minimize {
   height: 40px;
   width: 40px;
   display: flex;

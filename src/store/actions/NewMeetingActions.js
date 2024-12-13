@@ -83,6 +83,10 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   participantVideoNavigationScreen,
+  setAudioControlForParticipant,
+  setAudioControlHost,
+  setVideoControlForParticipant,
+  setVideoControlHost,
   videoChatPanel,
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
@@ -1415,10 +1419,10 @@ const FetchMeetingURLApi = (
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }
+              localStorage.setItem("isMeeting", true);
               localStorage.setItem("CallType", 2);
               localStorage.setItem("callTypeID", 2);
               localStorage.setItem("activeCall", true);
-              localStorage.setItem("isMeeting", true);
               localStorage.setItem("callerID", 9999);
               localStorage.setItem("acceptedRoomID", match[1]);
               localStorage.setItem("activeRoomID", match[1]);
@@ -8339,10 +8343,12 @@ const LeaveCurrentMeeting = (
                   dispatch(viewAdvanceMeetingPublishPageFlag(false));
                   dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                 }
+                let newName = localStorage.getItem("name");
 
                 let Data = {
                   RoomID: roomID,
                   UserGUID: userGUID,
+                  Name: String(newName),
                 };
                 if (roomID !== "0" && userGUID !== null) {
                   dispatch(normalizeVideoPanelFlag(false));
@@ -8350,6 +8356,7 @@ const LeaveCurrentMeeting = (
                   dispatch(minimizeVideoPanelFlag(false));
 
                   localStorage.setItem("activeCall", false);
+
                   localStorage.setItem("isMeeting", false);
                   localStorage.setItem("meetingTitle", "");
                   localStorage.setItem("acceptedRecipientID", 0);
@@ -8972,19 +8979,23 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
-                isDashboardVideo: true,
+                isDashboardVideo: false,
               };
-              dispatch(makeHostNow(meetingHost));
+              // dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
-              localStorage.setItem("isMeeting", false);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
-              localStorage.setItem("isWebCamEnabled", true);
-              localStorage.setItem("isMicEnabled", true);
-
+              localStorage.setItem("refinedVideoGiven", false);
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
+              localStorage.setItem("activeCall", false);
+              await dispatch(setAudioControlHost(false));
+              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
+              await dispatch(setVideoControlForParticipant(false));
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage

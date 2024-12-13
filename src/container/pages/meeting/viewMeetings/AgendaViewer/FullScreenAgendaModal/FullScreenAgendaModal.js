@@ -20,6 +20,7 @@ import {
   participantPopup,
   maxHostVideoCallPanel,
   maxParticipantVideoCallPanel,
+  getParticipantMeetingJoinMainApi,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -365,16 +366,20 @@ const FullScreenAgendaModal = ({
   const onClickVideoIconOpenVideo = () => {
     console.log("Agenda View Full");
     let meetingVideoData = {
-      roleID:
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor"
-          ? 2
-          : 1,
+      roleID: editorRole.role === "Participant" ? 2 : 10,
     };
-    if (meetingVideoData.roleID === 1) {
-      dispatch(maxHostVideoCallPanel(true));
-    } else {
+    console.log(meetingVideoData, "meetingVideoData");
+
+    if (meetingVideoData.roleID === 2) {
       dispatch(maxParticipantVideoCallPanel(true));
+    } else {
+      let data = {
+        MeetingId: Number(currentMeeting),
+        VideoCallURL: String(currentMeetingVideoURL),
+        IsMuted: false,
+        HideVideo: false,
+      };
+      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
     }
   };
 

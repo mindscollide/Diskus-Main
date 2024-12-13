@@ -15,7 +15,16 @@ import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {
   incomingVideoCallFlag,
   normalizeVideoPanelFlag,
+  setAudioControlForParticipant,
+  setAudioControlHost,
+  setVideoControlForParticipant,
+  setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  LeaveCurrentMeeting,
+  LeaveMeetingVideo,
+} from "../../../../../store/actions/NewMeetingActions";
+import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -88,6 +97,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false);
       audioElement.pause();
       audioElement.currentTime = 0;
+      console.log("busyCall");
     }, timeValue);
 
     // Clear the timer if isTimerRunning becomes false
@@ -108,6 +118,7 @@ const VideoMaxIncoming = () => {
   // }, [])
 
   const acceptCall = () => {
+    console.log("busyCall");
     const meetingHost = {
       isHost: false,
       isHostId: 0,
@@ -128,27 +139,105 @@ const VideoMaxIncoming = () => {
   };
 
   const endAndAccept = async () => {
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: acceptedRoomID,
-      IsCaller: callerID === currentUserId ? true : false,
-      CallTypeID: callTypeID,
-    };
-    await dispatch(LeaveCall(Data, navigate, t));
-    localStorage.setItem("isCaller", false);
-    let Data2 = {
-      ReciepentID: currentUserId,
-      RoomID: activeRoomID,
-      CallStatusID: 1,
-      CallTypeID: callTypeID,
-    };
-    dispatch(VideoCallResponse(Data2, navigate, t));
-    dispatch(incomingVideoCallFlag(false));
-    setIsTimerRunning(false);
-    localStorage.setItem("isMeetingVideo", false);
+    console.log("busyCall");
+    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    let isMeeting = localStorage.getItem("isMeeting");
+    if (isMeeting) {
+      if (isMeetingVideo) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(setAudioControlHost(false));
+        await dispatch(setAudioControlForParticipant(false));
+        await dispatch(setVideoControlHost(false));
+        await dispatch(setVideoControlForParticipant(false));
+        localStorage.setItem("isMicEnabled", false);
+        localStorage.setItem("isWebCamEnabled", false);
+        localStorage.setItem("activeOtoChatID", 0);
+        localStorage.setItem("initiateVideoCall", false);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.setItem("meetingVideoID", 0);
+        localStorage.setItem("newCallerID", 0);
+        localStorage.setItem("callerStatusObject", JSON.stringify([]));
+        localStorage.removeItem("newRoomId");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("VideoView");
+        localStorage.removeItem("videoIframe");
+        localStorage.removeItem("CallType");
+
+        let Data2 = {
+          ReciepentID: currentUserId,
+          RoomID: activeRoomID,
+          CallStatusID: 1,
+          CallTypeID: callTypeID,
+        };
+        dispatch(VideoCallResponse(Data2, navigate, t));
+        dispatch(incomingVideoCallFlag(false));
+        setIsTimerRunning(false);
+      } else {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        localStorage.setItem("activeOtoChatID", 0);
+        localStorage.setItem("initiateVideoCall", false);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.setItem("meetingVideoID", 0);
+        localStorage.setItem("newCallerID", 0);
+        localStorage.setItem("callerStatusObject", JSON.stringify([]));
+        localStorage.removeItem("newRoomId");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("VideoView");
+        localStorage.removeItem("videoIframe");
+        localStorage.removeItem("CallType");
+        let Data2 = {
+          ReciepentID: currentUserId,
+          RoomID: activeRoomID,
+          CallStatusID: 1,
+          CallTypeID: callTypeID,
+        };
+        dispatch(VideoCallResponse(Data2, navigate, t));
+        dispatch(incomingVideoCallFlag(false));
+        setIsTimerRunning(false);
+      }
+    } else {
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: acceptedRoomID,
+        IsCaller: callerID === currentUserId ? true : false,
+        CallTypeID: callTypeID,
+      };
+      await dispatch(LeaveCall(Data, navigate, t));
+      localStorage.setItem("isCaller", false);
+      let Data2 = {
+        ReciepentID: currentUserId,
+        RoomID: activeRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data2, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      setIsTimerRunning(false);
+    }
   };
 
   const rejectCall = () => {
+    console.log("busyCall");
     let Data = {
       ReciepentID: currentUserId,
       RoomID: incomingRoomID,
@@ -157,11 +246,13 @@ const VideoMaxIncoming = () => {
     };
     dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
+    console.log("busyCall");
     localStorage.setItem("activeCall", false);
     setIsTimerRunning(false);
   };
 
   const busyCall = () => {
+    console.log("busyCall");
     let Data = {
       ReciepentID: currentUserId,
       RoomID: activeRoomID,
@@ -242,7 +333,9 @@ const VideoMaxIncoming = () => {
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <div className="calling-title-max-call">
-                  <p className="calling-text-max-call">Calling...</p>
+                  <p className="calling-text-max-call">
+                    {t("Calling") + "..."}
+                  </p>
                 </div>
               </Col>
             </Row>
@@ -265,7 +358,7 @@ const VideoMaxIncoming = () => {
                               ? "button-active-img"
                               : "button-img"
                           }
-                          icon={<img src={BusyIcon} width={50} />}
+                          icon={<img src={BusyIcon} width={50} alt="" />}
                           onClick={busyCall}
                           style={{ paddingBottom: "0" }}
                         />
@@ -276,7 +369,7 @@ const VideoMaxIncoming = () => {
                               : "incoming-text"
                           }
                         >
-                          Busy
+                          {t("Busy")}
                         </span>
                       </div>
                     </>
@@ -285,10 +378,10 @@ const VideoMaxIncoming = () => {
                       <div className="incoming-action">
                         <Button
                           className="button-img-max-call"
-                          icon={<img src={videoEndIcon} width={50} />}
+                          icon={<img src={videoEndIcon} width={50} alt="" />}
                           onClick={rejectCall}
                         />
-                        <span className="incoming-text">Reject</span>
+                        <span className="incoming-text">{t("Reject")}</span>
                       </div>
                     </>
                   )}
@@ -317,7 +410,7 @@ const VideoMaxIncoming = () => {
                               ? "button-active-img"
                               : "button-img"
                           }
-                          icon={<img src={videoAttendIcon} width={50} />}
+                          icon={<img src={videoAttendIcon} width={50} alt="" />}
                           onClick={endAndAccept}
                         />
                         <span
@@ -327,7 +420,7 @@ const VideoMaxIncoming = () => {
                               : "incoming-text"
                           }
                         >
-                          End & Accept
+                          {t("End-&-accept")}
                         </span>
                       </div>
                     </>
@@ -336,10 +429,10 @@ const VideoMaxIncoming = () => {
                       <div className="incoming-action">
                         <Button
                           className="button-img"
-                          icon={<img src={videoAttendIcon} width={50} />}
+                          icon={<img src={videoAttendIcon} width={50} alt="" />}
                           onClick={acceptCall}
                         />
-                        <span className="incoming-text">Accept</span>
+                        <span className="incoming-text">{t("Accept")}</span>
                       </div>
                     </>
                   )}

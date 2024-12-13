@@ -7,7 +7,6 @@ import { Button } from "../../../../../components/elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOn2 from "../../../../../assets/images/Recent Activity Icons/Video/MicOn2.png";
-import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn.png";
 import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
@@ -16,17 +15,19 @@ import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Vi
 
 import {
   getParticipantMeetingJoinMainApi,
-  maxHostVideoCallPanel,
+  globalNavigatorVideoStream,
+  globalStateForAudioStream,
+  globalStateForVideoStream,
+  maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
-  normalHostVideoCallPanel,
-  normalParticipantVideoCallPanel,
+  maxParticipantVideoDenied,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
-import NormalHostVideoCallComponent from "../normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import { useNavigate } from "react-router-dom";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const ParticipantVideoCallComponent = ({
   handleExpandToNormalPanelParticipant,
@@ -42,10 +43,25 @@ const ParticipantVideoCallComponent = ({
     (state) => state.videoFeatureReducer.NormalHostVideoFlag
   );
 
+  const getJoinMeetingParticipantorHostrequest = useSelector(
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+  );
+  const isAudioGlobalStream = useSelector(
+    (state) => state.videoFeatureReducer.isAudioGlobalStream
+  );
+
+  const isVideoGlobalStream = useSelector(
+    (state) => state.videoFeatureReducer.isVideoGlobalStream
+  );
+
+  const allNavigatorVideoStream = useSelector(
+    (state) => state.videoFeatureReducer.allNavigatorVideoStream
+  );
+
   const { editorRole } = useContext(MeetingContext);
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
   let meetingId = localStorage.getItem("currentMeetingID");
+
   let newVideoUrl = localStorage.getItem("videoCallURL");
 
   let participantMeetingTitle = localStorage.getItem("meetingTitle");
@@ -53,11 +69,10 @@ const ParticipantVideoCallComponent = ({
   const videoRef = useRef(null);
   const [getReady, setGetReady] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
-
   const [stream, setStream] = useState(null);
   const [streamAudio, setStreamAudio] = useState(null);
-  const [isWebCamEnabled, setIsWebCamEnabled] = useState(true);
-  const [isMicEnabled, setIsMicEnabled] = useState(true);
+  const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
+  const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
 
   console.log(isWebCamEnabled, "isWebCamEnabled");
@@ -66,7 +81,7 @@ const ParticipantVideoCallComponent = ({
     // Enable webcam and microphone when isWebCamEnabled is true
     const enableWebCamAndMic = async () => {
       try {
-        if (isWebCamEnabled) {
+        if (!isWebCamEnabled) {
           // Access video and audio streams
           const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
@@ -79,8 +94,8 @@ const ParticipantVideoCallComponent = ({
             videoRef.current.muted = true;
             await videoRef.current.play();
           }
-
-          localStorage.setItem("isWebCamEnabled", true);
+          console.log(videoRef.current, "streamstream");
+          localStorage.setItem("isWebCamEnabled", false);
           setStream(stream); // Store the video and audio stream
 
           // Handle microphone setup
@@ -89,8 +104,15 @@ const ParticipantVideoCallComponent = ({
             // Stop any existing audio tracks
             streamAudio.getTracks().forEach((track) => track.stop());
           }
-          localStorage.setItem("isMicEnabled", true);
+          localStorage.setItem("isMicEnabled", false);
           setStreamAudio(audioStream);
+          console.log(streamAudio, "streamstream");
+          console.log(audioStream, "streamstream");
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("videoStreamId", stream.id); // Save video stream ID
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("audioStreamId", audioStream.id);
         }
       } catch (error) {
         alert(`Error accessing media devices: ${error.message}`);
@@ -101,31 +123,91 @@ const ParticipantVideoCallComponent = ({
 
     // Cleanup on unmount or when isWebCamEnabled changes
     return () => {
-      if (stream) {
-        stream.getVideoTracks().forEach((track) => track.stop());
-
-        // Clear the stream from state
-        setStream(null);
-
-        // Clear the video source
-        if (videoRef.current) {
-          videoRef.current.srcObject = null;
-        }
+      if (videoRef.current) {
+        console.log(videoRef.current, "streamstream");
+        videoRef.current.srcObject = null; // Clear the video source
       }
+
+      // Stop video stream
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
+      // Stop audio stream
       if (streamAudio) {
-        streamAudio.getAudioTracks().forEach((track) => track.stop());
-        setStreamAudio(null);
+        console.log(streamAudio, "streamstream");
+
+        streamAudio.getTracks().forEach((track) => track.stop());
       }
     };
   }, [isWebCamEnabled]);
 
+  useEffect(() => {
+    if (allNavigatorVideoStream === 1) {
+      if (isVideoGlobalStream) {
+        if (stream) {
+          stream.getVideoTracks().forEach((track) => track.stop());
+          setStream(null); // Clear the stream from state
+          if (videoRef.current) {
+            videoRef.current.srcObject = null; // Clear the video source
+          }
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+          sessionStorage.removeItem("videoStreamId");
+        }
+        dispatch(globalStateForVideoStream(false));
+      }
+      if (isAudioGlobalStream) {
+        // Stop audio stream
+        if (streamAudio) {
+          console.log(streamAudio, "streamstream");
+
+          streamAudio.getAudioTracks().forEach((track) => track.stop());
+          setStreamAudio(null); // Clear the stream from state
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+        }
+        dispatch(globalStateForAudioStream(true));
+      }
+      dispatch(globalNavigatorVideoStream(0));
+      dispatch(maxParticipantVideoCallPanel(false));
+      dispatch(maxParticipantVideoDenied(true));
+    } else if (allNavigatorVideoStream === 2) {
+      if (isVideoGlobalStream) {
+        if (stream) {
+          stream.getVideoTracks().forEach((track) => track.stop());
+          setStream(null); // Clear the stream from state
+          if (videoRef.current) {
+            videoRef.current.srcObject = null; // Clear the video source
+          }
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+          sessionStorage.removeItem("videoStreamId");
+        }
+        dispatch(globalStateForVideoStream(false));
+      }
+      if (isAudioGlobalStream) {
+        // Stop audio stream
+        if (streamAudio) {
+          console.log(streamAudio, "streamstream");
+
+          streamAudio.getAudioTracks().forEach((track) => track.stop());
+          setStreamAudio(null); // Clear the stream from state
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+        }
+        dispatch(globalStateForAudioStream(true));
+      }
+      dispatch(globalNavigatorVideoStream(0));
+      dispatch(maxParticipantVideoCallPanel(false));
+      dispatch(maximizeVideoPanelFlag(true));
+    }
+  }, [allNavigatorVideoStream]);
   // for set Video Web Cam on CLick
-  const toggleAudio = (enable, check) => {
+  const toggleAudio = (enable) => {
     dispatch(setAudioControlForParticipant(enable));
     localStorage.setItem("isMicEnabled", enable);
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
-        .getUserMedia({ audio: enable })
+        .getUserMedia({ audio: true })
         .then((audioStream) => {
           // Stop any existing audio tracks before starting a new one
           if (streamAudio) {
@@ -135,16 +217,23 @@ const ParticipantVideoCallComponent = ({
           const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
           setStreamAudio(newStream);
           setIsMicEnabled(enable);
+          console.log(streamAudio, "streamstream");
+
+          // Store audio stream state in sessionStorage
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("audioStreamId", newStream.id);
         })
         .catch((error) => {
           alert("Error accessing microphone: " + error.message);
         });
     } else {
-      localStorage.setItem("isMicEnabled", enable);
       if (streamAudio) {
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
+      sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+      sessionStorage.removeItem("audioStreamId");
+      console.log(streamAudio, "streamstream");
       setIsMicEnabled(enable); // Microphone is now disabled
     }
   };
@@ -153,9 +242,9 @@ const ParticipantVideoCallComponent = ({
   const toggleVideo = (enable) => {
     dispatch(setVideoControlForParticipant(enable));
     localStorage.setItem("isWebCamEnabled", enable);
-    if (enable) {
+    if (!enable) {
       navigator.mediaDevices
-        .getUserMedia({ video: enable })
+        .getUserMedia({ video: true })
         .then((videoStream) => {
           // Stop any existing video tracks before starting a new one
           if (stream) {
@@ -164,13 +253,17 @@ const ParticipantVideoCallComponent = ({
 
           if (videoRef.current) {
             videoRef.current.srcObject = videoStream;
-            videoRef.current.muted = enable;
+            videoRef.current.muted = true;
             videoRef.current.play().catch((error) => {
               console.error("Error playing video:", error);
             });
           }
           setStream(videoStream);
           setIsWebCamEnabled(enable);
+
+          // Store video stream information in sessionStorage
+          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("videoStreamId", videoStream.id);
         })
         .catch((error) => {
           alert("Error accessing webcam: " + error.message);
@@ -182,24 +275,35 @@ const ParticipantVideoCallComponent = ({
         if (videoRef.current) {
           videoRef.current.srcObject = null; // Clear the video source
         }
+
+        sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+        sessionStorage.removeItem("videoStreamId");
       }
       setIsWebCamEnabled(enable); // Webcam is now disabled
     }
   };
 
-  const joinNewApiVideoCallOnClick = () => {
+  const joinNewApiVideoCallOnClick = async () => {
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
     }
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
-      IsMuted: !isMicEnabled,
-      HideVideo: !isWebCamEnabled,
+      IsMuted: isMicEnabled,
+      HideVideo: isWebCamEnabled,
     };
-    dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
-    setIsWaiting(true);
-    setGetReady(false);
+    await dispatch(
+      getParticipantMeetingJoinMainApi(
+        navigate,
+        t,
+        data,
+        setIsWaiting,
+        setGetReady
+      )
+    );
+    // setIsWaiting(true);
+    // setGetReady(false);
   };
 
   const onClickToNormalParticipantPanel = () => {
@@ -208,8 +312,37 @@ const ParticipantVideoCallComponent = ({
     // dispatch(normalParticipantVideoCallPanel(true));
   };
 
-  const onClickEndVideoCall = () => {
-    dispatch(maxParticipantVideoCallPanel(false));
+  const onClickEndVideoCall = async () => {
+    console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
+    let userGUID = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.guid
+      : 0;
+    let roomID = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.roomID
+      : 0;
+    let newName = localStorage.getItem("name");
+    let currentMeetingID = localStorage.getItem("currentMeetingID");
+
+    if (isWaiting) {
+      let Data = {
+        RoomID: roomID,
+        UserGUID: userGUID,
+        Name: String(newName),
+        IsHost: false,
+        MeetingID: Number(currentMeetingID),
+      };
+      await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      // Stop video stream
+
+      dispatch(maxParticipantVideoCallPanel(false));
+    } else {
+      dispatch(maxParticipantVideoCallPanel(false));
+    }
+
+    sessionStorage.removeItem("audioStreamId");
+
+    // Clear session storage related to participant
+    sessionStorage.removeItem("participantData");
   };
 
   return (
@@ -235,16 +368,16 @@ const ParticipantVideoCallComponent = ({
               {isMicEnabled ? (
                 <img
                   dragable="false"
-                  src={MicOn2}
+                  src={MicOff}
                   className="cursor-pointer"
-                  onClick={() => toggleAudio(false, 2)}
+                  onClick={() => toggleAudio(false)}
                   alt=""
                 />
               ) : (
                 <img
                   dragable="false"
-                  src={MicOff}
-                  onClick={() => toggleAudio(true, 1)}
+                  src={MicOn2}
+                  onClick={() => toggleAudio(true)}
                   className="cursor-pointer"
                   alt=""
                 />
@@ -254,28 +387,28 @@ const ParticipantVideoCallComponent = ({
               {isWebCamEnabled ? (
                 <img
                   dragable="false"
-                  src={VideoOn2}
+                  src={VideoOff}
                   onClick={() => toggleVideo(false)}
                   alt=""
                 />
               ) : (
                 <img
                   dragable="false"
-                  src={VideoOff}
+                  src={VideoOn2}
                   onClick={() => toggleVideo(true)}
                   alt=""
                 />
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img dragable="false" src={MinimizeIcon} alt="" />
+              <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
                 src={isNormalPanel ? ExpandIcon : NormalizeIcon}
                 onClick={onClickToNormalParticipantPanel}
-                alt=""
+                alt="ExpandIcon"
               />
             </div>
             <div className="max-videoParticipant-Icons-state">
@@ -283,7 +416,7 @@ const ParticipantVideoCallComponent = ({
                 dragable="false"
                 src={EndCall}
                 onClick={onClickEndVideoCall}
-                alt=""
+                alt="EndCall"
               />
             </div>
           </Col>

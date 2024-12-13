@@ -54,14 +54,17 @@ const initialState = {
   participantVideoNavigationData: 1,
   videoControlHost: false,
   audioControlHost: false,
-  videoControlForParticipant: true,
-  audioControlForParticipant: true,
+  videoControlForParticipant: false,
+  audioControlForParticipant: false,
   raisedUnRaisedParticipant: false,
   getParticipantsVideoUrl: null,
   checkHostNow: null,
   makeHostNow: null,
   isMicEnabled: true,
   isWebCamEnabled: true,
+  isAudioGlobalStream: false,
+  isVideoGlobalStream: false,
+  allNavigatorVideoStream: 0,
   getAllParticipantMain: [],
   participantsVisible: false,
 };
@@ -122,6 +125,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
+      let copyState2 = [...state.waitingParticipantsList];
+      let newData2 = copyState2.filter(
+        (videoParticipants, index) => videoParticipants.guid !== action.payload
+      );
       let updatedList = state.getAllParticipantMain.filter(
         (guest) => guest.guid !== action.payload
       );
@@ -129,6 +136,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
       return {
         ...state,
+        waitingParticipantsList: newData2,
         getVideoParticpantListandWaitingList: newData,
         getAllParticipantMain: updatedList,
       };
@@ -799,6 +807,27 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         isWebCamEnabled: action.payload,
+      };
+
+    // FOR AUDIO STREAM GLOBAL
+    case actions.GLOBAL_STREAM_AUDIO:
+      return {
+        ...state,
+        isAudioGlobalStream: action.response,
+      };
+
+    // FOR VIDEO STREAM GLOBAL
+    case actions.GLOBAL_STREAM_VIDEO:
+      return {
+        ...state,
+        isVideoGlobalStream: action.response,
+      };
+
+    // FOR ALL GLOBAL NAVIGATOR VIDEO STREAM
+    case actions.GLOBAL_NAVIGATORE_VIDEO_STREAM:
+      return {
+        ...state,
+        allNavigatorVideoStream: action.response,
       };
 
     default:

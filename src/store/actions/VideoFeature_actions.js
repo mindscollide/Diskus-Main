@@ -541,7 +541,13 @@ const getParticipantMeetingJoinFail = (message) => {
   };
 };
 
-const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
+const getParticipantMeetingJoinMainApi = (
+  navigate,
+  t,
+  data,
+  setIsWaiting,
+  setGetReady
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getParticipantMeetingJoinInit());
@@ -560,7 +566,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+          dispatch(
+            getParticipantMeetingJoinMainApi(
+              navigate,
+              t,
+              data,
+              setIsWaiting,
+              setGetReady
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -575,17 +589,21 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 isHostId: 0,
                 isDashboardVideo: true,
               };
-              dispatch(makeHostNow(meetingHost));
+              await dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
+              try {
+                setIsWaiting(true);
+                setGetReady(false);
+              } catch {}
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,
-                  t("Join Request Sent To Host")
+                  t("Join-request-sent-to-host")
                 )
               );
             } else if (
@@ -596,6 +614,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 )
             ) {
               await dispatch(maxHostVideoCallPanel(false));
+              localStorage.setItem("activeCall", true);
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("isMeetingVideo", true);
+
+              let Data = { RoomID: response.data.responseResult.roomID };
+              await dispatch(
+                participantListWaitingListMainApi(Data, navigate, t)
+              );
               dispatch(maximizeVideoPanelFlag(true));
               localStorage.setItem(
                 "newRoomId",
@@ -620,15 +647,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 "isEmail",
                 response.data.responseResult.email
               );
+              localStorage.setItem(
+                "hostUrl",
+                response.data.responseResult.videoURL
+              );
               await dispatch(
                 getParticipantMeetingJoinSuccess(
-                  t("ScheduleCall Joined and Is host")
+                  t("ScheduleCall-joined-and-is-host")
                 )
               );
-              localStorage.setItem("CallType", 2);
-              localStorage.setItem("isMeeting", true);
-              localStorage.setItem("activeCall", true);
-              localStorage.setItem("isMeetingVideo", true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -638,7 +665,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
             ) {
               await dispatch(
                 getParticipantMeetingJoinFail(
-                  t("invalid video call url provided")
+                  t("invalid-video-call-url-provided")
                 )
               );
             } else if (
@@ -649,7 +676,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 )
             ) {
               await dispatch(
-                getParticipantMeetingJoinFail(t("Could not join call"))
+                getParticipantMeetingJoinFail(t("Could-not-join-call"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1028,6 +1055,30 @@ const toggleParticipantsVisibility = (isVisible) => {
   };
 };
 
+// FOR AUDIO STREAM GLOBAL
+const globalStateForAudioStream = (response) => {
+  return {
+    type: actions.GLOBAL_STREAM_AUDIO,
+    response: response,
+  };
+};
+
+//FOR VIDEO STREAM GLOBAL
+const globalStateForVideoStream = (response) => {
+  return {
+    type: actions.GLOBAL_STREAM_VIDEO,
+    response: response,
+  };
+};
+
+//FOR GLOBAL NAVIGATORE VIDEO STREAM
+const globalNavigatorVideoStream = (response) => {
+  return {
+    type: actions.GLOBAL_NAVIGATORE_VIDEO_STREAM,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1092,4 +1143,7 @@ export {
   participantLeaveVideoMeeting,
   getVideoCallParticipantsMainApi,
   toggleParticipantsVisibility,
+  globalStateForAudioStream,
+  globalStateForVideoStream,
+  globalNavigatorVideoStream,
 };
