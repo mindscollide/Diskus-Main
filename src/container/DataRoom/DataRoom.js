@@ -2384,6 +2384,7 @@ const DataRoom = () => {
   ];
 
   const handleLinkClick = (e, record) => {
+    console.log(record, "preventDefault");
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
       const pdfData = {
@@ -2398,6 +2399,88 @@ const DataRoom = () => {
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
+
+  //Notification Redirection for Files and folder Read and Right
+  useEffect(() => {
+    //For Read Rights only
+    if (JSON.parse(localStorage.getItem("DataRoomOperations")) === true) {
+      let NotificationClickFileID = localStorage.getItem(
+        "NotificationClickFileID"
+      );
+      let NotificationClickFileName = localStorage.getItem(
+        "NotificationClickFileName"
+      );
+      const pdfData = {
+        taskId: Number(NotificationClickFileID),
+        commingFrom: 4,
+        fileName: NotificationClickFileName,
+        attachmentID: Number(NotificationClickFileID),
+        isPermission: 1,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = NotificationClickFileName.split(".").pop();
+      openDocumentViewer(
+        ext,
+        pdfDataJson,
+        dispatch,
+        navigate,
+        t,
+        Number(NotificationClickFileID)
+      );
+    }
+    //For Edit Rights only
+    if (
+      JSON.parse(
+        localStorage.getItem("DataRoomOperationsForFileEditorRights")
+      ) === true
+    ) {
+      let NotificationClickFileID = localStorage.getItem(
+        "NotificationClickFileID"
+      );
+      let NotificationClickFileName = localStorage.getItem(
+        "NotificationClickFileName"
+      );
+      const pdfData = {
+        taskId: Number(NotificationClickFileID),
+        commingFrom: 4,
+        fileName: NotificationClickFileName,
+        attachmentID: Number(NotificationClickFileID),
+        isPermission: 2,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      let ext = NotificationClickFileName.split(".").pop();
+      openDocumentViewer(
+        ext,
+        pdfDataJson,
+        dispatch,
+        navigate,
+        t,
+        Number(NotificationClickFileID)
+      );
+    }
+
+    //For Folder View Rights
+    if (
+      JSON.parse(
+        localStorage.getItem("DataRoomOperationsForFolderViewerRights")
+      ) === true
+    ) {
+      let NotificaitonClickFolderID = localStorage.getItem(
+        "NotificationClickFolderID"
+      );
+      dispatch(
+        getFolderDocumentsApi(navigate, Number(NotificaitonClickFolderID), t)
+      );
+    }
+    return () => {
+      localStorage.removeItem("DataRoomOperations");
+      localStorage.removeItem("NotificationClickFileID");
+      localStorage.removeItem("NotificationClickFileName");
+      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+      localStorage.removeItem("DataRoomOperationsForFolderViewerRights");
+      localStorage.removeItem("NotificationClickFolderID");
+    };
+  }, []);
 
   const shareWithmeColoumns = [
     {

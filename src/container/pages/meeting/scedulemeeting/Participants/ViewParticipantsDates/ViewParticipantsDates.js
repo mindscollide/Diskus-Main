@@ -52,6 +52,7 @@ const ViewParticipantsDates = ({
   );
 
   const [prposedData, setPrposedData] = useState([]);
+  console.log(prposedData, "prposedData");
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
@@ -76,6 +77,7 @@ const ViewParticipantsDates = ({
     let NotificationClickMeetingID = localStorage.getItem(
       "NotificationClickMeetingID"
     );
+
     if (NotificationClickProposedMeetingFlag) {
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
@@ -119,6 +121,12 @@ const ViewParticipantsDates = ({
       setDataroomMapFolderId(null);
       localStorage.removeItem("ProposedMeetingOperations");
       localStorage.removeItem("NotificationClickMeetingID");
+      localStorage.removeItem("ProposedMeetOperationsDateSelected");
+      localStorage.removeItem("ProposedMeetOperationsDateSelectedMeetID");
+      localStorage.removeItem(
+        "ProposedMeetOperationsDateSelectedSendResponseByDate"
+      );
+      localStorage.removeItem("BeforeProposedDateSelectedCheck");
     };
   }, []);
 
@@ -284,6 +292,12 @@ const ViewParticipantsDates = ({
   };
 
   const handleSave = () => {
+    let NotificationClickProposedMeetingFlag = JSON.parse(
+      localStorage.getItem("ProposedMeetingOperations")
+    );
+    let NotificationClickMeetingID = localStorage.getItem(
+      "NotificationClickMeetingID"
+    );
     let findIsanySelected = prposedData.some(
       (data, index) => data.isSelected === true
     );
@@ -298,7 +312,10 @@ const ViewParticipantsDates = ({
         });
       });
       let Data = {
-        MeetingID: currentMeetingID,
+        MeetingID:
+          NotificationClickProposedMeetingFlag === true
+            ? Number(NotificationClickMeetingID)
+            : currentMeetingID,
         ProposedDates: defaultarr,
       };
       dispatch(
@@ -317,7 +334,10 @@ const ViewParticipantsDates = ({
         }
       });
       let Data = {
-        MeetingID: currentMeetingID,
+        MeetingID:
+          NotificationClickProposedMeetingFlag === true
+            ? Number(NotificationClickMeetingID)
+            : currentMeetingID,
         ProposedDates: newarr,
       };
 
@@ -408,6 +428,8 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
+                          console.log(data, "prposedData");
+
                           const isChecked =
                             data.isSelected &&
                             Number(data.userID) === Number(currentUserId);

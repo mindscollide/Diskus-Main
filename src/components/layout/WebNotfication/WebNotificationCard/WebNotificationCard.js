@@ -1,45 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./WebNotificationCard.module.css";
-import AddedInMeeting from "../../../../assets/images/Added in meeting.png";
-import MeetingUpdated from "../../../../assets/images/Meeting Updated.png";
-import MeetingCreated from "../../../../assets/images/Meeting created.png";
-import MeetingEnded from "../../../../assets/images/Meeting Ended.png";
-import RemoveFromMeeting from "../../../../assets/images/Removed from Meeting.png";
-import TaskCreated from "../../../../assets/images/Task Created.png";
-import AddedInTask from "../../../../assets/images/Added in a task.png";
-import TaskStatusChange from "../../../../assets/images/Task status change.png";
-import TaskDeadline from "../../../../assets/images/Task Deadline.png";
-import TaskDeleted from "../../../../assets/images/Task Deleted.png";
-import AddedAnEventFromGoogleCalender from "../../../../assets/images/Added an event from Google Calendar.png";
-import AddedAnEventFromOutlookCalender from "../../../../assets/images/Added an event from Outlook Calendar.png";
-import UpdatedAnEventFromGoogleCalender from "../../../../assets/images/Updated event from Google Calendar.png";
-import UpdatedAnEventFromOutlookCalender from "../../../../assets/images/Updated event from Outlook Calendar.png";
-import DeleteAnEventFromOutlookCalender from "../../../../assets/images/Deleted event from Outlook Calendar.png";
-import DeleteAnEventFromGoogleCalender from "../../../../assets/images/Deleted event from Outlook Calendar.png";
-import FolderShared from "../../../../assets/images/folder shared.png";
-import FolderDeleted from "../../../../assets/images/folder deleted.png";
-import RightsChangeInAnyFile from "../../../../assets/images/Rights change in any file.png";
-import GroupCreated from "../../../../assets/images/Group created.png";
-import GroupDeleted from "../../../../assets/images/Group deleted.png";
-import CommitteesCreated from "../../../../assets/images/Committees created.png";
-import CommitteesDeleted from "../../../../assets/images/Committees deleted.png";
-import ResolutionCreated from "../../../../assets/images/Resolution created.png";
-import ResolutionDeleted from "../../../../assets/images/Resolution deleted.png";
-import ResolutionAdded from "../../../../assets/images/Added in resolution.png";
-import ResolutionIntimationDeadline from "../../../../assets/images/Deadline intimation in resolution.png";
-import PollCreated from "../../../../assets/images/Poll created.png";
-import PollDeleted from "../../../../assets/images/Poll deleted.png";
-import PollResult from "../../../../assets/images/Poll Result.png";
-import SignatureRequest from "../../../../assets/images/Signatures request.png";
-import MinutesReviewRequest from "../../../../assets/images/Minutes review request.png";
-import Video from "../../../../assets/images/Video.png";
-import Approval from "../../../../assets/images/Approval.png";
-import Signature from "../../../../assets/images/Signature.png";
-import {
-  WebNotficationDateFormatter,
-  WebNotificationDateFormatter,
-} from "../../../../commen/functions/date_formater";
+import AddedInMeeting from "../../../../assets/NotificationIcon/Meeting created.png";
+import MeetingUpdateIcon from "../../../../assets/NotificationIcon/Meeting Updated.png";
+import MeetingStartedIcon from "../../../../assets/NotificationIcon/Meeting started.png";
+import MeetingEndedIcon from "../../../../assets/NotificationIcon/Meeting Ended.png";
+import MeetingCancelledIcon from "../../../../assets/NotificationIcon/Cancel meeting.png";
+import RemovedFromMeetingIcon from "../../../../assets/NotificationIcon/Removed from Meeting.png";
+import MinutesreviewrequestIcon from "../../../../assets/NotificationIcon/Minutes review request.png";
+import removedfromminutesreviewrequestIcon from "../../../../assets/NotificationIcon/removed from minutes review request.png";
+import Added_As_A_ParticipantIcon from "../../../../assets/NotificationIcon/Added_As_A_Participant.png";
+import Added_As_An_OrganizerIcon from "../../../../assets/NotificationIcon/Added_As_An_Organizer.png";
+import Added_As_An_Agenda_ContributorIcon from "../../../../assets/NotificationIcon/Added_As_An_Agenda_Contributor.png";
+import PollcreatedIcon from "../../../../assets/NotificationIcon/Poll created.png";
+import Propose_Meeting_RequestIcon from "../../../../assets/NotificationIcon/Propose_Meeting_Request.png";
+import Propose_Meeting_Slot_SelectedIcon from "../../../../assets/NotificationIcon/Propose_Meeting_Slot_Selected.png";
+import Propose_Meeting_Slot_Selected_For_OrganizerIcon from "../../../../assets/NotificationIcon/Propose_Meeting_Slot_Selected_For_Organizer.png";
+import Added_In_A_GroupIcon from "../../../../assets/NotificationIcon/Added_In_A_Group.png";
+import Removed_From_A_GroupIcon from "../../../../assets/NotificationIcon/Removed_From_A_Group.png";
+import Group_ArchivedIcon from "../../../../assets/NotificationIcon/Group_Archived.png";
+import Group_InactivatedIcon from "../../../../assets/NotificationIcon/Group_Inactivated.png";
+import Group_ActivatedIcon from "../../../../assets/NotificationIcon/Group_Activated.png";
+import Added_In_A_CommitteeIcon from "../../../../assets/NotificationIcon/Added_In_A_Committee.png";
+import Removed_From_A_CommitteeIcon from "../../../../assets/NotificationIcon/Removed_From_A_Committee.png";
+import Committee_InActivatedIcon from "../../../../assets/NotificationIcon/Committee_InActivated.png";
+import Committee_ActivatedIcon from "../../../../assets/NotificationIcon/Committee_Activated.png";
+import Added_In_A_Resolution_As_VoterIcon from "../../../../assets/NotificationIcon/Added_In_A_Resolution_As_Voter.png";
+import Added_In_A_Resolution_As_NonVoterIcon from "../../../../assets/NotificationIcon/Added_In_A_Resolution_As_NonVoter.png";
+import Resolution_Decision_AnnouncedIcon from "../../../../assets/NotificationIcon/Resolution_Decision_Announced.png";
+import Poll_UpdatedIcon from "../../../../assets/NotificationIcon/Poll_Updated.png";
+import Poll_Result_Published from "../../../../assets/NotificationIcon/Poll_Result_Published.png";
+import File_Shared_As_A_ViewerIcon from "../../../../assets/NotificationIcon/File_Shared_As_A_Viewer.png";
+import File_Shared_As_An_EditorIcon from "../../../../assets/NotificationIcon/File_Shared_As_An_Editor.png";
+import Folder_Shared_As_An_ViewerIcon from "../../../../assets/NotificationIcon/Folder_Shared_As_An_Viewer.png";
+import Folder_Shared_As_An_EditorIcon from "../../../../assets/NotificationIcon/Folder_Shared_As_An_Editor.png";
+import Shared_Editor_Folder_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Editor_Folder_Deleted.png";
+import Shared_Editor_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Editor_File_Deleted.png";
+import Shared_Viewer_Folder_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_Folder_Deleted.png";
+import Shared_Viewer_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_File_Deleted.png";
+import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
 
 const WebNotificationCard = ({
   NotificationMessege,
@@ -75,86 +74,92 @@ const WebNotificationCard = ({
         >
           {/* Icons According to Unique Notification ID  */}
           {NotificaitonID === 1 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={AddedInMeeting} width={46} alt="" />
           ) : NotificaitonID === 2 ? (
-            <img src={MeetingUpdated} width={46} alt="" />
+            <img src={MeetingUpdateIcon} width={46} alt="" />
           ) : NotificaitonID === 3 ? (
-            <img src={MeetingUpdated} width={46} alt="" />
+            <img src={MeetingStartedIcon} width={46} alt="" />
           ) : NotificaitonID === 4 ? (
-            <img src={MeetingEnded} width={46} alt="" />
+            <img src={MeetingEndedIcon} width={46} alt="" />
           ) : NotificaitonID === 5 ? (
-            <img src={MeetingEnded} width={46} alt="" />
+            <img src={MeetingCancelledIcon} width={46} alt="" />
           ) : NotificaitonID === 6 ? (
-            <img src={RemoveFromMeeting} width={46} alt="" />
+            <img src={RemovedFromMeetingIcon} width={46} alt="" />
           ) : NotificaitonID === 7 ? (
-            <img src={MinutesReviewRequest} width={46} alt="" />
+            <img src={MinutesreviewrequestIcon} width={46} alt="" />
           ) : NotificaitonID === 8 ? (
-            <img src={MinutesReviewRequest} width={46} alt="" />
+            <img src={removedfromminutesreviewrequestIcon} width={46} alt="" />
           ) : NotificaitonID === 9 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={Added_As_A_ParticipantIcon} width={46} alt="" />
           ) : NotificaitonID === 10 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={Added_As_An_OrganizerIcon} width={46} alt="" />
           ) : NotificaitonID === 11 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={Added_As_An_Agenda_ContributorIcon} width={46} alt="" />
           ) : NotificaitonID === 12 ? (
-            <img src={PollCreated} width={46} alt="" />
+            <img src={PollcreatedIcon} width={46} alt="" />
           ) : NotificaitonID === 13 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={Propose_Meeting_RequestIcon} width={46} alt="" />
           ) : NotificaitonID === 14 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img src={Propose_Meeting_Slot_SelectedIcon} width={46} alt="" />
           ) : NotificaitonID === 15 ? (
-            <img src={MeetingCreated} width={46} alt="" />
+            <img
+              src={Propose_Meeting_Slot_Selected_For_OrganizerIcon}
+              width={46}
+              alt=""
+            />
           ) : NotificaitonID === 16 ? (
-            <img src={GroupCreated} width={46} alt="" />
+            <img src={Added_In_A_GroupIcon} width={46} alt="" />
           ) : NotificaitonID === 17 ? (
-            <img src={GroupCreated} width={46} alt="" />
+            <img src={Removed_From_A_GroupIcon} width={46} alt="" />
           ) : NotificaitonID === 18 ? (
-            <img src={GroupCreated} width={46} alt="" />
+            <img src={Group_ArchivedIcon} width={46} alt="" />
           ) : NotificaitonID === 19 ? (
-            <img src={GroupCreated} width={46} alt="" />
+            <img src={Group_InactivatedIcon} width={46} alt="" />
           ) : NotificaitonID === 20 ? (
-            <img src={GroupCreated} width={46} alt="" />
+            <img src={Group_ActivatedIcon} width={46} alt="" />
           ) : NotificaitonID === 21 ? (
-            <img src={CommitteesCreated} width={46} alt="" />
+            <img src={Added_In_A_CommitteeIcon} width={46} alt="" />
           ) : NotificaitonID === 22 ? (
-            <img src={CommitteesCreated} width={46} alt="" />
+            <img src={Removed_From_A_CommitteeIcon} width={46} alt="" />
           ) : NotificaitonID === 23 ? (
-            <img src={CommitteesCreated} width={46} alt="" />
+            <img src={AddedInMeeting} width={46} alt="" />
           ) : NotificaitonID === 24 ? (
-            <img src={CommitteesCreated} width={46} alt="" />
+            <img src={Committee_InActivatedIcon} width={46} alt="" />
           ) : NotificaitonID === 25 ? (
-            <img src={CommitteesCreated} width={46} alt="" />
+            <img src={Committee_ActivatedIcon} width={46} alt="" />
           ) : NotificaitonID === 26 ? (
-            <img src={ResolutionCreated} width={46} alt="" />
+            <img src={Added_In_A_Resolution_As_VoterIcon} width={46} alt="" />
           ) : NotificaitonID === 27 ? (
-            <img src={ResolutionCreated} width={46} alt="" />
+            <img
+              src={Added_In_A_Resolution_As_NonVoterIcon}
+              width={46}
+              alt=""
+            />
           ) : NotificaitonID === 28 ? (
-            <img src={ResolutionCreated} width={46} alt="" />
+            <img src={Resolution_Decision_AnnouncedIcon} width={46} alt="" />
           ) : NotificaitonID === 29 ? (
-            <img src={PollCreated} width={46} alt="" />
+            <img src={PollcreatedIcon} width={46} alt="" />
           ) : NotificaitonID === 30 ? (
-            <img src={PollCreated} width={46} alt="" />
+            <img src={Poll_UpdatedIcon} width={46} alt="" />
           ) : NotificaitonID === 31 ? (
-            <img src={PollResult} width={46} alt="" />
+            <img src={Poll_Result_Published} width={46} alt="" />
           ) : NotificaitonID === 33 ? (
-            <img src={FolderShared} width={46} alt="" />
+            <img src={File_Shared_As_A_ViewerIcon} width={46} alt="" />
           ) : NotificaitonID === 34 ? (
-            <img src={FolderShared} width={46} alt="" />
+            <img src={File_Shared_As_An_EditorIcon} width={46} alt="" />
           ) : NotificaitonID === 35 ? (
-            <img src={FolderShared} width={46} alt="" />
+            <img src={Folder_Shared_As_An_ViewerIcon} width={46} alt="" />
           ) : NotificaitonID === 36 ? (
-            <img src={FolderShared} width={46} alt="" />
+            <img src={Folder_Shared_As_An_EditorIcon} width={46} alt="" />
           ) : NotificaitonID === 37 ? (
-            <img src={FolderDeleted} width={46} alt="" />
+            <img src={Shared_Editor_Folder_DeletedIcon} width={46} alt="" />
           ) : NotificaitonID === 38 ? (
-            <img src={FolderDeleted} width={46} alt="" />
+            <img src={Shared_Editor_File_DeletedIcon} width={46} alt="" />
           ) : NotificaitonID === 39 ? (
-            <img src={FolderDeleted} width={46} alt="" />
+            <img src={Shared_Viewer_Folder_DeletedIcon} width={46} alt="" />
           ) : NotificaitonID === 40 ? (
-            <img src={FolderDeleted} width={46} alt="" />
-          ) : (
-            <img src={MeetingCreated} width={46} alt="" />
-          )}
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : null}
 
           <span className={styles["NotificationMessegeUnmarked"]}>
             {truncatedMessage}
