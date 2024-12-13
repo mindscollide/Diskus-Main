@@ -52,6 +52,7 @@ const ViewParticipantsDates = ({
   );
 
   const [prposedData, setPrposedData] = useState([]);
+  console.log(prposedData, "prposedData");
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
@@ -76,29 +77,10 @@ const ViewParticipantsDates = ({
     let NotificationClickMeetingID = localStorage.getItem(
       "NotificationClickMeetingID"
     );
-    let NotificationClickProposeMeetingFlagAfterDateSelection =
-      localStorage.getItem("ProposedMeetOperationsDateSelected");
-    let NotificationClickProposedMeetAfterDateSelectedMeetID =
-      localStorage.getItem("ProposedMeetOperationsDateSelectedMeetID");
+
     if (NotificationClickProposedMeetingFlag) {
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
-      };
-      await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
-      await dispatch(
-        GetAllMeetingDetailsApiFunc(
-          navigate,
-          t,
-          Data,
-          false,
-          setCurrentMeetingID,
-          setSceduleMeeting,
-          setDataroomMapFolderId
-        )
-      );
-    } else if (NotificationClickProposeMeetingFlagAfterDateSelection) {
-      let Data = {
-        MeetingID: Number(NotificationClickProposedMeetAfterDateSelectedMeetID),
       };
       await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
       await dispatch(
@@ -144,6 +126,7 @@ const ViewParticipantsDates = ({
       localStorage.removeItem(
         "ProposedMeetOperationsDateSelectedSendResponseByDate"
       );
+      localStorage.removeItem("BeforeProposedDateSelectedCheck");
     };
   }, []);
 
@@ -445,6 +428,8 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
+                          console.log(data, "prposedData");
+
                           const isChecked =
                             data.isSelected &&
                             Number(data.userID) === Number(currentUserId);

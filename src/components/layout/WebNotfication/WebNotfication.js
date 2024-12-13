@@ -266,24 +266,20 @@ const WebNotfication = ({
       //Notification For Proposed Meeting Request
       navigate("/Diskus/Meeting");
       localStorage.setItem("ProposedMeetingOperations", true);
+      //Before Date Selection Check
+      localStorage.setItem("BeforeProposedDateSelectedCheck", true);
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 14) {
-      //Notification When slot is selected by the participant.
+      //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
       navigate("/Diskus/Meeting");
       localStorage.setItem("ProposedMeetingOperations", true);
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
-    } else if (NotificationData.notificationActionID === 15) {
-      //Notification that Proposed Participant has Selected the Dates for Proposed meeting
-      navigate("/Diskus/Meeting");
-      localStorage.setItem("ProposedMeetOperationsDateSelected", true);
-      localStorage.setItem(
-        "ProposedMeetOperationsDateSelectedMeetID",
-        PayLoadData.MeetingID
-      );
       localStorage.setItem(
         "ProposedMeetOperationsDateSelectedSendResponseByDate",
         PayLoadData.DeadlineDate
       );
+    } else if (NotificationData.notificationActionID === 15) {
+      //Notification that Proposed Meeting Date Organizer work
     } else if (NotificationData.notificationActionID === 16) {
       //Notificaiton For Added in Group
       navigate("/Diskus/groups");

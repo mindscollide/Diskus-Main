@@ -412,31 +412,36 @@ const NewMeeting = () => {
       if (
         JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
-        dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-        setViewProposeDatePoll(true);
-        dispatch(proposedMeetingDatesGlobalFlag(true));
-        dispatch(viewProposeDateMeetingPageFlag(true));
-        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-      } else if (
-        JSON.parse(
-          localStorage.getItem("ProposedMeetOperationsDateSelected")
-        ) === true
-      ) {
-        const storedDate = localStorage.getItem(
+        //Here to implemented the logic when the prposed meeting dates are not selected
+        if (
+          JSON.parse(
+            localStorage.getItem("BeforeProposedDateSelectedCheck")
+          ) === true
+        ) {
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(true);
+          dispatch(proposedMeetingDatesGlobalFlag(true));
+          dispatch(viewProposeDateMeetingPageFlag(true));
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        }
+        let StoredNotificationClickProposedMeetingDate = localStorage.getItem(
           "ProposedMeetOperationsDateSelectedSendResponseByDate"
         );
-
+        //Here i will apply that if polls are not expired i will redirect it to the voting page
         // Get the current date in "YYYYMMDD" format
         const currentDate = new Date();
         const formattedCurrentDate = `${currentDate.getFullYear()}${String(
           currentDate.getMonth() + 1
         ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
-        console.log(storedDate, "storedDatestoredDatestoredDate");
+        console.log(
+          StoredNotificationClickProposedMeetingDate,
+          "storedDatestoredDatestoredDate"
+        );
         console.log(formattedCurrentDate, "storedDatestoredDatestoredDate");
         // Compare stored date with the current date
-        if (storedDate <= formattedCurrentDate) {
-          console.log("Stored date is less than the current date.");
-          // If the polls are not Expired then move to voting page
+        if (
+          StoredNotificationClickProposedMeetingDate <= formattedCurrentDate
+        ) {
           dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
           setViewProposeDatePoll(true);
           dispatch(proposedMeetingDatesGlobalFlag(true));
@@ -448,6 +453,10 @@ const NewMeeting = () => {
           setViewProposeDatePoll(false);
           dispatch(proposedMeetingDatesGlobalFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
+          //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
+          localStorage.removeItem(
+            "ProposedMeetOperationsDateSelectedSendResponseByDate"
+          );
         }
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
