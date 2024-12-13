@@ -62,6 +62,8 @@ const initialState = {
   makeHostNow: null,
   isMicEnabled: true,
   isWebCamEnabled: true,
+  isAudioGlobalStream: false,
+  isVideoGlobalStream: false,
   getAllParticipantMain: [],
   participantsVisible: false,
 };
@@ -133,7 +135,7 @@ const videoFeatureReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        waitingParticipantsList:newData2,
+        waitingParticipantsList: newData2,
         getVideoParticpantListandWaitingList: newData,
         getAllParticipantMain: updatedList,
       };
@@ -804,6 +806,20 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         isWebCamEnabled: action.payload,
+      };
+
+    // FOR AUDIO STREAM GLOBAL
+    case actions.GLOBAL_STREAM_AUDIO:
+      return {
+        ...state,
+        isAudioGlobalStream: action.response,
+      };
+
+    // FOR VIDEO STREAM GLOBAL
+    case actions.GLOBAL_STREAM_VIDEO:
+      return {
+        ...state,
+        isVideoGlobalStream: action.response,
       };
 
     default:

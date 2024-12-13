@@ -1055,6 +1055,22 @@ const toggleParticipantsVisibility = (isVisible) => {
   };
 };
 
+// FOR AUDIO STREAM GLOBAL
+const globalStateForAudioStream = (response) => {
+  return {
+    type: actions.GLOBAL_STREAM_AUDIO,
+    response: response,
+  };
+};
+
+//FOR VIDEO STREAM GLOBAL
+const globalStateForVideoStream = (response) => {
+  return {
+    type: actions.GLOBAL_STREAM_VIDEO,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1119,4 +1135,6 @@ export {
   participantLeaveVideoMeeting,
   getVideoCallParticipantsMainApi,
   toggleParticipantsVisibility,
+  globalStateForAudioStream,
+  globalStateForVideoStream,
 };
