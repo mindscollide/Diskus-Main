@@ -188,13 +188,21 @@ const SceduleProposedmeeting = ({
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
+    let NotificationClickOrganizerProposedMeeting = JSON.parse(
+      localStorage.getItem("ProposedMeetingOrganizer")
+    );
+    let NotificationClickOrganizerProposedMeetingID = localStorage.getItem(
+      "ProposedMeetingOrganizerMeetingID"
+    );
     let findIsSelected = proposedDatesData.find(
       (propsedData, index) => propsedData.isSelected === true
     );
 
     if (findIsSelected) {
       let scheduleMeeting = {
-        MeetingID: Number(viewProposeDatePollMeetingID),
+        MeetingID: NotificationClickOrganizerProposedMeeting
+          ? Number(NotificationClickOrganizerProposedMeetingID)
+          : Number(viewProposeDatePollMeetingID),
         ProposedDateID: findIsSelected.proposedDateID,
       };
       dispatch(

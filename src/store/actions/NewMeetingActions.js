@@ -1010,6 +1010,25 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
+              if (
+                JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
+                true
+              ) {
+                if (
+                  JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
+                ) {
+                  //Notification Work
+                  console.log("ComingIN");
+                  //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
+                  dispatch(showSceduleProposedMeeting(true));
+                } else {
+                  console.log("ComingIN");
+                  //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
+                  localStorage.removeItem("MeetingStatusID");
+                  localStorage.removeItem("ProposedMeetingOrganizer");
+                  localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
+                }
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
