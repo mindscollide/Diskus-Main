@@ -57,6 +57,7 @@ import {
   GetMinuteReviewPendingApprovalsByReviewerId,
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
 } from "../../../store/actions/Minutes_action.js";
+import { convertNumbersInString } from "../../../commen/functions/regex";
 
 const Talk = () => {
   const { t } = useTranslation();
@@ -427,7 +428,9 @@ const Talk = () => {
               {/* <span className="talk-count"></span> */}
               {/* <span className={"talk-count"}> */}
               <span className={pendingApprovalCount === 0 ? "" : "talk-count"}>
-                {pendingApprovalCount === 0 ? "" : pendingApprovalCount}
+                {convertNumbersInString(pendingApprovalCount, currentLang) === 0
+                  ? ""
+                  : convertNumbersInString(pendingApprovalCount, currentLang)}
               </span>
               <svg
                 width="35"
@@ -583,7 +586,9 @@ const Talk = () => {
               >
                 {/* <span className="talk-count"></span> */}
                 <span className={missedCallCount === 0 ? "" : "talk-count"}>
-                  {missedCallCount === 0 ? "" : missedCallCount}
+                  {convertNumbersInString(missedCallCount, currentLang) === 0
+                    ? ""
+                    : convertNumbersInString(missedCallCount, currentLang)}
                 </span>
                 <svg
                   id="Icon_feather-video"

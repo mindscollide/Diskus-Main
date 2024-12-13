@@ -70,6 +70,7 @@ import {
   raiseUnRaisedHandMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { convertNumbersInString } from "../../../../../commen/functions/regex";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -81,7 +82,6 @@ const VideoCallNormalHeader = ({
   isVideoActive,
   showTile,
 }) => {
-  console.log("VideoCallNormalHeader");
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state
   );
@@ -91,23 +91,15 @@ const VideoCallNormalHeader = ({
   );
 
   const { editorRole } = useContext(MeetingContext);
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
   // For acccept Join name participantList
   const getVideoParticpantListandWaitingList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
 
-  console.log(
-    getVideoParticpantListandWaitingList,
-    "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
-  );
-
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
-
-  console.log(waitingParticipantsList, "participantWaitingList");
 
   //Audio Control For host
   const audioControlHost = useSelector(
@@ -146,6 +138,7 @@ const VideoCallNormalHeader = ({
   let initiateVideoCallFlag = JSON.parse(
     localStorage.getItem("initiateVideoCall")
   );
+  let lan = localStorage.getItem("i18nextLng");
   let recipentCalledID = Number(localStorage.getItem("recipentCalledID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let callerID = Number(localStorage.getItem("callerID"));
@@ -1016,11 +1009,16 @@ const VideoCallNormalHeader = ({
                           </Tooltip>
                         )}
                         <span className="participants-counter-For-Host">
-                          {participantCounter}
+                          {convertNumbersInString(participantCounter, lan)}
                         </span>
-                       {participantWaitingListCounter >0&& <span className="participants-counter-For-Host-waiting-counter">
-                          {participantWaitingListCounter}
-                        </span>}
+                        {participantWaitingListCounter > 0 && (
+                          <span className="participants-counter-For-Host-waiting-counter">
+                            {convertNumbersInString(
+                              participantWaitingListCounter,
+                              lan
+                            )}
+                          </span>
+                        )}
                       </div>
                     ) : null
                   }
