@@ -1,17 +1,9 @@
 {
-  "ResolutionModel": {
-    "PK_ResolutionID": 0,
-    "FK_ResolutionStatusID": 1,
-    "FK_ResolutionVotingMethodID": 1,
-    "Title": "Resolution 2",
-    "NotesToVoter": "None",
-    "CirculationDateTime": "2023-03-25 18:49:01",
-    "DeadlineDateTime": "2023-05-25 00:00:00",
-    "FK_ResolutionReminderFrequency_ID": 1,
-    "FK_ResolutionDecision_ID": 3,
-    "DecisionAnnouncementDateTime": "2023-05-25 00:00:00",
-    "IsResolutionPublic": false,
-    "FK_OrganizationID": 287,
-    "FK_UID": 750
-  }
+  "notificationID": 302,
+  "notificationActionID": 13,
+  "notificationActionName": "Propose_Meeting_Request",
+  "description": "Provide your preferred slot for the upcoming meeting: new",
+  "payloadData": "{\"MeetingID\":4465,\"MeetingTitle\":\"new\",\"NotifierName\":\"Mehdi Admin\",\"IsQuickMeeting\":false,\"DeadlineDate\":\"20241212\"}",
+  "isRead": true,
+  "sentDateTime": "20241212125525"
 }

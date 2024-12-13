@@ -336,24 +336,8 @@ const ViewMeetingDetails = ({
 
   //funciton cancel button
   const handleCancelMeetingNoPopup = () => {
-    if (meetingStatus === 10 || meetingStatus === "10") {
-      let leaveMeetingData = {
-        FK_MDID: currentMeeting,
-        DateTime: getCurrentDateTimeUTC(),
-      };
-      dispatch(
-        LeaveCurrentMeeting(
-          navigate,
-          t,
-          leaveMeetingData,
-          false,
-          setViewFlag,
-          setEdiorRole,
-          setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal
-        )
-      );
-    } else {
+    //Notifcation when Meeting Started and you have joined it if you didnt applied this it will say join logs didnt find
+    if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       let searchData = {
         Date: "",
         Title: "",
@@ -365,7 +349,6 @@ const ViewMeetingDetails = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEdiorRole({ status: null, role: null });
@@ -373,6 +356,45 @@ const ViewMeetingDetails = ({
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    } else {
+      if (meetingStatus === 10 || meetingStatus === "10") {
+        let leaveMeetingData = {
+          FK_MDID: currentMeeting,
+          DateTime: getCurrentDateTimeUTC(),
+        };
+        dispatch(
+          LeaveCurrentMeeting(
+            navigate,
+            t,
+            leaveMeetingData,
+            false,
+            setViewFlag,
+            setEdiorRole,
+            setAdvanceMeetingModalID,
+            setViewAdvanceMeetingModal
+          )
+        );
+      } else {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        console.log("chek search meeting");
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("folderDataRoomMeeting");
+        setEdiorRole({ status: null, role: null });
+        setAdvanceMeetingModalID(null);
+        setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      }
     }
   };
 

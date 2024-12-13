@@ -25,6 +25,8 @@ const WebNotfication = ({
     previous: [],
   });
 
+  console.log(groupedNotifications, "groupedNotifications");
+
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
@@ -180,24 +182,106 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 5) {
+      //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 6) {
+      //Notification For being removed from  Meeting
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+      } else {
+        navigate("/Diskus/Meeting");
+      }
     } else if (NotificationData.notificationActionID === 7) {
+      //Notification for being added as a minute reviewer
+      navigate("/Diskus/Minutes");
+      localStorage.setItem("MinutesOperations", true);
+      localStorage.setItem(
+        "NotificationClickMinutesMeetingID",
+        PayLoadData.MeetingID
+      );
     } else if (NotificationData.notificationActionID === 8) {
+      //Notification for Being Removed As a reviwer in Minutes review
+      navigate("/Diskus/Minutes");
     } else if (NotificationData.notificationActionID === 9) {
+      //Notification For Added as An Participant
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 10) {
+      //Notification For Added as An Organizer
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 11) {
+      //Notification For Added as An Agenda Contributor
+      if (PayLoadData.IsQuickMeeting === true) {
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("QuicMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationQuickMeetingID",
+          PayLoadData.MeetingID
+        );
+      } else {
+        navigate("/Diskus/Meeting");
+        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
       //Notification For Proposed Meeting Request
       navigate("/Diskus/Meeting");
       localStorage.setItem("ProposedMeetingOperations", true);
+      //Before Date Selection Check
+      localStorage.setItem("BeforeProposedDateSelectedCheck", true);
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
     } else if (NotificationData.notificationActionID === 14) {
-      //Notification When slot is selected by the participant.
+      //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
       navigate("/Diskus/Meeting");
       localStorage.setItem("ProposedMeetingOperations", true);
       localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
+      localStorage.setItem(
+        "ProposedMeetOperationsDateSelectedSendResponseByDate",
+        PayLoadData.DeadlineDate
+      );
     } else if (NotificationData.notificationActionID === 15) {
+      //Notification that Proposed Meeting Date Organizer work
     } else if (NotificationData.notificationActionID === 16) {
       //Notificaiton For Added in Group
       navigate("/Diskus/groups");
@@ -225,6 +309,13 @@ const WebNotfication = ({
       localStorage.setItem("NotificationClickAddedIntoGroup", true);
       localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
     } else if (NotificationData.notificationActionID === 21) {
+      //Notification for being Added in the Committee
+      navigate("/Diskus/committee");
+      localStorage.setItem("NotificationClickCommitteeOperations", true);
+      localStorage.setItem(
+        "NotifcationClickViewCommitteeID",
+        PayLoadData.CommitteeID
+      );
     } else if (NotificationData.notificationActionID === 22) {
       //Notificaiton For Removed From Committee
       navigate("/Diskus/committee");
@@ -265,13 +356,39 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
+      //Notification For Being File shared to you as viewer
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperations", true);
+      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 34) {
+      //Notification For Being File shared to you as Editor
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
+      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
     } else if (NotificationData.notificationActionID === 35) {
+      //Notification for sharing folder as a viewer
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
     } else if (NotificationData.notificationActionID === 36) {
+      //Notification for sharing folder as a Editor
+      navigate("/Diskus/dataroom");
+      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
     } else if (NotificationData.notificationActionID === 37) {
+      // Notification For Deleted a Folder as Editor
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 38) {
+      // Notification For Deleted a File as Editor
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 39) {
+      // Notification For Deleted a Folder as viewer
+      navigate("/Diskus/dataroom");
     } else if (NotificationData.notificationActionID === 40) {
+      // Notification For Deleted a file as viewer
+      navigate("/Diskus/dataroom");
     } else {
     }
   };
@@ -326,7 +443,7 @@ const WebNotfication = ({
                       NotificationTime={data.sentDateTime}
                       index={index}
                       length={groupedNotifications.today.length}
-                      NotificaitonID={data.notificationID}
+                      NotificaitonID={data.notificationActionID}
                     />
                   </Col>
                 </Row>
@@ -360,7 +477,7 @@ const WebNotfication = ({
                         NotificationTime={data.sentDateTime}
                         index={index}
                         length={groupedNotifications.previous.length}
-                        NotificaitonID={data.notificationID}
+                        NotificaitonID={data.notificationActionID}
                       />
                     </Col>
                   </Row>

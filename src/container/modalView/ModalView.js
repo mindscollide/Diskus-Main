@@ -449,9 +449,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setAllMeetingDetails(assigneesViewMeetingDetails);
       }
     } catch (error) {}
-    return () => {
-      localStorage.removeItem("QuicMeetingOperations");
-    };
   }, [assigneesViewMeetingDetails]);
 
   useEffect(() => {
@@ -934,12 +931,20 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         <Modal
           onHide={() => {
             if (
-              allMeetingDetails.meetingStatus.status === "10" ||
-              allMeetingDetails.meetingStatus.status === 10
+              JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
             ) {
-              leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
-            } else {
               setViewFlag(false);
+              localStorage.removeItem("QuicMeetingOperations");
+              localStorage.removeItem("NotificationQuickMeetingID");
+            } else {
+              if (
+                allMeetingDetails.meetingStatus.status === "10" ||
+                allMeetingDetails.meetingStatus.status === 10
+              ) {
+                leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+              } else {
+                setViewFlag(false);
+              }
             }
           }}
           show={viewFlag}
