@@ -156,6 +156,7 @@ const initialState = {
   shareViaDataRoomPathConfirmation: false,
   ProposedMeetingViewFlag: false,
   LeaveMeetingSidebarModal: false,
+  getMeetingStatusResponseData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2530,6 +2531,32 @@ const NewMeetingreducer = (state = initialState, action) => {
         LeaveMeetingSidebarModal: action.response,
       };
     }
+
+    case actions.GET_MEETING_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_MEETING_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingStatusResponseData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingStatusResponseData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return {
         ...state,
