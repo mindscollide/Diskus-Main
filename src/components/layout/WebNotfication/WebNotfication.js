@@ -10,6 +10,8 @@ import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmpty
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingActions";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -19,6 +21,7 @@ const WebNotfication = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -351,6 +354,15 @@ const WebNotfication = ({
       if (currentURL.includes("/Diskus/Meeting")) {
         return; // Perform no action if the URL matches
       } else {
+        //Call Status API to see what is the status of the meeting eighter proposed or published
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("ProposedMeetingOrganizer", true);
+        localStorage.setItem(
+          "ProposedMeetingOrganizerMeetingID",
+          PayLoadData.MeetingID
+        );
+        let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+        dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
       }
     } else if (NotificationData.notificationActionID === 16) {
       if (currentURL.includes("/Diskus/groups")) {

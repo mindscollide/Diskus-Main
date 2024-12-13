@@ -221,13 +221,10 @@ const NewMeeting = () => {
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
-
   //Proposed Meeting View Flag
   const ProposedMeetViewFlag = useSelector(
     (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
   );
-
-  console.log(ProposedMeetViewFlag, "ProposedMeetViewFlagProposedMeetViewFlag");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
@@ -299,7 +296,6 @@ const NewMeeting = () => {
   });
   const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
-
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -328,9 +324,7 @@ const NewMeeting = () => {
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
   ] = useState(false);
-
   const [dashboardEventData, setDashboardEventData] = useState(null);
-
   const [videoTalk, setVideoTalk] = useState({
     isChat: false,
     isVideoCall: false,
@@ -458,6 +452,34 @@ const NewMeeting = () => {
             "ProposedMeetOperationsDateSelectedSendResponseByDate"
           );
         }
+      } else if (
+        JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true
+      ) {
+        console.log("ComingIN");
+        //Notification if the Organizer clicks on the proposed meeting date submission Notification
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.setItem("MeetingCurrentView", 2);
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        setSearchFeilds({
+          ...searchFields,
+          Date: "",
+          DateView: "",
+          MeetingTitle: "",
+          OrganizerName: "",
+        });
+        setSearchMeeting(false);
+        setSearchText("");
+        setentereventIcon(false);
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           console.log(meetingpageRow, "QuicMeetingOperations");

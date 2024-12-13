@@ -1866,6 +1866,11 @@ const DiskusWebNotificationMarkAsRead = {
   RequestMethod: "ServiceManager.MarkNotificationsAsRead",
 };
 
+//Get Meeting Status
+const GetMeetingStatus = {
+  RequestMethod: "ServiceManager.GetMeetingStatusData",
+};
+
 export {
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
@@ -2358,4 +2363,5 @@ export {
   getVideoCallParticipantsAndWaitingList,
   DiskusWebNotification,
   DiskusWebNotificationMarkAsRead,
+  GetMeetingStatus,
 };
