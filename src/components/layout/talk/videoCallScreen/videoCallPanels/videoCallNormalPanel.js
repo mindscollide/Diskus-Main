@@ -72,14 +72,25 @@ const VideoPanelNormal = () => {
 
   let participantRoomIds = localStorage.getItem("participantRoomId");
 
+  let micStatus = JSON.parse(localStorage.getItem("MicOff"));
+
+  let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
+
+  let refinedParticipantVideoUrl = localStorage.getItem("refinedVideoUrl");
+
+  let refinedURLCheck = JSON.parse(localStorage.getItem("refinedVideoGiven"));
+
+  let urlFormeetingapi = localStorage.getItem("hostUrl");
+
   const newUserGUID = localStorage.getItem("isGuid");
 
   const { editorRole } = useContext(MeetingContext);
 
+  const FullLoader = useSelector((state) => state.VideoMainReducer.FullLoader);
+
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
   );
-  const FullLoader = useSelector((state) => state.VideoMainReducer.FullLoader);
 
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
@@ -189,15 +200,8 @@ const VideoPanelNormal = () => {
     meetingHost?.isHost ? true : false
   );
 
-  let micStatus = JSON.parse(localStorage.getItem("MicOff"));
-  let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
-
-  let refinedParticipantVideoUrl = localStorage.getItem("refinedVideoUrl");
-  let refinedURLCheck = JSON.parse(localStorage.getItem("refinedVideoGiven"));
-
-  let urlFormeetingapi = localStorage.getItem("hostUrl");
-
   const [isMicActive, setIsMicActive] = useState(micStatus);
+
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
 
   useEffect(() => {
@@ -218,7 +222,6 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
-    const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
@@ -231,37 +234,36 @@ const VideoPanelNormal = () => {
     }
   }, [audioControlHost]);
 
-  // useEffect(() => {
-  //   console.log(isMeetingHost, "iframeiframe");
-  //   const userRole = localStorage.getItem("userRole");
-  //   // Determine the control source based on the user role
-  //   // Reference the iframe and perform postMessage based on the control source
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     if (audioControlForParticipant === true) {
-  //       iframe.contentWindow.postMessage("MicOn", "*");
-  //     } else {
-  //       iframe.contentWindow.postMessage("MicOff", "*");
-  //     }
-  //   }
-  // }, [audioControlForParticipant]);
-
-  // useEffect(() => {
-  //   console.log(isMeetingHost, "iframeiframe");
-  //   const userRole = localStorage.getItem("userRole");
-  //   const iframe = iframeRef.current;
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     if (videoControlForParticipant === true) {
-  //       iframe.contentWindow.postMessage("VidOn", "*");
-  //     } else {
-  //       iframe.contentWindow.postMessage("VidOff", "*");
-  //     }
-  //   }
-  // }, [videoControlForParticipant]);
+  useEffect(() => {
+    console.log(isMeetingHost, "iframeiframe");
+    const userRole = localStorage.getItem("userRole");
+    // Determine the control source based on the user role
+    // Reference the iframe and perform postMessage based on the control source
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (audioControlForParticipant === true) {
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("MicOff", "*");
+      }
+    }
+  }, [audioControlForParticipant]);
 
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
     const userRole = localStorage.getItem("userRole");
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (videoControlForParticipant === true) {
+        iframe.contentWindow.postMessage("VidOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("VidOff", "*");
+      }
+    }
+  }, [videoControlForParticipant]);
+
+  useEffect(() => {
+    console.log(isMeetingHost, "iframeiframe");
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (videoControlHost === true) {
@@ -298,7 +300,6 @@ const VideoPanelNormal = () => {
   }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (
       getNewParticipantsMeetingJoin !== null &&
       getNewParticipantsMeetingJoin !== undefined &&
@@ -335,7 +336,6 @@ const VideoPanelNormal = () => {
       setParticipantsList([]);
     }
   }, [getNewParticipantsMeetingJoin]);
-
 
   useEffect(() => {
     console.log(initiateCallRoomID, "mqtt");
@@ -398,7 +398,7 @@ const VideoPanelNormal = () => {
               generateURLCaller(
                 extractedBaseURLCaller,
                 currentUserName,
-                newRoomID===0?activeRoomID:newRoomID
+                newRoomID === 0 ? activeRoomID : newRoomID
               )
             );
           }
@@ -407,7 +407,7 @@ const VideoPanelNormal = () => {
             generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
-              newRoomID===0?activeRoomID:newRoomID
+              newRoomID === 0 ? activeRoomID : newRoomID
             )
           );
         }
@@ -493,18 +493,29 @@ const VideoPanelNormal = () => {
     }
   };
 
-  const disableMicFunction = () => {
+   // Handle turning the microphone on/off
+   const disableMicFunction = () => {
     const iframe = iframeRef.current;
-    iframe.contentWindow.postMessage("MicOff", "*");
-    setIsMicActive(!isMicActive);
-    localStorage.setItem("MicOff", !isMicActive);
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage("MicOff", "*");
+      setIsMicActive((prevState) => {
+        const newState = !prevState;
+        localStorage.setItem("MicOff", !newState);
+        return newState;
+      });
+    }
   };
-
+  // Handle turning the video on/off
   const disableVideoFunction = () => {
     const iframe = iframeRef.current;
-    iframe.contentWindow.postMessage("VidOff", "*");
-    setIsVideoActive(!isVideoActive);
-    localStorage.setItem("VidOff", !isVideoActive);
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage("VidOff", "*");
+      setIsVideoActive((prevState) => {
+        const newState = !prevState;
+        localStorage.setItem("VidOff", !newState);
+        return newState;
+      });
+    }
   };
 
   const closeParticipantsList = () => {
@@ -668,76 +679,8 @@ const VideoPanelNormal = () => {
                                   allow="camera;microphone;display-capture"
                                 />
                               )}
-
-                              {/* {console.log(
-                                "iframeiframeIsMeetingHost",
-                                isMeetingHost
-                              )}
-                              {console.log("iframeiframe", participantURL)}
-                              {console.log(
-                                "iframeiframe",
-                                typeof participantURL
-                              )}
-                              {console.log("iframeiframe", callerURL)}
-                              {console.log("iframeiframe", typeof callerURL)}
-                              {console.log(
-                                "iframeiframe",
-                                callAcceptedRecipientID === currentUserID
-                              )}
-                              {console.log("iframeiframe", currentUserID)}
-                              {console.log(
-                                "iframeiframe",
-                                callAcceptedRecipientID
-                              )} */}
-                              {/* {!refinedParticipantVideoUrl ? (
-                                <>
-                                  <iframe
-                                    src={
-                                      meetingHost.isHost
-                                        ? urlFormeetingapi
-                                        : callAcceptedRecipientID ===
-                                          currentUserID
-                                        ? participantURL
-                                        : callerURL
-                                    }
-                                    ref={iframeRef}
-                                    title="Live Video"
-                                    width="100%"
-                                    height="100%"
-                                    frameBorder="0"
-                                    allow="camera;microphone;display-capture"
-                                  />
-                                </>
-                              ) : !isMeetingHost ? (
-                                <>
-                                  {console.log("iframeiframe", isMeetingHost)}
-                                  <iframe
-                                    src={refinedParticipantVideoUrl}
-                                    ref={iframeRef}
-                                    title="Live Video"
-                                    width="100%"
-                                    height="100%"
-                                    frameBorder="0"
-                                    allow="camera;microphone;display-capture"
-                                  />
-                                </>
-                              ) : null} */}
                             </>
                           </>
-                          {/* // {!isMeetingHost ? (
-                          //   <>
-                          //     {console.log("iframeiframe", isMeetingHost)}
-                          //     <iframe
-                          //       src={refinedParticipantVideoUrl}
-                          //       ref={iframeRef}
-                          //       title="Live Video"
-                          //       width="100%"
-                          //       height="100%"
-                          //       frameBorder="0"
-                          //       allow="camera;microphone;display-capture"
-                          //     />
-                          //   </>
-                          // ) : null} */}
                         </div>
                       </Col>
 
