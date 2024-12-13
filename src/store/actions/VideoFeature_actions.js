@@ -575,7 +575,7 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
                 isHostId: 0,
                 isDashboardVideo: true,
               };
-              dispatch(makeHostNow(meetingHost));
+              await dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
@@ -600,6 +600,11 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
+
+              let Data = { RoomID: response.data.responseResult.roomID };
+              await dispatch(
+                participantListWaitingListMainApi(Data, navigate, t)
+              );
               dispatch(maximizeVideoPanelFlag(true));
               localStorage.setItem(
                 "newRoomId",
