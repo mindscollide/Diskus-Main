@@ -47,6 +47,7 @@ import {
   participantLeaveVideoMeeting,
   globalStateForAudioStream,
   globalStateForVideoStream,
+  globalNavigatorVideoStream,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -912,9 +913,11 @@ const Dashboard = () => {
                 Number(currentMeetingID) === Number(data.payload.meetingID) &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
-                dispatch(globalStateForAudioStream(true))
-                dispatch(globalStateForVideoStream(true))
-                
+                dispatch(globalNavigatorVideoStream(1));
+                dispatch(globalStateForAudioStream(true));
+                dispatch(globalStateForVideoStream(true));
+                // dispatch(maxParticipantVideoCallPanel(false));
+                // dispatch(maxParticipantVideoDenied(true));
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -922,8 +925,10 @@ const Dashboard = () => {
             ) {
               // dispatch(maxParticipantVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
-              dispatch(globalStateForAudioStream(true))
-              dispatch(globalStateForVideoStream(true))
+              dispatch(globalNavigatorVideoStream(2));
+
+              dispatch(globalStateForAudioStream(true));
+              dispatch(globalStateForVideoStream(true));
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
@@ -2549,7 +2554,14 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
         ) {
           let callerID = Number(localStorage.getItem("callerID"));
-
+          let newCallerID = Number(localStorage.getItem("newCallerID"));
+          let currentUserName = localStorage.getItem("name");
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+          let callTypeID = Number(localStorage.getItem("CallType"));
           localStorage.setItem("newCallerID", callerID);
           localStorage.setItem("initiateVideoCall", false);
 
@@ -2580,6 +2592,30 @@ const Dashboard = () => {
             "callerStatusObject",
             JSON.stringify(existingData)
           );
+          if (callTypeID === 1) {
+            console.log("mqtt", isMeetingVideo);
+            let Data = {
+              OrganizationID: currentOrganization,
+              RoomID: initiateRoomID,
+              IsCaller: true,
+              CallTypeID: callTypeID,
+            };
+            dispatch(LeaveCall(Data, navigate, t));
+            dispatch(
+              callRequestReceivedMQTT(data.payload, data.payload.message)
+            );
+            localStorage.setItem("activeCall", false);
+            localStorage.setItem("newCallerID", callerID);
+            localStorage.setItem("initiateVideoCall", false);
+            localStorage.setItem("NewRoomID", 0);
+            localStorage.setItem("activeRoomID", 0);
+            localStorage.setItem("initiateVideoCall", false);
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(videoChatMessagesFlag(false));
+            dispatch(videoOutgoingCallFlag(false));
+          }else if(callTypeID===2){
+            
+          }
           setNotification({
             ...notification,
             notificationShow: true,

@@ -15,10 +15,12 @@ import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Vi
 
 import {
   getParticipantMeetingJoinMainApi,
+  globalNavigatorVideoStream,
   globalStateForAudioStream,
   globalStateForVideoStream,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
+  maxParticipantVideoDenied,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -51,10 +53,15 @@ const ParticipantVideoCallComponent = ({
   const isVideoGlobalStream = useSelector(
     (state) => state.videoFeatureReducer.isVideoGlobalStream
   );
+
+  const allNavigatorVideoStream = useSelector(
+    (state) => state.videoFeatureReducer.allNavigatorVideoStream
+  );
+
   const { editorRole } = useContext(MeetingContext);
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
 
   let meetingId = localStorage.getItem("currentMeetingID");
+
   let newVideoUrl = localStorage.getItem("videoCallURL");
 
   let participantMeetingTitle = localStorage.getItem("meetingTitle");
@@ -136,36 +143,64 @@ const ParticipantVideoCallComponent = ({
   }, [isWebCamEnabled]);
 
   useEffect(() => {
-    if (isAudioGlobalStream) {
-      // Stop audio stream
-      if (streamAudio) {
-        console.log(streamAudio, "streamstream");
-
-        streamAudio.getAudioTracks().forEach((track) => track.stop());
-        setStreamAudio(null); // Clear the stream from state
-        sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
-      }
-      dispatch(globalStateForAudioStream(true));
-    }
-  }, [isAudioGlobalStream]);
-
-  useEffect(() => {
-    if (isVideoGlobalStream) {
-      if (stream) {
-        stream.getVideoTracks().forEach((track) => track.stop());
-        setStream(null); // Clear the stream from state
-        if (videoRef.current) {
-          videoRef.current.srcObject = null; // Clear the video source
+    if (allNavigatorVideoStream === 1) {
+      if (isVideoGlobalStream) {
+        if (stream) {
+          stream.getVideoTracks().forEach((track) => track.stop());
+          setStream(null); // Clear the stream from state
+          if (videoRef.current) {
+            videoRef.current.srcObject = null; // Clear the video source
+          }
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+          sessionStorage.removeItem("videoStreamId");
         }
-        console.log(stream, "streamstream");
-        sessionStorage.setItem("streamOnOff", JSON.stringify(false));
-        sessionStorage.removeItem("videoStreamId");
-        dispatch(maxParticipantVideoCallPanel(false));
-        dispatch(maximizeVideoPanelFlag(true));
+        dispatch(globalStateForVideoStream(false));
       }
-      dispatch(globalStateForVideoStream(false));
+      if (isAudioGlobalStream) {
+        // Stop audio stream
+        if (streamAudio) {
+          console.log(streamAudio, "streamstream");
+
+          streamAudio.getAudioTracks().forEach((track) => track.stop());
+          setStreamAudio(null); // Clear the stream from state
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+        }
+        dispatch(globalStateForAudioStream(true));
+      }
+      dispatch(globalNavigatorVideoStream(0))
+      dispatch(maxParticipantVideoCallPanel(false));
+      dispatch(maxParticipantVideoDenied(true));
+    } else if (allNavigatorVideoStream === 2) {
+      if (isVideoGlobalStream) {
+        if (stream) {
+          stream.getVideoTracks().forEach((track) => track.stop());
+          setStream(null); // Clear the stream from state
+          if (videoRef.current) {
+            videoRef.current.srcObject = null; // Clear the video source
+          }
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+          sessionStorage.removeItem("videoStreamId");
+        }
+        dispatch(globalStateForVideoStream(false));
+      }
+      if (isAudioGlobalStream) {
+        // Stop audio stream
+        if (streamAudio) {
+          console.log(streamAudio, "streamstream");
+
+          streamAudio.getAudioTracks().forEach((track) => track.stop());
+          setStreamAudio(null); // Clear the stream from state
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+        }
+        dispatch(globalStateForAudioStream(true));
+      }
+      dispatch(globalNavigatorVideoStream(0))
+      dispatch(maxParticipantVideoCallPanel(false));
+      dispatch(maximizeVideoPanelFlag(true));
     }
-  }, [isVideoGlobalStream]);
+  }, [allNavigatorVideoStream]);
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
     dispatch(setAudioControlForParticipant(enable));
