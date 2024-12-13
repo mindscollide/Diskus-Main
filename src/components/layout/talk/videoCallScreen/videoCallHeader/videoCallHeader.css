@@ -477,6 +477,7 @@ span.participants-counter-For-Host {
   font-size: 10px;
   font-weight: 600;
 }
+
 span.participants-counter-For-Host-waiting-counter {
   position: absolute;
   top: 0;
@@ -490,6 +491,37 @@ span.participants-counter-For-Host-waiting-counter {
   font-size: 10px;
   font-weight: 600;
 }
+
+body[dir="rtl"] span.participants-counter-For-Host {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: auto;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+body[dir="rtl"] span.participants-counter-For-Host-waiting-counter {
+  position: absolute;
+  top: 0;
+  left: -17px;
+  right: auto;
+  background: #55ce5c !important;
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
 .minimize {
   margin: 0 !important;
 }
