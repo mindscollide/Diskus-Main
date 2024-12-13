@@ -541,7 +541,13 @@ const getParticipantMeetingJoinFail = (message) => {
   };
 };
 
-const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
+const getParticipantMeetingJoinMainApi = (
+  navigate,
+  t,
+  data,
+  setIsWaiting,
+  setGetReady
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getParticipantMeetingJoinInit());
@@ -560,7 +566,15 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+          dispatch(
+            getParticipantMeetingJoinMainApi(
+              navigate,
+              t,
+              data,
+              setIsWaiting,
+              setGetReady
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -582,6 +596,10 @@ const getParticipantMeetingJoinMainApi = (navigate, t, data) => {
               );
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
+              try {
+                setIsWaiting(true);
+                setGetReady(false);
+              } catch {}
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,

@@ -100,7 +100,10 @@ const VideoCallNormalHeader = ({
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
-
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
+  );
+  
   //Audio Control For host
   const audioControlHost = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
@@ -185,21 +188,19 @@ const VideoCallNormalHeader = ({
   const [isActiveIcon, setIsActiveIcon] = useState(false);
 
   const [currentParticipants, setCurrentParticipants] = useState([]);
-  console.log(currentParticipants, "currentParticipantscurrentParticipants");
 
   const [participantStatus, setParticipantStatus] = useState([]);
-
-  const [handStatus, setHandStatus] = useState(false);
 
   const [addParticipantPopup, setAddParticipantPopup] = useState(false);
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
 
   const [isMeetingHost, setIsMeetingHost] = useState(null);
+
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
-  console.log(participantCounterList, "participantCounterList");
+
   const leaveModalPopupRef = useRef(null);
 
   // to show a host participants list counter
@@ -207,11 +208,25 @@ const VideoCallNormalHeader = ({
 
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
-
+  const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
+  console.log("mqtt handStatus", handStatus);
+  console.log("mqtt handStatus", raisedUnRaisedParticipant);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
+  // useEffect(() => {
+  //   return () => {
+  //     let data = {
+  //       RoomID: String(participantRoomIds),
+  //       UID: String(participantUID),
+  //       IsHandRaised: false,
+  //     };
+  //     setHandStatus(false);
+  //     localStorage.setItem("handStatus", false);
+  //     dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+  //   };
+  // }, []);
   // for show Participant popUp only
   // Update filteredParticipants based on participantList
   useEffect(() => {
@@ -323,6 +338,7 @@ const VideoCallNormalHeader = ({
           UserGUID: String(participantUID),
           Name: String(newName),
         };
+        dispatch(setRaisedUnRaisedParticiant(false));
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       }
       dispatch(normalizeVideoPanelFlag(false));
@@ -456,6 +472,7 @@ const VideoCallNormalHeader = ({
             UserGUID: String(participantUID),
             Name: String(newName),
           };
+          dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         }
       }
@@ -513,6 +530,7 @@ const VideoCallNormalHeader = ({
             UserGUID: String(participantUID),
             Name: String(newName),
           };
+          dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         }
       }
@@ -529,15 +547,6 @@ const VideoCallNormalHeader = ({
       dispatch(LeaveCall(Data, navigate, t));
       console.log("Not End 1");
     }
-    // if (isMeeting === false && getDashboardVideo === true) {
-    //   let Data = {
-    //     RoomID: String(participantRoomIds),
-    //     UserGUID: String(participantUID),
-    //     Name: String(newName),
-    //   };
-    //   dispatch(LeaveMeetingVideo(Data, navigate, t));
-    // }
-    // dispatch(LeaveCall(Data, navigate, t));
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
     const emptyArray = [];
@@ -706,7 +715,8 @@ const VideoCallNormalHeader = ({
       UID: String(participantUID),
       IsHandRaised: flag,
     };
-
+    localStorage.setItem("handStatus", flag);
+    setHandStatus(flag);
     dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
   };
 
@@ -1209,7 +1219,7 @@ const VideoCallNormalHeader = ({
                   ) : null}
 
                   <div
-                    onClick={disableRaisedHandForParticipant}
+                    // onClick={disableRaisedHandForParticipant}
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
                         ? "grayScaleImage"
@@ -1376,7 +1386,7 @@ const VideoCallNormalHeader = ({
                           </Tooltip>
                         )}
                         <span className="participants-counter">
-                          {participantCounter}
+                          {getAllParticipantMain.length>0&&getAllParticipantMain.length}
                         </span>
                       </div>
                     ) : null
