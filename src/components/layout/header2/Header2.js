@@ -1329,7 +1329,7 @@ const Header2 = ({ isVideo }) => {
                     )}
                   </Dropdown>
                   {/* Web Notification Bell Icon */}
-                  <span
+                  {/* <span
                     className="position-relative"
                     onClick={handleWebNotication}
                     ref={WebNotificationBell}
@@ -1341,20 +1341,21 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
-
-                    <span className="NotficationCountSpan">
-                      {unReadCountNotification}
-                    </span>
-                  </span>
+                    {unReadCountNotification !== 0 ? (
+                      <span className="NotficationCountSpan">
+                        {unReadCountNotification}
+                      </span>
+                    ) : null}
+                  </span> */}
                   {/* Web Notification Outer Box Starts */}
-                  {showWebNotification && (
+                  {/* {showWebNotification && (
                     <WebNotfication
                       webNotificationData={webNotificationData}
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
                     />
-                  )}
+                  )} */}
                   {/* Web Notification Outer Box End */}
 
                   {roleRoute || TrialExpireSelectPac || cancelSub ? null : (

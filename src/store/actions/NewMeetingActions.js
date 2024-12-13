@@ -69,6 +69,7 @@ import {
   leaveMeetingVideo,
   ProposeNewMeetingSaveParticipants,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
+  GetMeetingStatus,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -1009,6 +1010,25 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                 totalRecords: response.data.responseResult.totalRecords,
               };
               dispatch(SearchMeeting_Success(newMeetingData, ""));
+              if (
+                JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
+                true
+              ) {
+                if (
+                  JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
+                ) {
+                  //Notification Work
+                  console.log("ComingIN");
+                  //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
+                  dispatch(showSceduleProposedMeeting(true));
+                } else {
+                  console.log("ComingIN");
+                  //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
+                  localStorage.removeItem("MeetingStatusID");
+                  localStorage.removeItem("ProposedMeetingOrganizer");
+                  localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
+                }
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9195,6 +9215,97 @@ const LeaveMeetingSideBarModalAction = (response) => {
   };
 };
 
+//Get Meeting Status Data API
+const GetMeetingStatusDataInit = () => {
+  return {
+    type: actions.GET_MEETING_STATUS_INIT,
+  };
+};
+
+const GetMeetingStatusDataSuccess = (response, message) => {
+  return {
+    type: actions.GET_MEETING_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetMeetingStatusDataFail = (message) => {
+  return {
+    type: actions.GET_MEETING_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const GetMeetingStatusDataAPI = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(GetMeetingStatusDataInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingStatusData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                GetMeetingStatusDataSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              localStorage.setItem(
+                "MeetingStatusID",
+                response.data.responseResult.meetingStatusID
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingStatusData_02".toLowerCase()
+                )
+            ) {
+              dispatch(GetMeetingStatusDataFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingStatusData_03".toLowerCase()
+                )
+            ) {
+              dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+            } else {
+              dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetMeetingStatusDataFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9372,4 +9483,5 @@ export {
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
   LeaveMeetingSideBarModalAction,
+  GetMeetingStatusDataAPI,
 };
