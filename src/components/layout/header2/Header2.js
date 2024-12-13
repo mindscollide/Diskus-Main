@@ -1341,10 +1341,11 @@ const Header2 = ({ isVideo }) => {
                       draggable="false"
                       className="BellNotificationIconStyles"
                     />
-
-                    <span className="NotficationCountSpan">
-                      {unReadCountNotification}
-                    </span>
+                    {unReadCountNotification !== 0 ? (
+                      <span className="NotficationCountSpan">
+                        {unReadCountNotification}
+                      </span>
+                    ) : null}
                   </span>
                   {/* Web Notification Outer Box Starts */}
                   {showWebNotification && (
