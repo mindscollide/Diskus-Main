@@ -348,6 +348,10 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 15) {
       //Notification that Proposed Meeting Date Organizer work
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
+      } else {
+      }
     } else if (NotificationData.notificationActionID === 16) {
       if (currentURL.includes("/Diskus/groups")) {
         return; // Perform no action if the URL matches
