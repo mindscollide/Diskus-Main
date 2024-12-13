@@ -177,6 +177,7 @@ import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScr
 import {
   admitGuestUserRequest,
   muteUnMuteByHost,
+  raiseUnRaisedHandMainApi,
   setVoiceControleGuest,
 } from "../../store/actions/Guest_Video";
 import { MeetingContext } from "../../context/MeetingContext";
@@ -216,6 +217,11 @@ const Dashboard = () => {
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
+  // For Participant Raise Un Raised Hand
+  const raisedUnRaisedParticipant = useSelector(
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+  );
+
   const cancelModalMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   );
@@ -814,6 +820,7 @@ const Dashboard = () => {
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
+
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(maxParticipantVideoRemoved(true));
               // Participant room Id and usrrGuid
@@ -826,6 +833,9 @@ const Dashboard = () => {
                 UserGUID: String(participantUID),
                 Name: String(newName),
               };
+
+              dispatch(setRaisedUnRaisedParticiant(false));
+
               dispatch(LeaveMeetingVideo(Data, navigate, t));
             } else if (
               data.payload.message.toLowerCase() ===

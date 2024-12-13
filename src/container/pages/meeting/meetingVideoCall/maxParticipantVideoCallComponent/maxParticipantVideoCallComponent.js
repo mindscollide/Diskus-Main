@@ -218,9 +218,17 @@ const ParticipantVideoCallComponent = ({
       IsMuted: isMicEnabled,
       HideVideo: isWebCamEnabled,
     };
-    await dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
-    setIsWaiting(true);
-    setGetReady(false);
+    await dispatch(
+      getParticipantMeetingJoinMainApi(
+        navigate,
+        t,
+        data,
+        setIsWaiting,
+        setGetReady
+      )
+    );
+    // setIsWaiting(true);
+    // setGetReady(false);
   };
 
   const onClickToNormalParticipantPanel = () => {
