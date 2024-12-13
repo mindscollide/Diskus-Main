@@ -1018,101 +1018,12 @@ const VideoCallNormalHeader = ({
                         <span className="participants-counter-For-Host">
                           {participantCounter}
                         </span>
+                       {participantWaitingListCounter >0&& <span className="participants-counter-For-Host-waiting-counter">
+                          {participantWaitingListCounter}
+                        </span>}
                       </div>
                     ) : null
                   }
-
-                  {/* <div
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? "grayScaleImage position-relative"
-                        : videoFeatureReducer.LeaveCallModalFlag === false &&
-                          addParticipantPopup === true
-                        ? "active-state position-relative"
-                        : "inactive-state position-relative"
-                    }
-                  >
-                    <Tooltip placement="topRight" title={t("Participants")}>
-                      <img
-                        onClick={addMoreParticipants}
-                        className="cursor-pointer"
-                        src={
-                          addParticipantPopup
-                            ? AddParticipantWhite
-                            : AddParticipant
-                        }
-                        alt="Add Participants"
-                      />
-                    </Tooltip>
-                    {addParticipantPopup ? (
-                      <div className="add-participants-list">
-                        <div className="participants-section">
-                          {currentParticipants !== undefined &&
-                          currentParticipants !== null &&
-                          currentParticipants.length > 0
-                            ? currentParticipants.map(
-                                (participantData, index) => {
-                                  console.log(
-                                    "participantStatus",
-                                    participantStatus[0]
-                                  );
-                                  const matchingStatus =
-                                    participantStatus[0]?.find(
-                                      (status) =>
-                                        status.RecipientID ===
-                                          participantData.userID &&
-                                        status.RoomID === initiateRoomID
-                                    );
-                                  return (
-                                    <>
-                                      <Row className="text-start" key={index}>
-                                        <Col lg={12} md={12} sm={12}>
-                                          <Checkbox
-                                            onChange={handleCheckboxChange(
-                                              participantData.userID
-                                            )}
-                                            checked={selectedParticipants.includes(
-                                              participantData.userID
-                                            )}
-                                            label2Class={"SelectAll"}
-                                            label2={
-                                              <>
-                                                <div
-                                                  className={
-                                                    "image-profile-wrapper"
-                                                  }
-                                                >
-                                                  <img
-                                                    height={40}
-                                                    width={40}
-                                                    className={"image-style"}
-                                                    src={`data:image/jpeg;base64,${participantData.profilePicture.displayProfilePictureName}`}
-                                                    alt=""
-                                                  />
-                                                  <span>
-                                                    {participantData.userName}
-                                                  </span>
-                                                </div>
-                                              </>
-                                            }
-                                            className="SearchCheckbox "
-                                            name="IsChat"
-                                            classNameDiv={
-                                              "addParticipantCheckbox"
-                                            }
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </>
-                                  );
-                                }
-                              )
-                            : null}
-                        </div>
-                      </div>
-                    ) : null}
-                  </div> */}
-
                   {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
                     <div
                       className={

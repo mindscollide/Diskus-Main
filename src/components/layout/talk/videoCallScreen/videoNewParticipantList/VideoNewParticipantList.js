@@ -93,13 +93,13 @@ const VideoNewParticipantList = () => {
     setFilteredParticipants(filtered);
   };
 
-  useEffect(() => {
-    console.log("hell");
-    let Data = {
-      RoomID: String(getRoomId),
-    };
-    dispatch(participantListWaitingListMainApi(Data, navigate, t));
-  }, []);
+  // useEffect(() => {
+  //   console.log("hell");
+  //   let Data = {
+  //     RoomID: String(getRoomId),
+  //   };
+  //   dispatch(participantListWaitingListMainApi(Data, navigate, t));
+  // }, []);
 
   // Update filteredParticipants based on participantList
   useEffect(() => {
