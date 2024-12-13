@@ -226,13 +226,6 @@ const NewMeeting = () => {
     (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
   );
 
-  //Checking Meeting Status For Proposed meeting Organizer Notfication Scenario
-  const CheckMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingStatusResponseData
-  );
-
-  console.log(ProposedMeetViewFlag, "ProposedMeetViewFlagProposedMeetViewFlag");
-
   let currentLanguage = localStorage.getItem("i18nextLng");
   let AgCont = localStorage.getItem("AgCont");
   let AdOrg = localStorage.getItem("AdOrg");
@@ -408,17 +401,6 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
 
-  //UseEffect for Getting Meeting Status
-  useEffect(() => {
-    try {
-      if (CheckMeetingStatus !== null && CheckMeetingStatus !== undefined) {
-        setMeetingStatus(CheckMeetingStatus.meetingStatusID);
-      }
-    } catch (error) {
-      console.log(error, "error");
-    }
-  }, [CheckMeetingStatus]);
-
   //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
@@ -474,8 +456,10 @@ const NewMeeting = () => {
       } else if (
         JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true
       ) {
+        console.log("ComingIN");
         //Notification if the Organizer clicks on the proposed meeting date submission Notification
-        if (Number(meetingStatus) === 12) {
+        if (Number(localStorage.getItem("MeetingStatusID")) === 12) {
+          //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
           console.log(meetingStatus, "meetingStatusmeetingStatusmeetingStatus");
           dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
           dispatch(showSceduleProposedMeeting(true));
@@ -483,10 +467,41 @@ const NewMeeting = () => {
           dispatch(proposedMeetingDatesGlobalFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
         } else {
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-          setViewProposeDatePoll(false);
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
+          console.log("ComingIN");
+          //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
+          localStorage.removeItem("MeetingStatusID");
+          localStorage.removeItem("ProposedMeetingOrganizer");
+          localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings: false,
+          };
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+          localStorage.setItem("MeetingCurrentView", 2);
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          setSearchFeilds({
+            ...searchFields,
+            Date: "",
+            DateView: "",
+            MeetingTitle: "",
+            OrganizerName: "",
+          });
+          setSearchMeeting(false);
+          setSearchText("");
+          setentereventIcon(false);
         }
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {

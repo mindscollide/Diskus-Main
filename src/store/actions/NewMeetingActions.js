@@ -9251,6 +9251,10 @@ const GetMeetingStatusDataAPI = (navigate, t, Data) => {
                   t("Successful")
                 )
               );
+              localStorage.setItem(
+                "MeetingStatusID",
+                response.data.responseResult.meetingStatusID
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

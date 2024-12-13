@@ -71,6 +71,7 @@ const SceduleProposedmeeting = ({
     return () => {
       localStorage.removeItem("ProposedMeetingOrganizer");
       localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
+      localStorage.removeItem("MeetingStatusID");
     };
   }, []);
 
