@@ -3340,3 +3340,6 @@ export const GLOBAL_STREAM_AUDIO = "GLOBAL_STREAM_AUDIO";
 
 // For Stream Video Global state
 export const GLOBAL_STREAM_VIDEO = "GLOBAL_STREAM_VIDEO";
+
+// Navigator For All Video Stream
+export const GLOBAL_NAVIGATORE_VIDEO_STREAM = "GLOBAL_NAVIGATORE_VIDEO_STREAM";

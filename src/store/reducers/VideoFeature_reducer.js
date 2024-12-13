@@ -64,6 +64,7 @@ const initialState = {
   isWebCamEnabled: true,
   isAudioGlobalStream: false,
   isVideoGlobalStream: false,
+  allNavigatorVideoStream: 0,
   getAllParticipantMain: [],
   participantsVisible: false,
 };
@@ -820,6 +821,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         isVideoGlobalStream: action.response,
+      };
+
+    // FOR ALL GLOBAL NAVIGATOR VIDEO STREAM
+    case actions.GLOBAL_NAVIGATORE_VIDEO_STREAM:
+      return {
+        ...state,
+        allNavigatorVideoStream: action.response,
       };
 
     default:
