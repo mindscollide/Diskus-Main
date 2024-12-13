@@ -3334,3 +3334,9 @@ export const DISKUS_WEB_NOTIFICATION_MARKASREAD_FAIL =
 //Real Time Unread Notification Count
 export const REAL_TIME_UNREAD_NOTIFICATION_COUNT =
   "REAL_TIME_UNREAD_NOTIFICATION_COUNT";
+
+// For stream Audio Global State
+export const GLOBAL_STREAM_AUDIO = "GLOBAL_STREAM_AUDIO";
+
+// For Stream Video Global state
+export const GLOBAL_STREAM_VIDEO = "GLOBAL_STREAM_VIDEO";
