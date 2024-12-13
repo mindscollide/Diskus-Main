@@ -25,6 +25,8 @@ const WebNotfication = ({
     previous: [],
   });
 
+  console.log(groupedNotifications, "groupedNotifications");
+
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
     (state) => state.settingReducer.Loading
@@ -441,7 +443,7 @@ const WebNotfication = ({
                       NotificationTime={data.sentDateTime}
                       index={index}
                       length={groupedNotifications.today.length}
-                      NotificaitonID={data.notificationID}
+                      NotificaitonID={data.notificationActionID}
                     />
                   </Col>
                 </Row>
@@ -475,7 +477,7 @@ const WebNotfication = ({
                         NotificationTime={data.sentDateTime}
                         index={index}
                         length={groupedNotifications.previous.length}
-                        NotificaitonID={data.notificationID}
+                        NotificaitonID={data.notificationActionID}
                       />
                     </Col>
                   </Row>
