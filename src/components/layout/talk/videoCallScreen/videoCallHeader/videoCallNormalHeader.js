@@ -477,6 +477,7 @@ const VideoCallNormalHeader = ({
         }
       }
     } else if (getDashboardVideo.isDashboardVideo === false) {
+      console.log("leaveCallleaveCallleaveCallleaveCall")
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateRoomID,
@@ -507,6 +508,7 @@ const VideoCallNormalHeader = ({
 
   // For Participant Leave Call
   const participantLeaveCall = () => {
+      console.log("leaveCallleaveCallleaveCallleaveCall")
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("isHost");
@@ -545,7 +547,6 @@ const VideoCallNormalHeader = ({
         CallTypeID: callTypeID,
       };
       dispatch(LeaveCall(Data, navigate, t));
-      console.log("Not End 1");
     }
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
