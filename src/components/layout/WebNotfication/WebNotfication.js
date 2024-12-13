@@ -19,6 +19,8 @@ const WebNotfication = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const currentURL = window.location.href;
+  console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
   const [groupedNotifications, setGroupedNotifications] = useState({
     today: [],
@@ -110,285 +112,446 @@ const WebNotfication = ({
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
-      //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      //If you already on the Meeting Page
+      // Check if the current URL contains the target path
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 2) {
-      //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      //If you already on the Meeting Page
+      // Check if the current URL contains the target path
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 3) {
-      //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      //If you already on the Meeting Page
+      // Check if the current URL contains the target path
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 4) {
-      //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        if (PayLoadData.IsQuickMeeting === true) {
+          //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 5) {
-      //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification if the Meeting is cancelled and is only applicable for Quick meet not advanced
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 6) {
-      //Notification For being removed from  Meeting
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
+        //Notification For being removed from  Meeting
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+        } else {
+          navigate("/Diskus/Meeting");
+        }
       }
     } else if (NotificationData.notificationActionID === 7) {
-      //Notification for being added as a minute reviewer
-      navigate("/Diskus/Minutes");
-      localStorage.setItem("MinutesOperations", true);
-      localStorage.setItem(
-        "NotificationClickMinutesMeetingID",
-        PayLoadData.MeetingID
-      );
-    } else if (NotificationData.notificationActionID === 8) {
-      //Notification for Being Removed As a reviwer in Minutes review
-      navigate("/Diskus/Minutes");
-    } else if (NotificationData.notificationActionID === 9) {
-      //Notification For Added as An Participant
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      if (currentURL.includes("/Diskus/Minutes")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
+        //Notification for being added as a minute reviewer
+        navigate("/Diskus/Minutes");
+        localStorage.setItem("MinutesOperations", true);
         localStorage.setItem(
-          "NotificationAdvanceMeetingID",
+          "NotificationClickMinutesMeetingID",
           PayLoadData.MeetingID
         );
+      }
+    } else if (NotificationData.notificationActionID === 8) {
+      if (currentURL.includes("/Diskus/Minutes")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Being Removed As a reviwer in Minutes review
+        navigate("/Diskus/Minutes");
+      }
+    } else if (NotificationData.notificationActionID === 9) {
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification For Added as An Participant
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 10) {
-      //Notification For Added as An Organizer
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        //Notification For Added as An Organizer
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 11) {
-      //Notification For Added as An Agenda Contributor
-      if (PayLoadData.IsQuickMeeting === true) {
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("QuicMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationQuickMeetingID",
-          PayLoadData.MeetingID
-        );
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
       } else {
-        navigate("/Diskus/Meeting");
-        console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
-        localStorage.setItem("AdvanceMeetingOperations", true);
-        localStorage.setItem(
-          "NotificationAdvanceMeetingID",
-          PayLoadData.MeetingID
-        );
+        //Notification For Added as An Agenda Contributor
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+        }
       }
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
-      //Notification For Proposed Meeting Request
-      navigate("/Diskus/Meeting");
-      localStorage.setItem("ProposedMeetingOperations", true);
-      //Before Date Selection Check
-      localStorage.setItem("BeforeProposedDateSelectedCheck", true);
-      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification For Proposed Meeting Request
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("ProposedMeetingOperations", true);
+        //Before Date Selection Check
+        localStorage.setItem("BeforeProposedDateSelectedCheck", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+      }
     } else if (NotificationData.notificationActionID === 14) {
-      //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
-      navigate("/Diskus/Meeting");
-      localStorage.setItem("ProposedMeetingOperations", true);
-      localStorage.setItem("NotificationClickMeetingID", PayLoadData.MeetingID);
-      localStorage.setItem(
-        "ProposedMeetOperationsDateSelectedSendResponseByDate",
-        PayLoadData.DeadlineDate
-      );
+      if (currentURL.includes("/Diskus/Meeting")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
+        navigate("/Diskus/Meeting");
+        localStorage.setItem("ProposedMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+        localStorage.setItem(
+          "ProposedMeetOperationsDateSelectedSendResponseByDate",
+          PayLoadData.DeadlineDate
+        );
+      }
     } else if (NotificationData.notificationActionID === 15) {
       //Notification that Proposed Meeting Date Organizer work
     } else if (NotificationData.notificationActionID === 16) {
-      //Notificaiton For Added in Group
-      navigate("/Diskus/groups");
-      //open ViewMode Modal Also in this
-      localStorage.setItem("NotificationClickAddedIntoGroup", true);
-      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+      if (currentURL.includes("/Diskus/groups")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Added in Group
+        navigate("/Diskus/groups");
+        //open ViewMode Modal Also in this
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+      }
     } else if (NotificationData.notificationActionID === 17) {
-      //Notificaiton For Removed From Group
-      navigate("/Diskus/groups");
+      if (currentURL.includes("/Diskus/groups")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Removed From Group
+        navigate("/Diskus/groups");
+      }
     } else if (NotificationData.notificationActionID === 18) {
-      //Notificaiton For Groups Archived
-      navigate("/Diskus/groups");
-      //open Archinved Modal Also in this
-      localStorage.setItem("NotificationClickArchivedGroup", true);
+      if (currentURL.includes("/Diskus/groups")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Groups Archived
+        navigate("/Diskus/groups");
+        //open Archinved Modal Also in this
+        localStorage.setItem("NotificationClickArchivedGroup", true);
+      }
     } else if (NotificationData.notificationActionID === 19) {
-      //Notificaiton For Groups InActivated
-      navigate("/Diskus/groups");
-      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
-      localStorage.setItem("NotificationClickAddedIntoGroup", true);
-      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+      if (currentURL.includes("/Diskus/groups")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Groups InActivated
+        navigate("/Diskus/groups");
+        //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+      }
     } else if (NotificationData.notificationActionID === 20) {
-      //Notificaiton For Groups Activated
-      navigate("/Diskus/groups");
-      //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
-      localStorage.setItem("NotificationClickAddedIntoGroup", true);
-      localStorage.setItem("NotifcationClickViewGroupID", PayLoadData.GroupID);
+      if (currentURL.includes("/Diskus/groups")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Groups Activated
+        navigate("/Diskus/groups");
+        //using the same logic here Srs say it will function same as Notificaiton ID 16 (Added in Group)
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+      }
     } else if (NotificationData.notificationActionID === 21) {
-      //Notification for being Added in the Committee
-      navigate("/Diskus/committee");
-      localStorage.setItem("NotificationClickCommitteeOperations", true);
-      localStorage.setItem(
-        "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
-      );
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for being Added in the Committee
+        navigate("/Diskus/committee");
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+      }
     } else if (NotificationData.notificationActionID === 22) {
-      //Notificaiton For Removed From Committee
-      navigate("/Diskus/committee");
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Removed From Committee
+        navigate("/Diskus/committee");
+      }
     } else if (NotificationData.notificationActionID === 23) {
-      //Notificaiton For  Committee Archived
-      navigate("/Diskus/committee");
-      localStorage.setItem("NotificationClickCommitteeArchived", true);
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For  Committee Archived
+        navigate("/Diskus/committee");
+        localStorage.setItem("NotificationClickCommitteeArchived", true);
+      }
     } else if (NotificationData.notificationActionID === 24) {
-      //Notificaiton For Committee InActive
-      navigate("/Diskus/committee");
-      localStorage.setItem("NotificationClickCommitteeOperations", true);
-      localStorage.setItem(
-        "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
-      );
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Committee InActive
+        navigate("/Diskus/committee");
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+      }
     } else if (NotificationData.notificationActionID === 25) {
-      //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
-      navigate("/Diskus/committee");
-      localStorage.setItem("NotificationClickCommitteeOperations", true);
-      localStorage.setItem(
-        "NotifcationClickViewCommitteeID",
-        PayLoadData.CommitteeID
-      );
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
+        navigate("/Diskus/committee");
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+      }
     } else if (NotificationData.notificationActionID === 26) {
-      //Notification for Added as Voter in the resolution
-      navigate("/Diskus/resolution");
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Added as Voter in the resolution
+        navigate("/Diskus/resolution");
+      }
     } else if (NotificationData.notificationActionID === 27) {
-      //Notification for Added as Non-Voter in the resolution
-      navigate("/Diskus/resolution");
+      if (currentURL.includes("/Diskus/resolution")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Added as Non-Voter in the resolution
+        navigate("/Diskus/resolution");
+      }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
     } else if (NotificationData.notificationActionID === 29) {
-      //Notification for Poll has been Created submit your response
-      navigate("/Diskus/polling");
+      if (currentURL.includes("/Diskus/polling")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Poll has been Created submit your response
+        navigate("/Diskus/polling");
+      }
     } else if (NotificationData.notificationActionID === 30) {
-      //Notification for Poll has been Updated submit your response
-      navigate("/Diskus/polling");
+      if (currentURL.includes("/Diskus/polling")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Poll has been Updated submit your response
+        navigate("/Diskus/polling");
+      }
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
-      //Notification For Being File shared to you as viewer
-      navigate("/Diskus/dataroom");
-      localStorage.setItem("DataRoomOperations", true);
-      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification For Being File shared to you as viewer
+        navigate("/Diskus/dataroom");
+        localStorage.setItem("DataRoomOperations", true);
+        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+      }
     } else if (NotificationData.notificationActionID === 34) {
-      //Notification For Being File shared to you as Editor
-      navigate("/Diskus/dataroom");
-      localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
-      localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-      localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification For Being File shared to you as Editor
+        navigate("/Diskus/dataroom");
+        localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
+        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
+        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+      }
     } else if (NotificationData.notificationActionID === 35) {
-      //Notification for sharing folder as a viewer
-      navigate("/Diskus/dataroom");
-      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
-      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for sharing folder as a viewer
+        navigate("/Diskus/dataroom");
+        localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+        localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
+      }
     } else if (NotificationData.notificationActionID === 36) {
-      //Notification for sharing folder as a Editor
-      navigate("/Diskus/dataroom");
-      localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
-      localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for sharing folder as a Editor
+        navigate("/Diskus/dataroom");
+        localStorage.setItem("DataRoomOperationsForFolderViewerRights", true);
+        localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
+      }
     } else if (NotificationData.notificationActionID === 37) {
-      // Notification For Deleted a Folder as Editor
-      navigate("/Diskus/dataroom");
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        // Notification For Deleted a Folder as Editor
+        navigate("/Diskus/dataroom");
+      }
     } else if (NotificationData.notificationActionID === 38) {
-      // Notification For Deleted a File as Editor
-      navigate("/Diskus/dataroom");
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        // Notification For Deleted a File as Editor
+        navigate("/Diskus/dataroom");
+      }
     } else if (NotificationData.notificationActionID === 39) {
-      // Notification For Deleted a Folder as viewer
-      navigate("/Diskus/dataroom");
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        // Notification For Deleted a Folder as viewer
+        navigate("/Diskus/dataroom");
+      }
     } else if (NotificationData.notificationActionID === 40) {
-      // Notification For Deleted a file as viewer
-      navigate("/Diskus/dataroom");
+      if (currentURL.includes("/Diskus/dataroom")) {
+        return; // Perform no action if the URL matches
+      } else {
+        // Notification For Deleted a file as viewer
+        navigate("/Diskus/dataroom");
+      }
     } else {
     }
   };
