@@ -830,15 +830,16 @@ const Dashboard = () => {
               let participantRoomIds =
                 localStorage.getItem("participantRoomId");
               let participantUID = localStorage.getItem("participantUID");
+              let currentMeetingID = localStorage.getItem("currentMeetingID");
               let newName = localStorage.getItem("name");
               let Data = {
                 RoomID: String(participantRoomIds),
                 UserGUID: String(participantUID),
                 Name: String(newName),
+                IsHost: false,
+                MeetingID: Number(currentMeetingID),
               };
-
               dispatch(setRaisedUnRaisedParticiant(false));
-
               dispatch(LeaveMeetingVideo(Data, navigate, t));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2613,8 +2614,7 @@ const Dashboard = () => {
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(videoChatMessagesFlag(false));
             dispatch(videoOutgoingCallFlag(false));
-          }else if(callTypeID===2){
-            
+          } else if (callTypeID === 2) {
           }
           setNotification({
             ...notification,

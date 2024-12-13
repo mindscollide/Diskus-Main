@@ -168,7 +168,7 @@ const ParticipantVideoCallComponent = ({
         }
         dispatch(globalStateForAudioStream(true));
       }
-      dispatch(globalNavigatorVideoStream(0))
+      dispatch(globalNavigatorVideoStream(0));
       dispatch(maxParticipantVideoCallPanel(false));
       dispatch(maxParticipantVideoDenied(true));
     } else if (allNavigatorVideoStream === 2) {
@@ -196,7 +196,7 @@ const ParticipantVideoCallComponent = ({
         }
         dispatch(globalStateForAudioStream(true));
       }
-      dispatch(globalNavigatorVideoStream(0))
+      dispatch(globalNavigatorVideoStream(0));
       dispatch(maxParticipantVideoCallPanel(false));
       dispatch(maximizeVideoPanelFlag(true));
     }
@@ -321,12 +321,15 @@ const ParticipantVideoCallComponent = ({
       ? getJoinMeetingParticipantorHostrequest.roomID
       : 0;
     let newName = localStorage.getItem("name");
+    let currentMeetingID = localStorage.getItem("currentMeetingID");
 
     if (isWaiting) {
       let Data = {
         RoomID: roomID,
         UserGUID: userGUID,
         Name: String(newName),
+        IsHost: false,
+        MeetingID: Number(currentMeetingID),
       };
       await dispatch(LeaveMeetingVideo(Data, navigate, t));
       // Stop video stream

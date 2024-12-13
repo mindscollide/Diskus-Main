@@ -103,7 +103,7 @@ const VideoCallNormalHeader = ({
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
-  
+
   //Audio Control For host
   const audioControlHost = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
@@ -310,7 +310,7 @@ const VideoCallNormalHeader = ({
       };
       dispatch(LeaveCall(Data, navigate, t));
       console.log("Not End 1");
-
+      const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
@@ -328,6 +328,8 @@ const VideoCallNormalHeader = ({
           RoomID: String(newRoomID),
           UserGUID: String(newUserGUID),
           Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
         };
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       } else {
@@ -337,6 +339,8 @@ const VideoCallNormalHeader = ({
           RoomID: String(participantRoomIds),
           UserGUID: String(participantUID),
           Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
         };
         dispatch(setRaisedUnRaisedParticiant(false));
         dispatch(LeaveMeetingVideo(Data, navigate, t));
@@ -464,6 +468,8 @@ const VideoCallNormalHeader = ({
             RoomID: String(newRoomID),
             UserGUID: String(newUserGUID),
             Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
           };
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         } else {
@@ -471,13 +477,15 @@ const VideoCallNormalHeader = ({
             RoomID: String(participantRoomIds),
             UserGUID: String(participantUID),
             Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
           };
           dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         }
       }
     } else if (getDashboardVideo.isDashboardVideo === false) {
-      console.log("leaveCallleaveCallleaveCallleaveCall")
+      console.log("leaveCallleaveCallleaveCallleaveCall");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateRoomID,
@@ -508,7 +516,7 @@ const VideoCallNormalHeader = ({
 
   // For Participant Leave Call
   const participantLeaveCall = () => {
-      console.log("leaveCallleaveCallleaveCallleaveCall")
+    console.log("leaveCallleaveCallleaveCallleaveCall");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("isHost");
@@ -524,6 +532,8 @@ const VideoCallNormalHeader = ({
             RoomID: String(newRoomID),
             UserGUID: String(newUserGUID),
             Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
           };
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         } else {
@@ -531,6 +541,8 @@ const VideoCallNormalHeader = ({
             RoomID: String(participantRoomIds),
             UserGUID: String(participantUID),
             Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
           };
           dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
@@ -1387,7 +1399,8 @@ const VideoCallNormalHeader = ({
                           </Tooltip>
                         )}
                         <span className="participants-counter">
-                          {getAllParticipantMain.length>0&&getAllParticipantMain.length}
+                          {getAllParticipantMain.length > 0 &&
+                            getAllParticipantMain.length}
                         </span>
                       </div>
                     ) : null
