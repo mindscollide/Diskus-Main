@@ -309,12 +309,15 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isMeetingVideo", false);
   };
   const leavecallMeetingVideo = async () => {
-    
-    let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
-    let newUserGUID = meetinHostInfo?.isHost?localStorage.getItem("participantUID"):localStorage.getItem("isGuid");
+    let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    let newUserGUID = meetinHostInfo?.isHost
+      ? localStorage.getItem("isGuid ")
+      : localStorage.getItem("participantUID");
     let newName = localStorage.getItem("name");
-    let newRoomID = localStorage.getItem("activeRoomID");
+    let newRoomID = meetinHostInfo?.isHost
+      ? localStorage.getItem("newRoomId")
+      : localStorage.getItem("activeRoomID");
     let Data = {
       RoomID: String(newRoomID),
       UserGUID: String(newUserGUID),
