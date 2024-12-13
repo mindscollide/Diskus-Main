@@ -355,8 +355,12 @@ const WebNotfication = ({
         return; // Perform no action if the URL matches
       } else {
         //Call Status API to see what is the status of the meeting eighter proposed or published
-        navigate("/Diskus/Meeting");
-        localStorage.setItem("ProposedMeetingOrganizer", true);
+        // navigate("/Diskus/Meeting");
+        // localStorage.setItem("ProposedMeetingOrganizer", true);
+        // localStorage.setItem(
+        //   "ProposedMeetingOrganizerMeetingID",
+        //   PayLoadData.MeetingID
+        // );
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
       }

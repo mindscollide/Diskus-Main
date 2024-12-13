@@ -52,11 +52,26 @@ const SceduleProposedmeeting = ({
   };
 
   // dispatch Api in useEffect
+  //Notificaiton When organizer Click the notification that the response dates has been submitted by the participant
   useEffect(() => {
-    let Data = {
-      MeetingID: Number(viewProposeDatePollMeetingID),
+    if (JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true) {
+      let NotificationClickProposeMeetingID = localStorage.getItem(
+        "ProposedMeetingOrganizerMeetingID"
+      );
+      let Data = {
+        MeetingID: Number(NotificationClickProposeMeetingID),
+      };
+      dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+    } else {
+      let Data = {
+        MeetingID: Number(viewProposeDatePollMeetingID),
+      };
+      dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+    }
+    return () => {
+      localStorage.removeItem("ProposedMeetingOrganizer");
+      localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
     };
-    dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
   }, []);
 
   // for rendering data in table

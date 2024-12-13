@@ -221,10 +221,14 @@ const NewMeeting = () => {
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
-
   //Proposed Meeting View Flag
   const ProposedMeetViewFlag = useSelector(
     (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
+  );
+
+  //Checking Meeting Status For Proposed meeting Organizer Notfication Scenario
+  const CheckMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingStatusResponseData
   );
 
   console.log(ProposedMeetViewFlag, "ProposedMeetViewFlagProposedMeetViewFlag");
@@ -299,7 +303,6 @@ const NewMeeting = () => {
   });
   const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
-
   const [totalRecords, setTotalRecords] = useState(0);
   const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
@@ -328,9 +331,8 @@ const NewMeeting = () => {
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
   ] = useState(false);
-
   const [dashboardEventData, setDashboardEventData] = useState(null);
-
+  const [meetingStatus, setMeetingStatus] = useState(0);
   const [videoTalk, setVideoTalk] = useState({
     isChat: false,
     isVideoCall: false,
@@ -406,6 +408,17 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
 
+  //UseEffect for Getting Meeting Status
+  useEffect(() => {
+    try {
+      if (CheckMeetingStatus !== null && CheckMeetingStatus !== undefined) {
+        setMeetingStatus(CheckMeetingStatus.meetingStatusID);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+  }, [CheckMeetingStatus]);
+
   //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
@@ -457,6 +470,23 @@ const NewMeeting = () => {
           localStorage.removeItem(
             "ProposedMeetOperationsDateSelectedSendResponseByDate"
           );
+        }
+      } else if (
+        JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true
+      ) {
+        //Notification if the Organizer clicks on the proposed meeting date submission Notification
+        if (Number(meetingStatus) === 12) {
+          console.log(meetingStatus, "meetingStatusmeetingStatusmeetingStatus");
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          dispatch(showSceduleProposedMeeting(true));
+          setViewProposeDatePoll(false);
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(viewProposeDateMeetingPageFlag(false));
+        } else {
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(false);
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(viewProposeDateMeetingPageFlag(false));
         }
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
