@@ -78,7 +78,7 @@ const ParticipantVideoCallComponent = ({
             videoRef.current.muted = true;
             await videoRef.current.play();
           }
-
+          console.log(videoRef.current, "streamstream");
           localStorage.setItem("isWebCamEnabled", false);
           setStream(stream); // Store the video and audio stream
 
@@ -90,6 +90,13 @@ const ParticipantVideoCallComponent = ({
           }
           localStorage.setItem("isMicEnabled", false);
           setStreamAudio(audioStream);
+          console.log(streamAudio, "streamstream");
+          console.log(audioStream, "streamstream");
+          console.log(stream, "streamstream");
+          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("videoStreamId", stream.id); // Save video stream ID
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("audioStreamId", audioStream.id);
         }
       } catch (error) {
         alert(`Error accessing media devices: ${error.message}`);
@@ -101,6 +108,7 @@ const ParticipantVideoCallComponent = ({
     // Cleanup on unmount or when isWebCamEnabled changes
     return () => {
       if (videoRef.current) {
+        console.log(videoRef.current, "streamstream");
         videoRef.current.srcObject = null; // Clear the video source
       }
 
@@ -111,6 +119,8 @@ const ParticipantVideoCallComponent = ({
 
       // Stop audio stream
       if (streamAudio) {
+        console.log(streamAudio, "streamstream");
+
         streamAudio.getTracks().forEach((track) => track.stop());
       }
     };
@@ -132,6 +142,11 @@ const ParticipantVideoCallComponent = ({
           const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
           setStreamAudio(newStream);
           setIsMicEnabled(enable);
+          console.log(streamAudio, "streamstream");
+
+          // Store audio stream state in sessionStorage
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("audioStreamId", newStream.id);
         })
         .catch((error) => {
           alert("Error accessing microphone: " + error.message);
@@ -141,6 +156,9 @@ const ParticipantVideoCallComponent = ({
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
+      sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+      sessionStorage.removeItem("audioStreamId");
+      console.log(streamAudio, "streamstream");
       setIsMicEnabled(enable); // Microphone is now disabled
     }
   };
@@ -167,6 +185,10 @@ const ParticipantVideoCallComponent = ({
           }
           setStream(videoStream);
           setIsWebCamEnabled(enable);
+
+          // Store video stream information in sessionStorage
+          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("videoStreamId", videoStream.id);
         })
         .catch((error) => {
           alert("Error accessing webcam: " + error.message);
@@ -178,6 +200,9 @@ const ParticipantVideoCallComponent = ({
         if (videoRef.current) {
           videoRef.current.srcObject = null; // Clear the video source
         }
+
+        sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+        sessionStorage.removeItem("videoStreamId");
       }
       setIsWebCamEnabled(enable); // Webcam is now disabled
     }
@@ -205,13 +230,6 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickEndVideoCall = async () => {
-    if (stream) {
-      stream.getVideoTracks().forEach((track) => track.stop());
-      setStream(null); // Clear the stream from state
-      if (videoRef.current) {
-        videoRef.current.srcObject = null; // Clear the video source
-      }
-    }
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -228,10 +246,35 @@ const ParticipantVideoCallComponent = ({
         Name: String(newName),
       };
       await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      // Stop video stream
+
       dispatch(maxParticipantVideoCallPanel(false));
     } else {
       dispatch(maxParticipantVideoCallPanel(false));
     }
+    if (stream) {
+      stream.getVideoTracks().forEach((track) => track.stop());
+      setStream(null); // Clear the stream from state
+      if (videoRef.current) {
+        videoRef.current.srcObject = null; // Clear the video source
+      }
+      console.log(stream, "streamstream");
+      sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+      sessionStorage.removeItem("videoStreamId");
+    }
+
+    // Stop audio stream
+    if (streamAudio) {
+      console.log(streamAudio, "streamstream");
+
+      streamAudio.getAudioTracks().forEach((track) => track.stop());
+      setStreamAudio(null); // Clear the stream from state
+      sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+    }
+    sessionStorage.removeItem("audioStreamId");
+
+    // Clear session storage related to participant
+    sessionStorage.removeItem("participantData");
   };
 
   return (

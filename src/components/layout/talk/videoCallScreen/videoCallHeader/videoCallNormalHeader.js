@@ -103,13 +103,11 @@ const VideoCallNormalHeader = ({
     "getNewParticipantsMeetingJoingetNewParticipantsMeetingJoin"
   );
 
-  const [newParticipants, setNewParticipants] = useState([]);
-
-  const [participantData, setParticipantData] = useState([]);
-
-  const participantWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.participantWaitingList
+  const waitingParticipantsList = useSelector(
+    (state) => state.videoFeatureReducer.waitingParticipantsList
   );
+
+  console.log(waitingParticipantsList, "participantWaitingList");
 
   //Audio Control For host
   const audioControlHost = useSelector(
@@ -204,11 +202,6 @@ const VideoCallNormalHeader = ({
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
 
-  // state for mute and UnMute from Host side
-  const [muteGuest, setMuteGuest] = useState(false);
-
-  const [micEnableHost, setMicEnableHost] = useState(null);
-
   const [isMeetingHost, setIsMeetingHost] = useState(null);
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
@@ -216,7 +209,12 @@ const VideoCallNormalHeader = ({
   console.log(participantCounterList, "participantCounterList");
   const leaveModalPopupRef = useRef(null);
 
+  // to show a host participants list counter
   const participantCounter = participantCounterList?.length;
+
+  // to show a host participants waiting List Counter
+  const participantWaitingListCounter = waitingParticipantsList?.length;
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -1017,14 +1015,14 @@ const VideoCallNormalHeader = ({
                             </div>
                           </Tooltip>
                         )}
-                        <span className="participants-counter">
+                        <span className="participants-counter-For-Host">
                           {participantCounter}
                         </span>
                       </div>
                     ) : null
                   }
 
-                  <div
+                  {/* <div
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
                         ? "grayScaleImage position-relative"
@@ -1113,7 +1111,7 @@ const VideoCallNormalHeader = ({
                         </div>
                       </div>
                     ) : null}
-                  </div>
+                  </div> */}
 
                   {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
                     <div
@@ -1469,7 +1467,7 @@ const VideoCallNormalHeader = ({
                           </Tooltip>
                         )}
                         <span className="participants-counter">
-                          {/* {participantCounter} */}
+                          {participantCounter}
                         </span>
                       </div>
                     ) : null

@@ -909,6 +909,80 @@ const Dashboard = () => {
                   "Dispatching PARTICIPANT_VIDEO_SCREEN_NAVIGATION with 3",
                   data.payload
                 );
+                const stopStreams = () => {
+                  console.log("Stopping webcam and microphone...");
+
+                  // Stop video stream
+                  const isVideoEnabled = JSON.parse(
+                    sessionStorage.getItem("streamOnOff")
+                  );
+                  if (isVideoEnabled) {
+                    try {
+                      const videoStreamId =
+                        sessionStorage.getItem("videoStreamId");
+                      if (videoStreamId) {
+                        navigator.mediaDevices
+                          .getUserMedia({ video: true })
+                          .then((videoStream) => {
+                            videoStream
+                              .getTracks()
+                              .forEach((track) => track.stop());
+                            console.log(
+                              "Video stream stopped.streamstream",
+                              videoStreamId
+                            );
+                            sessionStorage.setItem(
+                              "streamOnOff",
+                              JSON.stringify(false)
+                            );
+                            sessionStorage.removeItem("videoStreamId");
+                          })
+                          .catch((error) =>
+                            console.error("Error stopping video:", error)
+                          );
+                      }
+                    } catch (error) {
+                      console.error("Error stopping video stream:", error);
+                    }
+                  }
+
+                  // Stop audio stream
+                  const isAudioEnabled = JSON.parse(
+                    sessionStorage.getItem("audioStreamOnOff")
+                  );
+                  if (isAudioEnabled) {
+                    try {
+                      const audioStreamId =
+                        sessionStorage.getItem("audioStreamId");
+                      if (audioStreamId) {
+                        navigator.mediaDevices
+                          .getUserMedia({ audio: true })
+                          .then((audioStream) => {
+                            audioStream
+                              .getTracks()
+                              .forEach((track) => track.stop());
+                            console.log(
+                              "Video stream stopped.streamstream",
+                              audioStreamId
+                            );
+                            console.log("Audio stream stopped.");
+                            sessionStorage.setItem(
+                              "audioStreamOnOff",
+                              JSON.stringify(false)
+                            );
+                            sessionStorage.removeItem("audioStreamId");
+                          })
+                          .catch((error) =>
+                            console.error("Error stopping audio:", error)
+                          );
+                      }
+                    } catch (error) {
+                      console.error("Error stopping audio stream:", error);
+                    }
+                  }
+                };
+                stopStreams();
+
                 dispatch(maxParticipantVideoCallPanel(false));
                 dispatch(maxParticipantVideoDenied(true));
               }
