@@ -1,3 +1,4 @@
+import { filterHostData } from "../../commen/functions/regex";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -432,37 +433,73 @@ const videoFeatureReducer = (state = initialState, action) => {
       const { payload, flag } = action;
       console.log("allUidsallUids Payload:", flag);
       console.log("allUidsallUids Payload:", payload);
-
+      let meetinHostInfo = false;
+      let isGuid = "";
+      let isuid = 0;
+      const meetingHostformeetingHost = JSON.parse(
+        localStorage.getItem("meetinHostInfo")
+      );
+      if (meetingHostformeetingHost?.isHost) {
+        meetinHostInfo = true;
+        isGuid = localStorage.getItem("isGuid");
+        isuid = Number(localStorage.getItem("userID"));
+      } else {
+        const hostsData = sessionStorage.getItem("currentmeetingHost");
+        // Parse it back to a JavaScript object
+        const hosts = hostsData ? JSON.parse(hostsData) : [];
+        meetinHostInfo = false;
+        isGuid = hosts.guid;
+        isuid = Number(hosts.userID);
+      }
       // Ensure proper use of isForAll
       if (action.flag) {
         // Mute/Unmute all participants
         let updatedParticipantList = [];
-        if (
-          Object.keys(state.getVideoParticpantListandWaitingList).length > 0
-        ) {
-          updatedParticipantList =
-            state.getVideoParticpantListandWaitingList.map(
+        let newParticipantList = [];
+        if (meetinHostInfo) {
+          console.log("participanMuteUnMuteMeeting");
+          if (
+            Object.keys(state.getVideoParticpantListandWaitingList).length > 0
+          ) {
+            console.log("participanMuteUnMuteMeeting");
+            updatedParticipantList =
+              state.getVideoParticpantListandWaitingList.map(
+                (participant) =>
+                  participant.isHost
+                    ? participant // Do not modify if the participant is a host
+                    : { ...participant, mute: payload } // Update only non-host participants
+              );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+
+            updatedParticipantList = filterHostData(
+              updatedParticipantList,
+              isGuid
+            );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+          }
+        } else {
+          console.log("allUidsallUids");
+          if (Object.keys(state.getAllParticipantMain).length > 0) {
+            newParticipantList = state.getAllParticipantMain.map(
               (participant) =>
                 participant.isHost
                   ? participant // Do not modify if the participant is a host
                   : { ...participant, mute: payload } // Update only non-host participants
             );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+
+            newParticipantList = filterHostData(
+              newParticipantList,
+              isGuid
+            );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+          }
         }
 
-        let newParticipantList = [];
-        if (Object.keys(state.getAllParticipantMain).length > 0) {
-          newParticipantList = state.getAllParticipantMain.map(
-            (participant) =>
-              participant.isHost
-                ? participant // Do not modify if the participant is a host
-                : { ...participant, mute: payload } // Update only non-host participants
-          );
-        }
-
-        console.log(state.getAllParticipantMain, "allUidsallUids");
+        console.log(state.getAllParticipantMain, "participanMuteUnMuteMeeting");
         console.log(
           state.getVideoParticpantListandWaitingList,
-          "allUidsallUids"
+          "participanMuteUnMuteMeeting"
         );
 
         return {

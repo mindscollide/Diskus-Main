@@ -115,3 +115,24 @@ export const convertNumbersInString = (inputString, locale) => {
   // Convert the entire string
   return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
 };
+
+export function filterHostData(data, guid) {
+  // Find the data entry where the guid matches the provided guid
+  const matchData = data.find(item => item.guid === guid);
+
+  if (!matchData) {
+      // If no matching data is found, return the original data
+      return data;
+  }
+
+  // Get the userID of the matched entry
+  const matchUserID = matchData.userID;
+
+  // Filter out all entries with the same userID except the matched one
+  const filteredData = data.filter(item => item.userID !== matchUserID);
+
+  // Add the matched data back into the filtered list
+  filteredData.push(matchData);
+
+  return filteredData;
+}
