@@ -52,7 +52,8 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
   console.log(participantList, "participantListMainReducer");
-
+  console.log(participantList, "participanMuteUnMuteMeeting");
+  
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );

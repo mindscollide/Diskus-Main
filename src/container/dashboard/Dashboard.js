@@ -849,15 +849,6 @@ const Dashboard = () => {
                 localStorage.getItem("meetinHostInfo")
               );
               if (data.payload.isForAll) {
-                // Gather all participant UIDs
-                const allUids = getVideoParticpantListandWaitingList.map(
-                  (participant) => participant.guid
-                );
-
-                console.log(allUids, "allUidsallUids");
-                console.log(getVideoParticpantListandWaitingList, "allUidsallUids");
-                console.log(data, "allUidsallUids");
-
                 // Dispatch action with all UIDs
                 dispatch(
                   participanMuteUnMuteMeeting(data.payload.isMuted,true)
