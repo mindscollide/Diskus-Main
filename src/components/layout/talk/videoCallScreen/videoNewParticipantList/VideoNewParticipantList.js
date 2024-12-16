@@ -116,8 +116,27 @@ const VideoNewParticipantList = () => {
     } else {
       setFilteredParticipants([]);
     }
-  }, [participantList]); // Ensure it listens to participantList updates
+  }, [participantList]);
+  // Ensure it listens to participantList updates
 
+  function isEveryoneUnmuted(participants) {
+    return !participants.some(
+      (participant) => !participant.isHost && participant.mute === true
+    );
+  }
+  useEffect(() => {
+    if (filteredParticipants?.length) {
+      if (isEveryoneUnmuted(filteredParticipants)) {
+        if (isForAll === true) {
+          setIsForAll(false);
+        }
+      } else {
+        if (isForAll === false) {
+          setIsForAll(true);
+        }
+      }
+    }
+  }, [filteredParticipants]);
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
@@ -142,10 +161,9 @@ const VideoNewParticipantList = () => {
     dispatch(transferMeetingHostMainApi(navigate, t, data));
   };
 
-  const muteUnmuteByHost = (usersData, flag = true) => {
+  const muteUnmuteByHost = (usersData, flag) => {
     console.log(usersData, "usersData");
-    setMuteGuest(flag);
-
+    console.log(flag, "usersData");
     if (usersData) {
       // Mute/Unmute a specific participant
       if (!usersData.isHost) {
@@ -153,6 +171,7 @@ const VideoNewParticipantList = () => {
         const data = {
           RoomID: roomID,
           IsMuted: flag,
+          isForAll:false,
           MuteUnMuteList: [
             {
               UID: usersData.guid, // The participant's UID
@@ -163,27 +182,28 @@ const VideoNewParticipantList = () => {
       } else {
         console.log("Cannot mute/unmute host.");
       }
-    } else {
-      // Toggle mute/unmute for all participants
-      setIsForAll(flag); // Update the isForAll state
+    } 
+  };
+  
+  const muteUnmuteAllByHost = (flag) => {
+    // Update the isForAll state
+    let duplicatesData = [...filteredParticipants];
+    // Exclude hosts from the mute/unmute list
+    const allUids = duplicatesData
+      .filter((participant) => !participant.isHost) // Filter out hosts
+      .map((participant) => ({
+        UID: participant.guid,
+      }));
 
-      // Exclude hosts from the mute/unmute list
-      const allUids = filteredParticipants
-        .filter((participant) => !participant.isHost) // Filter out hosts
-        .map((participant) => ({
-          UID: participant.guid,
-        }));
+    console.log(allUids, "allUids after excluding hosts");
 
-      console.log(allUids, "allUids after excluding hosts");
-
-      const data = {
-        RoomID: roomID,
-        IsMuted: flag,
-        isForAll: flag, // Pass the current flag
-        MuteUnMuteList: allUids,
-      };
-      dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-    }
+    const data = {
+      RoomID: roomID,
+      IsMuted: !flag,
+      isForAll: true, // Pass the current flag
+      MuteUnMuteList: allUids,
+    };
+    dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
@@ -340,7 +360,7 @@ const VideoNewParticipantList = () => {
               <Button
                 text={isForAll ? t("Unmute-All") : t("Mute-All")}
                 className={styles["Waiting-New-Participant-muteAll"]}
-                onClick={() => muteUnmuteByHost(null, !isForAll)}
+                onClick={() => muteUnmuteAllByHost(isForAll)}
               />
             </Col>
           </Row>
