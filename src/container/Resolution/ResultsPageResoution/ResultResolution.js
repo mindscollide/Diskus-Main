@@ -111,8 +111,9 @@ const ResultResolution = ({ setResultresolution }) => {
     try {
       if (ResolutionReducergetResolutionResult !== null) {
         let resolutionresult = ResolutionReducergetResolutionResult;
+        let isAbstainValue = resolutionresult.abstainVotes
         setApproved(resolutionresult.approvedVotes);
-        setAbstain();
+        setAbstain( isAbstainValue || 0);
         setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);

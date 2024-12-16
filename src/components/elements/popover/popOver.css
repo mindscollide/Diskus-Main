@@ -1,0 +1,18 @@
+
+.popOver_content {
+    min-width: 120px !important;
+}
+.popOver_ulList {
+  list-style: none !important;
+  text-decoration: none !important;
+  margin-bottom: 0px !important;
+}
+.popOver_li_options {
+  border-bottom: 2px solid #000000 !important;
+  cursor: pointer;
+  padding: 5px 0 0 0;
+  font-weight: 600;
+}
+.popOver_li_options:last-child {
+    border-bottom: 0px !important;
+}

@@ -3,9 +3,11 @@ import sharedIcon from "../../../assets/images/shared_icon.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
 import CheckIconDropdown from "../../../assets/images/check__sign_dropdown.svg";
 import CrossIconDropdown from "../../../assets/images/cross__sign_dropdown.svg";
+import BootstrapDropdown from "react-bootstrap/Dropdown";
+
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd/lib";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Tooltip } from "react-bootstrap";
 import { Button, Modal, TableToDo } from "../../../components/elements";
 import GridViewDataRoom from "../GridViewDataRoom/GridViewDataRoom";
 import styles from "./searchComponent.module.css";
@@ -15,7 +17,14 @@ import {
   getIconSource,
   OptionsDocument,
   optionsforFile,
+  optionsforFileEditableNonShareable,
+  optionsforFileEditor,
+  optionsforFileViewer,
   optionsforFolder,
+  optionsforFolderEditableNonShareable,
+  optionsforFolderEditor,
+  optionsforFolderViewer,
+  optionsforPDFandSignatureFlow,
   optionsLastmodified,
   optionsLocations,
   OptionsOwner,
@@ -31,7 +40,12 @@ import {
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFolderApiFunc,
   dataBehaviour,
+  deleteSharedFileDataroom,
+  deleteSharedFolderDataroom,
+  getSharedFolderUsersApi,
   searchDocumentsAndFoldersApi,
 } from "../../../store/actions/DataRoom_actions";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -43,8 +57,19 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import { checkFeatureIDAvailability, openDocumentViewer } from "../../../commen/functions/utils";
+import dot from "../../../assets/images/Group 2898.svg";
+import {
+  checkFeatureIDAvailability,
+  fileFormatforSignatureFlow,
+  openDocumentViewer,
+} from "../../../commen/functions/utils";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import MenuPopover from "../../../components/elements/popover";
+import {
+  getDataAnalyticsCountApi,
+  getFilesandFolderDetailsApi,
+} from "../../../store/actions/DataRoom2_actions";
+import { createWorkflowApi } from "../../../store/actions/workflow_actions";
 
 const SearchComponent = ({
   setSearchDataFields,
@@ -55,6 +80,19 @@ const SearchComponent = ({
   setSearchResultFields,
   searchResultsFields,
   setSearchTabOpen,
+  showShareFolderModa,
+  showShareFileModal,
+  setShowreanmemodal,
+  setRenameFolderData,
+  setShowRenameFile,
+  setRenameFileData,
+  setDetailView,
+  setIsFolderDeleteId,
+  setIsFolderDelete,
+  setIsFileDeleteId,
+  setIsFileDelete,
+  setFileDataforAnalyticsCount,
+  showShareFolderModal,
 }) => {
   console.log(searchDataFields, "searchDataFieldssearchDataFields");
   const dispatch = useDispatch();
@@ -63,7 +101,7 @@ const SearchComponent = ({
   const calendRef = useRef();
   const { DataRoomReducer, assignees } = useSelector((state) => state);
   const [searchAllData, setSearchAllData] = useState([]);
-  console.log(searchAllData, "searchAllDatasearchAllData")
+  console.log(searchAllData, "searchAllDatasearchAllData");
   const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
   const [dateValue, setDateValue] = useState(t("Date-modified"));
@@ -71,7 +109,7 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
-  console.log(assignessList, "assignessListassignessList")
+  console.log(assignessList, "assignessListassignessList");
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -92,10 +130,10 @@ const SearchComponent = ({
 
   console.log({ searchDataFields }, "searchDataFields");
   useEffect(() => {
-    if(assignees?.user && assignees?.user?.length  === 0) {
-     dispatch(allAssignessList(navigate, t, false));
+    if (assignees?.user && assignees?.user?.length === 0) {
+      dispatch(allAssignessList(navigate, t, false));
     }
-  },[])
+  }, []);
 
   const handeClickSortingFunc = async (statusID) => {
     // this is for All Tab and My Document tab
@@ -300,6 +338,119 @@ const SearchComponent = ({
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
+
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    console.log(data, record, pdfDataJson,"fileOptionsSelectfileOptionsSelectfileOptionsSelect");
+    if (data.value === 1) {
+      if (checkFeatureIDAvailability(20)) {
+        // Open on Apryse
+        let ext = record?.name?.split(".").pop();
+        openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+      }
+    } else if (data.value === 2) {
+      // Share File Modal
+      if (record.isFolder) {
+        showShareFolderModal(record.id, record.name);
+      } else {
+        showShareFileModal(record.id, record.name);
+      }
+    } else if (data.value === 3) {
+      // Rename Folder and File
+      if (record.isFolder) {
+        setShowreanmemodal(true);
+        setRenameFolderData(record);
+      } else {
+        setShowRenameFile(true);
+        setRenameFileData(record);
+      }
+    } else if (data.value === 4) {
+      // View Details File and Folder
+      if (record.isFolder) {
+        let Data = {
+          ID: record.id,
+          isFolder: true,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      } else {
+        let Data = {
+          ID: record.id,
+          isFolder: false,
+        };
+        dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      }
+    } else if (data.value === 5) {
+      // Download File and Folder
+      if (record.isFolder === true) {
+        let data = {
+          FolderID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
+      } else {
+        let data = {
+          FileID: Number(record.id),
+        };
+        dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
+      }
+    } else if (data.value === 6) {
+      // Delete File and Folder
+      if (record.isFolder) {
+        setIsFolderDeleteId(record.id);
+        setIsFolderDelete(true);
+      } else {
+        setIsFileDeleteId(record.id);
+        setIsFileDelete(true);
+      }
+      // Delete File
+    } else if (data.value === 7) {
+      if (record.isFolder) {
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      } else {
+        // Get Anayltics  for the document
+        let Data = {
+          FileID: Number(record.id),
+        };
+        dispatch(
+          getDataAnalyticsCountApi(
+            navigate,
+            t,
+            Data,
+            record,
+            setFileDataforAnalyticsCount
+          )
+        );
+      }
+    } else if (data.value === 8) {
+      // Create Signature Flow
+      let dataRoomData = {
+        FileID: Number(record.id),
+      };
+      dispatch(createWorkflowApi(dataRoomData, navigate, t, pdfDataJson));
+    } else if (data.value === 9) {
+      if (record.isFolder) {
+        let removeSharedFolder = {
+          FolderSharingID: record.sharingID,
+        };
+        dispatch(deleteSharedFolderDataroom(navigate, removeSharedFolder, t));
+      } else {
+        // Remove Shared File
+        let removeShareData = {
+          FileSharingID: Number(record.sharingID),
+        };
+        dispatch(deleteSharedFileDataroom(navigate, removeShareData, t));
+      }
+    }
+  };
   // these are search columns
   const searchColumns = [
     {
@@ -352,7 +503,9 @@ const SearchComponent = ({
                     alt=''
                   />
                   <abbr title={text}>
-                    <span className={stylesss["dataroom_table_heading"]}  onClick={(e) => handleLinkClick(e, data)}>
+                    <span
+                      className={stylesss["dataroom_table_heading"]}
+                      onClick={(e) => handleLinkClick(e, data)}>
                       {text} <img draggable='false' src={sharedIcon} alt='' />
                     </span>
                   </abbr>
@@ -386,7 +539,7 @@ const SearchComponent = ({
                     alt=''
                   />
 
-                  <abbr title={text}  onClick={(e) => handleLinkClick(e, data)}>
+                  <abbr title={text} onClick={(e) => handleLinkClick(e, data)}>
                     <span className={stylesss["dataroom_table_heading"]}>
                       {text}
                     </span>
@@ -478,6 +631,78 @@ const SearchComponent = ({
           <span className={styles["Dataroom__mydocument_location"]}>
             {text}
           </span>
+        );
+      },
+    },
+    {
+      dataIndex: "OtherStuff",
+      key: "OtherStuff",
+      width: "20%",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        const pdfData = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+          isPermission: record.permissionID,
+        };
+
+        let fileExtension = getFileExtension(record.name);
+
+        // Simplify MenuPopover props setup
+        const getMenuPopover = (listData) => (
+          <MenuPopover
+            imageImage={dot}
+            listData={listData}
+            record={record}
+            t={t}
+            listOnClickFunction={fileOptionsSelect}
+          />
+        );
+
+        return (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+              <span className={styles["threeDot__Icon"]}>
+                {/* Check if Shared */}
+                {record.isShared ? (
+                  <>
+                    {record.isFolder
+                      ? // Folder Logic
+                        record.permissionID === 2
+                        ? getMenuPopover(optionsforFolderEditor)
+                        : record.permissionID === 1
+                        ? getMenuPopover(optionsforFolderViewer)
+                        : record.permissionID === 3
+                        ? getMenuPopover(optionsforFolderEditableNonShareable)
+                        : null
+                      : // File Logic
+                      record.permissionID === 2
+                      ? getMenuPopover(optionsforFileEditor)
+                      : record.permissionID === 1
+                      ? getMenuPopover(optionsforFileViewer)
+                      : record.permissionID === 3
+                      ? getMenuPopover(optionsforFileEditableNonShareable)
+                      : null}
+                  </>
+                ) : (
+                  <>
+                    {/* Non-Shared Items */}
+                    {record.isFolder
+                      ? getMenuPopover(optionsforFolder)
+                      : fileFormatforSignatureFlow.includes(fileExtension)
+                      ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
+                      : getMenuPopover(optionsforFile)}
+                  </>
+                )}
+              </span>
+            </Col>
+          </Row>
         );
       },
     },
@@ -576,7 +801,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: searchDataFields.isDocument,
         isSpreadSheet: searchDataFields.isSpreadSheet,

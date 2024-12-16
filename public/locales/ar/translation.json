@@ -2273,5 +2273,7 @@
   "Join-request-sent-to-host":"Join Request Sent To Host",
   "ScheduleCall-joined-and-is-host":"ScheduleCall Joined and Is host",
   "invalid-video-call-url-provided":"invalid video call url provided",
-  "Could-not-join-call":"Could not join call"
+  "Could-not-join-call":"Could not join call",
+  "There-are-no-Participants": "There are no Participants"
+
 }
