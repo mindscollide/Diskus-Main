@@ -260,11 +260,12 @@ const guestLeaveVideoMeeting = (response) => {
   };
 };
 
-const participanMuteUnMuteMeeting = (response) => {
+const participanMuteUnMuteMeeting = (response, flag) => {
   console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
+    flag: flag,
   };
 };
 

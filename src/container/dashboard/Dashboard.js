@@ -773,7 +773,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload));
+              dispatch(participanMuteUnMuteMeeting(data.payload,false));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
@@ -855,23 +855,16 @@ const Dashboard = () => {
                 );
 
                 console.log(allUids, "allUidsallUids");
+                console.log(getVideoParticpantListandWaitingList, "allUidsallUids");
+                console.log(data, "allUidsallUids");
 
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting({
-                    isMuted: data.payload.isMuted,
-                    isForAll: true,
-                    uids: allUids, // Include all participant UIDs
-                  })
+                  participanMuteUnMuteMeeting(data.payload.isMuted,true)
                 );
-                let isGuid = localStorage.getItem("isGuid");
-
-                if (data.payload.uid === isGuid) {
-                  dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
-                }
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload));
+                dispatch(participanMuteUnMuteMeeting(data.payload,false));
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -881,7 +874,6 @@ const Dashboard = () => {
                 }
 
                 if (data.payload.uid === isGuid) {
-                  console.log(data.payload, "guestDataGuestData");
                   dispatch(setAudioControlForParticipant(data.payload.isMuted));
                 }
               }

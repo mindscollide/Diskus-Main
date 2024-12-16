@@ -92,6 +92,7 @@ const VideoNewParticipantList = () => {
 
     setFilteredParticipants(filtered);
   };
+  console.log(participantList, "allUidsallUids");
 
   // useEffect(() => {
   //   console.log("hell");
@@ -184,7 +185,7 @@ const VideoNewParticipantList = () => {
       }
     } 
   };
-  
+
   const muteUnmuteAllByHost = (flag) => {
     // Update the isForAll state
     let duplicatesData = [...filteredParticipants];
