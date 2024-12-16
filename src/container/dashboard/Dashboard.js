@@ -845,6 +845,9 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
+              const meetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
               if (data.payload.isForAll) {
                 // Gather all participant UIDs
                 const allUids = getVideoParticpantListandWaitingList.map(
@@ -869,18 +872,17 @@ const Dashboard = () => {
               } else {
                 // Handle individual mute/unmute
                 dispatch(participanMuteUnMuteMeeting(data.payload));
-                let isGuid = localStorage.getItem("isGuid");
+
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
 
                 if (data.payload.uid === isGuid) {
-                  if (data.payload.isMuted === true) {
-                    dispatch(
-                      setAudioControlForParticipant(data.payload.isMuted)
-                    );
-                  } else {
-                    dispatch(
-                      setAudioControlForParticipant(data.payload.isMuted)
-                    );
-                  }
+                  console.log(data.payload, "guestDataGuestData");
+                  dispatch(setAudioControlForParticipant(data.payload.isMuted));
                 }
               }
 
@@ -889,16 +891,22 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
             ) {
+              const meetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+              let isGuid = "";
+              if (meetingHost?.isHost) {
+                isGuid = localStorage.getItem("isGuid");
+              } else {
+                isGuid = localStorage.getItem("participantUID");
+              }
               //  dispatch(hideUnHideVideoByHost(data.payload));
               dispatch(participantHideUnhideVideo(data.payload));
-              let isGuid = localStorage.getItem("isGuid");
 
               if (data.payload.uid === isGuid) {
-                if (data.payload.isVideoHidden === true) {
-                  dispatch(setVideoControlForParticipant(true));
-                } else {
-                  dispatch(setVideoControlForParticipant(false));
-                }
+                dispatch(
+                  setVideoControlForParticipant(data.payload.isVideoHidden)
+                );
               }
 
               console.log(data.payload, "guestDataGuestDataVideo");
