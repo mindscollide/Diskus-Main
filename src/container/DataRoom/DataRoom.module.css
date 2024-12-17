@@ -1347,3 +1347,11 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.dataroombreadCrumbs {
+  color: #6172d6 !important;
+}
+.dataroombreadCrumbs nav ol li span {
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}

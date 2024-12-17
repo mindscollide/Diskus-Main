@@ -513,11 +513,17 @@ const getFolerDocuments_fail = (message) => {
     message: message,
   };
 };
-
+const BreadCrumbsList = (response) => {
+  return {
+    type: actions.DATAROOM_BREADCRUMBS,
+    payload: response,
+  };
+};
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no, record) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
+
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FolderID: Number(FolderId),
@@ -546,7 +552,7 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getFolderDocumentsApi(navigate, FolderId, t, no));
+          dispatch(getFolderDocumentsApi(navigate, FolderId, t, no, record));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -556,6 +562,14 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
                   "DataRoom_DataRoomManager_GetFolderDocuments_01".toLowerCase()
                 )
             ) {
+              if (record !== null && record !== undefined) {
+                let newFolderRecord = {
+                  name: record?.name,
+                  id: record?.id,
+                };
+                dispatch(BreadCrumbsList(newFolderRecord));
+              }
+
               dispatch(
                 getFolerDocuments_success(response.data.responseResult, "")
               );
@@ -3920,4 +3934,5 @@ export {
   DataRoomDownloadFolderApiFunc,
   showFileDetailsModal,
   validateUserAvailibilityEncryptedStringDataRoomApi,
+  BreadCrumbsList,
 };
