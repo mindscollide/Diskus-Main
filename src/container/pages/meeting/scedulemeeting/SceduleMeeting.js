@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -39,11 +39,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import { MeetingContext } from "../../../../context/MeetingContext";
 const SceduleMeeting = ({
-  setEdiorRole,
   setEditMeeting,
   isEditMeeting,
-  editorRole,
   setCurrentMeetingID,
   currentMeeting,
   setSceduleMeeting,
@@ -56,7 +55,7 @@ const SceduleMeeting = ({
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
-
+  const { editorRole, setEditorRole } = useContext(MeetingContext);
   const [meetingDetails, setmeetingDetails] = useState(
     editorRole.role === "Agenda Contributor" ? false : true
   );
@@ -104,7 +103,7 @@ const SceduleMeeting = ({
     }
     return () => {
       setEditMeeting(false);
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
       setCurrentMeetingID(0);
       setProposedMeetingDates(false);
     };
@@ -400,7 +399,8 @@ const SceduleMeeting = ({
         if (Number(pK_MDID) === Number(currentMeeting)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
-          setEdiorRole({ status: null, role: null });
+          setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           setCurrentMeetingID(0);
@@ -437,7 +437,8 @@ const SceduleMeeting = ({
         if (Number(pK_MDID) === Number(currentMeeting)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
-          setEdiorRole({ status: null, role: null });
+          setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           setCurrentMeetingID(0);
@@ -466,7 +467,7 @@ const SceduleMeeting = ({
 
   return (
     <section>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col lg={12} md={12} sm={12}>
           {isEditMeeting ? (
             <span className={styles["Scedule_newMeeting_Heading"]}>
@@ -480,15 +481,14 @@ const SceduleMeeting = ({
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className="mb-4">
+        <Col lg={12} md={12} sm={12} className='mb-4'>
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="py-2 d-flex gap-2 flex-wrap"
-              >
+                className='py-2 d-flex gap-2 flex-wrap'>
                 <Button
                   text={t("Meeting-details")}
                   className={
@@ -682,7 +682,6 @@ const SceduleMeeting = ({
                   setEditMeeting={setEditMeeting}
                   isEditMeeting={isEditMeeting}
                   editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
@@ -699,7 +698,6 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {agenda && NewMeetingreducer.agendaGlobalFlag && (
@@ -715,7 +713,6 @@ const SceduleMeeting = ({
                 setParticipants={setParticipants}
                 dataroomMapFolderId={dataroomMapFolderId}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {meetingMaterial && NewMeetingreducer.meetingMaterialGlobalFlag && (
@@ -731,7 +728,6 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setAgenda={setAgenda}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {minutes && NewMeetingreducer.minutesGlobalFlag && (
@@ -746,7 +742,6 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setactionsPage={setactionsPage}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {actionsPage && NewMeetingreducer.actionsGlobalFlag && (
@@ -763,7 +758,6 @@ const SceduleMeeting = ({
                 dataroomMapFolderId={dataroomMapFolderId}
                 setMeetingMaterial={setMeetingMaterial}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {polls && NewMeetingreducer.pollsGlobalFlag && (
@@ -778,7 +772,6 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setactionsPage={setactionsPage}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
             {attendance && NewMeetingreducer.attendanceGlobalFlag && (
@@ -792,7 +785,6 @@ const SceduleMeeting = ({
                 setPolls={setPolls}
                 setSceduleMeeting={setSceduleMeeting}
                 setDataroomMapFolderId={setDataroomMapFolderId}
-                setEdiorRole={setEdiorRole}
               />
             )}
           </span>

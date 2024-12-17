@@ -8207,7 +8207,7 @@ const LeaveCurrentMeeting = (
   Data,
   isQuickMeeting,
   setViewFlag,
-  setEdiorRole,
+  setEditorRole,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal
@@ -8244,7 +8244,7 @@ const LeaveCurrentMeeting = (
               Data,
               isQuickMeeting,
               setViewFlag,
-              setEdiorRole,
+              setEditorRole,
               setAdvanceMeetingModalID,
               setViewAdvanceMeetingModal,
               setEndMeetingConfirmationModal
@@ -8338,7 +8338,7 @@ const LeaveCurrentMeeting = (
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   localStorage.removeItem("folderDataRoomMeeting");
-                  setEdiorRole({ status: null, role: null });
+                  setEditorRole({ status: null, role: null });
                   setAdvanceMeetingModalID(null);
                   if (typeof setViewAdvanceMeetingModal === "function") {
                     setViewAdvanceMeetingModal(false);

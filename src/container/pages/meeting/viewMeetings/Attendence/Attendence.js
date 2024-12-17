@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Attendence.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -33,6 +33,7 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 const Attendence = ({
   setPolls,
   setMinutes,
@@ -40,7 +41,6 @@ const Attendence = ({
   advanceMeetingModalID,
   setAttendance,
   setViewAdvanceMeetingModal,
-  setEdiorRole,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -48,9 +48,10 @@ const Attendence = ({
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [useCase, setUseCase] = useState(0);
+  const { setEditorRole } = useContext(MeetingContext);
   //reducer call from Attendance_Reducers
   const attendanceConfirmationModal = useSelector(
     (state) => state.NewMeetingreducer.attendanceConfirmationModal
@@ -163,8 +164,7 @@ const Attendence = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex align-items-center gap-4"
-            >
+              className='d-flex align-items-center gap-4'>
               {console.log("attendanceStatusID:", text)}
               {/* Add this line for debugging */}
               {text === 1 ? (
@@ -173,10 +173,10 @@ const Attendence = ({
                     <Col lg={12} md={12} sm={12}>
                       <section className={styles["PresentBackgroundSection"]}>
                         <img
-                          alt="Present-Icon"
+                          alt='Present-Icon'
                           src={whitepresentIcon}
-                          width="22.59px"
-                          height="22.59px"
+                          width='22.59px'
+                          height='22.59px'
                         />
                         <span>
                           {record.meetingAttendancestatus.attendanceStatus}
@@ -188,10 +188,10 @@ const Attendence = ({
               ) : (
                 <>
                   <img
-                    alt="Present-Pic"
+                    alt='Present-Pic'
                     src={presentIcon}
-                    height="22.59px"
-                    width="22.59px"
+                    height='22.59px'
+                    width='22.59px'
                     className={"cursor-pointer"}
                     onClick={() => enablePresent(record, 1)}
                   />
@@ -203,10 +203,10 @@ const Attendence = ({
                     <Col lg={12} md={12} sm={12}>
                       <section className={styles["AbsentBackgroundSection"]}>
                         <img
-                          alt="Absent-Icon"
+                          alt='Absent-Icon'
                           src={whiteAbsentICon}
-                          width="22.59px"
-                          height="22.59px"
+                          width='22.59px'
+                          height='22.59px'
                         />
                         <span>
                           {record.meetingAttendancestatus.attendanceStatus}
@@ -218,10 +218,10 @@ const Attendence = ({
               ) : (
                 <>
                   <img
-                    alt="Absent-Pic"
+                    alt='Absent-Pic'
                     src={AbsentIcon}
-                    height="22.59px"
-                    width="22.59px"
+                    height='22.59px'
+                    width='22.59px'
                     className={"cursor-pointer"}
                     onClick={() => enableAbsent(record, 2)}
                   />
@@ -233,10 +233,10 @@ const Attendence = ({
                     <Col lg={12} md={12} sm={12}>
                       <section className={styles["WorkFromHomeSection"]}>
                         <img
-                          alt="Remote-Icon"
+                          alt='Remote-Icon'
                           src={whiteworkhome}
-                          width="22.59px"
-                          height="22.59px"
+                          width='22.59px'
+                          height='22.59px'
                         />
                         <span>
                           {record.meetingAttendancestatus.attendanceStatus}
@@ -248,10 +248,10 @@ const Attendence = ({
               ) : (
                 <>
                   <img
-                    alt="Remote-Pic"
+                    alt='Remote-Pic'
                     src={HomeworkIcon}
-                    height="21.84px"
-                    width="21.84px"
+                    height='21.84px'
+                    width='21.84px'
                     className={"cursor-pointer"}
                     onClick={() => enableworkFromHome(record, 3)}
                   />
@@ -367,7 +367,7 @@ const Attendence = ({
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
     } else {
       dispatch(showAttendanceConfirmationModal(true));
@@ -384,7 +384,7 @@ const Attendence = ({
               column={attendanceColumn}
               scroll={{ y: "44vh" }}
               pagination={false}
-              className="Polling_table"
+              className='Polling_table'
               rows={attendenceRows}
             />
           </Col>
@@ -396,8 +396,7 @@ const Attendence = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-4"
-        >
+          className='d-flex justify-content-end gap-2 mt-4'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_Details"]}
@@ -425,7 +424,6 @@ const Attendence = ({
           setPolls={setPolls}
           setAttendance={setAttendance}
           setMinutes={setMinutes}
-          setEdiorRole={setEdiorRole}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}

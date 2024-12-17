@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Participants.module.css";
 import thumbsup from "../../../../../assets/images/thumbsup.svg";
 import thumbsdown from "../../../../../assets/images/thumbsdown.svg";
@@ -26,6 +26,7 @@ import { useEffect } from "react";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Participants = ({
   setParticipants,
@@ -34,13 +35,12 @@ const Participants = ({
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-
+  const { setEditorRole } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
@@ -96,11 +96,11 @@ const Participants = ({
 
         // IsParticipantsAddFlow;
       }
-      console.log(getAllData, "getAllDatagetAllDatagetAllData")
+      console.log(getAllData, "getAllDatagetAllDatagetAllData");
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
-  console.log(rowsData, "getAllDatagetAllDatagetAllData")
+  console.log(rowsData, "getAllDatagetAllDatagetAllData");
   const handleNextBtn = () => {
     setAgenda(true);
     setParticipants(false);
@@ -122,7 +122,7 @@ const Participants = ({
     setParticipants(false);
     localStorage.removeItem("folderDataRoomMeeting");
 
-    setEdiorRole({ status: null, role: null });
+    setEditorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -31,13 +31,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import Attendees from "./attendees/Attendees";
+import {
+  useMeetingContext,
+} from "../../../../context/MeetingContext";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
-  editorRole,
-  setEdiorRole,
   dataroomMapFolderId,
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -47,6 +48,7 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
+  const { editorRole, setEditorRole } = useMeetingContext();
   const [meetingDetails, setmeetingDetails] = useState(
     (editorRole.role === "Organizer" ||
       editorRole.role === "Participant" ||
@@ -107,7 +109,7 @@ const ViewMeetingModal = ({
   useEffect(() => {
     return () => {
       dispatch(cleareAllState());
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
     };
   }, []);
@@ -271,7 +273,7 @@ const ViewMeetingModal = ({
       NewMeetingreducer.mqttMeetingAcRemoved !== undefined
     ) {
       try {
-        setEdiorRole({ status: null, role: null });
+        setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -302,7 +304,7 @@ const ViewMeetingModal = ({
       NewMeetingreducer.mqttMeetingOrgRemoved !== undefined
     ) {
       try {
-        setEdiorRole({ status: null, role: null });
+        setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -338,7 +340,7 @@ const ViewMeetingModal = ({
         advanceMeetingModalID === endMeetingData?.pK_MDID &&
         endMeetingData.status === "9"
       ) {
-        setEdiorRole({ status: null, role: null });
+        setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -369,8 +371,8 @@ const ViewMeetingModal = ({
   }, [meetingIdReducer.MeetingStatusEnded]);
   return (
     <>
-      <section className="position-relative">
-        <Row className="mt-2">
+      <section className='position-relative'>
+        <Row className='mt-2'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -378,10 +380,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -564,17 +566,13 @@ const ViewMeetingModal = ({
                   advanceMeetingModalID={advanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
               {attendees && (
                 <Attendees
                   MeetingID={advanceMeetingModalID}
-                  setEdiorRole={setEdiorRole}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  editorRole={editorRole}
                   setAttendees={setAttendees}
                 />
               )}
@@ -586,8 +584,6 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAgendaContributors={setAgendaContributors}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                 />
               )}
               {agendaContributors && (
@@ -598,8 +594,6 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                 />
               )}
               {participants && (
@@ -610,8 +604,6 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                 />
               )}
               {agenda && (
@@ -622,8 +614,6 @@ const ViewMeetingModal = ({
                   setAgenda={setAgenda}
                   setPolls={setPolls}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                 />
               )}
@@ -635,8 +625,6 @@ const ViewMeetingModal = ({
                   setMeetingMaterial={setMeetingMaterial}
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
-                  editorRole={editorRole}
-                  setEdiorRole={setEdiorRole}
                   setactionsPage={setactionsPage}
                   videoTalk={videoTalk}
                   setVideoTalk={setVideoTalk}
@@ -652,8 +640,6 @@ const ViewMeetingModal = ({
                       setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
-                      editorRole={editorRole}
-                      setEdiorRole={setEdiorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
@@ -664,8 +650,6 @@ const ViewMeetingModal = ({
                       setPolls={setPolls}
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
-                      editorRole={editorRole}
-                      setEdiorRole={setEdiorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -679,8 +663,6 @@ const ViewMeetingModal = ({
                       setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
-                      editorRole={editorRole}
-                      setEdiorRole={setEdiorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -688,8 +670,6 @@ const ViewMeetingModal = ({
                   )}
                   {attendance && (
                     <Attendence
-                      editorRole={editorRole}
-                      setEdiorRole={setEdiorRole}
                       setMinutes={setMinutes}
                       setPolls={setPolls}
                       setAgenda={setAgenda}

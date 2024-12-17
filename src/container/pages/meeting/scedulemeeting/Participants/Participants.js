@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
@@ -48,6 +48,7 @@ import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Participants = ({
   setParticipants,
@@ -56,14 +57,13 @@ const Participants = ({
   setSceduleMeeting,
   currentMeeting,
   setAgendaContributors,
-  editorRole,
   isEditMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
   setCalendarViewModal,
   setDataroomMapFolderId,
   setCurrentMeetingID,
-  setEdiorRole,
+
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -74,7 +74,7 @@ const Participants = ({
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [editableSave, setEditableSave] = useState(0);
   const [isPublishedState, setIsPublishedState] = useState(false);
-
+  const {editorRole, setEditorRole } = useContext(MeetingContext);
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
   const [open, setOpen] = useState({
@@ -114,7 +114,7 @@ const Participants = ({
         t,
         5,
         Data,
-        setEdiorRole,
+      setEditorRole,
         setAdvanceMeetingModalID,
         setDataroomMapFolderId,
         setSceduleMeeting,
