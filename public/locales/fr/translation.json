@@ -2310,5 +2310,6 @@
   "View-proposed-meeting": "View Proposed Meeting",
   "Created-successfully": "Created Successfully",
   "You-have-no-notifications": "You have no notifications",
-  "Created-a-meeting": "Created a meeting"
+  "Created-a-meeting": "created a meeting:",
+  "Edited-a-meeting": "edited a meeting:"
 }
