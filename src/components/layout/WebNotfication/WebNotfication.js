@@ -124,6 +124,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
         } else {
+          //Advance Meeting
           navigate("/Diskus/Meeting");
           console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
@@ -131,6 +132,8 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         }
       }
     } else if (NotificationData.notificationActionID === 2) {
