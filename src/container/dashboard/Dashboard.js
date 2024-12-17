@@ -773,7 +773,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload));
+              dispatch(participanMuteUnMuteMeeting(data.payload,false));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
@@ -845,42 +845,27 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
+              const meetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
               if (data.payload.isForAll) {
-                // Gather all participant UIDs
-                const allUids = getVideoParticpantListandWaitingList.map(
-                  (participant) => participant.guid
-                );
-
-                console.log(allUids, "allUidsallUids");
-
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting({
-                    isMuted: data.payload.isMuted,
-                    isForAll: true,
-                    uids: allUids, // Include all participant UIDs
-                  })
+                  participanMuteUnMuteMeeting(data.payload.isMuted,true)
                 );
-                let isGuid = localStorage.getItem("isGuid");
-
-                if (data.payload.uid === isGuid) {
-                  dispatch(setAudioControlForParticipant(data.payload.isMuted)); // Update global state to mute all
-                }
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload));
-                let isGuid = localStorage.getItem("isGuid");
+                dispatch(participanMuteUnMuteMeeting(data.payload,false));
+
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
 
                 if (data.payload.uid === isGuid) {
-                  if (data.payload.isMuted === true) {
-                    dispatch(
-                      setAudioControlForParticipant(data.payload.isMuted)
-                    );
-                  } else {
-                    dispatch(
-                      setAudioControlForParticipant(data.payload.isMuted)
-                    );
-                  }
+                  dispatch(setAudioControlForParticipant(data.payload.isMuted));
                 }
               }
 
@@ -889,16 +874,22 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
             ) {
+              const meetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+              let isGuid = "";
+              if (meetingHost?.isHost) {
+                isGuid = localStorage.getItem("isGuid");
+              } else {
+                isGuid = localStorage.getItem("participantUID");
+              }
               //  dispatch(hideUnHideVideoByHost(data.payload));
               dispatch(participantHideUnhideVideo(data.payload));
-              let isGuid = localStorage.getItem("isGuid");
 
               if (data.payload.uid === isGuid) {
-                if (data.payload.isVideoHidden === true) {
-                  dispatch(setVideoControlForParticipant(true));
-                } else {
-                  dispatch(setVideoControlForParticipant(false));
-                }
+                dispatch(
+                  setVideoControlForParticipant(data.payload.isVideoHidden)
+                );
               }
 
               console.log(data.payload, "guestDataGuestDataVideo");

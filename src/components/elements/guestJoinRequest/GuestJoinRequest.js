@@ -35,6 +35,8 @@ const GuestJoinRequest = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
+  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
+
   const [getRoomId, setGetRoomId] = useState("");
 
   // let roomID = localStorage.getItem("activeRoomID");
@@ -197,7 +199,15 @@ const GuestJoinRequest = () => {
                   />
                 </div>
                 <p className={styles["title-alert"]}>
-                  <strong>{name + " "}</strong>
+                  <strong>
+                    {filteredWaitingParticipants.map((participant, index) =>
+                      participant.isGuest === false ? (
+                        <div key={index}>{participant.name}</div>
+                      ) : (
+                        <>{name + " "}</>
+                      )
+                    )}
+                  </strong>
                   {t("has-requested-to-join-this-video-call")}
                 </p>
                 <Row className="justify-content-center">

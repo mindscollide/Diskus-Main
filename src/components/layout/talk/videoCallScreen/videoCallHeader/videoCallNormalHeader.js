@@ -96,6 +96,7 @@ const VideoCallNormalHeader = ({
   const getVideoParticpantListandWaitingList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
+  console.log(getVideoParticpantListandWaitingList, "participanMuteUnMuteMeeting");
 
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList

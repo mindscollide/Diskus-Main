@@ -237,8 +237,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControlHost === true) {
+        console.log(isMeetingHost, "iframeiframe");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log(isMeetingHost, "iframeiframe");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
@@ -252,8 +254,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControlForParticipant === true) {
+        console.log(isMeetingHost, "iframeiframe");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log(isMeetingHost, "iframeiframe");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
@@ -309,6 +313,10 @@ const VideoPanelNormal = () => {
       });
     }
   }, [getVideoParticpantListandWaitingList]);
+  console.log(
+    getVideoParticpantListandWaitingList,
+    "participanMuteUnMuteMeeting"
+  );
 
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
@@ -348,7 +356,6 @@ const VideoPanelNormal = () => {
       setParticipantsList([]);
     }
   }, [getNewParticipantsMeetingJoin]);
-
 
   useEffect(() => {
     console.log(initiateCallRoomID, "mqtt");
@@ -425,7 +432,7 @@ const VideoPanelNormal = () => {
               generateURLCaller(
                 extractedBaseURLCaller,
                 currentUserName,
-                newRoomID===0?activeRoomID:newRoomID
+                newRoomID === 0 ? activeRoomID : newRoomID
               )
             );
           }
@@ -434,7 +441,7 @@ const VideoPanelNormal = () => {
             generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
-              newRoomID===0?activeRoomID:newRoomID
+              newRoomID === 0 ? activeRoomID : newRoomID
             ),
             "mqtt"
           );
@@ -442,7 +449,7 @@ const VideoPanelNormal = () => {
             generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
-              newRoomID===0?activeRoomID:newRoomID
+              newRoomID === 0 ? activeRoomID : newRoomID
             )
           );
         }

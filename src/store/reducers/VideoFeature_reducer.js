@@ -1,3 +1,4 @@
+import { filterHostData } from "../../commen/functions/regex";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -429,65 +430,111 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
-      const { payload } = action;
-      console.log("Action Payload:", payload);
-
+      const { payload, flag } = action;
+      console.log("allUidsallUids Payload:", flag);
+      console.log("allUidsallUids Payload:", payload);
+      let meetinHostInfo = false;
+      let isGuid = "";
+      let isuid = 0;
+      const meetingHostformeetingHost = JSON.parse(
+        localStorage.getItem("meetinHostInfo")
+      );
+      if (meetingHostformeetingHost?.isHost) {
+        meetinHostInfo = true;
+        isGuid = localStorage.getItem("isGuid");
+        isuid = Number(localStorage.getItem("userID"));
+      } else {
+        const hostsData = sessionStorage.getItem("currentmeetingHost");
+        // Parse it back to a JavaScript object
+        const hosts = hostsData ? JSON.parse(hostsData) : [];
+        meetinHostInfo = false;
+        isGuid = hosts.guid;
+        isuid = Number(hosts.userID);
+      }
       // Ensure proper use of isForAll
-      if (payload.isForAll) {
-        if (typeof payload.isMuted !== "boolean") {
-          console.error(
-            "Invalid isMuted value for a global mute/unmute action."
-          );
-          return state; // Return unchanged state if invalid
+      if (action.flag) {
+        // Mute/Unmute all participants
+        let updatedParticipantList = [];
+        let newParticipantList = [];
+        if (meetinHostInfo) {
+          console.log("participanMuteUnMuteMeeting");
+          if (
+            Object.keys(state.getVideoParticpantListandWaitingList).length > 0
+          ) {
+            console.log("participanMuteUnMuteMeeting");
+            updatedParticipantList =
+              state.getVideoParticpantListandWaitingList.map(
+                (participant) =>
+                  participant.isHost
+                    ? participant // Do not modify if the participant is a host
+                    : { ...participant, mute: payload } // Update only non-host participants
+              );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+
+            updatedParticipantList = filterHostData(
+              updatedParticipantList,
+              isGuid
+            );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+          }
+        } else {
+          console.log("allUidsallUids");
+          if (Object.keys(state.getAllParticipantMain).length > 0) {
+            newParticipantList = state.getAllParticipantMain.map(
+              (participant) =>
+                participant.isHost
+                  ? participant // Do not modify if the participant is a host
+                  : { ...participant, mute: payload } // Update only non-host participants
+            );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+
+            newParticipantList = filterHostData(
+              newParticipantList,
+              isGuid
+            );
+            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+          }
         }
 
-        // Mute/Unmute all participants
-        const updatedParticipantList =
-          state.getVideoParticpantListandWaitingList.map((participant) => ({
-            ...participant,
-            mute: payload.isMuted,
-          }));
-
-        const newParticipantList = state.getAllParticipantMain.map(
-          (participant) => ({
-            ...participant,
-            mute: payload.isMuted,
-          })
+        console.log(state.getAllParticipantMain, "participanMuteUnMuteMeeting");
+        console.log(
+          state.getVideoParticpantListandWaitingList,
+          "participanMuteUnMuteMeeting"
         );
 
         return {
           ...state,
           getVideoParticpantListandWaitingList: updatedParticipantList,
-          audioControlForParticipant: payload.isMuted, // Update global state only for "Mute All"
+          audioControlForParticipant: payload, // Update global state only for "Mute All"
           getAllParticipantMain: newParticipantList,
         };
-      }
+      } else {
+        // Individual participant mute/unmute
+        if (!payload.uid) {
+          console.error("Missing uid for individual mute/unmute action.");
+          return state; // Return unchanged state if uid is not provided
+        }
 
-      // Individual participant mute/unmute
-      if (!payload.uid) {
-        console.error("Missing uid for individual mute/unmute action.");
-        return state; // Return unchanged state if uid is not provided
-      }
+        const updatedParticipantList =
+          state.getVideoParticpantListandWaitingList.map((participant) =>
+            participant.guid === payload.uid
+              ? { ...participant, mute: payload.isMuted }
+              : participant
+          );
 
-      const updatedParticipantList =
-        state.getVideoParticpantListandWaitingList.map((participant) =>
-          participant.guid === payload.uid
-            ? { ...participant, mute: payload.isMuted }
-            : participant
+        const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
+          (participant) =>
+            participant.guid === payload.uid
+              ? { ...participant, mute: payload.isMuted }
+              : participant
         );
 
-      const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
-        (participant) =>
-          participant.guid === payload.uid
-            ? { ...participant, mute: payload.isMuted }
-            : participant
-      );
-
-      return {
-        ...state,
-        getVideoParticpantListandWaitingList: updatedParticipantList,
-        getAllParticipantMain: getMainMuteUnmuteParticipant,
-      };
+        return {
+          ...state,
+          getVideoParticpantListandWaitingList: updatedParticipantList,
+          getAllParticipantMain: getMainMuteUnmuteParticipant,
+        };
+      }
     }
 
     case actions.PARTICIPANT_RAISEDUNRAISEDHAND_VIDEO: {
