@@ -2269,11 +2269,6 @@
   "View-proposed-meeting": "View Proposed Meeting",
   "Created-successfully": "Created Successfully",
   "You-have-no-notifications": "You have no notifications",
-  "The-call-was-unanswered": "The call was unanswered",
-  "Join-request-sent-to-host": "Join Request Sent To Host",
-  "ScheduleCall-joined-and-is-host": "ScheduleCall Joined and Is host",
-  "invalid-video-call-url-provided": "invalid video call url provided",
-  "Could-not-join-call": "Could not join call",
   "Created-a-meeting": "created a meeting:",
   "Edited-a-meeting": "edited a meeting:",
   "Has-started-the-meeting": "has started the meeting:",
@@ -2310,5 +2305,12 @@
   "Has-deleted-a-folder-shared-with-you-as-editor": "has deleted a folder shared with you as editor",
   "Has-deleted-a-file-shared-with-you-as-editor": "has deleted a file shared with you as editor",
   "Has-deleted-a-folder-shared-with-you-as-viewer": "has deleted a folder shared with you as viewer",
-  "Has-deleted-a-file-shared-with-you-as-viewer": "has deleted a file shared with you as viewer"
+  "Has-deleted-a-file-shared-with-you-as-viewer": "has deleted a file shared with you as viewer",
+  "The-call-was-unanswered": "The call was unanswered",
+  "Join-request-sent-to-host": "Join Request Sent To Host",
+  "ScheduleCall-joined-and-is-host": "ScheduleCall Joined and Is host",
+  "invalid-video-call-url-provided": "invalid video call url provided",
+  "Could-not-join-call": "Could not join call",
+  "There-are-no-Participants": "There are no Participants",
+  "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway"
 }

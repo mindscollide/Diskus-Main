@@ -8,9 +8,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { LoginFlowRoutes } from "./UserManagementActions";
-import {
-  clearLocalStorageAtloginresponce,
-} from "../../commen/functions/utils";
+import { clearLocalStorageAtloginresponce } from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -653,12 +651,20 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
             ) {
               let RSVP = localStorage.getItem("RSVP");
               let dataroomValue = localStorage.getItem("DataRoomEmail");
+              let AgCont = localStorage.getItem("AgCont");
+              let AdOrg = localStorage.getItem("AdOrg");
               let MeetingStr = localStorage.getItem("meetingStr");
               let MeetinUpd = localStorage.getItem("meetingUpd");
               let MeetingMin = localStorage.getItem("meetingMin");
               let Meetingprop = localStorage.getItem("meetingprop");
-              let AgCont = localStorage.getItem("AgCont");
-              let AdOrg = localStorage.getItem("AdOrg");
+              let meetingCanc = localStorage.getItem("meetingCanc");
+              let mtAgUpdate = localStorage.getItem("mtAgUpdate");
+              let UserMeetPropoDatPoll = localStorage.getItem(
+                "UserMeetPropoDatPoll"
+              );
+              let pollExpire = localStorage.getItem("pollExpire");
+              let PollUpd = localStorage.getItem("poUpda");
+              let PollPublish = localStorage.getItem("poPub");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -672,75 +678,45 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               let isFirstLogin = localStorage.getItem("isFirstLogin");
 
               clearLocalStorageAtloginresponce(dispatch, 1, navigate);
-              if (isFirstLogin === "true") {
-                if (RSVP !== undefined && RSVP !== null) {
-                  if (hasUserRights === "true") {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (hasAdminRights === "true") {
-                    navigate("/Admin/ManageUsers");
-                  }
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  if (hasUserRights === "true") {
-                    navigate("/Diskus/dataroom");
-                  } else if (hasAdminRights === "true") {
-                    navigate("/Admin/ManageUsers");
-                  }
-                } else if (
-                  MeetingStr !== null ||
-                  MeetinUpd !== null ||
-                  MeetingMin !== null ||
-                  Meetingprop !== null ||
-                  AgCont !== null ||
-                  AdOrg !== null
-                ) {
-                  navigate("/Diskus/Meeting");
-                } else if (hasAdminRights === "true") {
-                  navigate("/Admin/ManageUsers");
-                } else if (hasUserRights === "true") {
-                  navigate("/onboard");
-                }
+              if (
+                String(isFirstLogin) === "true" &&
+                String(hasAdminRights) === "true"
+              ) {
+                navigate("/Admin/ManageUsers");
               } else {
-                if (RSVP !== undefined && RSVP !== null) {
-                  if (hasUserRights === "true") {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
-                  } else if (hasAdminRights === "true") {
-                    navigate("/Admin/ManageUsers");
-                  }
-                } else if (
-                  dataroomValue !== null &&
-                  dataroomValue !== undefined
-                ) {
-                  if (hasUserRights === "true") {
-                    navigate("/Diskus/dataroom");
-                  } else if (hasAdminRights === "true") {
-                    navigate("/Admin/ManageUsers");
-                  }
-                } else if (
-                  MeetingStr !== null ||
-                  MeetinUpd !== null ||
-                  MeetingMin !== null ||
-                  Meetingprop !== null ||
-                  AgCont !== null ||
-                  AdOrg !== null
-                ) {
-                  navigate("/Diskus/Meeting");
+                if (String(isFirstLogin) === "true") {
+                  navigate("/onboard");
                 } else {
-                  if (hasUserRights === "true") {
-                    navigate("/Diskus/");
-                  } else if (hasAdminRights === "true") {
-                    navigate("/Admin/ManageUsers");
+                  if (RSVP !== undefined && RSVP !== null) {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (
+                    dataroomValue !== null &&
+                    dataroomValue !== undefined
+                  ) {
+                    navigate("/Diskus/dataroom");
+                  } else if (
+                    MeetingStr !== null ||
+                    MeetinUpd !== null ||
+                    MeetingMin !== null ||
+                    Meetingprop !== null ||
+                    AgCont !== null ||
+                    AdOrg !== null ||
+                    meetingCanc !== null ||
+                    mtAgUpdate !== null ||
+                    UserMeetPropoDatPoll !== null
+                  ) {
+                    navigate("/Diskus/Meeting");
+                  } else if (
+                    PollPublish !== null ||
+                    PollUpd !== null ||
+                    pollExpire !== null
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else {
+                    navigate("/DisKus/");
                   }
                 }
               }
-              console.log(
-                Boolean(hasUserRights),
-                Boolean(hasAdminRights),
-                Boolean(isFirstLogin),
-                "PrivateRoutesPrivateRoutesPrivateRoutes"
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

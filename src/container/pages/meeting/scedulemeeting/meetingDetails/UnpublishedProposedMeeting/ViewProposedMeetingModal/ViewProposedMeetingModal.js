@@ -5,14 +5,22 @@ import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Button } from "../../../../../../../components/elements";
 import { useDispatch } from "react-redux";
-import { ProposedMeetingViewFlagAction } from "../../../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingDetialsData,
+  ParticipantsData,
+  ProposedMeetingViewFlagAction,
+  proposedMeetingData,
+  searchNewUserMeeting,
+} from "../../../../../../../store/actions/NewMeetingActions";
 import {
   ProposedMeetingDateViewFormat,
   ProposedMeetingViewDateFormatWithTime,
 } from "../../../../../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 const ViewProposedMeetingModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   //Getting the Current Language from LocalStorage
   let locale = localStorage.getItem("i18nextLng");
   //Getting all Proposed meeting Data
@@ -40,6 +48,15 @@ const ViewProposedMeetingModal = () => {
   const [partcipatns, setParticipants] = useState([]);
   const [meetingProposedDates, setMeetingProposedDates] = useState([]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(GetAllMeetingDetialsData());
+
+      dispatch(ParticipantsData());
+
+      dispatch(proposedMeetingData());
+    };
+  }, []);
   //Meeting Details Data UseEffect
   useEffect(() => {
     try {
@@ -94,12 +111,26 @@ const ViewProposedMeetingModal = () => {
   //Handling Cancel Button OnClick
   const hadleCancelButtonClick = () => {
     console.log("Click");
-    dispatch(ProposedMeetingViewFlagAction(false));
+    let meetingpageRow = localStorage.getItem("MeetingPageRows");
+    let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+    let userID = localStorage.getItem("userID");
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings: false,
+    };
+    localStorage.removeItem("folderDataRoomMeeting");
+
+    dispatch(searchNewUserMeeting(navigate, searchData, t, 1));
   };
 
   return (
     <>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["ViewProposedMeetingMainHeading"]}>
             {t("View-proposed-meeting")}
@@ -107,9 +138,9 @@ const ViewProposedMeetingModal = () => {
         </Col>
       </Row>
       <section className={styles["BackGroundPaperEffect"]}>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col lg={6} md={6} sm={6}>
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["MeetingTypeHeading"]}>
                 {basicmeetingTitle.MeetingType}
               </span>
@@ -118,7 +149,7 @@ const ViewProposedMeetingModal = () => {
               </span>
             </div>
 
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["MeetingDescriptionHeading"]}>
                 {t("Description")}
               </span>
@@ -128,7 +159,7 @@ const ViewProposedMeetingModal = () => {
             </div>
           </Col>
           <Col lg={6} md={6} sm={6}>
-            <div className="d-flex flex-column flex-wrap">
+            <div className='d-flex flex-column flex-wrap'>
               <span className={styles["ProposedOnHeading"]}>
                 {t("Proposed-on")}
               </span>
@@ -141,7 +172,7 @@ const ViewProposedMeetingModal = () => {
                       locale
                     );
                     return (
-                      <Col lg={6} md={6} sm={6} className="mt-2" key={index}>
+                      <Col lg={6} md={6} sm={6} className='mt-2' key={index}>
                         <span className={styles["BoxCardDate"]}>
                           {formattedDate}
                         </span>
@@ -153,9 +184,9 @@ const ViewProposedMeetingModal = () => {
                 )}
               </Row>
             </div>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={12} md={12} sm={12}>
-                <div className="d-flex flex-column flex-wrap">
+                <div className='d-flex flex-column flex-wrap'>
                   <span className={styles["SendResponseByDateHeading"]}>
                     {t("Send-response-by")}
                   </span>
@@ -165,9 +196,9 @@ const ViewProposedMeetingModal = () => {
                 </div>
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={12} md={12} sm={12}>
-                <div className="d-flex flex-column flex-wrap">
+                <div className='d-flex flex-column flex-wrap'>
                   <span className={styles["SendResponseByDateHeading"]}>
                     {t("Participants")}
                   </span>
@@ -176,8 +207,7 @@ const ViewProposedMeetingModal = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["ScrollerParticipant"]}
-                    >
+                      className={styles["ScrollerParticipant"]}>
                       <Row>
                         {partcipatns.length > 0 && partcipatns !== null
                           ? partcipatns.map((data, index) => {
@@ -188,14 +218,12 @@ const ViewProposedMeetingModal = () => {
                                     md={6}
                                     sm={6}
                                     key={index}
-                                    className="mt-3"
-                                  >
+                                    className='mt-3'>
                                     <span
-                                      className={styles["BoxCardParticipant"]}
-                                    >
+                                      className={styles["BoxCardParticipant"]}>
                                       <img
                                         src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                        alt=""
+                                        alt=''
                                         width={25}
                                       />
                                       <span className={styles["UserName"]}>
@@ -215,8 +243,8 @@ const ViewProposedMeetingModal = () => {
             </Row>
           </Col>
         </Row>
-        <Row className="mt-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+        <Row className='mt-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
             <Button
               text={t("Cancel")}
               className={styles["CancelButtonViewProposedMeeting"]}

@@ -923,6 +923,10 @@ const UnpublishedProposedMeeting = ({
     } catch (error) {
       // Handle errors here
     }
+    return () => {
+      setRow([]);
+      setDublicatedrows([]);
+    }
   }, [searchMeetings]);
 
   useEffect(() => {
