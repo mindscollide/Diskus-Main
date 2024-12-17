@@ -15,6 +15,7 @@ import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
 import {
   newTimeFormaterViewPoll,
+  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../../../../commen/functions/date_formater";
 import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
@@ -229,8 +230,7 @@ const SceduleProposedmeeting = ({
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}
-              >
+                title={record.userName}>
                 {record.userName}
               </span>
             ) : (
@@ -254,16 +254,21 @@ const SceduleProposedmeeting = ({
           isFind = record;
         }
       }
+      let checkisPassed =
+        new Date() >
+        resolutionResultTable(record.proposedDate + record.startTime);
+      console.log(checkisPassed, "formatetDateTimeformatetDateTime");
       return {
         title: (
           <span
             className={
-              isFind !== undefined && isFind.isSelected
+              checkisPassed
+                ? styles["Date-Object-Detail_disabled"]
+                : isFind !== undefined && isFind.isSelected
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}
-          >
+            onClick={() => toggleActive(index, record, formattedDate)}>
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -293,9 +298,9 @@ const SceduleProposedmeeting = ({
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
                 />
               );
             }
@@ -328,10 +333,10 @@ const SceduleProposedmeeting = ({
                   {t("Schedule-proposed-meetings")}
                 </span>
               </Col>
-              <Col lg={1} md={1} sm={1} className="d-flex justify-content-end">
+              <Col lg={1} md={1} sm={1} className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}
-                  alt=""
+                  alt=''
                   width={15}
                   onClick={handleCrossIconClass}
                 />
@@ -348,7 +353,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className="SceduleProposedMeeting"
+                    className='SceduleProposedMeeting'
                     rows={updateTableRows}
                   />
                   <span>
@@ -357,8 +362,7 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center mt-4"
-                      >
+                        className='d-flex justify-content-center mt-4'>
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

@@ -331,7 +331,7 @@ const Events = () => {
                       meetingDashboardCalendarEvent(upcomingEventsData);
                       localStorage.setItem(
                         "meetingTitle",
-                        upcomingEventsData.meetingDetails.titleg
+                        upcomingEventsData.meetingDetails.title
                       );
                     }}
                   />

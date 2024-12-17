@@ -53,7 +53,7 @@ const Loader = ({ progress }) => {
             alt="My GIF Icon"
             draggable="false"
           /> */}
-          {/* <ProgressLoader progress={progress} /> */}
+          <ProgressLoader progress={progress} />
           {/* <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["Messeges_Styles"]}>{randomIndex}</p>

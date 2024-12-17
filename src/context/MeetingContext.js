@@ -21,6 +21,11 @@ export const MeetingProvider = ({ children }) => {
     role: null,
     isPrimaryOrganizer: false,
   });
+  const [videoTalk, setVideoTalk] = useState({
+    isChat: false,
+    isVideoCall: false,
+    talkGroupID: 0,
+  });
   const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
   useEffect(() => {
     try {
@@ -49,6 +54,8 @@ export const MeetingProvider = ({ children }) => {
         setEndMeetingConfirmationModal,
         setCurrentMeetingStatus,
         currentMeetingStatus,
+        setVideoTalk,
+        videoTalk
       }}
     >
       {children}

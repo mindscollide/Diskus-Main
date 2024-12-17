@@ -593,7 +593,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_08:
           if (response.data.responseResult.isOrganizationCreator) {
-          await  dispatch(
+            await dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
                 t("Organization-is-inactive")
@@ -649,7 +649,63 @@ const enterPasswordvalidation = (value, navigate, t) => {
             if (response.data.responseResult.authToken.isFirstLogIn) {
               navigate("/Admin/ManageUsers");
             } else {
-              navigate("/Diskus");
+              if (response.data.responseResult.authToken.isFirstLogIn) {
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
+                } else if (
+                  MeetingStr !== null ||
+                  MeetinUpd !== null ||
+                  MeetingMin !== null ||
+                  Meetingprop !== null ||
+                  AgCont !== null ||
+                  AdOrg !== null ||
+                  mtAgUpdate !== null ||
+                  UserMeetPropoDatPoll !== null ||
+                  meetingCanc !== null
+                ) {
+                  navigate("/Diskus/Meeting");
+                } else if (
+                  PollPublish !== null ||
+                  PollUpd !== null ||
+                  pollExpire !== null
+                ) {
+                  navigate("/Diskus/polling");
+                } else {
+                  navigate("/onboard");
+                }
+              } else {
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
+                } else if (
+                  MeetingStr !== null ||
+                  MeetinUpd !== null ||
+                  MeetingMin !== null ||
+                  Meetingprop !== null ||
+                  AgCont !== null ||
+                  AdOrg !== null ||
+                  meetingCanc !== null
+                ) {
+                  navigate("/Diskus/Meeting");
+                } else if (
+                  PollPublish !== null ||
+                  PollUpd !== null ||
+                  pollExpire !== null
+                ) {
+                  navigate("/Diskus/polling");
+                } else {
+                  navigate("/DisKus/");
+                }
+              }
             }
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else if (response.data.responseResult.hasUserRights) {
@@ -702,6 +758,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 Meetingprop !== null ||
                 AgCont !== null ||
                 AdOrg !== null ||
+                mtAgUpdate !== null ||
+                UserMeetPropoDatPoll !== null ||
                 meetingCanc !== null
               ) {
                 navigate("/Diskus/Meeting");

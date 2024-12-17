@@ -969,7 +969,7 @@ const SearchMeeting_Fail = (message) => {
     message: message,
   };
 };
-const searchNewUserMeeting = (navigate, Data, t) => {
+const searchNewUserMeeting = (navigate, Data, t, val) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
@@ -998,6 +998,9 @@ const searchNewUserMeeting = (navigate, Data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
                 )
             ) {
+              if (val === 1) {
+                dispatch(ProposedMeetingViewFlagAction(false));
+              }
               let getMeetingData = await getAllUnpublishedMeetingData(
                 response.data.responseResult.meetings,
                 1

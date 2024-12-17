@@ -3615,6 +3615,19 @@ const DataRoom = () => {
                       setSearchResultFields={setSearchResultFields}
                       searchResultsFields={searchResultsFields}
                       setSearchTabOpen={setSearchTabOpen}
+                      showShareFolderModal={showShareFolderModal}
+                      showShareFileModal={showShareFileModal}
+                      setShowreanmemodal={setShowreanmemodal}
+                      setRenameFolderData={setRenameFolderData}
+                      setShowRenameFile={setShowRenameFile}
+                      setRenameFileData={setRenameFileData}
+                      setDetailView={setDetailView}
+                      setIsFolderDeleteId={setIsFolderDeleteId}
+                      setIsFolderDelete={setIsFolderDelete}
+                      setIsFileDeleteId={setIsFileDeleteId}
+                      setIsFileDelete={setIsFileDelete}
+                      setFileDataforAnalyticsCount={setFileDataforAnalyticsCount}
+                      // setFileDataforAnalyticsCount
                     />
                   ) : (
                     <>

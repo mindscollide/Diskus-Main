@@ -846,7 +846,7 @@ const Participants = ({
                           className="d-flex justify-content-center"
                         >
                           <span className={styles["Empty_state_Subheading"]}>
-                            {t("There-are-no-agenda-contributors")}
+                            {t("There-are-no-Participants")}
                           </span>
                         </Col>
                       </Row>
