@@ -62,7 +62,7 @@ const WebNotificationCard = ({
       if (NotificationMessege && typeof NotificationMessege === "object") {
         let message = "";
 
-        // Set message based on NotificationID
+        // Set message based on NotificationActionID
         if (NotificaitonID === 1) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Created-a-meeting"

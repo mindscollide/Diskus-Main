@@ -34,7 +34,7 @@ const WebNotfication = ({
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
-    (state) => state.settingReducer.Loading
+    (state) => state.settingReducer.NotificationSpinner
   );
 
   //Global Data State
