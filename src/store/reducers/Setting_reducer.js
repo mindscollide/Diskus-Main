@@ -6,6 +6,7 @@ const initialState = {
   ResponseCode: "",
   Loading: false,
   Spinner: false,
+  NotificationSpinner: false,
   NotificationData: [],
   RecentActivityData: [],
   SocketRecentActivityData: [],
@@ -447,13 +448,13 @@ const settingReducer = (state = initialState, action) => {
     case actions.DISKUS_WEB_NOTIFICATION_INIT: {
       return {
         ...state,
-        Loading: true,
+        NotificationSpinner: true,
       };
     }
     case actions.DISKUS_WEB_NOTIFICATION_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        NotificationSpinner: false,
         diskusWebNotificationData: action.response,
         ResponseMessage: action.message,
       };
@@ -461,7 +462,7 @@ const settingReducer = (state = initialState, action) => {
     case actions.DISKUS_WEB_NOTIFICATION_FAIL: {
       return {
         ...state,
-        Loading: false,
+        NotificationSpinner: false,
         diskusWebNotificationData: null,
         ResponseMessage: action.message,
       };
