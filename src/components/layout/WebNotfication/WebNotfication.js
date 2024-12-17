@@ -42,11 +42,6 @@ const WebNotfication = ({
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
-  console.log(
-    GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
-  );
-
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
@@ -618,7 +613,7 @@ const WebNotfication = ({
                 >
                   <Col lg={12} md={12} sm={12}>
                     <WebNotificationCard
-                      NotificationMessege={data.description}
+                      NotificationMessege={JSON.parse(data.payloadData)}
                       NotificationTime={data.sentDateTime}
                       index={index}
                       length={groupedNotifications.today.length}
@@ -652,7 +647,7 @@ const WebNotfication = ({
                   >
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
-                        NotificationMessege={data.description}
+                        NotificationMessege={JSON.parse(data.payloadData)}
                         NotificationTime={data.sentDateTime}
                         index={index}
                         length={groupedNotifications.previous.length}

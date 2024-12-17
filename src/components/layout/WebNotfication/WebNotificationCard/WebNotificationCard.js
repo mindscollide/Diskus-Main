@@ -39,6 +39,7 @@ import Shared_Editor_File_DeletedIcon from "../../../../assets/NotificationIcon/
 import Shared_Viewer_Folder_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_Folder_Deleted.png";
 import Shared_Viewer_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_File_Deleted.png";
 import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
+import { useTranslation } from "react-i18next";
 
 const WebNotificationCard = ({
   NotificationMessege,
@@ -48,20 +49,46 @@ const WebNotificationCard = ({
   length,
   NotificaitonID,
 }) => {
+  const { t } = useTranslation();
+  //Test work
+  console.log(NotificationMessege, "PayLoadMessage");
   //Current Language
   let Lang = localStorage.getItem("i18nextLng");
   //Local States
   const [truncatedMessage, setTruncatedMessage] = useState("");
   //UseEffect for Truncating the Text According to need without using webkitt solution for Text truncation
   useEffect(() => {
-    if (NotificationMessege.length > maxCharacters) {
-      setTruncatedMessage(
-        NotificationMessege.substring(0, maxCharacters) + "..."
-      );
-    } else {
-      setTruncatedMessage(NotificationMessege);
+    try {
+      if (NotificationMessege && typeof NotificationMessege === "object") {
+        let message = "";
+
+        // Set message based on NotificationID
+        if (NotificaitonID === 1) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Created-a-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else {
+          // Safely access a fallback field if NotificationID is not matched
+          message =
+            NotificationMessege.MeetingTitle || "Default Notification Message";
+        }
+
+        // Step 2: Apply truncation logic
+        if (message.length > maxCharacters) {
+          setTruncatedMessage(message.substring(0, maxCharacters) + "...");
+        } else {
+          setTruncatedMessage(message);
+        }
+      } else {
+        console.warn(
+          "NotificationMessege is not a valid object:",
+          NotificationMessege
+        );
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
-  }, [NotificationMessege, maxCharacters]);
+  }, [NotificationMessege, NotificaitonID, maxCharacters]);
 
   return (
     <section className={styles["CardSectionInner"]}>
