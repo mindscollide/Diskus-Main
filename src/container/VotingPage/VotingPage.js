@@ -37,7 +37,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
   const [isVotingMethodId, setVotingMethodId] = useState(0);
-  const [voteId, setVoteId] = useState(1);
+  const [voteId, setVoteId] = useState(0);
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
@@ -119,7 +119,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           setVotingMethod(getVoteresult.votingMethod);
           setVotingMethodId(getVoteresult.votingMethodID);
           setApproved(getVoteresult.approvedVotes);
-          setAbstain(0);
+          setAbstain(getVoteresult?.abstainVotes);
           setPending(getVoteresult.pendingVoters);
           setNonApproved(getVoteresult.nonApprovedVotes);
           setTotalVoters(getVoteresult.totalVoters);

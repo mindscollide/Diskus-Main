@@ -794,7 +794,7 @@ const Actions = ({
                                 >
                                   <span className={"EmptyState_SubHeading"}>
                                     {t(
-                                      "The-meeting-wrapped-up-lets-dive-into-some-task"
+                                      "Assign-tasks-in-real-time-while-the-meeting-is-underway"
                                     )}
                                   </span>
                                 </Col>

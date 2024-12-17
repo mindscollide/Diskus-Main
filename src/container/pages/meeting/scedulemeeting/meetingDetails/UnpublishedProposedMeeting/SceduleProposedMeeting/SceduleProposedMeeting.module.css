@@ -97,6 +97,19 @@
   cursor: pointer !important;
   user-select: none;
 }
+.Date-Object-Detail_disabled {
+  pointer-events: none !important;
+  width: 200px;
+  padding: 4px 11px;
+  font-size: 16px !important;
+  border: 3px solid #f1f1f1;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #545454;
+  cursor: pointer !important;
+  user-select: none;
+}
 
 .Date-Object-Detail_active {
   width: 200px;
