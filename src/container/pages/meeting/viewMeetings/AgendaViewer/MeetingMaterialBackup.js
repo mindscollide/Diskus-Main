@@ -30,7 +30,7 @@ const MeetingMaterialPrev = ({
   setAgenda,
   setMinutes,
   editorRole,
-  setEdiorRole,
+
   setactionsPage,
 }) => {
   const { t } = useTranslation();
@@ -337,7 +337,6 @@ const MeetingMaterialPrev = ({
       {cancelMeetingMaterial && (
         <CancelMeetingMaterial
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setEdiorRole={setEdiorRole}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}

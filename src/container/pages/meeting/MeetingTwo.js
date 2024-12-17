@@ -134,7 +134,7 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { editorRole, setEdiorRole, setVideoTalk, videoTalk } =
+  const { editorRole, setEditorRole, setVideoTalk, videoTalk } =
     useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -584,8 +584,8 @@ const NewMeeting = () => {
       console.log(error);
     }
   };
-  let calendarMainMeeting =  location.state?.CalendaradvanceMeeting
-  console.log(calendarMainMeeting, "calendarMeetingcalendarMeeting")
+  let calendarMainMeeting = location.state?.CalendaradvanceMeeting;
+  console.log(calendarMainMeeting, "calendarMeetingcalendarMeeting");
   useEffect(() => {
     if (
       location.state !== null &&
@@ -601,7 +601,7 @@ const NewMeeting = () => {
         } = location.state?.advancemeetingData;
 
         const fetchData = async () => {
-          setEdiorRole({
+          setEditorRole({
             status: statusID,
             role:
               attendeeRoleID === 2
@@ -679,7 +679,7 @@ const NewMeeting = () => {
               await setAdvanceMeetingModalID(Number(result.meetingID));
               await setViewAdvanceMeetingModalUnpublish(true);
               await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-              setEdiorRole({
+              setEditorRole({
                 ...editorRole,
                 isPrimaryOrganizer: false,
                 role:
@@ -716,7 +716,7 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-          setEdiorRole({
+          setEditorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
             role:
@@ -746,7 +746,7 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-          setEdiorRole({
+          setEditorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
             role:
@@ -796,7 +796,7 @@ const NewMeeting = () => {
             await setAdvanceMeetingModalID(Number(result.meetingID));
             await setViewAdvanceMeetingModalUnpublish(true);
             await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-            setEdiorRole({
+            setEditorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
               role:
@@ -876,7 +876,7 @@ const NewMeeting = () => {
             await setAdvanceMeetingModalID(Number(result.meetingID));
             await setViewAdvanceMeetingModalUnpublish(true);
             await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-            setEdiorRole({
+            setEditorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
               role:
@@ -908,7 +908,7 @@ const NewMeeting = () => {
           await setAdvanceMeetingModalID(Number(result.meetingID));
           await setViewAdvanceMeetingModalUnpublish(true);
           await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-          setEdiorRole({
+          setEditorRole({
             ...editorRole,
             isPrimaryOrganizer: false,
             role:
@@ -1086,7 +1086,7 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = async () => {
     setSceduleMeeting(true);
-    setEdiorRole({
+    setEditorRole({
       ...editorRole,
       status: "11",
       role: "Organizer",
@@ -1627,7 +1627,7 @@ const NewMeeting = () => {
                 isVideoCall: record.isVideoCall,
                 talkGroupID: record.talkGroupID,
               });
-              setEdiorRole({
+              setEditorRole({
                 status: record.status,
                 role: record.isParticipant
                   ? "Participant"
@@ -1938,7 +1938,7 @@ const NewMeeting = () => {
                           t,
                           4,
                           startMeetingRequest,
-                          setEdiorRole,
+                          setEditorRole,
                           setAdvanceMeetingModalID,
                           setDataroomMapFolderId,
                           setSceduleMeeting,
@@ -1946,7 +1946,7 @@ const NewMeeting = () => {
                           setEditFlag
                         )
                       );
-                      setEdiorRole({
+                      setEditorRole({
                         status: record.status,
                         role: "Organizer",
                         isPrimaryOrganizer: record.isPrimaryOrganizer,
@@ -1987,7 +1987,7 @@ const NewMeeting = () => {
                           t,
                           3,
                           startMeetingRequest,
-                          setEdiorRole,
+                          setEditorRole,
                           // setAdvanceMeetingModalID,
                           setDataroomMapFolderId,
                           setViewAdvanceMeetingModal,
@@ -2013,7 +2013,7 @@ const NewMeeting = () => {
                       setViewAdvanceMeetingModal(true);
                       dispatch(viewAdvanceMeetingPublishPageFlag(true));
                       dispatch(scheduleMeetingPageFlag(false));
-                      setEdiorRole({
+                      setEditorRole({
                         status: 10,
                         role: "Organizer",
                         isPrimaryOrganizer: record.isPrimaryOrganizer,
@@ -2037,7 +2037,7 @@ const NewMeeting = () => {
                       record.isQuickMeeting,
                       record.status
                     );
-                    setEdiorRole({
+                    setEditorRole({
                       status: record.status,
                       role: "Participant",
                       isPrimaryOrganizer: false,
@@ -2072,7 +2072,7 @@ const NewMeeting = () => {
                       record.status
                     );
                     // setIsOrganisers(isOrganiser);
-                    setEdiorRole({
+                    setEditorRole({
                       status: record.status,
                       role: "Agenda Contributor",
                       isPrimaryOrganizer: false,
@@ -2107,7 +2107,7 @@ const NewMeeting = () => {
                       record.status
                     );
                     // setIsOrganisers(isOrganiser);
-                    setEdiorRole({
+                    setEditorRole({
                       status: record.status,
                       role: "Organizer",
                       isPrimaryOrganizer: record.isPrimaryOrganizer,
@@ -2147,7 +2147,7 @@ const NewMeeting = () => {
                   className={styles["Board-Deck"]}
                   onClick={() => {
                     boardDeckOnClick(record);
-                    setEdiorRole({
+                    setEditorRole({
                       status: record.status,
                       role: record.isParticipant
                         ? "Participant"
@@ -2266,7 +2266,7 @@ const NewMeeting = () => {
                               "videoCallURL",
                               record.videoCallURL
                             );
-                            setEdiorRole({
+                            setEditorRole({
                               status: record.status,
                               role: "Organizer",
                               isPrimaryOrganizer: record.isPrimaryOrganizer,
@@ -2314,7 +2314,7 @@ const NewMeeting = () => {
                               "videoCallURL",
                               record.videoCallURL
                             );
-                            setEdiorRole({
+                            setEditorRole({
                               status: record.status,
                               role: "Agenda Contributor",
                               isPrimaryOrganizer: record.isPrimaryOrganizer,
@@ -2415,7 +2415,7 @@ const NewMeeting = () => {
             dashboardEventData.statusID
           );
 
-          setEdiorRole({
+          setEditorRole({
             status: dashboardEventData.statusID,
             role: "Participant",
             isPrimaryOrganizer: false,
@@ -2443,7 +2443,7 @@ const NewMeeting = () => {
             talkGroupID: dashboardEventData.talkGroupID,
           });
           localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
-          setEdiorRole({
+          setEditorRole({
             status: dashboardEventData.statusID,
             role: "Agenda Contributor",
             isPrimaryOrganizer: false,
@@ -2454,7 +2454,7 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 1
         ) {
-          setEdiorRole({
+          setEditorRole({
             status: dashboardEventData.statusID,
             role: "Organizer",
             isPrimaryOrganizer: false,
@@ -2484,7 +2484,7 @@ const NewMeeting = () => {
                 t,
                 4,
                 startMeetingRequest,
-                setEdiorRole,
+                setEditorRole,
                 setAdvanceMeetingModalID,
                 setDataroomMapFolderId,
                 setSceduleMeeting,
@@ -2501,7 +2501,7 @@ const NewMeeting = () => {
                 t,
                 3,
                 startMeetingRequest,
-                setEdiorRole,
+                setEditorRole,
                 setAdvanceMeetingModalID,
                 setDataroomMapFolderId,
                 setViewAdvanceMeetingModal
@@ -2516,7 +2516,7 @@ const NewMeeting = () => {
             setViewAdvanceMeetingModal(true);
             dispatch(viewAdvanceMeetingPublishPageFlag(true));
             dispatch(scheduleMeetingPageFlag(false));
-            setEdiorRole({
+            setEditorRole({
               status: 10,
               role: "Organizer",
               isPrimaryOrganizer: false,
@@ -2550,7 +2550,7 @@ const NewMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-       
+
           setRow(copyMeetingData);
           setDublicatedrows(copyMeetingData);
         }
@@ -2563,17 +2563,18 @@ const NewMeeting = () => {
 
   useEffect(() => {
     try {
-      if(calendarMainMeeting !== undefined && rows.length > 0) {
-        let currentMeetingIDCalendar = localStorage.getItem("currentMeetingID")
-        let findMeeting = rows.find((meetingData, index) => Number(currentMeetingIDCalendar) === Number(meetingData.pK_MDID))
-        console.log(findMeeting, "findMeetingfindMeeting")
+      if (calendarMainMeeting !== undefined && rows.length > 0) {
+        let currentMeetingIDCalendar = localStorage.getItem("currentMeetingID");
+        let findMeeting = rows.find(
+          (meetingData, index) =>
+            Number(currentMeetingIDCalendar) === Number(meetingData.pK_MDID)
+        );
+        console.log(findMeeting, "findMeetingfindMeeting");
       }
     } catch (error) {
-      console.log(error, "findMeetingfindMeeting")
-      
+      console.log(error, "findMeetingfindMeeting");
     }
-
-  }, [calendarMainMeeting])
+  }, [calendarMainMeeting]);
 
   useEffect(() => {
     if (mqttMeetingPrAdded !== null) {
@@ -2840,7 +2841,7 @@ const NewMeeting = () => {
             advanceMeetingModalID === endMeetingData.pK_MDID &&
             endMeetingData.status === "9"
           ) {
-            setEdiorRole({
+            setEditorRole({
               status: null,
               role: null,
               isPrimaryOrganizer: false,
@@ -3006,7 +3007,7 @@ const NewMeeting = () => {
                 meeting.status
               );
 
-              setEdiorRole({
+              setEditorRole({
                 status: meeting.status,
                 role: "Participant",
                 isPrimaryOrganizer: false,
@@ -3033,7 +3034,7 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
-              setEdiorRole({
+              setEditorRole({
                 status: meeting.status,
                 role: "Agenda Contributor",
                 isPrimaryOrganizer: false,
@@ -3043,7 +3044,7 @@ const NewMeeting = () => {
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 1
             ) {
-              setEdiorRole({
+              setEditorRole({
                 status: meeting.status,
                 role: "Organizer",
                 isPrimaryOrganizer: false,
@@ -3072,7 +3073,7 @@ const NewMeeting = () => {
                     t,
                     4,
                     startMeetingRequest,
-                    setEdiorRole,
+                    setEditorRole,
                     setAdvanceMeetingModalID,
                     setDataroomMapFolderId,
                     setSceduleMeeting,
@@ -3090,7 +3091,7 @@ const NewMeeting = () => {
                     t,
                     3,
                     startMeetingRequest,
-                    setEdiorRole,
+                    setEditorRole,
                     setAdvanceMeetingModalID,
                     setDataroomMapFolderId,
                     setViewAdvanceMeetingModal
@@ -3105,7 +3106,7 @@ const NewMeeting = () => {
                 setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 dispatch(scheduleMeetingPageFlag(false));
-                setEdiorRole({
+                setEditorRole({
                   status: 10,
                   role: "Organizer",
                   isPrimaryOrganizer: false,
@@ -3245,8 +3246,6 @@ const NewMeeting = () => {
             setSceduleMeeting={setSceduleMeeting}
             setCurrentMeetingID={setCurrentMeetingID}
             currentMeeting={currentMeetingID}
-            editorRole={editorRole}
-            setEdiorRole={setEdiorRole}
             setEditMeeting={setEditMeeting}
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
@@ -3267,8 +3266,6 @@ const NewMeeting = () => {
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
             unPublish={false}
-            editorRole={editorRole}
-            setEdiorRole={setEdiorRole}
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
             setCurrentMeetingID={setCurrentMeetingID}
@@ -3283,7 +3280,6 @@ const NewMeeting = () => {
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
             unPublish={true}
             editorRole={editorRole}
-            setEdiorRole={setEdiorRole}
             dataroomMapFolderId={dataroomMapFolderId}
             setDataroomMapFolderId={setDataroomMapFolderId}
             setVideoTalk={setVideoTalk}
@@ -3301,7 +3297,7 @@ const NewMeeting = () => {
             setCurrentMeetingID={setCurrentMeetingID}
             currentMeeting={currentMeetingID}
             editorRole={editorRole}
-            setEdiorRole={setEdiorRole}
+            setEditorRole={setEditorRole}
             setEditMeeting={setEditMeeting}
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
@@ -3551,7 +3547,7 @@ const NewMeeting = () => {
                       }
                       setResponseByDate={setResponseByDate}
                       setSceduleMeeting={setSceduleMeeting}
-                      setEdiorRole={setEdiorRole}
+                      setEditorRole={setEditorRole}
                       setEditMeeting={setEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
                       currentMeeting={currentMeetingID}

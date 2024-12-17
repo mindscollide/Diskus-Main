@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Organizers.module.css";
 import {
   Button,
@@ -27,6 +27,7 @@ import {
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Organizers = ({
   setmeetingDetails,
@@ -35,14 +36,13 @@ const Organizers = ({
   setViewAdvanceMeetingModal,
   setAgendaContributors,
   setAdvanceMeetingModalID,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
+  const { setEditorRole } = useContext(MeetingContext);
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
@@ -135,9 +135,8 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-3 justify-content-center align-items-center"
-            >
-              <label className="column-boldness">
+              className='d-flex gap-3 justify-content-center align-items-center'>
+              <label className='column-boldness'>
                 {text === true ? t("Primary") : t("Secondary")}
               </label>
             </Col>
@@ -156,9 +155,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -166,9 +165,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -176,9 +175,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -186,9 +185,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -208,14 +207,13 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -227,14 +225,13 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -287,9 +284,8 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-3 align-items-center"
-            >
-              <label className="column-boldness w-100">
+              className='d-flex gap-3 align-items-center'>
+              <label className='column-boldness w-100'>
                 {text === true ? t("Primary") : t("Non-primary")}
               </label>
             </Col>
@@ -309,14 +305,13 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -328,14 +323,13 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -352,7 +346,7 @@ const Organizers = ({
     setorganizers(false);
     setRowsData([]);
   };
-  console.log(rowsData, "getAllDatagetAllDatagetAllData")
+  console.log(rowsData, "getAllDatagetAllDatagetAllData");
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
       Date: "",
@@ -372,7 +366,7 @@ const Organizers = ({
 
     setorganizers(false);
     localStorage.removeItem("folderDataRoomMeeting");
-    setEdiorRole({ status: null, role: null });
+    setEditorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
   };
 
@@ -510,7 +504,7 @@ const Organizers = ({
                 x: "hidden",
               }}
               pagination={false}
-              className="Polling_table"
+              className='Polling_table'
               rows={rowsData}
             />
           </Col>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { MeetingContext } from "../../../../../../context/MeetingContext";
 const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
@@ -19,7 +20,6 @@ const CancelButtonModal = ({
   setPolls,
   setMinutes,
   setAttendance,
-  setEdiorRole,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -27,9 +27,9 @@ const CancelButtonModal = ({
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-
+  const { setEditorRole } = useContext(MeetingContext);
   const handleNOFunctionality = () => {
     setCancelModalView(false);
   };
@@ -46,7 +46,7 @@ const CancelButtonModal = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(cleareAllState());
-    setEdiorRole({ status: null, role: null });
+    setEditorRole({ status: null, role: null });
     localStorage.removeItem("folderDataRoomMeeting");
     setAdvanceMeetingModalID(null);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -80,8 +80,7 @@ const CancelButtonModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Any-unsaved-changes-will-be")}
                   </span>
@@ -92,8 +91,7 @@ const CancelButtonModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Lost-continue")}
                   </span>
@@ -108,8 +106,7 @@ const CancelButtonModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={t("No")}
                     className={styles["Yes_unsave_File_Upload"]}

@@ -83,6 +83,7 @@ import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipant
 import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -90,8 +91,6 @@ const AgendaViewer = ({
   setAdvanceMeetingModalID,
   setMeetingMaterial,
   setMinutes,
-  editorRole,
-  setEdiorRole,
   setactionsPage,
   videoTalk,
   setVideoTalk,
@@ -99,8 +98,9 @@ const AgendaViewer = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(videoTalk, "videoTalkvideoTalk")
+  console.log(videoTalk, "videoTalkvideoTalk");
   const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
+  const { editorRole, setEditorRole } = useMeetingContext();
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -393,7 +393,7 @@ const AgendaViewer = ({
         leaveMeetingData,
         false,
         false,
-        setEdiorRole,
+        setEditorRole,
         setAdvanceMeetingModalID,
         setViewAdvanceMeetingModal
       )
@@ -874,7 +874,6 @@ const AgendaViewer = ({
       {cancelMeetingMaterial && (
         <CancelMeetingMaterial
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setEdiorRole={setEdiorRole}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
@@ -888,8 +887,6 @@ const AgendaViewer = ({
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           setMeetingMaterial={setMeetingMaterial}
           setMinutes={setMinutes}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
           rows={rows}
           setRows={setRows}
           setMenuAgenda={setMenuAgenda}
@@ -920,8 +917,6 @@ const AgendaViewer = ({
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           setMeetingMaterial={setMeetingMaterial}
           setMinutes={setMinutes}
-          editorRole={editorRole}
-          setEdiorRole={setEdiorRole}
           rows={rows}
           setRows={setRows}
         />

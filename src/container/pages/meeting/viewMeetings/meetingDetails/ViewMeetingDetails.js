@@ -98,7 +98,7 @@ const ViewMeetingDetails = ({
     (state) => state.NewMeetingreducer.ResponseMessage
   );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-  const { setEndMeetingConfirmationModal, editorRole, setEdiorRole } =
+  const { setEndMeetingConfirmationModal, editorRole, setEditorRole } =
     useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
@@ -352,7 +352,7 @@ const ViewMeetingDetails = ({
       };
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -370,7 +370,7 @@ const ViewMeetingDetails = ({
             leaveMeetingData,
             false,
             setViewFlag,
-            setEdiorRole,
+          setEditorRole,
             setAdvanceMeetingModalID,
             setViewAdvanceMeetingModal
           )
@@ -390,7 +390,7 @@ const ViewMeetingDetails = ({
         console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.removeItem("folderDataRoomMeeting");
-        setEdiorRole({ status: null, role: null });
+        setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -711,7 +711,7 @@ const ViewMeetingDetails = ({
         t,
         4,
         endMeetingRequest,
-        setEdiorRole,
+      setEditorRole,
         setAdvanceMeetingModalID,
         setDataroomMapFolderId,
         setViewAdvanceMeetingModal,
@@ -1019,7 +1019,6 @@ const ViewMeetingDetails = ({
             cancelModalView={cancelModalView}
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
             setMeetingDetails={setmeetingDetails}
-            setEdiorRole={setEdiorRole}
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           />
         )}

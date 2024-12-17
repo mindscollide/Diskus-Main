@@ -51,10 +51,30 @@ const initialState = {
   FolderSharedMQTT: null,
   FileRemoveMQTT: null,
   FolderRemoveMQTT: null,
+  BreadCrumbsList: [],
 };
 
 const DataRoomReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.DATAROOM_BREADCRUMBS: {
+      console.log(action, "DATAROOM_BREADCRUMBSDATAROOM_BREADCRUMBS");
+
+      const { payload } = action;
+      console.log(
+        Array.isArray(payload) && payload.length === 0,
+        "DATAROOM_BREADCRUMBSDATAROOM_BREADCRUMBS"
+      );
+      let newArr;
+      if (Array.isArray(payload) && payload.length === 0) {
+        newArr = [];
+      } else {
+        newArr = [...state.BreadCrumbsList, action.payload];
+      }
+      return {
+        ...state,
+        BreadCrumbsList: newArr,
+      };
+    }
     case actions.DATAROOM_DATA_BEHAVIOUR: {
       return {
         ...state,

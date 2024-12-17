@@ -1,0 +1,11 @@
+.dataroombreadCrumbs {
+    color: #6127d6 !important;
+    list-style: none !important;
+    font-weight: 600;
+}
+.dataroombreadCrumbs  ol {
+    list-style: none !important;
+    display: flex !important;
+    padding-left: 0px !important;
+    margin-bottom: 0 !important;
+}

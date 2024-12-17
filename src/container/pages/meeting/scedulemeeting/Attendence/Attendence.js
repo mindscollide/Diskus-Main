@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Attendence.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -28,17 +28,18 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
-  setEdiorRole,
   setPolls,
   setAttendance,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {  setEditorRole } = useContext(MeetingContext);
 
   //reducer call from Attendance_Reducers
   const ResponseMessage = useSelector(
@@ -350,7 +351,7 @@ const Attendence = ({
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
     } else {
       dispatch(showAttendanceConfirmationModal(true));
       setUseCase(2);

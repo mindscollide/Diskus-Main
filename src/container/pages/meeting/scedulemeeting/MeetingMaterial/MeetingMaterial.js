@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./MeetingMaterial.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -38,6 +38,7 @@ import NextModal from "../meetingDetails/NextModal/NextModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -48,15 +49,15 @@ const MeetingMaterial = ({
   setPublishState,
   setAdvanceMeetingModalID,
   setCalendarViewModal,
-  editorRole,
   isEditMeeting,
   setDataroomMapFolderId,
-  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
+  const {editorRole, setEditorRole } = useContext(MeetingContext);
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
@@ -371,7 +372,7 @@ const MeetingMaterial = ({
         t,
         5,
         Data,
-        setEdiorRole,
+      setEditorRole,
         setAdvanceMeetingModalID,
         setDataroomMapFolderId,
         setSceduleMeeting,
