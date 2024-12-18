@@ -531,6 +531,7 @@ const WebNotfication = ({
       } else {
         //Notification for Added as Voter in the resolution
         navigate("/Diskus/resolution");
+        localStorage.setItem("ResolutionDecisionDateAnnounced", true);
       }
     } else if (NotificationData.notificationActionID === 29) {
       if (currentURL.includes("/Diskus/polling")) {
