@@ -1,5 +1,6 @@
 import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
+import { removeParticipantByGuid } from "../../commen/functions/regex";
 
 const initialState = {
   Loading: false,
@@ -29,6 +30,11 @@ const initialState = {
   raiseUnRaisedParticipantorGuest: null,
   hideUnHideParticpantorGuest: null,
   muteUnMuteParticpantorGuest: null,
+  setStreamStop: false,
+  setStreamTypeForNavigate: 0,
+  muteUnMuteParticpantorGuestByHost:false,
+  voiceControleForAllByHost:false,
+  voiceControleForAllByHostFlag:false
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -159,6 +165,15 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         guestVideoNavigationData: action.response,
+      };
+    }
+
+    case actions.GUEST_VIDEO_STREAM_STOP: {
+      // sessionStorage.setItem("viewState", action.response);
+      return {
+        ...state,
+        setStreamTypeForNavigate: action.flag,
+        setStreamStop: action.response,
       };
     }
 
@@ -329,10 +344,25 @@ const GuestVideoReducer = (state = initialState, action) => {
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
       console.log(action, "actionsactionsactions");
+      let data = [];
+      if (action.flag === 2) {
+        data = [...state.getAllParticipantGuest];
+        data.push(action.response);
+      } else if (action.flag === 3) {
+        let dublicate = [...state.getAllParticipantGuest];
+        console.log(
+          "hideUnHideParticpantorGuest123",
+          removeParticipantByGuid(data, action.response)
+        );
+        data = removeParticipantByGuid(dublicate, action.response);
+      } else {
+        data = action.response;
+      }
+      console.log("hideUnHideParticpantorGuest123", data);
       return {
         ...state,
         Loading: false,
-        getAllParticipantGuest: action.response,
+        getAllParticipantGuest: data,
         ResponseMessage: action.message,
       };
     }
@@ -384,7 +414,14 @@ const GuestVideoReducer = (state = initialState, action) => {
         voiceControle: action.response,
       };
     }
-
+    case actions.SET_MQTT_VOICE_CONTROLE_GUEST_FOR_ALL_BY_HOST: {
+      return {
+        ...state,
+        voiceControleForAllByHost: action.response,
+        voiceControleForAllByHostFlag:action.flag,
+      };
+    }
+    
     // to get validate room Id from Validate String
     case actions.GET_VALIDATE_STRING_DATA: {
       return {
@@ -413,7 +450,12 @@ const GuestVideoReducer = (state = initialState, action) => {
         muteUnMuteParticpantorGuest: action.response,
       };
     }
-
+    case actions.MUTE_UNMUTE_PARTICIPANTS_GUEST_BY_HOST: {
+      return {
+        ...state,
+        muteUnMuteParticpantorGuestByHost: action.response,
+      };
+    }
     default:
       return { ...state };
   }
