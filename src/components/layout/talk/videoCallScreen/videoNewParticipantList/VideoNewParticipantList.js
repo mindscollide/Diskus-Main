@@ -52,7 +52,6 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
   console.log(participantList, "participantListMainReducer");
-  console.log(participantList, "participanMuteUnMuteMeeting");
   
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
@@ -90,10 +89,10 @@ const VideoNewParticipantList = () => {
     const filtered = participantList.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
+    console.log(filtered, "participantListMainReducer");
 
     setFilteredParticipants(filtered);
   };
-  console.log(participantList, "allUidsallUids");
 
   // useEffect(() => {
   //   console.log("hell");
@@ -115,9 +114,11 @@ const VideoNewParticipantList = () => {
       );
 
       setFilteredParticipants(uniqueParticipants);
-    } else {
+    console.log(uniqueParticipants, "participantListMainReducer");
+  } else {
       setFilteredParticipants([]);
-    }
+    console.log("participantListMainReducer");
+  }
   }, [participantList]);
   // Ensure it listens to participantList updates
 

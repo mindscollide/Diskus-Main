@@ -302,7 +302,8 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
     if (getVideoParticpantListandWaitingList?.length) {
-      setAllParticipant((prev) => {
+    console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
+    setAllParticipant((prev) => {
         const combined = [...prev, ...getVideoParticpantListandWaitingList];
         // Filter duplicates by checking the unique identifier, e.g., `guid`
         const uniqueParticipants = combined.filter(
@@ -313,10 +314,8 @@ const VideoPanelNormal = () => {
       });
     }
   }, [getVideoParticpantListandWaitingList]);
-  console.log(
-    getVideoParticpantListandWaitingList,
-    "participanMuteUnMuteMeeting"
-  );
+  console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
+
 
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
