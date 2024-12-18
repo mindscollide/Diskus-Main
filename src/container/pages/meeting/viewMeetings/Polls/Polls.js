@@ -43,20 +43,21 @@ import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublis
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import DeletePollConfirmModal from "./DeletePollsConfirmationModal/DeletePollConfirmModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import { MeetingContext, useMeetingContext } from "../../../../../context/MeetingContext";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
   setPolls,
   setAttendance,
   currentMeeting,
-  editorRole,
   setAdvanceMeetingModalID,
   setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
+
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID
   );
@@ -560,7 +561,6 @@ const Polls = ({
     setAttendance(true);
     setPolls(false);
   };
-  console.log(editorRole, "editorRoleeditorRole");
 
   useEffect(() => {
     if (

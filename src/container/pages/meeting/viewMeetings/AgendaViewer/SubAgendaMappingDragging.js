@@ -30,6 +30,7 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRo
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -40,7 +41,6 @@ const SubAgendaMappingDragging = ({
   subLockArry,
   setSubLockArray,
   setSubExpand,
-  editorRole,
   advanceMeetingModalID,
   setFileDataAgenda,
   setAgendaName,
@@ -55,6 +55,7 @@ const SubAgendaMappingDragging = ({
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const { editorRole } = useMeetingContext();
 
   const ResponseMessage = useSelector(
     (state) => state.MeetingAgendaReducer.ResponseMessage

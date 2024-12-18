@@ -33,6 +33,7 @@ import CollapseIcon from "./AV-Images/Collapse-Icon.png";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
   data,
@@ -42,7 +43,6 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
-  editorRole,
   advanceMeetingModalID,
   setFileDataAgenda,
   setAgendaName,
@@ -56,6 +56,8 @@ const ParentAgenda = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentUserID = localStorage.getItem("userID");
 

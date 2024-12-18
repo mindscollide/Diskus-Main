@@ -881,25 +881,12 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings.length > 0
         ) {
           console.log(searchMeetings.meetings, "searchMeetingssearchMeetings");
-          // Create a deep copy of the meetings array
-          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
-            ...meeting,
-            meetingAgenda: meeting.meetingAgenda.filter(
-              (agenda) => agenda.objMeetingAgenda.canView
-            ),
-          }));
-          copyMeetingData.forEach((data) => {
-            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
-              return agenda.objMeetingAgenda.canView === true;
-            });
-          });
-          console.log(copyMeetingData, "searchMeetingssearchMeetings");
-
+          
           if (checkFeatureIDAvailability(12)) {
-            setRow(copyMeetingData);
-            setDublicatedrows(copyMeetingData);
+            setRow(searchMeetings.meetings);
+            setDublicatedrows(searchMeetings.meetings);
           } else {
-            let filterOutPropsed = copyMeetingData.filter((data) => {
+            let filterOutPropsed = searchMeetings.meetings.filter((data) => {
               return data.status !== "12";
             });
 

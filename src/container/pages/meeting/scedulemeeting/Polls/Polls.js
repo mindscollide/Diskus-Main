@@ -51,18 +51,20 @@ import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublis
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import EditDeletePollConfirm from "./EditDeletePollConfirm/EditDeletePollConfirm";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 const Polls = ({
   setSceduleMeeting,
   setPolls,
   setAttendance,
   currentMeeting,
-  editorRole,
   isEditMeeting,
   setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
+
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID
   );

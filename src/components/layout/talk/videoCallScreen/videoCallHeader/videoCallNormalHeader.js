@@ -96,7 +96,8 @@ const VideoCallNormalHeader = ({
   const getVideoParticpantListandWaitingList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
-  console.log(getVideoParticpantListandWaitingList, "participanMuteUnMuteMeeting");
+  console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
+
 
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
@@ -233,11 +234,13 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     console.log("hell");
     if (getVideoParticpantListandWaitingList?.length) {
+  console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
       const uniqueParticipants = getVideoParticpantListandWaitingList.filter(
         (participant, index, self) =>
           self.findIndex((p) => p.userID === participant.userID) === index
       );
 
+  console.log(uniqueParticipants, "participantListMainReducer");
       setParticipantCounterList(uniqueParticipants);
     } else {
       setParticipantCounterList([]);

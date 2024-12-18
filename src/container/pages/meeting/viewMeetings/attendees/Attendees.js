@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import styles from "./Attendees.module.css";
 import { Col, Row } from "react-bootstrap";
 import AttendeesCard from "../../../../../components/elements/attendeesCard/AttendeesCard";
@@ -15,18 +15,17 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import {
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 
-const Attendees = ({
-  MeetingID,
-  setViewAdvanceMeetingModal,
-  editorRole,
-  setAttendees,
-}) => {
+const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
   const dispatch = useDispatch();
   const [organizersData, setOrganizersData] = useState([]);
   const [participantsData, setParticipantsData] = useState([]);
   const [agendaContributorsData, setAgendaContributorsData] = useState([]);
+  const { editorRole, setEditorRole } = useMeetingContext();
+
   const [Attending, setAttending] = useState(0);
   const [mayBe, setMayBe] = useState(0);
   const [notAttending, setNotAttending] = useState(0);
@@ -35,7 +34,6 @@ const Attendees = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const { setEditorRole } = useContext(MeetingContext);
   const { getMeetingUsersRSVP } = useSelector(
     (state) => state.NewMeetingreducer
   );
