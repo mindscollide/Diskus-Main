@@ -188,7 +188,7 @@ const WebNotificationCard = ({
           )} ${NotificationMessege.PollTitle}`;
         } else if (NotificaitonID === 33) {
           message = `${NotificationMessege.NotifierName} ${t(
-            "Has-shared-a-file-with-you-as-editor"
+            "Has-shared-a-file-with-you-as-viewer"
           )} ${NotificationMessege.FileName}`;
         } else if (NotificaitonID === 34) {
           message = `${NotificationMessege.NotifierName} ${t(
