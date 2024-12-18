@@ -38,7 +38,13 @@ const guestVideoNavigationScreen = (response) => {
     response: response,
   };
 };
-
+const makeStreamStop = (response, flag) => {
+  return {
+    type: actions.GUEST_VIDEO_STREAM_STOP,
+    response: response,
+    flag: flag,
+  };
+};
 const getMeetingGuestVideoInit = () => {
   return {
     type: actions.GET_MEETING_GUEST_URL_INIT,
@@ -1149,19 +1155,25 @@ const setVoiceControleGuest = (response) => {
     response: response,
   };
 };
-
+const setVoiceControleGuestForAllbyHost = (flag,response) => {
+  return {
+    type: actions.SET_MQTT_VOICE_CONTROLE_GUEST_FOR_ALL_BY_HOST,
+    flag:flag,
+    response: response,
+  };
+};
 const getVideoCallParticipantGuestInit = () => {
   return {
     type: actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_INIT,
   };
 };
 
-const getVideoCallParticipantGuestSuccess = (response, message,flag) => {
+const getVideoCallParticipantGuestSuccess = (response, message, flag) => {
   return {
     type: actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS,
     response: response,
     message: message,
-    flag:flag
+    flag: flag,
   };
 };
 
@@ -1217,7 +1229,8 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               await dispatch(
                 getVideoCallParticipantGuestSuccess(
                   response.data.responseResult.participantList,
-                  t("Successful"),1
+                  t("Successful"),
+                  1
                 )
               );
             } else if (
@@ -1297,6 +1310,13 @@ const muteUnMuteParticipantsorGuest = (response) => {
     response: response,
   };
 };
+const muteUnMuteParticipantsorGuestbyHost = (response) => {
+  console.log(response, "firstfirstfirst");
+  return {
+    type: actions.MUTE_UNMUTE_PARTICIPANTS_GUEST_BY_HOST,
+    response: response,
+  };
+};
 
 const participantHideUnhideVideo = (response) => {
   console.log(response, "responseresponse");
@@ -1334,4 +1354,7 @@ export {
   muteUnMuteParticipantsorGuest,
   participantHideUnhideVideo,
   getVideoCallParticipantGuestSuccess,
+  makeStreamStop,
+  muteUnMuteParticipantsorGuestbyHost,
+  setVoiceControleGuestForAllbyHost,
 };

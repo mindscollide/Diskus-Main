@@ -30,6 +30,11 @@ const initialState = {
   raiseUnRaisedParticipantorGuest: null,
   hideUnHideParticpantorGuest: null,
   muteUnMuteParticpantorGuest: null,
+  setStreamStop: false,
+  setStreamTypeForNavigate: 0,
+  muteUnMuteParticpantorGuestByHost:false,
+  voiceControleForAllByHost:false,
+  voiceControleForAllByHostFlag:false
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -160,6 +165,15 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         guestVideoNavigationData: action.response,
+      };
+    }
+
+    case actions.GUEST_VIDEO_STREAM_STOP: {
+      // sessionStorage.setItem("viewState", action.response);
+      return {
+        ...state,
+        setStreamTypeForNavigate: action.flag,
+        setStreamStop: action.response,
       };
     }
 
@@ -344,8 +358,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       } else {
         data = action.response;
       }
-      console.log(
-        "hideUnHideParticpantorGuest123",data);
+      console.log("hideUnHideParticpantorGuest123", data);
       return {
         ...state,
         Loading: false,
@@ -401,7 +414,14 @@ const GuestVideoReducer = (state = initialState, action) => {
         voiceControle: action.response,
       };
     }
-
+    case actions.SET_MQTT_VOICE_CONTROLE_GUEST_FOR_ALL_BY_HOST: {
+      return {
+        ...state,
+        voiceControleForAllByHost: action.response,
+        voiceControleForAllByHostFlag:action.flag,
+      };
+    }
+    
     // to get validate room Id from Validate String
     case actions.GET_VALIDATE_STRING_DATA: {
       return {
@@ -430,7 +450,12 @@ const GuestVideoReducer = (state = initialState, action) => {
         muteUnMuteParticpantorGuest: action.response,
       };
     }
-
+    case actions.MUTE_UNMUTE_PARTICIPANTS_GUEST_BY_HOST: {
+      return {
+        ...state,
+        muteUnMuteParticpantorGuestByHost: action.response,
+      };
+    }
     default:
       return { ...state };
   }

@@ -14,11 +14,14 @@ import {
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
   hostEndVideoCallMeeting,
+  makeStreamStop,
   muteUnMuteByHost,
   muteUnMuteParticipantsorGuest,
+  muteUnMuteParticipantsorGuestbyHost,
   raisedUnRaisedParticipantsGuest,
   setVideoCameraGuest,
   setVoiceControleGuest,
+  setVoiceControleGuestForAllbyHost,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
@@ -121,9 +124,11 @@ const GuestVideoCall = () => {
             setVideoUrl(data.payload.videoUrl);
             setRoomId(data.payload.roomID);
             sessionStorage.setItem("roomId", data.payload.roomID);
-            dispatch(guestVideoNavigationScreen(2));
+            dispatch(makeStreamStop(true, 2));
+            // dispatch(guestVideoNavigationScreen(2));
           } else {
-            dispatch(guestVideoNavigationScreen(3));
+            dispatch(makeStreamStop(true, 3));
+            // dispatch(guestVideoNavigationScreen(3));
           }
         } else if (
           data.payload.message.toLowerCase() ===
@@ -138,10 +143,16 @@ const GuestVideoCall = () => {
         ) {
           if (data.payload.isForAll) {
             // Dispatch to globally mute/unmute participants
-            dispatch(setVoiceControleGuest(true));
+            // dispatch(setVoiceControleGuest(true));
+            console.log("data formute", data);
+            dispatch(
+              setVoiceControleGuestForAllbyHost(true, data.payload.isMute)
+            );
           } else {
             // // Handle additional logic for individual mute/unmute, if needed
             // dispatch(muteUnMuteByHost(data.payload));
+
+            dispatch(muteUnMuteParticipantsorGuestbyHost(true));
             dispatch(muteUnMuteParticipantsorGuest(data.payload));
           }
 
@@ -196,18 +207,14 @@ const GuestVideoCall = () => {
               2
             )
           );
-        }else if (
+        } else if (
           data.payload.message.toLowerCase() ===
           "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
         ) {
           console.log(data, "JOINEDJOINEDJOINED");
           console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
           dispatch(
-            getVideoCallParticipantGuestSuccess(
-              data.payload.removedUID,
-              "",
-              3
-            )
+            getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3)
           );
         }
       }
