@@ -170,6 +170,16 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
+          );
         }
       }
     } else if (NotificationData.notificationActionID === 3) {
@@ -194,6 +204,16 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
+          );
         }
       }
     } else if (NotificationData.notificationActionID === 4) {
@@ -215,6 +235,16 @@ const WebNotfication = ({
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
           );
         }
       }

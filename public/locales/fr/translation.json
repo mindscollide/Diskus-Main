@@ -2347,5 +2347,6 @@
   "Has-deleted-a-file-shared-with-you-as-editor": "has deleted a file shared with you as editor",
   "Has-deleted-a-folder-shared-with-you-as-viewer": "has deleted a folder shared with you as viewer",
   "Has-deleted-a-file-shared-with-you-as-viewer": "has deleted a file shared with you as viewer",
-  "There-are-no-Participants": "There are no Participants"
+  "There-are-no-Participants": "There are no Participants",
+  "Has-archived-the-committee": "Has archived the committee"
 }

@@ -61,7 +61,6 @@ const WebNotificationCard = ({
     try {
       if (NotificationMessege && typeof NotificationMessege === "object") {
         let message = "";
-
         // Set message based on NotificationActionID
         if (NotificaitonID === 1) {
           message = `${NotificationMessege.NotifierName} ${t(
@@ -153,7 +152,7 @@ const WebNotificationCard = ({
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 23) {
           message = `${NotificationMessege.NotifierName} ${t(
-            "Has-inactivated-the-committee"
+            "Has-archived-the-committee"
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 24) {
           message = `${NotificationMessege.NotifierName} ${t(
