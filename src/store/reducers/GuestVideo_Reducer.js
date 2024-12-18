@@ -1,5 +1,6 @@
 import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
+import { removeParticipantByGuid } from "../../commen/functions/regex";
 
 const initialState = {
   Loading: false,
@@ -329,10 +330,26 @@ const GuestVideoReducer = (state = initialState, action) => {
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
       console.log(action, "actionsactionsactions");
+      let data = [];
+      if (action.flag === 2) {
+        data = [...state.getAllParticipantGuest];
+        data.push(action.response);
+      } else if (action.flag === 3) {
+        let dublicate = [...state.getAllParticipantGuest];
+        console.log(
+          "hideUnHideParticpantorGuest123",
+          removeParticipantByGuid(data, action.response)
+        );
+        data = removeParticipantByGuid(dublicate, action.response);
+      } else {
+        data = action.response;
+      }
+      console.log(
+        "hideUnHideParticpantorGuest123",data);
       return {
         ...state,
         Loading: false,
-        getAllParticipantGuest: action.response,
+        getAllParticipantGuest: data,
         ResponseMessage: action.message,
       };
     }

@@ -110,9 +110,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     if (
       getAllParticipantGuest !== null &&
       getAllParticipantGuest !== undefined &&
-      getAllParticipantGuest.participantList.length > 0
+      getAllParticipantGuest?.length > 0
     ) {
-      setAllParticipantGuest(getAllParticipantGuest.participantList);
+      setAllParticipantGuest(getAllParticipantGuest);
     } else {
       setAllParticipantGuest([]);
     }
@@ -319,48 +319,71 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 src={MicOff}
                 onClick={() => openMicStatus(false)}
                 className="cursor-pointer"
+                alt="MicOff"
               />
             ) : (
               <img
                 src={MicOn2}
                 onClick={() => openMicStatus(true)}
                 className="cursor-pointer"
+                alt="MicOn2"
               />
             )}
           </div>
           <div className="Guest-Icons-state">
             {isVideoOn ? (
-              <img src={VideoOff} onClick={() => openVideoStatus(false)} />
+              <img
+                src={VideoOff}
+                onClick={() => openVideoStatus(false)}
+                alt="VideoOff"
+              />
             ) : (
-              <img src={VideoOn2} onClick={() => openVideoStatus(true)} />
+              <img
+                src={VideoOn2}
+                onClick={() => openVideoStatus(true)}
+                alt="VideoOn2"
+              />
             )}
           </div>
           <div className="Guest-Icons-state">
             {/* <img src={ScreenShareEnabled} onClick={openScreenShare} /> */}
-            <img src={Screenshare} onClick={openScreenShare} />
+            <img
+              src={Screenshare}
+              onClick={openScreenShare}
+              alt="Screenshare"
+            />
           </div>
           <div className="Guest-Icons-state">
             {isRaiseHand ? (
               <img
                 src={Raisehandselected}
                 onClick={() => openRaiseHand(false)}
+                alt="Raisehandselected"
               />
             ) : (
-              <img src={RaiseHand} onClick={() => openRaiseHand(true)} />
+              <img
+                src={RaiseHand}
+                onClick={() => openRaiseHand(true)}
+                alt="RaiseHand"
+              />
             )}
           </div>
 
           <div className="Guest-Icons-state">
             {isSpeakerView ? (
-              <img src={SpeakerView} onClick={openSpeaker} />
+              <img src={SpeakerView} onClick={openSpeaker} alt="SpeakerView" />
             ) : (
-              <img src={TileView} onClick={openSpeaker} />
+              <img src={TileView} onClick={openSpeaker} alt="TileView" />
             )}
           </div>
           <div className="Guest-Icons-state-Participant">
             {isParticipant ? (
               <>
-                <img src={ParticipantSelected} onClick={openParticipant} />
+                <img
+                  src={ParticipantSelected}
+                  onClick={openParticipant}
+                  alt="ParticipantSelected"
+                />
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
@@ -435,11 +458,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 </div>
               </>
             ) : (
-              <img src={Participant} onClick={openParticipant} />
+              <img
+                src={Participant}
+                onClick={openParticipant}
+                alt="Participant"
+              />
             )}
           </div>
           <div className="Guest-Icons-state">
-            <img src={EndCall} onClick={onClickEndGuestVideo} />
+            <img src={EndCall} onClick={onClickEndGuestVideo} alt="EndCall" />
           </div>
         </Col>
       </Row>

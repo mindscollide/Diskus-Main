@@ -1156,11 +1156,12 @@ const getVideoCallParticipantGuestInit = () => {
   };
 };
 
-const getVideoCallParticipantGuestSuccess = (response, message) => {
+const getVideoCallParticipantGuestSuccess = (response, message,flag) => {
   return {
     type: actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS,
     response: response,
     message: message,
+    flag:flag
   };
 };
 
@@ -1215,8 +1216,8 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
               );
               await dispatch(
                 getVideoCallParticipantGuestSuccess(
-                  response.data.responseResult,
-                  t("Successful")
+                  response.data.responseResult.participantList,
+                  t("Successful"),1
                 )
               );
             } else if (
@@ -1332,4 +1333,5 @@ export {
   hideUnHideVideoParticipantsorGuest,
   muteUnMuteParticipantsorGuest,
   participantHideUnhideVideo,
+  getVideoCallParticipantGuestSuccess,
 };
