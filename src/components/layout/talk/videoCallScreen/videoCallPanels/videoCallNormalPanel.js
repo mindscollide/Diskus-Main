@@ -235,13 +235,15 @@ const VideoPanelNormal = () => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (audioControlHost === true) {
-        console.log(isMeetingHost, "iframeiframe");
-        iframe.contentWindow.postMessage("MicOn", "*");
-      } else {
-        console.log(isMeetingHost, "iframeiframe");
-        iframe.contentWindow.postMessage("MicOff", "*");
+    if (isMeetingHost) {
+      if (iframe && iframe.contentWindow !== null) {
+        if (audioControlHost === true) {
+          console.log(isMeetingHost, "iframeiframe");
+          iframe.contentWindow.postMessage("MicOn", "*");
+        } else {
+          console.log(isMeetingHost, "iframeiframe");
+          iframe.contentWindow.postMessage("MicOff", "*");
+        }
       }
     }
   }, [audioControlHost]);
@@ -252,13 +254,15 @@ const VideoPanelNormal = () => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (audioControlForParticipant === true) {
-        console.log(isMeetingHost, "iframeiframe");
-        iframe.contentWindow.postMessage("MicOn", "*");
-      } else {
-        console.log(isMeetingHost, "iframeiframe");
-        iframe.contentWindow.postMessage("MicOff", "*");
+    if (isMeetingHost === false) {
+      if (iframe && iframe.contentWindow !== null) {
+        if (audioControlForParticipant === true) {
+          console.log(isMeetingHost, "iframeiframe");
+          iframe.contentWindow.postMessage("MicOn", "*");
+        } else {
+          console.log(isMeetingHost, "iframeiframe");
+          iframe.contentWindow.postMessage("MicOff", "*");
+        }
       }
     }
   }, [audioControlForParticipant]);
@@ -267,11 +271,13 @@ const VideoPanelNormal = () => {
     console.log(isMeetingHost, "iframeiframe");
     const userRole = localStorage.getItem("userRole");
     const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (videoControlForParticipant === true) {
-        iframe.contentWindow.postMessage("VidOn", "*");
-      } else {
-        iframe.contentWindow.postMessage("VidOff", "*");
+    if (isMeetingHost === false) {
+      if (iframe && iframe.contentWindow !== null) {
+        if (videoControlForParticipant === true) {
+          iframe.contentWindow.postMessage("VidOn", "*");
+        } else {
+          iframe.contentWindow.postMessage("VidOff", "*");
+        }
       }
     }
   }, [videoControlForParticipant]);
@@ -280,11 +286,13 @@ const VideoPanelNormal = () => {
     console.log(isMeetingHost, "iframeiframe");
     const userRole = localStorage.getItem("userRole");
     const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (videoControlHost === true) {
-        iframe.contentWindow.postMessage("VidOn", "*");
-      } else {
-        iframe.contentWindow.postMessage("VidOff", "*");
+    if (isMeetingHost) {
+      if (iframe && iframe.contentWindow !== null) {
+        if (videoControlHost === true) {
+          iframe.contentWindow.postMessage("VidOn", "*");
+        } else {
+          iframe.contentWindow.postMessage("VidOff", "*");
+        }
       }
     }
   }, [videoControlHost]);
@@ -302,8 +310,11 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");
     if (getVideoParticpantListandWaitingList?.length) {
-    console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
-    setAllParticipant((prev) => {
+      console.log(
+        getVideoParticpantListandWaitingList,
+        "participantListMainReducer"
+      );
+      setAllParticipant((prev) => {
         const combined = [...prev, ...getVideoParticpantListandWaitingList];
         // Filter duplicates by checking the unique identifier, e.g., `guid`
         const uniqueParticipants = combined.filter(
@@ -314,8 +325,10 @@ const VideoPanelNormal = () => {
       });
     }
   }, [getVideoParticpantListandWaitingList]);
-  console.log(getVideoParticpantListandWaitingList, "participantListMainReducer");
-
+  console.log(
+    getVideoParticpantListandWaitingList,
+    "participantListMainReducer"
+  );
 
   useEffect(() => {
     console.log(isMeetingHost, "iframeiframe");

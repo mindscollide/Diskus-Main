@@ -94,7 +94,9 @@ export const convertToArabicNumerals = (input, locale) => {
 export const convertNumbersInString = (inputString, locale) => {
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
   const englishDigits = "0123456789";
-  {console.log("cancelSubscriptionDetails",inputString)}
+  {
+    console.log("cancelSubscriptionDetails", inputString);
+  }
 
   // Ensure the input is a string
   const safeString = String(inputString);
@@ -106,33 +108,48 @@ export const convertNumbersInString = (inputString, locale) => {
     } else if (toLocale === "en") {
       return englishDigits[digit];
     }
-  {console.log("cancelSubscriptionDetails",digit)}
+    {
+      console.log("cancelSubscriptionDetails", digit);
+    }
 
     return digit; // Return as is if locale not supported
   };
 
-  {console.log("cancelSubscriptionDetails",safeString.replace(/\d/g, (match) => convertDigit(match, locale)))}
+  {
+    console.log(
+      "cancelSubscriptionDetails",
+      safeString.replace(/\d/g, (match) => convertDigit(match, locale))
+    );
+  }
   // Convert the entire string
   return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
 };
 
 export function filterHostData(data, guid) {
   // Find the data entry where the guid matches the provided guid
-  const matchData = data.find(item => item.guid === guid);
+  const matchData = data.find((item) => item.guid === guid);
 
   if (!matchData) {
-      // If no matching data is found, return the original data
-      return data;
+    // If no matching data is found, return the original data
+    return data;
   }
 
   // Get the userID of the matched entry
   const matchUserID = matchData.userID;
 
   // Filter out all entries with the same userID except the matched one
-  const filteredData = data.filter(item => item.userID !== matchUserID);
+  const filteredData = data.filter((item) => item.userID !== matchUserID);
 
   // Add the matched data back into the filtered list
   filteredData.push(matchData);
 
   return filteredData;
 }
+
+export const removeParticipantByGuid = (data, guidToRemove) => {
+  // Filter the data to exclude the object with the matching guid
+  const updatedData = data.filter(
+    (participant) => participant.guid !== guidToRemove
+  );
+  return updatedData;
+};
