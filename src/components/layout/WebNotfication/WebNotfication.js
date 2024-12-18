@@ -526,6 +526,12 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Added as Voter in the resolution
+        navigate("/Diskus/resolution");
+      }
     } else if (NotificationData.notificationActionID === 29) {
       if (currentURL.includes("/Diskus/polling")) {
         return; // Perform no action if the URL matches
