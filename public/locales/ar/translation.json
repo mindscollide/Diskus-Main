@@ -2312,5 +2312,6 @@
   "invalid-video-call-url-provided": "invalid video call url provided",
   "Could-not-join-call": "Could not join call",
   "There-are-no-Participants": "There are no Participants",
-  "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway"
+  "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway",
+  "Copy-invite-link": "Copy Invite Link"
 }

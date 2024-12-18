@@ -2,16 +2,11 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
-const SubUrls = ({
-  subAgendaData,
-  rows,
-  setRows,
-  index,
-  subIndex,
-  editorRole,
-}) => {
+const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
   const { t } = useTranslation();
+  const { editorRole } = useMeetingContext();
   // Function to handle changes in sub-agenda additional Enter URl Radio text field
   const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
     let name = e.target.name;
@@ -34,7 +29,7 @@ const SubUrls = ({
     setRows(updatedRows);
   };
   return (
-    <Row className="mt-2">
+    <Row className='mt-2'>
       <Col lg={12} md={12} sm={12}>
         <TextField
           labelclass={"d-none"}

@@ -73,7 +73,6 @@ import { useMeetingContext } from "../../../../../../context/MeetingContext";
 const FullScreenAgendaModal = ({
   setFullScreenView,
   advanceMeetingModalID,
-  editorRole,
   rows,
   setRows,
   setParticipantInfoView,
@@ -91,7 +90,8 @@ const FullScreenAgendaModal = ({
   const navigate = useNavigate();
 
   const { talkStateData } = useSelector((state) => state);
-  const { setEditorRole } = useMeetingContext();
+
+  const { setEditorRole, editorRole } = useMeetingContext();
   console.log("Agenda View Full");
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);

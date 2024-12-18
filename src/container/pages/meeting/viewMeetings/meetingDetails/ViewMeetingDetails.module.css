@@ -41,15 +41,31 @@
 .CopyLinkButton {
   padding: 8px 24px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  border: 1px solid#6172d6 !important;
-  color: #fff !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .CopyLinkButton:is(:active, :hover, :focus, :focus-visible) {
+  padding: 8px 24px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.CopyLinkButton_Disabled {
   padding: 8px 24px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
@@ -57,6 +73,22 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.CopyLinkButton_Disabled:is(:active, :hover, :focus, :focus-visible) {
+  padding: 8px 24px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: 1px solid#6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .ScrollerMeeting_Active {

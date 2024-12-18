@@ -43,7 +43,7 @@ import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgend
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -69,7 +69,8 @@ const AgendaContributers = ({
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [flag, setFlag] = useState(3);
   const [prevFlag, setprevFlag] = useState(3);
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole } = useMeetingContext();
+
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
     label: (

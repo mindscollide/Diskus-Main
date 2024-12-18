@@ -31,6 +31,7 @@ import { useEffect } from "react";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -45,10 +46,10 @@ const SubAgendaMappingDragging = ({
   setsubexpandIndex,
   setExpandSubIndex,
   setSubExpand,
-  editorRole,
   advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
+  const { editorRole } = useMeetingContext();
 
   const ResponseMessage = useSelector(
     (state) => state.MeetingAgendaReducer.ResponseMessage

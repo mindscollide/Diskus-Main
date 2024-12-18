@@ -21,6 +21,7 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { Eye } from "react-bootstrap-icons";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const MeetingMaterialPrev = ({
   setViewAdvanceMeetingModal,
@@ -29,13 +30,13 @@ const MeetingMaterialPrev = ({
   setMeetingMaterial,
   setAgenda,
   setMinutes,
-  editorRole,
-
   setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
+
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData
   );
