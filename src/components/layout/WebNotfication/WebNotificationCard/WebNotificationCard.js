@@ -39,6 +39,7 @@ import Shared_Editor_File_DeletedIcon from "../../../../assets/NotificationIcon/
 import Shared_Viewer_Folder_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_Folder_Deleted.png";
 import Shared_Viewer_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_File_Deleted.png";
 import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
+import { useTranslation } from "react-i18next";
 
 const WebNotificationCard = ({
   NotificationMessege,
@@ -48,20 +49,196 @@ const WebNotificationCard = ({
   length,
   NotificaitonID,
 }) => {
+  const { t } = useTranslation();
+  //Test work
+  console.log(NotificationMessege, "PayLoadMessage");
   //Current Language
   let Lang = localStorage.getItem("i18nextLng");
   //Local States
   const [truncatedMessage, setTruncatedMessage] = useState("");
   //UseEffect for Truncating the Text According to need without using webkitt solution for Text truncation
   useEffect(() => {
-    if (NotificationMessege.length > maxCharacters) {
-      setTruncatedMessage(
-        NotificationMessege.substring(0, maxCharacters) + "..."
-      );
-    } else {
-      setTruncatedMessage(NotificationMessege);
+    try {
+      if (NotificationMessege && typeof NotificationMessege === "object") {
+        let message = "";
+
+        // Set message based on NotificationActionID
+        if (NotificaitonID === 1) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Created-a-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 2) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Edited-a-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 3) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-started-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 4) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-ended-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 5) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-cancelled-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 6) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Removed-you-from-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 7) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-minutes-reviewer-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 8) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-removed-you-as-a-minutes-reviewer-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 9) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-participant-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 10) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-organizer-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 11) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-AgendaContributor-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 12) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-created-a-poll-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 13) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Provide-your-preferred-slot-for-the-upcoming-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 14) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Your proposed selected date is submitted for the"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 15) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-submitted-the-proposed-date-for-the"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 16) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-in-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 17) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-removed-you-from-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 18) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-archived-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 19) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-inactivated-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 20) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-activated-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 21) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-in-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 22) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-removed-you-in-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 23) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-inactivated-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 24) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-activated-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 25) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-activated-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 26) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-voter-in-the-resolution"
+          )} ${NotificationMessege.ResolutionTitle}`;
+        } else if (NotificaitonID === 27) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-added-you-as-a-non-voter-in-the-resolution"
+          )} ${NotificationMessege.ResolutionTitle}`;
+        } else if (NotificaitonID === 28) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Decision-announced-for-the-resolution"
+          )} ${NotificationMessege.ResolutionTitle}`;
+        } else if (NotificaitonID === 29) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-created-the-poll-submit-your-response"
+          )} ${NotificationMessege.PollTitle}`;
+        } else if (NotificaitonID === 30) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-updated-the-poll-submit-your-response"
+          )} ${NotificationMessege.PollTitle}`;
+        } else if (NotificaitonID === 31) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Poll-result-is-published-view-the-result"
+          )} ${NotificationMessege.PollTitle}`;
+        } else if (NotificaitonID === 33) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-shared-a-file-with-you-as-editor"
+          )} ${NotificationMessege.FileName}`;
+        } else if (NotificaitonID === 34) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-shared-a-file-with-you-as-editor"
+          )} ${NotificationMessege.FileName}`;
+        } else if (NotificaitonID === 35) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-shared-a-folder-with-you-as-viewer"
+          )} ${NotificationMessege.FolderName}`;
+        } else if (NotificaitonID === 36) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-shared-a-folder-with-you-as-editor"
+          )} ${NotificationMessege.FolderName}`;
+        } else if (NotificaitonID === 37) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-a-folder-shared-with-you-as-editor"
+          )} ${NotificationMessege.FolderName}`;
+        } else if (NotificaitonID === 38) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-a-file-shared-with-you-as-editor"
+          )} ${NotificationMessege.FileName}`;
+        } else if (NotificaitonID === 39) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-a-folder-shared-with-you-as-viewer"
+          )} ${NotificationMessege.FolderName}`;
+        } else if (NotificaitonID === 40) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-a-file-shared-with-you-as-viewer"
+          )} ${NotificationMessege.FolderName}`;
+        } else {
+          message = "Default Notification Message";
+        }
+
+        // Step 2: Apply truncation logic
+        if (message.length > maxCharacters) {
+          setTruncatedMessage(message.substring(0, maxCharacters) + "...");
+        } else {
+          setTruncatedMessage(message);
+        }
+      } else {
+        console.warn(
+          "NotificationMessege is not a valid object:",
+          NotificationMessege
+        );
+      }
+    } catch (error) {
+      console.log(error, "error");
     }
-  }, [NotificationMessege, maxCharacters]);
+  }, [NotificationMessege, NotificaitonID, maxCharacters]);
 
   return (
     <section className={styles["CardSectionInner"]}>
