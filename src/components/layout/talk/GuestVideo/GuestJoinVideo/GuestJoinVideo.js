@@ -104,6 +104,7 @@ const GuestJoinVideo = ({
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log("enableVideo", !enable);
     sessionStorage.setItem("enableVideo", !enable);
     dispatch(setVideoCameraGuest(!enable));
 

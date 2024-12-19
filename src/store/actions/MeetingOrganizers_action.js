@@ -279,7 +279,7 @@ setEditorRole,
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
-    FK_MDID: Data.MeetingID,
+    FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
   };
   return async (dispatch) => {

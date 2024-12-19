@@ -827,7 +827,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
   const leaveMeeting = async (id) => {
     let leaveMeetingData = {
-      FK_MDID: id,
+      FK_MDID: Number(id),
       DateTime: getCurrentDateTimeUTC(),
     };
     dispatch(

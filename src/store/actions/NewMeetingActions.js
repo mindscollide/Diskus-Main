@@ -7866,7 +7866,7 @@ const endMeetingStatusApi = (
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
-    FK_MDID: Data.MeetingID,
+    FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
   };
   return async (dispatch) => {
@@ -8112,6 +8112,12 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("AdvanceMeetingOpen", true);
+              localStorage.setItem(
+                "isMeetingVideoHostCheck",
+                response.data.responseResult.isMeetingVideoHost
+              );
+
               await dispatch(
                 joinMeetingSuccess(
                   response.data.responseResult,
@@ -8259,6 +8265,11 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("AdvanceMeetingOpen", false);
+              localStorage.setItem(
+                "isMeetingVideoHostCheck",
+                false
+              );
               try {
                 dispatch(currentMeetingStatus(0));
 
@@ -8447,6 +8458,11 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("AdvanceMeetingOpen", false);
+              localStorage.setItem(
+                "isMeetingVideoHostCheck",
+                false
+              );
               dispatch(currentMeetingStatus(0));
               dispatch(
                 leaveMeetingAdvancedSuccess(

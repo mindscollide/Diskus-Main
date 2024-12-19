@@ -2053,6 +2053,9 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.VIEW_ADVANCE_MEETING_PUBLISH_PAGE_FLAG: {
+      localStorage.setItem("AdvanceMeetingOpen", action.response);
+      console.log("mqtt mqmqmqmqmqmq", action.response);
+
       return {
         ...state,
         viewAdvanceMeetingPublishPageFlag: action.response,

@@ -64,7 +64,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const muteUnMuteParticpantorGuestByHost = useSelector(
     (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuestByHost
   );
-  
+
   console.log(hideUnHideParticpantorGuest, "hideUnHideParticpantorGuest123");
 
   const getAllParticipantGuest = useSelector(
@@ -83,7 +83,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const voiceControleForAllByHostFlag = useSelector(
     (state) => state.GuestVideoReducer.voiceControleForAllByHostFlag
   );
-  
+
   console.log(voiceControle, "voiceControlevoiceControle");
 
   let guestName = sessionStorage.getItem("guestName");
@@ -112,6 +112,16 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(getRoomId),
     };
     dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    if (videoCameraGuest) {
+      setIsVideoOn(true);
+    } else {
+      setIsVideoOn(false);
+    }
+    if (voiceControle) {
+      setMicOn(true);
+    } else {
+      setMicOn(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -125,7 +135,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       setAllParticipantGuest([]);
     }
   }, [getAllParticipantGuest]);
-console.log(guestMuteUnMuteData,"guestMuteUnMuteData")
+  console.log(guestMuteUnMuteData, "guestMuteUnMuteData");
   useEffect(() => {
     if (
       guestMuteUnMuteData &&
@@ -136,9 +146,11 @@ console.log(guestMuteUnMuteData,"guestMuteUnMuteData")
       if (iframe.contentWindow) {
         // Update the microphone state based on host's action
         if (guestMuteUnMuteData.isMuted) {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOff", "*");
           setMicOn(true); // Mic is off (muted)
         } else {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOn", "*");
           setMicOn(false); // Mic is on (unmuted)
         }
@@ -152,11 +164,13 @@ console.log(guestMuteUnMuteData,"guestMuteUnMuteData")
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
         if (guestMuteUnMuteData.isMuted === true) {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOff", "*");
           console.log("isVideoOnisVideoOn");
 
           setMicOn(true);
         } else {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOn", "*");
           console.log("isVideoOnisVideoOn");
 
@@ -228,15 +242,16 @@ console.log(guestMuteUnMuteData,"guestMuteUnMuteData")
       if (muteUnMuteParticpantorGuest?.uid === guestUID) {
         const iframe = frameRef.current;
         if (muteUnMuteParticpantorGuest.isMuted) {
+          console.log("enableVideo", muteUnMuteParticpantorGuest);
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
           iframe.contentWindow.postMessage("MicOff", "*");
         }
         setMicOn(muteUnMuteParticpantorGuest.isMuted);
+        console.log("enableVideo", muteUnMuteParticpantorGuest);
         sessionStorage.setItem("MicOff", muteUnMuteParticpantorGuest.isMuted);
       }
       dispatch(muteUnMuteParticipantsorGuestbyHost(false));
-
     }
   }, [muteUnMuteParticpantorGuestByHost]);
 
@@ -245,27 +260,28 @@ console.log(guestMuteUnMuteData,"guestMuteUnMuteData")
     if (voiceControleForAllByHostFlag) {
       console.log("data formute", voiceControleForAllByHostFlag);
       // if (muteUnMuteParticpantorGuest?.uid === guestUID) {
-        const iframe = frameRef.current;
-        if (voiceControleForAllByHostFlag) {
-          iframe.contentWindow.postMessage("MicOn", "*");
-        } else {
-          iframe.contentWindow.postMessage("MicOff", "*");
-        }
-        setMicOn(voiceControleForAllByHostFlag);
-        sessionStorage.setItem("MicOff", voiceControleForAllByHostFlag);
+      const iframe = frameRef.current;
+      if (voiceControleForAllByHostFlag) {
+        console.log("enableVideo", voiceControleForAllByHostFlag);
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        console.log("enableVideo", voiceControleForAllByHostFlag);
+        iframe.contentWindow.postMessage("MicOff", "*");
+      }
+      setMicOn(voiceControleForAllByHostFlag);
+      sessionStorage.setItem("MicOff", voiceControleForAllByHostFlag);
       // }
-      dispatch(setVoiceControleGuestForAllbyHost(false,false));
-
-
+      dispatch(setVoiceControleGuestForAllbyHost(false, false));
     }
   }, [voiceControleForAllByHostFlag]);
-
 
   const openMicStatus = (flag) => {
     const iframe = frameRef.current;
     if (flag) {
+      console.log("enableVideo", flag);
       iframe.contentWindow.postMessage("MicOn", "*");
     } else {
+      console.log("enableVideo", flag);
       iframe.contentWindow.postMessage("MicOff", "*");
     }
     setMicOn(flag);
