@@ -144,21 +144,21 @@ const Header2 = ({ isVideo }) => {
     ) {
       setShowWebNotification(false);
       //API Call Mark As Read
-      if (getAllNotificationData !== null) {
-        if (unReadCountNotification > 0) {
-          const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
-          let data = { ReadOnDateTime: currentDateTime };
-          dispatch(
-            DiskusWebNotificationMarkAsReadAPI(
-              navigate,
-              t,
-              data,
-              setUnReadCountNotification,
-              setwebNotificationData
-            )
-          );
-        }
+      // if (getAllNotificationData !== null) {
+      if (unReadCountNotification > 0) {
+        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+        let data = { ReadOnDateTime: currentDateTime };
+        dispatch(
+          DiskusWebNotificationMarkAsReadAPI(
+            navigate,
+            t,
+            data,
+            setUnReadCountNotification,
+            setwebNotificationData
+          )
+        );
       }
+      // }
     }
   };
   //Event Handler for Outside Click of Web Notification Window
