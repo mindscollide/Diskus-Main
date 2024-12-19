@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 // Create the Context
@@ -16,7 +16,7 @@ export const MeetingProvider = ({ children }) => {
   const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] =
     useState(false);
   const [goBackCancelModal, setGoBackCancelModal] = useState(false);
-  const [editorRole, setEdiorRole] = useState({
+  const [editorRole, setEditorRole] = useState({
     status: null,
     role: null,
     isPrimaryOrganizer: false,
@@ -46,7 +46,7 @@ export const MeetingProvider = ({ children }) => {
         setGoBackCancelModal,
         goBackCancelModal,
         editorRole,
-        setEdiorRole,
+        setEditorRole,
         isAgendaUpdateWhenMeetingActive,
         cancelConfirmationModal,
         setCancelConfirmationModal,
@@ -61,4 +61,15 @@ export const MeetingProvider = ({ children }) => {
       {children}
     </MeetingContext.Provider>
   );
+};
+
+// Custom Hook to consume the context
+export const useMeetingContext = () => {
+  const context = useContext(MeetingContext);
+
+  if (!context) {
+    throw new Error("useMeetingContext must be used within a MeetingProvider");
+  }
+
+  return context;
 };

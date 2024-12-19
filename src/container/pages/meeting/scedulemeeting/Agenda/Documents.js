@@ -2,6 +2,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
 import { AttachmentViewer } from "../../../../../components/elements";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const Documents = ({
   data,
@@ -11,8 +12,8 @@ const Documents = ({
   parentId,
   setFileForSend,
   fileForSend,
-  editorRole,
 }) => {
+  const { editorRole } = useMeetingContext();
   const CrossDocument = (fileIndex, fileDataProp) => {
     console.log(fileDataProp, "fileDataPropfileDataProp");
     let optionscross = [...rows];
@@ -41,7 +42,7 @@ const Documents = ({
     <>
       <Row key={index + 5}>
         <Col lg={12} md={12} sm={12} className={styles["Scroller_document"]}>
-          <div className="d-flex gap-2 flex-wrap  mt-2">
+          <div className='d-flex gap-2 flex-wrap  mt-2'>
             {data?.files?.length > 0
               ? data?.files?.map((filesData, Fileindex) => {
                   return (
@@ -58,14 +59,12 @@ const Documents = ({
                               editorRole.status === "9"
                             ? true
                             : false
-                        }
-                      >
+                        }>
                         {(provided) => (
                           <div
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                          >
+                            ref={provided.innerRef}>
                             <Col sm={4} md={4} lg={4}>
                               <AttachmentViewer
                                 name={filesData.displayAttachmentName}

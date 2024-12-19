@@ -36,6 +36,7 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRo
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const ParentAgenda = ({
   data,
@@ -45,11 +46,12 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
-  editorRole,
   advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
+
   let currentUserID = localStorage.getItem("userID");
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(

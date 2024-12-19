@@ -61,7 +61,6 @@ const WebNotificationCard = ({
     try {
       if (NotificationMessege && typeof NotificationMessege === "object") {
         let message = "";
-
         // Set message based on NotificationActionID
         if (NotificaitonID === 1) {
           message = `${NotificationMessege.NotifierName} ${t(
@@ -153,7 +152,7 @@ const WebNotificationCard = ({
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 23) {
           message = `${NotificationMessege.NotifierName} ${t(
-            "Has-inactivated-the-committee"
+            "Has-archived-the-committee"
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 24) {
           message = `${NotificationMessege.NotifierName} ${t(
@@ -189,7 +188,7 @@ const WebNotificationCard = ({
           )} ${NotificationMessege.PollTitle}`;
         } else if (NotificaitonID === 33) {
           message = `${NotificationMessege.NotifierName} ${t(
-            "Has-shared-a-file-with-you-as-editor"
+            "Has-shared-a-file-with-you-as-viewer"
           )} ${NotificationMessege.FileName}`;
         } else if (NotificaitonID === 34) {
           message = `${NotificationMessege.NotifierName} ${t(

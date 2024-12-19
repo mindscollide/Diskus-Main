@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import styles from "./Attendees.module.css";
 import { Col, Row } from "react-bootstrap";
 import AttendeesCard from "../../../../../components/elements/attendeesCard/AttendeesCard";
@@ -15,18 +15,17 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import {
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 
-const Attendees = ({
-  MeetingID,
-  setEdiorRole,
-  setViewAdvanceMeetingModal,
-  editorRole,
-  setAttendees,
-}) => {
+const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
   const dispatch = useDispatch();
   const [organizersData, setOrganizersData] = useState([]);
   const [participantsData, setParticipantsData] = useState([]);
   const [agendaContributorsData, setAgendaContributorsData] = useState([]);
+  const { editorRole, setEditorRole } = useMeetingContext();
+
   const [Attending, setAttending] = useState(0);
   const [mayBe, setMayBe] = useState(0);
   const [notAttending, setNotAttending] = useState(0);
@@ -35,7 +34,6 @@ const Attendees = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-
   const { getMeetingUsersRSVP } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -82,7 +80,7 @@ const Attendees = ({
           leaveMeetingData,
           false,
           false,
-          setEdiorRole,
+          setEditorRole,
           MeetingID,
           false
         )
@@ -103,7 +101,7 @@ const Attendees = ({
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -160,8 +158,7 @@ const Attendees = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${styles["Attendees_container"]}`}
-      >
+        className={`${styles["Attendees_container"]}`}>
         <section className={styles["Members_Area"]}>
           <p className={styles["AttendeesAreaHeading"]}>Organizers</p>
           <div className={styles["Cards"]}>
@@ -194,8 +191,7 @@ const Attendees = ({
         sm={12}
         md={12}
         lg={12}
-        className={` ${"d-flex justify-content-end align-items-center mt-2"}`}
-      >
+        className={` ${"d-flex justify-content-end align-items-center mt-2"}`}>
         <Button
           onClick={handleCancelAttendees}
           text={"Cancel"}

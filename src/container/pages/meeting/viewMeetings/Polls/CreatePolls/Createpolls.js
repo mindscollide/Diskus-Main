@@ -308,8 +308,10 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           });
         }
       }
-
-      setmemberSelect(newmembersArray);
+      let sortAssginersArr = newmembersArray.sort(
+        (a, b) =>  a.name.localeCompare(b.name)
+      );
+      setmemberSelect(sortAssginersArr);
     } else {
       setmemberSelect([]);
     }

@@ -22,6 +22,7 @@ const CustomButton = ({
   iconClass2,
   textClass,
   buttonValue,
+  title
 }) => {
   return (
     <>
@@ -37,6 +38,7 @@ const CustomButton = ({
         align={align}
         data-tut={datatut}
         style={style}
+        title={title}
       >
         {buttonValue}
         <span className={iconClass}>{icon}</span>

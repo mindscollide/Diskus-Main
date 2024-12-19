@@ -5,6 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { TextField } from "../../../../../components/elements";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubRequestContributor = ({
   setRows,
@@ -14,10 +15,9 @@ const SubRequestContributor = ({
   subIndex,
   allUsersRC,
   setAllUsersRC,
-  editorRole,
 }) => {
   const { t } = useTranslation();
-
+  const { editorRole } = useMeetingContext();
   const getAllAgendaContributors = useSelector(
     (state) => state.NewMeetingreducer.getAllAgendaContributors
   );
@@ -86,12 +86,12 @@ const SubRequestContributor = ({
         label: (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <img
-                  alt=""
+                  alt=''
                   src={`data:image/jpeg;base64,${usersRC.userProfilePicture.displayProfilePictureName}`}
-                  width="17px"
-                  height="17px"
+                  width='17px'
+                  height='17px'
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>{usersRC.userName}</span>
@@ -130,7 +130,7 @@ const SubRequestContributor = ({
 
   return (
     <>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col lg={12} md={12} sm={12}>
           <Select
             options={allUsersRC}
@@ -162,10 +162,10 @@ const SubRequestContributor = ({
       <Row>
         <Col lg={12} md={12} sm={12}>
           <TextField
-            applyClass="text-area-create-resolution"
-            type="text"
+            applyClass='text-area-create-resolution'
+            type='text'
             as={"textarea"}
-            rows="4"
+            rows='4'
             placeholder={t("Enter-notes")}
             name={"SubAgendaRequestContributorEnterNotesFiled"}
             required={true}

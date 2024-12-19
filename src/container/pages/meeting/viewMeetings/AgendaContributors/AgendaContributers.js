@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./AgendaContributors.module.css";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -26,18 +26,19 @@ import redMailIcon from "../../../../../assets/images/redmail.svg";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
-  setEdiorRole,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const { setEditorRole } = useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
@@ -115,7 +116,7 @@ const AgendaContributers = ({
 
     setAgendaContributors(false);
     localStorage.removeItem("folderDataRoomMeeting");
-    setEdiorRole({ status: null, role: null });
+    setEditorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
   };
 
@@ -158,9 +159,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -168,9 +169,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={thumbsup}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -178,9 +179,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={thumbsdown}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -188,9 +189,9 @@ const AgendaContributers = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -210,14 +211,13 @@ const AgendaContributers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -229,14 +229,13 @@ const AgendaContributers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -282,14 +281,13 @@ const AgendaContributers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -301,14 +299,13 @@ const AgendaContributers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
+                    height='30px'
+                    width='30px'
+                    alt=''
                   />
                 </Col>
               </Row>
@@ -339,7 +336,7 @@ const AgendaContributers = ({
       <section>
         <Row>
           <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
@@ -353,14 +350,13 @@ const AgendaContributers = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width="274.05px"
-                              alt=""
-                              height="230.96px"
+                              width='274.05px'
+                              alt=''
+                              height='230.96px'
                             />
                           </Col>
                         </Row>
@@ -369,8 +365,7 @@ const AgendaContributers = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-agenda-contributor")}
                             </span>
@@ -381,8 +376,7 @@ const AgendaContributers = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-agenda-contributors")}
                             </span>
@@ -391,7 +385,7 @@ const AgendaContributers = ({
                       </>
                     ),
                   }}
-                  className="Polling_table"
+                  className='Polling_table'
                   rows={rowsData}
                 />
               </Col>
@@ -403,8 +397,7 @@ const AgendaContributers = ({
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Meeting_Details"]}

@@ -3,6 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
 import { AttachmentViewer } from "../../../../../components/elements";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubDocumnets = ({
   subAgendaData,
@@ -13,8 +14,9 @@ const SubDocumnets = ({
   fileForSend,
   setFileForSend,
   subIndex,
-  editorRole,
 }) => {
+  const { editorRole } = useMeetingContext();
+
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
     console.log(subAgendaFiles, "fileDataPropfileDataProp");
     let optionscross = [...rows];

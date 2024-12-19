@@ -263,7 +263,7 @@ const UpdateOrganizersMeeting = (
   t,
   route,
   Data,
-  setEdiorRole,
+setEditorRole,
   setAdvanceMeetingModalID,
   setDataroomMapFolderId,
   // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -305,7 +305,7 @@ const UpdateOrganizersMeeting = (
               t,
               route,
               Data,
-              setEdiorRole,
+            setEditorRole,
               setAdvanceMeetingModalID,
               setDataroomMapFolderId,
               // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -392,7 +392,7 @@ const UpdateOrganizersMeeting = (
                         leaveMeetingData,
                         false,
                         setViewFlag,
-                        setEdiorRole,
+                      setEditorRole,
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
                         setEndMeetingConfirmationModal
@@ -402,7 +402,7 @@ const UpdateOrganizersMeeting = (
                     if (isQuickMeeting) {
                     } else {
                       setAdvanceMeetingModalID(Data.MeetingID);
-                      setEdiorRole({
+                      setEditorRole({
                         status: "10",
                         role: "Organizer",
                         isPrimaryOrganizer: false,

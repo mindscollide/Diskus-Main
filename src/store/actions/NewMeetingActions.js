@@ -8207,7 +8207,7 @@ const LeaveCurrentMeeting = (
   Data,
   isQuickMeeting,
   setViewFlag,
-  setEdiorRole,
+  setEditorRole,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal
@@ -8244,7 +8244,7 @@ const LeaveCurrentMeeting = (
               Data,
               isQuickMeeting,
               setViewFlag,
-              setEdiorRole,
+              setEditorRole,
               setAdvanceMeetingModalID,
               setViewAdvanceMeetingModal,
               setEndMeetingConfirmationModal
@@ -8338,7 +8338,7 @@ const LeaveCurrentMeeting = (
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   localStorage.removeItem("folderDataRoomMeeting");
-                  setEdiorRole({ status: null, role: null });
+                  setEditorRole({ status: null, role: null });
                   setAdvanceMeetingModalID(null);
                   if (typeof setViewAdvanceMeetingModal === "function") {
                     setViewAdvanceMeetingModal(false);
@@ -9251,7 +9251,7 @@ const GetMeetingStatusDataFail = (message) => {
   };
 };
 
-const GetMeetingStatusDataAPI = (navigate, t, Data) => {
+const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
@@ -9284,6 +9284,16 @@ const GetMeetingStatusDataAPI = (navigate, t, Data) => {
                   t("Successful")
                 )
               );
+              setEditorRole({
+                status: Number(response.data.responseResult.meetingStatusID),
+                role:
+                  Number(response.data.responseResult.attendeeRoleID) === 2
+                    ? "Participant"
+                    : Number(response.data.responseResult.attendeeRoleID) === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
               localStorage.setItem(
                 "MeetingStatusID",
                 response.data.responseResult.meetingStatusID

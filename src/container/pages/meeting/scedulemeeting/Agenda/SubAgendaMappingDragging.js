@@ -34,7 +34,7 @@ import SubDedaultDragger from "./SubDedaultDragger";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import { MeetingContext, useMeetingContext } from "../../../../../context/MeetingContext";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -56,11 +56,11 @@ const SubAgendaMappingDragging = ({
   setFileForSend,
   allUsersRC,
   setAllUsersRC,
-  editorRole,
 }) => {
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const { editorRole } = useMeetingContext();
 
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
   const getMeetingusers = useSelector(
