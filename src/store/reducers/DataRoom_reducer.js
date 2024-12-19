@@ -59,17 +59,28 @@ const DataRoomReducer = (state = initialState, action) => {
     case actions.DATAROOM_BREADCRUMBS: {
       console.log(action, "DATAROOM_BREADCRUMBSDATAROOM_BREADCRUMBS");
 
-      const { payload } = action;
-      console.log(
-        Array.isArray(payload) && payload.length === 0,
-        "DATAROOM_BREADCRUMBSDATAROOM_BREADCRUMBS"
-      );
-      let newArr;
-      if (Array.isArray(payload) && payload.length === 0) {
-        newArr = [];
-      } else {
-        newArr = [...state.BreadCrumbsList, action.payload];
+      const { payload, t } = action;
+      let newArr = [];
+      let getCurrentView = localStorage.getItem("setTableView");
+      if (getCurrentView !== null && t !== undefined) {
+        if (state.BreadCrumbsList.length === 0) {
+          let viewName =
+            Number(getCurrentView) === 1
+              ? t("My-document")
+              : Number(getCurrentView) === 2
+              ? t("Shared-with-me")
+              : Number(getCurrentView) === 3
+              ? t("All")
+              : t("Recently-added");
+          newArr = [
+            { name: viewName, id: Number(getCurrentView), main: true },
+            payload,
+          ];
+        } else {
+          newArr = [...state.BreadCrumbsList, action.payload];
+        }
       }
+
       return {
         ...state,
         BreadCrumbsList: newArr,
