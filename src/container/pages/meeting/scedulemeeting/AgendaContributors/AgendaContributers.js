@@ -807,20 +807,25 @@ const AgendaContributers = ({
               </>
             ) : (
               <>
-                <Button
-                  text={t("Edit")}
-                  className={styles["Edit_button"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={EditIcon}
-                      width='11.75px'
-                      height='11.75px'
-                      alt=''
+                {rowsData.length !== 0 && (
+                  <>
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_button"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
+                        />
+                      }
+                      onClick={handleEditBtn}
                     />
-                  }
-                  onClick={handleEditBtn}
-                />
+                  </>
+                )}
+
                 <Button
                   text={t("Add-more")}
                   icon={<img draggable={false} src={addmore} alt='' />}

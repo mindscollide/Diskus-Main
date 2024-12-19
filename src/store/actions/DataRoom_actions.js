@@ -513,15 +513,21 @@ const getFolerDocuments_fail = (message) => {
     message: message,
   };
 };
-const BreadCrumbsList = (response, translate) => {
+const BreadCrumbsList = (response) => {
   return {
     type: actions.DATAROOM_BREADCRUMBS,
     payload: response,
-    t: translate
   };
 };
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no, record) => {
+const getFolderDocumentsApi = (
+  navigate,
+  FolderId,
+  t,
+  no,
+  record,
+  BreadCrumbsListArr
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
 
@@ -553,7 +559,16 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no, record) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getFolderDocumentsApi(navigate, FolderId, t, no, record));
+          dispatch(
+            getFolderDocumentsApi(
+              navigate,
+              FolderId,
+              t,
+              no,
+              record,
+              BreadCrumbsListArr
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -563,12 +578,51 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no, record) => {
                   "DataRoom_DataRoomManager_GetFolderDocuments_01".toLowerCase()
                 )
             ) {
-              if (record !== null && record !== undefined) {
-                let newFolderRecord = {
-                  name: record?.name,
-                  id: record?.id,
-                };
-                dispatch(BreadCrumbsList(newFolderRecord, t));
+              let getCurrentView = localStorage.getItem("setTableView");
+              let newArr;
+              if (
+                getCurrentView !== null &&
+                record !== null &&
+                record !== undefined
+              ) {
+                if (
+                  BreadCrumbsListArr !== null &&
+                  BreadCrumbsListArr !== undefined &&
+                  BreadCrumbsListArr.length === 0
+                ) {
+                  // if User click from main root folder
+                  let viewName =
+                    Number(getCurrentView) === 1
+                      ? t("My-document")
+                      : Number(getCurrentView) === 2
+                      ? t("Shared-with-me")
+                      : Number(getCurrentView) === 3
+                      ? t("All")
+                      : t("Recently-added");
+                  newArr = [
+                    { name: viewName, id: Number(getCurrentView), main: true },
+                    { name: record?.name, id: record?.id },
+                  ];
+                  dispatch(BreadCrumbsList(newArr));
+                } else {
+                  let findIfItsExist = BreadCrumbsListArr.findIndex(
+                    (breadCrumbData, index) => breadCrumbData.id === record.id
+                  );
+                  if (findIfItsExist !== -1) {
+                    // Keep only the elements before index 2
+                    let checkingisExist = BreadCrumbsListArr.slice(
+                      0,
+                      findIfItsExist + 1
+                    );
+                    dispatch(BreadCrumbsList(checkingisExist));
+                  } else {
+                    let newFolderRecord = [
+                      ...BreadCrumbsListArr,
+                      { name: record?.name, id: record?.id },
+                    ];
+                    dispatch(BreadCrumbsList(newFolderRecord));
+                  }
+                }
               }
 
               dispatch(
