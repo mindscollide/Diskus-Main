@@ -1868,7 +1868,7 @@ const DiskusWebNotificationMarkAsRead = {
 
 //Get Meeting Status
 const GetMeetingStatus = {
-  RequestMethod: "ServiceManager.GetMeetingStatusData",
+  RequestMethod: "ServiceManager.GetMeetingAttendeeAndStatusData",
 };
 
 export {

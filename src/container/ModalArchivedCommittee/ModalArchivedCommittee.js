@@ -28,12 +28,15 @@ const ModalArchivedCommittee = ({
   let currentArPage = JSON.parse(localStorage.getItem("CoArcurrentPage"));
   const [uniqCardID, setUniqCardID] = useState(0);
   useEffect(() => {
-    if (currentArPage != undefined && currentArPage != null) {
+    if (currentArPage !== undefined && currentArPage !== null) {
       dispatch(getAllArcheivedCommittees(navigate, t, currentArPage));
     } else {
       localStorage.setItem("CoArcurrentPage", 1);
       dispatch(getAllArcheivedCommittees(navigate, t, 1));
     }
+    return () => {
+      localStorage.removeItem("NotificationClickCommitteeArchived");
+    };
   }, []);
 
   useEffect(() => {
@@ -82,10 +85,14 @@ const ModalArchivedCommittee = ({
     ) {
       setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
 
-      // Use the spread operator to create a new array to avoid state mutations
-      const newArr = [...CommitteeReducer.ArcheivedCommittees.committees];
+      let copyData = [...CommitteeReducer.ArcheivedCommittees?.committees];
+      // Create a new copy of committeeMembers array for each committee
+      const updatedCommittees = copyData.map((committee) => ({
+        ...committee,
+        committeeMembers: [...committee.committeeMembers],
+      }));
 
-      setGetCommitteeData(newArr); // Update the state with the new array
+      setGetCommitteeData(updatedCommittees); // Update the state with the new array
     }
   }, [CommitteeReducer.ArcheivedCommittees]);
 
@@ -137,8 +144,8 @@ const ModalArchivedCommittee = ({
                     {t("Archived-committees")}
                   </p>
                 </Col>
-                {CommitteeReducer.ArcheivedCommittees != null &&
-                CommitteeReducer.ArcheivedCommittees != undefined ? (
+                {CommitteeReducer.ArcheivedCommittees !== null &&
+                CommitteeReducer.ArcheivedCommittees !== undefined ? (
                   CommitteeReducer.ArcheivedCommittees.pageNumbers >=
                   currentArPage + 1 ? (
                     <Col lg={1} md={1} sm={1} className="justify-content-end">
