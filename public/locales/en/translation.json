@@ -2371,5 +2371,6 @@
   "The-meeting-has-ended": "The meeting has ended",
   "Has-archived-the-committee": "Has archived the committee",
   "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
-  "Copy-invite-link": "Copy Invite Link"
+  "Copy-invite-link": "Copy Invite Link",
+  "Required-fields-should-not-be-empty": "Required fields should not be empty"
 }
