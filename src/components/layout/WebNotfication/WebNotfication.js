@@ -12,6 +12,8 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingActions";
+import { useMeetingContext } from "../../../context/MeetingContext";
+import { XLg } from "react-bootstrap-icons";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -22,6 +24,7 @@ const WebNotfication = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { editorRole, setEditorRole } = useMeetingContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -124,12 +127,24 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
         } else {
+          console.log("NotificationDataNotificationData");
+          //Advance Meeting
           navigate("/Diskus/Meeting");
           console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
           );
         }
       }
@@ -155,6 +170,16 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
+          );
         }
       }
     } else if (NotificationData.notificationActionID === 3) {
@@ -179,6 +204,16 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
+          );
         }
       }
     } else if (NotificationData.notificationActionID === 4) {
@@ -200,6 +235,16 @@ const WebNotfication = ({
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              PayLoadData.IsQuickMeeting
+            )
           );
         }
       }
@@ -481,6 +526,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
+      if (currentURL.includes("/Diskus/committee")) {
+        return; // Perform no action if the URL matches
+      } else {
+        //Notification for Added as Voter in the resolution
+        navigate("/Diskus/resolution");
+        localStorage.setItem("ResolutionDecisionDateAnnounced", true);
+      }
     } else if (NotificationData.notificationActionID === 29) {
       if (currentURL.includes("/Diskus/polling")) {
         return; // Perform no action if the URL matches

@@ -6,7 +6,10 @@ import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
 
@@ -17,7 +20,6 @@ const SubDedaultDragger = ({
   subIndex,
   fileForSend,
   setFileForSend,
-  editorRole,
 }) => {
   const { t } = useTranslation();
   //Uploader Props For SubAgendas
@@ -27,7 +29,7 @@ const SubDedaultDragger = ({
     message: "",
     severity: "error",
   });
-  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+  const { editorRole, isAgendaUpdateWhenMeetingActive } = useMeetingContext();
 
   let currentUserID = Number(localStorage.getItem("userID"));
 
@@ -129,7 +131,7 @@ const SubDedaultDragger = ({
 
   return (
     <>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col lg={12} md={12} sm={12}>
           <Dragger
             fileList={[]}
@@ -146,31 +148,28 @@ const SubDedaultDragger = ({
                   !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
-            }
-          >
+            }>
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className="d-flex justify-content-end align-items-center"
-              >
+                className='d-flex justify-content-end align-items-center'>
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=""
+                  alt=''
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -181,8 +180,7 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -193,8 +191,7 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>

@@ -26,6 +26,7 @@ import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
 import {
   CleareMessegeNewMeeting,
+  GetAllMeetingUserApiFunc,
   showunsavedEditPollsMeetings,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
@@ -168,40 +169,97 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   };
 
   const handleAddUsers = () => {
-    let getUserDetails = [...getMeetingusers];
+    let pollsData = getMeetingusers;
     let tem = [...members];
     let newarr = [];
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.forEach((seledtedData, index) => {
-            let check1 = getUserDetails.find(
-              (data, index) => data.pK_UID === seledtedData.value
-            );
+          selectedsearch.map((seledtedData) => {
+            if (seledtedData.type === 1) {
+              let check1 = pollsData.meetingOrganizers.find(
+                (data) => data.userID === seledtedData.value
+              );
+              if (check1 !== undefined) {
+                newarr.push(check1);
 
-            if (check1 !== undefined) {
-              newarr.push(check1);
-
-              if (newarr.length > 0) {
-                newarr.forEach((morganizer, index) => {
-                  let check2 = newarr.find(
-                    (data, index) => data.UserID === morganizer.pK_UID
-                  );
-                  if (check2 !== undefined) {
-                  } else {
-                    let newUser = {
-                      userName: morganizer.userName,
-                      userID: morganizer.pK_UID,
-                      displayPicture:
-                        morganizer.userProfilePicture.displayProfilePictureName,
-                    };
-                    tem.push(newUser);
-                  }
-                });
+                if (newarr.length > 0) {
+                  newarr.map((morganizer) => {
+                    let check2 = newarr.find(
+                      (data) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
+                      };
+                      tem.push(newUser);
+                    }
+                  });
+                }
               }
+            } else if (seledtedData.type === 2) {
+              let check1 = pollsData.meetingAgendaContributors.find(
+                (data) => data.userID === seledtedData.value
+              );
+              if (check1 !== undefined) {
+                newarr.push(check1);
+
+                if (newarr.length > 0) {
+                  newarr.map((morganizer) => {
+                    let check2 = newarr.find(
+                      (data) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
+                      };
+                      tem.push(newUser);
+                    }
+                  });
+                }
+              }
+            } else if (seledtedData.type === 3) {
+              let check1 = pollsData.meetingParticipants.find(
+                (data) => data.userID === seledtedData.value
+              );
+              if (check1 !== undefined) {
+                newarr.push(check1);
+
+                if (newarr.length > 0) {
+                  newarr.map((morganizer) => {
+                    let check2 = newarr.find(
+                      (data) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
+                      };
+                      tem.push(newUser);
+                    }
+                  });
+                }
+              }
+            } else {
             }
           });
-        } catch {}
+        } catch {
+          console.log("error in add");
+        }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -212,7 +270,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       }
     } catch {}
   };
-
   const handleUpdateClick = (pollStatusValue) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
@@ -272,46 +329,130 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   };
 
   useEffect(() => {
-    if (
-      getGroupByGroupIdResponse !== null &&
-      getGroupByGroupIdResponse !== undefined
-    ) {
-      let newArr = [];
-      let getUserDetails = getGroupByGroupIdResponse.groupMembers;
-      getUserDetails.forEach((data, index) => {
-        newArr.push({
-          value: data.pK_UID,
-          label: (
-            <>
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
-                    />
-                    <span className={styles["NameDropDown"]}>
-                      {data.userName}
-                    </span>
-                  </Col>
-                </Row>
-              </>
-            </>
-          ),
-          type: 1,
-        });
-      });
-      setmemberSelect(newArr);
+    let Data = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    let pollMeetingData = getMeetingusers;
+    if (pollMeetingData !== undefined && pollMeetingData !== null) {
+      let newmembersArray = [];
+      if (Object.keys(pollMeetingData).length > 0) {
+        if (pollMeetingData.meetingOrganizers.length > 0) {
+          pollMeetingData.meetingOrganizers.map((MorganizerData) => {
+            let MeetingOrganizerData = {
+              value: MorganizerData.userID,
+              name: MorganizerData.userName,
+              label: (
+                <>
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {MorganizerData.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                </>
+              ),
+              type: 1,
+            };
+            newmembersArray.push(MeetingOrganizerData);
+          });
+        }
+        if (pollMeetingData.meetingAgendaContributors.length > 0) {
+          pollMeetingData.meetingAgendaContributors.map(
+            (meetAgendaContributor) => {
+              let MeetingAgendaContributorData = {
+                value: meetAgendaContributor.userID,
+                name: meetAgendaContributor.userName,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className='d-flex gap-2 align-items-center'>
+                          <img
+                            src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
+                            height='16.45px'
+                            alt=''
+                            width='18.32px'
+                            draggable='false'
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetAgendaContributor.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 2,
+              };
+              newmembersArray.push(MeetingAgendaContributorData);
+            }
+          );
+        }
+        if (pollMeetingData.meetingParticipants.length > 0) {
+          pollMeetingData.meetingParticipants.map((meetParticipants) => {
+            let MeetingParticipantsData = {
+              value: meetParticipants.userID,
+              name: meetParticipants.userName,
+              label: (
+                <>
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 align-items-center'>
+                        <img
+                          src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
+                          height='16.45px'
+                          width='18.32px'
+                          alt=''
+                          draggable='false'
+                        />
+                        <span className={styles["NameDropDown"]}>
+                          {meetParticipants.userName}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                </>
+              ),
+              type: 3,
+            };
+            newmembersArray.push(MeetingParticipantsData);
+          });
+        }
+      }
+      let sortAssginersArr = newmembersArray.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      setmemberSelect(sortAssginersArr);
+    } else {
+      setmemberSelect([]);
     }
-  }, [getGroupByGroupIdResponse]);
+  }, [getMeetingusers]);
 
   useEffect(() => {
     try {
@@ -342,7 +483,6 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
               userID: particpantData.userID,
               displayPicture:
                 particpantData.profilePicture.displayProfilePictureName,
-              emailAddress: particpantData.emailAddress,
             });
           });
           setMembers(pollMembers);
@@ -372,14 +512,14 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     <section>
       <Row>
         <Col lg={6} md={6} sm={6}>
-          <Row className="mt-5">
+          <Row className='mt-5'>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Title_heading"]}>
                 {t("Title")} <span className={styles["steric"]}>*</span>
               </span>
             </Col>
           </Row>
-          <Row className="mt-1">
+          <Row className='mt-1'>
             <Col lg={12} md={12} sm={12}>
               <TextField
                 labelclass={"d-none"}
@@ -391,7 +531,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
               />
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Title_heading"]}>
                 {t("Options")} <span className={styles["steric"]}>*</span>
@@ -403,22 +543,21 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
               lg={12}
               md={12}
               sm={12}
-              className={styles["Scroller_Meeting_polls"]}
-            >
+              className={styles["Scroller_Meeting_polls"]}>
               {options.length > 0
                 ? options.map((data, index) => {
                     return (
                       <>
                         {index <= 1 ? (
-                          <Row key={index} className="mt-2">
+                          <Row key={index} className='mt-2'>
                             <Col lg={12} md={12} sm={12}>
-                              <span className="position-relative">
+                              <span className='position-relative'>
                                 <TextField
                                   placeholder={
                                     "Option" + " " + parseInt(index + 1)
                                   }
                                   applyClass={"PollingCreateModal"}
-                                  labelclass="d-none"
+                                  labelclass='d-none'
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   maxLength={100}
@@ -429,15 +568,15 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                             </Col>
                           </Row>
                         ) : (
-                          <Row key={index} className="mt-2">
+                          <Row key={index} className='mt-2'>
                             <Col lg={12} md={12} sm={12}>
-                              <span className="position-relative">
+                              <span className='position-relative'>
                                 <TextField
                                   placeholder={
                                     "Option" + " " + parseInt(index + 1)
                                   }
                                   applyClass={"PollingCreateModal"}
-                                  labelclass="d-none"
+                                  labelclass='d-none'
                                   name={data.name}
                                   disable={checkForPollStatus}
                                   value={data.value}
@@ -448,9 +587,9 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                       <img
                                         draggable={false}
                                         src={WhiteCrossIcon}
-                                        width="31.76px"
-                                        height="31.76px"
-                                        alt=""
+                                        width='31.76px'
+                                        height='31.76px'
+                                        alt=''
                                         onClick={() =>
                                           HandleCancelFunction(index)
                                         }
@@ -474,20 +613,20 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 : null}
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col lg={12} md={12} sm={12}>
               <Button
                 disableBtn={checkForPollStatus}
                 text={
                   <>
-                    <Row className="mt-1">
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Row className='mt-1'>
+                      <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                         <img
                           draggable={false}
                           src={plusFaddes}
-                          width="15.87px"
-                          height="15.87px"
-                          alt=""
+                          width='15.87px'
+                          height='15.87px'
+                          alt=''
                         />
                         <span className={styles["Add_Button_Heading"]}>
                           {t("Add-another-field")}
@@ -501,23 +640,23 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
               />
             </Col>
           </Row>
-          <Row className="mt-3">
-            <Col lg={6} md={6} sm={6} className="d-flex align-items-center">
+          <Row className='mt-3'>
+            <Col lg={6} md={6} sm={6} className='d-flex align-items-center'>
               <DatePicker
                 value={meetingDate}
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
-                placeholder="DD/MM/YYYY"
+                placeholder='DD/MM/YYYY'
                 render={
                   <InputIcon
-                    placeholder="DD/MM/YYYY"
-                    className="datepicker_input"
+                    placeholder='DD/MM/YYYY'
+                    className='datepicker_input'
                   />
                 }
                 editable={false}
-                className="datePickerTodoCreate2"
+                className='datePickerTodoCreate2'
                 onOpenPickNewDate={true}
-                inputMode=""
+                inputMode=''
                 calendar={gregorian}
                 locale={gregorian_en}
                 ref={calendRef}
@@ -526,14 +665,13 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                 }
               />
             </Col>
-            <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
-              <Row className="mt-2">
+            <Col lg={6} md={6} sm={6} className='d-flex justify-content-end'>
+              <Row className='mt-2'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex align-items-center gap-2"
-                >
+                  className='d-flex align-items-center gap-2'>
                   <Checkbox
                     onChange={HandleCheckMultipleAnswersUpdatePolls}
                     checked={updatePolls.AllowMultipleAnswers}
@@ -550,13 +688,12 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
         <Col lg={6} md={6} sm={6}>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["MarginSection"]}>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="group-fields d-flex align-items-center gap-2"
-                >
+                  className='group-fields d-flex align-items-center gap-2'>
                   <Select
                     classNamePrefix={"Polls_Meeting"}
                     closeMenuOnSelect={false}
@@ -585,25 +722,23 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                       console.log("datadatadatamembers", data);
                       return (
                         <>
-                          <Col lg={6} md={6} sm={6} className="mt-3">
+                          <Col lg={6} md={6} sm={6} className='mt-3'>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <section
-                                  className={styles["Outer_Box_Members"]}
-                                >
-                                  <Row className="mt-2">
+                                  className={styles["Outer_Box_Members"]}>
+                                  <Row className='mt-2'>
                                     <Col
                                       lg={10}
                                       md={10}
                                       sm={10}
-                                      className="d-flex gap-2 align-items-center"
-                                    >
+                                      className='d-flex gap-2 align-items-center'>
                                       <img
                                         draggable={false}
                                         src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                        height="33px"
-                                        alt=""
-                                        width="33px"
+                                        height='33px'
+                                        alt=''
+                                        width='33px'
                                         className={styles["ProfileStyles"]}
                                       />
                                       <span className={styles["Name_Members"]}>
@@ -614,16 +749,15 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                       lg={2}
                                       md={2}
                                       sm={2}
-                                      className="d-flex align-items-center"
-                                    >
+                                      className='d-flex align-items-center'>
                                       {checkForPollStatus ? null : (
                                         <img
                                           draggable={false}
                                           src={RedCross}
-                                          height="14px"
-                                          alt=""
-                                          width="14px"
-                                          className="cursor-pointer"
+                                          height='14px'
+                                          alt=''
+                                          width='14px'
+                                          className='cursor-pointer'
                                           onClick={() => RemoveMembers(index)}
                                         />
                                       )}
@@ -647,8 +781,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2"
-        >
+          className='d-flex justify-content-end gap-2'>
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Button_Meeting_Creat_Polls"]}

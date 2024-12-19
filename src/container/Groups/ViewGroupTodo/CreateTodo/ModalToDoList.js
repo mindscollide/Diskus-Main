@@ -172,7 +172,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (
       data !== undefined &&
       data !== null &&
-      data !== [] &&
       Object(data).length > 0
     ) {
       const filterData = data.filter(
@@ -355,14 +354,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.userName}</span>
                   </Col>
@@ -382,14 +380,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{user.userName}</span>
                     </Col>
@@ -401,7 +398,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             });
           }
         });
-        setAllPresenters(PresenterData);
+        let sortAssginersArr = PresenterData.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        setAllPresenters(sortAssginersArr);
       }
     } catch {}
   }, [GroupsReducergetGroupByGroupIdResponse]);
@@ -557,7 +557,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className="input-with-icon"
+        className='input-with-icon'
       />
     );
   }
@@ -593,10 +593,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }}
           show={show}
           setShow={setShow}
-          className="modaldialogTodoCreate"
+          className='modaldialogTodoCreate'
           modalBodyClassName={"bodytodoCreateModal"}
-          modalFooterClassName="footertodoCreateModal"
-          modalHeaderClassName="headertodoCreateModal"
+          modalFooterClassName='footertodoCreateModal'
+          modalHeaderClassName='headertodoCreateModal'
           ButtonTitle={ModalTitle}
           ModalBody={
             isCreateTodo ? (
@@ -608,18 +608,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
-                    >
+                      className='CreateMeetingTime d-flex align-items-center gap-2 h-100'>
                       <DatePicker
-                        arrowClassName="arrowClass"
+                        arrowClassName='arrowClass'
                         value={task.timeforView}
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
+                        containerClassName='containerClassTimePicker'
+                        className='timePicker'
                         disableDayPicker
-                        inputClass="inputTImeMeeting"
+                        inputClass='inputTImeMeeting'
                         calendar={calendarValue}
                         locale={localValue}
-                        format="hh:mm A"
+                        format='hh:mm A'
                         selected={task.timeforView}
                         render={<CustomInput />}
                         editable={false}
@@ -632,17 +631,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         format={"DD/MM/YYYY"}
                         value={toDoDate}
                         minDate={moment().toDate()}
-                        placeholder="DD/MM/YYYY"
+                        placeholder='DD/MM/YYYY'
                         render={
                           <InputIcon
-                            placeholder="DD/MM/YYYY"
-                            className="datepicker_input"
+                            placeholder='DD/MM/YYYY'
+                            className='datepicker_input'
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2"
+                        className='datePickerTodoCreate2'
                         onOpenPickNewDate={true}
-                        inputMode=""
+                        inputMode=''
                         calendar={calendarValue}
                         locale={localValue}
                         ref={calendRef}
@@ -654,8 +653,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="todolist-modal-fields margin-top-0 d-flex  flex-column"
-                    >
+                      className='todolist-modal-fields margin-top-0 d-flex  flex-column'>
                       <Select
                         options={allPresenters}
                         maxMenuHeight={140}
@@ -664,34 +662,34 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           presenterValue.value === 0 ? null : presenterValue
                         }
                         placeholder={t("Add-assignee")}
-                        applyClass="assigneeFindInCreateToDo"
+                        applyClass='assigneeFindInCreateToDo'
                         filterOption={filterFunc}
                       />
                     </Col>
                   </Row>
-                  <Row className="create_todo_assignee d-flex justify-content-end">
+                  <Row className='create_todo_assignee d-flex justify-content-end'>
                     {assignees ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>
-                            <div className="dropdown-row-assignee w-100">
-                              <div className="d-flex align-items-center gap-2 mt-1 position-relative">
+                            <div className='dropdown-row-assignee w-100'>
+                              <div className='d-flex align-items-center gap-2 mt-1 position-relative'>
                                 <img
-                                  draggable="false"
-                                  alt=""
+                                  draggable='false'
+                                  alt=''
                                   src={`data:image/jpeg;base64,${taskAssignedName.userProfilePicture.displayProfilePictureName}`}
                                 />
-                                <p className=" m-0">
+                                <p className=' m-0'>
                                   {taskAssignedName.userName}
                                 </p>
                               </div>
-                              <span className="todolist-remove-assignee-icon">
+                              <span className='todolist-remove-assignee-icon'>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   width={20}
-                                  className="remove"
+                                  className='remove'
                                   height={20}
-                                  alt=""
+                                  alt=''
                                   src={deleteButtonCreateMeeting}
                                   onClick={() =>
                                     handleDeleteAttendee(
@@ -707,18 +705,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       </>
                     ) : null}
                   </Row>
-                  <Row className="my-0">
+                  <Row className='my-0'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="todolist-modal-fields"
-                    >
+                      className='todolist-modal-fields'>
                       <TextField
                         change={taskHandler}
-                        name="Title"
-                        applyClass="createtodo-title"
-                        type="text"
+                        name='Title'
+                        applyClass='createtodo-title'
+                        type='text'
                         placeholder={t("Title") + "*"}
                         required
                         value={task.Title}
@@ -727,35 +724,35 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={12} md={12} xs={12} className="FontArabicRegular">
+                    <Col lg={12} md={12} xs={12} className='FontArabicRegular'>
                       <TextField
                         change={taskHandler}
-                        name="Description"
-                        applyClass="createtodo-description"
-                        type="text"
+                        name='Description'
+                        applyClass='createtodo-description'
+                        type='text'
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
                         placeholder={t("Description")}
                         maxLength={2000}
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-4">
-                    <Col lg={12} md={12} xs={12} className=" attachmentCon ">
-                      <label className="ArabicFontSemiBold">
+                  <Row className='mt-4'>
+                    <Col lg={12} md={12} xs={12} className=' attachmentCon '>
+                      <label className='ArabicFontSemiBold'>
                         {t("Attachement")}
                       </label>
-                      <span className="custom-upload-input">
+                      <span className='custom-upload-input'>
                         <CustomUpload
                           multiple={true}
                           change={uploadFilesToDo}
                           onClick={(event) => {
                             event.target.value = null;
                           }}
-                          className="UploadFileButton"
+                          className='UploadFileButton'
                         />
                       </span>
-                      <section className="todolist_files ">
+                      <section className='todolist_files '>
                         {tasksAttachments.TasksAttachments.length > 0
                           ? tasksAttachments.TasksAttachments.map(
                               (data, index) => {
@@ -785,8 +782,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={"Confirmationmodal_body_text"}
-                  >
+                    className={"Confirmationmodal_body_text"}>
                     {t(
                       "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
                     )}
@@ -803,8 +799,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className="d-flex justify-content-end gap-3 p-0"
-                  >
+                    className='d-flex justify-content-end gap-3 p-0'>
                     <Button
                       onClick={() => {
                         setCloseConfirmationBox(true);
@@ -829,8 +824,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center gap-3"
-                  >
+                    className='d-flex justify-content-center gap-3'>
                     <Button
                       onClick={() => setIsCreateTodo(true)}
                       className={"cancelButton_createTodo"}

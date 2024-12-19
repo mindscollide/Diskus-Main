@@ -17,10 +17,10 @@ const DefaultDragger = ({
   rows,
   fileForSend,
   setFileForSend,
-  editorRole,
 }) => {
   const { t } = useTranslation();
-  const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
+  const { isAgendaUpdateWhenMeetingActive, editorRole } =
+    useContext(MeetingContext);
 
   let currentUserID = Number(localStorage.getItem("userID"));
 
@@ -127,7 +127,7 @@ const DefaultDragger = ({
   console.log(fileForSend, "fileForSendfileForSendfileForSend");
   return (
     <>
-      <Row key={index + 5} className="mt-4 mb-2">
+      <Row key={index + 5} className='mt-4 mb-2'>
         <Col lg={12} md={12} sm={12}>
           <Dragger
             {...props}
@@ -144,31 +144,28 @@ const DefaultDragger = ({
                   !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
-            }
-          >
+            }>
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className="d-flex justify-content-end align-items-center"
-              >
+                className='d-flex justify-content-end align-items-center'>
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=""
+                  alt=''
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -179,8 +176,7 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -191,8 +187,7 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start"
-                  >
+                    className='d-flex justify-content-start'>
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>

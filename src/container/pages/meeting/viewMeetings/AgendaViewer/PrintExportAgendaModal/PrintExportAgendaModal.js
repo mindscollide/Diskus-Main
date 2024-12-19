@@ -17,17 +17,19 @@ import ParentAgenda from "./../ParentAgenda";
 import AllFilesModal from "./../AllFilesModal/AllFilesModal";
 import { onDragEnd } from "./../drageFunction";
 import CrossIcon from "./../AV-Images/Cross_Icon.png";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const PrintExportAgendaModal = ({
   setPrintAgendaView,
   advanceMeetingModalID,
-  editorRole,
+
   rows,
   setRows,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
 
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
@@ -133,8 +135,7 @@ const PrintExportAgendaModal = ({
               lg={12}
               md={12}
               sm={12}
-              className={styles["agendaViewerHeader"]}
-            >
+              className={styles["agendaViewerHeader"]}>
               <p className={styles["FileModalTitle"]}>
                 {printFlag === true
                   ? t("Print")
@@ -146,7 +147,7 @@ const PrintExportAgendaModal = ({
                 onClick={closePrintExportModal}
                 className={styles["image-close"]}
                 src={CrossIcon}
-                alt=""
+                alt=''
               />
             </Col>
           </Row>
@@ -163,14 +164,13 @@ const PrintExportAgendaModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center mt-3"
-                >
+                  className='d-flex justify-content-center mt-3'>
                   <img
                     draggable={false}
                     src={emptyContributorState}
-                    width="274.05px"
-                    alt=""
-                    height="230.96px"
+                    width='274.05px'
+                    alt=''
+                    height='230.96px'
                     className={styles["Image-Add-Agenda"]}
                   />
                 </Col>
@@ -180,8 +180,7 @@ const PrintExportAgendaModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center mt-3"
-                >
+                  className='d-flex justify-content-center mt-3'>
                   <span className={styles["Empty_state_heading"]}>
                     {t("No-agenda-availabe-to-discuss").toUpperCase()}
                   </span>
@@ -195,21 +194,18 @@ const PrintExportAgendaModal = ({
               editorRole.role === "Participant") ? null : (
               <>
                 <DragDropContext
-                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-                >
+                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
                   <Row className={styles["horizontalSpacing"]}>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_Agenda"]}
-                    >
-                      <Droppable droppableId="board" type="PARENT">
+                      className={styles["Scroller_Agenda"]}>
+                      <Droppable droppableId='board' type='PARENT'>
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
+                            {...provided.droppableProps}>
                             {rows.length > 0 ? (
                               rows.map((data, index) => {
                                 return (
@@ -255,14 +251,13 @@ const PrintExportAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex justify-content-center mt-3"
-                                  >
+                                    className='d-flex justify-content-center mt-3'>
                                     <img
                                       draggable={false}
                                       src={emptyContributorState}
-                                      width="274.05px"
-                                      alt=""
-                                      height="230.96px"
+                                      width='274.05px'
+                                      alt=''
+                                      height='230.96px'
                                     />
                                   </Col>
                                 </Row>
@@ -271,11 +266,9 @@ const PrintExportAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex justify-content-center mt-3"
-                                  >
+                                    className='d-flex justify-content-center mt-3'>
                                     <span
-                                      className={styles["Empty_state_heading"]}
-                                    >
+                                      className={styles["Empty_state_heading"]}>
                                       {t("Add-agenda").toUpperCase()}
                                     </span>
                                   </Col>
@@ -285,13 +278,11 @@ const PrintExportAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex justify-content-center"
-                                  >
+                                    className='d-flex justify-content-center'>
                                     <span
                                       className={
                                         styles["Empty_state_Subheading"]
-                                      }
-                                    >
+                                      }>
                                       {t(
                                         "Add-some-purpose-start-by-creating-your-agenda"
                                       )}
@@ -333,8 +324,7 @@ const PrintExportAgendaModal = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2 p-0"
-            >
+              className='d-flex justify-content-end gap-2 p-0'>
               <Button
                 text={
                   printFlag === true

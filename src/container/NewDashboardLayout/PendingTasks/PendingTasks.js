@@ -14,7 +14,7 @@ const PendingTasks = ({ taskValue }) => {
           {formatValue(taskValue, lang)}
         </Col>
         <Col sm={12} md={12} lg={12} className={styles["UpComingTaskText"]}>
-          {t("Upcoming-tasks")}
+          {t("In-progress-tasks")}
         </Col>
       </Row>
     </>

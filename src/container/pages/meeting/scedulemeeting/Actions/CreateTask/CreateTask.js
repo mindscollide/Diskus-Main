@@ -571,8 +571,10 @@ const CreateTask = ({
         }
       }
       console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-      setTaskMemberSelect(newmembersArray);
+      let sortAssginersArr = newmembersArray.sort(
+        (a, b) =>  a.name.localeCompare(b.name)
+      );
+      setTaskMemberSelect(sortAssginersArr);
     } else {
       setTaskMemberSelect([]);
     }

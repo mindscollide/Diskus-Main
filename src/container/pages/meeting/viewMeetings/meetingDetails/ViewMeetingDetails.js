@@ -8,7 +8,7 @@ import {
   Modal,
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
-
+import CopyLinkBtn from "../../../../../assets/images/CopyLink_Image.png";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
@@ -98,7 +98,7 @@ const ViewMeetingDetails = ({
     (state) => state.NewMeetingreducer.ResponseMessage
   );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
-  const { setEndMeetingConfirmationModal, editorRole, setEdiorRole } =
+  const { setEndMeetingConfirmationModal, editorRole, setEditorRole } =
     useContext(MeetingContext);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
@@ -352,7 +352,7 @@ const ViewMeetingDetails = ({
       };
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
-      setEdiorRole({ status: null, role: null });
+      setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -370,7 +370,7 @@ const ViewMeetingDetails = ({
             leaveMeetingData,
             false,
             setViewFlag,
-            setEdiorRole,
+            setEditorRole,
             setAdvanceMeetingModalID,
             setViewAdvanceMeetingModal
           )
@@ -390,7 +390,7 @@ const ViewMeetingDetails = ({
         console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.removeItem("folderDataRoomMeeting");
-        setEdiorRole({ status: null, role: null });
+        setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -711,7 +711,7 @@ const ViewMeetingDetails = ({
         t,
         4,
         endMeetingRequest,
-        setEdiorRole,
+        setEditorRole,
         setAdvanceMeetingModalID,
         setDataroomMapFolderId,
         setViewAdvanceMeetingModal,
@@ -729,8 +729,8 @@ const ViewMeetingDetails = ({
     <>
       <section>
         {meetingStatus === 10 && (
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
               {Number(editorRole.status) === 10 &&
               editorRole.role === "Organizer" ? (
                 <>
@@ -762,13 +762,12 @@ const ViewMeetingDetails = ({
           </Row>
         )}
 
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className={styles["ScrollerMeeting_Active"]}
-          >
+            className={styles["ScrollerMeeting_Active"]}>
             <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
@@ -778,23 +777,23 @@ const ViewMeetingDetails = ({
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["MeetingTitle_Heading"]}>
                   {meetingDetails.MeetingTitle}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
                   {meetingDetails.Description}
                 </span>
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className='mt-3'>
               <Col lg={5} md={5} sm={5}>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>
                       {t("Notes")}
@@ -808,7 +807,7 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Scedule_OnHeading"]}>
                       {t("Scheduled-on")}
@@ -816,30 +815,31 @@ const ViewMeetingDetails = ({
                   </Col>
                 </Row>
                 <Row>
-                  {rows.map((data, index) => {
-                    const formattedStartDate = convertToGMT(
-                      data.meetingDate,
-                      data.startTime
-                    );
-                    const formattedEndDate = convertToGMT(
-                      data.meetingDate,
-                      data.endTime
-                    );
+                  {rows.length > 0 &&
+                    rows.map((data, index) => {
+                      const formattedStartDate = convertToGMT(
+                        data.meetingDate,
+                        data.startTime
+                      );
+                      const formattedEndDate = convertToGMT(
+                        data.meetingDate,
+                        data.endTime
+                      );
 
-                    if (!formattedStartDate || !formattedEndDate) {
-                      return null;
-                    }
+                      if (!formattedStartDate || !formattedEndDate) {
+                        return null;
+                      }
 
-                    return (
-                      <Col key={index} lg={12} md={12} sm={12}>
-                        <span className={styles["ScheduledDateTime"]}>
-                          {moment(formattedStartDate).format("hh:mm a")} -{" "}
-                          {moment(formattedEndDate).format("hh:mm a")} ,{" "}
-                          {moment(formattedEndDate).format("DD MMM YYYY")}
-                        </span>
-                      </Col>
-                    );
-                  })}
+                      return (
+                        <Col key={index} lg={12} md={12} sm={12}>
+                          <span className={styles["ScheduledDateTime"]}>
+                            {moment(formattedStartDate).format("hh:mm a")} -{" "}
+                            {moment(formattedEndDate).format("hh:mm a")} ,{" "}
+                            {moment(formattedEndDate).format("DD MMM YYYY")}
+                          </span>
+                        </Col>
+                      );
+                    })}
                 </Row>
               </Col>
               <Col lg={7} md={7} sm={7}>
@@ -848,16 +848,15 @@ const ViewMeetingDetails = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex align-items-center gap-1"
-                  >
+                    className='d-flex align-items-center gap-1'>
                     {meetingDetails.groupChat && (
                       <img
                         src={Messegeblue}
-                        height="20.44px"
-                        width="25.68px"
-                        alt=""
+                        height='20.44px'
+                        width='25.68px'
+                        alt=''
                         onClick={() => groupChatInitiation(meetingDetails)}
-                        className="cursor-pointer mx-2"
+                        className='cursor-pointer mx-2'
                       />
                     )}
                     {meetingDetails.IsVideoCall && (
@@ -867,14 +866,15 @@ const ViewMeetingDetails = ({
                           <>
                             {" "}
                             <Button
-                              text={t("Copy-link")}
+                              icon={<img src={CopyLinkBtn} />}
+                              text={t("Copy-invite-link")}
                               className={styles["CopyLinkButton"]}
                               onClick={() => copyToClipboardd()}
                             />
                             {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
                               <Button
-                                text="Join Video Call"
-                                className="JoinMeetingButton"
+                                text='Join Video Call'
+                                className='JoinMeetingButton'
                                 onClick={joinMeetingCall}
                               />
                             )}
@@ -902,9 +902,11 @@ const ViewMeetingDetails = ({
                           <>
                             {" "}
                             <Button
-                              text={t("Copy-link")}
+                              title={t("The-meeting-has-ended")}
+                              icon={<img src={CopyLinkBtn} />}
+                              text={t("Copy-invite-link")}
                               className={`${
-                                styles["CopyLinkButton"]
+                                styles["CopyLinkButton_Disabled"]
                               } ${"grayScaled"}`}
                             />
                             <Button
@@ -919,7 +921,7 @@ const ViewMeetingDetails = ({
                     )}
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
                   </Col>
@@ -933,9 +935,9 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Reminder-frequency")}
@@ -968,7 +970,7 @@ const ViewMeetingDetails = ({
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Recurring")}
@@ -988,13 +990,12 @@ const ViewMeetingDetails = ({
             </Row>
           </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Back")}
               className={styles["Cancel_Meeting_Details"]}
@@ -1019,7 +1020,6 @@ const ViewMeetingDetails = ({
             cancelModalView={cancelModalView}
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
             setMeetingDetails={setmeetingDetails}
-            setEdiorRole={setEdiorRole}
             setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           />
         )}
@@ -1032,7 +1032,7 @@ const ViewMeetingDetails = ({
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
         ModalBody={
@@ -1043,13 +1043,12 @@ const ViewMeetingDetails = ({
                   <p> Disconnect current call? </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -1058,7 +1057,7 @@ const ViewMeetingDetails = ({
                         ? t("End Participant")
                         : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
@@ -1070,7 +1069,7 @@ const ViewMeetingDetails = ({
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>

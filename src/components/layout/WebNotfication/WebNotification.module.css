@@ -1,5 +1,6 @@
 .WebNotificationOuterBox {
-  width: 452px !important;
+  max-width: 452px !important;
+  width: 100% !important;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
   position: absolute !important;
