@@ -360,7 +360,7 @@ const ViewMeetingDetails = ({
     } else {
       if (meetingStatus === 10 || meetingStatus === "10") {
         let leaveMeetingData = {
-          FK_MDID: currentMeeting,
+          FK_MDID: Number(currentMeeting),
           DateTime: getCurrentDateTimeUTC(),
         };
         dispatch(

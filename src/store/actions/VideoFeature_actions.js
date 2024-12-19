@@ -1094,7 +1094,23 @@ const globalNavigatorVideoStream = (response) => {
     response: response,
   };
 };
+// For Removed Max Patrticipant Video Compnent
+const leaveMeetingOnlogout = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
 
+  return {
+    type: actions.LEAVE_MEETING_ON_LOGOUT,
+    response: response,
+  };
+};
+const leaveMeetingVideoOnlogout = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
+
+  return {
+    type: actions.LEAVE_MEETING_VIDEO_ON_LOGOUT,
+    response: response,
+  };
+};
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1162,4 +1178,6 @@ export {
   globalStateForAudioStream,
   globalStateForVideoStream,
   globalNavigatorVideoStream,
+  leaveMeetingOnlogout,
+  leaveMeetingVideoOnlogout,
 };

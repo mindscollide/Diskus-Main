@@ -21,6 +21,7 @@ import {
   maxHostVideoCallPanel,
   maxParticipantVideoCallPanel,
   getParticipantMeetingJoinMainApi,
+  leaveMeetingOnlogout,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +70,7 @@ import NormalParticipantVideoComponent from "../../../meetingVideoCall/normalPar
 import MaxParticipantVideoDeniedComponent from "../../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
+import { userLogOutApiFunc } from "../../../../../../store/actions/Auth_Sign_Out";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,
@@ -91,6 +93,9 @@ const FullScreenAgendaModal = ({
 
   const { talkStateData } = useSelector((state) => state);
 
+  const leaveMeetingOnLogoutResponse = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
+  );
   const { setEditorRole, editorRole } = useMeetingContext();
   console.log("Agenda View Full");
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
@@ -323,13 +328,13 @@ const FullScreenAgendaModal = ({
     setFullScreenView(false);
   };
 
-  const leaveMeeting = () => {
+  const leaveMeeting = async (flag) => {
     console.log("Agenda View Full");
     let leaveMeetingData = {
-      FK_MDID: currentMeeting,
+      FK_MDID: Number(currentMeeting),
       DateTime: getCurrentDateTimeUTC(),
     };
-    dispatch(
+    await dispatch(
       LeaveCurrentMeeting(
         navigate,
         t,
@@ -341,7 +346,21 @@ const FullScreenAgendaModal = ({
         setViewAdvanceMeetingModal
       )
     );
+    console.log("mqtt mqmqmqmqmqmq", flag);
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingOnlogout(false));
+      dispatch(userLogOutApiFunc(navigate, t));
+    }
   };
+  useEffect(() => {
+    try {
+      if (leaveMeetingOnLogoutResponse) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(true);
+      }
+    } catch {}
+  }, [leaveMeetingOnLogoutResponse]);
 
   const handleOutsideClick = (event) => {
     console.log("Agenda View Full");
@@ -365,8 +384,13 @@ const FullScreenAgendaModal = ({
 
   const onClickVideoIconOpenVideo = () => {
     console.log("Agenda View Full");
+    let AdvanceMeetingOpen = JSON.parse(
+      localStorage.getItem("AdvanceMeetingOpen")
+    );
+
     let meetingVideoData = {
-      roleID: editorRole.role === "Participant" ? 2 : 10,
+      roleID:
+        editorRole.role === "Participant" ? 2 : AdvanceMeetingOpen ? 10 : 2,
     };
     console.log(meetingVideoData, "meetingVideoData");
 
@@ -400,61 +424,66 @@ const FullScreenAgendaModal = ({
               lg={12}
               md={12}
               sm={12}
-              className={styles["agendaViewerHeader"]}>
+              className={styles["agendaViewerHeader"]}
+            >
               <p className={styles["FileModalTitle"]}>{t("Agenda-viewer")}</p>
               <div className={styles["icons-block"]}>
                 {videoTalk?.isChat ? (
-                  <Tooltip placement='topRight' title={t("Start-chat")}>
+                  <Tooltip placement="topRight" title={t("Start-chat")}>
                     <div
                       className={styles["box-agendas-leave"]}
                       onClick={() =>
                         groupChatInitiation(videoTalk?.talkGroupID)
-                      }>
-                      <img src={TalkInactiveIcon} alt='' />
+                      }
+                    >
+                      <img src={TalkInactiveIcon} alt="" />
                     </div>
                   </Tooltip>
                 ) : null}
 
                 {editorRole.status === "10" || editorRole.status === 10 ? (
-                  <Tooltip placement='topRight' title={t("Leave-meeting")}>
+                  <Tooltip placement="topRight" title={t("Leave-meeting")}>
                     <div
                       className={styles["box-agendas-leave"]}
-                      onClick={leaveMeeting}>
-                      <img src={LeaveMeetingIcon} alt='' />
+                      onClick={() => leaveMeeting(false)}
+                    >
+                      <img src={LeaveMeetingIcon} alt="" />
                     </div>
                   </Tooltip>
                 ) : null}
 
                 {(editorRole.status === "10" || editorRole.status === 10) &&
                 videoTalk?.isVideoCall ? (
-                  <Tooltip placement='topRight' title={t("Enable-video-call")}>
+                  <Tooltip placement="topRight" title={t("Enable-video-call")}>
                     <div
                       className={styles["box-agendas-camera"]}
                       // onClick={joinMeetingCall}
                     >
                       <img
                         src={VideocameraIcon}
-                        alt=''
+                        alt=""
                         onClick={onClickVideoIconOpenVideo}
                       />
                     </div>
                   </Tooltip>
                 ) : null}
 
-                <Tooltip placement='topRight' title={t("Collapse")}>
+                <Tooltip placement="topRight" title={t("Collapse")}>
                   <div
                     className={styles["box-agendas"]}
-                    onClick={() => setFullScreenView(false)}>
-                    <img src={CollapseAgendaIcon} alt='' />
+                    onClick={() => setFullScreenView(false)}
+                  >
+                    <img src={CollapseAgendaIcon} alt="" />
                   </div>
                 </Tooltip>
 
                 <div
                   onClick={menuPopupAgenda}
                   className={styles["box-agendas"]}
-                  ref={closeMenuAgenda}>
-                  <Tooltip placement='topRight' title={t("More")}>
-                    <img src={MenuIcon} alt='' />
+                  ref={closeMenuAgenda}
+                >
+                  <Tooltip placement="topRight" title={t("More")}>
+                    <img src={MenuIcon} alt="" />
                   </Tooltip>
                   <div
                     className={
@@ -465,7 +494,8 @@ const FullScreenAgendaModal = ({
                         : `${
                             styles["popup-agenda-menu"]
                           } ${"opacity-0 pe-none"}`
-                    }>
+                    }
+                  >
                     <span
                       className={
                         editorRole.status === 9 || editorRole.status === "9"
@@ -476,7 +506,8 @@ const FullScreenAgendaModal = ({
                         editorRole.status === 9 || editorRole.status === "9"
                           ? participantModal
                           : null
-                      }>
+                      }
+                    >
                       <img
                         width={20}
                         src={
@@ -484,21 +515,21 @@ const FullScreenAgendaModal = ({
                             ? ParticipantsInfo
                             : ParticipantsInfoDisabled
                         }
-                        alt=''
+                        alt=""
                       />
                       {t("Participants-info")}
                     </span>
                     <span onClick={printModal}>
-                      <img width={20} src={PrintIcon} alt='' />
+                      <img width={20} src={PrintIcon} alt="" />
                       {t("Print")}
                     </span>
                     <span onClick={exportModal}>
-                      <img width={20} src={ExportIcon} alt='' />
+                      <img width={20} src={ExportIcon} alt="" />
 
                       {t("Export-pdf")}
                     </span>
-                    <span onClick={shareEmailModal} className='border-0'>
-                      <img width={20} src={ShareIcon} alt='' />
+                    <span onClick={shareEmailModal} className="border-0">
+                      <img width={20} src={ShareIcon} alt="" />
                       {t("Share-email")}
                     </span>
                   </div>
@@ -519,13 +550,14 @@ const FullScreenAgendaModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center mt-3'>
+                  className="d-flex justify-content-center mt-3"
+                >
                   <img
                     draggable={false}
                     src={emptyContributorState}
-                    width='274.05px'
-                    alt=''
-                    height='230.96px'
+                    width="274.05px"
+                    alt=""
+                    height="230.96px"
                     className={styles["Image-Add-Agenda"]}
                   />
                 </Col>
@@ -535,7 +567,8 @@ const FullScreenAgendaModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center mt-3'>
+                  className="d-flex justify-content-center mt-3"
+                >
                   <span className={styles["Empty_state_heading"]}>
                     {t("No-agenda-availabe-to-discuss").toUpperCase()}
                   </span>
@@ -549,18 +582,21 @@ const FullScreenAgendaModal = ({
               editorRole.role === "Participant") ? null : (
               <>
                 <DragDropContext
-                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+                >
                   <Row className={styles["horizontalSpacing"]}>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_Agenda"]}>
-                      <Droppable droppableId='board' type='PARENT'>
+                      className={styles["Scroller_Agenda"]}
+                    >
+                      <Droppable droppableId="board" type="PARENT">
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}>
+                            {...provided.droppableProps}
+                          >
                             {rows.length > 0 ? (
                               rows.map((data, index) => {
                                 return (
@@ -606,13 +642,14 @@ const FullScreenAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className='d-flex justify-content-center mt-3'>
+                                    className="d-flex justify-content-center mt-3"
+                                  >
                                     <img
                                       draggable={false}
                                       src={emptyContributorState}
-                                      width='274.05px'
-                                      alt=''
-                                      height='230.96px'
+                                      width="274.05px"
+                                      alt=""
+                                      height="230.96px"
                                     />
                                   </Col>
                                 </Row>
@@ -621,9 +658,11 @@ const FullScreenAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className='d-flex justify-content-center mt-3'>
+                                    className="d-flex justify-content-center mt-3"
+                                  >
                                     <span
-                                      className={styles["Empty_state_heading"]}>
+                                      className={styles["Empty_state_heading"]}
+                                    >
                                       {t("Add-agenda").toUpperCase()}
                                     </span>
                                   </Col>
@@ -633,11 +672,13 @@ const FullScreenAgendaModal = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className='d-flex justify-content-center'>
+                                    className="d-flex justify-content-center"
+                                  >
                                     <span
                                       className={
                                         styles["Empty_state_Subheading"]
-                                      }>
+                                      }
+                                    >
                                       {t(
                                         "Add-some-purpose-start-by-creating-your-agenda"
                                       )}
@@ -676,10 +717,10 @@ const FullScreenAgendaModal = ({
                 setInitiateVideoModalOto(false);
               }}
               setShow={setInitiateVideoModalOto}
-              modalFooterClassName='d-none'
+              modalFooterClassName="d-none"
               centered
               size={"sm"}
-              className='callCheckModal'
+              className="callCheckModal"
               ModalBody={
                 <>
                   <Container>
@@ -688,12 +729,13 @@ const FullScreenAgendaModal = ({
                         <p> {t("Disconnect-current-call")} </p>
                       </Col>
                     </Row>
-                    <Row className='mt-3 mb-4'>
+                    <Row className="mt-3 mb-4">
                       <Col
                         lg={12}
                         sm={12}
                         md={12}
-                        className='d-flex justify-content-center gap-2'>
+                        className="d-flex justify-content-center gap-2"
+                      >
                         <Button
                           text={
                             callerID === currentUserID || callerID === 0
@@ -702,7 +744,7 @@ const FullScreenAgendaModal = ({
                               ? t("End Participant")
                               : null
                           }
-                          className='leave-meeting-options__btn leave-meeting-red-button'
+                          className="leave-meeting-options__btn leave-meeting-red-button"
                           onClick={
                             callerID === currentUserID || callerID === 0
                               ? leaveCallHost
@@ -714,7 +756,7 @@ const FullScreenAgendaModal = ({
 
                         <Button
                           text={t("Cancel")}
-                          className='leave-meeting-options__btn leave-meeting-gray-button'
+                          className="leave-meeting-options__btn leave-meeting-gray-button"
                           onClick={() => setInitiateVideoModalOto(false)}
                         />
                       </Col>
