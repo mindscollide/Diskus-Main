@@ -9284,6 +9284,10 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
                   t("Successful")
                 )
               );
+              localStorage.setItem(
+                "MeetingStatusID",
+                response.data.responseResult.meetingStatusID
+              );
               setEditorRole({
                 status: Number(response.data.responseResult.meetingStatusID),
                 role:
@@ -9294,10 +9298,6 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
                     : "Organizer",
                 isPrimaryOrganizer: false,
               });
-              localStorage.setItem(
-                "MeetingStatusID",
-                response.data.responseResult.meetingStatusID
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
