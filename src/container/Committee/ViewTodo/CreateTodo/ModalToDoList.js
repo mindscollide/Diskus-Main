@@ -488,7 +488,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             });
           }
         });
-        setAllPresenters(PresenterData);
+        let sortAssginersArr = PresenterData.sort(
+          (a, b) =>  a.name.localeCompare(b.name)
+        );
+        setAllPresenters(sortAssginersArr);
       }
     } catch {}
   }, [CommitteeReducer.getCommitteeByCommitteeID]);

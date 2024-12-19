@@ -815,30 +815,31 @@ const ViewMeetingDetails = ({
                   </Col>
                 </Row>
                 <Row>
-                  {rows.map((data, index) => {
-                    const formattedStartDate = convertToGMT(
-                      data.meetingDate,
-                      data.startTime
-                    );
-                    const formattedEndDate = convertToGMT(
-                      data.meetingDate,
-                      data.endTime
-                    );
+                  {rows.length > 0 &&
+                    rows.map((data, index) => {
+                      const formattedStartDate = convertToGMT(
+                        data.meetingDate,
+                        data.startTime
+                      );
+                      const formattedEndDate = convertToGMT(
+                        data.meetingDate,
+                        data.endTime
+                      );
 
-                    if (!formattedStartDate || !formattedEndDate) {
-                      return null;
-                    }
+                      if (!formattedStartDate || !formattedEndDate) {
+                        return null;
+                      }
 
-                    return (
-                      <Col key={index} lg={12} md={12} sm={12}>
-                        <span className={styles["ScheduledDateTime"]}>
-                          {moment(formattedStartDate).format("hh:mm a")} -{" "}
-                          {moment(formattedEndDate).format("hh:mm a")} ,{" "}
-                          {moment(formattedEndDate).format("DD MMM YYYY")}
-                        </span>
-                      </Col>
-                    );
-                  })}
+                      return (
+                        <Col key={index} lg={12} md={12} sm={12}>
+                          <span className={styles["ScheduledDateTime"]}>
+                            {moment(formattedStartDate).format("hh:mm a")} -{" "}
+                            {moment(formattedEndDate).format("hh:mm a")} ,{" "}
+                            {moment(formattedEndDate).format("DD MMM YYYY")}
+                          </span>
+                        </Col>
+                      );
+                    })}
                 </Row>
               </Col>
               <Col lg={7} md={7} sm={7}>
@@ -901,6 +902,7 @@ const ViewMeetingDetails = ({
                           <>
                             {" "}
                             <Button
+                              title={t("The-meeting-has-ended")}
                               icon={<img src={CopyLinkBtn} />}
                               text={t("Copy-invite-link")}
                               className={`${

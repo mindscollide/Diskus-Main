@@ -298,7 +298,10 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           type: 1,
         });
       });
-      setmemberSelect(newArr);
+      let sortAssginersArr = newArr.sort(
+        (a, b) =>  a.name.localeCompare(b.name)
+      );
+      setmemberSelect(sortAssginersArr);
     }
   }, [getCommitteeByCommitteeID]);
 
