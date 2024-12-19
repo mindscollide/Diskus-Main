@@ -969,10 +969,10 @@ body[dir="rtl"] .dataroom_searchinput2 {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  width: 300px !important;
+  max-width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
-  display: initial !important;
+  display: block !important;
 }
 .fileRow {
   display: flex;

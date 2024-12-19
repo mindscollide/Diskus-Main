@@ -403,12 +403,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             <>
               <img
                 src={redcrossIcon}
-                height="21.79px"
-                width="21.79px"
-                className="cursor-pointer"
+                height='21.79px'
+                width='21.79px'
+                className='cursor-pointer'
                 draggable={false}
                 onClick={() => deleteRow(record)}
-                alt=""
+                alt=''
               />
             </>
           );
@@ -459,13 +459,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           organizerUserName: (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                   <img
                     src={`data:image/jpeg;base64,${matchedOrganizer.userProfilePicture.displayProfilePictureName}`}
-                    width="17px"
-                    height="17px"
+                    width='17px'
+                    height='17px'
                     className={styles["Image_profile"]}
-                    alt=""
+                    alt=''
                   />
                   <span className={styles["Participant_names"]}>
                     {matchedOrganizer.userName}
@@ -536,13 +536,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     label: (
       <>
         <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+          <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
             <img
               src={`data:image/jpeg;base64,${organizer.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
+              width='17px'
+              height='17px'
               className={styles["Image_profile"]}
-              alt=""
+              alt=''
             />
             <span className={styles["Participant_names"]}>
               {organizer.userName}
@@ -563,77 +563,85 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }));
 
   const handleVoteSaveModal = () => {
-    let votingOptionData = saveOptions.map((item) => ({
-      AgendaID: agendaDetails.agendaId,
-      VotingAnswer: item.votingAnswer,
-    }));
-    let participantData = meetingParticipants.map((item) => ({
-      AgendaID: agendaDetails.agendaId,
-      UserID: item.userID,
-      AgendaVotingID: agendaDetails.agendaVotingID,
-    }));
+    if (
+      agendaDetails.organizerUserID !== 0 &&
+      agendaDetails.votingResultDisplayID !== 0 &&
+      agendaDetails.voteQuestion !== ""
+    ) {
+      let votingOptionData = saveOptions.map((item) => ({
+        AgendaID: agendaDetails.agendaId,
+        VotingAnswer: item.votingAnswer,
+      }));
+      let participantData = meetingParticipants.map((item) => ({
+        AgendaID: agendaDetails.agendaId,
+        UserID: item.userID,
+        AgendaVotingID: agendaDetails.agendaVotingID,
+      }));
 
-    console.log("votingOptionData", typeof votingOptionData);
-    if (Object.keys(votingOptionData).length >= 2) {
-      let Data = {
-        MeetingID: currentMeeting,
-        AgendaVoting: {
-          AgendaVotingID: agendaDetails.agendaVotingID,
-          AgendaID: agendaDetails.agendaId,
-          VoteQuestion: agendaDetails.voteQuestion,
-          VotingResultDisplayID: agendaDetails.votingResultDisplayID,
-          IsVotingClosed: false,
-          UserID: agendaDetails.organizerUserID,
-          IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
-          VotingAnswers: votingOptionData,
-          AgendaVotingParticipants: participantData,
-        },
-      };
+      console.log("votingOptionData", typeof votingOptionData);
+      if (Object.keys(votingOptionData).length >= 2) {
+        let Data = {
+          MeetingID: currentMeeting,
+          AgendaVoting: {
+            AgendaVotingID: agendaDetails.agendaVotingID,
+            AgendaID: agendaDetails.agendaId,
+            VoteQuestion: agendaDetails.voteQuestion,
+            VotingResultDisplayID: agendaDetails.votingResultDisplayID,
+            IsVotingClosed: false,
+            UserID: agendaDetails.organizerUserID,
+            IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
+            VotingAnswers: votingOptionData,
+            AgendaVotingParticipants: participantData,
+          },
+        };
 
-      console.log("Save Agenda Voting Data", Data);
-      dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
-      dispatch(getAgendaVotingDetails_success([], ""));
-      setAgendaDetails({
-        ...agendaDetails,
-        agendaTitle: "",
-        agendaId: "",
-        agendaVotingID: 0,
-        isvotingClosed: false,
-        userID: 0,
-        voteQuestion: "",
-        organizerUserID: 0,
-        organizerUserName: "",
-        votingResultDisplay: "",
-        votingResultDisplayID: 0,
-      });
-      setVoteModalAttrbutes({
-        ...voteModalAttrbutes,
-        voteQuestion: "",
-        Answer: "",
-        OptionsAdded: "",
-        SelectOrganizers: 0,
-        SelectOptions: 0,
-        YesAnswer: "Yes",
-        NOAnswer: "No",
-        AbstainAnswer: "Abstain",
-        Pending: "Pending",
-      });
-      setOrganizers([]);
-      setVotingResultDisplayData([]);
-      setMeetingParticipants([]);
-      setSaveOptions([
-        { votingAnswer: "Pending", votingAnswerID: 0 },
-        { votingAnswer: "Yes", votingAnswerID: 1 },
-        { votingAnswer: "No", votingAnswerID: 2 },
-      ]);
-      dispatch(GetCurrentAgendaDetails([]));
-      dispatch(showVoteAgendaModal(false));
+        console.log("Save Agenda Voting Data", Data);
+        dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
+        dispatch(getAgendaVotingDetails_success([], ""));
+        setAgendaDetails({
+          ...agendaDetails,
+          agendaTitle: "",
+          agendaId: "",
+          agendaVotingID: 0,
+          isvotingClosed: false,
+          userID: 0,
+          voteQuestion: "",
+          organizerUserID: 0,
+          organizerUserName: "",
+          votingResultDisplay: "",
+          votingResultDisplayID: 0,
+        });
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          voteQuestion: "",
+          Answer: "",
+          OptionsAdded: "",
+          SelectOrganizers: 0,
+          SelectOptions: 0,
+          YesAnswer: "Yes",
+          NOAnswer: "No",
+          AbstainAnswer: "Abstain",
+          Pending: "Pending",
+        });
+        setOrganizers([]);
+        setVotingResultDisplayData([]);
+        setMeetingParticipants([]);
+        setSaveOptions([
+          { votingAnswer: "Pending", votingAnswerID: 0 },
+          { votingAnswer: "Yes", votingAnswerID: 1 },
+          { votingAnswer: "No", votingAnswerID: 2 },
+        ]);
+        dispatch(GetCurrentAgendaDetails([]));
+        dispatch(showVoteAgendaModal(false));
+      } else {
+        showMessage(
+          t("Voting-options-should-be-2-or-more-than-2"),
+          "error",
+          setOpen
+        );
+      }
     } else {
-      showMessage(
-        t("Voting-options-should-be-2-or-more-than-2"),
-        "error",
-        setOpen
-      );
+      showMessage(t("Required-fields-should-not-be-empty"), "error", setOpen);
     }
   };
 
@@ -693,8 +701,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
                 <Row>
-                  <Col lg={7} md={7} sm={7} className="d-flex gap-2">
-                    <img src={Cast} height="25.85px" width="25.85px" alt="" />
+                  <Col lg={7} md={7} sm={7} className='d-flex gap-2'>
+                    <img src={Cast} height='25.85px' width='25.85px' alt='' />
                     <span className={styles["Voter_modal_heading"]}>
                       {t("Add-vote-item")}
                     </span>
@@ -703,8 +711,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     lg={5}
                     md={5}
                     sm={5}
-                    className="d-flex justify-content-end gap-2 align-items-center"
-                  >
+                    className='d-flex justify-content-end gap-2 align-items-center'>
                     <span className={styles["Vote_switch_heading"]}>
                       {t("Voting") + ":"}
                     </span>
@@ -717,7 +724,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="m-0 p-0">
+              <Col lg={12} md={12} sm={12} className='m-0 p-0'>
                 <span className={styles["Bottom_line"]}></span>
               </Col>
             </Row>
@@ -741,7 +748,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       applyClass={
@@ -751,12 +758,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         "text-area-close-New_meeting"
                       }
                       labelclass={"d-none"}
-                      type="text"
+                      type='text'
                       as={"textarea"}
                       value={agendaDetails.voteQuestion}
                       maxLength={500}
                       name={"description"}
-                      rows="2"
+                      rows='2'
                       placeholder={t("Question")}
                       required={true}
                       change={handleChange}
@@ -770,14 +777,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                           //   ? ` ${styles["errorMessage-inLogin"]} `
                           //   :
                           `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {t("Please-enter-vote-question")}
                       </p>
                     </Col>
                   </Row>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Vote_question_heading"]}>
                       {t("Vote-answer")} <span>*</span>
@@ -813,20 +819,19 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                   </>
                 ) : (
                   <>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={1}
                         md={1}
                         sm={1}
-                        className="d-flex align-items-center"
-                      >
+                        className='d-flex align-items-center'>
                         <img
                           src={Leftploygon}
-                          width="20px"
-                          height="15px"
+                          width='20px'
+                          height='15px'
                           onClick={SlideLeft}
-                          className="cursor-pointer"
-                          alt=""
+                          className='cursor-pointer'
+                          alt=''
                         />
                       </Col>
 
@@ -834,27 +839,25 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         lg={10}
                         md={10}
                         sm={10}
-                        className="Scroller-x-Meeting"
-                        id="Slider"
-                      >
+                        className='Scroller-x-Meeting'
+                        id='Slider'>
                         <Col lg={2} md={2} sm={2}>
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <Button
                                 icon={
-                                  <Row className="m-2">
+                                  <Row className='m-2'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center align-items-center p-0"
-                                    >
+                                      className='d-flex justify-content-center align-items-center p-0'>
                                       <img
                                         src={Plus}
-                                        height="20.68px"
-                                        width="20.68px"
+                                        height='20.68px'
+                                        width='20.68px'
                                         className={styles["IconClass"]}
-                                        alt=""
+                                        alt=''
                                       />
                                     </Col>
                                   </Row>
@@ -871,15 +874,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-2 "
-                            >
+                              className='d-flex gap-2 '>
                               {saveOptions.length > 0
                                 ? saveOptions.map((data, index) => {
                                     return (
                                       <span
-                                        className="position-relative"
-                                        key={index}
-                                      >
+                                        className='position-relative'
+                                        key={index}>
                                         {data.votingAnswer === "Pending" ? (
                                           <TextField
                                             labelclass={"d-none"}
@@ -915,10 +916,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                             inputicon={
                                               <img
                                                 src={redcrossIcon}
-                                                height="21.79px"
-                                                width="21.79px"
-                                                className="cursor-pointer"
-                                                alt=""
+                                                height='21.79px'
+                                                width='21.79px'
+                                                className='cursor-pointer'
+                                                alt=''
                                                 onClick={() =>
                                                   handleCrossBtn(index)
                                                 }
@@ -938,15 +939,14 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         lg={1}
                         md={1}
                         sm={1}
-                        className="d-flex align-items-center"
-                      >
+                        className='d-flex align-items-center'>
                         <img
                           src={Rightploygon}
-                          width="20px"
-                          height="15px"
+                          width='20px'
+                          height='15px'
                           onClick={Slideright}
-                          className="cursor-pointer"
-                          alt=""
+                          className='cursor-pointer'
+                          alt=''
                         />
                       </Col>
                     </Row>
@@ -954,7 +954,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                 )}
                 <Row>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Vote_modal_heading"]}>
                           {t(
@@ -964,7 +964,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Select
                           options={optionsIndividualOpenCloseVoting}
@@ -985,8 +985,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                               //   ? ` ${styles["errorMessage-inLogin"]} `
                               //   :
                               `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
+                            }>
                             {t("Please-select-organizers")}
                           </p>
                         </Col>
@@ -994,7 +993,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Vote_modal_heading"]}>
                           {t("Results-viewing-option-in-member-portal")}
@@ -1002,7 +1001,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Select
                           options={options}
@@ -1023,8 +1022,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                               //   ? ` ${styles["errorMessage-inLogin"]} `
                               //   :
                               `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
+                            }>
                             {t("Please-select-any-one-option")}
                           </p>
                         </Col>
@@ -1032,7 +1030,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Members_Heading"]}>
                       {"Members"} <span>*</span>
@@ -1045,7 +1043,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                       column={MeetingColoumns}
                       scroll={{ y: "62vh" }}
                       pagination={false}
-                      className="NewMeeting_table AgendaVoting"
+                      className='NewMeeting_table AgendaVoting'
                       rows={meetingParticipants}
                     />
                   </Col>
@@ -1056,13 +1054,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         }
         ModalFooter={
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Vote_Modal"]}

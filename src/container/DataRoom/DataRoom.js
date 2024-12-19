@@ -1249,13 +1249,14 @@ const DataRoom = () => {
                 className={`${styles["dataFolderRow"]}`}
                 onClick={() => getFolderDocuments(data.id, data)}>
                 <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text}>
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}>
-                    {text} <img src={sharedIcon} alt='' draggable='false' />
+                    {text}
                   </span>
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </abbr>
               </div>
             );
@@ -1268,13 +1269,13 @@ const DataRoom = () => {
                   width={"25px"}
                   height={"25px"}
                 />
-                <abbr title={text}>
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
-                    <img src={sharedIcon} alt='' draggable='false' />
                   </span>
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </abbr>
               </section>
             );
@@ -1854,7 +1855,7 @@ const DataRoom = () => {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
                 <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text}>
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
@@ -2484,8 +2485,9 @@ const DataRoom = () => {
               <span
                 className={styles["dataroom_table_heading"]}
                 onClick={() => getFolderDocuments(record.id, record)}>
-                {text} <img src={sharedIcon} alt='' draggable='false' />
+                {text}
               </span>
+              <img src={sharedIcon} alt='' draggable='false' />
             </div>
           );
         } else {
@@ -2500,8 +2502,9 @@ const DataRoom = () => {
               <span
                 className={styles["dataroom_table_heading"]}
                 onClick={(e) => handleLinkClick(e, record)}>
-                {record.name} <img src={sharedIcon} alt='' draggable='false' />
+                {record.name}
               </span>
+              <img src={sharedIcon} alt='' draggable='false' />
             </div>
           );
         }
@@ -3381,12 +3384,22 @@ const DataRoom = () => {
     );
   };
 
-  const handleClickGetFolderData = async (id, record) => {
+  const handleClickGetFolderData = async (id, record, index) => {
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       await dispatch(getDocumentsAndFolderApi(navigate, record.id, t, 1));
       dispatch(BreadCrumbsList([]));
     } else {
-      dispatch(getFolderDocumentsApi(navigate, Number(id), t, 1));
+      console.log(index, "indexindex");
+      dispatch(
+        getFolderDocumentsApi(
+          navigate,
+          Number(id),
+          t,
+          1,
+          record,
+          BreadCrumbsListArr
+        )
+      );
     }
   };
 
@@ -3682,7 +3695,7 @@ const DataRoom = () => {
                                       content={
                                         <div>
                                           {BreadCrumbsListArr.slice(0, -2).map(
-                                            (item) => (
+                                            (item, index) => (
                                               <div
                                                 key={item.id}
                                                 className={
@@ -3693,7 +3706,8 @@ const DataRoom = () => {
                                                 onClick={() =>
                                                   handleClickGetFolderData(
                                                     item.id,
-                                                    item
+                                                    item,
+                                                    index
                                                   )
                                                 }>
                                                 <div
@@ -3731,34 +3745,21 @@ const DataRoom = () => {
                                 {/* Show only last 2 items if length > 2 */}
                                 {BreadCrumbsListArr.slice(
                                   BreadCrumbsListArr.length > 2 ? -2 : 0
-                                ).map((item) => (
+                                ).map((item, index) => (
                                   <Breadcrumb.Item
                                     key={item.id}
+                                    
                                     onClick={() =>
-                                      handleClickGetFolderData(item.id, item)
+                                      handleClickGetFolderData(
+                                        item.id,
+                                        item,
+                                        index
+                                      )
                                     }>
                                     {item.name}
                                   </Breadcrumb.Item>
                                 ))}
                               </Breadcrumb>
-                              {/* {BreadCrumbsListArr.length > 2 && (
-                                <img src={ThreeDotsBreadCrumbs} />
-                              )}
-                              <Breadcrumb
-                                prefixCls='dataroombreadCrumbs'
-                                separator={<img src={RightArrowBreadCrumbs} />}>
-                                {BreadCrumbsListArr.slice(
-                                  BreadCrumbsListArr.length > 2 ? -2 : 0 // Show only last 2 items if length > 2, otherwise all
-                                ).map((item) => (
-                                  <Breadcrumb.Item
-                                    key={item.id}
-                                    onClick={() =>
-                                      handleClickGetFolderData(item.id)
-                                    }>
-                                    {item.name}
-                                  </Breadcrumb.Item>
-                                ))}
-                              </Breadcrumb> */}
                             </Col>
                           </>
                         )}
