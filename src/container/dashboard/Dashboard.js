@@ -114,6 +114,7 @@ import {
   meetingReminderNotifcation,
   searchNewUserMeeting,
   getDashboardMeetingCountMQTT,
+  LeaveCurrentMeeting,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -188,6 +189,8 @@ import {
   DiskusGlobalDataIsReadFlag,
   DiskusGlobalUnreadNotificationCount,
 } from "../../store/actions/UpdateUserNotificationSetting";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import {useMeetingContext} from "../../context/MeetingContext"
 
 const Dashboard = () => {
   const location = useLocation();
@@ -199,6 +202,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+const{setEditorRole}=useMeetingContext()
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -773,7 +778,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload,false));
+              dispatch(participanMuteUnMuteMeeting(data.payload, false));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
@@ -851,11 +856,11 @@ const Dashboard = () => {
               if (data.payload.isForAll) {
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted,true)
+                  participanMuteUnMuteMeeting(data.payload.isMuted, true)
                 );
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload,false));
+                dispatch(participanMuteUnMuteMeeting(data.payload, false));
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -2745,7 +2750,50 @@ const Dashboard = () => {
             Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
             Number(data?.payload?.deviceID) === 1
           ) {
-            dispatch(userLogOutApiFunc(navigate, t));
+            let isMeetingVideo = JSON.parse(
+              localStorage.getItem("isMeetingVideo")
+            );
+            if (isMeetingVideo) {
+              let newName = localStorage.getItem("name");
+             
+                let currentMeeting = localStorage.getItem("currentMeetingID");
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("acceptedRecipientID", 0);
+              localStorage.setItem("acceptedRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("meetingVideoID", 0);
+              localStorage.setItem("MicOff", true);
+              localStorage.setItem("VidOff", true);
+              let Data = {
+                RoomID: currentMeetingVideoID,
+                UserGUID: userGUID,
+                Name: String(newName),
+              };
+              dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+              let leaveMeetingData = {
+                FK_MDID: currentMeeting,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+              dispatch(
+                LeaveCurrentMeeting(
+                  navigate,
+                  t,
+                  leaveMeetingData,
+                  false,
+                  false,
+                  setEdiorRole,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
+            } else {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
           }
         }
       }

@@ -112,6 +112,16 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(getRoomId),
     };
     dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    if (videoCameraGuest) {
+      setIsVideoOn(true);
+    } else {
+      setIsVideoOn(false);
+    }
+    if (voiceControle) {
+      setMicOn(true);
+    } else {
+      setMicOn(false);
+    }
   }, []);
 
   useEffect(() => {
