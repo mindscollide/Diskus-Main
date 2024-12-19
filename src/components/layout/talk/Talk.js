@@ -195,7 +195,7 @@ const Talk = () => {
       dispatch(viewMeetingFlag(false));
       console.log("This Check");
       let Data = {
-        FK_MDID: currentMeeting,
+        FK_MDID: Number(currentMeeting),
         DateTime: getCurrentDateTimeUTC(),
       };
       if (CurrentMeetingStatus === 10) {
