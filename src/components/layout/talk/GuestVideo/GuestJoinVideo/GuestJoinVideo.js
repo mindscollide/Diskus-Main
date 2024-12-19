@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
+  guestVideoNavigationScreen,
   joinGuestVideoMainApi,
+  makeStreamStop,
   setVideoCameraGuest,
   setVoiceControleGuest,
 } from "../../../../../store/actions/Guest_Video";
@@ -34,7 +36,12 @@ const GuestJoinVideo = ({
   const getValidateStringData = useSelector(
     (state) => state.GuestVideoReducer.validateStringData
   );
-
+  const setStreamTypeForNavigate = useSelector(
+    (state) => state.GuestVideoReducer.setStreamTypeForNavigate
+  );
+  const setStreamStop = useSelector(
+    (state) => state.GuestVideoReducer.setStreamStop
+  );
   console.log(getValidateStringData, "getValidateRoomIdgetValidateRoomId");
 
   const videoRef = useRef(null);
@@ -97,6 +104,7 @@ const GuestJoinVideo = ({
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
+    console.log("enableVideo", !enable);
     sessionStorage.setItem("enableVideo", !enable);
     dispatch(setVideoCameraGuest(!enable));
 
@@ -225,7 +233,27 @@ const GuestJoinVideo = ({
       }
     };
   }, [isWebCamEnabled]);
-
+  useEffect(() => {
+    if (setStreamStop) {
+      if (streamAudio) {
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      if (stream) {
+        stream.getVideoTracks().forEach((track) => track.stop());
+        setStream(null); // Clear the stream from state
+        if (videoRef.current) {
+          videoRef.current.srcObject = null; // Clear the video source
+        }
+      }
+      if (Number(setStreamTypeForNavigate) === 2) {
+        dispatch(guestVideoNavigationScreen(2));
+      } else if (Number(setStreamTypeForNavigate) === 3) {
+        dispatch(guestVideoNavigationScreen(3));
+      }
+      dispatch(makeStreamStop(false, 0));
+    }
+  }, [setStreamStop]);
   return (
     <Container fluid>
       <Row>

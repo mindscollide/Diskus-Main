@@ -889,7 +889,16 @@ const DataRoom = () => {
 
   const getFolderDocuments = async (folderid, record) => {
     localStorage.setItem("folderID", folderid);
-    await dispatch(getFolderDocumentsApi(navigate, folderid, t, 1, record));
+    await dispatch(
+      getFolderDocumentsApi(
+        navigate,
+        folderid,
+        t,
+        1,
+        record,
+        BreadCrumbsListArr
+      )
+    );
     setSearchTabOpen(false);
   };
 
@@ -1850,7 +1859,7 @@ const DataRoom = () => {
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}>
+                    onClick={() => getFolderDocuments(data.id, data)}>
                     {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
                 </abbr>
@@ -1883,7 +1892,7 @@ const DataRoom = () => {
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}>
+                    onClick={() => getFolderDocuments(data.id, data)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -2474,7 +2483,7 @@ const DataRoom = () => {
               <img src={folderColor} alt='' draggable='false' />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={() => getFolderDocuments(record.id)}>
+                onClick={() => getFolderDocuments(record.id, record)}>
                 {text} <img src={sharedIcon} alt='' draggable='false' />
               </span>
             </div>
@@ -3372,8 +3381,13 @@ const DataRoom = () => {
     );
   };
 
-  const handleClickGetFolderData = (id) => {
-    dispatch(getFolderDocumentsApi(navigate, Number(id), t, 1));
+  const handleClickGetFolderData = async (id, record) => {
+    if (record?.main !== undefined && record?.main !== null && record?.main) {
+      await dispatch(getDocumentsAndFolderApi(navigate, record.id, t, 1));
+      dispatch(BreadCrumbsList([]));
+    } else {
+      dispatch(getFolderDocumentsApi(navigate, Number(id), t, 1));
+    }
   };
 
   // State to manage popover visibility
@@ -3662,6 +3676,9 @@ const DataRoom = () => {
                                 {BreadCrumbsListArr.length > 2 && (
                                   <Breadcrumb.Item>
                                     <Popover
+                                      className='breadCrumbsItems'
+                                      openClassName='openPopOverClass'
+                                      overlayClassName='overClass'
                                       content={
                                         <div>
                                           {BreadCrumbsListArr.slice(0, -2).map(
@@ -3675,10 +3692,16 @@ const DataRoom = () => {
                                                 }
                                                 onClick={() =>
                                                   handleClickGetFolderData(
-                                                    item.id
+                                                    item.id,
+                                                    item
                                                   )
                                                 }>
-                                                <div className='d-flex justify-content-center align-items-center gap-2'>
+                                                <div
+                                                  className={
+                                                    styles[
+                                                      "breadCrumbsThreeDotsDiv_Row"
+                                                    ]
+                                                  }>
                                                   <img src={folderColor} />
                                                   <p className='m-0'>
                                                     {item.name}
@@ -3692,9 +3715,8 @@ const DataRoom = () => {
                                       trigger='click'
                                       visible={isPopoverVisible}
                                       onVisibleChange={setIsPopoverVisible}
-                                      placement='left'
+                                      placement='bottomLeft'
                                       defaultOpen={false}
-
                                       showArrow={false}>
                                       <img
                                         src={ThreeDotsBreadCrumbs}
@@ -3713,7 +3735,7 @@ const DataRoom = () => {
                                   <Breadcrumb.Item
                                     key={item.id}
                                     onClick={() =>
-                                      handleClickGetFolderData(item.id)
+                                      handleClickGetFolderData(item.id, item)
                                     }>
                                     {item.name}
                                   </Breadcrumb.Item>

@@ -48,6 +48,8 @@ import {
   globalStateForAudioStream,
   globalStateForVideoStream,
   globalNavigatorVideoStream,
+  leaveMeetingOnlogout,
+  leaveMeetingVideoOnlogout,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -114,6 +116,7 @@ import {
   meetingReminderNotifcation,
   searchNewUserMeeting,
   getDashboardMeetingCountMQTT,
+  LeaveCurrentMeeting,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -183,11 +186,15 @@ import {
   raiseUnRaisedHandMainApi,
   setVoiceControleGuest,
 } from "../../store/actions/Guest_Video";
-import { MeetingContext } from "../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../context/MeetingContext";
 import {
   DiskusGlobalDataIsReadFlag,
   DiskusGlobalUnreadNotificationCount,
 } from "../../store/actions/UpdateUserNotificationSetting";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -199,6 +206,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+  const { setEditorRole } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -285,7 +294,9 @@ const Dashboard = () => {
   const getVideoParticpantListandWaitingList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
-
+  const viewAdvanceMeetingsPublishPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -313,6 +324,66 @@ const Dashboard = () => {
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
+
+  const leaveMeetingCall = async () => {
+    // dispatch(leaveMeetingOnlogout(true))
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let AdvanceMeetingOpen =JSON.parse(localStorage.getItem("AdvanceMeetingOpen"));
+
+    console.log("mqtt mqmqmqmqmqmq", viewAdvanceMeetingsPublishPageFlag);
+    if (isMeetingVideo || AdvanceMeetingOpen ) {
+      dispatch(leaveMeetingVideoOnlogout(true));
+    } else {
+      // dispatch(userLogOutApiFunc(navigate, t));
+    }
+
+    // const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    // let newName = localStorage.getItem("name");
+    // let participantUID = localStorage.getItem("participantUID");
+    // let participantRoomIds = localStorage.getItem("participantRoomId")
+    // let currentMeeting = localStorage.getItem("currentMeetingID");
+    // let newUserGUID = localStorage.getItem("isGuid");
+    // let newRoomId = localStorage.getItem("newRoomId");
+    // let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
+    // dispatch(normalizeVideoPanelFlag(false));
+    // dispatch(maximizeVideoPanelFlag(false));
+    // dispatch(minimizeVideoPanelFlag(false));
+    // localStorage.setItem("activeCall", false);
+    // localStorage.setItem("isMeeting", false);
+    // localStorage.setItem("meetingTitle", "");
+    // localStorage.setItem("acceptedRecipientID", 0);
+    // localStorage.setItem("acceptedRoomID", 0);
+    // localStorage.setItem("activeRoomID", 0);
+    // localStorage.setItem("meetingVideoID", 0);
+    // localStorage.setItem("MicOff", true);
+    // localStorage.setItem("VidOff", true);
+    // let Data = {
+    //   RoomID: meetHostFlag?.isHost?newRoomId:participantRoomIds,
+    //   UserGUID: meetHostFlag?.isHost?newUserGUID:participantUID,
+    //   Name: String(newName),
+    //   IsHost: meetHostFlag?.isHost ? true : false,
+    //   MeetingID: Number(currentMeetingID),
+
+    // };
+    // await dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+    // let leaveMeetingData = {
+    //   FK_MDID: currentMeeting,
+    //   DateTime: getCurrentDateTimeUTC(),
+    // };
+    // //await dispatch(
+    // //   LeaveCurrentMeeting(
+    // //     navigate,
+    // //     t,
+    // //     leaveMeetingData,
+    // //     false,
+    // //     false,
+    // //     setEditorRole,
+    // //     setAdvanceMeetingModalID,
+    // //     setViewAdvanceMeetingModal
+    // //   )
+    // // );
+    // dispatch(userLogOutApiFunc(navigate, t));
+  };
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
@@ -773,7 +844,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload,false));
+              dispatch(participanMuteUnMuteMeeting(data.payload, false));
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
@@ -851,11 +922,11 @@ const Dashboard = () => {
               if (data.payload.isForAll) {
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted,true)
+                  participanMuteUnMuteMeeting(data.payload.isMuted, true)
                 );
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload,false));
+                dispatch(participanMuteUnMuteMeeting(data.payload, false));
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -2745,7 +2816,7 @@ const Dashboard = () => {
             Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
             Number(data?.payload?.deviceID) === 1
           ) {
-            dispatch(userLogOutApiFunc(navigate, t));
+            leaveMeetingCall();
           }
         }
       }

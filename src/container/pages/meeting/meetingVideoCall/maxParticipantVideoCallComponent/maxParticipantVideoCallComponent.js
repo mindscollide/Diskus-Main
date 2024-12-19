@@ -18,6 +18,8 @@ import {
   globalNavigatorVideoStream,
   globalStateForAudioStream,
   globalStateForVideoStream,
+  leaveMeetingOnlogout,
+  leaveMeetingVideoOnlogout,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   maxParticipantVideoDenied,
@@ -56,6 +58,9 @@ const ParticipantVideoCallComponent = ({
 
   const allNavigatorVideoStream = useSelector(
     (state) => state.videoFeatureReducer.allNavigatorVideoStream
+  );
+  const leaveMeetingVideoOnLogoutResponse = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
   );
 
   const { editorRole } = useContext(MeetingContext);
@@ -240,6 +245,7 @@ const ParticipantVideoCallComponent = ({
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
+    console.log("toggleVideo", enable);
     dispatch(setVideoControlForParticipant(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     if (!enable) {
@@ -286,6 +292,7 @@ const ParticipantVideoCallComponent = ({
   const joinNewApiVideoCallOnClick = async () => {
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
+      localStorage.setItem("isMeetingVideo", true);
     }
     let data = {
       MeetingId: Number(meetingId),
@@ -312,7 +319,7 @@ const ParticipantVideoCallComponent = ({
     // dispatch(normalParticipantVideoCallPanel(true));
   };
 
-  const onClickEndVideoCall = async () => {
+  const onClickEndVideoCall = async (flag) => {
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -322,7 +329,24 @@ const ParticipantVideoCallComponent = ({
       : 0;
     let newName = localStorage.getItem("name");
     let currentMeetingID = localStorage.getItem("currentMeetingID");
+    if (stream) {
+      stream.getVideoTracks().forEach((track) => track.stop());
+      setStream(null); // Clear the stream from state
+      if (videoRef.current) {
+        videoRef.current.srcObject = null; // Clear the video source
+      }
 
+      sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+      sessionStorage.removeItem("videoStreamId");
+    }
+    if (streamAudio) {
+      streamAudio.getAudioTracks().forEach((track) => track.stop());
+      setStreamAudio(null); // Clear the stream from state
+    }
+    sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+    sessionStorage.removeItem("audioStreamId");
+    console.log(streamAudio, "streamstream");
+    setIsMicEnabled(false); // Microphone is now disabled
     if (isWaiting) {
       let Data = {
         RoomID: roomID,
@@ -343,7 +367,21 @@ const ParticipantVideoCallComponent = ({
 
     // Clear session storage related to participant
     sessionStorage.removeItem("participantData");
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnlogout(false));
+      dispatch(leaveMeetingOnlogout(true));
+    }
   };
+
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoOnLogoutResponse) {
+        console.log("mqtt mqmqmqmqmqmq");
+        onClickEndVideoCall(true);
+      }
+    } catch {}
+  }, [leaveMeetingVideoOnLogoutResponse]);
 
   return (
     <Container fluid>
@@ -415,7 +453,7 @@ const ParticipantVideoCallComponent = ({
               <img
                 dragable="false"
                 src={EndCall}
-                onClick={onClickEndVideoCall}
+                onClick={() => onClickEndVideoCall(false)}
                 alt="EndCall"
               />
             </div>

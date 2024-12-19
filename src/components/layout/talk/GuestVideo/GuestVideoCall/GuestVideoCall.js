@@ -9,15 +9,19 @@ import { extractActionFromUrl } from "../../../../../commen/functions/utils";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
+  getVideoCallParticipantGuestSuccess,
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
   hostEndVideoCallMeeting,
+  makeStreamStop,
   muteUnMuteByHost,
   muteUnMuteParticipantsorGuest,
+  muteUnMuteParticipantsorGuestbyHost,
   raisedUnRaisedParticipantsGuest,
   setVideoCameraGuest,
   setVoiceControleGuest,
+  setVoiceControleGuestForAllbyHost,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
@@ -51,6 +55,9 @@ const GuestVideoCall = () => {
 
   const guestVideoNavigationData = useSelector(
     (state) => state.GuestVideoReducer.guestVideoNavigationData
+  );
+  const getAllParticipantGuest = useSelector(
+    (state) => state.GuestVideoReducer.getAllParticipantGuest
   );
   // let viewState = sessionStorage.getItem("viewState");
 
@@ -117,9 +124,11 @@ const GuestVideoCall = () => {
             setVideoUrl(data.payload.videoUrl);
             setRoomId(data.payload.roomID);
             sessionStorage.setItem("roomId", data.payload.roomID);
-            dispatch(guestVideoNavigationScreen(2));
+            dispatch(makeStreamStop(true, 2));
+            // dispatch(guestVideoNavigationScreen(2));
           } else {
-            dispatch(guestVideoNavigationScreen(3));
+            dispatch(makeStreamStop(true, 3));
+            // dispatch(guestVideoNavigationScreen(3));
           }
         } else if (
           data.payload.message.toLowerCase() ===
@@ -134,10 +143,19 @@ const GuestVideoCall = () => {
         ) {
           if (data.payload.isForAll) {
             // Dispatch to globally mute/unmute participants
-            dispatch(setVoiceControleGuest(true));
+            // dispatch(setVoiceControleGuest(true));
+            console.log("data formute", data);
+            dispatch(
+              setVoiceControleGuestForAllbyHost(true, data.payload.isMute)
+            );
+          } else {
+            // // Handle additional logic for individual mute/unmute, if needed
+            // dispatch(muteUnMuteByHost(data.payload));
+
+            dispatch(muteUnMuteParticipantsorGuestbyHost(true));
+            dispatch(muteUnMuteParticipantsorGuest(data.payload));
           }
-          // // Handle additional logic for individual mute/unmute, if needed
-          dispatch(muteUnMuteByHost(data.payload));
+
           console.log(data.payload, "guestDataGuestData");
         } else if (
           data.payload.message.toLowerCase() ===
@@ -176,6 +194,28 @@ const GuestVideoCall = () => {
         ) {
           dispatch(muteUnMuteParticipantsorGuest(data.payload));
           console.log(data.payload, "guestDataGuestData");
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
+        ) {
+          console.log(data, "JOINEDJOINEDJOINED");
+          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          dispatch(
+            getVideoCallParticipantGuestSuccess(
+              data.payload.newParticipants[0],
+              "",
+              2
+            )
+          );
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
+        ) {
+          console.log(data, "JOINEDJOINEDJOINED");
+          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          dispatch(
+            getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3)
+          );
         }
       }
     } catch (error) {}

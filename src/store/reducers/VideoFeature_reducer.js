@@ -68,6 +68,8 @@ const initialState = {
   allNavigatorVideoStream: 0,
   getAllParticipantMain: [],
   participantsVisible: false,
+  leaveMeetingOnLogoutResponse: false,
+  leaveMeetingVideoOnLogoutResponse: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -488,10 +490,7 @@ const videoFeatureReducer = (state = initialState, action) => {
             );
             console.log("participanMuteUnMuteMeeting", updatedParticipantList);
 
-            newParticipantList = filterHostData(
-              newParticipantList,
-              isGuid
-            );
+            newParticipantList = filterHostData(newParticipantList, isGuid);
             console.log("participanMuteUnMuteMeeting", updatedParticipantList);
           }
         }
@@ -875,6 +874,16 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         allNavigatorVideoStream: action.response,
+      };
+    case actions.LEAVE_MEETING_ON_LOGOUT:
+      return {
+        ...state,
+        leaveMeetingOnLogoutResponse: action.response,
+      };
+    case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
+      return {
+        ...state,
+        leaveMeetingVideoOnLogoutResponse: action.response,
       };
 
     default:

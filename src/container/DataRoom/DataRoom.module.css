@@ -1343,15 +1343,30 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   border: none !important;
 }
 .datemodifiedfilter {
-  max-width:80% !important;
+  max-width: 80% !important;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.dataroombreadCrumbs {
-  color: #6172d6 !important;
+
+
+.breadCrumbsThreeDotsDiv_Row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 10px;
+  position: relative;
+  padding-bottom: 10px;
+  color: #5a5a5a;
+  font-weight: 600;
+  cursor: pointer;
 }
-.dataroombreadCrumbs nav ol li span {
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-size: 12px !important;
+.breadCrumbsThreeDotsDiv_Row::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  background-color: #E1E1E1;
+  height: 1px;
+  width: 100%;
 }

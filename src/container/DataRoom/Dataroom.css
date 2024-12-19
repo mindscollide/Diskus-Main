@@ -8,4 +8,9 @@
     display: flex !important;
     padding-left: 0px !important;
     margin-bottom: 0 !important;
+    cursor: pointer;
+}
+.ant-popover.overClass .ant-popover-content {
+    border-radius: 4px !important;
+    border: 1px solid #e1e1e1;
 }

@@ -134,14 +134,13 @@ const CreateTask = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex gap-2 align-items-center"
-                          >
+                            className='d-flex gap-2 align-items-center'>
                             <img
                               src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                              height="16.45px"
-                              width="18.32px"
-                              alt=""
-                              draggable="false"
+                              height='16.45px'
+                              width='18.32px'
+                              alt=''
+                              draggable='false'
                               className={styles["Image_class_Agenda"]}
                             />
                             <span className={styles["NameDropDown"]}>
@@ -171,14 +170,13 @@ const CreateTask = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-2 align-items-center"
-                            >
+                              className='d-flex gap-2 align-items-center'>
                               <img
                                 src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                                height="16.45px"
-                                width="18.32px"
-                                alt=""
-                                draggable="false"
+                                height='16.45px'
+                                width='18.32px'
+                                alt=''
+                                draggable='false'
                                 className={styles["Image_class_Agenda"]}
                               />
                               <span className={styles["NameDropDown"]}>
@@ -209,14 +207,13 @@ const CreateTask = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex gap-2 align-items-center"
-                          >
+                            className='d-flex gap-2 align-items-center'>
                             <img
                               src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
-                              height="16.45px"
-                              alt=""
-                              width="18.32px"
-                              draggable="false"
+                              height='16.45px'
+                              alt=''
+                              width='18.32px'
+                              draggable='false'
                             />
                             <span className={styles["NameDropDown"]}>
                               {meetAgendaContributor.userName}
@@ -248,14 +245,13 @@ const CreateTask = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-2 align-items-center"
-                            >
+                              className='d-flex gap-2 align-items-center'>
                               <img
                                 src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
-                                height="16.45px"
-                                width="18.32px"
-                                alt=""
-                                draggable="false"
+                                height='16.45px'
+                                width='18.32px'
+                                alt=''
+                                draggable='false'
                                 className={styles["Image_class_Agenda"]}
                               />
                               <span className={styles["NameDropDown"]}>
@@ -286,14 +282,13 @@ const CreateTask = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex gap-2 align-items-center"
-                          >
+                            className='d-flex gap-2 align-items-center'>
                             <img
                               src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                              height="16.45px"
-                              width="18.32px"
-                              alt=""
-                              draggable="false"
+                              height='16.45px'
+                              width='18.32px'
+                              alt=''
+                              draggable='false'
                             />
                             <span className={styles["NameDropDown"]}>
                               {meetParticipants.userName}
@@ -322,14 +317,13 @@ const CreateTask = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-2 align-items-center"
-                            >
+                              className='d-flex gap-2 align-items-center'>
                               <img
                                 src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                                height="16.45px"
-                                width="18.32px"
-                                alt=""
-                                draggable="false"
+                                height='16.45px'
+                                width='18.32px'
+                                alt=''
+                                draggable='false'
                                 className={styles["Image_class_Agenda"]}
                               />
                               <span className={styles["NameDropDown"]}>
@@ -349,8 +343,11 @@ const CreateTask = ({
           }
         }
         console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-        setTaskMemberSelect(newmembersArray);
+        let sortAssginersArr = newmembersArray.sort(
+          (a, b) =>  a.name.localeCompare(b.name)
+        );
+   
+        setTaskMemberSelect(sortAssginersArr);
       } else {
         setTaskMemberSelect([]);
       }
@@ -661,9 +658,8 @@ const CreateTask = ({
             lg={12}
             md={12}
             sm={12}
-            className={styles["Create_Task_main_Scroller"]}
-          >
-            <Row className="mt-1">
+            className={styles["Create_Task_main_Scroller"]}>
+            <Row className='mt-1'>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["SubHeading"]}>
                   {t("Task-title")} <span className={styles["Steric"]}>*</span>
@@ -687,15 +683,14 @@ const CreateTask = ({
                         error && createTaskDetails.ActionsToTake === ""
                           ? ` ${styles["errorMessage-inLogin"]} `
                           : `${styles["errorMessage-inLogin_hidden"]}`
-                      }
-                    >
+                      }>
                       {t("Please-enter-action-to-take")}
                     </p>
                   </Col>
                 </Row>
               </Col>
             </Row>
-            <Row className="mt-1">
+            <Row className='mt-1'>
               <Col lg={5} md={5} sm={5}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
@@ -713,6 +708,8 @@ const CreateTask = ({
                       options={taskMemberSelect}
                       onChange={handleSelectMemberValue}
                       isSearchable={false}
+                      // minMenuHeight={50}
+                      maxMenuHeight={200}
                     />
                     <Row>
                       <Col>
@@ -721,8 +718,7 @@ const CreateTask = ({
                             error && createTaskDetails.AssignedTo.length === 0
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
+                          }>
                           {t("Please-select-assignees")}
                         </p>
                       </Col>
@@ -764,23 +760,22 @@ const CreateTask = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Create-task"]}
-                  >
+                    className={styles["Create-task"]}>
                     <DatePicker
                       value={agendaDueDate}
                       format={"DD/MM/YYYY"}
                       minDate={moment().toDate()}
-                      placeholder="DD/MM/YYYY"
+                      placeholder='DD/MM/YYYY'
                       render={
                         <InputIcon
-                          placeholder="DD/MM/YYYY"
-                          className="datepicker_input"
+                          placeholder='DD/MM/YYYY'
+                          className='datepicker_input'
                         />
                       }
                       editable={false}
-                      className="datePickerTodoCreate2"
+                      className='datePickerTodoCreate2'
                       onOpenPickNewDate={true}
-                      inputMode=""
+                      inputMode=''
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
@@ -794,8 +789,7 @@ const CreateTask = ({
                             error && createTaskDetails.date === ""
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
+                          }>
                           {t("Enter-date-must-action")}
                         </p>
                       </Col>
@@ -818,26 +812,25 @@ const CreateTask = ({
                   change={HandleChange}
                   name={"Description"}
                   value={createTaskDetails.Description}
-                  applyClass="Polls_meeting"
+                  applyClass='Polls_meeting'
                   as={"textarea"}
                   maxLength={2000}
-                  rows="4"
+                  rows='4'
                   placeholder={t("Description")}
                 />
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <Dragger
                   {...props}
                   fileList={[]}
-                  className={styles["dragdrop_attachment_create_resolution"]}
-                >
+                  className={styles["dragdrop_attachment_create_resolution"]}>
                   {taskAttachments.length > 0 ? (
                     <>
                       <Row>
                         <Col className={styles["Scroller_Actions_Page"]}>
-                          <Row className="ps-3">
+                          <Row className='ps-3'>
                             {taskAttachments.map((data, index) => {
                               console.log(data, "datadatadata");
                               return (
@@ -867,27 +860,24 @@ const CreateTask = ({
                           lg={5}
                           md={5}
                           sm={12}
-                          className="d-flex justify-content-end align-items-center"
-                        >
+                          className='d-flex justify-content-end align-items-center'>
                           <img
                             draggable={false}
                             src={DrapDropIcon}
                             width={100}
                             className={styles["ClassImage"]}
-                            alt=""
+                            alt=''
                           />
                         </Col>
                         <Col lg={7} md={7} sm={12}>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-start"
-                            >
+                              className='d-flex justify-content-start'>
                               <span
-                                className={styles["ant-upload-text-Meetings"]}
-                              >
+                                className={styles["ant-upload-text-Meetings"]}>
                                 {t("Drag-file-here")}
                               </span>
                             </Col>
@@ -897,11 +887,9 @@ const CreateTask = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-start"
-                            >
+                              className='d-flex justify-content-start'>
                               <span
-                                className={styles["Choose_file_style-Meeting"]}
-                              >
+                                className={styles["Choose_file_style-Meeting"]}>
                                 {t("The-following-file-formats-are")}
                               </span>
                             </Col>
@@ -911,11 +899,9 @@ const CreateTask = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-start"
-                            >
+                              className='d-flex justify-content-start'>
                               <span
-                                className={styles["Choose_file_style-Meeting"]}
-                              >
+                                className={styles["Choose_file_style-Meeting"]}>
                                 {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                               </span>
                             </Col>
@@ -930,13 +916,12 @@ const CreateTask = ({
           </Col>
         </Row>
 
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             <Button
               text={t("Cancel")}
               className={styles["Cancel_Button_Polls_meeting"]}

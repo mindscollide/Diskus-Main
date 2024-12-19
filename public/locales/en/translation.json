@@ -2367,6 +2367,8 @@
   "Could-not-join-call": "Could not join call",
   "There-are-no-Participants": "There are no Participants",
   "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway",
+  "In-progress-tasks": "In Progress Tasks",
+  "The-meeting-has-ended": "The meeting has ended",
   "Has-archived-the-committee": "Has archived the committee",
   "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
   "Copy-invite-link": "Copy Invite Link"

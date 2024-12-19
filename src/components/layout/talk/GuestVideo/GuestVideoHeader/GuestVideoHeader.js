@@ -23,8 +23,10 @@ import {
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
   muteUnMuteParticipantMainApi,
+  muteUnMuteParticipantsorGuestbyHost,
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,
+  setVoiceControleGuestForAllbyHost,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 
@@ -59,6 +61,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const muteUnMuteParticpantorGuest = useSelector(
     (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuest
   );
+  const muteUnMuteParticpantorGuestByHost = useSelector(
+    (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuestByHost
+  );
 
   console.log(hideUnHideParticpantorGuest, "hideUnHideParticpantorGuest123");
 
@@ -74,6 +79,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const voiceControle = useSelector(
     (state) => state.GuestVideoReducer.voiceControle
+  );
+  const voiceControleForAllByHostFlag = useSelector(
+    (state) => state.GuestVideoReducer.voiceControleForAllByHostFlag
   );
 
   console.log(voiceControle, "voiceControlevoiceControle");
@@ -104,20 +112,30 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(getRoomId),
     };
     dispatch(getVideoCallParticipantsGuestMainApi(Data, navigate, t));
+    if (videoCameraGuest) {
+      setIsVideoOn(true);
+    } else {
+      setIsVideoOn(false);
+    }
+    if (voiceControle) {
+      setMicOn(true);
+    } else {
+      setMicOn(false);
+    }
   }, []);
 
   useEffect(() => {
     if (
       getAllParticipantGuest !== null &&
       getAllParticipantGuest !== undefined &&
-      getAllParticipantGuest.participantList.length > 0
+      getAllParticipantGuest?.length > 0
     ) {
-      setAllParticipantGuest(getAllParticipantGuest.participantList);
+      setAllParticipantGuest(getAllParticipantGuest);
     } else {
       setAllParticipantGuest([]);
     }
   }, [getAllParticipantGuest]);
-
+  console.log(guestMuteUnMuteData, "guestMuteUnMuteData");
   useEffect(() => {
     if (
       guestMuteUnMuteData &&
@@ -128,9 +146,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       if (iframe.contentWindow) {
         // Update the microphone state based on host's action
         if (guestMuteUnMuteData.isMuted) {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOff", "*");
           setMicOn(true); // Mic is off (muted)
         } else {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOn", "*");
           setMicOn(false); // Mic is on (unmuted)
         }
@@ -144,11 +164,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
         if (guestMuteUnMuteData.isMuted === true) {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOff", "*");
           console.log("isVideoOnisVideoOn");
 
           setMicOn(true);
         } else {
+          console.log("enableVideo", guestMuteUnMuteData);
           iframe.contentWindow.postMessage("MicOn", "*");
           console.log("isVideoOnisVideoOn");
 
@@ -180,45 +202,86 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     }
   }, [guesthideunHideByHostData]);
 
-  useEffect(() => {
-    const iframe = frameRef.current;
-    if (iframe.contentWindow !== null) {
-      console.log("Sending message...");
-      if (videoCameraGuest) {
-        iframe.contentWindow.postMessage("VidOff", "*");
-        console.log("isVideoOnisVideoOn");
-        setIsVideoOn(true);
-      } else {
-        iframe.contentWindow.postMessage("VidOn", "*");
-        console.log("isVideoOnisVideoOn");
+  // useEffect(() => {
+  //   const iframe = frameRef.current;
+  //   if (iframe.contentWindow !== null) {
+  //     console.log("Sending message...");
+  //     if (videoCameraGuest) {
+  //       iframe.contentWindow.postMessage("VidOff", "*");
+  //       console.log("isVideoOnisVideoOn");
+  //       setIsVideoOn(true);
+  //     } else {
+  //       iframe.contentWindow.postMessage("VidOn", "*");
+  //       console.log("isVideoOnisVideoOn");
 
-        setIsVideoOn(false);
+  //       setIsVideoOn(false);
+  //     }
+  //   }
+  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
+  // }, []);
+
+  // useEffect(() => {
+  //   const iframe = frameRef.current;
+  //   if (iframe.contentWindow !== null) {
+  //     console.log("Sending message...");
+  //     setMicOn(voiceControle);
+  //     if (voiceControle === true) {
+  //       iframe.contentWindow.postMessage("MicOff", "*");
+  //       console.log("isVideoOnisVideoOn");
+  //     } else {
+  //       iframe.contentWindow.postMessage("MicOn", "*");
+  //       console.log("isVideoOnisVideoOn");
+  //     }
+  //   }
+  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
+  // }, []);
+
+  useEffect(() => {
+    if (muteUnMuteParticpantorGuestByHost) {
+      console.log("data formute", voiceControleForAllByHostFlag);
+      if (muteUnMuteParticpantorGuest?.uid === guestUID) {
+        const iframe = frameRef.current;
+        if (muteUnMuteParticpantorGuest.isMuted) {
+          console.log("enableVideo", muteUnMuteParticpantorGuest);
+          iframe.contentWindow.postMessage("MicOn", "*");
+        } else {
+          iframe.contentWindow.postMessage("MicOff", "*");
+        }
+        setMicOn(muteUnMuteParticpantorGuest.isMuted);
+        console.log("enableVideo", muteUnMuteParticpantorGuest);
+        sessionStorage.setItem("MicOff", muteUnMuteParticpantorGuest.isMuted);
       }
+      dispatch(muteUnMuteParticipantsorGuestbyHost(false));
     }
-    console.log("Webcam status read from sessionStorage:", webcamStatus);
-  }, []);
+  }, [muteUnMuteParticpantorGuestByHost]);
 
+  // For All Mute
   useEffect(() => {
-    const iframe = frameRef.current;
-    if (iframe.contentWindow !== null) {
-      console.log("Sending message...");
-      setMicOn(voiceControle);
-      if (voiceControle === true) {
-        iframe.contentWindow.postMessage("MicOff", "*");
-        console.log("isVideoOnisVideoOn");
-      } else {
+    if (voiceControleForAllByHostFlag) {
+      console.log("data formute", voiceControleForAllByHostFlag);
+      // if (muteUnMuteParticpantorGuest?.uid === guestUID) {
+      const iframe = frameRef.current;
+      if (voiceControleForAllByHostFlag) {
+        console.log("enableVideo", voiceControleForAllByHostFlag);
         iframe.contentWindow.postMessage("MicOn", "*");
-        console.log("isVideoOnisVideoOn");
+      } else {
+        console.log("enableVideo", voiceControleForAllByHostFlag);
+        iframe.contentWindow.postMessage("MicOff", "*");
       }
+      setMicOn(voiceControleForAllByHostFlag);
+      sessionStorage.setItem("MicOff", voiceControleForAllByHostFlag);
+      // }
+      dispatch(setVoiceControleGuestForAllbyHost(false, false));
     }
-    console.log("Webcam status read from sessionStorage:", webcamStatus);
-  }, []);
+  }, [voiceControleForAllByHostFlag]);
 
   const openMicStatus = (flag) => {
     const iframe = frameRef.current;
     if (flag) {
+      console.log("enableVideo", flag);
       iframe.contentWindow.postMessage("MicOn", "*");
     } else {
+      console.log("enableVideo", flag);
       iframe.contentWindow.postMessage("MicOff", "*");
     }
     setMicOn(flag);
@@ -319,48 +382,71 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 src={MicOff}
                 onClick={() => openMicStatus(false)}
                 className="cursor-pointer"
+                alt="MicOff"
               />
             ) : (
               <img
                 src={MicOn2}
                 onClick={() => openMicStatus(true)}
                 className="cursor-pointer"
+                alt="MicOn2"
               />
             )}
           </div>
           <div className="Guest-Icons-state">
             {isVideoOn ? (
-              <img src={VideoOff} onClick={() => openVideoStatus(false)} />
+              <img
+                src={VideoOff}
+                onClick={() => openVideoStatus(false)}
+                alt="VideoOff"
+              />
             ) : (
-              <img src={VideoOn2} onClick={() => openVideoStatus(true)} />
+              <img
+                src={VideoOn2}
+                onClick={() => openVideoStatus(true)}
+                alt="VideoOn2"
+              />
             )}
           </div>
           <div className="Guest-Icons-state">
             {/* <img src={ScreenShareEnabled} onClick={openScreenShare} /> */}
-            <img src={Screenshare} onClick={openScreenShare} />
+            <img
+              src={Screenshare}
+              onClick={openScreenShare}
+              alt="Screenshare"
+            />
           </div>
           <div className="Guest-Icons-state">
             {isRaiseHand ? (
               <img
                 src={Raisehandselected}
                 onClick={() => openRaiseHand(false)}
+                alt="Raisehandselected"
               />
             ) : (
-              <img src={RaiseHand} onClick={() => openRaiseHand(true)} />
+              <img
+                src={RaiseHand}
+                onClick={() => openRaiseHand(true)}
+                alt="RaiseHand"
+              />
             )}
           </div>
 
           <div className="Guest-Icons-state">
             {isSpeakerView ? (
-              <img src={SpeakerView} onClick={openSpeaker} />
+              <img src={SpeakerView} onClick={openSpeaker} alt="SpeakerView" />
             ) : (
-              <img src={TileView} onClick={openSpeaker} />
+              <img src={TileView} onClick={openSpeaker} alt="TileView" />
             )}
           </div>
           <div className="Guest-Icons-state-Participant">
             {isParticipant ? (
               <>
-                <img src={ParticipantSelected} onClick={openParticipant} />
+                <img
+                  src={ParticipantSelected}
+                  onClick={openParticipant}
+                  alt="ParticipantSelected"
+                />
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
@@ -435,11 +521,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 </div>
               </>
             ) : (
-              <img src={Participant} onClick={openParticipant} />
+              <img
+                src={Participant}
+                onClick={openParticipant}
+                alt="Participant"
+              />
             )}
           </div>
           <div className="Guest-Icons-state">
-            <img src={EndCall} onClick={onClickEndGuestVideo} />
+            <img src={EndCall} onClick={onClickEndGuestVideo} alt="EndCall" />
           </div>
         </Col>
       </Row>

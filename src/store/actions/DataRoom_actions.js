@@ -513,10 +513,11 @@ const getFolerDocuments_fail = (message) => {
     message: message,
   };
 };
-const BreadCrumbsList = (response) => {
+const BreadCrumbsList = (response, translate) => {
   return {
     type: actions.DATAROOM_BREADCRUMBS,
     payload: response,
+    t: translate
   };
 };
 // Get Folder Documents Api
@@ -567,7 +568,7 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no, record) => {
                   name: record?.name,
                   id: record?.id,
                 };
-                dispatch(BreadCrumbsList(newFolderRecord));
+                dispatch(BreadCrumbsList(newFolderRecord, t));
               }
 
               dispatch(
