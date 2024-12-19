@@ -659,27 +659,35 @@ const WebNotfication = ({
           >
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
-              groupedNotifications.today.map((data, index) => (
-                <Row
-                  key={data.notificationID || `notification-today-${index}`}
-                  className={
-                    data.isRead
-                      ? styles["BackGroundreadNotifications"]
-                      : styles["BackGroundUnreadNotifications"]
-                  }
-                  onClick={() => HandleClickNotfication(data)}
-                >
-                  <Col lg={12} md={12} sm={12}>
-                    <WebNotificationCard
-                      NotificationMessege={JSON.parse(data.payloadData)}
-                      NotificationTime={data.sentDateTime}
-                      index={index}
-                      length={groupedNotifications.today.length}
-                      NotificaitonID={data.notificationActionID}
-                    />
-                  </Col>
-                </Row>
-              ))}
+              groupedNotifications.today
+                .slice() // Create a shallow copy to avoid mutating the original array
+                .sort((a, b) => {
+                  // Extract the time (last 6 digits) from `sentDateTime` and compare
+                  const timeA = parseInt(a.sentDateTime.slice(-6), 10);
+                  const timeB = parseInt(b.sentDateTime.slice(-6), 10);
+                  return timeB - timeA; // Sort in descending order
+                })
+                .map((data, index) => (
+                  <Row
+                    key={data.notificationID || `notification-today-${index}`}
+                    className={
+                      data.isRead
+                        ? styles["BackGroundreadNotifications"]
+                        : styles["BackGroundUnreadNotifications"]
+                    }
+                    onClick={() => HandleClickNotfication(data)}
+                  >
+                    <Col lg={12} md={12} sm={12}>
+                      <WebNotificationCard
+                        NotificationMessege={JSON.parse(data.payloadData)}
+                        NotificationTime={data.sentDateTime}
+                        index={index}
+                        length={groupedNotifications.today.length}
+                        NotificaitonID={data.notificationActionID}
+                      />
+                    </Col>
+                  </Row>
+                ))}
 
             {/* Render "Previous" Header and Notifications */}
             {groupedNotifications.previous.length > 0 && (
