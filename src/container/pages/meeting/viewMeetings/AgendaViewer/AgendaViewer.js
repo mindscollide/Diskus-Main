@@ -603,8 +603,16 @@ const AgendaViewer = ({
 
   const onClickVideoIconOpenVideo = () => {
     console.log("Agenda View Full");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
     let meetingVideoData = {
-      roleID: editorRole.role === "Participant" ? 2 : 10,
+      roleID:
+        editorRole.role === "Participant"
+          ? 2
+          : isMeetingVideoHostCheck
+          ? 10
+          : 2,
     };
     console.log(meetingVideoData, "meetingVideoData");
 
