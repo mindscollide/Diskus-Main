@@ -334,7 +334,7 @@ const Dashboard = () => {
     if (isMeetingVideo || AdvanceMeetingOpen ) {
       dispatch(leaveMeetingVideoOnlogout(true));
     } else {
-      // dispatch(userLogOutApiFunc(navigate, t));
+      dispatch(userLogOutApiFunc(navigate, t));
     }
 
     // const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
