@@ -52,7 +52,7 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
   console.log(participantList, "participantListMainReducer");
-  
+
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
@@ -114,11 +114,11 @@ const VideoNewParticipantList = () => {
       );
 
       setFilteredParticipants(uniqueParticipants);
-    console.log(uniqueParticipants, "participantListMainReducer");
-  } else {
+      console.log(uniqueParticipants, "participantListMainReducer");
+    } else {
       setFilteredParticipants([]);
-    console.log("participantListMainReducer");
-  }
+      console.log("participantListMainReducer");
+    }
   }, [participantList]);
   // Ensure it listens to participantList updates
 
@@ -174,7 +174,7 @@ const VideoNewParticipantList = () => {
         const data = {
           RoomID: roomID,
           IsMuted: flag,
-          isForAll:false,
+          isForAll: false,
           MuteUnMuteList: [
             {
               UID: usersData.guid, // The participant's UID
@@ -185,7 +185,7 @@ const VideoNewParticipantList = () => {
       } else {
         console.log("Cannot mute/unmute host.");
       }
-    } 
+    }
   };
 
   const muteUnmuteAllByHost = (flag) => {
@@ -503,12 +503,14 @@ const VideoNewParticipantList = () => {
                             <img draggable="false" src={Menu} alt="" />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item
-                              className="participant-dropdown-item"
-                              onClick={() => makeLeaveOnClick(usersData)}
-                            >
-                              {t("Make-host")}
-                            </Dropdown.Item>
+                            {usersData.isGuest === false && (
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() => makeLeaveOnClick(usersData)}
+                              >
+                                {t("Make-host")}
+                              </Dropdown.Item>
+                            )}
 
                             {usersData.isHost === false ? (
                               <Dropdown.Item
