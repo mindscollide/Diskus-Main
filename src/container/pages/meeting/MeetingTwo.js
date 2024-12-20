@@ -1897,6 +1897,7 @@ const NewMeeting = () => {
       width: "80px",
       align: "center",
       render: (text, record) => {
+                      console.log("end meeting chaek",record);
         const startMeetingRequest = {
           VideoCallURL: record.videoCallURL,
           MeetingID: Number(record.pK_MDID),
@@ -1997,7 +1998,7 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek");
+                      console.log("end meeting chaek",startMeetingRequest);
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
