@@ -598,6 +598,7 @@ const NewMeeting = () => {
           attendeeRoleID,
           isPrimaryOrganizer,
           meetingID,
+          videoCallURL,
         } = location.state?.advancemeetingData;
 
         const fetchData = async () => {
@@ -613,6 +614,7 @@ const NewMeeting = () => {
           });
           if (statusID === "10" || statusID === 10) {
             let joinMeetingData = {
+              VideoCallURL: videoCallURL,
               FK_MDID: meetingID,
               DateTime: getCurrentDateTimeUTC(),
             };
@@ -1896,6 +1898,7 @@ const NewMeeting = () => {
       align: "center",
       render: (text, record) => {
         const startMeetingRequest = {
+          VideoCallURL: record.videoCallURL,
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
         };
@@ -2422,6 +2425,7 @@ const NewMeeting = () => {
         let dashboardEventData = CalendarDashboardEventData;
 
         let startMeetingRequest = {
+          VideoCallURL: CalendarDashboardEventData.videoCallURL,
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,
         };
@@ -3015,6 +3019,7 @@ const NewMeeting = () => {
       if (dashboardEventData !== null && dashboardEventData !== undefined) {
         console.log(dashboardEventData, "dashboardEventDatadashboardEventData");
         let startMeetingRequest = {
+          VideoCallURL: dashboardEventData.videoCallURL,
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,
         };

@@ -154,7 +154,9 @@ const CalendarPage = () => {
   const viewModalHandler = async (value) => {
     console.log(value, "valuevaluevaluevalues");
     if (value.calendarTypeId === 2) {
+    console.log(value, "valuevaluevaluevalues");
       if (value.isQuickMeeting === false) {
+    console.log(value, "valuevaluevaluevalues");
         let advancemeetingData = {
           id: value.id,
           isQuickMeeting: value.isQuickMeeting,
@@ -163,7 +165,9 @@ const CalendarPage = () => {
           attendeeRoleID: value.attendeeRoleID,
           isPrimaryOrganizer: value.isPrimaryOrganizer,
           meetingID: value.meetingID,
+          videoCallURL: value.videoCallURL,
         };
+    console.log(advancemeetingData, "valuevaluevaluevalues");
         navigate("/DisKus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
