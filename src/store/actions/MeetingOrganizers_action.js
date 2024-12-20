@@ -263,7 +263,7 @@ const UpdateOrganizersMeeting = (
   t,
   route,
   Data,
-setEditorRole,
+  setEditorRole,
   setAdvanceMeetingModalID,
   setDataroomMapFolderId,
   // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -279,6 +279,7 @@ setEditorRole,
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
+    VideoCallURL: Data.videoCallURL,
     FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
   };
@@ -305,7 +306,7 @@ setEditorRole,
               t,
               route,
               Data,
-            setEditorRole,
+              setEditorRole,
               setAdvanceMeetingModalID,
               setDataroomMapFolderId,
               // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -392,7 +393,7 @@ setEditorRole,
                         leaveMeetingData,
                         false,
                         setViewFlag,
-                      setEditorRole,
+                        setEditorRole,
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
                         setEndMeetingConfirmationModal
