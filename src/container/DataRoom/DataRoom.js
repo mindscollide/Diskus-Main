@@ -3387,6 +3387,8 @@ const DataRoom = () => {
   const handleClickGetFolderData = async (id, record, index) => {
     if (record?.main !== undefined && record?.main !== null && record?.main) {
       await dispatch(getDocumentsAndFolderApi(navigate, record.id, t, 1));
+      localStorage.removeItem("folderID");
+
       dispatch(BreadCrumbsList([]));
     } else {
       console.log(index, "indexindex");

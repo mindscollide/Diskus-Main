@@ -379,7 +379,8 @@ const NewMeeting = () => {
         video: false,
         Agenda: false,
       });
-      setViewFlag(true);
+      dispatch(viewMeetingFlag(false))
+      setViewFlag(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1636,12 +1637,12 @@ const NewMeeting = () => {
                   : "Organizer",
                 isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
-              dispatch(viewMeetingFlag(true));
               localStorage.setItem(
                 "isMinutePublished",
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
+              dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}>
             {text}
