@@ -263,7 +263,7 @@ const UpdateOrganizersMeeting = (
   t,
   route,
   Data,
-setEditorRole,
+  setEditorRole,
   setAdvanceMeetingModalID,
   setDataroomMapFolderId,
   // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -279,6 +279,7 @@ setEditorRole,
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
   let leaveMeetingData = {
+    VideoCallURL: Data.VideoCallURL ? Data.VideoCallURL : Data.videoCallURL,
     FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
   };
@@ -305,7 +306,7 @@ setEditorRole,
               t,
               route,
               Data,
-            setEditorRole,
+              setEditorRole,
               setAdvanceMeetingModalID,
               setDataroomMapFolderId,
               // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
@@ -346,9 +347,11 @@ setEditorRole,
                   )
                 );
                 if (route !== 4 && Data.StatusID !== 9) {
+                  console.log("end meeting chaek");
                   dispatch(setLoaderFalse(false));
                 }
                 if (route === 3) {
+                  console.log("end meeting chaek", leaveMeetingData);
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
                   };
@@ -384,7 +387,9 @@ setEditorRole,
                     )
                   );
                 } else if (route === 4) {
+                  console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 9) {
+                    console.log("end meeting chaek", leaveMeetingData);
                     dispatch(
                       LeaveCurrentMeeting(
                         navigate,
@@ -392,7 +397,7 @@ setEditorRole,
                         leaveMeetingData,
                         false,
                         setViewFlag,
-                      setEditorRole,
+                        setEditorRole,
                         setAdvanceMeetingModalID,
                         setViewAdvanceMeetingModal,
                         setEndMeetingConfirmationModal
@@ -400,8 +405,10 @@ setEditorRole,
                     );
                   } else {
                     if (isQuickMeeting) {
+                      console.log("end meeting chaek", leaveMeetingData);
                     } else {
                       setAdvanceMeetingModalID(Data.MeetingID);
+                      console.log("end meeting chaek", leaveMeetingData);
                       setEditorRole({
                         status: "10",
                         role: "Organizer",
@@ -425,12 +432,14 @@ setEditorRole,
                     );
                   }
                 } else if (route === 5) {
+                  console.log("end meeting chaek", leaveMeetingData);
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
                     localStorage.getItem("MeetingPageCurrent");
 
                   let userID = localStorage.getItem("userID");
+                  console.log("end meeting chaek", leaveMeetingData);
                   let searchData = {
                     Date: "",
                     Title: "",
@@ -450,7 +459,9 @@ setEditorRole,
                   setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (route === 6) {
+                  console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 10) {
+                    console.log("end meeting chaek", leaveMeetingData);
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -469,6 +480,7 @@ setEditorRole,
                     let ViewCommitteeID =
                       localStorage.getItem("ViewCommitteeID");
                     let userID = localStorage.getItem("userID");
+                    console.log("end meeting chaek", leaveMeetingData);
 
                     let searchData = {
                       CommitteeID: Number(ViewCommitteeID),
@@ -487,7 +499,9 @@ setEditorRole,
 
                   // setPublishState(Data.MeetingID);
                 } else if (route === 7) {
+                  console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 10) {
+                    console.log("end meeting chaek", leaveMeetingData);
                     dispatch(
                       JoinCurrentMeeting(
                         true,
@@ -515,6 +529,7 @@ setEditorRole,
                       Length: 50,
                       PublishedMeetings: true,
                     };
+                    console.log("end meeting chaek", leaveMeetingData);
                     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                   }
                 }
