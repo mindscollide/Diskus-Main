@@ -133,6 +133,7 @@ const NewCalendar = () => {
   const updateCalendarData = (flag, meetingID) => {
     let Data = calendarReducer.CalenderData;
     if (Object.keys(Data).length > 0) {
+      console.log("findDatafindDatafindData", Data);
       let newCalendarData = [];
       Data.forEach((calenderData, index) => {
         newCalendarData.push({
@@ -173,6 +174,12 @@ const NewCalendar = () => {
           statusID: calenderData.statusID,
           participantRoleID: calenderData.participantRoleID,
           isQuickMeeting: calenderData.isQuickMeeting,
+          videoCallURL: calenderData.videoCallURL,
+          isChat: calenderData.isChat,
+          isVideoCall: calenderData.isVideoCall,
+          talkGroupID: calenderData.talkGroupID,
+          isPrimaryOrganizer: calenderData.isPrimaryOrganizer,
+          isMinutePublished: calenderData.isMinutePublished ? true : false,
         });
       });
       setCalendarEvents(newCalendarData);
@@ -437,6 +444,12 @@ const NewCalendar = () => {
           statusID: meetingData.status,
           participantRoleID: findPartcipantRoleID,
           isQuickMeeting: meetingData.isQuickMeeting,
+          videoCallURL: meetingData.videoCallURL,
+          isChat: meetingData.isChat,
+          isVideoCall: meetingData.isVideoCall,
+          talkGroupID: meetingData.talkGroupID,
+          isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
+          isMinutePublished: meetingData.isMinutePublished ? true : false,
         };
         console.log(dashboardData, "meetingDatameetingDatameetingData");
 
@@ -475,6 +488,7 @@ const NewCalendar = () => {
       console.log(error);
     }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
   useEffect(() => {
     if (meetingIdReducer.allMeetingsSocketData !== null) {
       try {
@@ -537,6 +551,12 @@ const NewCalendar = () => {
           statusID: meetingData.status,
           participantRoleID: findPartcipantRoleID,
           isQuickMeeting: meetingData.isQuickMeeting,
+          videoCallURL: meetingData.videoCallURL,
+          isChat: meetingData.isChat,
+          isVideoCall: meetingData.isVideoCall,
+          talkGroupID: meetingData.talkGroupID,
+          isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
+          isMinutePublished: meetingData.isMinutePublished ? true : false,
         };
         // Check if the meeting ID already exists in the upComingEvents array
         const isExistAlready = calendarEvents.findIndex(
