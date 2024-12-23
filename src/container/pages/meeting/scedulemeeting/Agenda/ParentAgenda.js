@@ -331,27 +331,6 @@ const ParentAgenda = ({
     setRows(updatedAgendaItems);
   };
 
-  useEffect(() => {
-    if (
-      getAllMeetingDetails !== null &&
-      getAllMeetingDetails !== undefined &&
-      getAllMeetingDetails.length !== 0 &&
-      Object.keys(getAllMeetingDetails) !== 0
-    ) {
-      const updatedAgendaItems = [...rows];
-      let advanceMeetingDetails = getAllMeetingDetails.advanceMeetingDetails;
-      let meetingStartTime =
-        advanceMeetingDetails.meetingDates[0].meetingDate +
-        advanceMeetingDetails.meetingDates[0].startTime;
-      let meetingEndTime =
-        advanceMeetingDetails.meetingDates[0].meetingDate +
-        advanceMeetingDetails.meetingDates[0].endTime;
-      updatedAgendaItems[index].endDate = resolutionResultTable(meetingEndTime);
-      updatedAgendaItems[index].startDate =
-        resolutionResultTable(meetingStartTime);
-      setRows(updatedAgendaItems);
-    }
-  }, [getAllMeetingDetails]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
