@@ -85,28 +85,33 @@ const Events = () => {
   // Function to add MQTT data to local data
   function addMQTTData(localData, mqttData) {
     // Check if localData is empty
-    let highestKey = localData.length > 0 
-      ? localData.reduce((maxKey, item) => Math.max(maxKey, item.key), 0)
-      : -1; // Set to -1 so the first key will be 0
-  
+    let highestKey =
+      localData.length > 0
+        ? localData.reduce((maxKey, item) => Math.max(maxKey, item.key), 0)
+        : -1; // Set to -1 so the first key will be 0
+
     // Increment the key for new MQTT data
     const newKey = highestKey + 1;
-  
+
     // Return a new MQTT data object with the incremented key
     return { ...mqttData, key: newKey };
   }
-  
+
   useEffect(() => {
     try {
       if (MQTTUpcomingEvents) {
         console.log("mqtt", upComingEvents);
         console.log("mqtt", MQTTUpcomingEvents);
-  
+
         // Ensure MQTTUpcomingEvents is valid
-        if (MQTTUpcomingEvents.meetingDetails && MQTTUpcomingEvents.meetingEvent) {
+        if (
+          Object.keys(upComingEvents).length < 3 &&
+          MQTTUpcomingEvents.meetingDetails &&
+          MQTTUpcomingEvents.meetingEvent
+        ) {
           // Add MQTT data to local data
           const newMQTTData = addMQTTData(upComingEvents, MQTTUpcomingEvents);
-  
+
           // Update the state with new data
           setUpComingEvents([...upComingEvents, newMQTTData]); // Immutable state update
           console.log("mqtt updated data:", [...upComingEvents, newMQTTData]);
