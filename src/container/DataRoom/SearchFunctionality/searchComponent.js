@@ -144,7 +144,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -172,7 +172,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -205,7 +205,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -233,7 +233,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -266,7 +266,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -294,7 +294,7 @@ const SearchComponent = ({
           let data = {
             UserID: parseInt(userID),
             OrganizationID: parseInt(organizationID),
-            StatusID: searchDataFields.StatusID,
+            StatusID: Number(searchDataFields.StatusID),
             Title: searchDataFields.Title,
             isDocument: searchDataFields.isDocument,
             isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -850,7 +850,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: true,
         isSpreadSheet: true,
@@ -890,7 +890,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: true,
         isSpreadSheet: false,
@@ -930,7 +930,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: true,
@@ -970,7 +970,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1010,7 +1010,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1050,7 +1050,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1090,7 +1090,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1130,7 +1130,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1170,7 +1170,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1210,7 +1210,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1250,7 +1250,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: false,
         isSpreadSheet: false,
@@ -1331,7 +1331,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: searchDataFields.isDocument,
         isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1364,7 +1364,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: searchDataFields.isDocument,
         isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1398,7 +1398,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: searchDataFields.isDocument,
         isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1432,7 +1432,7 @@ const SearchComponent = ({
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
+        StatusID: Number(searchDataFields.StatusID),
         Title: searchDataFields.Title,
         isDocument: searchDataFields.isDocument,
         isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1481,7 +1481,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1520,7 +1520,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1559,7 +1559,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1596,7 +1596,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1632,7 +1632,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1668,7 +1668,7 @@ const SearchComponent = ({
         data = {
           UserID: parseInt(userID),
           OrganizationID: parseInt(organizationID),
-          StatusID: searchDataFields.StatusID,
+          StatusID: Number(searchDataFields.StatusID),
           Title: searchDataFields.Title,
           isDocument: searchDataFields.isDocument,
           isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1802,7 +1802,7 @@ const SearchComponent = ({
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: searchDataFields.StatusID,
+      StatusID: Number(searchDataFields.StatusID),
       Title: searchDataFields.Title,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1837,7 +1837,7 @@ const SearchComponent = ({
     let newData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: searchDataFields.StatusID,
+      StatusID: Number(searchDataFields.StatusID),
       Title: searchDataFields.Title,
       isDocument: false,
       isSpreadSheet: false,
