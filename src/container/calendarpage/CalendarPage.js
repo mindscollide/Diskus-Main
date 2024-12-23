@@ -154,9 +154,9 @@ const CalendarPage = () => {
   const viewModalHandler = async (value) => {
     console.log(value, "valuevaluevaluevalues");
     if (value.calendarTypeId === 2) {
-    console.log(value, "valuevaluevaluevalues");
+      console.log(value, "valuevaluevaluevalues");
       if (value.isQuickMeeting === false) {
-    console.log(value, "valuevaluevaluevalues");
+        console.log(value, "valuevaluevaluevalues");
         let advancemeetingData = {
           id: value.id,
           isQuickMeeting: value.isQuickMeeting,
@@ -166,8 +166,11 @@ const CalendarPage = () => {
           isPrimaryOrganizer: value.isPrimaryOrganizer,
           meetingID: value.meetingID,
           videoCallURL: value.videoCallURL,
+          isChat: value.isChat,
+          isVideoCall: value.isVideoCall,
+          talkGroupID: value.talkGroupID,
         };
-    console.log(advancemeetingData, "valuevaluevaluevalues");
+        console.log(advancemeetingData, "valuevaluevaluevalues");
         navigate("/DisKus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
@@ -365,6 +368,10 @@ const CalendarPage = () => {
             attendeeRoleID: cData.attendeeRoleID,
             isPrimaryOrganizer: cData.isPrimaryOrganizer,
             meetingID: cData.pK_MDID,
+            videoCallURL: "",
+            isChat: false,
+            isVideoCall: false,
+            talkGroupID: 0,
           });
         } else if (cData.fK_CESID === 2 || cData.fK_CESID === 4) {
           newList.push({
@@ -383,6 +390,10 @@ const CalendarPage = () => {
             attendeeRoleID: cData.attendeeRoleID,
             isPrimaryOrganizer: cData.isPrimaryOrganizer,
             meetingID: cData.pK_MDID,
+            videoCallURL: "",
+            isChat: false,
+            isVideoCall: false,
+            talkGroupID: 0,
           });
         } else if (cData.fK_CESID === 3) {
           newList.push({
@@ -401,6 +412,11 @@ const CalendarPage = () => {
             attendeeRoleID: cData.attendeeRoleID,
             isPrimaryOrganizer: cData.isPrimaryOrganizer,
             meetingID: cData.pK_MDID,
+            videoCallURL: cData.videoCallURL,
+            isChat: cData.isChat,
+            isVideoCall: cData.isVideoCall,
+            talkGroupID: cData.talkGroupID,
+            isMinutePublished: cData.isMinutePublished,
           });
         }
       });
@@ -441,6 +457,10 @@ const CalendarPage = () => {
           attendeeRoleID: 0,
           isPrimaryOrganizer: false,
           meetingID: 0,
+          videoCallURL: "",
+          isChat: false,
+          isVideoCall: false,
+          talkGroupID: 0,
         };
         setCalenderDatae([...calenderData, newData]);
       }
@@ -482,6 +502,10 @@ const CalendarPage = () => {
           attendeeRoleID: 0,
           isPrimaryOrganizer: false,
           meetingID: 0,
+          videoCallURL: "",
+          isChat: false,
+          isVideoCall: false,
+          talkGroupID: 0,
         };
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {
@@ -548,6 +572,10 @@ const CalendarPage = () => {
           attendeeRoleID: 0,
           isPrimaryOrganizer: false,
           meetingID: 0,
+          videoCallURL: "",
+          isChat: false,
+          isVideoCall: false,
+          talkGroupID: 0,
         };
         setCalenderDatae([...calenderData, newData]);
       }
@@ -588,6 +616,10 @@ const CalendarPage = () => {
           attendeeRoleID: 0,
           isPrimaryOrganizer: false,
           meetingID: 0,
+          videoCallURL: "",
+          isChat: false,
+          isVideoCall: false,
+          talkGroupID: 0,
         };
         setCalenderDatae((calendarData2) =>
           calendarData2.map((data2, index) => {
@@ -665,6 +697,11 @@ const CalendarPage = () => {
           isPrimaryOrganizer:
             findRoleID !== undefined ? findRoleID.isPrimaryOrganizer : false,
           meetingID: MeetingPublishData.pK_MDID,
+          videoCallURL: MeetingPublishData.videoCallURL,
+          isChat: MeetingPublishData.isChat,
+          isVideoCall: MeetingPublishData.isVideoCall,
+          talkGroupID: MeetingPublishData.talkGroupID,
+          isMinutePublished: MeetingPublishData.isMinutePublished,
         };
         setCalenderDatae([...calenderData, MeetingData]);
         dispatch(meetingStatusPublishedMqtt(null));
