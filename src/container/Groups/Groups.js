@@ -50,7 +50,8 @@ const Groups = () => {
   const { t } = useTranslation();
 
   //Context For Groups
-  const { ViewGroupPage, setViewGroupPage } = useGroupsContext();
+  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
+    useGroupsContext();
   const GroupsReducerrealtimeGroupStatus = useSelector(
     (state) => state.GroupsReducer.realtimeGroupStatus
   );
@@ -92,7 +93,6 @@ const Groups = () => {
   );
 
   const [modalStatusChange, setModalStatusChange] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();

@@ -2,13 +2,15 @@ import React, { createContext, useContext, useState } from "react";
 
 // Create the Context
 export const GroupContext = createContext();
+
 // Create a Provider component
 export const GroupsProvider = ({ children }) => {
-  //View Group Page Context
   const [ViewGroupPage, setViewGroupPage] = useState(true);
-
+  const [showModal, setShowModal] = useState(false);
   return (
-    <GroupContext.Provider value={{ ViewGroupPage, setViewGroupPage }}>
+    <GroupContext.Provider
+      value={{ ViewGroupPage, setViewGroupPage, showModal, setShowModal }}
+    >
       {children}
     </GroupContext.Provider>
   );
@@ -19,7 +21,7 @@ export const useGroupsContext = () => {
   const context = useContext(GroupContext);
 
   if (!context) {
-    throw new Error("useMeetingContext must be used within a GroupsProvider");
+    throw new Error("useGroupsContext must be used within a GroupsProvider");
   }
 
   return context;

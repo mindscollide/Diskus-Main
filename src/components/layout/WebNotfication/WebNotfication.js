@@ -29,6 +29,8 @@ import {
   pendingApprovalPage,
   reviewMinutesPage,
 } from "../../../store/actions/Minutes_action.js";
+import { useGroupsContext } from "../../../context/GroupsContext.js";
+import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -47,6 +49,8 @@ const WebNotfication = ({
     setViewAdvanceMeetingModal,
     setViewProposeDatePoll,
   } = useMeetingContext();
+  //Groups Context
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -626,7 +630,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 16) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Added in Group
         navigate("/Diskus/groups");
@@ -646,7 +657,8 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 18) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickArchivedGroup", true);
+        setShowModal(true);
       } else {
         //Notificaiton For Groups Archived
         navigate("/Diskus/groups");
@@ -655,7 +667,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 19) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Groups InActivated
         navigate("/Diskus/groups");
@@ -668,7 +687,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 20) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Groups Activated
         navigate("/Diskus/groups");

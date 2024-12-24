@@ -142,17 +142,37 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     setEditMeetingModal(true);
   };
   useEffect(() => {
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
-    };
-    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    if (
+      JSON.parse(localStorage.getItem("NotificationClickAddedIntoGroup")) ===
+      true
+    ) {
+      let NotificationClickGroupID = localStorage.getItem(
+        "NotifcationClickViewGroupID"
+      );
+      let searchData = {
+        GroupID: Number(NotificationClickGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    } else {
+      let searchData = {
+        GroupID: Number(ViewGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    }
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
@@ -293,14 +313,15 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex  align-items-center justify-content-between p-1'>
+      <div className="d-flex  align-items-center justify-content-between p-1">
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -319,13 +340,13 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const MeetingColoumns = [
     {
       title: (
-        <span className='d-flex gap-2 align-items-center'>
+        <span className="d-flex gap-2 align-items-center">
           {" "}
           {t("Title")}{" "}
           {meetingTitleSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </span>
       ),
@@ -345,7 +366,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
-            }}>
+            }}
+          >
             {text}
           </span>
         );
@@ -396,7 +418,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -404,7 +426,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -414,12 +437,12 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     },
     {
       title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Organizer")}
           {meetingOrganizerSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
+            <img src={DescendIcon} alt="" />
           ) : (
-            <img src={AscendIcon} alt='' />
+            <img src={AscendIcon} alt="" />
           )}
         </span>
       ),
@@ -445,12 +468,12 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     },
     {
       title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
+        <span className="d-flex gap-2 align-items-center justify-content-center">
           {t("Date-time")}
           {meetingDateTimeSort === "descend" ? (
-            <img src={ArrowDownIcon} alt='' />
+            <img src={ArrowDownIcon} alt="" />
           ) : (
-            <img src={ArrowUpIcon} alt='' />
+            <img src={ArrowUpIcon} alt="" />
           )}
         </span>
       ),
@@ -507,15 +530,16 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-center gap-3'>
+                className="d-flex justify-content-center gap-3"
+              >
                 <span className={styles["iconsWidth"]}>
                   {record.isAttachment ? (
-                    <Tooltip placement='topRight' title={t("ClipIcon")}>
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className='cursor-pointer'
-                        alt=''
-                        draggable='false'
+                        className="cursor-pointer"
+                        alt=""
+                        draggable="false"
                       />
                     </Tooltip>
                   ) : null}
@@ -525,9 +549,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   {record.isChat ? (
                     <img
                       src={CommentIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
+                      className="cursor-pointer"
+                      alt=""
+                      draggable="false"
                     />
                   ) : null}
                 </span>
@@ -536,9 +560,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   {record.isVideoCall ? (
                     <img
                       src={VideoIcon}
-                      alt=''
+                      alt=""
                       title={t("Video")}
-                      draggable='false'
+                      draggable="false"
                     />
                   ) : null}
                 </span>
@@ -546,10 +570,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   {record.status === "9" && isOrganiser && (
                     <img
                       src={member}
-                      className='cursor-pointer'
-                      alt=''
+                      className="cursor-pointer"
+                      alt=""
                       title={t("Member")}
-                      draggable='false'
+                      draggable="false"
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   )}
@@ -665,7 +689,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-start'>
+                  className="d-flex justify-content-start"
+                >
                   <Button
                     text={t("Join-meeting")}
                     className={styles["joining-Meeting"]}
@@ -764,11 +789,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                         {groupStatus === 3 && (
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='17.11px'
-                            height='17.11px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="17.11px"
+                            height="17.11px"
+                            alt=""
+                            draggable="false"
                             onClick={() =>
                               handleEditMeeting(
                                 record.pK_MDID,
@@ -888,9 +913,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
         }
         title={t("No-new-meetings")}
@@ -1012,11 +1037,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         />
       )}
       <Row>
-        <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
+        <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
           {groupStatus === 3 && (
             <Button
               text={t("Create-Meeting")}
-              icon={<img draggable={false} src={addmore} alt='' />}
+              icon={<img draggable={false} src={addmore} alt="" />}
               className={styles["Create_Meeting_Button"]}
               onClick={handelCreateMeeting}
             />
@@ -1030,8 +1055,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             scroll={scroll}
             rows={rows}
             pagination={false}
-            size='small'
-            className='newMeetingTable'
+            size="small"
+            className="newMeetingTable"
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
@@ -1044,8 +1069,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             lg={12}
             className={
               "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
+            }
+          >
+            <span className="PaginationStyle-TodoList">
               <CustomPagination
                 current={currentPage}
                 showSizer={true}
