@@ -1111,6 +1111,17 @@ const leaveMeetingVideoOnlogout = (response) => {
     response: response,
   };
 };
+
+// FOR CONVERT PARTICIPANT TO HOST
+const makeParticipantHost = (response) => {
+  console.log(response, "MAKE_A_PARTICIPANT_HOST");
+
+  return {
+    type: actions.MAKE_A_PARTICIPANT_HOST,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1180,4 +1191,5 @@ export {
   globalNavigatorVideoStream,
   leaveMeetingOnlogout,
   leaveMeetingVideoOnlogout,
+  makeParticipantHost,
 };
