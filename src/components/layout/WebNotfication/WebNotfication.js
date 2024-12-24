@@ -31,6 +31,7 @@ import {
 } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
 import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
+import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -707,7 +708,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 21) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notification for being Added in the Committee
         navigate("/Diskus/committee");
@@ -726,7 +733,8 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 23) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeArchived", true);
+        setShowModal(true);
       } else {
         //Notificaiton For  Committee Archived
         navigate("/Diskus/committee");
@@ -734,7 +742,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 24) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notificaiton For Committee InActive
         navigate("/Diskus/committee");
@@ -746,7 +760,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 25) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
         navigate("/Diskus/committee");
@@ -772,7 +792,7 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
-      if (currentURL.includes("/Diskus/committee")) {
+      if (currentURL.includes("/Diskus/resolution")) {
         return; // Perform no action if the URL matches
       } else {
         //Notification for Added as Voter in the resolution

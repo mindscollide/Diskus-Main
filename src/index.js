@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { MeetingProvider } from "./context/MeetingContext";
 import { DataroomProvider } from "./context/DataroomContext";
 import { GroupsProvider } from "./context/GroupsContext";
+import { CommitteeProvider } from "./context/CommitteeContext";
 const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming you're using BrowserRouter
 
 // Disable console.* in production
@@ -23,9 +24,11 @@ root.render(
     <Provider store={store}>
       <MeetingProvider>
         <GroupsProvider>
-          <DataroomProvider>
-            <App />
-          </DataroomProvider>
+          <CommitteeProvider>
+            <DataroomProvider>
+              <App />
+            </DataroomProvider>
+          </CommitteeProvider>
         </GroupsProvider>
       </MeetingProvider>
     </Provider>
