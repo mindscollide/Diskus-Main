@@ -219,6 +219,7 @@ const VideoPanelNormal = () => {
       setIsMeetingHost(meetingHost.isHost);
     }
   }, [meetingHost]);
+  console.log(isMeetingHost, "iframeiframe");
 
   // useEffect(() => {
   //   if (makeHostNow !== null) {isHost
@@ -489,10 +490,10 @@ const VideoPanelNormal = () => {
         ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
         : "";
       // let randomGuestName = generateRandomGuest();
-      console.log(endIndexBaseURLCaller, "mqtt");
-      console.log(extractedBaseURLCaller, "mqtt");
+      console.log(endIndexBaseURLCaller, "iframeiframe");
+      console.log(extractedBaseURLCaller, "iframeiframe");
       if (isMeeting === false) {
-        console.log(initiateCallRoomID, "mqtt");
+        console.log(initiateCallRoomID, "iframeiframe");
         setParticipantURL(
           generateURLParticipant(
             extractedBaseURLCaller,
@@ -506,9 +507,12 @@ const VideoPanelNormal = () => {
           console.log(extractedBaseURLCaller, "mqtt");
           if (isMeetingHost) {
             console.log(extractedBaseURLCaller, "mqtt");
+            console.log(urlFormeetingapi, "iframeiframe");
+
             setParticipantURL(urlFormeetingapi);
           } else {
             console.log(extractedBaseURLCaller, "mqtt");
+            console.log(callAcceptedRoomID, "iframeiframe");
             setParticipantURL(
               generateURLParticipant(
                 extractedBaseURLCaller,
@@ -519,6 +523,7 @@ const VideoPanelNormal = () => {
           }
         } else {
           console.log(extractedBaseURLCaller, "mqtt");
+          console.log(callAcceptedRoomID, "iframeiframe");
           setParticipantURL(
             generateURLParticipant(
               extractedBaseURLCaller,
@@ -724,11 +729,26 @@ const VideoPanelNormal = () => {
                                 callAcceptedRecipientID
                               )}
 
-                              {console.log("mqtt", refinedParticipantVideoUrl)}
-                              {console.log("mqtt", participantURL)}
-                              {console.log("mqtt", callerURL)}
+                              {console.log(
+                                "iframeiframe",
+                                refinedParticipantVideoUrl
+                              )}
+                              {console.log("iframeiframe", participantURL)}
+                              {console.log("iframeiframe", callerURL)}
                               {refinedURLCheck ? (
                                 <>
+                                  {console.log(
+                                    "iframeiframe meetingHost.isHost",
+                                    meetingHost.isHost
+                                  )}
+                                  {console.log(
+                                    "iframeiframe",
+                                    refinedParticipantVideoUrl
+                                  )}
+                                  {console.log(
+                                    "iframeiframe",
+                                    refinedParticipantVideoUrl
+                                  )}
                                   <iframe
                                     src={
                                       !meetingHost.isHost
@@ -744,19 +764,34 @@ const VideoPanelNormal = () => {
                                   />
                                 </>
                               ) : (
-                                <iframe
-                                  src={
-                                    callAcceptedRecipientID === currentUserID
-                                      ? participantURL
-                                      : callerURL
-                                  }
-                                  ref={iframeRef}
-                                  title="Live Video"
-                                  width="100%"
-                                  height="100%"
-                                  frameBorder="0"
-                                  allow="camera;microphone;display-capture"
-                                />
+                                <>
+                                  {console.log(
+                                    "iframeiframe participantURL",
+                                    participantURL
+                                  )}
+                                  {console.log("iframeiframe", callerURL)}
+                                  {console.log(
+                                    "iframeiframe callAcceptedRecipientID",
+                                    callAcceptedRecipientID
+                                  )}
+                                  {console.log(
+                                    "iframeiframe currentUserID",
+                                    currentUserID
+                                  )}
+                                  <iframe
+                                    src={
+                                      callAcceptedRecipientID === currentUserID
+                                        ? participantURL
+                                        : callerURL
+                                    }
+                                    ref={iframeRef}
+                                    title="Live Video"
+                                    width="100%"
+                                    height="100%"
+                                    frameBorder="0"
+                                    allow="camera;microphone;display-capture"
+                                  />
+                                </>
                               )}
 
                               {/* {console.log(

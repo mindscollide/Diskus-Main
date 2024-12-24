@@ -2922,6 +2922,7 @@ const Dashboard = () => {
         let participantRoomId = localStorage.getItem("participantRoomId");
         let participantUID = localStorage.getItem("participantUID");
         let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+        localStorage.setItem("participantRoomId");
         localStorage.setItem("hostUrl", refinedVideoUrl);
         localStorage.setItem("newRoomId", participantRoomId);
         let Data = { RoomID: participantRoomId };
