@@ -2906,22 +2906,35 @@ const Dashboard = () => {
           isHostId: Number(localStorage.getItem("userID")),
           isDashboardVideo: true,
         };
+        console.log("hostTrasfer", meetingHost);
         let participantRoomId = localStorage.getItem("participantRoomId");
+        console.log("hostTrasfer", participantRoomId);
         let participantUID = localStorage.getItem("participantUID");
+        console.log("hostTrasfer", participantUID);
         let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-        localStorage.setItem("participantRoomId");
+        console.log("hostTrasfer", refinedVideoUrl);
         localStorage.setItem("hostUrl", refinedVideoUrl);
+        console.log("hostTrasfer");
         localStorage.setItem("newRoomId", participantRoomId);
+        console.log("hostTrasfer");
         let Data = { RoomID: participantRoomId };
-
-        dispatch(toggleParticipantsVisibility(false));
-        dispatch(participantWaitingListBox(false));
-        await dispatch(participantListWaitingListMainApi(Data, navigate, t));
+        console.log("hostTrasfer");
         dispatch(makeHostNow(meetingHost));
+        console.log("hostTrasfer");
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+        console.log("hostTrasfer");
         localStorage.setItem("isGuid", participantUID);
+        console.log("hostTrasfer");
         localStorage.setItem("isMeetingVideoHostCheck", true);
+        console.log("hostTrasfer");
         localStorage.setItem("isHost", true);
+        console.log("hostTrasfer");
+        dispatch(toggleParticipantsVisibility(false));
+        console.log("hostTrasfer");
+        dispatch(participantWaitingListBox(false));
+        console.log("hostTrasfer");
+        await dispatch(participantListWaitingListMainApi(Data, navigate, t));
+      
         // localStorage.removeItem("participantUID");
         // localStorage.removeItem("participantRoomId");
         setNotification({
