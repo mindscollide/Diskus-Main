@@ -13,18 +13,21 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingActions";
 import { useMeetingContext } from "../../../context/MeetingContext";
-import { XLg } from "react-bootstrap-icons";
+import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
+import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
   fetchNotifications, // Scrolling Function on Lazy Loading,
+  unReadCountNotification, //Unread Top Count Number State on Bell Icon
+  setUnReadCountNotification, //Unread Top Count Number State on Bell Icon Set State
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { editorRole, setEditorRole } = useMeetingContext();
+  const { setEditorRole } = useMeetingContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -54,6 +57,25 @@ const WebNotfication = ({
       spin
     />
   );
+
+  useEffect(() => {
+    return () => {
+      //API Call Mark As Read
+      if (unReadCountNotification > 0) {
+        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+        let data = { ReadOnDateTime: currentDateTime };
+        dispatch(
+          DiskusWebNotificationMarkAsReadAPI(
+            navigate,
+            t,
+            data,
+            setUnReadCountNotification,
+            setwebNotificationData
+          )
+        );
+      }
+    };
+  }, []);
 
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {

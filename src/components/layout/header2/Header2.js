@@ -49,7 +49,6 @@ import {
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,
 } from "../../../store/actions/UpdateUserNotificationSetting.js";
-import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -143,22 +142,6 @@ const Header2 = ({ isVideo }) => {
       showWebNotification
     ) {
       setShowWebNotification(false);
-      //API Call Mark As Read
-      // if (getAllNotificationData !== null) {
-      if (unReadCountNotification > 0) {
-        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
-        let data = { ReadOnDateTime: currentDateTime };
-        dispatch(
-          DiskusWebNotificationMarkAsReadAPI(
-            navigate,
-            t,
-            data,
-            setUnReadCountNotification,
-            setwebNotificationData
-          )
-        );
-      }
-      // }
     }
   };
   //Event Handler for Outside Click of Web Notification Window
@@ -1354,6 +1337,8 @@ const Header2 = ({ isVideo }) => {
                       setwebNotificationData={setwebNotificationData}
                       totalCountNotification={totalCountNotification}
                       fetchNotifications={fetchNotifications}
+                      unReadCountNotification={unReadCountNotification}
+                      setUnReadCountNotification={setUnReadCountNotification}
                     />
                   )}
                   {/* Web Notification Outer Box End */}
