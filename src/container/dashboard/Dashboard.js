@@ -1053,21 +1053,11 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
             ) {
-              console.log("New Host Information", data.payload);
-              localStorage.setItem(
-                "isHost",
-                JSON.stringify(data.payload.newHost.isHost)
-              );
-              const newHostUserID = data.payload.newHost.userID;
-
-              dispatch(checkHostNow(newHostUserID));
-              localStorage.setItem("currentHostUserID", newHostUserID);
-              console.log("Host ID set in localStorage: ", newHostUserID);
+              hostTrasfer(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
-              hostTrasfer(data.payload);
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2917,30 +2907,34 @@ const Dashboard = () => {
     } catch (error) {}
   };
   async function hostTrasfer(datamqttData) {
-    console.log("hostTrasfer",datamqttData)
+    console.log("hostTrasfer", datamqttData);
     try {
-      const meetingHost = {
-        isHost: true,
-        isHostId: Number(localStorage.getItem("userID")),
-        isDashboardVideo: true,
-      };
-      let participantRoomId = localStorage.getItem("participantRoomId");
-      let participantUID = localStorage.getItem("participantUID");
-      let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-      localStorage.setItem("hostUrl", refinedVideoUrl);
-      localStorage.setItem("newRoomId", participantRoomId);
-      let Data = { RoomID: participantRoomId };
+      if (
+        localStorage.getItem("participantUID") === datamqttData.newHost.guid
+      ) {
+        const meetingHost = {
+          isHost: true,
+          isHostId: Number(localStorage.getItem("userID")),
+          isDashboardVideo: true,
+        };
+        let participantRoomId = localStorage.getItem("participantRoomId");
+        let participantUID = localStorage.getItem("participantUID");
+        let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+        localStorage.setItem("hostUrl", refinedVideoUrl);
+        localStorage.setItem("newRoomId", participantRoomId);
+        let Data = { RoomID: participantRoomId };
 
-      dispatch(toggleParticipantsVisibility(false));
-      dispatch(participantWaitingListBox(false));
-      await dispatch(participantListWaitingListMainApi(Data, navigate, t));
-      dispatch(makeHostNow(meetingHost));
-      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-      localStorage.setItem("isGuid", participantUID);
-      localStorage.setItem("isMeetingVideoHostCheck", true);
-      localStorage.setItem("isHost", true);
-      // localStorage.removeItem("participantUID");
-      // localStorage.removeItem("participantRoomId");
+        dispatch(toggleParticipantsVisibility(false));
+        dispatch(participantWaitingListBox(false));
+        await dispatch(participantListWaitingListMainApi(Data, navigate, t));
+        dispatch(makeHostNow(meetingHost));
+        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+        localStorage.setItem("isGuid", participantUID);
+        localStorage.setItem("isMeetingVideoHostCheck", true);
+        localStorage.setItem("isHost", true);
+        // localStorage.removeItem("participantUID");
+        // localStorage.removeItem("participantRoomId");
+      }
     } catch {}
   }
   const onConnectionLost = () => {
