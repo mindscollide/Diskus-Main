@@ -822,18 +822,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST".toLowerCase()
             ) {
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
-              );
-
-              if (isMeetingVideo) {
-                if (data.payload.isGuest) {
-                  dispatch(admitGuestUserRequest(data.payload));
-                } else {
-                  dispatch(participantWaitingList(data.payload));
-                }
-                dispatch(guestJoinPopup(true));
-              }
+              joinRequestForMeetingVideo(data);
             } else if (
               data.payload.message.toLowerCase() ===
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
@@ -2905,15 +2894,13 @@ const Dashboard = () => {
       }
     } catch (error) {}
   };
-  async function hostTrasfer(datamqttData) {
-    console.log("hostTrasfer", datamqttData);
+  async function hostTrasfer(mqttData) {
+    console.log("hostTrasfer", mqttData);
     try {
       console.log("hostTrasfer", localStorage.getItem("participantUID"));
-      console.log("hostTrasfer", datamqttData.newHost.guid);
-      if (
-        localStorage.getItem("participantUID") === datamqttData.newHost.guid
-      ) {
-        console.log("hostTrasfer", datamqttData);
+      console.log("hostTrasfer", mqttData.newHost.guid);
+      if (localStorage.getItem("participantUID") === mqttData.newHost.guid) {
+        console.log("hostTrasfer", mqttData);
         const meetingHost = {
           isHost: true,
           isHostId: Number(localStorage.getItem("userID")),
@@ -2940,7 +2927,7 @@ const Dashboard = () => {
         setNotification({
           ...notification,
           notificationShow: true,
-          message: `${datamqttData.newHost.name}  is now host`,
+          message: `${mqttData.newHost.name}  is now host`,
         });
       } else {
         setNotification({
@@ -2951,6 +2938,32 @@ const Dashboard = () => {
       }
     } catch {}
   }
+
+  async function joinRequestForMeetingVideo(mqttData) {
+    try {
+      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      console.log("Mqtt Data", currentMeetingID);
+
+      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      console.log("Mqtt Data");
+      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+        if (isMeetingVideo) {
+          console.log("Mqtt Data");
+
+          if (mqttData.payload.isGuest) {
+            console.log("Mqtt Data");
+
+            dispatch(admitGuestUserRequest(mqttData.payload));
+          } else {
+            dispatch(participantWaitingList(mqttData.payload));
+          }
+          console.log("Mqtt Data");
+
+          dispatch(guestJoinPopup(true));
+        }
+    } catch {}
+  }
+
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
   };
