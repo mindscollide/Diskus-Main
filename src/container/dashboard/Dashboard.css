@@ -54,3 +54,6 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 .mainDashboardLayout {
   min-height: 100vh;
 }
+.sidebar_layout {
+  background: none !important;
+}

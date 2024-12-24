@@ -18,6 +18,7 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   LeaveCurrentMeeting,
+  viewMeetingFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -322,6 +323,7 @@ const ViewMeetingDetails = ({
       localStorage.removeItem("AdvanceMeetingOperations");
       localStorage.removeItem("NotificationAdvanceMeetingID");
       dispatch(cleareAllState());
+      dispatch(viewMeetingFlag(false));
     };
   }, []);
 
