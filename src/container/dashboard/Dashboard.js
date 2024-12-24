@@ -2909,9 +2909,12 @@ const Dashboard = () => {
   async function hostTrasfer(datamqttData) {
     console.log("hostTrasfer", datamqttData);
     try {
+      console.log("hostTrasfer", localStorage.getItem("participantUID"));
+      console.log("hostTrasfer", datamqttData.newHost.guid);
       if (
         localStorage.getItem("participantUID") === datamqttData.newHost.guid
       ) {
+        console.log("hostTrasfer", datamqttData);
         const meetingHost = {
           isHost: true,
           isHostId: Number(localStorage.getItem("userID")),
