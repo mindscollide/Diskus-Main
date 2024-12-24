@@ -392,7 +392,8 @@ const NewMeeting = () => {
         video: false,
         Agenda: false,
       });
-      setViewFlag(true);
+      dispatch(viewMeetingFlag(false))
+      setViewFlag(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -597,6 +598,7 @@ const NewMeeting = () => {
       console.log(error);
     }
   };
+
   let calendarMainMeeting = location.state?.CalendaradvanceMeeting;
   console.log(calendarMainMeeting, "calendarMeetingcalendarMeeting");
   useEffect(() => {
@@ -611,6 +613,10 @@ const NewMeeting = () => {
           attendeeRoleID,
           isPrimaryOrganizer,
           meetingID,
+          videoCallURL,
+          isChat,
+          isVideoCall,
+          talkGroupID,
         } = location.state?.advancemeetingData;
 
         const fetchData = async () => {
@@ -624,8 +630,15 @@ const NewMeeting = () => {
                 : "Organizer",
             isPrimaryOrganizer: isPrimaryOrganizer,
           });
+          setVideoTalk({
+            isChat: isChat,
+            isVideoCall: isVideoCall,
+            talkGroupID: talkGroupID,
+          });
+
           if (statusID === "10" || statusID === 10) {
             let joinMeetingData = {
+              VideoCallURL: videoCallURL,
               FK_MDID: meetingID,
               DateTime: getCurrentDateTimeUTC(),
             };
@@ -787,6 +800,7 @@ const NewMeeting = () => {
         .then(async (result) => {
           // Handle the result here
           let Data = {
+            VideoCallURL: result.videoCallURL,
             FK_MDID: Number(result.meetingID),
             DateTime: getCurrentDateTimeUTC(),
           };
@@ -1268,11 +1282,17 @@ const NewMeeting = () => {
     setentereventIcon(false);
   };
 
-  const handleViewMeeting = async (id, isQuickMeeting, status) => {
+  const handleViewMeeting = async (
+    videoCallURL,
+    id,
+    isQuickMeeting,
+    status
+  ) => {
     try {
       if (status === "10" || status === 10) {
         if (isQuickMeeting) {
           let joinMeetingData = {
+            VideoCallURL: videoCallURL,
             FK_MDID: id,
             DateTime: getCurrentDateTimeUTC(),
           };
@@ -1293,6 +1313,7 @@ const NewMeeting = () => {
           );
         } else {
           let joinMeetingData = {
+            VideoCallURL: videoCallURL,
             FK_MDID: id,
             DateTime: getCurrentDateTimeUTC(),
           };
@@ -1632,6 +1653,7 @@ const NewMeeting = () => {
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(
+                record.videoCallURL,
                 record.pK_MDID,
                 record.isQuickMeeting,
                 record.status
@@ -1651,12 +1673,12 @@ const NewMeeting = () => {
                   : "Organizer",
                 isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
-              dispatch(viewMeetingFlag(true));
               localStorage.setItem(
                 "isMinutePublished",
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
+              dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}
           >
@@ -1899,7 +1921,9 @@ const NewMeeting = () => {
       width: "80px",
       align: "center",
       render: (text, record) => {
+        console.log("end meeting chaek", record);
         const startMeetingRequest = {
+          VideoCallURL: record.videoCallURL,
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
         };
@@ -1998,7 +2022,7 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek");
+                      console.log("end meeting chaek", startMeetingRequest);
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
@@ -2052,6 +2076,7 @@ const NewMeeting = () => {
                   className={styles["joining-Meeting"]}
                   onClick={() => {
                     handleViewMeeting(
+                      record.videoCallURL,
                       record.pK_MDID,
                       record.isQuickMeeting,
                       record.status
@@ -2086,6 +2111,7 @@ const NewMeeting = () => {
                   className={styles["joining-Meeting"]}
                   onClick={() => {
                     handleViewMeeting(
+                      record.videoCallURL,
                       record.pK_MDID,
                       record.isQuickMeeting,
                       record.status
@@ -2121,6 +2147,7 @@ const NewMeeting = () => {
                   className={styles["joining-Meeting"]}
                   onClick={() => {
                     handleViewMeeting(
+                      record.videoCallURL,
                       record.pK_MDID,
                       record.isQuickMeeting,
                       record.status
@@ -2413,7 +2440,53 @@ const NewMeeting = () => {
     dispatch(boardDeckModal(true));
     localStorage.setItem("meetingTitle", record.title);
   };
+  const callStartMeetingFromEvents = async (dashboardEventData) => {
+    let startMeetingRequest = {
+      VideoCallURL: dashboardEventData.videoCallURL,
+      MeetingID: Number(dashboardEventData.pK_MDID),
+      StatusID: 10,
+    };
+    console.log("startMeetingRequest", dashboardEventData);
+    await dispatch(
+      UpdateOrganizersMeeting(
+        false,
+        navigate,
+        t,
+        3,
+        startMeetingRequest,
+        setEditorRole,
+        // setAdvanceMeetingModalID,
+        setDataroomMapFolderId,
+        setViewAdvanceMeetingModal,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal,
+        dashboardEventData.isPrimaryOrganizer
+      )
+    );
 
+    setEditorRole({
+      status: 10,
+      role: "Organizer",
+      isPrimaryOrganizer: dashboardEventData.isPrimaryOrganizer,
+    });
+    setVideoTalk({
+      isChat: dashboardEventData.isChat,
+      isVideoCall: dashboardEventData.isVideoCall,
+      talkGroupID: dashboardEventData.talkGroupID,
+    });
+    localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
+    localStorage.setItem("currentMeetingID", dashboardEventData.pK_MDID);
+    localStorage.setItem(
+      "isMinutePublished",
+      dashboardEventData.isMinutePublished
+    );
+    localStorage.setItem("meetingTitle", dashboardEventData.title);
+    setAdvanceMeetingModalID(Number(dashboardEventData.pK_MDID));
+    dispatch(viewMeetingFlag(true));
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+  };
   useEffect(() => {
     if (
       CalendarDashboardEventData !== null &&
@@ -2423,6 +2496,7 @@ const NewMeeting = () => {
         let dashboardEventData = CalendarDashboardEventData;
 
         let startMeetingRequest = {
+          VideoCallURL: dashboardEventData.videoCallURL,
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,
         };
@@ -2431,7 +2505,9 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 2
         ) {
+          console.log("startMeetingRequest", dashboardEventData);
           handleViewMeeting(
+            dashboardEventData.videoCallURL,
             dashboardEventData.pK_MDID,
             dashboardEventData.isQuickMeeting,
             dashboardEventData.statusID
@@ -2454,7 +2530,9 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 4
         ) {
+          console.log("startMeetingRequest", dashboardEventData);
           handleViewMeeting(
+            dashboardEventData.videoCallURL,
             dashboardEventData.pK_MDID,
             dashboardEventData.isQuickMeeting,
             dashboardEventData.statusID
@@ -2476,10 +2554,11 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 1
         ) {
+          console.log("startMeetingRequest", dashboardEventData);
           setEditorRole({
             status: dashboardEventData.statusID,
             role: "Organizer",
-            isPrimaryOrganizer: false,
+            isPrimaryOrganizer: dashboardEventData.isPrimaryOrganizer,
           });
           setVideoTalk({
             isChat: dashboardEventData.isChat,
@@ -2489,6 +2568,7 @@ const NewMeeting = () => {
           localStorage.setItem("videoCallURL", dashboardEventData.videoCallURL);
           dispatch(viewMeetingFlag(true));
           handleViewMeeting(
+            dashboardEventData.videoCallURL,
             dashboardEventData.pK_MDID,
             dashboardEventData.isQuickMeeting,
             dashboardEventData.statusID
@@ -2497,7 +2577,9 @@ const NewMeeting = () => {
           dashboardEventData.statusID === "1" ||
           dashboardEventData.statusID === 1
         ) {
+          console.log("startMeetingRequest", dashboardEventData);
           if (dashboardEventData.isQuickMeeting === true) {
+            console.log("startMeetingRequest", dashboardEventData);
             console.log("end meeting chaek");
             dispatch(
               UpdateOrganizersMeeting(
@@ -2515,40 +2597,45 @@ const NewMeeting = () => {
               )
             );
           } else if (dashboardEventData.isQuickMeeting === false) {
-            console.log("end meeting chaek");
-            dispatch(
-              UpdateOrganizersMeeting(
-                false,
-                navigate,
-                t,
-                3,
-                startMeetingRequest,
-                setEditorRole,
-                setAdvanceMeetingModalID,
-                setDataroomMapFolderId,
-                setViewAdvanceMeetingModal
-              )
-            );
-            localStorage.setItem(
-              "currentMeetingID",
-              dashboardEventData.pK_MDID
-            );
-            setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
-            dispatch(viewMeetingFlag(true));
-            setViewAdvanceMeetingModal(true);
-            dispatch(viewAdvanceMeetingPublishPageFlag(true));
-            dispatch(scheduleMeetingPageFlag(false));
-            setEditorRole({
-              status: 10,
-              role: "Organizer",
-              isPrimaryOrganizer: false,
-            });
+            console.log("end meeting chaek", dashboardEventData);
+            // ================== //
+            // dispatch(
+            //   UpdateOrganizersMeeting(
+            //     false,
+            //     navigate,
+            //     t,
+            //     3,
+            //     startMeetingRequest,
+            //     setEditorRole,
+            //     setAdvanceMeetingModalID,
+            //     setDataroomMapFolderId,
+            //     setViewAdvanceMeetingModal
+            //   )
+            // );
+            // localStorage.setItem(
+            //   "currentMeetingID",
+            //   dashboardEventData.pK_MDID
+            // );
+            // setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
+            // dispatch(viewMeetingFlag(true));
+            // setViewAdvanceMeetingModal(true);
+            // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            // dispatch(scheduleMeetingPageFlag(false));
+            // setEditorRole({
+            //   status: 10,
+            //   role: "Organizer",
+            //   isPrimaryOrganizer: false,
+            // });
+            // ================== //
+            console.log("startMeetingRequest", dashboardEventData);
+
+            callStartMeetingFromEvents(dashboardEventData);
           }
         }
 
         dispatch(dashboardCalendarEvent(null));
       } catch (error) {
-        console.log(error);
+        console.log("dashboardCalendarEvent", error);
         dispatch(dashboardCalendarEvent(null));
       }
     }
@@ -3013,6 +3100,7 @@ const NewMeeting = () => {
       if (dashboardEventData !== null && dashboardEventData !== undefined) {
         console.log(dashboardEventData, "dashboardEventDatadashboardEventData");
         let startMeetingRequest = {
+          VideoCallURL: dashboardEventData.videoCallURL,
           MeetingID: Number(dashboardEventData.pK_MDID),
           StatusID: 10,
         };
@@ -3024,6 +3112,7 @@ const NewMeeting = () => {
               dashboardEventData.participantRoleID === 2
             ) {
               handleViewMeeting(
+                dashboardEventData.videoCallURL,
                 meeting.pK_MDID,
                 meeting.isQuickMeeting,
                 meeting.status
@@ -3046,6 +3135,7 @@ const NewMeeting = () => {
               dashboardEventData.participantRoleID === 4
             ) {
               handleViewMeeting(
+                dashboardEventData.videoCallURL,
                 meeting.pK_MDID,
                 meeting.isQuickMeeting,
                 meeting.status
@@ -3079,6 +3169,7 @@ const NewMeeting = () => {
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
               dispatch(viewMeetingFlag(true));
               handleViewMeeting(
+                dashboardEventData.videoCallURL,
                 meeting.pK_MDID,
                 meeting.isQuickMeeting,
                 meeting.status

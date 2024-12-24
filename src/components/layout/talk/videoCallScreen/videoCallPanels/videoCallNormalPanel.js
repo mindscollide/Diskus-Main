@@ -878,14 +878,14 @@ const VideoPanelNormal = () => {
                                   allParticipant.map((participant, index) => {
                                     return (
                                       <>
-                                        <Row key={participant.guid}>
+                                        <Row key={participant.guid} className="mb-1">
                                           <Col
                                             lg={6}
                                             md={6}
                                             sm={12}
                                             className="d-flex justify-content-start"
                                           >
-                                            <p>{participant.name}</p>{" "}
+                                            <p className="participantModal_name">{participant.name}</p>{" "}
                                           </Col>
                                           <Col
                                             lg={6}

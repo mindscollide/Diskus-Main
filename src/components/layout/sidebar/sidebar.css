@@ -4,12 +4,12 @@
   background-color: #fff !important;
   position: fixed;
   height: 100vh !important;
-  width: 3.99vw !important;
+  max-width: 100% !important;
+  width: auto;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* z-index: 0; */
   z-index: 101 !important;
 }
 
@@ -247,7 +247,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 .expanded_menu {
   position: absolute !important;
   height: auto !important;
-  left: 61px !important;
+  left: 65px !important;
   background-color: #fff !important;
   z-index: -1 !important;
   display: flex;

@@ -85,10 +85,16 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  const handleViewMeeting = async (meetingID, isQuickMeeting, status) => {
+  const handleViewMeeting = async (
+    videoCallURL,
+    meetingID,
+    isQuickMeeting,
+    status
+  ) => {
     // console.log(record, "recordrecord")
     if (Number(status) === 10) {
       let joinMeetingData = {
+        VideoCallURL: videoCallURL,
         FK_MDID: Number(meetingID),
         DateTime: getCurrentDateTimeUTC(),
       };
@@ -332,6 +338,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(
+                record.videoCallURL,
                 record.pK_MDID,
                 record.isQuickMeeting,
                 record.status
@@ -645,6 +652,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     className={styles["joining-Meeting"]}
                     onClick={() => {
                       handleViewMeeting(
+                        record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
                         record.status
@@ -670,6 +678,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     className={styles["joining-Meeting"]}
                     onClick={() => {
                       handleViewMeeting(
+                        record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
                         record.status
@@ -695,6 +704,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                     className={styles["joining-Meeting"]}
                     onClick={() => {
                       handleViewMeeting(
+                        record.videoCallURL,
                         record.pK_MDID,
                         record.isQuickMeeting,
                         record.status

@@ -8073,6 +8073,7 @@ const JoinCurrentMeeting = (
   setViewAdvanceMeetingModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
     let form = new FormData();

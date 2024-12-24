@@ -165,9 +165,16 @@ const ReviewMinutes = () => {
       let getDeadlineformated = forRecentActivity(
         currentMeetingMinutesToReviewData.deadline
       );
+      console.log(
+        currentMeetingMinutesToReviewData,
+        "currentMeetingMinutesToReviewDatacurrentMeetingMinutesToReviewData"
+      );
       let currentDate = new Date();
       let getDeadlineIsPassed = currentDate > getDeadlineformated;
-      if (getDeadlineIsPassed) {
+      if (
+        getDeadlineIsPassed === true ||
+        Number(currentMeetingMinutesToReviewData.statusID) === 2
+      ) {
         setDisableSubmit(getDeadlineIsPassed);
       } else {
         let result = checkActorBundleStatus(minutesAgenda, minutesGeneral);
@@ -773,7 +780,13 @@ const ReviewMinutes = () => {
               <Button
                 onClick={() => dispatch(acceptCommentModal(true))}
                 text={t("Accept-all")}
-                disableBtn={minutesToReview === 0 ? true : false}
+                disableBtn={
+                  minutesToReview === 0
+                    ? true
+                    : Number(currentMeetingMinutesToReviewData.statusID) === 2
+                    ? true
+                    : false
+                }
                 className={styles["Accept-all"]}
               />
             </Col>

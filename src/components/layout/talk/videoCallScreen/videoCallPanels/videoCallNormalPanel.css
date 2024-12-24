@@ -150,3 +150,10 @@ body[dir="rtl"] .videoCallScreen {
   font-size: 17px;
   color: #6172d6;
 }
+.participantModal_name {
+  white-space: nowrap;
+  margin: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

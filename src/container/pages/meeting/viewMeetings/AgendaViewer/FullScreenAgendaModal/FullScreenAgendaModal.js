@@ -384,13 +384,17 @@ const FullScreenAgendaModal = ({
 
   const onClickVideoIconOpenVideo = () => {
     console.log("Agenda View Full");
-    let AdvanceMeetingOpen = JSON.parse(
-      localStorage.getItem("AdvanceMeetingOpen")
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
 
     let meetingVideoData = {
       roleID:
-        editorRole.role === "Participant" ? 2 : AdvanceMeetingOpen ? 10 : 2,
+        editorRole.role === "Participant"
+          ? 2
+          : isMeetingVideoHostCheck
+          ? 10
+          : 2,
     };
     console.log(meetingVideoData, "meetingVideoData");
 

@@ -18,6 +18,7 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   LeaveCurrentMeeting,
+  viewMeetingFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -321,6 +322,7 @@ const ViewMeetingDetails = ({
       });
 
       dispatch(cleareAllState());
+      dispatch(viewMeetingFlag(false));
     };
   }, []);
 

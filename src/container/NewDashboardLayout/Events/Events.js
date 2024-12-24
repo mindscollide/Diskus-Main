@@ -29,6 +29,9 @@ const Events = () => {
   const userProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData
   );
+  const MQTTUpcomingEvents = useSelector(
+    (state) => state.meetingIdReducer.MQTTUpcomingEvents
+  );
 
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
@@ -79,6 +82,45 @@ const Events = () => {
       // Log any errors for debugging
     }
   }, [UpcomingEventsDataReducerData]);
+  // Function to add MQTT data to local data
+  function addMQTTData(localData, mqttData) {
+    // Check if localData is empty
+    let highestKey =
+      localData.length > 0
+        ? localData.reduce((maxKey, item) => Math.max(maxKey, item.key), 0)
+        : -1; // Set to -1 so the first key will be 0
+
+    // Increment the key for new MQTT data
+    const newKey = highestKey + 1;
+
+    // Return a new MQTT data object with the incremented key
+    return { ...mqttData, key: newKey };
+  }
+
+  useEffect(() => {
+    try {
+      if (MQTTUpcomingEvents) {
+        console.log("mqtt", upComingEvents);
+        console.log("mqtt", MQTTUpcomingEvents);
+
+        // Ensure MQTTUpcomingEvents is valid
+        if (
+          Object.keys(upComingEvents).length < 3 &&
+          MQTTUpcomingEvents.meetingDetails &&
+          MQTTUpcomingEvents.meetingEvent
+        ) {
+          // Add MQTT data to local data
+          const newMQTTData = addMQTTData(upComingEvents, MQTTUpcomingEvents);
+
+          // Update the state with new data
+          setUpComingEvents([...upComingEvents, newMQTTData]); // Immutable state update
+          console.log("mqtt updated data:", [...upComingEvents, newMQTTData]);
+        }
+      }
+    } catch (error) {
+      console.error("Error processing MQTT data:", error); // Log errors for debugging
+    }
+  }, [MQTTUpcomingEvents]);
 
   useEffect(() => {
     if (MeetingStatusSocket !== null) {
@@ -152,12 +194,15 @@ const Events = () => {
 
   const meetingDashboardCalendarEvent = (data) => {
     // Create a shallow copy of the data object to prevent mutation
+    console.log("startMeetingRequest", data);
     const dashboardData = {
+      isPrimaryOrganizer: data.isPrimaryOrganizer,
+      isMinutePublished: data.meetingDetails.isMinutePublished,
       pK_MDID: data.meetingDetails.pK_MDID,
       pK_CEID: data.meetingEvent.pK_CEID,
       fK_TZID: 0,
-      fK_CETID: 0,
-      fK_CESID: 0,
+      fK_CETID: data.meetingEvent.fK_CETID,
+      fK_CESID: data.meetingEvent.fK_CESID,
       location: data.meetingEvent.location,
       eventDate: data.meetingEvent.meetingDate,
       startTime: data.meetingEvent.startTime,
@@ -170,13 +215,12 @@ const Events = () => {
       statusID: data.meetingDetails.statusID,
       participantRoleID: data.participantRoleID,
       isQuickMeeting: data.meetingDetails.isQuickMeeting,
-      isPrimaryOrganizer: data.isPrimaryOrganizer,
       isChat: data.meetingDetails.isChat,
       isVideoCall: data.meetingDetails.isVideoCall,
       videoCallURL: data.meetingDetails.videoCallURL,
       talkGroupID: data.talkGroupID,
     };
-    console.log("dashboardDatadashboardData", dashboardData);
+    console.log("startMeetingRequest", dashboardData);
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
     navigate("/DisKus/Meeting");
@@ -247,7 +291,8 @@ const Events = () => {
                 checkisTodayorActive
                   ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                   : styles["event-details"] || ""
-              }>
+              }
+            >
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -255,7 +300,8 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : `${styles["event-details-block"]}`
-                }>
+                }
+              >
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
@@ -351,7 +397,8 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                     : ` ${styles["event-details"]}`
-                }>
+                }
+              >
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -359,7 +406,8 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }>
+                  }
+                >
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -478,7 +526,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt='' width={300} draggable='false' />
+              <img src={noTask} alt="" width={300} draggable="false" />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>
