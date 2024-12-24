@@ -13,8 +13,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   GetMeetingStatusDataAPI,
+  proposedMeetingDatesGlobalFlag,
   scheduleMeetingPageFlag,
+  searchNewUserMeeting,
+  showSceduleProposedMeeting,
   viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeDateMeetingPageFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { useMeetingContext } from "../../../context/MeetingContext";
 import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
@@ -36,8 +41,12 @@ const WebNotfication = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setEditorRole, setViewFlag, setViewAdvanceMeetingModal } =
-    useMeetingContext();
+  const {
+    setEditorRole,
+    setViewFlag,
+    setViewAdvanceMeetingModal,
+    setViewProposeDatePoll,
+  } = useMeetingContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -525,7 +534,18 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOperations", true);
+        //Before Date Selection Check
+        localStorage.setItem("BeforeProposedDateSelectedCheck", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+        setViewProposeDatePoll(true);
+        dispatch(proposedMeetingDatesGlobalFlag(true));
+        dispatch(viewProposeDateMeetingPageFlag(true));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
         //Notification For Proposed Meeting Request
         navigate("/Diskus/Meeting");
@@ -539,7 +559,36 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 14) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+        //Here i will apply that if polls are not expired i will redirect it to the voting page
+        // Get the current date in "YYYYMMDD" format
+        const currentDate = new Date();
+        const formattedCurrentDate = `${currentDate.getFullYear()}${String(
+          currentDate.getMonth() + 1
+        ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
+
+        // Compare stored date with the current date
+        if (PayLoadData.DeadlineDate <= formattedCurrentDate) {
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(true);
+          dispatch(proposedMeetingDatesGlobalFlag(true));
+          dispatch(viewProposeDateMeetingPageFlag(true));
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        } else {
+          //Other wise Move to Proposed meeting listing page
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(false);
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(viewProposeDateMeetingPageFlag(false));
+          //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
+          localStorage.removeItem(
+            "ProposedMeetOperationsDateSelectedSendResponseByDate"
+          );
+        }
       } else {
         //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
         navigate("/Diskus/Meeting");
@@ -556,7 +605,14 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 15) {
       //Notification that Proposed Meeting Date Organizer work
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOrganizer", true);
+        localStorage.setItem(
+          "ProposedMeetingOrganizerMeetingID",
+          PayLoadData.MeetingID
+        );
+        let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+        dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+        dispatch(showSceduleProposedMeeting(true));
       } else {
         //Call Status API to see what is the status of the meeting eighter proposed or published
         navigate("/Diskus/Meeting");

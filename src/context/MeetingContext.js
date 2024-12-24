@@ -29,6 +29,7 @@ export const MeetingProvider = ({ children }) => {
   const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   useEffect(() => {
     try {
       if (UserProfileData !== null && UserProfileData !== undefined) {
@@ -62,6 +63,8 @@ export const MeetingProvider = ({ children }) => {
         setViewFlag,
         viewAdvanceMeetingModal,
         setViewAdvanceMeetingModal,
+        viewProposeDatePoll,
+        setViewProposeDatePoll,
       }}
     >
       {children}

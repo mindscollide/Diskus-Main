@@ -141,6 +141,8 @@ const NewMeeting = () => {
     videoTalk,
     viewAdvanceMeetingModal,
     setViewAdvanceMeetingModal,
+    viewProposeDatePoll,
+    setViewProposeDatePoll,
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -326,7 +328,6 @@ const NewMeeting = () => {
   });
   const [startMeetingButton, setStartMeetingButton] = useState([]);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
