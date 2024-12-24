@@ -214,8 +214,8 @@ const VideoPanelNormal = () => {
     }
   }, []);
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (meetingHost) {
+      console.log(isMeetingHost, "iframeiframe");
       setIsMeetingHost(meetingHost.isHost);
     }
   }, [meetingHost]);

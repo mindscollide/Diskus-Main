@@ -670,18 +670,22 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
+              let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+              localStorage.setItem("hostUrl", refinedVideoUrl);
               localStorage.setItem("participantRoomId", newRoomId);
               localStorage.setItem("participantUID", isGuid);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               localStorage.setItem("isHost", false);
+              // localStorage.removeItem("isGuid");
               dispatch(participantWaitingListBox(false));
+              dispatch(toggleParticipantsVisibility(false));
+
               let Data = {
                 RoomID: String(newRoomId),
               };
               await dispatch(
                 getVideoCallParticipantsMainApi(Data, navigate, t)
               );
-              dispatch(toggleParticipantsVisibility(true));
               await dispatch(
                 transferMeetingHostSuccess(
                   response.data.responseResult,

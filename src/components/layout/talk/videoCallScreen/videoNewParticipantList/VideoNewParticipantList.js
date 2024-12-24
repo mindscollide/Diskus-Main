@@ -6,23 +6,17 @@ import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCa
 import { Button, TextField } from "../../../../elements";
 import UserImage from "../../../../../assets/images/user.png";
 import {
-  getVideoCallParticipantsMainApi,
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
-  participantListWaitingListMainApi,
   participantWaitingListBox,
-  toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   admitRejectAttendeeMainApi,
-  removeParticipantFromVideo,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
-import RaiseHand from "./../../talk-Video/video-images/Raise Hand Purple.svg";
-import MicOn from "./../../talk-Video/video-images/Mic Enabled Purple.svg";
 import Menu from "./../../talk-Video/video-images/Menu.png";
 import GoldenHandRaised from "./../../talk-Video/video-images/GoldenHandRaised.png";
 import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
@@ -30,17 +24,16 @@ import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
-import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
 
 const VideoNewParticipantList = () => {
-  console.log("VideoNewParticipantList");
-
-  const { videoFeatureReducer } = useSelector((state) => state);
   const navigate = useNavigate();
+
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
+
   let roomID = localStorage.getItem("newRoomId");
-  let currentUserID = Number(localStorage.getItem("userID"));
+
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   let HostName = localStorage.getItem("name");
@@ -48,20 +41,17 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.participantWaitingList
   );
 
-  console.log(participantWaitingList, "participantWaitingList");
-
   const participantList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
-  console.log(participantList, "participantListMainReducer");
 
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
 
-  console.log(waitingParticipants, "waitingParticipants");
-
-  let getRoomId = localStorage.getItem("newRoomId");
+  const NormalizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+  );
 
   // For acccept Join name participantList
   // const getNewParticipantsMeetingJoin = useSelector(
@@ -69,19 +59,13 @@ const VideoNewParticipantList = () => {
   // );
 
   const [filteredParticipants, setFilteredParticipants] = useState([]);
+
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
-  const [newParticipants, setNewParticipants] = useState([]);
-  const [participantsList, setPartcipantList] = useState([]);
-  console.log(filteredParticipants, "filteredParticipants");
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
-
   const [searchValue, setSearchValue] = useState("");
-  const [participantData, setParticipantData] = useState([]);
-  const [muteGuest, setMuteGuest] = useState(false);
+
   const [isForAll, setIsForAll] = useState(false);
-  console.log(isForAll, "isForAllisForAll");
 
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
@@ -91,7 +75,6 @@ const VideoNewParticipantList = () => {
     const filtered = participantList.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
-    console.log(filtered, "participantListMainReducer");
 
     setFilteredParticipants(filtered);
   };
@@ -258,7 +241,6 @@ const VideoNewParticipantList = () => {
       IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: filteredWaitingParticipants.map(
         (participantData, index) => {
-          console.log(participantData, "mahdahahshahs");
           return {
             IsGuest: participantData.isGuest,
             UID: participantData.guid,
@@ -274,8 +256,6 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAcceptAndReject = (participantInfo, flag) => {
-    console.log("hell");
-    console.log(participantInfo, "participantInfo");
     let Data = {
       MeetingId: currentMeetingID,
       RoomId: String(roomID),
@@ -292,11 +272,10 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
-  console.log("hell");
   return (
     <section
       className={
-        videoFeatureReducer.NormalizeVideoFlag
+        NormalizeVideoFlag
           ? styles["WaitingParticipantBoxNorm"]
           : styles["Waiting-New-Participant-List"]
       }
@@ -612,7 +591,7 @@ const VideoNewParticipantList = () => {
       <Col sm={12} md={12} lg={12}>
         <div
           className={
-            videoFeatureReducer.NormalizeVideoFlag
+            NormalizeVideoFlag
               ? styles["AcceptAndDeniedManual_Nor"]
               : styles["AcceptAndDeniedManual"]
           }
