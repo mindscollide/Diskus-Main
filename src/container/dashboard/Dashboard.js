@@ -1064,7 +1064,6 @@ const Dashboard = () => {
             ) {
               try {
                 dispatch(meetingReminderNotifcation(data.payload));
-
                 if (data.viewable) {
                   setNotification({
                     ...notification,
@@ -2937,6 +2936,17 @@ const Dashboard = () => {
         localStorage.setItem("isHost", true);
         // localStorage.removeItem("participantUID");
         // localStorage.removeItem("participantRoomId");
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `${datamqttData.newHost.name}  is now host`,
+        });
+      } else {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: "Host Has been changed",
+        });
       }
     } catch {}
   }
