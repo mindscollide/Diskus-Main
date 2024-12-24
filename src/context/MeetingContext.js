@@ -28,6 +28,7 @@ export const MeetingProvider = ({ children }) => {
   });
   const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
   const [viewFlag, setViewFlag] = useState(false);
+  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   useEffect(() => {
     try {
       if (UserProfileData !== null && UserProfileData !== undefined) {
@@ -59,6 +60,8 @@ export const MeetingProvider = ({ children }) => {
         videoTalk,
         viewFlag,
         setViewFlag,
+        viewAdvanceMeetingModal,
+        setViewAdvanceMeetingModal,
       }}
     >
       {children}

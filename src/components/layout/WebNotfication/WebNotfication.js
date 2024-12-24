@@ -11,7 +11,11 @@ import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingActions";
+import {
+  GetMeetingStatusDataAPI,
+  scheduleMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+} from "../../../store/actions/NewMeetingActions";
 import { useMeetingContext } from "../../../context/MeetingContext";
 import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
@@ -28,7 +32,8 @@ const WebNotfication = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setEditorRole, setViewFlag } = useMeetingContext();
+  const { setEditorRole, setViewFlag, setViewAdvanceMeetingModal } =
+    useMeetingContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -145,21 +150,7 @@ const WebNotfication = ({
           dispatch(
             ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
           );
-        }
-      } else {
-        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-        if (PayLoadData.IsQuickMeeting === true) {
-          navigate("/Diskus/Meeting");
-          localStorage.setItem("QuicMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationQuickMeetingID",
-            PayLoadData.MeetingID
-          );
         } else {
-          console.log("NotificationDataNotificationData");
-          //Advance Meeting
-          navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -172,9 +163,30 @@ const WebNotfication = ({
               t,
               Data,
               setEditorRole,
-              PayLoadData.IsQuickMeeting
+              true,
+              setViewAdvanceMeetingModal
             )
           );
+        }
+      } else {
+        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          //Advance Meeting
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 2) {
@@ -200,15 +212,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              PayLoadData.IsQuickMeeting
-            )
-          );
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 3) {
@@ -234,15 +238,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              PayLoadData.IsQuickMeeting
-            )
-          );
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 4) {
@@ -266,15 +262,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              PayLoadData.IsQuickMeeting
-            )
-          );
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 5) {

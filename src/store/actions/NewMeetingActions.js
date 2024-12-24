@@ -8266,10 +8266,7 @@ const LeaveCurrentMeeting = (
                 )
             ) {
               localStorage.setItem("AdvanceMeetingOpen", false);
-              localStorage.setItem(
-                "isMeetingVideoHostCheck",
-                false
-              );
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               try {
                 dispatch(currentMeetingStatus(0));
 
@@ -8459,10 +8456,7 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                 )
             ) {
               localStorage.setItem("AdvanceMeetingOpen", false);
-              localStorage.setItem(
-                "isMeetingVideoHostCheck",
-                false
-              );
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(currentMeetingStatus(0));
               dispatch(
                 leaveMeetingAdvancedSuccess(
@@ -9267,7 +9261,14 @@ const GetMeetingStatusDataFail = (message) => {
   };
 };
 
-const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
+const GetMeetingStatusDataAPI = (
+  navigate,
+  t,
+  Data,
+  setEditorRole,
+  FlagOnRouteClickAdvanceMeet,
+  setViewAdvanceMeetingModal
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
@@ -9284,7 +9285,16 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              FlagOnRouteClickAdvanceMeet,
+              setViewAdvanceMeetingModal
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9314,6 +9324,12 @@ const GetMeetingStatusDataAPI = (navigate, t, Data, setEditorRole) => {
                     : "Organizer",
                 isPrimaryOrganizer: false,
               });
+              if (FlagOnRouteClickAdvanceMeet) {
+                dispatch(scheduleMeetingPageFlag(false));
+                isFunction(setViewAdvanceMeetingModal) &&
+                  setViewAdvanceMeetingModal(true);
+                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
