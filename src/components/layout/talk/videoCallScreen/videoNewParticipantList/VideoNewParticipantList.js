@@ -152,7 +152,7 @@ const VideoNewParticipantList = () => {
     }
   }, [waitingParticipants]);
 
-  const makeLeaveOnClick = (usersData) => {
+  const makeHostOnClick = (usersData) => {
     console.log("hell");
     console.log(usersData.UID, "usersDatausersData");
     let data = {
@@ -161,7 +161,7 @@ const VideoNewParticipantList = () => {
       UserID: usersData.userID,
     };
 
-    dispatch(transferMeetingHostMainApi(navigate, t, data));
+    // dispatch(transferMeetingHostMainApi(navigate, t, data));
   };
 
   const muteUnmuteByHost = (usersData, flag) => {
@@ -506,7 +506,7 @@ const VideoNewParticipantList = () => {
                             {usersData.isGuest === false && (
                               <Dropdown.Item
                                 className="participant-dropdown-item"
-                                onClick={() => makeLeaveOnClick(usersData)}
+                                onClick={() => makeHostOnClick(usersData)}
                               >
                                 {t("Make-host")}
                               </Dropdown.Item>
