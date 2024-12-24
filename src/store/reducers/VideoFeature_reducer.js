@@ -71,6 +71,7 @@ const initialState = {
   leaveMeetingOnLogoutResponse: false,
   leaveMeetingVideoOnLogoutResponse: false,
   makeParticipantAsHost: false,
+  makeParticipantAsHostData: [],
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -881,7 +882,8 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.MAKE_A_PARTICIPANT_HOST:
       return {
         ...state,
-        makeParticipantAsHost: action.response,
+        makeParticipantAsHost: action.flag,
+        makeParticipantAsHostData: action.response,
       };
 
     case actions.LEAVE_MEETING_ON_LOGOUT:

@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getVideoCallParticipantsMainApi,
   makeHostNow,
+  makeParticipantHost,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   toggleParticipantsVisibility,
@@ -174,6 +175,12 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.participantsVisible
   );
 
+  const makeParticipantAsHost = useSelector(
+    (state) => state.videoFeatureReducer.makeParticipantAsHost
+  );
+  const makeParticipantAsHostData = useSelector(
+    (state) => state.videoFeatureReducer.makeParticipantAsHostData
+  );
   const [allParticipant, setAllParticipant] = useState([]);
 
   const [participantsList, setParticipantsList] = useState([]);
@@ -610,54 +617,38 @@ const VideoPanelNormal = () => {
   };
 
   localStorage.setItem("videoIframe", iframeRef.current);
-    useEffect(() => {
+  useEffect(() => {
     try {
-      if(){
-        hostTrasfer()
+      if (makeParticipantAsHost) {
+        hostTrasfer(makeParticipantAsHostData);
+        dispatch(makeParticipantHost([],false))
       }
     } catch {}
-  }, [callAcceptedRoomID]);
+  }, [makeParticipantAsHost]);
   async function hostTrasfer(mqttData) {
     console.log("hostTrasfer", mqttData);
     try {
-      console.log("hostTrasfer", localStorage.getItem("participantUID"));
-      console.log("hostTrasfer", mqttData.newHost.guid);
       if (localStorage.getItem("participantUID") === mqttData.newHost.guid) {
-        console.log("hostTrasfer", mqttData);
         const meetingHost = {
           isHost: true,
           isHostId: Number(localStorage.getItem("userID")),
           isDashboardVideo: true,
         };
-        console.log("hostTrasfer", meetingHost);
         let participantRoomId = localStorage.getItem("participantRoomId");
-        console.log("hostTrasfer", participantRoomId);
         let participantUID = localStorage.getItem("participantUID");
-        console.log("hostTrasfer", participantUID);
         let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-        console.log("hostTrasfer", refinedVideoUrl);
         localStorage.setItem("hostUrl", refinedVideoUrl);
-        console.log("hostTrasfer");
         localStorage.setItem("newRoomId", participantRoomId);
-        console.log("hostTrasfer");
         let Data = { RoomID: participantRoomId };
-        console.log("hostTrasfer");
         dispatch(makeHostNow(meetingHost));
-        console.log("hostTrasfer");
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-        console.log("hostTrasfer");
         localStorage.setItem("isGuid", participantUID);
-        console.log("hostTrasfer");
         localStorage.setItem("isMeetingVideoHostCheck", true);
-        console.log("hostTrasfer");
         localStorage.setItem("isHost", true);
-        console.log("hostTrasfer");
         dispatch(toggleParticipantsVisibility(false));
-        console.log("hostTrasfer");
         dispatch(participantWaitingListBox(false));
-        console.log("hostTrasfer");
         await dispatch(participantListWaitingListMainApi(Data, navigate, t));
-      
+
         // localStorage.removeItem("participantUID");
         // localStorage.removeItem("participantRoomId");
       } else {

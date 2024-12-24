@@ -1113,11 +1113,12 @@ const leaveMeetingVideoOnlogout = (response) => {
 };
 
 // FOR CONVERT PARTICIPANT TO HOST
-const makeParticipantHost = (response) => {
+const makeParticipantHost = (response,flag) => {
   console.log(response, "MAKE_A_PARTICIPANT_HOST");
 
   return {
     type: actions.MAKE_A_PARTICIPANT_HOST,
+    flag:flag,
     response: response,
   };
 };
