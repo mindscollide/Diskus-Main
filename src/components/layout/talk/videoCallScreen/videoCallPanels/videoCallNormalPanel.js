@@ -25,6 +25,9 @@ import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actio
 import { useNavigate } from "react-router-dom";
 import {
   getVideoCallParticipantsMainApi,
+  makeHostNow,
+  participantListWaitingListMainApi,
+  participantWaitingListBox,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
@@ -607,7 +610,60 @@ const VideoPanelNormal = () => {
   };
 
   localStorage.setItem("videoIframe", iframeRef.current);
-
+    useEffect(() => {
+    try {
+      if(){
+        hostTrasfer()
+      }
+    } catch {}
+  }, [callAcceptedRoomID]);
+  async function hostTrasfer(mqttData) {
+    console.log("hostTrasfer", mqttData);
+    try {
+      console.log("hostTrasfer", localStorage.getItem("participantUID"));
+      console.log("hostTrasfer", mqttData.newHost.guid);
+      if (localStorage.getItem("participantUID") === mqttData.newHost.guid) {
+        console.log("hostTrasfer", mqttData);
+        const meetingHost = {
+          isHost: true,
+          isHostId: Number(localStorage.getItem("userID")),
+          isDashboardVideo: true,
+        };
+        console.log("hostTrasfer", meetingHost);
+        let participantRoomId = localStorage.getItem("participantRoomId");
+        console.log("hostTrasfer", participantRoomId);
+        let participantUID = localStorage.getItem("participantUID");
+        console.log("hostTrasfer", participantUID);
+        let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+        console.log("hostTrasfer", refinedVideoUrl);
+        localStorage.setItem("hostUrl", refinedVideoUrl);
+        console.log("hostTrasfer");
+        localStorage.setItem("newRoomId", participantRoomId);
+        console.log("hostTrasfer");
+        let Data = { RoomID: participantRoomId };
+        console.log("hostTrasfer");
+        dispatch(makeHostNow(meetingHost));
+        console.log("hostTrasfer");
+        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+        console.log("hostTrasfer");
+        localStorage.setItem("isGuid", participantUID);
+        console.log("hostTrasfer");
+        localStorage.setItem("isMeetingVideoHostCheck", true);
+        console.log("hostTrasfer");
+        localStorage.setItem("isHost", true);
+        console.log("hostTrasfer");
+        dispatch(toggleParticipantsVisibility(false));
+        console.log("hostTrasfer");
+        dispatch(participantWaitingListBox(false));
+        console.log("hostTrasfer");
+        await dispatch(participantListWaitingListMainApi(Data, navigate, t));
+      
+        // localStorage.removeItem("participantUID");
+        // localStorage.removeItem("participantRoomId");
+      } else {
+      }
+    } catch {}
+  }
   return (
     <>
       {MaximizeHostVideoFlag ? (
@@ -712,43 +768,8 @@ const VideoPanelNormal = () => {
                           <>
                             <>
                               {console.log("iframeiframe", isMeetingHost)}
-                              {console.log("iframeiframe", participantURL)}
-                              {console.log(
-                                "iframeiframe",
-                                typeof participantURL
-                              )}
-                              {console.log("iframeiframe", callerURL)}
-                              {console.log("iframeiframe", typeof callerURL)}
-                              {console.log(
-                                "iframeiframe",
-                                callAcceptedRecipientID === currentUserID
-                              )}
-                              {console.log("iframeiframe", currentUserID)}
-                              {console.log(
-                                "iframeiframe",
-                                callAcceptedRecipientID
-                              )}
-
-                              {console.log(
-                                "iframeiframe",
-                                refinedParticipantVideoUrl
-                              )}
-                              {console.log("iframeiframe", participantURL)}
-                              {console.log("iframeiframe", callerURL)}
                               {refinedURLCheck ? (
                                 <>
-                                  {console.log(
-                                    "iframeiframe meetingHost.isHost",
-                                    meetingHost.isHost
-                                  )}
-                                  {console.log(
-                                    "iframeiframe",
-                                    refinedParticipantVideoUrl
-                                  )}
-                                  {console.log(
-                                    "iframeiframe",
-                                    refinedParticipantVideoUrl
-                                  )}
                                   <iframe
                                     src={
                                       !meetingHost.isHost
@@ -765,19 +786,6 @@ const VideoPanelNormal = () => {
                                 </>
                               ) : (
                                 <>
-                                  {console.log(
-                                    "iframeiframe participantURL",
-                                    participantURL
-                                  )}
-                                  {console.log("iframeiframe", callerURL)}
-                                  {console.log(
-                                    "iframeiframe callAcceptedRecipientID",
-                                    callAcceptedRecipientID
-                                  )}
-                                  {console.log(
-                                    "iframeiframe currentUserID",
-                                    currentUserID
-                                  )}
                                   <iframe
                                     src={
                                       callAcceptedRecipientID === currentUserID
