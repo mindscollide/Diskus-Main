@@ -623,53 +623,58 @@ const NewCalendar = () => {
 
   //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
-    if (meetingIdReducer.MeetingStatusSocket !== null) {
-      let meetingStatusID =
-        meetingIdReducer.MeetingStatusSocket.meetingStatusID;
-      if (
-        meetingIdReducer.MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
-      ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
-        updateCalendarData(true, meetingID);
-        console.log("upComingEvents");
-
-        setEvents((event) =>
-          event.filter((eventData, index) => {
-            return eventData.pK_MDID !== Number(meetingID);
-          })
-        );
-        console.log("upComingEvents");
-      } else if (
-        meetingIdReducer.MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
-      ) {
-        let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
-        setCalendarEvents((calendarEventData) => {
-          return calendarEventData.map((data) => {
-            if (Number(data.pK_MDID) === Number(meetingID)) {
-              // Assuming statusID is defined somewhere and you want to update it for this data item
-              data.statusID = 10;
-            }
-            return data; // Always return the data item
+    try {
+      if (meetingIdReducer.MeetingStatusSocket !== null) {
+        let meetingStatusID =
+          meetingIdReducer.MeetingStatusSocket.meetingStatusID;
+        if (
+          meetingIdReducer.MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+        ) {
+          let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
+          updateCalendarData(true, meetingID);
+          console.log("upComingEvents");
+  
+          setEvents((event) =>
+            event.filter((eventData, index) => {
+              return eventData.pK_MDID !== Number(meetingID);
+            })
+          );
+          console.log("upComingEvents");
+        } else if (
+          meetingIdReducer.MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+        ) {
+          let meetingID = meetingIdReducer.MeetingStatusSocket.meeting.pK_MDID;
+          setCalendarEvents((calendarEventData) => {
+            return calendarEventData.map((data) => {
+              if (Number(data.pK_MDID) === Number(meetingID)) {
+                // Assuming statusID is defined somewhere and you want to update it for this data item
+                data.statusID = 10;
+              }
+              return data; // Always return the data item
+            });
           });
-        });
-
-        setEvents((event) =>
-          event.map((eventData, index) => {
-            if (eventData.pK_MDID === Number(meetingID)) {
-              eventData.status = 10;
-            }
-            return eventData;
-          })
-        );
-        console.log("upComingEvents", events);
+  
+          setEvents((event) =>
+            event.map((eventData, index) => {
+              if (eventData.pK_MDID === Number(meetingID)) {
+                eventData.status = 10;
+              }
+              return eventData;
+            })
+          );
+          console.log("upComingEvents", events);
+        }
+  
+        dispatch(getMeetingStatusfromSocket(null));
       }
-
-      dispatch(getMeetingStatusfromSocket(null));
+    } catch (error) {
+      console.log(error, "errorerrorerror");
     }
+ 
   }, [meetingIdReducer.MeetingStatusSocket]);
 
   return (

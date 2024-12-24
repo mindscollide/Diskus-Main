@@ -75,6 +75,8 @@ const LeaveMeetingModalSideBar = () => {
               >
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Any-unsaved-changes-will-be")}
+                  {t("Any-unsaved-changes-will-be")}
+
                 </span>
               </Col>
             </Row>
