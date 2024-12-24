@@ -198,16 +198,33 @@ const AgendaViewer = ({
     "advanceMeetingModalIDadvanceMeetingModalID"
   );
   useEffect(() => {
-    let Data = {
-      MeetingID:
-        advanceMeetingModalID === "0" ||
-        advanceMeetingModalID === 0 ||
-        advanceMeetingModalID === null ||
-        advanceMeetingModalID === undefined
-          ? currentMeeting
-          : Number(advanceMeetingModalID),
-    };
-    dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
+    if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
+      let NotificationClickMeetingID = localStorage.getItem(
+        "NotificationAdvanceMeetingID"
+      );
+      let Data = {
+        MeetingID:
+          advanceMeetingModalID === "0" ||
+          advanceMeetingModalID === 0 ||
+          advanceMeetingModalID === null ||
+          advanceMeetingModalID === undefined
+            ? Number(NotificationClickMeetingID)
+            : Number(advanceMeetingModalID),
+      };
+      dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
+    } else {
+      let Data = {
+        MeetingID:
+          advanceMeetingModalID === "0" ||
+          advanceMeetingModalID === 0 ||
+          advanceMeetingModalID === null ||
+          advanceMeetingModalID === undefined
+            ? currentMeeting
+            : Number(advanceMeetingModalID),
+      };
+      dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
+    }
+
     return () => {
       dispatch(clearAgendaReducerState());
       setRows([]);

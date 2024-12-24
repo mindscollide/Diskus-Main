@@ -20,6 +20,10 @@ import { useMeetingContext } from "../../../context/MeetingContext";
 import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
+import {
+  pendingApprovalPage,
+  reviewMinutesPage,
+} from "../../../store/actions/Minutes_action.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -142,9 +146,9 @@ const WebNotfication = ({
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
-      //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
+        //If you already on the Meeting Page
         if (PayLoadData.IsQuickMeeting === true) {
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
@@ -190,10 +194,32 @@ const WebNotfication = ({
         }
       }
     } else if (NotificationData.notificationActionID === 2) {
-      //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        //If you already on the Meeting Page
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
         if (PayLoadData.IsQuickMeeting === true) {
@@ -205,7 +231,6 @@ const WebNotfication = ({
           );
         } else {
           navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -219,7 +244,29 @@ const WebNotfication = ({
       //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
         if (PayLoadData.IsQuickMeeting === true) {
@@ -243,7 +290,29 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 4) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         if (PayLoadData.IsQuickMeeting === true) {
           //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
@@ -255,7 +324,6 @@ const WebNotfication = ({
           );
         } else {
           navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -292,7 +360,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 7) {
       if (currentURL.includes("/Diskus/Minutes")) {
-        return; // Perform no action if the URL matches
+        //Notification for being added as a minute reviewer
+        localStorage.setItem("MinutesOperations", true);
+        localStorage.setItem(
+          "NotificationClickMinutesMeetingID",
+          PayLoadData.MeetingID
+        );
+        dispatch(reviewMinutesPage(true));
+        dispatch(pendingApprovalPage(false));
       } else {
         //Notification for being added as a minute reviewer
         navigate("/Diskus/Minutes");
@@ -311,7 +386,29 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 9) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Added as An Participant
         if (PayLoadData.IsQuickMeeting === true) {
