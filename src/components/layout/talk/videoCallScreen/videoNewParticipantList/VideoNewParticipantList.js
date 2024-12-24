@@ -6,10 +6,12 @@ import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCa
 import { Button, TextField } from "../../../../elements";
 import UserImage from "../../../../../assets/images/user.png";
 import {
+  getVideoCallParticipantsMainApi,
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
   participantListWaitingListMainApi,
   participantWaitingListBox,
+  toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -152,16 +154,16 @@ const VideoNewParticipantList = () => {
     }
   }, [waitingParticipants]);
 
-  const makeHostOnClick = (usersData) => {
-    console.log("hell");
-    console.log(usersData.UID, "usersDatausersData");
+  const makeHostOnClick = async (usersData) => {
+    console.log("makeHostOnClick", usersData);
+
+    let newRoomId = localStorage.getItem("newRoomId");
     let data = {
-      RoomID: roomID,
+      RoomID: String(newRoomId),
       UID: usersData.guid,
       UserID: usersData.userID,
     };
-
-    // dispatch(transferMeetingHostMainApi(navigate, t, data));
+    dispatch(transferMeetingHostMainApi(navigate, t, data, 1));
   };
 
   const muteUnmuteByHost = (usersData, flag) => {
@@ -308,7 +310,7 @@ const VideoNewParticipantList = () => {
             draggable="false"
             src={CrossIcon}
             onClick={() => dispatch(participantWaitingListBox(false))}
-            style={{ display: "block", objectFit: "cover" }}
+            style={{ display: "block", objectFit: "cover", cursor: "pointer" }}
             alt=""
           />
         </Col>

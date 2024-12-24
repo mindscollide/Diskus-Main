@@ -185,9 +185,7 @@ const VideoPanelNormal = () => {
 
   const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   // for make host
-  const [isMeetingHost, setIsMeetingHost] = useState(
-    meetingHost?.isHost ? true : false
-  );
+  const [isMeetingHost, setIsMeetingHost] = useState(false);
 
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
@@ -215,6 +213,12 @@ const VideoPanelNormal = () => {
       dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
     }
   }, []);
+  useEffect(() => {
+    console.log(isMeetingHost, "iframeiframe");
+    if (meetingHost) {
+      setIsMeetingHost(meetingHost.isHost);
+    }
+  }, [meetingHost]);
 
   // useEffect(() => {
   //   if (makeHostNow !== null) {isHost
@@ -878,14 +882,19 @@ const VideoPanelNormal = () => {
                                   allParticipant.map((participant, index) => {
                                     return (
                                       <>
-                                        <Row key={participant.guid} className="mb-1">
+                                        <Row
+                                          key={participant.guid}
+                                          className="mb-1"
+                                        >
                                           <Col
                                             lg={6}
                                             md={6}
                                             sm={12}
                                             className="d-flex justify-content-start"
                                           >
-                                            <p className="participantModal_name">{participant.name}</p>{" "}
+                                            <p className="participantModal_name">
+                                              {participant.name}
+                                            </p>{" "}
                                           </Col>
                                           <Col
                                             lg={6}

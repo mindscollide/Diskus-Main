@@ -19,6 +19,7 @@ import {
 import copyToClipboard from "../../hooks/useClipBoard";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import {
+  getVideoCallParticipantsMainApi,
   guestJoinPopup,
   guestLeaveVideoMeeting,
   makeHostNow,
@@ -29,6 +30,7 @@ import {
   setAudioControlHost,
   setVideoControlForParticipant,
   setVideoControlHost,
+  toggleParticipantsVisibility,
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
 
@@ -628,7 +630,7 @@ const transferMeetingHostFail = (message) => {
   };
 };
 
-const transferMeetingHostMainApi = (navigate, t, data) => {
+const transferMeetingHostMainApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(transferMeetingHostInit());
@@ -646,7 +648,7 @@ const transferMeetingHostMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(transferMeetingHostMainApi(navigate, t, data));
+          dispatch(transferMeetingHostMainApi(navigate, t, data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -658,9 +660,28 @@ const transferMeetingHostMainApi = (navigate, t, data) => {
             ) {
               const meetingHost = {
                 isHost: false,
-                isHostId: Number(localStorage.getItem("userID")),
+                isHostId: 0,
+                isDashboardVideo: true,
               };
-              dispatch(makeHostNow(meetingHost));
+              console.log("makeHostOnClick", meetingHost);
+              let newRoomId = localStorage.getItem("newRoomId");
+              let isGuid = localStorage.getItem("isGuid");
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              localStorage.setItem("participantRoomId", newRoomId);
+              localStorage.setItem("participantUID", isGuid);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
+              localStorage.setItem("isHost", false);
+              dispatch(participantWaitingListBox(false));
+              let Data = {
+                RoomID: String(newRoomId),
+              };
+              await dispatch(
+                getVideoCallParticipantsMainApi(Data, navigate, t)
+              );
+              dispatch(toggleParticipantsVisibility(true));
               await dispatch(
                 transferMeetingHostSuccess(
                   response.data.responseResult,
@@ -1155,10 +1176,10 @@ const setVoiceControleGuest = (response) => {
     response: response,
   };
 };
-const setVoiceControleGuestForAllbyHost = (flag,response) => {
+const setVoiceControleGuestForAllbyHost = (flag, response) => {
   return {
     type: actions.SET_MQTT_VOICE_CONTROLE_GUEST_FOR_ALL_BY_HOST,
-    flag:flag,
+    flag: flag,
     response: response,
   };
 };
