@@ -211,25 +211,45 @@ const VideoPanelNormal = () => {
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
+  function validateRoomID(input) {
+    // Ensure the input is a string
+    const urlString = typeof input === "string" ? input : String(input);
 
+    try {
+      // Parse the URL
+      const url = new URL(urlString);
+
+      // Extract the query parameters
+      const params = new URLSearchParams(url.search);
+
+      // Get the RoomID parameter
+      const roomID = params.get("RoomID");
+
+      // Check if RoomID exists and is not '0'
+      return roomID && roomID !== "0";
+    } catch (error) {
+      // Return false if URL parsing fails
+      return false;
+    }
+  }
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (
       isMeeting &&
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
-      console.log(isMeetingHost, "iframeiframe");
-
       let Data = {
         RoomID: String(participantRoomIds),
       };
       dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
       setIsMeetinVideoCeckForParticipant(true);
+      if (validateRoomID(refinedParticipantVideoUrl)) {
+        setCallerURL(refinedParticipantVideoUrl);
+      } else {
+        setCallerURL("");
+      }
     }
   }, []);
-
-  console.log(isMeetingHost, "iframeiframe");
 
   // useEffect(() => {
   //   if (makeHostNow !== null) {isHost
@@ -245,18 +265,14 @@ const VideoPanelNormal = () => {
   // }, [makeHostNow]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
-    const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
     if (isMeetingHost) {
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlHost === true) {
-          console.log(isMeetingHost, "iframeiframe");
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
-          console.log(isMeetingHost, "iframeiframe");
           iframe.contentWindow.postMessage("MicOff", "*");
         }
       }
@@ -264,18 +280,14 @@ const VideoPanelNormal = () => {
   }, [audioControlHost]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
-    const userRole = localStorage.getItem("userRole");
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
     if (isMeetingHost === false) {
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlForParticipant === true) {
-          console.log(isMeetingHost, "iframeiframe");
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
-          console.log(isMeetingHost, "iframeiframe");
           iframe.contentWindow.postMessage("MicOff", "*");
         }
       }
@@ -283,8 +295,6 @@ const VideoPanelNormal = () => {
   }, [audioControlForParticipant]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
-    const userRole = localStorage.getItem("userRole");
     const iframe = iframeRef.current;
     if (isMeetingHost === false) {
       if (iframe && iframe.contentWindow !== null) {
@@ -298,8 +308,6 @@ const VideoPanelNormal = () => {
   }, [videoControlForParticipant]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
-    const userRole = localStorage.getItem("userRole");
     const iframe = iframeRef.current;
     if (isMeetingHost) {
       if (iframe && iframe.contentWindow !== null) {
@@ -313,8 +321,6 @@ const VideoPanelNormal = () => {
   }, [videoControlHost]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
-
     if (getAllParticipantGuest?.length) {
       setAllParticipant(getAllParticipantGuest);
     } else {
@@ -323,12 +329,7 @@ const VideoPanelNormal = () => {
   }, [getAllParticipantGuest]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (getVideoParticpantListandWaitingList?.length) {
-      console.log(
-        getVideoParticpantListandWaitingList,
-        "participantListMainReducer"
-      );
       setAllParticipant((prev) => {
         const combined = [...prev, ...getVideoParticpantListandWaitingList];
         // Filter duplicates by checking the unique identifier, e.g., `guid`
@@ -346,7 +347,6 @@ const VideoPanelNormal = () => {
   );
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (
       getNewParticipantsMeetingJoin !== null &&
       getNewParticipantsMeetingJoin !== undefined &&
@@ -360,7 +360,6 @@ const VideoPanelNormal = () => {
   }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
-    console.log(isMeetingHost, "iframeiframe");
     if (
       getNewParticipantsMeetingJoin !== null &&
       getNewParticipantsMeetingJoin !== undefined &&
@@ -400,26 +399,35 @@ const VideoPanelNormal = () => {
           console.log(initiateCallRoomID, "mqtt");
           if (isMeetingHost) {
             console.log(initiateCallRoomID, "mqtt");
-            setCallerURL(urlFormeetingapi);
+            if (validateRoomID(urlFormeetingapi)) {
+              setCallerURL(urlFormeetingapi);
+            } else {
+              setCallerURL("");
+            }
           } else {
             console.log(initiateCallRoomID, "mqtt");
-            setCallerURL(
-              generateURLCaller(
-                extractedBaseURLCaller,
-                currentUserName,
-                initiateCallRoomID
-              )
-            );
-          }
-        } else {
-          console.log(initiateCallRoomID, "mqtt");
-          setCallerURL(
-            generateURLCaller(
+            let newurl = generateURLCaller(
               extractedBaseURLCaller,
               currentUserName,
               initiateCallRoomID
-            )
+            );
+            if (validateRoomID(newurl)) {
+              setCallerURL(newurl);
+            } else {
+              setCallerURL("");
+            }
+          }
+        } else {
+          let newurl = generateURLCaller(
+            extractedBaseURLCaller,
+            currentUserName,
+            initiateCallRoomID
           );
+          if (validateRoomID(newurl)) {
+            setCallerURL(newurl);
+          } else {
+            setCallerURL("");
+          }
         }
       }
     } catch {}
@@ -444,41 +452,34 @@ const VideoPanelNormal = () => {
         if (isMeeting) {
           console.log(isMeetingHost, "mqtt");
           if (isMeetingHost) {
-            console.log(urlFormeetingapi, "mqtt");
-            setCallerURL(urlFormeetingapi);
+            if (validateRoomID(urlFormeetingapi)) {
+              setCallerURL(urlFormeetingapi);
+            } else {
+              setCallerURL("");
+            }
           } else {
-            console.log(
-              generateURLCaller(
-                extractedBaseURLCaller,
-                currentUserName,
-                newRoomID
-              ),
-              "mqtt"
+            let newurl = generateURLCaller(
+              extractedBaseURLCaller,
+              currentUserName,
+              newRoomID
             );
-            setCallerURL(
-              generateURLCaller(
-                extractedBaseURLCaller,
-                currentUserName,
-                newRoomID === 0 ? activeRoomID : newRoomID
-              )
-            );
+            if (validateRoomID(newurl)) {
+              setCallerURL(newurl);
+            } else {
+              setCallerURL("");
+            }
           }
         } else {
-          console.log(
-            generateURLCaller(
-              extractedBaseURLCaller,
-              currentUserName,
-              newRoomID === 0 ? activeRoomID : newRoomID
-            ),
-            "mqtt"
+          let newurl = generateURLCaller(
+            extractedBaseURLCaller,
+            currentUserName,
+            newRoomID === 0 ? activeRoomID : newRoomID
           );
-          setCallerURL(
-            generateURLCaller(
-              extractedBaseURLCaller,
-              currentUserName,
-              newRoomID === 0 ? activeRoomID : newRoomID
-            )
-          );
+          if (validateRoomID(newurl)) {
+            setCallerURL(newurl);
+          } else {
+            setCallerURL("");
+          }
         }
       }
     } catch {}
@@ -500,47 +501,48 @@ const VideoPanelNormal = () => {
         ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
         : "";
       // let randomGuestName = generateRandomGuest();
-      console.log(endIndexBaseURLCaller, "iframeiframe");
-      console.log(extractedBaseURLCaller, "iframeiframe");
       if (isMeeting === false) {
-        console.log(initiateCallRoomID, "iframeiframe");
-        setParticipantURL(
-          generateURLParticipant(
-            extractedBaseURLCaller,
-            currentUserName,
-            callAcceptedRoomID
-          )
+        let newurl = generateURLParticipant(
+          extractedBaseURLCaller,
+          currentUserName,
+          callAcceptedRoomID
         );
-      } else if (isMeeting === true) {
-        console.log(extractedBaseURLCaller, "mqtt");
-        if (isMeetingVideo) {
-          console.log(extractedBaseURLCaller, "mqtt");
-          if (isMeetingHost) {
-            console.log(extractedBaseURLCaller, "mqtt");
-            console.log(urlFormeetingapi, "iframeiframe");
-
-            setParticipantURL(urlFormeetingapi);
-          } else {
-            console.log(extractedBaseURLCaller, "mqtt");
-            console.log(callAcceptedRoomID, "iframeiframe");
-            setParticipantURL(
-              generateURLParticipant(
-                extractedBaseURLCaller,
-                currentUserName,
-                callAcceptedRoomID
-              )
-            );
-          }
+        if (validateRoomID(newurl)) {
+          setCallerURL(newurl);
         } else {
-          console.log(extractedBaseURLCaller, "mqtt");
-          console.log(callAcceptedRoomID, "iframeiframe");
-          setParticipantURL(
-            generateURLParticipant(
+          setCallerURL("");
+        }
+      } else if (isMeeting === true) {
+        if (isMeetingVideo) {
+          if (isMeetingHost) {
+            if (validateRoomID(urlFormeetingapi)) {
+              setCallerURL(urlFormeetingapi);
+            } else {
+              setCallerURL("");
+            }
+          } else {
+            let newurl = generateURLParticipant(
               extractedBaseURLCaller,
               currentUserName,
               callAcceptedRoomID
-            )
+            );
+            if (validateRoomID(newurl)) {
+              setCallerURL(newurl);
+            } else {
+              setCallerURL("");
+            }
+          }
+        } else {
+          let newurl = generateURLParticipant(
+            extractedBaseURLCaller,
+            currentUserName,
+            callAcceptedRoomID
           );
+          if (validateRoomID(newurl)) {
+            setCallerURL(newurl);
+          } else {
+            setCallerURL("");
+          }
         }
       }
     } catch {}
@@ -558,7 +560,7 @@ const VideoPanelNormal = () => {
   //     );
   //     // let randomGuestName = generateRandomGuest();
   //     if (isMeeting === false) {
-  //       setParticipantURL(
+  //       setCallerURL(
   //         generateURLParticipant(
   //           extractedBaseURLCaller,
   //           currentUserName,
@@ -640,7 +642,6 @@ const VideoPanelNormal = () => {
         let participantRoomId = localStorage.getItem("participantRoomId");
         let participantUID = localStorage.getItem("participantUID");
         let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-        await setParticipantURL(refinedVideoUrl);
         await setCallerURL(refinedVideoUrl);
         await setIsMeetingHost(true);
         let Data = { RoomID: participantRoomId };
@@ -767,33 +768,19 @@ const VideoPanelNormal = () => {
                           }
                         >
                           {console.log("iframeiframe", isMeetingHost)}
-                          {console.log("iframeiframe refinedURLCheck", {
-                            url: isMeetingHost
-                              ? urlFormeetingapi
-                              : isMeetinVideoCeckForParticipant
-                              ? refinedParticipantVideoUrl
-                              : callAcceptedRecipientID === currentUserID
-                              ? participantURL
-                              : callerURL,
-                          })}
+                          {console.log("iframeiframe", callerURL)}
                           <>
-                            <iframe
-                              src={
-                                isMeetingHost
-                                  ? urlFormeetingapi
-                                  : isMeetinVideoCeckForParticipant
-                                  ? refinedParticipantVideoUrl
-                                  : callAcceptedRecipientID === currentUserID
-                                  ? participantURL
-                                  : callerURL
-                              }
-                              ref={iframeRef}
-                              title="Live Video"
-                              width="100%"
-                              height="100%"
-                              frameBorder="0"
-                              allow="camera;microphone;display-capture"
-                            />
+                            {callerURL !== "" && (
+                              <iframe
+                                src={callerURL}
+                                ref={iframeRef}
+                                title="Live Video"
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                allow="camera;microphone;display-capture"
+                              />
+                            )}
                           </>
                         </div>
                       </Col>
