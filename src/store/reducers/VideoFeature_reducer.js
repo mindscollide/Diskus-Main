@@ -70,6 +70,7 @@ const initialState = {
   participantsVisible: false,
   leaveMeetingOnLogoutResponse: false,
   leaveMeetingVideoOnLogoutResponse: false,
+  makeParticipantAsHost: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -875,6 +876,14 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         allNavigatorVideoStream: action.response,
       };
+
+    // FOR MAKE A PARTICIPANT AS A HOST
+    case actions.MAKE_A_PARTICIPANT_HOST:
+      return {
+        ...state,
+        makeParticipantAsHost: action.response,
+      };
+
     case actions.LEAVE_MEETING_ON_LOGOUT:
       return {
         ...state,
