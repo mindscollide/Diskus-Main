@@ -15,6 +15,7 @@ import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingAction
 import { useMeetingContext } from "../../../context/MeetingContext";
 import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
+import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -27,7 +28,7 @@ const WebNotfication = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setEditorRole } = useMeetingContext();
+  const { setEditorRole, setViewFlag } = useMeetingContext();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -58,6 +59,7 @@ const WebNotfication = ({
     />
   );
 
+  //Mark All As Read API Hit on the Unmount of the Function
   useEffect(() => {
     return () => {
       //API Call Mark As Read
@@ -138,7 +140,12 @@ const WebNotfication = ({
       //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        }
       } else {
         //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
         if (PayLoadData.IsQuickMeeting === true) {

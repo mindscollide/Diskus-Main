@@ -27,6 +27,7 @@ export const MeetingProvider = ({ children }) => {
     talkGroupID: 0,
   });
   const [currentMeetingStatus, setCurrentMeetingStatus] = useState(null);
+  const [viewFlag, setViewFlag] = useState(false);
   useEffect(() => {
     try {
       if (UserProfileData !== null && UserProfileData !== undefined) {
@@ -55,7 +56,9 @@ export const MeetingProvider = ({ children }) => {
         setCurrentMeetingStatus,
         currentMeetingStatus,
         setVideoTalk,
-        videoTalk
+        videoTalk,
+        viewFlag,
+        setViewFlag,
       }}
     >
       {children}
