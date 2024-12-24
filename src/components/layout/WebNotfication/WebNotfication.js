@@ -432,7 +432,29 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 10) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Added as An Organizer
         if (PayLoadData.IsQuickMeeting === true) {
