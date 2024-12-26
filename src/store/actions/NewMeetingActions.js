@@ -7459,6 +7459,13 @@ const meetingNotConductedMQTT = (response) => {
   };
 };
 
+const removeUpComingEvent = (response) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS,
+    response: response
+  }
+}
+
 //Validate Empty String User Availibility For Meeting
 
 const validateEmptyStringUserAvailibilityInit = () => {
@@ -9541,4 +9548,5 @@ export {
   ProposedMeetingViewFlagAction,
   LeaveMeetingSideBarModalAction,
   GetMeetingStatusDataAPI,
+  removeUpComingEvent
 };

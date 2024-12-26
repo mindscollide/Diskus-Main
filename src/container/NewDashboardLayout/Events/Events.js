@@ -39,6 +39,7 @@ const Events = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
+  const removeUpcomingEvents = useSelector((state) => state.NewMeetingreducer.removeUpcomingEventMeeting);
   const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
 
   const { t } = useTranslation();
@@ -517,7 +518,21 @@ const Events = () => {
       console.log(error);
     }
   }, [MeetingStatusEnded]);
-
+  useEffect(() => {
+    try {
+        if(removeUpcomingEvents !== null) {
+          setUpComingEvents((upcomingeventData) => {
+            return upcomingeventData.filter((meetingData) => {
+              return (
+                Number(meetingData.meetingDetails.pK_MDID) !== Number(removeUpcomingEvents)
+              );
+            });
+          });
+        }
+    } catch (error) {
+      
+    }
+  }, [removeUpcomingEvents])
   return (
     <>
       {Spinner === true ? (

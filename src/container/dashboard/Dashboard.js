@@ -117,6 +117,7 @@ import {
   searchNewUserMeeting,
   getDashboardMeetingCountMQTT,
   LeaveCurrentMeeting,
+  removeUpComingEvent,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -1132,6 +1133,10 @@ const Dashboard = () => {
                   setNotificationID(id);
                 }
               }
+            } else if(data.payload.message.toLowerCase() === "UPCOMING_EVENTS_REMOVE".toLowerCase()) {
+             
+                dispatch(removeUpComingEvent(data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID));
+
             }
           } catch (error) {
             console.log(error);
