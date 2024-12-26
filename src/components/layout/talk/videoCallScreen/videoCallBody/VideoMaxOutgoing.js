@@ -3,8 +3,11 @@ import "./VideoMaxOutgoing.css";
 import { Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
+import { useDispatch } from "react-redux";
 
 const VideoOutgoing = () => {
+  const dispatch = useDispatch();
+
   const VideoRecipentData = useSelector(
     (state) => state.VideoMainReducer.VideoRecipentData
   );
@@ -21,6 +24,7 @@ const VideoOutgoing = () => {
 
     // Play the audio when the component mounts
     audioElement.play();
+    console.log("busyCall");
 
     // const timer = setTimeout(() => {
     //   // Dispatch action to update global state
@@ -31,7 +35,9 @@ const VideoOutgoing = () => {
     // }, timeValue)
 
     return () => {
+      console.log("busyCall");
       audioElement.pause();
+      dispatch(videoOutgoingCallFlag(false));
       audioElement.currentTime = 0;
       // clearTimeout(timer)
     };

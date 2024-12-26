@@ -50,6 +50,10 @@ import {
   globalNavigatorVideoStream,
   leaveMeetingOnlogout,
   leaveMeetingVideoOnlogout,
+  toggleParticipantsVisibility,
+  participantWaitingListBox,
+  participantListWaitingListMainApi,
+  makeParticipantHost,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -820,18 +824,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST".toLowerCase()
             ) {
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
-              );
-
-              if (isMeetingVideo) {
-                if (data.payload.isGuest) {
-                  dispatch(admitGuestUserRequest(data.payload));
-                } else {
-                  dispatch(participantWaitingList(data.payload));
-                }
-                dispatch(guestJoinPopup(true));
-              }
+              joinRequestForMeetingVideo(data);
             } else if (
               data.payload.message.toLowerCase() ===
               "VIDEO_PARTICIPANT_LEFT".toLowerCase()
@@ -884,7 +877,7 @@ const Dashboard = () => {
                 isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
-              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.setItem("refinedVideoGiven", false);
@@ -975,10 +968,13 @@ const Dashboard = () => {
                 localStorage.getItem("currentMeetingID")
               );
               let userIDCurrent = Number(localStorage.getItem("userID"));
+              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
               if (
+                isMeetingVideo &&
                 Number(currentMeetingID) === Number(data.payload.meetingID) &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
                 dispatch(globalStateForAudioStream(true));
                 dispatch(globalStateForVideoStream(true));
@@ -1051,38 +1047,17 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
             ) {
-              console.log("New Host Information", data.payload);
-              localStorage.setItem(
-                "isHost",
-                JSON.stringify(data.payload.newHost.isHost)
-              );
-              const newHostUserID = data.payload.newHost.userID;
-
-              dispatch(checkHostNow(newHostUserID));
-              localStorage.setItem("currentHostUserID", newHostUserID);
-              console.log("Host ID set in localStorage: ", newHostUserID);
+              dispatch(makeParticipantHost(data.payload, true));
             } else if (
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
-              const meetingHost = {
-                isHost: true,
-                isHostId: Number(localStorage.getItem("userID")),
-                isDashboardVideo: true,
-              };
-              dispatch(makeHostNow(meetingHost));
-
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
             ) {
               try {
                 dispatch(meetingReminderNotifcation(data.payload));
-
                 if (data.viewable) {
                   setNotification({
                     ...notification,
@@ -2386,10 +2361,13 @@ const Dashboard = () => {
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           localStorage.setItem("newCallerID", callerID);
           if (Number(data.senderID) !== Number(createrID)) {
-            if (Number(createrID) !== data.payload.recepientID) {
-              localStorage.setItem("unansweredFlag", true);
+          console.log("mqtt", callTypeID);
+          if (Number(createrID) !== data.payload.recepientID) {
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("unansweredFlag", true);
             }
-            setNotification({
+          console.log("mqtt", callTypeID);
+          setNotification({
               ...notification,
               notificationShow: true,
               message: t("The-call-was-unanswered"),
@@ -2402,29 +2380,38 @@ const Dashboard = () => {
               CallStatus: "Unanswered",
               RoomID: data.payload.roomID,
             };
-            let existingObjectIndex = existingData.findIndex(
+          console.log("mqtt", callTypeID);
+          let existingObjectIndex = existingData.findIndex(
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
                 item.RoomID === newData.RoomID
             );
             if (existingObjectIndex !== -1) {
-              existingData[existingObjectIndex] = newData;
+          console.log("mqtt", callTypeID);
+          existingData[existingObjectIndex] = newData;
             } else {
-              existingData.push(newData);
+          console.log("mqtt", callTypeID);
+          existingData.push(newData);
             }
-            localStorage.setItem(
+          console.log("mqtt", callTypeID);
+          localStorage.setItem(
               "callerStatusObject",
               JSON.stringify(existingData)
             );
           }
+          console.log("mqtt", callTypeID);
           if (callerID === newCallerID) {
-            if (isMeeting) {
-              if (!isMeetingVideo) {
-                localStorage.setItem("activeCall", false);
+          console.log("mqtt", callTypeID);
+          if (isMeeting) {
+          console.log("mqtt", callTypeID);
+          if (!isMeetingVideo) {
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("activeCall", false);
               }
             } else {
-              localStorage.setItem("activeCall", false);
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("activeCall", false);
             }
           }
           console.log("mqtt", callTypeID);
@@ -2929,6 +2916,31 @@ const Dashboard = () => {
     } catch (error) {}
   };
 
+  async function joinRequestForMeetingVideo(mqttData) {
+    try {
+      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      console.log("Mqtt Data", currentMeetingID);
+
+      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      console.log("Mqtt Data");
+      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+        if (isMeetingVideo) {
+          console.log("Mqtt Data");
+
+          if (mqttData.payload.isGuest) {
+            console.log("Mqtt Data");
+
+            dispatch(admitGuestUserRequest(mqttData.payload));
+          } else {
+            dispatch(participantWaitingList(mqttData.payload));
+          }
+          console.log("Mqtt Data");
+
+          dispatch(guestJoinPopup(true));
+        }
+    } catch {}
+  }
+
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
   };
@@ -3045,28 +3057,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3083,8 +3096,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3115,25 +3128,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3149,12 +3162,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

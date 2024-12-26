@@ -158,6 +158,15 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 )
               );
               await dispatch(videoOutgoingCallFlag(true));
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: false,
+              };
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               localStorage.setItem("initiateVideoCall", true);
               localStorage.setItem("isMeeting", false);
               localStorage.setItem("meetingTitle", "");
@@ -690,7 +699,7 @@ const LeaveCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_LeaveCall_01".toLowerCase()
                 )
             ) {
-              localStorage.setItem("callTypeID",0)
+              localStorage.setItem("callTypeID", 0);
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage
