@@ -29,6 +29,7 @@ import {
   validateEncyptedStringUserDataRoom,
   leaveFileSharingRM,
   leaveFolderSharingRM,
+  GetDataRoomFileSharedPersmission,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -38,6 +39,7 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
+import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -831,83 +833,73 @@ const getDocumentsAndFolders_fail = (message) => {
   };
 };
 
-// Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let Data = {
-    UserID: parseInt(createrID),
-    OrganizationID: parseInt(OrganizationID),
-    StatusID: parseInt(statusID),
-    SortBy: sort !== null && sort !== undefined ? sort : 1,
-    isDescending: order !== null && order !== undefined ? order : true,
-    sRow: 0,
-    Length: 10,
-  };
-  return (dispatch) => {
+  return async (dispatch) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const userID = localStorage.getItem("userID");
+    const organizationID = localStorage.getItem("organizationID");
+
+    const Data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      StatusID: parseInt(statusID),
+      SortBy: sort ?? 1,
+      isDescending: order ?? true,
+      sRow: 0,
+      Length: 10,
+    };
+
     if (no === 1) {
       dispatch(getDocumentsAndFolders_init());
     }
-    let form = new FormData();
-    form.append(
-      "RequestMethod",
-      getDocumentsAndFolderRequestMethod.RequestMethod
-    );
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getDocumentsAndFolderApi(navigate, statusID, t, no, sort, order)
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()
-            ) {
-              dispatch(
-                getDocumentsAndFolders_success(response.data.responseResult, "")
-              );
-              if (statusID === 1) {
-                localStorage.setItem("setTableView", 1);
-              } else if (statusID === 2) {
-                localStorage.setItem("setTableView", 2);
-              } else if (statusID === 3) {
-                localStorage.setItem("setTableView", 3);
-              }
-            } else if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase()
-            ) {
-              dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
-            } else if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()
-            ) {
-              dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
-            }
+
+    try {
+      const form = new FormData();
+      form.append(
+        "RequestMethod",
+        getDocumentsAndFolderRequestMethod.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(Data));
+
+      const response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          getDocumentsAndFolderApi(navigate, statusID, t, no, sort, order)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const result = response.data.responseResult;
+        if (result.isExecuted) {
+          const message = result.responseMessage.toLowerCase();
+          if (message === "dataroom_dataroommanager_getdocumentsandfolders_01") {
+            dispatch(getDocumentsAndFolders_success(result, ""));
+            localStorage.setItem("setTableView", statusID);
+            return result; // Return the successful result
+          } else if (
+            message === "dataroom_dataroommanager_getdocumentsandfolders_02"
+          ) {
+            dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
           } else {
             dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         }
-      })
-      .catch((error) => {
+      } else {
         dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
+      throw error; // Re-throw error for further handling
+    }
   };
 };
+
 
 // Get All Data from scroll behaviour
 const getDocumentsAndFolderApiScrollbehaviour = (
@@ -3945,6 +3937,108 @@ const folderRemoveMQTT = (response) => {
     response: response,
   };
 };
+
+//DataRoom FileSharing Permission
+const DataRoomFileSharingPermissionInit = () => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_INIT,
+  };
+};
+
+const DataRoomFileSharingPermissionSuccess = (response, message) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DataRoomFileSharingPermissionFailed = (message) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_FAILED,
+    message: message,
+  };
+};
+
+const DataRoomFileSharingPermissionAPI = (navigate, t, Data, PermissionID) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(DataRoomFileSharingPermissionInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetDataRoomFileSharedPersmission.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DataRoomFileSharingPermissionAPI(navigate, t, Data));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              DataRoomFileSharingPermissionSuccess(
+                response.data.responseResult,
+                ""
+              )
+            );
+            //Setting the Permission ID
+            PermissionID = response.data.responseResult.permissionID;
+            //Open File Viewer Open According to Permission ID
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_02".toLowerCase()
+              )
+          ) {
+            dispatch(DataRoomFileSharingPermissionFailed(""));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+            );
+          } else {
+            dispatch(
+              DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
 export {
   folderRemoveMQTT,
   fileRemoveMQTT,
@@ -3990,4 +4084,5 @@ export {
   showFileDetailsModal,
   validateUserAvailibilityEncryptedStringDataRoomApi,
   BreadCrumbsList,
+  DataRoomFileSharingPermissionAPI,
 };

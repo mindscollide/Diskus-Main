@@ -134,8 +134,16 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { editorRole, setEditorRole, setVideoTalk, videoTalk } =
-    useContext(MeetingContext);
+  const {
+    editorRole,
+    setEditorRole,
+    setVideoTalk,
+    videoTalk,
+    viewAdvanceMeetingModal,
+    setViewAdvanceMeetingModal,
+    viewProposeDatePoll,
+    setViewProposeDatePoll,
+  } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
@@ -159,6 +167,8 @@ const NewMeeting = () => {
   const scheduleMeetingsPageFlag = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
+
+  console.log(scheduleMeetingsPageFlag, "scheduleMeetingsPageFlag");
   const mqtMeetingPrRemoved = useSelector(
     (state) => state.NewMeetingreducer.mqtMeetingPrRemoved
   );
@@ -203,6 +213,11 @@ const NewMeeting = () => {
   );
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+
+  console.log(
+    viewAdvanceMeetingsPublishPageFlag,
+    "viewAdvanceMeetingsPublishPageFlag"
   );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
@@ -313,10 +328,8 @@ const NewMeeting = () => {
   });
   const [startMeetingButton, setStartMeetingButton] = useState([]);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
-  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);

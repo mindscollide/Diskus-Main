@@ -96,6 +96,8 @@ const Polling = () => {
   const PollsReducerviewVotesDetails = useSelector(
     (state) => state.PollsReducer.viewVotesDetails
   );
+
+  console.log(PollsReducerviewVotesDetails, "PollsReducerviewVotes");
   const PollsReducerdeletePollsModal = useSelector(
     (state) => state.PollsReducer.deletePollsModal
   );
@@ -384,7 +386,7 @@ const Polling = () => {
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
-
+    console.log(check, "PollsReducerviewVotes");
     if (Object.keys(record).length > 0) {
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
@@ -1166,7 +1168,7 @@ const Polling = () => {
           <Col sm={12} md={12} lg={12}>
             <Table
               column={PollTableColumns}
-              scroll={{ y: rows.length > 0 ? "65vh" : "auto" }}
+              scroll={{ y: rows.length > 0 ? "55vh" : "auto" }}
               pagination={false}
               className={"Polling_main_table"}
               rows={rows}

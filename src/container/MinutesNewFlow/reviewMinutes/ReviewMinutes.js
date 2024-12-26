@@ -758,7 +758,7 @@ const ReviewMinutes = () => {
       <Row className='my-3 d-flex align-items-center'>
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
-            {currentMeetingMinutesToReviewData.title}
+            {currentMeetingMinutesToReviewData?.title}
           </span>
         </Col>
       </Row>

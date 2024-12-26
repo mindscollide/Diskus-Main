@@ -1654,12 +1654,18 @@ export const isSameAsToday = (utcDateString) => {
 };
 
 export const dateConverterIntoUTCForDataroom = (newDate, no) => {
+  // Check if newDate is a Date instance, return empty string if true
+  if (!(newDate instanceof Date)) {
+    return ''; // Return empty string if newDate is not a Date instance
+  }
+
   if (no === 1) {
     newDate.setHours(0, 0, 0, 0); // Set to 00:00:00 in local time
   } else {
     newDate.setHours(23, 58, 59, 0); // Set to 23:58:59 in local time
   }
   console.log(newDate, no, "newDatenewDate");
+
   // Convert to UTC components
   const year = newDate.getUTCFullYear();
   const month = String(newDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -1674,6 +1680,7 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   console.log(formattedDate, "UTC formatted date");
   return formattedDate;
 };
+
 
 //Review Minutes Send Date Format
 
@@ -1765,7 +1772,6 @@ export function ProposedMeetingDateViewFormat(inputDate, language) {
 
   return formattedDate;
 }
-
 export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
   if (
     !dateData ||
@@ -1777,36 +1783,45 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
   }
 
   try {
-    // Parse the date
-    const parsedDate = new Date(
-      `${dateData.proposedDate.substring(
-        0,
-        4
-      )}-${dateData.proposedDate.substring(
-        4,
-        6
-      )}-${dateData.proposedDate.substring(6, 8)}`
-    );
+    // Parse the UTC date and time into Date objects
+    const datePart = `${dateData.proposedDate.substring(
+      0,
+      4
+    )}-${dateData.proposedDate.substring(
+      4,
+      6
+    )}-${dateData.proposedDate.substring(6, 8)}`;
 
-    // Parse the times
-    const parsedStartTime = new Date(
-      `1970-01-01T${dateData.startTime.substring(
+    const startDateTimeUTC = new Date(
+      `${datePart}T${dateData.startTime.substring(
         0,
         2
       )}:${dateData.startTime.substring(2, 4)}:${dateData.startTime.substring(
         4,
         6
-      )}`
+      )}Z`
     );
 
-    const parsedEndTime = new Date(
-      `1970-01-01T${dateData.endTime.substring(
+    const endDateTimeUTC = new Date(
+      `${datePart}T${dateData.endTime.substring(
         0,
         2
       )}:${dateData.endTime.substring(2, 4)}:${dateData.endTime.substring(
         4,
         6
-      )}`
+      )}Z`
+    );
+
+    // Convert the UTC times to local timezone
+    const startDateTimeLocal = new Date(
+      startDateTimeUTC.toLocaleString("en-US", {
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      })
+    );
+    const endDateTimeLocal = new Date(
+      endDateTimeUTC.toLocaleString("en-US", {
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      })
     );
 
     // Format the date and times based on the language
@@ -1822,9 +1837,9 @@ export function ProposedMeetingViewDateFormatWithTime(dateData, lang) {
       hour12: true,
     });
 
-    const proposedDate = dateFormatter.format(parsedDate);
-    const startTime = timeFormatter.format(parsedStartTime);
-    const endTime = timeFormatter.format(parsedEndTime);
+    const proposedDate = dateFormatter.format(startDateTimeLocal); // Same for both
+    const startTime = timeFormatter.format(startDateTimeLocal);
+    const endTime = timeFormatter.format(endDateTimeLocal);
 
     return `${startTime} - ${endTime} | ${proposedDate}`;
   } catch (error) {

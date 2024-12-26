@@ -26,73 +26,155 @@ const getOrganizationLevelSettingFail = (message) => {
   };
 };
 const getOrganizationLevelSetting = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-  let data = {
-    OrganizationID: organizationID,
-  };
   return (dispatch) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const organizationID = JSON.parse(localStorage.getItem("organizationID"));
+
+    const data = {
+      OrganizationID: organizationID,
+    };
+
     dispatch(getOrganizationLevelSettingInit());
-    let form = new FormData();
+
+    const form = new FormData();
     form.append("RequestMethod", getOrganizationLevelSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
-          dispatch(getOrganizationLevelSetting(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage ===
-              "Settings_SettingsServiceManager_GetOrganizationSettings_01"
-            ) {
-              dispatch(
-                getOrganizationLevelSettingSuccess(
-                  response.data.responseResult.organizationSettings,
-                  ""
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Settings_SettingsServiceManager_GetOrganizationSettings_02"
-            ) {
-              dispatch(
-                getOrganizationLevelSettingSuccess(
-                  response.data.responseResult.organizationSettings,
-                  t("No-records-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Settings_SettingsServiceManager_GetOrganizationSettings_03"
-            ) {
-              dispatch(
-                getOrganizationLevelSettingSuccess(
-                  response.data.responseResult.organizationSettings,
-                  t("No-records-found")
-                )
-              );
+
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "post",
+        url: settingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t))
+              .then(() => dispatch(getOrganizationLevelSetting(navigate, t)))
+              .then(resolve)
+              .catch(reject);
+          } else if (response.data.responseCode === 200) {
+            const result = response.data.responseResult;
+            if (result.isExecuted) {
+              const message = result.responseMessage.toLowerCase();
+
+              if (
+                message ===
+                "Settings_SettingsServiceManager_GetOrganizationSettings_01".toLowerCase()
+              ) {
+                dispatch(
+                  getOrganizationLevelSettingSuccess(
+                    result.organizationSettings,
+                    ""
+                  )
+                );
+                resolve(result.organizationSettings);
+              } else if (
+                message ===
+                  "Settings_SettingsServiceManager_GetOrganizationSettings_02".toLowerCase() ||
+                message ===
+                  "Settings_SettingsServiceManager_GetOrganizationSettings_03".toLowerCase()
+              ) {
+                dispatch(
+                  getOrganizationLevelSettingSuccess(
+                    null,
+                    t("No-records-found")
+                  )
+                );
+                reject(result.organizationSettings);
+              } else {
+                dispatch(
+                  getOrganizationLevelSettingFail(t("No-records-found"))
+                );
+                reject(new Error(t("No-records-found")));
+              }
+            } else {
+              dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+              reject(new Error(t("No-records-found")));
             }
           } else {
             dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+            reject(new Error(t("No-records-found")));
           }
-        } else {
+        })
+        .catch((error) => {
           dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
-        }
-      })
-      .catch((response) => {
-        dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
-      });
+          reject(error);
+        });
+    });
   };
 };
+
+// const getOrganizationLevelSetting = (navigate, t) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+//   let data = {
+//     OrganizationID: organizationID,
+//   };
+//   return (dispatch) => {
+//     dispatch(getOrganizationLevelSettingInit());
+//     let form = new FormData();
+//     form.append("RequestMethod", getOrganizationLevelSettings.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     axios({
+//       method: "post",
+//       url: settingApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           dispatch(RefreshToken(navigate, t));
+//           dispatch(getOrganizationLevelSetting(navigate, t));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage ===
+//               "Settings_SettingsServiceManager_GetOrganizationSettings_01"
+//             ) {
+//               dispatch(
+//                 getOrganizationLevelSettingSuccess(
+//                   response.data.responseResult.organizationSettings,
+//                   ""
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage ===
+//               "Settings_SettingsServiceManager_GetOrganizationSettings_02"
+//             ) {
+//               dispatch(
+//                 getOrganizationLevelSettingSuccess(
+//                   response.data.responseResult.organizationSettings,
+//                   t("No-records-found")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage ===
+//               "Settings_SettingsServiceManager_GetOrganizationSettings_03"
+//             ) {
+//               dispatch(
+//                 getOrganizationLevelSettingSuccess(
+//                   response.data.responseResult.organizationSettings,
+//                   t("No-records-found")
+//                 )
+//               );
+//             }
+//           } else {
+//             dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+//           }
+//         } else {
+//           dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+//       });
+//   };
+// };
 
 const updateOrganizationLevelSettingInit = () => {
   return {

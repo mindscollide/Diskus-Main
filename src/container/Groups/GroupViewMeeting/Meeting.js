@@ -124,11 +124,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           setViewMeetingModal,
           setEditMeetingModal,
           setCalendarViewModal,
-          setSceduleMeeting,
-          1
+          // setSceduleMeeting,
+          6
         )
       );
-      setViewMeetingModal(true);
+      // setViewMeetingModal(true);
     }
   };
   const handleEditMeeting = async (meetingID, isQuickMeeting) => {
@@ -141,24 +141,44 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         setViewMeetingModal,
         setEditMeetingModal,
         setCalendarViewModal,
-        setSceduleMeeting,
+        // setSceduleMeeting,
         2
       )
     );
-    setEditMeetingModal(true);
+    // setEditMeetingModal(true);
   };
   useEffect(() => {
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
-    };
-    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    if (
+      JSON.parse(localStorage.getItem("NotificationClickAddedIntoGroup")) ===
+      true
+    ) {
+      let NotificationClickGroupID = localStorage.getItem(
+        "NotifcationClickViewGroupID"
+      );
+      let searchData = {
+        GroupID: Number(NotificationClickGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    } else {
+      let searchData = {
+        GroupID: Number(ViewGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    }
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
@@ -437,6 +457,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "host",
       align: "center",
       width: "90px",
+      ellipsis: true,
       onHeaderCell: () => ({
         onClick: () => {
           setMeetingOrganizerSort((order) => {
@@ -574,7 +595,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "55px",
+      width: "85px",
       align: "center",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(

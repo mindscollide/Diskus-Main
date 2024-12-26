@@ -12,7 +12,6 @@ const Loader = ({ progress }) => {
   const downloadMessageIndex = useSelector(
     (state) => state.DataRoomReducer.downloadMessage
   );
-  console.log(downloadMessageIndex, "downloadMessageIndexdownloadMessageIndex");
   const messages = [
     t("Securing-your-session-one-step-at-a-time"),
     t("Deploying-multiple-encryption-layers"),

@@ -19,66 +19,47 @@ const timeZoneFail = (message) => {
 };
 
 const getTimeZone = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    const token = JSON.parse(localStorage.getItem("token"));
 
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestMethod", getTimeZOne.RequestMethod);
+    try {
+      const form = new FormData();
+      form.append("RequestMethod", getTimeZOne.RequestMethod);
 
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(getTimeZone((navigate, t)));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Settings_SettingsServiceManager_GetAllTimeZones_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                timeZoneSuccess(
-                  response.data.responseResult.timeZones,
-                  ""
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Settings_SettingsServiceManager_GetAllTimeZones_02".toLowerCase()
-                )
-            ) {
-              dispatch(timeZoneFail(t("No-records-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Settings_SettingsServiceManager_GetAllTimeZones_03".toLowerCase()
-                )
-            ) {
-              dispatch(timeZoneFail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(timeZoneFail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(timeZoneFail(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(timeZoneFail(t("Something-went-wrong")));
+      const response = await axios.post(settingApi, form, {
+        headers: { _token: token },
       });
+
+      const { responseCode, responseResult } = response.data;
+
+      if (responseCode === 417) {
+        // Refresh token and retry the API call
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(getTimeZone(navigate, t));
+      }
+
+      if (responseCode === 200 && responseResult.isExecuted) {
+        const message = responseResult.responseMessage.toLowerCase();
+
+        // Dynamic handling of response messages
+        if (message.includes("settings_settingsservicemanager_getalltimezones_01".toLowerCase())) {
+          dispatch(timeZoneSuccess(responseResult.timeZones, ""));
+          return responseResult.timeZones; // Return successful result
+        } else if (message.includes("settings_settingsservicemanager_getalltimezones_02".toLowerCase())) {
+          dispatch(timeZoneFail(t("No-records-found")));
+        } else if (message.includes("settings_settingsservicemanager_getalltimezones_03".toLowerCase())) {
+          dispatch(timeZoneFail(t("Something-went-wrong")));
+        } else {
+          dispatch(timeZoneFail(t("Unexpected-response-message")));
+        }
+      } else {
+        dispatch(timeZoneFail(t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(timeZoneFail(t("Something-went-wrong")));
+      throw error; // Rethrow error for higher-level handling
+    }
   };
 };
+
 export default getTimeZone;

@@ -2318,5 +2318,11 @@
   "The-meeting-has-ended": "The meeting has ended",
   "Has-archived-the-committee": "Has archived the committee",
   "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
-  "Required-fields-should-not-be-empty": "Required fields should not be empty"
+  "Required-fields-should-not-be-empty": "Required fields should not be empty",
+  "Start-date-is-missing-in-agenda": "Start date is missing in agenda",
+  "End-date-is-missing-in-agenda": "End-date is missing in agenda",
+  "Presenter-is-missing-in-agenda": "Presenter is missing in agenda",
+  "URL-is-missing-in-agenda": "URL is missing in agenda",
+  "UserID/Note-is-missing-in-agenda": "UserID/Note is missing in agenda",
+  "Title-is-missing-in-agenda": "Title is missing in agenda"
 }

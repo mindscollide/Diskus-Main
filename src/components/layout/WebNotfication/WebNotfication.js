@@ -9,22 +9,57 @@ import { useSelector } from "react-redux";
 import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetMeetingStatusDataAPI } from "../../../store/actions/NewMeetingActions";
+import {
+  GetMeetingStatusDataAPI,
+  proposedMeetingDatesGlobalFlag,
+  scheduleMeetingPageFlag,
+  searchNewUserMeeting,
+  showSceduleProposedMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeDateMeetingPageFlag,
+} from "../../../store/actions/NewMeetingActions";
 import { useMeetingContext } from "../../../context/MeetingContext";
-import { XLg } from "react-bootstrap-icons";
+import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
+import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
+import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
+import {
+  pendingApprovalPage,
+  reviewMinutesPage,
+} from "../../../store/actions/Minutes_action.js";
+import { useGroupsContext } from "../../../context/GroupsContext.js";
+import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
+import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
+import { openDocumentViewer } from "../../../commen/functions/utils.js";
+import {
+  DataRoomFileSharingPermissionAPI,
+  getFolderDocumentsApi,
+} from "../../../store/actions/DataRoom_actions.js";
+import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
+import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
   setwebNotificationData, // Set State for Web Notification Data
   totalCountNotification, // Total number of Notification
   fetchNotifications, // Scrolling Function on Lazy Loading,
+  unReadCountNotification, //Unread Top Count Number State on Bell Icon
+  setUnReadCountNotification, //Unread Top Count Number State on Bell Icon Set State
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { editorRole, setEditorRole } = useMeetingContext();
+  const {
+    setEditorRole,
+    setViewFlag,
+    setViewAdvanceMeetingModal,
+    setViewProposeDatePoll,
+  } = useMeetingContext();
+  //Groups Context
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const location = useLocation();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -54,6 +89,26 @@ const WebNotfication = ({
       spin
     />
   );
+
+  //Mark All As Read API Hit on the Unmount of the Function
+  useEffect(() => {
+    return () => {
+      //API Call Mark As Read
+      if (unReadCountNotification > 0) {
+        const currentDateTime = getCurrentDateTimeMarkAsReadNotification();
+        let data = { ReadOnDateTime: currentDateTime };
+        dispatch(
+          DiskusWebNotificationMarkAsReadAPI(
+            navigate,
+            t,
+            data,
+            setUnReadCountNotification,
+            setwebNotificationData
+          )
+        );
+      }
+    };
+  }, []);
 
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {
@@ -113,24 +168,15 @@ const WebNotfication = ({
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
-      //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
-      } else {
-        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+        //If you already on the Meeting Page
         if (PayLoadData.IsQuickMeeting === true) {
-          navigate("/Diskus/Meeting");
-          localStorage.setItem("QuicMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationQuickMeetingID",
-            PayLoadData.MeetingID
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
           );
         } else {
-          console.log("NotificationDataNotificationData");
-          //Advance Meeting
-          navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -143,16 +189,11 @@ const WebNotfication = ({
               t,
               Data,
               setEditorRole,
-              PayLoadData.IsQuickMeeting
+              true,
+              setViewAdvanceMeetingModal
             )
           );
         }
-      }
-    } else if (NotificationData.notificationActionID === 2) {
-      //If you already on the Meeting Page
-      // Check if the current URL contains the target path
-      if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
       } else {
         //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
         if (PayLoadData.IsQuickMeeting === true) {
@@ -163,8 +204,27 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
         } else {
+          //Advance Meeting
           navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+        }
+      }
+    } else if (NotificationData.notificationActionID === 2) {
+      // Check if the current URL contains the target path
+      if (currentURL.includes("/Diskus/Meeting")) {
+        //If you already on the Meeting Page
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -177,16 +237,58 @@ const WebNotfication = ({
               t,
               Data,
               setEditorRole,
-              PayLoadData.IsQuickMeeting
+              true,
+              setViewAdvanceMeetingModal
             )
           );
+        }
+      } else {
+        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+        if (PayLoadData.IsQuickMeeting === true) {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 3) {
       //If you already on the Meeting Page
       // Check if the current URL contains the target path
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
         if (PayLoadData.IsQuickMeeting === true) {
@@ -205,32 +307,17 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              PayLoadData.IsQuickMeeting
-            )
-          );
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 4) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
-      } else {
         if (PayLoadData.IsQuickMeeting === true) {
-          //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
-          navigate("/Diskus/Meeting");
-          localStorage.setItem("QuicMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationQuickMeetingID",
-            PayLoadData.MeetingID
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
           );
         } else {
-          navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
@@ -243,9 +330,29 @@ const WebNotfication = ({
               t,
               Data,
               setEditorRole,
-              PayLoadData.IsQuickMeeting
+              true,
+              setViewAdvanceMeetingModal
             )
           );
+        }
+      } else {
+        if (PayLoadData.IsQuickMeeting === true) {
+          //Notification For Meeting Ended For Participant (Create Update Started scenarios are same A/c SRS)
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("QuicMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationQuickMeetingID",
+            PayLoadData.MeetingID
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
         }
       }
     } else if (NotificationData.notificationActionID === 5) {
@@ -275,7 +382,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 7) {
       if (currentURL.includes("/Diskus/Minutes")) {
-        return; // Perform no action if the URL matches
+        //Notification for being added as a minute reviewer
+        localStorage.setItem("MinutesOperations", true);
+        localStorage.setItem(
+          "NotificationClickMinutesMeetingID",
+          PayLoadData.MeetingID
+        );
+        dispatch(reviewMinutesPage(true));
+        dispatch(pendingApprovalPage(false));
       } else {
         //Notification for being added as a minute reviewer
         navigate("/Diskus/Minutes");
@@ -294,7 +408,29 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 9) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Added as An Participant
         if (PayLoadData.IsQuickMeeting === true) {
@@ -312,11 +448,35 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         }
       }
     } else if (NotificationData.notificationActionID === 10) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Added as An Organizer
         if (PayLoadData.IsQuickMeeting === true) {
@@ -334,11 +494,35 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         }
       }
     } else if (NotificationData.notificationActionID === 11) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        if (PayLoadData.IsQuickMeeting === true) {
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+          );
+        } else {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
       } else {
         //Notification For Added as An Agenda Contributor
         if (PayLoadData.IsQuickMeeting === true) {
@@ -356,12 +540,25 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         }
       }
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOperations", true);
+        //Before Date Selection Check
+        localStorage.setItem("BeforeProposedDateSelectedCheck", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+        setViewProposeDatePoll(true);
+        dispatch(proposedMeetingDatesGlobalFlag(true));
+        dispatch(viewProposeDateMeetingPageFlag(true));
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
         //Notification For Proposed Meeting Request
         navigate("/Diskus/Meeting");
@@ -375,7 +572,36 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 14) {
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationClickMeetingID",
+          PayLoadData.MeetingID
+        );
+        //Here i will apply that if polls are not expired i will redirect it to the voting page
+        // Get the current date in "YYYYMMDD" format
+        const currentDate = new Date();
+        const formattedCurrentDate = `${currentDate.getFullYear()}${String(
+          currentDate.getMonth() + 1
+        ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
+
+        // Compare stored date with the current date
+        if (PayLoadData.DeadlineDate <= formattedCurrentDate) {
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(true);
+          dispatch(proposedMeetingDatesGlobalFlag(true));
+          dispatch(viewProposeDateMeetingPageFlag(true));
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        } else {
+          //Other wise Move to Proposed meeting listing page
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+          setViewProposeDatePoll(false);
+          dispatch(proposedMeetingDatesGlobalFlag(false));
+          dispatch(viewProposeDateMeetingPageFlag(false));
+          //here After Navigating if the polls has been expired remove the date of the Proposed meeting from Local storage
+          localStorage.removeItem(
+            "ProposedMeetOperationsDateSelectedSendResponseByDate"
+          );
+        }
       } else {
         //Notification When slot is selected by the participant. date wala kam bh yahe ho ga
         navigate("/Diskus/Meeting");
@@ -392,7 +618,14 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 15) {
       //Notification that Proposed Meeting Date Organizer work
       if (currentURL.includes("/Diskus/Meeting")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("ProposedMeetingOrganizer", true);
+        localStorage.setItem(
+          "ProposedMeetingOrganizerMeetingID",
+          PayLoadData.MeetingID
+        );
+        let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+        dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+        dispatch(showSceduleProposedMeeting(true));
       } else {
         //Call Status API to see what is the status of the meeting eighter proposed or published
         navigate("/Diskus/Meeting");
@@ -406,7 +639,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 16) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Added in Group
         navigate("/Diskus/groups");
@@ -426,7 +666,8 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 18) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickArchivedGroup", true);
+        setShowModal(true);
       } else {
         //Notificaiton For Groups Archived
         navigate("/Diskus/groups");
@@ -435,7 +676,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 19) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Groups InActivated
         navigate("/Diskus/groups");
@@ -448,7 +696,14 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 20) {
       if (currentURL.includes("/Diskus/groups")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickAddedIntoGroup", true);
+        localStorage.setItem(
+          "NotifcationClickViewGroupID",
+          PayLoadData.GroupID
+        );
+        // For Notification Added in the Group
+        setViewGroupPage(true);
+        dispatch(viewGroupPageFlag(true));
       } else {
         //Notificaiton For Groups Activated
         navigate("/Diskus/groups");
@@ -461,7 +716,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 21) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notification for being Added in the Committee
         navigate("/Diskus/committee");
@@ -480,7 +741,8 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 23) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeArchived", true);
+        setShowModal(true);
       } else {
         //Notificaiton For  Committee Archived
         navigate("/Diskus/committee");
@@ -488,7 +750,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 24) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notificaiton For Committee InActive
         navigate("/Diskus/committee");
@@ -500,7 +768,13 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 25) {
       if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+        localStorage.setItem("NotificationClickCommitteeOperations", true);
+        localStorage.setItem(
+          "NotifcationClickViewCommitteeID",
+          PayLoadData.CommitteeID
+        );
+        setViewGroupPage(true);
+        dispatch(viewCommitteePageFlag(true));
       } else {
         //Notificaiton For Committee Active using the same above 24 logic as the operation End result is same
         navigate("/Diskus/committee");
@@ -511,22 +785,52 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 26) {
-      if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+      if (currentURL.includes("/Diskus/resolution")) {
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 27) {
       if (currentURL.includes("/Diskus/resolution")) {
-        return; // Perform no action if the URL matches
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Non-Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
-      if (currentURL.includes("/Diskus/committee")) {
+      if (currentURL.includes("/Diskus/resolution")) {
         return; // Perform no action if the URL matches
       } else {
         //Notification for Added as Voter in the resolution
@@ -539,6 +843,12 @@ const WebNotfication = ({
       } else {
         //Notification for Poll has been Created submit your response
         navigate("/Diskus/polling");
+        // let userID = localStorage.getItem("userID");
+        // let data = {
+        //   PollID: Number(PayLoadData.PollID),
+        //   UserID: parseInt(userID),
+        // };
+        // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       }
     } else if (NotificationData.notificationActionID === 30) {
       if (currentURL.includes("/Diskus/polling")) {
@@ -550,8 +860,38 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        let PermissionID = 0;
+        //Api Call For Extracting the Permission ID
+        // let Data = {
+        //   FileFolderID: Number(PayLoadData.FileID),
+        //   IsFolder: false,
+        // };
+        // dispatch(
+        //   DataRoomFileSharingPermissionAPI(navigate, t, Data, PermissionID)
+        // );
+        console.log(PermissionID, "PermissionID");
+        const pdfData = {
+          taskId: Number(PayLoadData.FileID),
+          commingFrom: 4,
+          fileName: PayLoadData.FileName,
+          attachmentID: Number(PayLoadData.FileID),
+          isPermission: 1,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        let ext = PayLoadData.FileName.split(".").pop();
+        openDocumentViewer(
+          ext,
+          pdfDataJson,
+          dispatch,
+          navigate,
+          t,
+          Number(PayLoadData.FileID)
+        );
       } else {
         //Notification For Being File shared to you as viewer
         navigate("/Diskus/dataroom");
@@ -560,8 +900,28 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
       }
     } else if (NotificationData.notificationActionID === 34) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        const pdfData = {
+          taskId: Number(PayLoadData.FileID),
+          commingFrom: 4,
+          fileName: PayLoadData.FileName,
+          attachmentID: Number(PayLoadData.FileID),
+          isPermission: 2,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        let ext = PayLoadData.FileName.split(".").pop();
+        openDocumentViewer(
+          ext,
+          pdfDataJson,
+          dispatch,
+          navigate,
+          t,
+          Number(PayLoadData.FileID)
+        );
       } else {
         //Notification For Being File shared to you as Editor
         navigate("/Diskus/dataroom");
@@ -570,8 +930,14 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
       }
     } else if (NotificationData.notificationActionID === 35) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        dispatch(
+          getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        );
       } else {
         //Notification for sharing folder as a viewer
         navigate("/Diskus/dataroom");
@@ -579,8 +945,14 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
       }
     } else if (NotificationData.notificationActionID === 36) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        dispatch(
+          getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        );
       } else {
         //Notification for sharing folder as a Editor
         navigate("/Diskus/dataroom");
@@ -653,27 +1025,35 @@ const WebNotfication = ({
           >
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
-              groupedNotifications.today.map((data, index) => (
-                <Row
-                  key={data.notificationID || `notification-today-${index}`}
-                  className={
-                    data.isRead
-                      ? styles["BackGroundreadNotifications"]
-                      : styles["BackGroundUnreadNotifications"]
-                  }
-                  onClick={() => HandleClickNotfication(data)}
-                >
-                  <Col lg={12} md={12} sm={12}>
-                    <WebNotificationCard
-                      NotificationMessege={JSON.parse(data.payloadData)}
-                      NotificationTime={data.sentDateTime}
-                      index={index}
-                      length={groupedNotifications.today.length}
-                      NotificaitonID={data.notificationActionID}
-                    />
-                  </Col>
-                </Row>
-              ))}
+              groupedNotifications.today
+                .slice() // Create a shallow copy to avoid mutating the original array
+                .sort((a, b) => {
+                  // Extract the time (last 6 digits) from `sentDateTime` and compare
+                  const timeA = parseInt(a.sentDateTime.slice(-6), 10);
+                  const timeB = parseInt(b.sentDateTime.slice(-6), 10);
+                  return timeB - timeA; // Sort in descending order
+                })
+                .map((data, index) => (
+                  <Row
+                    key={data.notificationID || `notification-today-${index}`}
+                    className={
+                      data.isRead
+                        ? styles["BackGroundreadNotifications"]
+                        : styles["BackGroundUnreadNotifications"]
+                    }
+                    onClick={() => HandleClickNotfication(data)}
+                  >
+                    <Col lg={12} md={12} sm={12}>
+                      <WebNotificationCard
+                        NotificationMessege={JSON.parse(data.payloadData)}
+                        NotificationTime={data.sentDateTime}
+                        index={index}
+                        length={groupedNotifications.today.length}
+                        NotificaitonID={data.notificationActionID}
+                      />
+                    </Col>
+                  </Row>
+                ))}
 
             {/* Render "Previous" Header and Notifications */}
             {groupedNotifications.previous.length > 0 && (

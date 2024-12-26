@@ -8075,3 +8075,14 @@ td.ant-table-column-sort {
 .ant-table-filter-trigger:hover {
   background: none !important;
 }
+
+/* Prevent animation or conflicting positioning */
+.google-visualization-tooltip {
+  position: absolute !important; /* Ensure absolute positioning */
+  right: 0 !important;  /* Disable animations */
+}
+
+/* Auto Close Resolution Select Dropdown in Organization Admin Configurations */
+.select_dormant-days__control {
+  min-width: 80px !important;
+}

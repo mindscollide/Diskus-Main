@@ -42,6 +42,7 @@ import {
   GetAllSavedparticipantsAPI,
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
+  meetingStatusProposedMqtt,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -865,9 +866,9 @@ const UnpublishedProposedMeeting = ({
           // 👇️ otherwise return object as is
           return obj;
         });
-        setRow(newState);
+        // setRow(newState);
       } else {
-        setRow([allMeetingsSocketData, ...rows]);
+        // setRow([allMeetingsSocketData, ...rows]);
       }
     }
   }, [allMeetingsSocketData]);
@@ -880,8 +881,12 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          console.log(searchMeetings.meetings, "searchMeetingssearchMeetings");
-          
+          console.log(
+            searchMeetings.meetings,
+            checkFeatureIDAvailability(12),
+            "searchMeetingssearchMeetings"
+          );
+
           if (checkFeatureIDAvailability(12)) {
             setRow(searchMeetings.meetings);
             setDublicatedrows(searchMeetings.meetings);
@@ -889,27 +894,28 @@ const UnpublishedProposedMeeting = ({
             let filterOutPropsed = searchMeetings.meetings.filter((data) => {
               return data.status !== "12";
             });
+            console.log(filterOutPropsed, "searchMeetingssearchMeetings");
 
-            setRow(filterOutPropsed);
+            // setRow(filterOutPropsed);
             setDublicatedrows(filterOutPropsed);
           }
         } else {
-          setRow([]);
+          // setRow([]);
           setDublicatedrows([]);
         }
       } else {
-        setRow([]);
+        // setRow([]);
         setDublicatedrows([]);
       }
     } catch (error) {
       // Handle errors here
     }
     return () => {
-      setRow([]);
-      setDublicatedrows([]);
+      // setRow([]);
+      // setDublicatedrows([]);
     };
   }, [searchMeetings]);
-
+  console.log(rows, "searchMeetingssearchMeetings");
   useEffect(() => {
     if (publishState) {
       const filteredArray = rows.filter(
@@ -921,11 +927,11 @@ const UnpublishedProposedMeeting = ({
   }, [publishState]);
 
   useEffect(() => {
-    const updateMeetingData = async () => {
-      if (
-        meetingStatusProposedMqttData !== null &&
-        meetingStatusProposedMqttData !== undefined
-      ) {
+    if (
+      meetingStatusProposedMqttData !== null &&
+      meetingStatusProposedMqttData !== undefined
+    ) {
+      const updateMeetingData = async () => {
         let meetingData = meetingStatusProposedMqttData;
         const indexToUpdate = rows.findIndex(
           (obj) => obj.pK_MDID === meetingData.pK_MDID
@@ -949,10 +955,10 @@ const UnpublishedProposedMeeting = ({
           let updatedRows = [getMeetingData, ...rows];
           setRow(updatedRows);
         }
-      }
-    };
-
-    updateMeetingData();
+      };
+      updateMeetingData();
+      dispatch(meetingStatusProposedMqtt(null));
+    }
   }, [meetingStatusProposedMqttData]);
 
   useEffect(() => {
@@ -965,7 +971,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        setRow(updatedRows);
+        // setRow(updatedRows);
       } catch {}
     }
   }, [meetingStatusPublishedMqttData]);
@@ -977,7 +983,7 @@ const UnpublishedProposedMeeting = ({
           let newObj = mqttMeetingAcAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
-            setRow([getData, ...rows]);
+            // setRow([getData, ...rows]);
           } catch (error) {
             console.log(error, "getDatagetDatagetData");
           }
@@ -1000,7 +1006,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        setRow(updatedRows);
+        // setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
@@ -1016,7 +1022,7 @@ const UnpublishedProposedMeeting = ({
           let newObj = mqttMeetingOrgAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
-            setRow([getData, ...rows]);
+            // setRow([getData, ...rows]);
             console.log(getData, "getDatagetDatagetData");
           } catch (error) {
             console.log(error, "getDatagetDatagetData");
@@ -1040,7 +1046,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        setRow(updatedRows);
+        // setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
