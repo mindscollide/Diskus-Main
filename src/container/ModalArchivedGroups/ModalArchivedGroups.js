@@ -47,10 +47,12 @@ const ModalArchivedCommittee = ({
       localStorage.setItem("groupsArCurrent", 1);
       dispatch(getArcheivedGroups(navigate, t, 1));
     }
+    return () => {
+      localStorage.removeItem("NotificationClickArchivedGroup");
+    };
   }, []);
 
   useEffect(() => {
-    // try{}catch{}
     if (GroupsReducerrealtimeGroupStatus !== null) {
       let status = GroupsReducerrealtimeGroupStatus.groupStatusID;
 

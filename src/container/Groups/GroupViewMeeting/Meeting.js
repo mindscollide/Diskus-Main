@@ -148,17 +148,37 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     // setEditMeetingModal(true);
   };
   useEffect(() => {
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 50,
-      PublishedMeetings: true,
-    };
-    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    if (
+      JSON.parse(localStorage.getItem("NotificationClickAddedIntoGroup")) ===
+      true
+    ) {
+      let NotificationClickGroupID = localStorage.getItem(
+        "NotifcationClickViewGroupID"
+      );
+      let searchData = {
+        GroupID: Number(NotificationClickGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    } else {
+      let searchData = {
+        GroupID: Number(ViewGroupID),
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 50,
+        PublishedMeetings: true,
+      };
+      dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+    }
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
