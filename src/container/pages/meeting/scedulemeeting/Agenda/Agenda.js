@@ -638,25 +638,25 @@ const Agenda = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
-  //       undefined ||
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
-  //       0 ||
-  //     Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
-  //       .length === 0
-  //   ) {
-  //     let updatedRows = [...rows];
-  //     if (rows.length === 1) {
-  //       updatedRows[0].presenterID = allSavedPresenters[0]?.value;
-  //       updatedRows[0].presenterName = allSavedPresenters[0]?.label;
-  //       setRows(updatedRows);
-  //       console.log("updated Rows ROWS ROWS");
-  //     }
-  //   }
-  // }, [allSavedPresenters, allUsersRC]);
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData === null ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData ===
+        undefined ||
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length ===
+        0 ||
+      Object.keys(MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData)
+        .length === 0
+    ) {
+      let updatedRows = [...rows];
+      if (rows.length === 1) {
+        updatedRows[0].presenterID = allSavedPresenters[0]?.value;
+        updatedRows[0].presenterName = allSavedPresenters[0]?.label;
+        setRows(updatedRows);
+        console.log("updated Rows ROWS ROWS");
+      }
+    }
+  }, [allSavedPresenters, allUsersRC]);
   console.log(MeetingAgendaData, "MeetingAgendaDataMeetingAgendaData");
   useEffect(() => {
     if (MeetingAgendaData !== null && MeetingAgendaData !== undefined) {
@@ -732,6 +732,30 @@ const Agenda = ({
         } catch (error) {
           console.log(error, "error");
         }
+      } else {
+        let newData = {
+          iD: getRandomUniqueNumber().toString() + "A",
+          title: "",
+          agendaVotingID: 0,
+          presenterID: allSavedPresenters[0]?.value,
+          presenterName: allSavedPresenters[0]?.label,
+          description: "",
+          startDate: "",
+          endDate: "",
+          selectedRadio: 1,
+          urlFieldMain: "",
+          mainNote: "",
+          requestContributorURlName: "",
+          files: [],
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
+          subAgenda: [],
+          canView: true,
+          canEdit: true,
+        };
+        setRows([newData]);
       }
     } else {
       let newData = {
