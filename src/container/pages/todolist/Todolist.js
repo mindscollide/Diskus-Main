@@ -137,7 +137,6 @@ const TodoList = () => {
     "2",
     "4",
     "5",
-    "6",
   ]);
 
   const filters = [
@@ -156,10 +155,6 @@ const TodoList = () => {
     {
       value: "5",
       text: t("Completed"),
-    },
-    {
-      value: "6",
-      text: t("Deleted"),
     },
   ];
 

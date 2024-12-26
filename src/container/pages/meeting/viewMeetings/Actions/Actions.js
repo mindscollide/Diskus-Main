@@ -112,7 +112,6 @@ const Actions = ({
     "3",
     "4",
     "5",
-    "6",
   ]);
 
   // dispatch Api in useEffect
@@ -240,10 +239,6 @@ const Actions = ({
     {
       value: "5",
       text: t("Completed"),
-    },
-    {
-      value: "6",
-      text: t("Deleted"),
     },
   ];
 

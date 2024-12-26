@@ -4,7 +4,6 @@ import "./ProgressLoader.css";
 
 const ProgressLoader = ({progress}) => {
  const currentUrl = window.location.href;
- console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl")
   const [twoColors, setTwoColors] = useState({
     "0%": "#6172d6",
     "100%": "#49dbdb",

@@ -536,7 +536,7 @@ const Agenda = ({
 
           if (subAgendaItem.subTitle === "") {
             showMessage(
-              t("Title-is-missing-in-agenda ", {
+              t("Title-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -550,7 +550,7 @@ const Agenda = ({
 
           if (subAgendaItem.startDate === "") {
             showMessage(
-              t("Start-date-is-missing-in-agenda ", {
+              t("Start-date-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -564,7 +564,7 @@ const Agenda = ({
 
           if (subAgendaItem.endDate === "") {
             showMessage(
-              t("End-date-is-missing-in-agenda ", {
+              t("End-date-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -578,7 +578,7 @@ const Agenda = ({
 
           if (subAgendaItem.presenterID === 0) {
             showMessage(
-              t("Presenter-is-missing-in-agenda ", {
+              t("Presenter-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -597,7 +597,7 @@ const Agenda = ({
             subAgendaItem.subAgendaUrlFieldRadio === ""
           ) {
             showMessage(
-              t("URL-is-missing-in-agenda ", {
+              t("URL-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -615,7 +615,7 @@ const Agenda = ({
               subAgendaItem.subAgendarequestContributorEnterNotes === "")
           ) {
             showMessage(
-              t("UserID/Note-is-missing-in-agenda ", {
+              t("UserID/Note-is-missing-in-agenda", {
                 rowIndex: rowIndex + 1,
                 subIndex: subIndex + 1,
               }),
@@ -740,8 +740,8 @@ const Agenda = ({
           presenterID: allSavedPresenters[0]?.value,
           presenterName: allSavedPresenters[0]?.label,
           description: "",
-          startDate: "",
-          endDate: "",
+          startDate: meetingTime?.meetingStartTime,
+          endDate: meetingTime?.meetingEndTime,
           selectedRadio: 1,
           urlFieldMain: "",
           mainNote: "",
@@ -765,8 +765,8 @@ const Agenda = ({
         presenterID: allSavedPresenters[0]?.value,
         presenterName: allSavedPresenters[0]?.label,
         description: "",
-        startDate: "",
-        endDate: "",
+        startDate: meetingTime?.meetingStartTime,
+        endDate: meetingTime?.meetingEndTime,
         selectedRadio: 1,
         urlFieldMain: "",
         mainNote: "",

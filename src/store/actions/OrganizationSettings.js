@@ -49,9 +49,9 @@ const getOrganizationLevelSetting = (navigate, t) => {
           _token: token,
         },
       })
-        .then((response) => {
+        .then(async (response) => {
           if (response.data.responseCode === 417) {
-            dispatch(RefreshToken(navigate, t))
+            await dispatch(RefreshToken(navigate, t))
               .then(() => dispatch(getOrganizationLevelSetting(navigate, t)))
               .then(resolve)
               .catch(reject);
@@ -65,7 +65,10 @@ const getOrganizationLevelSetting = (navigate, t) => {
                 "Settings_SettingsServiceManager_GetOrganizationSettings_01".toLowerCase()
               ) {
                 dispatch(
-                  getOrganizationLevelSettingSuccess(result.organizationSettings, "")
+                  getOrganizationLevelSettingSuccess(
+                    result.organizationSettings,
+                    ""
+                  )
                 );
                 resolve(result.organizationSettings);
               } else if (
@@ -82,7 +85,9 @@ const getOrganizationLevelSetting = (navigate, t) => {
                 );
                 reject(result.organizationSettings);
               } else {
-                dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
+                dispatch(
+                  getOrganizationLevelSettingFail(t("No-records-found"))
+                );
                 reject(new Error(t("No-records-found")));
               }
             } else {

@@ -225,7 +225,7 @@ export const router = createHashRouter(
       {/* Video Meeting Route */}
       <Route element={<PrivateVideoMeeting />}>
         <Route
-          path="/Diskus/video"
+          path='/Diskus/video'
           element={
             <Suspense fallback={<Loader />}>
               <VideoMeetingBoardDeck />
@@ -233,17 +233,17 @@ export const router = createHashRouter(
           }
         />
       </Route>
-        <Route
-          path="/GuestVideoCall"
-          element={
-            <Suspense fallback={<Loader />}>
-              <GuestVideoCall />
-            </Suspense>
-          }
-        />
+      <Route
+        path='/GuestVideoCall'
+        element={
+          <Suspense fallback={<Loader />}>
+            <GuestVideoCall />
+          </Suspense>
+        }
+      />
       {/* for all login Routes  */}
       <Route
-        path="/"
+        path='/'
         element={
           <Suspense fallback={<Loader />}>
             <UserManagementProcess />
@@ -252,7 +252,7 @@ export const router = createHashRouter(
       />
       {/* For All Signup Route */}
       <Route
-        path="/Signup"
+        path='/Signup'
         element={
           <Suspense fallback={<Loader />}>
             <SignupProcessUserManagement />
@@ -261,7 +261,7 @@ export const router = createHashRouter(
       />
       {/* ============================================================ */}
       <Route
-        path="/PakageDetailsUserManagement"
+        path='/PakageDetailsUserManagement'
         element={
           <Suspense fallback={<Loader />}>
             <PakageDetailsUserManagement />
@@ -270,7 +270,7 @@ export const router = createHashRouter(
       />
       {/* <Route path="/signuporganization" element={<Signup />} /> */}
       <Route
-        path="/forgotpasswordVerification"
+        path='/forgotpasswordVerification'
         element={
           <Suspense fallback={<Loader />}>
             <ForgotPasswordVerification />
@@ -278,7 +278,7 @@ export const router = createHashRouter(
         }
       />
       <Route
-        path="/updatepassword"
+        path='/updatepassword'
         element={
           <Suspense fallback={<Loader />}>
             <UpdatePasswordSuccessfully />
@@ -287,7 +287,7 @@ export const router = createHashRouter(
       />
       Ï
       <Route
-        path="/PaymentFormUserManagement"
+        path='/PaymentFormUserManagement'
         element={
           <Suspense fallback={<Loader />}>
             <BillingMethodUsermanagement />
@@ -295,7 +295,7 @@ export const router = createHashRouter(
         }
       />
       <Route
-        path="/updatePasswordSuccess"
+        path='/updatePasswordSuccess'
         element={
           <Suspense fallback={<Loader />}>
             <PasswordUpdateMessage />
@@ -303,7 +303,7 @@ export const router = createHashRouter(
         }
       />
       <Route
-        path="/404"
+        path='/404'
         element={
           <Suspense fallback={<Loader />}>
             <NotFound />
@@ -311,10 +311,18 @@ export const router = createHashRouter(
         }
       />
       <Route
-        path="*"
+        path='*'
         element={
           <Suspense fallback={<Loader />}>
             <NotFound />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/onboard'
+        element={
+          <Suspense fallback={<Loader />}>
+            <OnBoard />
           </Suspense>
         }
       />
@@ -322,40 +330,39 @@ export const router = createHashRouter(
       <Route element={<PrivateRoutes />}>
         <Route
           exact
-          path="/Diskus/"
+          path='/Diskus/'
           element={
             <Suspense fallback={<Loader />}>
-              <RouteWrapperUser name="Diskus">
+              <RouteWrapperUser name='Diskus'>
                 <Dashboard />
               </RouteWrapperUser>
             </Suspense>
-          }
-        >
+          }>
           <Route
-            path=""
+            path=''
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="">
+                <RouteWrapperUser name=''>
                   <NewDashobard />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="Minutes"
+            path='Minutes'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="Minutes">
+                <RouteWrapperUser name='Minutes'>
                   <MinutesFlow />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="home"
+            path='home'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="home">
+                <RouteWrapperUser name='home'>
                   <NewDashobard />
                 </RouteWrapperUser>
               </Suspense>
@@ -363,20 +370,20 @@ export const router = createHashRouter(
           />
 
           <Route
-            path="todolist"
+            path='todolist'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="todolist">
+                <RouteWrapperUser name='todolist'>
                   <TodoList />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="documentViewer"
+            path='documentViewer'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="documentViewer">
+                <RouteWrapperUser name='documentViewer'>
                   <DocumentViewer />
                 </RouteWrapperUser>
               </Suspense>
@@ -384,30 +391,30 @@ export const router = createHashRouter(
           />
 
           <Route
-            path="signatureviewer"
+            path='signatureviewer'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="signatureviewer">
+                <RouteWrapperUser name='signatureviewer'>
                   <SignatureViewer />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="signeddocument"
+            path='signeddocument'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="signatureviewer">
+                <RouteWrapperUser name='signatureviewer'>
                   <PendingSignature />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="viewSignDocument"
+            path='viewSignDocument'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="signatureviewer">
+                <RouteWrapperUser name='signatureviewer'>
                   <ViewSignatureDocument />
                 </RouteWrapperUser>
               </Suspense>
@@ -415,40 +422,40 @@ export const router = createHashRouter(
           />
           {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route
-            path="calendar"
+            path='calendar'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="calendar">
+                <RouteWrapperUser name='calendar'>
                   <CalendarPage />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="Meeting"
+            path='Meeting'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="Meeting">
+                <RouteWrapperUser name='Meeting'>
                   <NewMeeting />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="Meeting/Useravailabilityformeeting"
+            path='Meeting/Useravailabilityformeeting'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="Meeting">
+                <RouteWrapperUser name='Meeting'>
                   <RSVP />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="setting"
+            path='setting'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="setting">
+                <RouteWrapperUser name='setting'>
                   <UserSettings />
                 </RouteWrapperUser>
               </Suspense>
@@ -465,70 +472,70 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path="groups"
+            path='groups'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="groups">
+                <RouteWrapperUser name='groups'>
                   <Groups />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="changePassword"
+            path='changePassword'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="changePassword">
+                <RouteWrapperUser name='changePassword'>
                   <ChangePassword />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="notes"
+            path='notes'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="notes">
+                <RouteWrapperUser name='notes'>
                   <Notes />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="committee"
+            path='committee'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="committee">
+                <RouteWrapperUser name='committee'>
                   <Committee />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="resolution"
+            path='resolution'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="resolution">
+                <RouteWrapperUser name='resolution'>
                   <Resolution />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="dataroom"
+            path='dataroom'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="dataroom">
+                <RouteWrapperUser name='dataroom'>
                   <DataRoom />
                 </RouteWrapperUser>
               </Suspense>
             }
           />
           <Route
-            path="polling"
+            path='polling'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperUser name="polling">
+                <RouteWrapperUser name='polling'>
                   <Polling />
                 </RouteWrapperUser>
               </Suspense>
@@ -539,30 +546,29 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path="/Admin/"
+          path='/Admin/'
           element={
             <Suspense fallback={<Loader />}>
-              <RouteWrapperAdmin name="Admin">
+              <RouteWrapperAdmin name='Admin'>
                 <AdminHome />
               </RouteWrapperAdmin>
             </Suspense>
-          }
-        >
+          }>
           <Route
-            path=""
+            path=''
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="Admin">
+                <RouteWrapperAdmin name='Admin'>
                   {roleRoute ? <PayOutstanding /> : <ManageUsers />}
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PaymentFormUserManagement"
+            path='PaymentFormUserManagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PaymentFormUserManagement">
+                <RouteWrapperAdmin name='PaymentFormUserManagement'>
                   <BillingMethodUsermanagement />
                 </RouteWrapperAdmin>
               </Suspense>
@@ -571,30 +577,30 @@ export const router = createHashRouter(
           {/* Route For Payment Processs end */}
 
           <Route
-            path="PakageDetailsUserManagement"
+            path='PakageDetailsUserManagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PakageDetailsUserManagement">
+                <RouteWrapperAdmin name='PakageDetailsUserManagement'>
                   <PakageDetailsUserManagement />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="loginreport"
+            path='loginreport'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="loginreport">
+                <RouteWrapperAdmin name='loginreport'>
                   <Reports />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PackageDetailUMupgrade"
+            path='PackageDetailUMupgrade'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PackageDetailUMupgrade">
+                <RouteWrapperAdmin name='PackageDetailUMupgrade'>
                   <PakageDetailsUMUpgrade />
                 </RouteWrapperAdmin>
               </Suspense>
@@ -602,200 +608,200 @@ export const router = createHashRouter(
           />
 
           <Route
-            path="AddUsers"
+            path='AddUsers'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="AddUsers">
+                <RouteWrapperAdmin name='AddUsers'>
                   <AddUsers />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="ManageUsers"
+            path='ManageUsers'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="ManageUsers">
+                <RouteWrapperAdmin name='ManageUsers'>
                   <ManageUsers />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="UserLevelConfigUM"
+            path='UserLevelConfigUM'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="UserLevelConfigUM">
+                <RouteWrapperAdmin name='UserLevelConfigUM'>
                   <UserLevelConfigUM />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="AddUsersUsermanagement"
+            path='AddUsersUsermanagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="AddUsersUsermanagement">
+                <RouteWrapperAdmin name='AddUsersUsermanagement'>
                   <AddUserMain />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PayOutstanding"
+            path='PayOutstanding'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PayOutstanding">
+                <RouteWrapperAdmin name='PayOutstanding'>
                   <PayOutstanding />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PaymentHistory"
+            path='PaymentHistory'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PaymentHistory">
+                <RouteWrapperAdmin name='PaymentHistory'>
                   <PaymentHistory />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PaymentHistoryusermanagement"
+            path='PaymentHistoryusermanagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PaymentHistoryusermanagement">
+                <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
                   <PaymentMethodBillInfo />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="Summary"
+            path='Summary'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="Summary">
+                <RouteWrapperAdmin name='Summary'>
                   <Summary />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="OrganizationlevelConfigUM"
+            path='OrganizationlevelConfigUM'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="OrganizationlevelConfigUM">
+                <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
                   <OrganizationLevelConfigUM />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="AllMeeting"
+            path='AllMeeting'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="AllMeeting">
+                <RouteWrapperAdmin name='AllMeeting'>
                   <AllMeetings />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="CancelSub"
+            path='CancelSub'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="CancelSub">
+                <RouteWrapperAdmin name='CancelSub'>
                   <CancelSubs />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="CancelSubscriptionUserManagement"
+            path='CancelSubscriptionUserManagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
+                <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
                   <CancelSubscriptionAdmin />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PackageDetail"
+            path='PackageDetail'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PackageDetail">
+                <RouteWrapperAdmin name='PackageDetail'>
                   <PackageDetails />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="PackageDetailsUserManagement"
+            path='PackageDetailsUserManagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="PackageDetailsUserManagement">
+                <RouteWrapperAdmin name='PackageDetailsUserManagement'>
                   <PakageDetailsAdmin />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="subscriptionDetailsUserManagement"
+            path='subscriptionDetailsUserManagement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
+                <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
                   <SubscriptionDetailsUserManagement />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="downgradeSubscription"
+            path='downgradeSubscription'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="downgradeSubscription">
+                <RouteWrapperAdmin name='downgradeSubscription'>
                   <DowngradeSubscription />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="updatedCancelSubscription"
+            path='updatedCancelSubscription'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="updatedCancelSubscription">
+                <RouteWrapperAdmin name='updatedCancelSubscription'>
                   <UpdatedCancelSubscription />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="EmptyState"
+            path='EmptyState'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="EmptyState">
+                <RouteWrapperAdmin name='EmptyState'>
                   <EmptyState />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="UpgradePackage"
+            path='UpgradePackage'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="UpgradePackage">
+                <RouteWrapperAdmin name='UpgradePackage'>
                   <PackageUpgrade />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="changePassword"
+            path='changePassword'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="changePassword">
+                <RouteWrapperAdmin name='changePassword'>
                   <ChangePassword />
                 </RouteWrapperAdmin>
               </Suspense>
@@ -812,86 +818,69 @@ export const router = createHashRouter(
             }
           />
           <Route
-            path="deleteorganization"
+            path='deleteorganization'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="deleteorganization">
+                <RouteWrapperAdmin name='deleteorganization'>
                   <DeleteOrganization />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="deleteorganizationUserMangement"
+            path='deleteorganizationUserMangement'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="deleteorganizationUserMangement">
+                <RouteWrapperAdmin name='deleteorganizationUserMangement'>
                   <DeleteOrganizationAdmin />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="paymentForm"
+            path='paymentForm'
             element={
               <Suspense fallback={<Loader />}>
-                <RouteWrapperAdmin name="paymentForm">
+                <RouteWrapperAdmin name='paymentForm'>
                   <PaymentForm2 />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="UpgradePackageDetail"
+            path='UpgradePackageDetail'
             element={
               <Suspense fallback={<Loader />}>
                 {" "}
-                <RouteWrapperAdmin name="UpgradePackageDetail">
+                <RouteWrapperAdmin name='UpgradePackageDetail'>
                   <PackageUpgradeDetail />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="UpgradePackageSelect"
+            path='UpgradePackageSelect'
             element={
               <Suspense fallback={<Loader />}>
                 {" "}
-                <RouteWrapperAdmin name="UpgradePackageSelect">
+                <RouteWrapperAdmin name='UpgradePackageSelect'>
                   <PackageUpgradeSelect />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
           <Route
-            path="CustomerInformation"
+            path='CustomerInformation'
             element={
               <Suspense fallback={<Loader />}>
                 {" "}
-                <RouteWrapperAdmin name="CustomerInformation">
+                <RouteWrapperAdmin name='CustomerInformation'>
                   <CustomerInformation />
                 </RouteWrapperAdmin>
               </Suspense>
             }
           />
         </Route>
-      </Route>
-      <Route
-        Route
-        element={
-          <Suspense fallback={<Loader />}>
-            <PrivateRoutes />
-          </Suspense>
-        }
-      >
-        <Route
-          path="/onboard"
-          element={
-            <Suspense fallback={<Loader />}>
-              <OnBoard />
-            </Suspense>
-          }
-        />
       </Route>
     </>
   )
