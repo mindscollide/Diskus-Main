@@ -1871,6 +1871,12 @@ const GetMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingAttendeeAndStatusData",
 };
 
+//Get DataRoom File Shared Persmission
+
+const GetDataRoomFileSharedPersmission = {
+  RequestMethod: "ServiceManager.GetDataRoomSharedFilePermission",
+};
+
 export {
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
@@ -2364,4 +2370,5 @@ export {
   DiskusWebNotification,
   DiskusWebNotificationMarkAsRead,
   GetMeetingStatus,
+  GetDataRoomFileSharedPersmission,
 };
