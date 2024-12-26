@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import BellIconNotificationEmptyState from "../../../assets/images/BellIconEmptyState.png";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   GetMeetingStatusDataAPI,
@@ -32,6 +32,13 @@ import {
 import { useGroupsContext } from "../../../context/GroupsContext.js";
 import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
 import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
+import { openDocumentViewer } from "../../../commen/functions/utils.js";
+import {
+  DataRoomFileSharingPermissionAPI,
+  getFolderDocumentsApi,
+} from "../../../store/actions/DataRoom_actions.js";
+import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
+import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -52,6 +59,7 @@ const WebNotfication = ({
   } = useMeetingContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const location = useLocation();
   const currentURL = window.location.href;
   console.log(currentURL, "currentURL");
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
@@ -777,18 +785,48 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 26) {
-      if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+      if (currentURL.includes("/Diskus/resolution")) {
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 27) {
       if (currentURL.includes("/Diskus/resolution")) {
-        return; // Perform no action if the URL matches
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Non-Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
@@ -805,6 +843,12 @@ const WebNotfication = ({
       } else {
         //Notification for Poll has been Created submit your response
         navigate("/Diskus/polling");
+        // let userID = localStorage.getItem("userID");
+        // let data = {
+        //   PollID: Number(PayLoadData.PollID),
+        //   UserID: parseInt(userID),
+        // };
+        // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       }
     } else if (NotificationData.notificationActionID === 30) {
       if (currentURL.includes("/Diskus/polling")) {
@@ -816,8 +860,38 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 31) {
     } else if (NotificationData.notificationActionID === 32) {
     } else if (NotificationData.notificationActionID === 33) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        let PermissionID = 0;
+        //Api Call For Extracting the Permission ID
+        // let Data = {
+        //   FileFolderID: Number(PayLoadData.FileID),
+        //   IsFolder: false,
+        // };
+        // dispatch(
+        //   DataRoomFileSharingPermissionAPI(navigate, t, Data, PermissionID)
+        // );
+        console.log(PermissionID, "PermissionID");
+        const pdfData = {
+          taskId: Number(PayLoadData.FileID),
+          commingFrom: 4,
+          fileName: PayLoadData.FileName,
+          attachmentID: Number(PayLoadData.FileID),
+          isPermission: 1,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        let ext = PayLoadData.FileName.split(".").pop();
+        openDocumentViewer(
+          ext,
+          pdfDataJson,
+          dispatch,
+          navigate,
+          t,
+          Number(PayLoadData.FileID)
+        );
       } else {
         //Notification For Being File shared to you as viewer
         navigate("/Diskus/dataroom");
@@ -826,8 +900,28 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
       }
     } else if (NotificationData.notificationActionID === 34) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        const pdfData = {
+          taskId: Number(PayLoadData.FileID),
+          commingFrom: 4,
+          fileName: PayLoadData.FileName,
+          attachmentID: Number(PayLoadData.FileID),
+          isPermission: 2,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        let ext = PayLoadData.FileName.split(".").pop();
+        openDocumentViewer(
+          ext,
+          pdfDataJson,
+          dispatch,
+          navigate,
+          t,
+          Number(PayLoadData.FileID)
+        );
       } else {
         //Notification For Being File shared to you as Editor
         navigate("/Diskus/dataroom");
@@ -836,8 +930,14 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
       }
     } else if (NotificationData.notificationActionID === 35) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        dispatch(
+          getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        );
       } else {
         //Notification for sharing folder as a viewer
         navigate("/Diskus/dataroom");
@@ -845,8 +945,14 @@ const WebNotfication = ({
         localStorage.setItem("NotificationClickFolderID", PayLoadData.FolderID);
       }
     } else if (NotificationData.notificationActionID === 36) {
-      if (currentURL.includes("/Diskus/dataroom")) {
-        return; // Perform no action if the URL matches
+      if (
+        location.pathname
+          .toLowerCase()
+          .includes("/Diskus/dataroom".toLowerCase())
+      ) {
+        dispatch(
+          getFolderDocumentsApi(navigate, Number(PayLoadData.FolderID), t)
+        );
       } else {
         //Notification for sharing folder as a Editor
         navigate("/Diskus/dataroom");

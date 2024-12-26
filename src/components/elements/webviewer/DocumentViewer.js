@@ -79,6 +79,12 @@ const DocumentViewer = () => {
         );
       }
     }
+    return () => {
+      localStorage.removeItem("DataRoomOperations");
+      localStorage.removeItem("NotificationClickFileID");
+      localStorage.removeItem("NotificationClickFileName");
+      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+    };
   }, []);
 
   function base64ToBlob(base64) {
@@ -251,6 +257,12 @@ const DocumentViewer = () => {
         });
       });
     }
+    return () => {
+      localStorage.removeItem("DataRoomOperations");
+      localStorage.removeItem("NotificationClickFileID");
+      localStorage.removeItem("NotificationClickFileName");
+      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+    };
   }, [webViewer.xfdfData, webViewer.attachmentBlob]);
   console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer");
   useEffect(() => {

@@ -9,6 +9,7 @@ import { MeetingProvider } from "./context/MeetingContext";
 import { DataroomProvider } from "./context/DataroomContext";
 import { GroupsProvider } from "./context/GroupsContext";
 import { CommitteeProvider } from "./context/CommitteeContext";
+import { PollsProvider } from "./context/PollsContext";
 const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming you're using BrowserRouter
 
 // Disable console.* in production
@@ -26,7 +27,9 @@ root.render(
         <GroupsProvider>
           <CommitteeProvider>
             <DataroomProvider>
-              <App />
+              <PollsProvider>
+                <App />
+              </PollsProvider>
             </DataroomProvider>
           </CommitteeProvider>
         </GroupsProvider>

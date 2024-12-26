@@ -52,12 +52,12 @@ const initialState = {
   FileRemoveMQTT: null,
   FolderRemoveMQTT: null,
   BreadCrumbsList: [],
+  fileSharePermissionData: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.DATAROOM_BREADCRUMBS: {
-
       const { payload } = action;
 
       return {
@@ -838,6 +838,29 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         FolderRemoveMQTT: action.response,
+      };
+    }
+
+    case actions.DATAROOM_FILE_SHARED_PERMISSION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DATAROOM_FILE_SHARED_PERMISSION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        fileSharePermissionData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DATAROOM_FILE_SHARED_PERMISSION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        fileSharePermissionData: null,
+        ResponseMessage: action.message,
       };
     }
     default:

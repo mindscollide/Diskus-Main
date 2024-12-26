@@ -29,6 +29,7 @@ import {
   validateEncyptedStringUserDataRoom,
   leaveFileSharingRM,
   leaveFolderSharingRM,
+  GetDataRoomFileSharedPersmission,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -38,6 +39,7 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
+import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -3935,6 +3937,108 @@ const folderRemoveMQTT = (response) => {
     response: response,
   };
 };
+
+//DataRoom FileSharing Permission
+const DataRoomFileSharingPermissionInit = () => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_INIT,
+  };
+};
+
+const DataRoomFileSharingPermissionSuccess = (response, message) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DataRoomFileSharingPermissionFailed = (message) => {
+  return {
+    type: actions.DATAROOM_FILE_SHARED_PERMISSION_FAILED,
+    message: message,
+  };
+};
+
+const DataRoomFileSharingPermissionAPI = (navigate, t, Data, PermissionID) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(DataRoomFileSharingPermissionInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetDataRoomFileSharedPersmission.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DataRoomFileSharingPermissionAPI(navigate, t, Data));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              DataRoomFileSharingPermissionSuccess(
+                response.data.responseResult,
+                ""
+              )
+            );
+            //Setting the Permission ID
+            PermissionID = response.data.responseResult.permissionID;
+            //Open File Viewer Open According to Permission ID
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_02".toLowerCase()
+              )
+          ) {
+            dispatch(DataRoomFileSharingPermissionFailed(""));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_GetDataRoomSharedFilePermission_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+            );
+          } else {
+            dispatch(
+              DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          DataRoomFileSharingPermissionFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
 export {
   folderRemoveMQTT,
   fileRemoveMQTT,
@@ -3980,4 +4084,5 @@ export {
   showFileDetailsModal,
   validateUserAvailibilityEncryptedStringDataRoomApi,
   BreadCrumbsList,
+  DataRoomFileSharingPermissionAPI,
 };
