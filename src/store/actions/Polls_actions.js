@@ -660,6 +660,7 @@ const getAllPollsByPollsIDInit = () => {
 };
 
 const getAllPollsByPollsIDSuccess = (response, message) => {
+  console.log(response, "PollsReducerviewVotes");
   return {
     type: actions.GET_POLLS_BY_POLLID_SUCCESS,
     response: response,
@@ -675,6 +676,7 @@ const getAllPollsByPollsIDFailed = (message) => {
 };
 
 const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
+  console.log("Checking");
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -701,58 +703,66 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
               )
           ) {
-            dispatch(emailRouteID(0));
+            try {
+              dispatch(emailRouteID(0));
 
-            if (parseInt(check) === 1) {
-              await dispatch(setviewpollModal(false));
-              await dispatch(setCreatePollModal(false));
-              await dispatch(setviewpollProgressModal(false));
-              await dispatch(viewVotesDetailsModal(false));
-              await dispatch(setVotePollModal(false));
-              await dispatch(globalFlag(true));
-              await dispatch(setEditpollModal(true));
-            } else if (parseInt(check) === 2) {
-              await dispatch(setviewpollModal(false));
-              await dispatch(setCreatePollModal(false));
-              await dispatch(setviewpollProgressModal(false));
-              await dispatch(globalFlag(false));
-              await dispatch(viewVotesDetailsModal(false));
-              await dispatch(setVotePollModal(false));
-              await dispatch(getAllCommitteesandGroups(navigate, t, false));
-              await dispatch(setEditpollModal(true));
-            } else if (parseInt(check) === 3) {
-              await dispatch(setEditpollModal(false));
-              await dispatch(setCreatePollModal(false));
-              await dispatch(setviewpollModal(false));
-              await dispatch(viewVotesDetailsModal(true));
-              await dispatch(globalFlag(false));
-              await dispatch(setVotePollModal(false));
-              await dispatch(setviewpollProgressModal(false));
-            } else if (parseInt(check) === 4) {
-              await dispatch(setEditpollModal(false));
-              await dispatch(setCreatePollModal(false));
-              await dispatch(setviewpollProgressModal(false));
-              await dispatch(globalFlag(false));
-              await dispatch(viewVotesDetailsModal(false));
-              await dispatch(setVotePollModal(false));
-              await dispatch(setviewpollModal(true));
-            } else if (parseInt(check) === 5) {
-              await dispatch(setEditpollModal(false));
-              await dispatch(setCreatePollModal(false));
-              await dispatch(setviewpollProgressModal(false));
-              await dispatch(globalFlag(false));
-              await dispatch(viewVotesDetailsModal(false));
-              await dispatch(setviewpollModal(false));
-              await dispatch(setVotePollModal(true));
-            }
-            await dispatch(
-              getAllPollsByPollsIDSuccess(response.data.responseResult, "")
-            );
-            if (typeof setEditPolls === "function") {
-              setEditPolls(true);
-            }
+              if (parseInt(check) === 1) {
+                await dispatch(setviewpollModal(false));
+                await dispatch(setCreatePollModal(false));
+                await dispatch(setviewpollProgressModal(false));
+                await dispatch(viewVotesDetailsModal(false));
+                await dispatch(setVotePollModal(false));
+                await dispatch(globalFlag(true));
+                await dispatch(setEditpollModal(true));
+              } else if (parseInt(check) === 2) {
+                await dispatch(setviewpollModal(false));
+                await dispatch(setCreatePollModal(false));
+                await dispatch(setviewpollProgressModal(false));
+                await dispatch(globalFlag(false));
+                await dispatch(viewVotesDetailsModal(false));
+                await dispatch(setVotePollModal(false));
+                await dispatch(getAllCommitteesandGroups(navigate, t, false));
+                await dispatch(setEditpollModal(true));
+              } else if (parseInt(check) === 3) {
+                await dispatch(setEditpollModal(false));
+                await dispatch(setCreatePollModal(false));
+                await dispatch(setviewpollModal(false));
+                await dispatch(viewVotesDetailsModal(true));
+                await dispatch(globalFlag(false));
+                await dispatch(setVotePollModal(false));
+                await dispatch(setviewpollProgressModal(false));
+              } else if (parseInt(check) === 4) {
+                await dispatch(setEditpollModal(false));
+                await dispatch(setCreatePollModal(false));
+                await dispatch(setviewpollProgressModal(false));
+                await dispatch(globalFlag(false));
+                await dispatch(viewVotesDetailsModal(false));
+                await dispatch(setVotePollModal(false));
+                await dispatch(setviewpollModal(true));
+              } else if (parseInt(check) === 5) {
+                await dispatch(setEditpollModal(false));
+                await dispatch(setCreatePollModal(false));
+                await dispatch(setviewpollProgressModal(false));
+                await dispatch(globalFlag(false));
+                await dispatch(viewVotesDetailsModal(false));
+                await dispatch(setviewpollModal(false));
+                await dispatch(setVotePollModal(true));
+              }
+              dispatch(
+                getAllPollsByPollsIDSuccess(response.data.responseResult, "")
+              );
+              console.log(
+                response.data.responseResult,
+                "PollsReducerviewVotes"
+              );
+              if (typeof setEditPolls === "function") {
+                setEditPolls(true);
+              }
 
-            dispatch(showunsavedEditPollsMeetings(false));
+              dispatch(showunsavedEditPollsMeetings(false));
+            } catch (error) {
+              console.log(error, "errorerrorerror");
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2260,6 +2270,8 @@ const getPollsByPollIdforCommitteeApi = (
   setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log("Checking");
+
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
@@ -2354,6 +2366,8 @@ const getPollByPollIdforGroups = (
   setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log("Checking");
+
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
@@ -2448,6 +2462,8 @@ const getPollByPollIdforMeeting = (
   setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log("Checking");
+
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
     let form = new FormData();
