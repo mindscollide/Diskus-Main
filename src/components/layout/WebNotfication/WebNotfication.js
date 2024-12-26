@@ -37,6 +37,7 @@ import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
 } from "../../../store/actions/DataRoom_actions.js";
+import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -811,6 +812,12 @@ const WebNotfication = ({
       } else {
         //Notification for Poll has been Created submit your response
         navigate("/Diskus/polling");
+        // let userID = localStorage.getItem("userID");
+        // let data = {
+        //   PollID: Number(PayLoadData.PollID),
+        //   UserID: parseInt(userID),
+        // };
+        // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       }
     } else if (NotificationData.notificationActionID === 30) {
       if (currentURL.includes("/Diskus/polling")) {
