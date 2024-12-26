@@ -38,6 +38,7 @@ import {
   getFolderDocumentsApi,
 } from "../../../store/actions/DataRoom_actions.js";
 import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
+import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -784,18 +785,48 @@ const WebNotfication = ({
         );
       }
     } else if (NotificationData.notificationActionID === 26) {
-      if (currentURL.includes("/Diskus/committee")) {
-        return; // Perform no action if the URL matches
+      if (currentURL.includes("/Diskus/resolution")) {
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 27) {
       if (currentURL.includes("/Diskus/resolution")) {
-        return; // Perform no action if the URL matches
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       } else {
         //Notification for Added as Non-Voter in the resolution
         navigate("/Diskus/resolution");
+        dispatch(
+          getResolutionbyResolutionID(
+            navigate,
+            Number(PayLoadData.ResolutionID),
+            t,
+            2
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 28) {
       //Resolution Descision Announced
