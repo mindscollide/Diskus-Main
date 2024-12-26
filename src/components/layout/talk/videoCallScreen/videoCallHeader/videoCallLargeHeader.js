@@ -51,7 +51,7 @@ const VideoCallLargeHeader = () => {
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
-    console.log("busyCall")
+    console.log("busyCall");
     localStorage.setItem("activeCall", false);
   };
 
@@ -59,7 +59,12 @@ const VideoCallLargeHeader = () => {
     <Row className="mt-2 mb-0">
       <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3">
         {isActiveIcon ? (
-          <img width={30} src={ActiveChat} onClick={onClickCloseChatHandler} alt=""/>
+          <img
+            width={30}
+            src={ActiveChat}
+            onClick={onClickCloseChatHandler}
+            alt=""
+          />
         ) : (
           <img
             width={30}
@@ -68,7 +73,7 @@ const VideoCallLargeHeader = () => {
             alt=""
           />
         )}
-        <img src={CallEndRedIcon} onClick={closeVideoPanel} alt=""/>
+        <img src={CallEndRedIcon} onClick={closeVideoPanel} alt="" />
         <img
           width={20}
           src={MinimizeIcon}
@@ -83,20 +88,6 @@ const VideoCallLargeHeader = () => {
           className="normalize-Icon-Large"
           onClick={normalizeScreen}
         />
-
-        {/* <img
-          width={20}
-          src={MinimizeIcon}
-          alt="Minimize Icon"
-          className="minimize_icon-class"
-          onClick={minimizeVideoPanel}
-        />
-        <img
-          width={17}
-          src={NormalizeIcon}
-          alt="Maximize Icon"
-          onClick={normalizeScreen}
-        /> */}
       </Col>
     </Row>
   );

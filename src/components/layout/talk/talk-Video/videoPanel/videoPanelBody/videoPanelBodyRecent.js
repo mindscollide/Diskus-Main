@@ -30,6 +30,11 @@ import {
   videoChatPanel,
   leaveCallModal,
   participantPopup,
+  maxParticipantVideoRemoved,
+  setRaisedUnRaisedParticiant,
+  setVideoControlForParticipant,
+  setAudioControlForParticipant,
+  makeHostNow,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
@@ -274,6 +279,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallHostOto = () => {
+    console.log("leavecallMeetingVideo");
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
       OrganizationID: currentOrganization,
@@ -308,9 +314,37 @@ const VideoPanelBodyRecent = () => {
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", false);
   };
+  
   const leavecallMeetingVideo = async () => {
+    console.log("leavecallMeetingVideo");
+    const emptyArray = [];
+    const meetingHost = {
+      isHost: false,
+      isHostId: 0,
+      isDashboardVideo: false,
+    };
+    await dispatch(makeHostNow(meetingHost));
+    localStorage.setItem("isMeeting", true);
+    localStorage.removeItem("refinedVideoUrl");
+    localStorage.removeItem("hostUrl");
+    localStorage.setItem("refinedVideoGiven", false);
+    localStorage.setItem("isWebCamEnabled", false);
+    localStorage.setItem("isMicEnabled", false);
+    await dispatch(setAudioControlForParticipant(false));
+    await dispatch(setVideoControlForParticipant(false));
+    await dispatch(maximizeVideoPanelFlag(false));
+    await dispatch(maxParticipantVideoRemoved(false));
+    await dispatch(setRaisedUnRaisedParticiant(false));
+    // ================================
+
+    localStorage.setItem("isCaller", true);
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", currentUserID);
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
+    localStorage.setItem("recipentCalledID", userCalledID);
     let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
     let newUserGUID = meetinHostInfo?.isHost
       ? localStorage.getItem("isGuid ")
       : localStorage.getItem("participantUID");
@@ -322,7 +356,10 @@ const VideoPanelBodyRecent = () => {
       RoomID: String(newRoomID),
       UserGUID: String(newUserGUID),
       Name: String(newName),
+      IsHost: meetinHostInfo?.isHost ? true : false,
+      MeetingID: Number(currentMeetingID),
     };
+    localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
     await dispatch(LeaveMeetingVideo(Data, navigate, t));
     let Data2 = {
       RecipentIDs:
@@ -332,26 +369,22 @@ const VideoPanelBodyRecent = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
+    localStorage.setItem("CallType", Data2.CallTypeID);
+
     dispatch(InitiateVideoCall(Data2, navigate, t));
-    localStorage.setItem("isCaller", true);
-    const emptyArray = [];
-    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     dispatch(normalizeVideoPanelFlag(true));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     setInitiateVideoModalOto(false);
     dispatch(participantPopup(false));
-    localStorage.setItem("CallType", Data2.CallTypeID);
-    localStorage.setItem("activeCall", true);
-    localStorage.setItem("callerID", currentUserID);
-    localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantOto = () => {
+    console.log("leavecallMeetingVideo");
     let roomID = localStorage.getItem("acceptedRoomID");
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {

@@ -32,9 +32,10 @@ const initialState = {
   muteUnMuteParticpantorGuest: null,
   setStreamStop: false,
   setStreamTypeForNavigate: 0,
-  muteUnMuteParticpantorGuestByHost:false,
-  voiceControleForAllByHost:false,
-  voiceControleForAllByHostFlag:false
+  muteUnMuteParticpantorGuestByHost: false,
+  voiceControleForAllByHost: false,
+  voiceControleForAllByHostFlag: false,
+  hostTransferFlag: false,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -206,6 +207,13 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+      };
+    }
+    case actions.TRANSFER_MEETING_HOST_SUCCESS: {
+      console.log("videoHideUnHideForHost", action.response);
+      return {
+        ...state,
+        hostTransferFlag: action.response,
       };
     }
 
@@ -418,10 +426,10 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         voiceControleForAllByHost: action.response,
-        voiceControleForAllByHostFlag:action.flag,
+        voiceControleForAllByHostFlag: action.flag,
       };
     }
-    
+
     // to get validate room Id from Validate String
     case actions.GET_VALIDATE_STRING_DATA: {
       return {

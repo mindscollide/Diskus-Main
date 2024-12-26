@@ -65,7 +65,8 @@ const VideoMaxIncoming = () => {
       VideoMainReducer.InitiateVideoCallDataMQTT !== null &&
       VideoMainReducer.InitiateVideoCallDataMQTT.length !== 0
     ) {
-      setIncomingCallerData(VideoMainReducer.InitiateVideoCallDataMQTT);
+    console.log("busyCall");
+    setIncomingCallerData(VideoMainReducer.InitiateVideoCallDataMQTT);
     } else {
       setIncomingCallerData([]);
     }
@@ -82,6 +83,7 @@ const VideoMaxIncoming = () => {
 
     // Play the audio when the component mounts
     audioElement.play();
+    console.log("busyCall");
 
     const timer = setTimeout(() => {
       // Dispatch action to update global state
@@ -107,6 +109,7 @@ const VideoMaxIncoming = () => {
     }
 
     return () => {
+      console.log("busyCall");
       audioElement.pause();
       audioElement.currentTime = 0;
       clearTimeout(timer);
@@ -250,6 +253,7 @@ const VideoMaxIncoming = () => {
     localStorage.setItem("activeCall", false);
     setIsTimerRunning(false);
   };
+  console.log("busyCall");
 
   const busyCall = () => {
     console.log("busyCall");
