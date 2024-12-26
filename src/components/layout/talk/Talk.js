@@ -487,10 +487,11 @@ const Talk = () => {
                   </linearGradient>
                 </defs>
               </svg>
+              <span className="TalkIconPannelLabels">{t("Approval")}</span>
             </div>
           </Tooltip>
           {/* ) : null} */}
-          {checkFeatureIDAvailability(6) ? (
+          {/* {checkFeatureIDAvailability(6) ? (
             <Tooltip placement="leftTop" title={t("Add-a-note")}>
               <div
                 className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
@@ -570,7 +571,7 @@ const Talk = () => {
                 </svg>
               </div>
             </Tooltip>
-          ) : null}
+          ) : null} */}
           {checkFeatureIDAvailability(4) ? (
             <Tooltip placement="leftTop" title={t("Video-call")}>
               <div
@@ -617,6 +618,7 @@ const Talk = () => {
                     fill="url(#linear-gradient)"
                   />
                 </svg>
+                <span className="TalkIconPannelLabels">{t("Video-call")}</span>
               </div>
             </Tooltip>
           ) : null}
@@ -661,6 +663,7 @@ const Talk = () => {
                     fill="url(#linear-gradient)"
                   />
                 </svg>
+                <span className="TalkIconPannelLabels">{t("Talk")}</span>
               </div>
             </Tooltip>
           ) : null}

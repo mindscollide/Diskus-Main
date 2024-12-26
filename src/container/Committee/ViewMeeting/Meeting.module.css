@@ -134,4 +134,5 @@ body[dir="rtl"] .Create_Meeting_Button {
 .meeting-start {
   font-size: 14px;
   font-weight: 400 !important;
+  /* white-space: ; */
 }

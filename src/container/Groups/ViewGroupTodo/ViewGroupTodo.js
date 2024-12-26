@@ -267,7 +267,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     "3",
     "4",
     "5",
-    "6",
   ]);
 
   const filters = [
@@ -291,10 +290,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       value: "5",
       text: t("Completed"),
     },
-    {
-      value: "6",
-      text: t("Deleted"),
-    },
+
   ];
 
   // Menu click handler for selecting filters

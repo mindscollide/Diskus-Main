@@ -43,8 +43,9 @@ const ResultResolution = ({ setResultresolution }) => {
   const [decisionId, setDecisionId] = useState(0);
   console.log(decisionId, "decisionIddecisionId");
   const options = {
+    width: "100%",
+    height: 300,
     backgroundColor: "transparent",
-    border: "1px solid #ffffff",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -277,8 +278,8 @@ const ResultResolution = ({ setResultresolution }) => {
                   >
                     <Chart
                       chartType="ColumnChart"
-                      width="450px"
-                      height="250px"
+                      width={"100%"}
+                      height={"auto"}
                       radius={10}
                       data={data}
                       options={options}
@@ -286,7 +287,7 @@ const ResultResolution = ({ setResultresolution }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}
