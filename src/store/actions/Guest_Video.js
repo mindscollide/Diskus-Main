@@ -615,11 +615,11 @@ const transferMeetingHostInit = () => {
   };
 };
 
-const transferMeetingHostSuccess = (response, message) => {
+const transferMeetingHostSuccess = (response) => {
+  console.log("videoHideUnHideForHost", response);
   return {
     type: actions.TRANSFER_MEETING_HOST_SUCCESS,
     response: response,
-    message: message,
   };
 };
 
@@ -686,12 +686,8 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 getVideoCallParticipantsMainApi(Data, navigate, t)
               );
-              await dispatch(
-                transferMeetingHostSuccess(
-                  response.data.responseResult,
-                  t("Successful")
-                )
-              );
+
+              await dispatch(transferMeetingHostSuccess(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1382,4 +1378,5 @@ export {
   makeStreamStop,
   muteUnMuteParticipantsorGuestbyHost,
   setVoiceControleGuestForAllbyHost,
+  transferMeetingHostSuccess,
 };

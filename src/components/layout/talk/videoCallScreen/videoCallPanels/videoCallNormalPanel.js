@@ -21,11 +21,13 @@ import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
 import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
-import { getVideoCallParticipantsGuestMainApi } from "../../../../../store/actions/Guest_Video";
+import {
+  getVideoCallParticipantsGuestMainApi,
+  transferMeetingHostSuccess,
+} from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import {
   getVideoCallParticipantsMainApi,
-  makeHostNow,
   makeParticipantHost,
   participantListWaitingListMainApi,
   participantWaitingListBox,
@@ -175,9 +177,14 @@ const VideoPanelNormal = () => {
   const makeParticipantAsHost = useSelector(
     (state) => state.videoFeatureReducer.makeParticipantAsHost
   );
+
   const makeParticipantAsHostData = useSelector(
     (state) => state.videoFeatureReducer.makeParticipantAsHostData
   );
+  const hostTransferFlag = useSelector(
+    (state) => state.GuestVideoReducer.hostTransferFlag
+  );
+
   const [allParticipant, setAllParticipant] = useState([]);
 
   const [participantsList, setParticipantsList] = useState([]);
@@ -282,8 +289,12 @@ const VideoPanelNormal = () => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     const iframe = iframeRef.current;
+    console.log("videoHideUnHideForHost", audioControlForParticipant);
+    console.log("videoHideUnHideForHost", isMeetingHost);
     if (isMeetingHost === false) {
+      console.log("videoHideUnHideForHost", audioControlForParticipant);
       if (iframe && iframe.contentWindow !== null) {
+        console.log("videoHideUnHideForHost", audioControlForParticipant);
         if (audioControlForParticipant === true) {
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
@@ -308,8 +319,10 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     const iframe = iframeRef.current;
+    console.log("videoHideUnHideForHost", videoControlHost);
     if (isMeetingHost) {
       if (iframe && iframe.contentWindow !== null) {
+        console.log("videoHideUnHideForHost", videoControlHost);
         if (videoControlHost === true) {
           iframe.contentWindow.postMessage("VidOn", "*");
         } else {
@@ -630,6 +643,7 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [makeParticipantAsHost]);
 
+
   async function hostTrasfer(mqttData) {
     try {
       if (localStorage.getItem("participantUID") === mqttData.newHost.guid) {
@@ -674,6 +688,16 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      if (hostTransferFlag) {
+        console.log("videoHideUnHideForHost", hostTransferFlag);
+        setIsMeetingHost(false);
+        dispatch(transferMeetingHostSuccess(false,));
+      }
+    } catch {}
+  }, [hostTransferFlag]);
   return (
     <>
       {MaximizeHostVideoFlag ? (

@@ -146,7 +146,9 @@ const VideoNewParticipantList = () => {
       UID: usersData.guid,
       UserID: usersData.userID,
     };
-    dispatch(transferMeetingHostMainApi(navigate, t, data, 1));
+    dispatch(
+      transferMeetingHostMainApi(navigate, t, data, 1)
+    );
   };
 
   const muteUnmuteByHost = (usersData, flag) => {

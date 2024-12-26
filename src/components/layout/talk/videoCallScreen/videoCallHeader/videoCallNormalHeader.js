@@ -42,6 +42,7 @@ import {
   toggleParticipantsVisibility,
   leaveMeetingVideoOnlogout,
   leaveMeetingOnlogout,
+  makeParticipantHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -134,13 +135,16 @@ const VideoCallNormalHeader = ({
   const raisedUnRaisedParticipant = useSelector(
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
   );
+
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
   );
+
   //makeHostNow Reducer
   const makeHostNow = useSelector(
     (state) => state.videoFeatureReducer.makeHostNow
   );
+
   const VideoChatMessagesFlag = useSelector(
     (state) => state.videoFeatureReducer.VideoChatMessagesFlag
   );
@@ -160,8 +164,13 @@ const VideoCallNormalHeader = ({
   const priticipantListModalFlagForHost = useSelector(
     (state) => state.videoFeatureReducer.participantWaitinglistBox
   );
+
   const priticipantListModalFlagForNonHost = useSelector(
     (state) => state.videoFeatureReducer.participantsVisible
+  );
+
+  const makeParticipantAsHost = useSelector(
+    (state) => state.videoFeatureReducer.makeParticipantAsHost
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -738,7 +747,20 @@ const VideoCallNormalHeader = ({
   const onClickCLoseParticipantPanel = () => {
     dispatch(toggleParticipantsVisibility(false));
   };
-
+  useEffect(() => {
+    try {
+      if (makeParticipantAsHost) {
+        if (
+          localStorage.getItem("participantUID") ===
+          makeParticipantAsHost.newHost.guid
+        ) {
+          setIsMeetingHost(true)
+          // hostTrasfer(makeParticipantAsHostData);
+          dispatch(makeParticipantHost([], false));
+        }
+      }
+    } catch {}
+  }, [makeParticipantAsHost]);
   return (
     <>
       <Row className="mb-4">
