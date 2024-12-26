@@ -242,7 +242,7 @@ const VideoPanelNormal = () => {
       setIsMeetinVideoCeckForParticipant(true);
       if (validateRoomID(refinedParticipantVideoUrl)) {
         console.log("iframeiframe", refinedParticipantVideoUrl);
-        if (refinedParticipantVideoUrl === callerURL) {
+        if (refinedParticipantVideoUrl !== callerURL) {
           setCallerURL(refinedParticipantVideoUrl);
         }
       }
@@ -386,7 +386,7 @@ const VideoPanelNormal = () => {
           if (isMeetingHost) {
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
-              if (urlFormeetingapi === callerURL) {
+              if (urlFormeetingapi !== callerURL) {
                 setCallerURL(urlFormeetingapi);
               }
             }
@@ -398,7 +398,7 @@ const VideoPanelNormal = () => {
             );
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", newurl);
-              if (newurl === callerURL) {
+              if (newurl !== callerURL) {
                 setCallerURL(newurl);
               }
             }
@@ -411,7 +411,7 @@ const VideoPanelNormal = () => {
           );
           if (validateRoomID(newurl)) {
             console.log("iframeiframe", newurl);
-            if (newurl === callerURL) {
+            if (newurl !== callerURL) {
               setCallerURL(newurl);
             }
           }
@@ -434,8 +434,8 @@ const VideoPanelNormal = () => {
         if (isMeeting) {
           if (isMeetingHost) {
             if (validateRoomID(urlFormeetingapi)) {
-              console.log("iframeiframe", urlFormeetingapi === callerURL);
-              if (urlFormeetingapi === callerURL) {
+              console.log("iframeiframe", urlFormeetingapi !== callerURL);
+              if (urlFormeetingapi !== callerURL) {
                 console.log("iframeiframe", urlFormeetingapi);
                 setCallerURL(urlFormeetingapi);
               }
@@ -447,8 +447,8 @@ const VideoPanelNormal = () => {
               newRoomID
             );
             if (validateRoomID(newurl)) {
-              console.log("iframeiframe", newurl === callerURL);
-              if (newurl === callerURL) {
+              console.log("iframeiframe", newurl !== callerURL);
+              if (newurl !== callerURL) {
                 console.log("iframeiframe", newurl);
                 setCallerURL(newurl);
               }
@@ -461,8 +461,8 @@ const VideoPanelNormal = () => {
             newRoomID === 0 ? activeRoomID : newRoomID
           );
           if (validateRoomID(newurl)) {
-            console.log("iframeiframe", newurl === callerURL);
-            if (newurl === callerURL) {
+            console.log("iframeiframe", newurl !== callerURL);
+            if (newurl !== callerURL) {
               console.log("iframeiframe", newurl);
               setCallerURL(newurl);
             }
@@ -493,8 +493,8 @@ const VideoPanelNormal = () => {
           callAcceptedRoomID
         );
         if (validateRoomID(newurl)) {
-          console.log("iframeiframe", newurl === callerURL);
-          if (newurl === callerURL) {
+          console.log("iframeiframe", newurl !== callerURL);
+          if (newurl !== callerURL) {
             console.log("iframeiframe", newurl);
             setCallerURL(newurl);
           }
@@ -507,8 +507,8 @@ const VideoPanelNormal = () => {
             console.log("iframeiframe", urlFormeetingapi);
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", validateRoomID(urlFormeetingapi));
-              if (urlFormeetingapi === callerURL) {
-                console.log("iframeiframe", urlFormeetingapi === callerURL);
+              if (urlFormeetingapi !== callerURL) {
+                console.log("iframeiframe", urlFormeetingapi !== callerURL);
                 setCallerURL(urlFormeetingapi);
               }
             }
@@ -522,8 +522,8 @@ const VideoPanelNormal = () => {
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", validateRoomID(newurl));
 
-              if (newurl === callerURL) {
-                console.log("iframeiframe", newurl === callerURL);
+              if (newurl !== callerURL) {
+                console.log("iframeiframe", newurl !== callerURL);
                 setCallerURL(newurl);
               }
             }
@@ -537,8 +537,8 @@ const VideoPanelNormal = () => {
           console.log("iframeiframe", newurl);
           if (validateRoomID(newurl)) {
             console.log("iframeiframe", validateRoomID(newurl));
-            if (newurl === callerURL) {
-              console.log("iframeiframe", newurl === callerURL);
+            if (newurl !== callerURL) {
+              console.log("iframeiframe", newurl !== callerURL);
               setCallerURL(newurl);
             }
           }
@@ -637,8 +637,8 @@ const VideoPanelNormal = () => {
         await localStorage.removeItem("participantUID");
         if (validateRoomID(refinedVideoUrl)) {
           console.log("iframeiframe", refinedVideoUrl);
-          if (refinedVideoUrl === callerURL) {
-            console.log("iframeiframe", refinedVideoUrl === callerURL);
+          if (refinedVideoUrl !== callerURL) {
+            console.log("iframeiframe", refinedVideoUrl !== callerURL);
             setCallerURL(refinedVideoUrl);
           }
         }
