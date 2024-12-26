@@ -967,10 +967,13 @@ const Dashboard = () => {
                 localStorage.getItem("currentMeetingID")
               );
               let userIDCurrent = Number(localStorage.getItem("userID"));
+              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
               if (
+                isMeetingVideo &&
                 Number(currentMeetingID) === Number(data.payload.meetingID) &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
                 dispatch(globalStateForAudioStream(true));
                 dispatch(globalStateForVideoStream(true));
@@ -2353,10 +2356,13 @@ const Dashboard = () => {
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           localStorage.setItem("newCallerID", callerID);
           if (Number(data.senderID) !== Number(createrID)) {
-            if (Number(createrID) !== data.payload.recepientID) {
-              localStorage.setItem("unansweredFlag", true);
+          console.log("mqtt", callTypeID);
+          if (Number(createrID) !== data.payload.recepientID) {
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("unansweredFlag", true);
             }
-            setNotification({
+          console.log("mqtt", callTypeID);
+          setNotification({
               ...notification,
               notificationShow: true,
               message: t("The-call-was-unanswered"),
@@ -2369,29 +2375,38 @@ const Dashboard = () => {
               CallStatus: "Unanswered",
               RoomID: data.payload.roomID,
             };
-            let existingObjectIndex = existingData.findIndex(
+          console.log("mqtt", callTypeID);
+          let existingObjectIndex = existingData.findIndex(
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
                 item.RoomID === newData.RoomID
             );
             if (existingObjectIndex !== -1) {
-              existingData[existingObjectIndex] = newData;
+          console.log("mqtt", callTypeID);
+          existingData[existingObjectIndex] = newData;
             } else {
-              existingData.push(newData);
+          console.log("mqtt", callTypeID);
+          existingData.push(newData);
             }
-            localStorage.setItem(
+          console.log("mqtt", callTypeID);
+          localStorage.setItem(
               "callerStatusObject",
               JSON.stringify(existingData)
             );
           }
+          console.log("mqtt", callTypeID);
           if (callerID === newCallerID) {
-            if (isMeeting) {
-              if (!isMeetingVideo) {
-                localStorage.setItem("activeCall", false);
+          console.log("mqtt", callTypeID);
+          if (isMeeting) {
+          console.log("mqtt", callTypeID);
+          if (!isMeetingVideo) {
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("activeCall", false);
               }
             } else {
-              localStorage.setItem("activeCall", false);
+          console.log("mqtt", callTypeID);
+          localStorage.setItem("activeCall", false);
             }
           }
           console.log("mqtt", callTypeID);

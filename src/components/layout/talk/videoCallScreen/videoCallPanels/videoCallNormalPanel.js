@@ -18,11 +18,9 @@ import {
   generateURLParticipant,
 } from "../../../../../commen/functions/urlVideoCalls";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
-import VideoCallParticipants from "../videocallParticipants/VideoCallParticipants";
 import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
 import {
-  getVideoCallParticipantsGuestMainApi,
   transferMeetingHostSuccess,
 } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";

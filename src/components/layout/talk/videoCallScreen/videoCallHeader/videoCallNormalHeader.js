@@ -301,11 +301,14 @@ const VideoCallNormalHeader = ({
   };
 
   const openVideoPanel = () => {
+    console.log("busyCall");
     dispatch(leaveCallModal(true));
     dispatch(toggleParticipantsVisibility(false));
   };
 
   const endCallParticipant = () => {
+    console.log("busyCall");
+
     if (getDashboardVideo.isDashboardVideo === false) {
       let Data = {
         OrganizationID: currentOrganization,
@@ -470,12 +473,14 @@ const VideoCallNormalHeader = ({
   };
 
   const cancelLeaveCallOption = () => {
+    console.log("busyCall");
     dispatch(leaveCallModal(false));
     dispatch(toggleParticipantsVisibility(false));
   };
 
   // for Host leave Call
   const leaveCall = async (flag) => {
+    console.log("busyCall");
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
@@ -548,42 +553,42 @@ const VideoCallNormalHeader = ({
 
   // For Participant Leave Call
   const participantLeaveCall = () => {
-    console.log("leaveCallleaveCallleaveCallleaveCall");
+    console.log("busyCall");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("isHost");
     localStorage.removeItem("isNewHost");
     if (isMeeting === true) {
-      const meetHostFlag = localStorage.getItem("meetinHostInfo");
+      console.log("busyCall");
+      const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
-      if (meetHostFlag) {
-        const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
-        console.log(parsedHostFlag, "parsedHostFlag");
-        if (parsedHostFlag.isHost) {
-          let Data = {
-            RoomID: String(newRoomID),
-            UserGUID: String(newUserGUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
-        } else {
-          let Data = {
-            RoomID: String(participantRoomIds),
-            UserGUID: String(participantUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-          dispatch(setRaisedUnRaisedParticiant(false));
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
-        }
+      if (meetHostFlag?.isHost) {
+        console.log("busyCall");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+      } else {
+        console.log("busyCall");
+        let Data = {
+          RoomID: String(participantRoomIds),
+          UserGUID: String(participantUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        dispatch(setRaisedUnRaisedParticiant(false));
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
       }
     } else if (
       isMeeting === false &&
       getDashboardVideo.isDashboardVideo === false
     ) {
+    console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateRoomID,
@@ -754,7 +759,7 @@ const VideoCallNormalHeader = ({
           localStorage.getItem("participantUID") ===
           makeParticipantAsHost.newHost.guid
         ) {
-          setIsMeetingHost(true)
+          setIsMeetingHost(true);
           // hostTrasfer(makeParticipantAsHostData);
           dispatch(makeParticipantHost([], false));
         }
