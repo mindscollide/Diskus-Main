@@ -477,46 +477,42 @@ const VideoPanelNormal = () => {
           console.log("iframeiframe", newurl);
           setCallerURL(newurl);
         }
+      } else if (isMeeting === true) {
+        console.log("iframeiframe", isMeeting);
+        if (isMeetingVideo) {
+          console.log("iframeiframe", isMeetingHost);
+          if (isMeetingHost) {
+            console.log("iframeiframe", urlFormeetingapi);
+            if (validateRoomID(urlFormeetingapi)) {
+              console.log("iframeiframe", validateRoomID(urlFormeetingapi));
+              setCallerURL(urlFormeetingapi);
+            }
+          } else {
+            let newurl = generateURLParticipant(
+              extractedBaseURLCaller,
+              currentUserName,
+              callAcceptedRoomID
+            );
+            console.log("iframeiframe", newurl);
+            if (validateRoomID(newurl)) {
+              console.log("iframeiframe", validateRoomID(newurl));
+
+              setCallerURL(newurl);
+            }
+          }
+        } else {
+          let newurl = generateURLParticipant(
+            extractedBaseURLCaller,
+            currentUserName,
+            callAcceptedRoomID
+          );
+          console.log("iframeiframe", newurl);
+          if (validateRoomID(newurl)) {
+            console.log("iframeiframe", validateRoomID(newurl));
+            setCallerURL(newurl);
+          }
+        }
       }
-      // else if (isMeeting === true) {
-      //   if (isMeetingVideo) {
-      //     if (isMeetingHost) {
-      //       if (validateRoomID(urlFormeetingapi)) {
-      //         console.log("iframeiframe", urlFormeetingapi);
-      //         setCallerURL(urlFormeetingapi);
-      //       } else {
-      //         console.log("iframeiframe");
-      //         setCallerURL("");
-      //       }
-      //     } else {
-      //       let newurl = generateURLParticipant(
-      //         extractedBaseURLCaller,
-      //         currentUserName,
-      //         callAcceptedRoomID
-      //       );
-      //       if (validateRoomID(newurl)) {
-      //         console.log("iframeiframe", newurl);
-      //         setCallerURL(newurl);
-      //       } else {
-      //         console.log("iframeiframe");
-      //         setCallerURL("");
-      //       }
-      //     }
-      //   } else {
-      //     let newurl = generateURLParticipant(
-      //       extractedBaseURLCaller,
-      //       currentUserName,
-      //       callAcceptedRoomID
-      //     );
-      //     if (validateRoomID(newurl)) {
-      //       console.log("iframeiframe", newurl);
-      //       setCallerURL(newurl);
-      //     } else {
-      //       console.log("iframeiframe");
-      //       setCallerURL("");
-      //     }
-      //   }
-      // }
     } catch {}
   }, [callAcceptedRoomID]);
 
