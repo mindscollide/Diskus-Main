@@ -209,23 +209,26 @@ const VideoPanelNormal = () => {
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
   function validateRoomID(input) {
-    // Ensure the input is a string
-    const urlString = typeof input === "string" ? input : String(input);
-
     try {
+      // Convert input to string if not already a string
+      const urlString = String(input);
+
       // Parse the URL
       const url = new URL(urlString);
 
-      // Extract the query parameters
+      // Extract query parameters
       const params = new URLSearchParams(url.search);
 
-      // Get the RoomID parameter
-      const roomID = params.get("RoomID");
+      // Look for 'RoomID' or 'roomid' (case-insensitive)
+      let roomID = params.get("RoomID") || params.get("roomid");
 
-      // Check if RoomID exists and is not '0'
-      return roomID && roomID !== "0";
+      // Ensure RoomID is treated as a string
+      roomID = String(roomID).trim();
+
+      // Validate RoomID - must be a number greater than 0
+      return /^\d+$/.test(roomID) && parseInt(roomID, 10) > 0; // Only numbers > 0
     } catch (error) {
-      // Return false if URL parsing fails
+      // Return false for any parsing or validation error
       return false;
     }
   }
@@ -241,14 +244,17 @@ const VideoPanelNormal = () => {
       dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
       setIsMeetinVideoCeckForParticipant(true);
       if (validateRoomID(refinedParticipantVideoUrl)) {
-        console.log("iframeiframe", refinedParticipantVideoUrl);
+        console.log("iframeiframe", refinedParticipantVideoUrl !== callerURL);
         if (refinedParticipantVideoUrl !== callerURL) {
+          console.log("iframeiframe", refinedParticipantVideoUrl);
           setCallerURL(refinedParticipantVideoUrl);
         }
       }
     }
     return () => {
+      console.log("iframeiframe");
       if (callerURL !== "") {
+        console.log("iframeiframe");
         setCallerURL("");
       }
       localStorage.removeItem("refinedVideoUrl");
@@ -509,6 +515,8 @@ const VideoPanelNormal = () => {
               console.log("iframeiframe", validateRoomID(urlFormeetingapi));
               if (urlFormeetingapi !== callerURL) {
                 console.log("iframeiframe", urlFormeetingapi !== callerURL);
+                console.log("iframeiframe", urlFormeetingapi);
+                console.log("iframeiframe", callerURL);
                 setCallerURL(urlFormeetingapi);
               }
             }
