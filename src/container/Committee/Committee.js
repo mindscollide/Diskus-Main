@@ -45,13 +45,15 @@ import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useGroupsContext } from "../../context/GroupsContext";
 
 const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
-
+  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
+    useGroupsContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
   const CommitteeReducerGetAllCommitteesByUserIDResponse = useSelector(
@@ -100,7 +102,6 @@ const Committee = () => {
   const [changeStatusModal, setChangeStatusModal] = useState(false);
   const [statusUpdateData, setStatusUpdateData] = useState(null);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
-  const [ViewGroupPage, setViewGroupPage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
@@ -115,7 +116,6 @@ const Committee = () => {
   });
   const [mapgroupsData, setMapGroupData] = useState(null);
 
-  const [showModal, setShowModal] = useState(false);
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
 

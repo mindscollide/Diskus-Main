@@ -208,7 +208,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
+                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
                 };
@@ -306,7 +306,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   HostName: "",
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
+                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
                   PublishedMeetings: true,
                 };
                 console.log("chek search meeting");

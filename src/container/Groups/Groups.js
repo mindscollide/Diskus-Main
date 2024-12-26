@@ -44,10 +44,14 @@ import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useGroupsContext } from "../../context/GroupsContext";
 
 const Groups = () => {
   const { t } = useTranslation();
 
+  //Context For Groups
+  const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
+    useGroupsContext();
   const GroupsReducerrealtimeGroupStatus = useSelector(
     (state) => state.GroupsReducer.realtimeGroupStatus
   );
@@ -89,17 +93,13 @@ const Groups = () => {
   );
 
   const [modalStatusChange, setModalStatusChange] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [viewGroupTab, setViewGroupTab] = useState(0);
   const [ViewGroupID, setViewGroupID] = useState(0);
-
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
-  const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
 

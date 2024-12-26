@@ -213,6 +213,7 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
+      console.log(action.response, "PollsReducerviewVotes");
       return {
         ...state,
         Loading: false,
@@ -225,6 +226,7 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        Allpolls: null,
         ResponseMessage: action.message,
       };
     }

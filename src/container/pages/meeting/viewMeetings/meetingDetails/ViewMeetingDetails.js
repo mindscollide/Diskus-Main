@@ -320,8 +320,7 @@ const ViewMeetingDetails = ({
         IsVideoCall: false,
         TalkGroupID: 0,
       });
-      localStorage.removeItem("AdvanceMeetingOperations");
-      localStorage.removeItem("NotificationAdvanceMeetingID");
+
       dispatch(cleareAllState());
       dispatch(viewMeetingFlag(false));
     };
@@ -359,6 +358,8 @@ const ViewMeetingDetails = ({
       setViewAdvanceMeetingModal(false);
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationAdvanceMeetingID");
     } else {
       if (meetingStatus === 10 || meetingStatus === "10") {
         let leaveMeetingData = {
@@ -731,8 +732,8 @@ const ViewMeetingDetails = ({
     <>
       <section>
         {meetingStatus === 10 && (
-          <Row className='mt-3'>
-            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               {Number(editorRole.status) === 10 &&
               editorRole.role === "Organizer" ? (
                 <>
@@ -764,12 +765,13 @@ const ViewMeetingDetails = ({
           </Row>
         )}
 
-        <Row className='mt-4'>
+        <Row className="mt-4">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className={styles["ScrollerMeeting_Active"]}>
+            className={styles["ScrollerMeeting_Active"]}
+          >
             <Row className={meetingStatus === 10 ? "mt-4" : ""}>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_Gray_meeting"]}>
@@ -779,23 +781,23 @@ const ViewMeetingDetails = ({
                 </span>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["MeetingTitle_Heading"]}>
                   {meetingDetails.MeetingTitle}
                 </span>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["ParaGraph_SavedMeeting"]}>
                   {meetingDetails.Description}
                 </span>
               </Col>
             </Row>
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col lg={5} md={5} sm={5}>
-                <Row className='mt-1'>
+                <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>
                       {t("Notes")}
@@ -809,7 +811,7 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Scedule_OnHeading"]}>
                       {t("Scheduled-on")}
@@ -850,15 +852,16 @@ const ViewMeetingDetails = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex align-items-center gap-1'>
+                    className="d-flex align-items-center gap-1"
+                  >
                     {meetingDetails.groupChat && (
                       <img
                         src={Messegeblue}
-                        height='20.44px'
-                        width='25.68px'
-                        alt=''
+                        height="20.44px"
+                        width="25.68px"
+                        alt=""
                         onClick={() => groupChatInitiation(meetingDetails)}
-                        className='cursor-pointer mx-2'
+                        className="cursor-pointer mx-2"
                       />
                     )}
                     {meetingDetails.IsVideoCall && (
@@ -875,8 +878,8 @@ const ViewMeetingDetails = ({
                             />
                             {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
                               <Button
-                                text='Join Video Call'
-                                className='JoinMeetingButton'
+                                text="Join Video Call"
+                                className="JoinMeetingButton"
                                 onClick={joinMeetingCall}
                               />
                             )}
@@ -923,7 +926,7 @@ const ViewMeetingDetails = ({
                     )}
                   </Col>
                 </Row>
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
                   </Col>
@@ -937,9 +940,9 @@ const ViewMeetingDetails = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={6} md={6} sm={6}>
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Reminder-frequency")}
@@ -972,7 +975,7 @@ const ViewMeetingDetails = ({
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["NOtes_heading"]}>
                           {t("Recurring")}
@@ -992,12 +995,13 @@ const ViewMeetingDetails = ({
             </Row>
           </Col>
         </Row>
-        <Row className='mt-2'>
+        <Row className="mt-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-end gap-2'>
+            className="d-flex justify-content-end gap-2"
+          >
             <Button
               text={t("Back")}
               className={styles["Cancel_Meeting_Details"]}
@@ -1034,7 +1038,7 @@ const ViewMeetingDetails = ({
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName='d-none'
+        modalFooterClassName="d-none"
         centered
         size={"sm"}
         ModalBody={
@@ -1045,12 +1049,13 @@ const ViewMeetingDetails = ({
                   <p> Disconnect current call? </p>
                 </Col>
               </Row>
-              <Row className='mt-3 mb-4'>
+              <Row className="mt-3 mb-4">
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className='d-flex justify-content-center gap-2'>
+                  className="d-flex justify-content-center gap-2"
+                >
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -1059,7 +1064,7 @@ const ViewMeetingDetails = ({
                         ? t("End Participant")
                         : null
                     }
-                    className='leave-meeting-options__btn leave-meeting-red-button'
+                    className="leave-meeting-options__btn leave-meeting-red-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
@@ -1071,7 +1076,7 @@ const ViewMeetingDetails = ({
 
                   <Button
                     text={t("Cancel")}
-                    className='leave-meeting-options__btn leave-meeting-gray-button'
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>

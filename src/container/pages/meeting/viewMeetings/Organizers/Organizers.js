@@ -135,8 +135,9 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className='d-flex gap-3 justify-content-center align-items-center'>
-              <label className='column-boldness'>
+              className="d-flex gap-3 justify-content-center align-items-center"
+            >
+              <label className="column-boldness">
                 {text === true ? t("Primary") : t("Secondary")}
               </label>
             </Col>
@@ -155,9 +156,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -165,9 +166,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsup}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -175,9 +176,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={thumbsdown}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -185,9 +186,9 @@ const Organizers = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           }
@@ -207,13 +208,14 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -225,13 +227,14 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -284,8 +287,9 @@ const Organizers = ({
               lg={12}
               md={12}
               sm={12}
-              className='d-flex gap-3 align-items-center'>
-              <label className='column-boldness w-100'>
+              className="d-flex gap-3 align-items-center"
+            >
+              <label className="column-boldness w-100">
                 {text === true ? t("Primary") : t("Non-primary")}
               </label>
             </Col>
@@ -305,13 +309,14 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -323,13 +328,14 @@ const Organizers = ({
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -363,11 +369,12 @@ const Organizers = ({
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-
     setorganizers(false);
     localStorage.removeItem("folderDataRoomMeeting");
     setEditorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   useEffect(() => {
@@ -504,7 +511,7 @@ const Organizers = ({
                 x: "hidden",
               }}
               pagination={false}
-              className='Polling_table'
+              className="Polling_table"
               rows={rowsData}
             />
           </Col>

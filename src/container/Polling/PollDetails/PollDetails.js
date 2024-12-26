@@ -6,42 +6,42 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import {
-  getPollsByPollIdApi,
-  viewVotesDetailsModal,
-} from "../../../store/actions/Polls_actions";
+import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
 const PollDetails = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const PollsReducerviewVotes = useSelector(
-    (state) => state.PollsReducer.viewVotes
+    (state) => state.PollsReducer.Allpolls
   );
+
+  const PollsReducerviewVotess = useSelector((state) => state.PollsReducer);
+
+  console.log(PollsReducerviewVotess, "PollsReducerviewVotes");
+  console.log(PollsReducerviewVotes, "PollsReducerviewVotes");
   const PollsReducerviewVotesDetails = useSelector(
     (state) => state.PollsReducer.viewVotesDetails
   );
   const { t } = useTranslation();
-  const [pollId, setPollId] = useState(0);
-  let userID = localStorage.getItem("userID");
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
     []
+  );
+  console.log(
+    pollAttendiesOpptionsVise,
+    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
   );
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
 
   useEffect(() => {
     let vieVotePollDetails = PollsReducerviewVotes;
-    let pollOptions = vieVotePollDetails.pollOptions;
-    let pollAttendies = vieVotePollDetails.pollParticipants;
-    let Options = [];
+    console.log(vieVotePollDetails, "vieVotePollDetailsvieVotePollDetails");
+    if (PollsReducerviewVotes !== undefined && PollsReducerviewVotes !== null) {
+      const { pollDetails, pollOptions, pollParticipants, selectedAnswers } =
+        PollsReducerviewVotes.poll;
 
-    if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
-      if (Object.keys(vieVotePollDetails).length > 0) {
-        // for poll ID
-        setPollId(vieVotePollDetails.pollDetails.pollID);
-
+      let Options = [];
+      if (Object.values(pollDetails).length > 0) {
         // for poll Title
-        setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
+        setPollTitle(pollDetails.pollTitle);
 
         // for options
         if (Object.keys(pollOptions).length > 0) {
@@ -51,8 +51,8 @@ const PollDetails = () => {
           setVotePollDetailsOptions(Options);
         }
 
-        if (Object.keys(pollAttendies).length > 0) {
-          setPollAttendiesOpptionsVise(pollAttendies);
+        if (Object.keys(pollParticipants).length > 0) {
+          setPollAttendiesOpptionsVise(pollParticipants);
         }
       }
     }
@@ -195,75 +195,70 @@ const PollDetails = () => {
                     sm={12}
                     className={styles["Scroller_participants"]}
                   >
-                    {pollAttendiesOpptionsVise.map((data, index) => {
-                      return (
-                        <>
-                          <Row className="mt-2" key={index}>
-                            <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                              <span className={styles["Yes_voters"]}>
-                                {data.answer +
+                    {/* {pollAttendiesOpptionsVise.map((data, index) => {
+                      return ( */}
+                    <>
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                          <span className={styles["Yes_voters"]}>
+                            {/* {data.answer +
                                   " " +
                                   "(" +
                                   data.totalVotes +
-                                  ")"}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            {Object.keys(data.pollParticipants).length > 0
-                              ? data.pollParticipants.map(
-                                  (innerData, index) => {
-                                    return (
-                                      <>
+                                  ")"} */}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        {Object.keys(pollAttendiesOpptionsVise).length > 0
+                          ? pollAttendiesOpptionsVise.map(
+                              (innerData, index) => {
+                                return (
+                                  <>
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={12}
+                                      className="mt-2"
+                                      key={index}
+                                    >
+                                      <Row>
                                         <Col
-                                          lg={6}
-                                          md={6}
+                                          lg={11}
+                                          md={11}
                                           sm={12}
-                                          className="mt-2"
-                                          key={index}
+                                          className="m-0 p-0"
                                         >
-                                          <Row>
-                                            <Col
-                                              lg={11}
-                                              md={11}
-                                              sm={12}
-                                              className="m-0 p-0"
-                                            >
-                                              <Row
-                                                className={
-                                                  styles["Card_border2"]
-                                                }
+                                          <Row
+                                            className={styles["Card_border2"]}
+                                          >
+                                            <Col sm={12} md={12} lg={12}>
+                                              <img
+                                                draggable="false"
+                                                src={`data:image/jpeg;base64,${innerData.profilePicture.displayProfilePictureName}`}
+                                                width="33px"
+                                                height="33px"
+                                                className="rounded-circle"
+                                                alt=""
+                                              />
+                                              <span
+                                                className={styles["Name_cards"]}
                                               >
-                                                <Col sm={12} md={12} lg={12}>
-                                                  <img
-                                                    draggable="false"
-                                                    src={`data:image/jpeg;base64,${innerData.profilePicture.displayProfilePictureName}`}
-                                                    width="33px"
-                                                    height="33px"
-                                                    className="rounded-circle"
-                                                    alt=""
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["Name_cards"]
-                                                    }
-                                                  >
-                                                    {innerData.userName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
+                                                {innerData.userName}
+                                              </span>
                                             </Col>
                                           </Row>
                                         </Col>
-                                      </>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </Row>
-                        </>
-                      );
-                    })}
+                                      </Row>
+                                    </Col>
+                                  </>
+                                );
+                              }
+                            )
+                          : null}
+                      </Row>
+                    </>
+                    {/* ); })} */}
                   </Col>
                 </Row>
               </Col>
