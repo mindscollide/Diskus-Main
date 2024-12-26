@@ -368,30 +368,6 @@ const VideoPanelNormal = () => {
   }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      // Filter out duplicates based on UID
-      const uniqueParticipants = getNewParticipantsMeetingJoin.reduce(
-        (acc, current) => {
-          // Only add the current participant if its UID is not already in acc
-          if (!acc.find((participant) => participant.guid === current.guid)) {
-            acc.push(current);
-          }
-          return acc;
-        },
-        []
-      );
-
-      setParticipantsList(uniqueParticipants);
-    } else {
-      setParticipantsList([]);
-    }
-  }, [getNewParticipantsMeetingJoin]);
-
-  useEffect(() => {
     try {
       if (initiateCallRoomID !== null) {
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");

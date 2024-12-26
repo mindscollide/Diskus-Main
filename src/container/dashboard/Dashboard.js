@@ -876,7 +876,7 @@ const Dashboard = () => {
                 isDashboardVideo: true,
               };
               dispatch(makeHostNow(meetingHost));
-              localStorage.setItem("isMeeting", false);
+              localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.setItem("refinedVideoGiven", false);
