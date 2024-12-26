@@ -2349,5 +2349,11 @@
   "Has-deleted-a-file-shared-with-you-as-viewer": "has deleted a file shared with you as viewer",
   "There-are-no-Participants": "There are no Participants",
   "Has-archived-the-committee": "Has archived the committee",
-  "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer"
+  "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
+  "Start-date-is-missing-in-agenda": "Start date is missing in agenda",
+  "End-date-is-missing-in-agenda": "End-date is missing in agenda",
+  "Presenter-is-missing-in-agenda": "Presenter is missing in agenda",
+  "URL-is-missing-in-agenda": "URL is missing in agenda",
+  "UserID/Note-is-missing-in-agenda": "UserID/Note is missing in agenda",
+  "Title-is-missing-in-agenda": "Title is missing in agenda"
 }

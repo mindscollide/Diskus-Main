@@ -194,16 +194,16 @@ const ParentAgenda = ({
     );
   };
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "error",
-        setOpen
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
+  // useEffect(() => {
+  //   if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+  //     showMessage(
+  //       t("Thank-you-for-participanting-in-voting"),
+  //       "error",
+  //       setOpen
+  //     );
+  //     dispatch(clearResponseMessage(""));
+  //   }
+  // }, [MeetingAgendaReducer.ResponseMessage]);
 
   const pdfData = (record, ext) => {
     let Data = {

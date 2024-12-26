@@ -343,10 +343,10 @@ const CreateTask = ({
           }
         }
         console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-        let sortAssginersArr = newmembersArray.sort(
-          (a, b) =>  a.name.localeCompare(b.name)
+        let sortAssginersArr = newmembersArray.sort((a, b) =>
+          a.name.localeCompare(b.name)
         );
-   
+
         setTaskMemberSelect(sortAssginersArr);
       } else {
         setTaskMemberSelect([]);
@@ -524,44 +524,44 @@ const CreateTask = ({
   const documentsUploadCall = async (dataroomMapFolderId) => {
     let newFolder = [];
     let newSaveFiles = [];
-    // if(fileForSend)
-    const uploadPromises = fileForSend.map(async (newData) => {
+    let newAttachmentData = [];
+
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadActionMeetingApi(
+            navigate,
+            t,
+            newData,
+            dataroomMapFolderId,
+            newFolder
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
       await dispatch(
-        uploadActionMeetingApi(
+        saveFilesTaskApi(
           navigate,
           t,
-          newData,
+          newFolder,
           dataroomMapFolderId,
-          newFolder
+          newSaveFiles
         )
       );
-    });
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    await dispatch(
-      saveFilesTaskApi(
-        navigate,
-        t,
-        newFolder,
-        dataroomMapFolderId,
-        newSaveFiles
-      )
-    );
-    console.log(
-      { uploadPromises, newFolder, newSaveFiles },
-      "uploadPromisesuploadPromisesuploadPromises"
-    );
-    let newAttachmentData = newSaveFiles.map((data, index) => {
-      return {
-        DisplayAttachmentName: data.DisplayAttachmentName,
-        OriginalAttachmentName: data.pK_FileID.toString(),
-        FK_TID: Number(createTaskID),
-      };
-    });
-    console.log(
-      { newAttachmentData },
-      "uploadPromisesuploadPromisesuploadPromises"
-    );
+
+      newAttachmentData = newSaveFiles.map((data, index) => {
+        return {
+          DisplayAttachmentName: data.DisplayAttachmentName,
+          OriginalAttachmentName: data.pK_FileID.toString(),
+          FK_TID: Number(createTaskID),
+        };
+      });
+      console.log(
+        { newAttachmentData },
+        "uploadPromisesuploadPromisesuploadPromises"
+      );
+    }
 
     let Data = {
       TaskCreatorID: Number(creatorID),
