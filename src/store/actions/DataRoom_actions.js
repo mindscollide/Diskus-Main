@@ -831,83 +831,73 @@ const getDocumentsAndFolders_fail = (message) => {
   };
 };
 
-// Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let Data = {
-    UserID: parseInt(createrID),
-    OrganizationID: parseInt(OrganizationID),
-    StatusID: parseInt(statusID),
-    SortBy: sort !== null && sort !== undefined ? sort : 1,
-    isDescending: order !== null && order !== undefined ? order : true,
-    sRow: 0,
-    Length: 10,
-  };
-  return (dispatch) => {
+  return async (dispatch) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const userID = localStorage.getItem("userID");
+    const organizationID = localStorage.getItem("organizationID");
+
+    const Data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      StatusID: parseInt(statusID),
+      SortBy: sort ?? 1,
+      isDescending: order ?? true,
+      sRow: 0,
+      Length: 10,
+    };
+
     if (no === 1) {
       dispatch(getDocumentsAndFolders_init());
     }
-    let form = new FormData();
-    form.append(
-      "RequestMethod",
-      getDocumentsAndFolderRequestMethod.RequestMethod
-    );
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getDocumentsAndFolderApi(navigate, statusID, t, no, sort, order)
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()
-            ) {
-              dispatch(
-                getDocumentsAndFolders_success(response.data.responseResult, "")
-              );
-              if (statusID === 1) {
-                localStorage.setItem("setTableView", 1);
-              } else if (statusID === 2) {
-                localStorage.setItem("setTableView", 2);
-              } else if (statusID === 3) {
-                localStorage.setItem("setTableView", 3);
-              }
-            } else if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase()
-            ) {
-              dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
-            } else if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()
-            ) {
-              dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
-            }
+
+    try {
+      const form = new FormData();
+      form.append(
+        "RequestMethod",
+        getDocumentsAndFolderRequestMethod.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(Data));
+
+      const response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          getDocumentsAndFolderApi(navigate, statusID, t, no, sort, order)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const result = response.data.responseResult;
+        if (result.isExecuted) {
+          const message = result.responseMessage.toLowerCase();
+          if (message === "dataroom_dataroommanager_getdocumentsandfolders_01") {
+            dispatch(getDocumentsAndFolders_success(result, ""));
+            localStorage.setItem("setTableView", statusID);
+            return result; // Return the successful result
+          } else if (
+            message === "dataroom_dataroommanager_getdocumentsandfolders_02"
+          ) {
+            dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
           } else {
             dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         }
-      })
-      .catch((error) => {
+      } else {
         dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
+      throw error; // Re-throw error for further handling
+    }
   };
 };
+
 
 // Get All Data from scroll behaviour
 const getDocumentsAndFolderApiScrollbehaviour = (

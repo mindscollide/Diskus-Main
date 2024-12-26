@@ -1654,12 +1654,18 @@ export const isSameAsToday = (utcDateString) => {
 };
 
 export const dateConverterIntoUTCForDataroom = (newDate, no) => {
+  // Check if newDate is a Date instance, return empty string if true
+  if (!(newDate instanceof Date)) {
+    return ''; // Return empty string if newDate is not a Date instance
+  }
+
   if (no === 1) {
     newDate.setHours(0, 0, 0, 0); // Set to 00:00:00 in local time
   } else {
     newDate.setHours(23, 58, 59, 0); // Set to 23:58:59 in local time
   }
   console.log(newDate, no, "newDatenewDate");
+
   // Convert to UTC components
   const year = newDate.getUTCFullYear();
   const month = String(newDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -1674,6 +1680,7 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   console.log(formattedDate, "UTC formatted date");
   return formattedDate;
 };
+
 
 //Review Minutes Send Date Format
 

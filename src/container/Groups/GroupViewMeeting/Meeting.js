@@ -124,11 +124,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           setViewMeetingModal,
           setEditMeetingModal,
           setCalendarViewModal,
-          setSceduleMeeting,
-          1
+          // setSceduleMeeting,
+          6
         )
       );
-      setViewMeetingModal(true);
+      // setViewMeetingModal(true);
     }
   };
   const handleEditMeeting = async (meetingID, isQuickMeeting) => {
@@ -141,11 +141,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         setViewMeetingModal,
         setEditMeetingModal,
         setCalendarViewModal,
-        setSceduleMeeting,
+        // setSceduleMeeting,
         2
       )
     );
-    setEditMeetingModal(true);
+    // setEditMeetingModal(true);
   };
   useEffect(() => {
     let searchData = {
@@ -437,6 +437,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "host",
       align: "center",
       width: "90px",
+      ellipsis: true,
       onHeaderCell: () => ({
         onClick: () => {
           setMeetingOrganizerSort((order) => {
@@ -574,7 +575,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "55px",
+      width: "85px",
       align: "center",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(

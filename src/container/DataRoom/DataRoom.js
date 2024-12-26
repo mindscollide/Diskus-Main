@@ -366,7 +366,10 @@ const DataRoom = () => {
         setSearchoptions(false);
       }
     } else {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      let getData = await dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 1)
+      );
+      console.log(getData, "getDatagetDatagetData");
       localStorage.removeItem("folderID");
     }
     dispatch(BreadCrumbsList([]));
@@ -3750,7 +3753,6 @@ const DataRoom = () => {
                                 ).map((item, index) => (
                                   <Breadcrumb.Item
                                     key={item.id}
-                                    
                                     onClick={() =>
                                       handleClickGetFolderData(
                                         item.id,
