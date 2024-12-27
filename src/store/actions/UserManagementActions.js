@@ -2709,7 +2709,7 @@ const SetLoaderFalseDownload = () => {
   };
 };
 
-const BoardDeckPDFDownloadApi = (navigate, t, data) => {
+const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", DownloadBoarddeckPDF.RequestMethod);
@@ -2745,6 +2745,18 @@ const BoardDeckPDFDownloadApi = (navigate, t, data) => {
 
           dispatch(SetLoaderFalseDownload(false));
           dispatch(boardDeckModal(false));
+          setBoarddeckOptions({
+            selectall: false,
+            Organizer: false,
+            AgendaContributor: false,
+            Participants: false,
+            Minutes: false,
+            Task: false,
+            polls: false,
+            attendeceReport: false,
+            video: false,
+            Agenda: false,
+          });
         } else {
           console.log("Unexpected response status:", response.status);
           console.log("Response headers:", response.headers);

@@ -236,7 +236,7 @@ const BoardDeckModal = ({
           : false,
       fetchAgenda: boarddeckOptions.Agenda,
     };
-    dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
+    dispatch(BoardDeckPDFDownloadApi(navigate, t, data, setBoarddeckOptions));
   };
 
   return (
