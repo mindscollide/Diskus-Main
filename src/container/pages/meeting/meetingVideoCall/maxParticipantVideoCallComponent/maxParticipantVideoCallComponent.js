@@ -79,7 +79,8 @@ const ParticipantVideoCallComponent = ({
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
-
+  const [joinButton, setJoinButton] = useState(false);
+  
   console.log(isWebCamEnabled, "isWebCamEnabled");
 
   useEffect(() => {
@@ -290,6 +291,7 @@ const ParticipantVideoCallComponent = ({
   };
 
   const joinNewApiVideoCallOnClick = async () => {
+    setJoinButton(true)
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
@@ -306,7 +308,8 @@ const ParticipantVideoCallComponent = ({
         t,
         data,
         setIsWaiting,
-        setGetReady
+        setGetReady,
+        setJoinButton
       )
     );
     // setIsWaiting(true);
@@ -551,6 +554,7 @@ const ParticipantVideoCallComponent = ({
                       {t("Ready-to-join")}
                     </p>
                     <Button
+                    disableBtn={joinButton}
                       text={t("Join-now")}
                       className="max-videoParticipant-Join-Now-Btn"
                       onClick={joinNewApiVideoCallOnClick}

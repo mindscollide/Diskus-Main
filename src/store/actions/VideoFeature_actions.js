@@ -547,7 +547,8 @@ const getParticipantMeetingJoinMainApi = (
   t,
   data,
   setIsWaiting,
-  setGetReady
+  setGetReady,
+  setJoinButton
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -573,7 +574,8 @@ const getParticipantMeetingJoinMainApi = (
               t,
               data,
               setIsWaiting,
-              setGetReady
+              setGetReady,
+              setJoinButton
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -600,6 +602,7 @@ const getParticipantMeetingJoinMainApi = (
               try {
                 setIsWaiting(true);
                 setGetReady(false);
+                setJoinButton(false);
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinSuccess(
@@ -657,6 +660,9 @@ const getParticipantMeetingJoinMainApi = (
                   t("ScheduleCall-joined-and-is-host")
                 )
               );
+              try {
+                setJoinButton(false);
+              } catch {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -664,6 +670,9 @@ const getParticipantMeetingJoinMainApi = (
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_03".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(
                   t("invalid-video-call-url-provided")
@@ -676,6 +685,9 @@ const getParticipantMeetingJoinMainApi = (
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_04".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call"))
               );
@@ -686,22 +698,34 @@ const getParticipantMeetingJoinMainApi = (
                   "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_05".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong"))
               );
             }
           } else {
+            try {
+              setJoinButton(false);
+            } catch {}
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong"))
             );
           }
         } else {
+          try {
+            setJoinButton(false);
+          } catch {}
           await dispatch(
             getParticipantMeetingJoinFail(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
+        try {
+          setJoinButton(false);
+        } catch {}
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
   };
@@ -1113,12 +1137,12 @@ const leaveMeetingVideoOnlogout = (response) => {
 };
 
 // FOR CONVERT PARTICIPANT TO HOST
-const makeParticipantHost = (response,flag) => {
+const makeParticipantHost = (response, flag) => {
   console.log(response, "MAKE_A_PARTICIPANT_HOST");
 
   return {
     type: actions.MAKE_A_PARTICIPANT_HOST,
-    flag:flag,
+    flag: flag,
     response: response,
   };
 };
