@@ -865,32 +865,19 @@ const WebNotfication = ({
           .toLowerCase()
           .includes("/Diskus/dataroom".toLowerCase())
       ) {
-        let PermissionID = 0;
-        //Api Call For Extracting the Permission ID
-        // let Data = {
-        //   FileFolderID: Number(PayLoadData.FileID),
-        //   IsFolder: false,
-        // };
-        // dispatch(
-        //   DataRoomFileSharingPermissionAPI(navigate, t, Data, PermissionID)
-        // );
-        console.log(PermissionID, "PermissionID");
-        const pdfData = {
-          taskId: Number(PayLoadData.FileID),
-          commingFrom: 4,
-          fileName: PayLoadData.FileName,
-          attachmentID: Number(PayLoadData.FileID),
-          isPermission: 1,
+        // Api Call For Extracting the Permission ID
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
         };
-        const pdfDataJson = JSON.stringify(pdfData);
-        let ext = PayLoadData.FileName.split(".").pop();
-        openDocumentViewer(
-          ext,
-          pdfDataJson,
-          dispatch,
-          navigate,
-          t,
-          Number(PayLoadData.FileID)
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
         );
       } else {
         //Notification For Being File shared to you as viewer
