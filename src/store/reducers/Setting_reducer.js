@@ -471,7 +471,7 @@ const settingReducer = (state = initialState, action) => {
     case actions.DISKUS_WEB_NOTIFICATION_MARKASREAD_INIT: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
       };
     }
 

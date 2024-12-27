@@ -37,7 +37,10 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
-import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
+import {
+  fileFormatforSignatureFlow,
+  openDocumentViewer,
+} from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
@@ -876,7 +879,9 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
         const result = response.data.responseResult;
         if (result.isExecuted) {
           const message = result.responseMessage.toLowerCase();
-          if (message === "dataroom_dataroommanager_getdocumentsandfolders_01") {
+          if (
+            message === "dataroom_dataroommanager_getdocumentsandfolders_01"
+          ) {
             dispatch(getDocumentsAndFolders_success(result, ""));
             localStorage.setItem("setTableView", statusID);
             return result; // Return the successful result
@@ -899,7 +904,6 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
     }
   };
 };
-
 
 // Get All Data from scroll behaviour
 const getDocumentsAndFolderApiScrollbehaviour = (
@@ -3960,7 +3964,13 @@ const DataRoomFileSharingPermissionFailed = (message) => {
   };
 };
 
-const DataRoomFileSharingPermissionAPI = (navigate, t, Data, PermissionID) => {
+const DataRoomFileSharingPermissionAPI = (
+  navigate,
+  t,
+  Data,
+  FileID,
+  FileName
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -4000,9 +4010,20 @@ const DataRoomFileSharingPermissionAPI = (navigate, t, Data, PermissionID) => {
                 ""
               )
             );
-            //Setting the Permission ID
-            PermissionID = response.data.responseResult.permissionID;
+
             //Open File Viewer Open According to Permission ID
+            const pdfData = {
+              taskId: FileID,
+              commingFrom: 4,
+              fileName: FileName,
+              attachmentID: FileID,
+              isPermission: Number(response.data.responseResult.permissionID),
+            };
+
+            console.log(pdfData, "stringifypdfData");
+            const pdfDataJson = JSON.stringify(pdfData);
+            let ext = FileName.split(".").pop();
+            openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, FileID);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
