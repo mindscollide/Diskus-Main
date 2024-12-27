@@ -180,6 +180,7 @@ const NewCalendar = () => {
           talkGroupID: calenderData.talkGroupID,
           isPrimaryOrganizer: calenderData.isPrimaryOrganizer,
           isMinutePublished: calenderData.isMinutePublished ? true : false,
+          attendeeRoleID: calenderData.attendeeRoleID,
         });
       });
       setCalendarEvents(newCalendarData);
@@ -450,6 +451,7 @@ const NewCalendar = () => {
           talkGroupID: meetingData.talkGroupID,
           isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
           isMinutePublished: meetingData.isMinutePublished ? true : false,
+          attendeeRoleID: meetingData.attendeeRoleID,
         };
         console.log(dashboardData, "meetingDatameetingDatameetingData");
 
@@ -557,6 +559,7 @@ const NewCalendar = () => {
           talkGroupID: meetingData.talkGroupID,
           isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
           isMinutePublished: meetingData.isMinutePublished ? true : false,
+          attendeeRoleID: meetingData.attendeeRoleID,
         };
         // Check if the meeting ID already exists in the upComingEvents array
         const isExistAlready = calendarEvents.findIndex(
@@ -635,7 +638,7 @@ const NewCalendar = () => {
           let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
           updateCalendarData(true, meetingID);
           console.log("upComingEvents");
-  
+
           setEvents((event) =>
             event.filter((eventData, index) => {
               return eventData.pK_MDID !== Number(meetingID);
@@ -657,7 +660,7 @@ const NewCalendar = () => {
               return data; // Always return the data item
             });
           });
-  
+
           setEvents((event) =>
             event.map((eventData, index) => {
               if (eventData.pK_MDID === Number(meetingID)) {
@@ -668,13 +671,12 @@ const NewCalendar = () => {
           );
           console.log("upComingEvents", events);
         }
-  
+
         dispatch(getMeetingStatusfromSocket(null));
       }
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
- 
   }, [meetingIdReducer.MeetingStatusSocket]);
 
   return (

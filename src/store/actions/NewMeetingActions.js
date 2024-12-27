@@ -1424,6 +1424,7 @@ const FetchMeetingURLApi = (
               }
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("CallType", 2);
+              console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 2);
               localStorage.setItem("activeCall", true);
               localStorage.setItem("callerID", 9999);
@@ -7462,9 +7463,9 @@ const meetingNotConductedMQTT = (response) => {
 const removeUpComingEvent = (response) => {
   return {
     type: actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 
 //Validate Empty String User Availibility For Meeting
 
@@ -8080,7 +8081,7 @@ const JoinCurrentMeeting = (
   setViewAdvanceMeetingModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  
+
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
     let form = new FormData();
@@ -9548,5 +9549,5 @@ export {
   ProposedMeetingViewFlagAction,
   LeaveMeetingSideBarModalAction,
   GetMeetingStatusDataAPI,
-  removeUpComingEvent
+  removeUpComingEvent,
 };

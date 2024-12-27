@@ -871,43 +871,47 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "REMOVED_FROM_MEETING".toLowerCase()
             ) {
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: true,
-              };
-              dispatch(makeHostNow(meetingHost));
-              localStorage.setItem("isMeeting", true);
-              localStorage.setItem("isMeetingVideo", false);
-              localStorage.removeItem("refinedVideoUrl");
-              localStorage.setItem("refinedVideoGiven", false);
-              localStorage.setItem("isWebCamEnabled", false);
-              localStorage.setItem("isMicEnabled", false);
-              dispatch(setAudioControlForParticipant(false));
-              dispatch(setVideoControlForParticipant(false));
+              let isMeetingVideoCheck = JSON.parse(localStorage.getItem("isMeetingVideo"));
+              console.log("leavecallMeetingVideo", isMeetingVideoCheck);
+              if (isMeetingVideoCheck) {
+                const meetingHost = {
+                  isHost: false,
+                  isHostId: 0,
+                  isDashboardVideo: true,
+                };
+                dispatch(makeHostNow(meetingHost));
+                localStorage.setItem("isMeeting", true);
+                localStorage.setItem("isMeetingVideo", false);
+                localStorage.removeItem("refinedVideoUrl");
+                localStorage.setItem("refinedVideoGiven", false);
+                localStorage.setItem("isWebCamEnabled", false);
+                localStorage.setItem("isMicEnabled", false);
+                dispatch(setAudioControlForParticipant(false));
+                dispatch(setVideoControlForParticipant(false));
 
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
 
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(maxParticipantVideoRemoved(true));
-              // Participant room Id and usrrGuid
-              let participantRoomIds =
-                localStorage.getItem("participantRoomId");
-              let participantUID = localStorage.getItem("participantUID");
-              let currentMeetingID = localStorage.getItem("currentMeetingID");
-              let newName = localStorage.getItem("name");
-              let Data = {
-                RoomID: String(participantRoomIds),
-                UserGUID: String(participantUID),
-                Name: String(newName),
-                IsHost: false,
-                MeetingID: Number(currentMeetingID),
-              };
-              dispatch(setRaisedUnRaisedParticiant(false));
-              dispatch(LeaveMeetingVideo(Data, navigate, t));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(maxParticipantVideoRemoved(true));
+                // Participant room Id and usrrGuid
+                let participantRoomIds =
+                  localStorage.getItem("participantRoomId");
+                let participantUID = localStorage.getItem("participantUID");
+                let currentMeetingID = localStorage.getItem("currentMeetingID");
+                let newName = localStorage.getItem("name");
+                let Data = {
+                  RoomID: String(participantRoomIds),
+                  UserGUID: String(participantUID),
+                  Name: String(newName),
+                  IsHost: false,
+                  MeetingID: Number(currentMeetingID),
+                };
+                dispatch(setRaisedUnRaisedParticiant(false));
+                dispatch(LeaveMeetingVideo(Data, navigate, t));
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
@@ -1108,10 +1112,15 @@ const Dashboard = () => {
                   setNotificationID(id);
                 }
               }
-            } else if(data.payload.message.toLowerCase() === "UPCOMING_EVENTS_REMOVE".toLowerCase()) {
-             
-                dispatch(removeUpComingEvent(data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID));
-
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "UPCOMING_EVENTS_REMOVE".toLowerCase()
+            ) {
+              dispatch(
+                removeUpComingEvent(
+                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID
+                )
+              );
             }
           } catch (error) {
             console.log(error);
@@ -2150,6 +2159,7 @@ const Dashboard = () => {
         ) {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           localStorage.setItem("callType", data.payload.callType);
+          console.log("leavecallMeetingVideo");
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           localStorage.setItem("newCallerID", data.payload.callerID);
           let Dataa = {
@@ -2211,6 +2221,7 @@ const Dashboard = () => {
           localStorage.setItem("activeCall", true);
           localStorage.setItem("activeRoomID", data.payload.roomID);
           localStorage.setItem("CallType", data.payload.callTypeID);
+          console.log("leavecallMeetingVideo");
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           if (data.payload.recepientID === Number(createrID)) {
             localStorage.setItem("initiateVideoCall", false);
@@ -2361,13 +2372,13 @@ const Dashboard = () => {
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           localStorage.setItem("newCallerID", callerID);
           if (Number(data.senderID) !== Number(createrID)) {
-          console.log("mqtt", callTypeID);
-          if (Number(createrID) !== data.payload.recepientID) {
-          console.log("mqtt", callTypeID);
-          localStorage.setItem("unansweredFlag", true);
+            console.log("mqtt", callTypeID);
+            if (Number(createrID) !== data.payload.recepientID) {
+              console.log("mqtt", callTypeID);
+              localStorage.setItem("unansweredFlag", true);
             }
-          console.log("mqtt", callTypeID);
-          setNotification({
+            console.log("mqtt", callTypeID);
+            setNotification({
               ...notification,
               notificationShow: true,
               message: t("The-call-was-unanswered"),
@@ -2380,38 +2391,38 @@ const Dashboard = () => {
               CallStatus: "Unanswered",
               RoomID: data.payload.roomID,
             };
-          console.log("mqtt", callTypeID);
-          let existingObjectIndex = existingData.findIndex(
+            console.log("mqtt", callTypeID);
+            let existingObjectIndex = existingData.findIndex(
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
                 item.RoomID === newData.RoomID
             );
             if (existingObjectIndex !== -1) {
-          console.log("mqtt", callTypeID);
-          existingData[existingObjectIndex] = newData;
+              console.log("mqtt", callTypeID);
+              existingData[existingObjectIndex] = newData;
             } else {
-          console.log("mqtt", callTypeID);
-          existingData.push(newData);
+              console.log("mqtt", callTypeID);
+              existingData.push(newData);
             }
-          console.log("mqtt", callTypeID);
-          localStorage.setItem(
+            console.log("mqtt", callTypeID);
+            localStorage.setItem(
               "callerStatusObject",
               JSON.stringify(existingData)
             );
           }
           console.log("mqtt", callTypeID);
           if (callerID === newCallerID) {
-          console.log("mqtt", callTypeID);
-          if (isMeeting) {
-          console.log("mqtt", callTypeID);
-          if (!isMeetingVideo) {
-          console.log("mqtt", callTypeID);
-          localStorage.setItem("activeCall", false);
+            console.log("mqtt", callTypeID);
+            if (isMeeting) {
+              console.log("mqtt", callTypeID);
+              if (!isMeetingVideo) {
+                console.log("mqtt", callTypeID);
+                localStorage.setItem("activeCall", false);
               }
             } else {
-          console.log("mqtt", callTypeID);
-          localStorage.setItem("activeCall", false);
+              console.log("mqtt", callTypeID);
+              localStorage.setItem("activeCall", false);
             }
           }
           console.log("mqtt", callTypeID);

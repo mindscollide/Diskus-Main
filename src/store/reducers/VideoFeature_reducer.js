@@ -72,6 +72,7 @@ const initialState = {
   leaveMeetingVideoOnLogoutResponse: false,
   makeParticipantAsHost: false,
   makeParticipantAsHostData: [],
+  nonMeetingVideo: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -886,11 +887,20 @@ const videoFeatureReducer = (state = initialState, action) => {
         makeParticipantAsHostData: action.response,
       };
 
+    //FOR NON MEETING VIDEO MODAL
+    case actions.NON_MEETING_VIDEO_MODAL: {
+      return {
+        ...state,
+        nonMeetingVideo: action.response,
+      };
+    }
+
     case actions.LEAVE_MEETING_ON_LOGOUT:
       return {
         ...state,
         leaveMeetingOnLogoutResponse: action.response,
       };
+
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
       return {
         ...state,
