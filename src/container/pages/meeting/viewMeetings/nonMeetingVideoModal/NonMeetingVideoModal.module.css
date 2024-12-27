@@ -1,0 +1,43 @@
+.NonMeetingVideo-Message {
+  color: #5a5a5a !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  display: flex;
+  justify-content: center;
+}
+
+.Yes-ButtonFor-NonMeetingVideo {
+  padding: 12px 30px !important;
+  border: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.Yes-ButtonFor-NonMeetingVideo:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  border: none !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.No-ButtonFor-NonMeetingVideo {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.No-ButtonFor-NonMeetingVideo:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}

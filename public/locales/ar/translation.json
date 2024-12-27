@@ -2325,5 +2325,6 @@
   "URL-is-missing-in-agenda": "URL is missing in agenda",
   "UserID/Note-is-missing-in-agenda": "UserID/Note is missing in agenda",
   "Title-is-missing-in-agenda": "Title is missing in agenda",
-  "Group-call-disconnection": "Group Call Disconnection "
+  "Group-call-disconnection": "Group Call Disconnection ",
+  "Are-You-Sure-you-Want-to-Leave-video": "Are You Sure you Want to Leave Video"
 }

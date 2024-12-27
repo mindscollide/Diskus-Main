@@ -37,6 +37,7 @@ import {
   maxParticipantVideoCallPanel,
   getParticipantMeetingJoinMainApi,
   leaveMeetingOnlogout,
+  nonMeetingVideoGlobalModal,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -86,6 +87,7 @@ import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxPartic
 import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
+import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -157,6 +159,12 @@ const AgendaViewer = ({
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
+
+  //For Non Video MEeting Modal
+  const nonMeetingVideo = useSelector(
+    (state) => state.videoFeatureReducer.nonMeetingVideo
+  );
+
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );
@@ -623,26 +631,35 @@ const AgendaViewer = ({
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
-    let meetingVideoData = {
-      roleID:
-        editorRole.role === "Participant"
-          ? 2
-          : isMeetingVideoHostCheck
-          ? 10
-          : 2,
-    };
-    console.log(meetingVideoData, "meetingVideoData");
 
-    if (meetingVideoData.roleID === 2) {
-      dispatch(maxParticipantVideoCallPanel(true));
+    let nonMeetingCheck = JSON.parse(
+      sessionStorage.getItem("NonMeetingVideoCall")
+    );
+    console.log(nonMeetingCheck, "nonMeetingChecknonMeetingCheck");
+    if (nonMeetingCheck) {
+      dispatch(nonMeetingVideoGlobalModal(true));
     } else {
-      let data = {
-        MeetingId: Number(currentMeeting),
-        VideoCallURL: String(currentMeetingVideoURL),
-        IsMuted: false,
-        HideVideo: false,
+      let meetingVideoData = {
+        roleID:
+          editorRole.role === "Participant"
+            ? 2
+            : isMeetingVideoHostCheck
+            ? 10
+            : 2,
       };
-      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      console.log(meetingVideoData, "meetingVideoData");
+
+      if (meetingVideoData.roleID === 2) {
+        dispatch(maxParticipantVideoCallPanel(true));
+      } else {
+        let data = {
+          MeetingId: Number(currentMeeting),
+          VideoCallURL: String(currentMeetingVideoURL),
+          IsMuted: false,
+          HideVideo: false,
+        };
+        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      }
     }
   };
 
@@ -745,7 +762,7 @@ const AgendaViewer = ({
                           </div>
                         </Tooltip>
                       ) : null}
-{/* 
+                      {/* 
                       <Tooltip placement="topRight" title={t("Expand")}>
                         <div
                           className={styles["box-agendas"]}
@@ -1068,6 +1085,7 @@ const AgendaViewer = ({
       {maxParticipantVideoRemovedFlag && (
         <MaxParticipantVideoRemovedComponent />
       )}
+      {nonMeetingVideo && <NonMeetingVideoModal />}
     </>
   );
 };

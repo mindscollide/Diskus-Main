@@ -153,6 +153,7 @@ const VideoPanelBodyContact = () => {
         CallTypeID: 1,
         OrganizationID: currentOrganization,
       };
+      sessionStorage.setItem("NonMeetingVideoCall", true);
       localStorage.setItem("CallType", Data.CallTypeID);
       console.log("leavecallMeetingVideo");
       localStorage.setItem("callTypeID", Data.CallTypeID);
@@ -183,6 +184,7 @@ const VideoPanelBodyContact = () => {
           CallTypeID: 2,
           OrganizationID: currentOrganization,
         };
+        sessionStorage.setItem("NonMeetingVideoCall", true);
         localStorage.setItem("CallType", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("isCaller", true);

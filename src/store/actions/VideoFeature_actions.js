@@ -1147,6 +1147,14 @@ const makeParticipantHost = (response, flag) => {
   };
 };
 
+//FOR NON-MEETING-VIDEO-MODAL
+const nonMeetingVideoGlobalModal = (response) => {
+  return {
+    type: actions.NON_MEETING_VIDEO_MODAL,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1217,4 +1225,5 @@ export {
   leaveMeetingOnlogout,
   leaveMeetingVideoOnlogout,
   makeParticipantHost,
+  nonMeetingVideoGlobalModal,
 };
