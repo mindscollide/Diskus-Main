@@ -106,6 +106,7 @@ const initialState = {
   meetingStatusNotConductedMqttData: null,
   userAvailibilityData: null,
   CalendarDashboardEventData: null,
+  removeUpcomingEventMeeting: null,
 
   scheduleMeetingPageFlag: false,
   viewProposeDateMeetingPageFlag: false,
@@ -1918,9 +1919,15 @@ const NewMeetingreducer = (state = initialState, action) => {
         getUserProposedOrganizerData: [],
         getMeeingUsersRSVPDetails: null,
         cancelAgendaSavedModal: false,
+        removeUpcomingEventMeeting: null
       };
     }
-
+    case actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS: {
+      return {
+        ...state,
+        removeUpcomingEventMeeting: action.response,
+      }
+    }
     case actions.NEWMEETING_RESPONSEMESSAGE: {
       return {
         ...state,
