@@ -234,10 +234,12 @@ const VideoPanelBodyContact = () => {
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     localStorage.setItem("recipentCalledID", userCalledID);
     let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    console.log("leavecallMeetingVideo", meetinHostInfo);
     let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
     let newUserGUID = meetinHostInfo?.isHost
-      ? localStorage.getItem("isGuid ")
+      ? localStorage.getItem("isGuid")
       : localStorage.getItem("participantUID");
+    console.log("leavecallMeetingVideo", newUserGUID);
     let newName = localStorage.getItem("name");
     let newRoomID = meetinHostInfo?.isHost
       ? localStorage.getItem("newRoomId")

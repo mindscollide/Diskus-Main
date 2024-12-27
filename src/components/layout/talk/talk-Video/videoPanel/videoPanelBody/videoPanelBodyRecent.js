@@ -347,7 +347,7 @@ const VideoPanelBodyRecent = () => {
     let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
     let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
     let newUserGUID = meetinHostInfo?.isHost
-      ? localStorage.getItem("isGuid ")
+      ? localStorage.getItem("isGuid")
       : localStorage.getItem("participantUID");
     let newName = localStorage.getItem("name");
     let newRoomID = meetinHostInfo?.isHost

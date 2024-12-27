@@ -65,8 +65,8 @@ const VideoMaxIncoming = () => {
       VideoMainReducer.InitiateVideoCallDataMQTT !== null &&
       VideoMainReducer.InitiateVideoCallDataMQTT.length !== 0
     ) {
-    console.log("busyCall");
-    setIncomingCallerData(VideoMainReducer.InitiateVideoCallDataMQTT);
+      console.log("busyCall");
+      setIncomingCallerData(VideoMainReducer.InitiateVideoCallDataMQTT);
     } else {
       setIncomingCallerData([]);
     }
@@ -147,13 +147,24 @@ const VideoMaxIncoming = () => {
     let isMeeting = localStorage.getItem("isMeeting");
     if (isMeeting) {
       if (isMeetingVideo) {
-        let newRoomID = localStorage.getItem("newRoomId");
-        let newUserGUID = localStorage.getItem("isGuid");
+        let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+        let currentMeetingID = JSON.parse(
+          localStorage.getItem("currentMeetingID")
+        );
+        let newRoomID = meetinHostInfo?.isHost
+          ? localStorage.getItem("newRoomId")
+          : localStorage.getItem("activeRoomID");
+        let newUserGUID = meetinHostInfo?.isHost
+          ? localStorage.getItem("isGuid")
+          : localStorage.getItem("participantUID");
         let newName = localStorage.getItem("name");
+
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(newUserGUID),
           Name: String(newName),
+          IsHost: meetinHostInfo?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         await dispatch(setAudioControlHost(false));
@@ -186,15 +197,13 @@ const VideoMaxIncoming = () => {
         dispatch(incomingVideoCallFlag(false));
         setIsTimerRunning(false);
       } else {
-        let newRoomID = localStorage.getItem("newRoomId");
-        let newUserGUID = localStorage.getItem("isGuid");
-        let newName = localStorage.getItem("name");
         let Data = {
-          RoomID: String(newRoomID),
-          UserGUID: String(newUserGUID),
-          Name: String(newName),
+          OrganizationID: currentOrganization,
+          RoomID: acceptedRoomID,
+          IsCaller: callerID === currentUserId ? true : false,
+          CallTypeID: callTypeID,
         };
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(LeaveCall(Data, navigate, t));
         localStorage.setItem("activeOtoChatID", 0);
         localStorage.setItem("initiateVideoCall", false);
         localStorage.setItem("activeRoomID", 0);
