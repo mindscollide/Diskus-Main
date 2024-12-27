@@ -881,10 +881,20 @@ const WebNotfication = ({
         );
       } else {
         //Notification For Being File shared to you as viewer
-        navigate("/Diskus/dataroom");
-        localStorage.setItem("DataRoomOperations", true);
-        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+        // Api Call For Extracting the Permission ID
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
+        };
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 34) {
       if (
@@ -892,29 +902,34 @@ const WebNotfication = ({
           .toLowerCase()
           .includes("/Diskus/dataroom".toLowerCase())
       ) {
-        const pdfData = {
-          taskId: Number(PayLoadData.FileID),
-          commingFrom: 4,
-          fileName: PayLoadData.FileName,
-          attachmentID: Number(PayLoadData.FileID),
-          isPermission: 2,
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
         };
-        const pdfDataJson = JSON.stringify(pdfData);
-        let ext = PayLoadData.FileName.split(".").pop();
-        openDocumentViewer(
-          ext,
-          pdfDataJson,
-          dispatch,
-          navigate,
-          t,
-          Number(PayLoadData.FileID)
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
         );
       } else {
         //Notification For Being File shared to you as Editor
-        navigate("/Diskus/dataroom");
-        localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
-        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
+        };
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 35) {
       if (
