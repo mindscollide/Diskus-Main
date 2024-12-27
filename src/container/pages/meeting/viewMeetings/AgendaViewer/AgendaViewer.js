@@ -178,7 +178,7 @@ const AgendaViewer = ({
   let userID = localStorage.getItem("userID");
   const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
-  const [fullScreenView, setFullScreenView] = useState(true);
+  const [fullScreenView, setFullScreenView] = useState(false);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
   // const [exportAgendaView, setExportAgendaView] = useState(false);
   const [printAgendaView, setPrintAgendaView] = useState(false);
@@ -426,16 +426,16 @@ const AgendaViewer = ({
     }
   };
 
-  useEffect(() => {
-    try {
-      if (leaveMeetingOnLogoutResponse) {
-        if (fullScreenView === false) {
-          console.log("mqtt mqmqmqmqmqmq");
-          leaveMeeting(true);
-        }
-      }
-    } catch {}
-  }, [leaveMeetingOnLogoutResponse]);
+  // useEffect(() => {
+  //   try {
+  //     if (leaveMeetingOnLogoutResponse) {
+  //       if (fullScreenView === false) {
+  //         console.log("mqtt mqmqmqmqmqmq");
+  //         leaveMeeting(true);
+  //       }
+  //     }
+  //   } catch {}
+  // }, [leaveMeetingOnLogoutResponse]);
 
   const groupChatInitiation = (talkGroupID) => {
     if (
@@ -745,7 +745,7 @@ const AgendaViewer = ({
                           </div>
                         </Tooltip>
                       ) : null}
-
+{/* 
                       <Tooltip placement="topRight" title={t("Expand")}>
                         <div
                           className={styles["box-agendas"]}
@@ -753,7 +753,7 @@ const AgendaViewer = ({
                         >
                           <img src={ExpandAgendaIcon} alt="" />
                         </div>
-                      </Tooltip>
+                      </Tooltip> */}
 
                       <div
                         onClick={menuPopupAgenda}
@@ -941,7 +941,7 @@ const AgendaViewer = ({
       )}
       <Notification open={open} setOpen={setOpen} />
 
-      {fullScreenView ? (
+      {/* {fullScreenView ? (
         <FullScreenAgendaModal
           setFullScreenView={setFullScreenView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -961,7 +961,7 @@ const AgendaViewer = ({
           shareEmailView={shareEmailView}
           videoTalk={videoTalk}
         />
-      ) : null}
+      ) : null} */}
       {agendaSelectOptionView ? (
         <SelectAgendaModal
           setAgendaSelectOptionView={setAgendaSelectOptionView}

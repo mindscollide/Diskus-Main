@@ -7459,6 +7459,13 @@ const meetingNotConductedMQTT = (response) => {
   };
 };
 
+const removeUpComingEvent = (response) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS,
+    response: response
+  }
+}
+
 //Validate Empty String User Availibility For Meeting
 
 const validateEmptyStringUserAvailibilityInit = () => {
@@ -8126,7 +8133,7 @@ const JoinCurrentMeeting = (
                 )
               );
               if (isQuickMeeting === true) {
-                let viewMeetingData = { MeetingID: Data.FK_MDID };
+                let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
                 await dispatch(
                   ViewMeeting(
                     navigate,
@@ -8139,7 +8146,7 @@ const JoinCurrentMeeting = (
                   )
                 );
               } else {
-                setAdvanceMeetingModalID(Data.FK_MDID);
+                setAdvanceMeetingModalID(Number(Data.FK_MDID));
                 setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
@@ -9541,4 +9548,5 @@ export {
   ProposedMeetingViewFlagAction,
   LeaveMeetingSideBarModalAction,
   GetMeetingStatusDataAPI,
+  removeUpComingEvent
 };
