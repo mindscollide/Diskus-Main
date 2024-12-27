@@ -23,6 +23,7 @@ import {
   BoardDeckSendEmail,
   validateVideoRecordingURL,
   getMinutesPublishedStatus,
+  GetMeetingBoardDeckCredentialsStatus,
 } from "../../commen/apis/Api_config";
 import {
   authenticationApi,
@@ -2873,7 +2874,10 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(BoardDeckValidateIsMinutesPublished_init());
     let form = new FormData();
-    form.append("RequestMethod", getMinutesPublishedStatus.RequestMethod);
+    form.append(
+      "RequestMethod",
+      GetMeetingBoardDeckCredentialsStatus.RequestMethod
+    );
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
@@ -2893,7 +2897,7 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -2906,7 +2910,7 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_02".toLowerCase()
                 )
             ) {
               dispatch(

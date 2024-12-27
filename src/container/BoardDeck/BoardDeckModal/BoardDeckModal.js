@@ -36,12 +36,23 @@ const BoardDeckModal = ({
     (state) => state.UserMangementReducer.getMinutesPublishedData
   );
   const [radioValue, setRadioValue] = useState(1);
-  const [publishedMinutes, setPublishedMinutes] = useState(false);
+  const [boardDeckpublishedChecks, setBoardDeckpublishedChecks] = useState({
+    isAgendaContributorExist: false,
+    isAgendaWithAttachmentExist: false,
+    isMeetingPolls: false,
+    isMinutesPublished: false,
+    isTaskAssignedToUser: false,
+    isVideoCall: false,
+  });
 
   //Minutes Published API
   useEffect(() => {
     try {
-      let data = { PK_mdid: Number(boardDeckMeetingID) };
+      let UserID = localStorage.getItem("userID");
+      let data = {
+        PK_mdid: Number(boardDeckMeetingID),
+        userID: Number(UserID),
+      };
       dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
     } catch (error) {
       console.log(error, "error");
@@ -55,9 +66,21 @@ const BoardDeckModal = ({
         getMinutesPublishedData !== null &&
         getMinutesPublishedData !== undefined
       ) {
-        setPublishedMinutes(
-          getMinutesPublishedData.minutesStatus.isMinutesPublished
-        );
+        setBoardDeckpublishedChecks({
+          isAgendaContributorExist:
+            getMinutesPublishedData.boardDeckCredentials
+              .isAgendaContributorExist,
+          isAgendaWithAttachmentExist:
+            getMinutesPublishedData.boardDeckCredentials
+              .isAgendaWithAttachmentExist,
+          isMeetingPolls:
+            getMinutesPublishedData.boardDeckCredentials.isMeetingPolls,
+          isMinutesPublished:
+            getMinutesPublishedData.boardDeckCredentials.isMinutesPublished,
+          isTaskAssignedToUser:
+            getMinutesPublishedData.boardDeckCredentials.isTaskAssignedToUser,
+          isVideoCall: getMinutesPublishedData.boardDeckCredentials.isVideoCall,
+        });
       }
     } catch (error) {
       console.log(error, "error");
@@ -69,13 +92,17 @@ const BoardDeckModal = ({
     setBoarddeckOptions({
       selectall: value,
       Organizer: value,
-      AgendaContributor: value,
+      AgendaContributor:
+        boardDeckpublishedChecks.isAgendaContributorExist === true
+          ? value
+          : false,
       Participants: value,
       Minutes: value,
-      Task: value,
-      polls: value,
+      Task:
+        boardDeckpublishedChecks.isTaskAssignedToUser === true ? value : false,
+      polls: boardDeckpublishedChecks.isMeetingPolls === true ? value : false,
       attendeceReport: value,
-      video: value,
+      video: boardDeckpublishedChecks.isVideoCall === true ? value : false,
       Agenda: value,
     });
   };
@@ -180,18 +207,33 @@ const BoardDeckModal = ({
     });
   };
 
+  console.log(boardDeckpublishedChecks, "boardDeckpublishedChecks");
+
   const handleDownloadButton = () => {
     let data = {
       PK_MDID: Number(boardDeckMeetingID),
       fetchOrganizers: boarddeckOptions.Organizer,
-      fetchAgendaContributors: boarddeckOptions.AgendaContributor,
+      fetchAgendaContributors: boardDeckpublishedChecks.isAgendaContributorExist
+        ? boarddeckOptions.AgendaContributor
+        : false,
       fetchParticipants: boarddeckOptions.Participants,
-      fetchMinutes: publishedMinutes ? boarddeckOptions.Minutes : false,
-      fetchTasks: boarddeckOptions.Task,
-      fetchPolls: boarddeckOptions.polls,
+      fetchMinutes: boardDeckpublishedChecks.isMinutesPublished
+        ? boarddeckOptions.Minutes
+        : false,
+      fetchTasks: boardDeckpublishedChecks.isTaskAssignedToUser
+        ? boarddeckOptions.Task
+        : false,
+      fetchPolls: boardDeckpublishedChecks.isMeetingPolls
+        ? boarddeckOptions.polls
+        : false,
       fetchAttendance: boarddeckOptions.attendeceReport,
-      fetchVideo: boarddeckOptions.video,
-      fetchAgendaWithAttachments: boarddeckOptions.Agenda,
+      fetchVideo: boardDeckpublishedChecks.isVideoCall
+        ? boarddeckOptions.video
+        : false,
+      fetchAgendaWithAttachments:
+        boardDeckpublishedChecks.isAgendaWithAttachmentExist
+          ? boarddeckOptions.Agenda
+          : false,
       fetchAgenda: boarddeckOptions.Agenda,
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data));
@@ -233,17 +275,18 @@ const BoardDeckModal = ({
                 <Col lg={3} md={3} sm={3} className={styles["checkbox"]}>
                   <Checkbox
                     onChange={onChangeSelectAll}
-                    checked={boarddeckOptions.selectall}>
+                    checked={boarddeckOptions.selectall}
+                  >
                     <span className={styles["Class_CheckBox"]}>
                       {t("Select-all")}
                     </span>
                   </Checkbox>
                 </Col>
               </Row>
-              <Row className='mt-4'>
+              <Row className="mt-4">
                 <Col lg={4} md={4} sm={4}>
-                  <div className='d-flex gap-3 align-items-center'>
-                    <img src={blacktick} alt='' />
+                  <div className="d-flex gap-3 align-items-center">
+                    <img src={blacktick} alt="" />
                     <span className={styles["Box_options"]}>
                       {t("Meeting-details")}
                     </span>
@@ -252,7 +295,8 @@ const BoardDeckModal = ({
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeOrganizers}
-                    checked={boarddeckOptions.Organizer}>
+                    checked={boarddeckOptions.Organizer}
+                  >
                     <span className={styles["Box_options"]}>
                       {t("Organizers")}
                     </span>
@@ -261,30 +305,38 @@ const BoardDeckModal = ({
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeAgendaContributor}
-                    checked={boarddeckOptions.AgendaContributor}>
+                    checked={boarddeckOptions.AgendaContributor}
+                    disabled={
+                      !boardDeckpublishedChecks.isMinutesPublished
+                        ? true
+                        : false
+                    }
+                  >
                     <span className={styles["Box_options"]}>
                       {t("Agenda-Contributor")}
                     </span>
                   </Checkbox>
                 </Col>
               </Row>
-              <Row className='mt-4'>
+              <Row className="mt-4">
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeParticipants}
-                    checked={boarddeckOptions.Participants}>
+                    checked={boarddeckOptions.Participants}
+                  >
                     <span className={styles["Box_options"]}>
                       {t("Participants")}
                     </span>
                   </Checkbox>
                 </Col>
                 <Col lg={4} md={4} sm={4}>
-                  {publishedMinutes ? (
+                  {boardDeckpublishedChecks.isMinutesPublished ? (
                     <>
                       {" "}
                       <Checkbox
                         onChange={onChangeMinutes}
-                        checked={boarddeckOptions.Minutes}>
+                        checked={boarddeckOptions.Minutes}
+                      >
                         <span className={styles["Box_options"]}>
                           {t("Minutes")}
                         </span>
@@ -298,26 +350,29 @@ const BoardDeckModal = ({
                             lg={3}
                             md={3}
                             sm={3}
-                            className='d-flex align-items-center'>
+                            className="d-flex align-items-center"
+                          >
                             <Tooltip
-                              placement='topLeft'
+                              placement="topLeft"
                               title={
                                 <span className={styles["FontsizeToolTip"]}>
                                   {t(
                                     "Minutes-will-be-available-when-published"
                                   )}
                                 </span>
-                              }>
+                              }
+                            >
                               <img
                                 src={warningImage}
-                                alt=''
-                                className='cursor-pointer'
+                                alt=""
+                                className="cursor-pointer"
                               />
                             </Tooltip>
                           </Col>
                           <Col lg={9} md={9} sm={9}>
                             <span
-                              className={styles["Box_options_MinutesDisabled"]}>
+                              className={styles["Box_options_MinutesDisabled"]}
+                            >
                               {t("Minutes")}
                             </span>
                           </Col>
@@ -329,23 +384,34 @@ const BoardDeckModal = ({
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeTask}
-                    checked={boarddeckOptions.Task}>
+                    checked={boarddeckOptions.Task}
+                    disabled={
+                      !boardDeckpublishedChecks.isTaskAssignedToUser
+                        ? true
+                        : false
+                    }
+                  >
                     <span className={styles["Box_options"]}>{t("Task")}</span>
                   </Checkbox>
                 </Col>
               </Row>
-              <Row className='mt-4'>
+              <Row className="mt-4">
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangePolls}
-                    checked={boarddeckOptions.polls}>
+                    checked={boarddeckOptions.polls}
+                    disabled={
+                      !boardDeckpublishedChecks.isMeetingPolls ? true : false
+                    }
+                  >
                     <span className={styles["Box_options"]}>{t("Polls")}</span>
                   </Checkbox>
                 </Col>
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeAttendenceReport}
-                    checked={boarddeckOptions.attendeceReport}>
+                    checked={boarddeckOptions.attendeceReport}
+                  >
                     <span className={styles["Box_options"]}>
                       {t("Attendence-report")}
                     </span>
@@ -354,22 +420,36 @@ const BoardDeckModal = ({
                 <Col lg={4} md={4} sm={4}>
                   <Checkbox
                     onChange={onChangeVideo}
-                    checked={boarddeckOptions.video}>
+                    checked={boarddeckOptions.video}
+                    disabled={
+                      !boardDeckpublishedChecks.isVideoCall ? true : false
+                    }
+                  >
                     <span className={styles["Box_options"]}>{t("Video")}</span>
                   </Checkbox>
                 </Col>
               </Row>
-              <Row className='mt-4'>
+              <Row className="mt-4">
                 <Col lg={12} md={12} sm={12}>
                   <Checkbox
                     onChange={onChangeAgenda}
-                    checked={boarddeckOptions.Agenda}>
+                    checked={boarddeckOptions.Agenda}
+                  >
                     <span className={styles["Box_options_Agendaas"]}>
                       <Radio.Group
                         onChange={(e) => handleRadioChange(e.target.value)}
-                        value={radioValue}
-                        className='BoarddeckSelection'>
-                        <Radio value={1}>
+                        // value={radioValue}
+                        className="BoarddeckSelection"
+                      >
+                        <Radio
+                          value={1}
+                          disabled={
+                            boardDeckpublishedChecks.isAgendaWithAttachmentExist ===
+                            false
+                              ? true
+                              : false
+                          }
+                        >
                           <span>{t("Agenda-with-attachments")}</span>
                         </Radio>
                         <Radio value={2}>
@@ -389,7 +469,8 @@ const BoardDeckModal = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex gap-2 justify-content-end'>
+                  className="d-flex gap-2 justify-content-end"
+                >
                   <Button
                     text={t("Cancel")}
                     className={styles["CancelButton"]}
