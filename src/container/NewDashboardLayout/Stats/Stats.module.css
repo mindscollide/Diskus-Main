@@ -60,6 +60,7 @@ body[dir="rtl"] .dashboard_progress_upcomingmeeting div {
   text-align: right;
   margin-left: 7px;
   padding-right: 30px;
+  width: auto !important;
 }
 body[dir="rtl"] .dashboard_progress_upcomingmeeting_R div {
   background-color: transparent !important;
@@ -67,6 +68,7 @@ body[dir="rtl"] .dashboard_progress_upcomingmeeting_R div {
   text-align: left;
   margin-left: 7px;
   padding-right: 30px;
+  width: auto !important;
 }
 /* Upcoming Task this week */
 
@@ -82,6 +84,7 @@ body[dir="rtl"] .dashboard_progress_upcomingmeeting_R div {
   border-radius: 25px !important;
   text-align: right;
   padding: 0 10px;
+  
 }
 body[dir="rtl"] .dashboard_progress_upcomingTask div {
   background-color: #ffc300 !important;
@@ -102,6 +105,7 @@ body[dir="rtl"] .dashboard_progress_upcomingTask div {
   text-align: right;
   margin-left: 7px;
   padding-right: 30px;
+  width: auto !important;
 }
 /* Upcoming Pending Approval this week */
 
@@ -138,6 +142,7 @@ body[dir="rtl"] .dashboard_progress_upcomingApproval div {
   text-align: right;
   margin-left: 7px;
   padding-right: 30px;
+  width: auto !important;
 }
 
 body[dir="rtl"] .dashboard_progress_upcomingApproval_R div {
@@ -146,4 +151,5 @@ body[dir="rtl"] .dashboard_progress_upcomingApproval_R div {
   text-align: left !important;
   margin-left: 7px;
   padding-right: 30px;
+  width: auto !important;
 }
