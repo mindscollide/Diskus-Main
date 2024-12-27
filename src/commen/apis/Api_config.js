@@ -1750,8 +1750,8 @@ const getAdvanceMeetingAgendabyMeetingIDForView = {
 const getStatsForPublishingMinutesByWorkFlowId = {
   RequestMethod: "ServiceManager.GetStatsForPublishingMinutesByWorkFlowId",
 };
-const getMinutesPublishedStatus = {
-  RequestMethod: "ServiceManager.GetMeetingMinutesStatus",
+const GetMeetingBoardDeckCredentialsStatus = {
+  RequestMethod: "ServiceManager.GetMeetingBoardDeckCredentialsStatus",
 };
 
 const validateEncryptedStringParticipantProposedRM = {
@@ -2347,7 +2347,7 @@ export {
   validateVideoRecordingURL,
   getAdvanceMeetingAgendabyMeetingIDForView,
   getStatsForPublishingMinutesByWorkFlowId,
-  getMinutesPublishedStatus,
+  GetMeetingBoardDeckCredentialsStatus,
   downloadCallRecording,
   downloadMeetingRecording,
   leaveMeetingVideo,

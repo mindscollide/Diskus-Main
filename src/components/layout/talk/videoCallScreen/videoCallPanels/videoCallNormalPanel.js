@@ -20,9 +20,7 @@ import {
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import { useTranslation } from "react-i18next";
 import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticipantList";
-import {
-  transferMeetingHostSuccess,
-} from "../../../../../store/actions/Guest_Video";
+import { transferMeetingHostSuccess } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import {
   getVideoCallParticipantsMainApi,
@@ -617,7 +615,6 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [makeParticipantAsHost]);
 
-
   async function hostTrasfer(mqttData) {
     try {
       if (localStorage.getItem("participantUID") === mqttData.newHost.guid) {
@@ -668,7 +665,7 @@ const VideoPanelNormal = () => {
       if (hostTransferFlag) {
         console.log("videoHideUnHideForHost", hostTransferFlag);
         setIsMeetingHost(false);
-        dispatch(transferMeetingHostSuccess(false,));
+        dispatch(transferMeetingHostSuccess(false));
       }
     } catch {}
   }, [hostTransferFlag]);
@@ -717,9 +714,9 @@ const VideoPanelNormal = () => {
               {FullLoader === true ? (
                 <>
                   <LoaderPanelVideoScreen
-                    message={t(
-                      "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
-                    )}
+                  // message={t(
+                  //   "Securing-your-connection-You'll-be-able-to-join-in-a-moment"
+                  // )}
                   />
                 </>
               ) : (

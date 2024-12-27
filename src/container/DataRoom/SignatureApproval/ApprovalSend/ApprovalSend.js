@@ -30,6 +30,8 @@ import DescendIcon from "../../../../assets/images/sortingIcons/SorterIconDescen
 import AscendIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
+import { Checkbox, Dropdown, Menu } from "antd";
+import { Button } from "../../../../components/elements";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
@@ -46,14 +48,77 @@ const ApprovalSend = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [signatoriesList, setSignatoriesList] = useState(false);
+  const [originalData, setOriginalData] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
   const [fileNameSort, setFileNameSort] = useState(null);
   const [signatoriesSort, setSignatoriesSort] = useState(null);
-  const [statusSort, setStatusSort] = useState(null);
-  const [sentOnSort, setSentOnSort] = useState(null);
+
+  const handleClickChevron = () => {
+    setVisible((prevVisible) => !prevVisible);
+  };
+  const resetFilter = () => {
+    try {
+      const { statusList } =
+        SignatureWorkFlowReducer.getAllPendingApprovalStatuses;
+      let defaultStatus = [];
+      if (statusList.length > 0) {
+        statusList.forEach((statusData, index) => {
+          defaultStatus.push(Number(statusData.statusID));
+        });
+        setDefaultReviewAndSignatureStatus(defaultStatus);
+      }
+    } catch (error) {}
+    setApprovalsData(originalData);
+    setVisible(false);
+  };
+
+  const handleMenuClick = (filterValue) => {
+    setDefaultReviewAndSignatureStatus((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => value !== filterValue)
+        : [...prevValues, filterValue]
+    );
+  };
+  const handleApplyFilter = () => {
+    const filteredData = originalData.filter((item) =>
+      defaultreviewAndSignatureStatus.includes(item.workFlowStatusID)
+    );
+    setApprovalsData(filteredData);
+    setVisible(false);
+  };
+
+  const menu = (
+    <Menu>
+      {reviewAndSignatureStatus.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMenuClick(filter.value)}>
+          <Checkbox
+            checked={defaultreviewAndSignatureStatus.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className='d-flex gap-3 align-items-center justify-content-center'>
+        <Button
+          text={"Reset"}
+          className={styles["FilterResetBtn"]}
+          onClick={resetFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={defaultreviewAndSignatureStatus.length === 0}
+          className={styles["ResetOkBtn"]}
+          onClick={handleApplyFilter}
+        />
+      </div>
+    </Menu>
+  );
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -61,7 +126,7 @@ const ApprovalSend = () => {
       // Column for file name
       title: (
         <>
-          <span>
+          <span className='d-flex gap-2'>
             {t("File-name")}
             {fileNameSort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -89,7 +154,7 @@ const ApprovalSend = () => {
         },
       }),
       render: (text, record) => {
-        console.log(record, "texttexttext")
+        console.log(record, "texttexttext");
         return (
           <span
             className='d-flex gap-2 align-items-center cursor-pointer'
@@ -104,7 +169,7 @@ const ApprovalSend = () => {
       // Column for signatories
       title: (
         <>
-          <span>
+          <span className='d-flex gap-2 justify-content-center'>
             {t("Signatories")}
             {signatoriesSort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -116,13 +181,9 @@ const ApprovalSend = () => {
       ),
       dataIndex: "numberOfSignatories",
       key: "numberOfSignatories",
-      className: "signatories",
       ellipsis: true,
-      sortOrder: "ascend",
       width: "20%",
       align: "center",
-      sortDirections: ["ascend", "descend"],
-      sorter: (a, b) => b.name - a.name,
       onHeaderCell: () => ({
         onClick: () => {
           setSignatoriesSort((order) => {
@@ -177,17 +238,30 @@ const ApprovalSend = () => {
     },
     {
       // Column for status
-      title: t("Status"),
+      title: (
+        <>
+          <span className='d-flex justify-content-center gap-2'>
+            {t("Status")}
+          </span>
+        </>
+      ),
       dataIndex: "status",
       key: "status",
       align: "center",
       width: "30%",
-
+      ellipsis: true,
       className: "statusParticipant",
-      filters: reviewAndSignatureStatus,
-      onFilter: (value, record) => Number(record.workFlowStatusID) === value,
-      filterIcon: () => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+
+      filterIcon: (filtered) => (
+        <ChevronDown
+          className='filter-chevron-icon-todolist'
+          onClick={handleClickChevron}
+        />
+      ),
+      filterDropdown: () => (
+        <Dropdown overlay={menu}  open={visible} trigger={["click"]}>
+          <div />
+        </Dropdown>
       ),
       render: (text, record) => {
         const { workFlowStatusID, status } = record;
@@ -289,6 +363,11 @@ const ApprovalSend = () => {
               ...signatureFlowDocumentsForCreator,
               ...approvalsData,
             ]);
+            setOriginalData([
+              ...originalData,
+              ...signatureFlowDocumentsForCreator,
+            ]);
+
             if (
               totalCount !== undefined &&
               totalCount !== null &&
@@ -301,7 +380,6 @@ const ApprovalSend = () => {
               (prev) => prev + signatureFlowDocumentsForCreator.length
             );
           } else {
-            setApprovalsData(signatureFlowDocumentsForCreator);
             if (
               totalCount !== undefined &&
               totalCount !== null &&
@@ -309,6 +387,8 @@ const ApprovalSend = () => {
             ) {
               setTotalRecords(totalCount);
             }
+            setOriginalData(signatureFlowDocumentsForCreator);
+            setApprovalsData(signatureFlowDocumentsForCreator);
             setPageNo(1);
             setDataLength(signatureFlowDocumentsForCreator.length);
           }
@@ -340,7 +420,7 @@ const ApprovalSend = () => {
         if (statusList.length > 0) {
           statusList.forEach((statusData, index) => {
             statusValues.push({
-              text: statusData.statusName,
+              text: `${t(statusData.statusName)}`,
               value: Number(statusData.statusID),
             });
             defaultStatus.push(Number(statusData.statusID));
