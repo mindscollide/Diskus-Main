@@ -2437,64 +2437,6 @@ const DataRoom = () => {
 
   //Notification Redirection for Files and folder Read and Right
   useEffect(() => {
-    console.log("Checking DataRoom");
-    //For Read Rights only
-    if (JSON.parse(localStorage.getItem("DataRoomOperations")) === true) {
-      let NotificationClickFileID = localStorage.getItem(
-        "NotificationClickFileID"
-      );
-      let NotificationClickFileName = localStorage.getItem(
-        "NotificationClickFileName"
-      );
-      const pdfData = {
-        taskId: Number(NotificationClickFileID),
-        commingFrom: 4,
-        fileName: NotificationClickFileName,
-        attachmentID: Number(NotificationClickFileID),
-        isPermission: 1,
-      };
-      const pdfDataJson = JSON.stringify(pdfData);
-      let ext = NotificationClickFileName.split(".").pop();
-      openDocumentViewer(
-        ext,
-        pdfDataJson,
-        dispatch,
-        navigate,
-        t,
-        Number(NotificationClickFileID)
-      );
-    }
-    //For Edit Rights only
-    if (
-      JSON.parse(
-        localStorage.getItem("DataRoomOperationsForFileEditorRights")
-      ) === true
-    ) {
-      let NotificationClickFileID = localStorage.getItem(
-        "NotificationClickFileID"
-      );
-      let NotificationClickFileName = localStorage.getItem(
-        "NotificationClickFileName"
-      );
-      const pdfData = {
-        taskId: Number(NotificationClickFileID),
-        commingFrom: 4,
-        fileName: NotificationClickFileName,
-        attachmentID: Number(NotificationClickFileID),
-        isPermission: 2,
-      };
-      const pdfDataJson = JSON.stringify(pdfData);
-      let ext = NotificationClickFileName.split(".").pop();
-      openDocumentViewer(
-        ext,
-        pdfDataJson,
-        dispatch,
-        navigate,
-        t,
-        Number(NotificationClickFileID)
-      );
-    }
-
     //For Folder View Rights
     if (
       JSON.parse(
