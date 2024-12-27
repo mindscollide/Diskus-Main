@@ -839,16 +839,21 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 29) {
       if (currentURL.includes("/Diskus/polling")) {
-        return; // Perform no action if the URL matches
+        let userID = localStorage.getItem("userID");
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: parseInt(userID),
+        };
+        dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       } else {
         //Notification for Poll has been Created submit your response
         navigate("/Diskus/polling");
-        // let userID = localStorage.getItem("userID");
-        // let data = {
-        //   PollID: Number(PayLoadData.PollID),
-        //   UserID: parseInt(userID),
-        // };
-        // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+        let userID = localStorage.getItem("userID");
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: parseInt(userID),
+        };
+        dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       }
     } else if (NotificationData.notificationActionID === 30) {
       if (currentURL.includes("/Diskus/polling")) {
@@ -865,39 +870,36 @@ const WebNotfication = ({
           .toLowerCase()
           .includes("/Diskus/dataroom".toLowerCase())
       ) {
-        let PermissionID = 0;
-        //Api Call For Extracting the Permission ID
-        // let Data = {
-        //   FileFolderID: Number(PayLoadData.FileID),
-        //   IsFolder: false,
-        // };
-        // dispatch(
-        //   DataRoomFileSharingPermissionAPI(navigate, t, Data, PermissionID)
-        // );
-        console.log(PermissionID, "PermissionID");
-        const pdfData = {
-          taskId: Number(PayLoadData.FileID),
-          commingFrom: 4,
-          fileName: PayLoadData.FileName,
-          attachmentID: Number(PayLoadData.FileID),
-          isPermission: 1,
+        // Api Call For Extracting the Permission ID
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
         };
-        const pdfDataJson = JSON.stringify(pdfData);
-        let ext = PayLoadData.FileName.split(".").pop();
-        openDocumentViewer(
-          ext,
-          pdfDataJson,
-          dispatch,
-          navigate,
-          t,
-          Number(PayLoadData.FileID)
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
         );
       } else {
         //Notification For Being File shared to you as viewer
-        navigate("/Diskus/dataroom");
-        localStorage.setItem("DataRoomOperations", true);
-        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+        // Api Call For Extracting the Permission ID
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
+        };
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 34) {
       if (
@@ -905,29 +907,34 @@ const WebNotfication = ({
           .toLowerCase()
           .includes("/Diskus/dataroom".toLowerCase())
       ) {
-        const pdfData = {
-          taskId: Number(PayLoadData.FileID),
-          commingFrom: 4,
-          fileName: PayLoadData.FileName,
-          attachmentID: Number(PayLoadData.FileID),
-          isPermission: 2,
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
         };
-        const pdfDataJson = JSON.stringify(pdfData);
-        let ext = PayLoadData.FileName.split(".").pop();
-        openDocumentViewer(
-          ext,
-          pdfDataJson,
-          dispatch,
-          navigate,
-          t,
-          Number(PayLoadData.FileID)
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
         );
       } else {
         //Notification For Being File shared to you as Editor
-        navigate("/Diskus/dataroom");
-        localStorage.setItem("DataRoomOperationsForFileEditorRights", true);
-        localStorage.setItem("NotificationClickFileID", PayLoadData.FileID);
-        localStorage.setItem("NotificationClickFileName", PayLoadData.FileName);
+        let Data = {
+          FileFolderID: Number(PayLoadData.FileID),
+          IsFolder: false,
+        };
+        dispatch(
+          DataRoomFileSharingPermissionAPI(
+            navigate,
+            t,
+            Data,
+            Number(PayLoadData.FileID),
+            PayLoadData.FileName
+          )
+        );
       }
     } else if (NotificationData.notificationActionID === 35) {
       if (
