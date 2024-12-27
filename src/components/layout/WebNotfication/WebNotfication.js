@@ -839,16 +839,21 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 29) {
       if (currentURL.includes("/Diskus/polling")) {
-        return; // Perform no action if the URL matches
+        let userID = localStorage.getItem("userID");
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: parseInt(userID),
+        };
+        dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       } else {
         //Notification for Poll has been Created submit your response
         navigate("/Diskus/polling");
-        // let userID = localStorage.getItem("userID");
-        // let data = {
-        //   PollID: Number(PayLoadData.PollID),
-        //   UserID: parseInt(userID),
-        // };
-        // dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+        let userID = localStorage.getItem("userID");
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: parseInt(userID),
+        };
+        dispatch(getPollsByPollIdApi(navigate, data, 3, t));
       }
     } else if (NotificationData.notificationActionID === 30) {
       if (currentURL.includes("/Diskus/polling")) {
