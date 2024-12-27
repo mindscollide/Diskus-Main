@@ -41,7 +41,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
   const meetingDashboardCalendarEvent = (data) => {
-    console.log("startMeetingRequest",data)
+    console.log("startMeetingRequest", data);
     dispatch(dashboardCalendarEvent(data));
     localStorage.setItem("meetingTitle", data.title);
     navigate("/DisKus/Meeting");
@@ -60,17 +60,13 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
             remainsData?.configKey?.toLowerCase() ===
             "Join_Meeting_Before_Minutes".toLowerCase()
         );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
-        );
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
         }
       }
     }
   }, [settingReducer?.UserProfileData]);
-
+  console.log("participantRoleID", events);
   return (
     <Modal
       show={eventModal}
@@ -117,14 +113,6 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                   const minutesDifference = Math.floor(
                     timeDifference / (1000 * 60)
                   );
-                  console.log(
-                    "eventDataeventData",
-                    eventData,
-                    Number(eventData.statusID) === 1,
-                    eventData.participantRoleID === 1,
-                    eventData.isQuickMeeting === true,
-                    minutesDifference <= remainingMinutesAgo
-                  );
                   return (
                     <section
                       key={index}
@@ -160,7 +148,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                       <Row>
                         <Col sm={12} md={6} lg={6}>
                           {Number(eventData.statusID) === 1 &&
-                          eventData.participantRoleID === 1 ? (
+                          eventData.attendeeRoleID === 1 ? (
                             eventData.isQuickMeeting === true &&
                             minutesDifference <= remainingMinutesAgo ? (
                               // &&
@@ -188,7 +176,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                               />
                             ) : null
                           ) : Number(eventData.statusID) === 10 ? (
-                            eventData.participantRoleID === 2 ? (
+                            eventData.attendeeRoleID === 2 ? (
                               <Button
                                 text={t("Join-meeting")}
                                 className={styles["joining-Meeting"]}
@@ -196,7 +184,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                                   meetingDashboardCalendarEvent(eventData)
                                 }
                               />
-                            ) : eventData.participantRoleID === 4 ? (
+                            ) : eventData.attendeeRoleID === 4 ? (
                               <Button
                                 text={t("Join-meeting")}
                                 className={styles["joining-Meeting"]}
@@ -204,7 +192,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                                   meetingDashboardCalendarEvent(eventData)
                                 }
                               />
-                            ) : eventData.participantRoleID === 1 ? (
+                            ) : eventData.attendeeRoleID === 1 ? (
                               <Button
                                 text={t("Join-meeting")}
                                 className={styles["joining-Meeting"]}
