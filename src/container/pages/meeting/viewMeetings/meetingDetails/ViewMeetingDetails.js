@@ -63,6 +63,7 @@ import {
   maxParticipantVideoCallPanel,
   normalParticipantVideoCallPanel,
   getParticipantMeetingJoinMainApi,
+  nonMeetingVideoGlobalModal,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -80,6 +81,7 @@ import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipant
 import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
@@ -138,6 +140,11 @@ const ViewMeetingDetails = ({
 
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+  );
+
+  //For Non Video MEeting Modal
+  const nonMeetingVideo = useSelector(
+    (state) => state.videoFeatureReducer.nonMeetingVideo
   );
 
   console.log(
@@ -576,28 +583,38 @@ const ViewMeetingDetails = ({
   };
 
   const joinMeetingCall = () => {
+    let nonMeetingCheck = JSON.parse(
+      sessionStorage.getItem("NonMeetingVideoCall")
+    );
+
     const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
     console.log(meetingHost, "editorRoleeditorRole");
     // Orgainzer  = 10 ,Participant = 2 , Agenda Contributor = 3,
-    let meetingVideoData = {
-      roleID: editorRole.role === "Participant" ? 2 : 10,
-    };
-    if (meetingVideoData.roleID === 2) {
-      dispatch(maxParticipantVideoCallPanel(true));
+
+    if (nonMeetingCheck) {
+      dispatch(nonMeetingVideoGlobalModal(true));
     } else {
-      let data = {
-        MeetingId: Number(currentMeetingID),
-        VideoCallURL: String(currentMeetingVideoURL),
-        IsMuted: false,
-        HideVideo: false,
+      let meetingVideoData = {
+        roleID: editorRole.role === "Participant" ? 2 : 10,
       };
-      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      if (meetingVideoData.roleID === 2) {
+        dispatch(maxParticipantVideoCallPanel(true));
+      } else {
+        let data = {
+          MeetingId: Number(currentMeetingID),
+          VideoCallURL: String(currentMeetingVideoURL),
+          IsMuted: false,
+          HideVideo: false,
+        };
+        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      }
+      console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
+      localStorage.setItem(
+        "meetingVideoDetails",
+        JSON.stringify(meetingVideoData)
+      );
     }
-    console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
-    localStorage.setItem(
-      "meetingVideoDetails",
-      JSON.stringify(meetingVideoData)
-    );
+
     // let Data = {
     //   VideoCallURL: currentMeetingVideoURL,
     // };
@@ -1085,6 +1102,7 @@ const ViewMeetingDetails = ({
           </>
         }
       />
+      {nonMeetingVideo && <NonMeetingVideoModal />}
     </>
   );
 };
