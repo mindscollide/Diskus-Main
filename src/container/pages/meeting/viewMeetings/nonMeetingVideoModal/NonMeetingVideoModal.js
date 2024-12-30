@@ -5,7 +5,12 @@ import { Button, Modal } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { nonMeetingVideoGlobalModal } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  nonMeetingVideoGlobalModal,
+  normalizeVideoPanelFlag,
+} from "../../../../../store/actions/VideoFeature_actions";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 
 const NonMeetingVideoModal = () => {
@@ -24,6 +29,16 @@ const NonMeetingVideoModal = () => {
 
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = () => {
+    localStorage.setItem("isMeetingVideo", false);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    const meetingHost = {
+      isHost: false,
+      isHostId: 0,
+      isDashboardVideo: false,
+    };
+    localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
     let currentOrganization = Number(localStorage.getItem("organizationID"));
     let initiateCallRoomID = Number(localStorage.getItem("initiateCallRoomID"));
     let currentCallType = Number(localStorage.getItem("CallType"));
