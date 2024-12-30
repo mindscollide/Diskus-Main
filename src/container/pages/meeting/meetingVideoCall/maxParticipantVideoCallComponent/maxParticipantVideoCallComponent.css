@@ -138,3 +138,18 @@
   max-height: 45vh;
   padding: 0px 0px;
 }
+
+.max-minimize-videoParticipantsvideo-panel {
+  position: fixed;
+  height: 8vh !important;
+  bottom: 0px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: 1px solid #4adede !important;
+  border-radius: 4px !important;
+  z-index: 99 !important;
+  padding: 10px 40px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
+  width: 50%;
+  left: 65px;
+  color: #fff !important;
+}

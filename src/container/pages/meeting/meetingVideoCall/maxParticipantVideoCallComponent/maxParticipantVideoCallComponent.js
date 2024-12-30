@@ -80,8 +80,10 @@ const ParticipantVideoCallComponent = ({
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
   const [joinButton, setJoinButton] = useState(false);
-  
-  console.log(isWebCamEnabled, "isWebCamEnabled");
+  // Other hooks and state declarations
+  const [minimizeState, setMinimizeState] = useState(false);
+
+  console.log(minimizeState, "minimizeState");
 
   useEffect(() => {
     // Enable webcam and microphone when isWebCamEnabled is true
@@ -291,7 +293,7 @@ const ParticipantVideoCallComponent = ({
   };
 
   const joinNewApiVideoCallOnClick = async () => {
-    setJoinButton(true)
+    setJoinButton(true);
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
@@ -317,9 +319,20 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickToNormalParticipantPanel = () => {
+    setMinimizeState(false);
     setIsNormalPanel((prevState) => !prevState);
     // dispatch(maxParticipantVideoCallPanel(false));
     // dispatch(normalParticipantVideoCallPanel(true));
+  };
+
+  const toggleMinimizeState = () => {
+    if (minimizeState) {
+      // If currently minimized, clicking the icon will normalize the state
+      setMinimizeState(false);
+    } else {
+      // If not minimized, toggle to minimized state
+      setMinimizeState(true);
+    }
   };
 
   const onClickEndVideoCall = async (flag) => {
@@ -390,7 +403,9 @@ const ParticipantVideoCallComponent = ({
     <Container fluid>
       <div
         className={
-          isNormalPanel
+          minimizeState
+            ? "max-minimize-videoParticipantsvideo-panel"
+            : isNormalPanel
             ? "max-videoParticipantsvideo-panel"
             : "max-videoParticipant-panel"
         }
@@ -442,12 +457,17 @@ const ParticipantVideoCallComponent = ({
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
+              <img
+                dragable="false"
+                src={MinimizeIcon}
+                onClick={toggleMinimizeState}
+                alt="MinimizeIcon"
+              />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
-                src={isNormalPanel ? ExpandIcon : NormalizeIcon}
+                src={minimizeState ? ExpandIcon : NormalizeIcon}
                 onClick={onClickToNormalParticipantPanel}
                 alt="ExpandIcon"
               />
@@ -462,109 +482,76 @@ const ParticipantVideoCallComponent = ({
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col lg={8} md={8} sm={12}>
-            {
-              <>
-                <div
-                  className="max-videoParticipant-tag-name "
-                  style={{
-                    backgroundImage: `url(${ProfileUser})`,
-                    backgroundSize: "33%",
-                    backgroundRepeat: "no-repeat",
-                    height: isNormalPanel ? "44vh" : "78vh",
-                    backgroundPosition: "center center",
-                  }}
-                >
-                  <div className="max-videoParticipant-gradient-sheet">
-                    <div className="avatar-class">
-                      <div
-                        style={{
-                          position: "relative",
-                        }}
-                      >
-                        <video
-                          ref={videoRef}
-                          className={
-                            isNormalPanel
-                              ? "video-max-videoParticipantsvideo-panel"
-                              : "video-max-Participant"
-                          }
-                        />
+
+        {!minimizeState && (
+          <Row>
+            <Col lg={8} md={8} sm={12}>
+              {
+                <>
+                  <div
+                    className="max-videoParticipant-tag-name "
+                    style={{
+                      backgroundImage: `url(${ProfileUser})`,
+                      backgroundSize: "33%",
+                      backgroundRepeat: "no-repeat",
+                      height: isNormalPanel ? "44vh" : "78vh",
+                      backgroundPosition: "center center",
+                    }}
+                  >
+                    <div className="max-videoParticipant-gradient-sheet">
+                      <div className="avatar-class">
+                        <div
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <video
+                            ref={videoRef}
+                            className={
+                              isNormalPanel
+                                ? "video-max-videoParticipantsvideo-panel"
+                                : "video-max-Participant"
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
-
-                    {/* <div className="mic-vid-buttons">
-                      {isMicEnabled ? (
-                        <img dragable="false"
-                          src={MicOn}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(false, 2)}
-                        />
-                      ) : (
-                        <img dragable="false"
-                          src={MicOff}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(true, 1)}
-                        />
-                      )}
-                    </div> */}
                   </div>
-                </div>
-              </>
-            }
-          </Col>
-          <Col lg={4} md={4} sm={12}>
-            {/* <div className="max-videoParticipant-component">
-              <p className="max-Hostvideo-left-meeting-text">
-                {t("You've-left-the-meeting")}
-              </p>
-              <p className="max-videoParticipant-left-meeting-rejoin-text">
-                {t("Want-to-rejoin?-click-here-to-return-to-the-session")}
-              </p>
-              <Button
-                text={t("Rejoin")}
-                className="normal-videoHost-Join-Now-Btn"
-              />
-            </div> */}
-            {/* <div className="max-videoParticipant-component">
-              <p className="max-videoParticipant-waiting-room-class">
-                {t("You-are-in-the-waiting-room")}
-              </p>
-              <p className="max-videoParticipant-organizer-allow-class">
-                {t("The-organizer-will-allow-you-to-join-shortly")}
-              </p>
-            </div> */}
-            {isWaiting ? (
-              <>
-                <div className="max-videoParticipant-component">
-                  <p className="max-videoParticipant-waiting-room-class">
-                    {t("You-are-in-the-waiting-room")}
-                  </p>
-                  <p className="max-Hostvideo-organizer-allow-class">
-                    {t("The-organizer-will-allow-you-to-join-shortly")}
-                  </p>
-                </div>
-              </>
-            ) : !getReady ? (
-              <>
-                <div className="max-videoParticipant-component">
-                  <>
-                    <p className="max-videoParticipant-ready-to-join">
-                      {t("Ready-to-join")}
+                </>
+              }
+            </Col>
+            <Col lg={4} md={4} sm={12}>
+              {isWaiting ? (
+                <>
+                  <div className="max-videoParticipant-component">
+                    <p className="max-videoParticipant-waiting-room-class">
+                      {t("You-are-in-the-waiting-room")}
                     </p>
-                    <Button
-                    disableBtn={joinButton}
-                      text={t("Join-now")}
-                      className="max-videoParticipant-Join-Now-Btn"
-                      onClick={joinNewApiVideoCallOnClick}
-                    />
-                  </>
-                </div>
-              </>
-            ) : null}
-          </Col>
-        </Row>
+                    <p className="max-Hostvideo-organizer-allow-class">
+                      {t("The-organizer-will-allow-you-to-join-shortly")}
+                    </p>
+                  </div>
+                </>
+              ) : !getReady ? (
+                <>
+                  <div className="max-videoParticipant-component">
+                    <>
+                      <p className="max-videoParticipant-ready-to-join">
+                        {t("Ready-to-join")}
+                      </p>
+                      <Button
+                        disableBtn={joinButton}
+                        text={t("Join-now")}
+                        className="max-videoParticipant-Join-Now-Btn"
+                        onClick={joinNewApiVideoCallOnClick}
+                      />
+                    </>
+                  </div>
+                </>
+              ) : null}
+            </Col>
+          </Row>
+        )}
       </div>
     </Container>
   );

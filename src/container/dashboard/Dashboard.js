@@ -2281,7 +2281,7 @@ const Dashboard = () => {
           if (callTypeID === 1) {
             console.log("mqtt", isMeetingVideo);
             let Data = {
-              OrganizationID: currentOrganization,
+              OrganizationID: Number(currentOrganization),
               RoomID: initiateRoomID,
               IsCaller: true,
               CallTypeID: callTypeID,
@@ -2333,7 +2333,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 console.log("mqtt", isMeetingVideo);
                 let Data = {
-                  OrganizationID: currentOrganization,
+                  OrganizationID: Number(currentOrganization),
                   RoomID: initiateRoomID,
                   IsCaller: true,
                   CallTypeID: callTypeID,
@@ -2443,7 +2443,7 @@ const Dashboard = () => {
               if (Number(callTypeID) === 1) {
                 console.log("mqtt", isMeetingVideo);
                 let Data = {
-                  OrganizationID: currentOrganization,
+                  OrganizationID: Number(currentOrganization),
                   RoomID: initiateRoomID,
                   IsCaller: true,
                   CallTypeID: callTypeID,
@@ -2460,7 +2460,7 @@ const Dashboard = () => {
                 if (checkCallStatus(existingData)) {
                   console.log("mqtt", isMeetingVideo);
                   let Data = {
-                    OrganizationID: currentOrganization,
+                    OrganizationID: Number(currentOrganization),
                     RoomID: initiateRoomID,
                     IsCaller: true,
                     CallTypeID: callTypeID,
@@ -2669,7 +2669,7 @@ const Dashboard = () => {
           if (callTypeID === 1) {
             console.log("mqtt", isMeetingVideo);
             let Data = {
-              OrganizationID: currentOrganization,
+              OrganizationID: Number(currentOrganization),
               RoomID: initiateRoomID,
               IsCaller: true,
               CallTypeID: callTypeID,
