@@ -618,6 +618,7 @@ const getParticipantMeetingJoinMainApi = (
                 )
             ) {
               await dispatch(maxHostVideoCallPanel(false));
+              sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("activeCall", true);
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);

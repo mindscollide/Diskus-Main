@@ -871,7 +871,9 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "REMOVED_FROM_MEETING".toLowerCase()
             ) {
-              let isMeetingVideoCheck = JSON.parse(localStorage.getItem("isMeetingVideo"));
+              let isMeetingVideoCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 const meetingHost = {
@@ -2259,6 +2261,8 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_REJECTED".toLowerCase()
         ) {
+          //To make false sessionStorage which is set on VideoCall
+          sessionStorage.setItem("NonMeetingVideoCall", false);
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
           let currentUserName = localStorage.getItem("name");
@@ -2360,6 +2364,8 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_UNANSWERED".toLowerCase()
         ) {
+          //To make false sessionStorage which is set on VideoCall
+          sessionStorage.setItem("NonMeetingVideoCall", false);
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));

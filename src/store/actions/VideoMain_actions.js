@@ -12,6 +12,8 @@ import {
   leaveCall,
 } from "../../commen/apis/Api_config";
 import {
+  getParticipantMeetingJoinMainApi,
+  nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   videoOutgoingCallFlag,
 } from "./VideoFeature_actions";
@@ -701,7 +703,8 @@ const LeaveCall = (Data, navigate, t) => {
             ) {
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 0);
-              sessionStorage.setItem("NonMeetingVideoCall", false);
+              // sessionStorage.setItem("NonMeetingVideoCall", false);
+              dispatch(nonMeetingVideoGlobalModal(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage
