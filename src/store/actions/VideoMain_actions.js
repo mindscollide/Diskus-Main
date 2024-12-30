@@ -704,7 +704,6 @@ const LeaveCall = (Data, navigate, t) => {
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 0);
               // sessionStorage.setItem("NonMeetingVideoCall", false);
-              dispatch(nonMeetingVideoGlobalModal(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage

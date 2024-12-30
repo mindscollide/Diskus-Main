@@ -33,13 +33,12 @@ const NonMeetingVideoModal = () => {
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
-    // const meetingHost = {
-    //   isHost: false,
-    //   isHostId: 0,
-    //   isDashboardVideo: false,
-    // };
-    // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-    // localStorage.setItem("isMeetingVideo", false);
+    localStorage.setItem("activeCall", false);
+    localStorage.setItem("initiateVideoCall", false);
+    // localStorage.setItem("isCaller", false);
+    localStorage.setItem("isMeeting", true);
+
+    //Before Joining the Meeting Video we should need to make a LeaveCall for Dashboard Video
     let currentOrganization = Number(localStorage.getItem("organizationID"));
     let initiateCallRoomID = String(localStorage.getItem("initiateCallRoomID"));
     let currentCallType = Number(localStorage.getItem("CallType"));
@@ -50,11 +49,12 @@ const NonMeetingVideoModal = () => {
       CallTypeID: currentCallType,
     };
     await dispatch(LeaveCall(Data, navigate, t));
+    await dispatch(nonMeetingVideoGlobalModal(false));
 
+    // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi
     let getVideoCallMeeting = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
-    console.log(getVideoCallMeeting, "getVideoCallMeeting");
     if (getVideoCallMeeting) {
       let currentMeeting = localStorage.getItem("currentMeetingID");
       let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
