@@ -13,6 +13,7 @@ import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/vid
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 
+import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import MicOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Mic Enabled.svg";
 import VideoOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Video Enabled.svg";
 import MinToNormalIcon from "../../../../../components/layout/talk/talk-Video/video-images/Half Video Screen.svg";
@@ -437,7 +438,7 @@ const ParticipantVideoCallComponent = ({
               {isMicEnabled ? (
                 <img
                   dragable="false"
-                  src={MicOff}
+                  src={minimizeState ? MicOffHost : MicOff}
                   className="cursor-pointer"
                   onClick={() => toggleAudio(false)}
                   alt=""

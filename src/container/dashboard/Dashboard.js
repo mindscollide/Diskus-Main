@@ -485,9 +485,7 @@ const Dashboard = () => {
                 .includes("MEETING_STATUS_EDITED_END".toLowerCase())
             ) {
               try {
-                let meetingVideoID = Number(
-                  localStorage.getItem("meetingVideoID")
-                );
+                let meetingVideoID = localStorage.getItem("currentMeetingID");
 
                 if (data.viewable) {
                   setNotification({
