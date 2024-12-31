@@ -31,9 +31,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import Attendees from "./attendees/Attendees";
-import {
-  useMeetingContext,
-} from "../../../../context/MeetingContext";
+import { useMeetingContext } from "../../../../context/MeetingContext";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -371,8 +369,8 @@ const ViewMeetingModal = ({
   }, [meetingIdReducer.MeetingStatusEnded]);
   return (
     <>
-      <section className='position-relative'>
-        <Row className='mt-2'>
+      <section className="position-relative">
+        <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
@@ -380,10 +378,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -486,7 +484,6 @@ const ViewMeetingModal = ({
                         }
                       />
                     )}
-
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         <Button
@@ -523,9 +520,9 @@ const ViewMeetingModal = ({
                         }
                       />
                     ) : null}
+                    {/* editorRole.isPrimaryOrganizer Commented Due to CR 0011183 */}
                     {Number(editorRole.status) === 10 &&
-                    editorRole.role === "Organizer" &&
-                    editorRole.isPrimaryOrganizer ? (
+                    editorRole.role === "Organizer" ? (
                       <Button
                         text={t("Attendence")}
                         className={

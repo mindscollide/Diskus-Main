@@ -80,6 +80,8 @@ const SceduleMeeting = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(editorRole.role, "navigatenavigate");
+  console.log(editorRole.status, "navigatenavigate");
   const apiCallsForComponentMound = async () => {
     try {
       // // Meeting Type Drop Down API
@@ -399,7 +401,11 @@ const SceduleMeeting = ({
         if (Number(pK_MDID) === Number(currentMeeting)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
-          setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+          setEditorRole({
+            status: null,
+            role: null,
+            isPrimaryOrganizer: false,
+          });
 
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -437,7 +443,11 @@ const SceduleMeeting = ({
         if (Number(pK_MDID) === Number(currentMeeting)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
-          setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+          setEditorRole({
+            status: null,
+            role: null,
+            isPrimaryOrganizer: false,
+          });
 
           dispatch(viewAdvanceMeetingPublishPageFlag(false));
           dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
@@ -467,7 +477,7 @@ const SceduleMeeting = ({
 
   return (
     <section>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           {isEditMeeting ? (
             <span className={styles["Scedule_newMeeting_Heading"]}>
@@ -481,14 +491,15 @@ const SceduleMeeting = ({
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className='mb-4'>
+        <Col lg={12} md={12} sm={12} className="mb-4">
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='py-2 d-flex gap-2 flex-wrap'>
+                className="py-2 d-flex gap-2 flex-wrap"
+              >
                 <Button
                   text={t("Meeting-details")}
                   className={
