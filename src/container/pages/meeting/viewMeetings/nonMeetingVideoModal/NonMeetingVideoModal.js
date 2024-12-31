@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  getParticipantMeetingJoinMainApi,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
@@ -28,28 +29,43 @@ const NonMeetingVideoModal = () => {
   };
 
   // handle click on Yes Meeting Modal
-  const onClickOnYesMeetingModal = () => {
-    localStorage.setItem("isMeetingVideo", false);
+  const onClickOnYesMeetingModal = async () => {
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
-    const meetingHost = {
-      isHost: false,
-      isHostId: 0,
-      isDashboardVideo: false,
-    };
-    localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+    // const meetingHost = {
+    //   isHost: false,
+    //   isHostId: 0,
+    //   isDashboardVideo: false,
+    // };
+    // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+    // localStorage.setItem("isMeetingVideo", false);
     let currentOrganization = Number(localStorage.getItem("organizationID"));
-    let initiateCallRoomID = Number(localStorage.getItem("initiateCallRoomID"));
+    let initiateCallRoomID = String(localStorage.getItem("initiateCallRoomID"));
     let currentCallType = Number(localStorage.getItem("CallType"));
-
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: initiateCallRoomID,
-      IsCaller: false,
+      IsCaller: true,
       CallTypeID: currentCallType,
     };
-    dispatch(LeaveCall(Data, navigate, t));
+    await dispatch(LeaveCall(Data, navigate, t));
+
+    let getVideoCallMeeting = JSON.parse(
+      sessionStorage.getItem("NonMeetingVideoCall")
+    );
+    console.log(getVideoCallMeeting, "getVideoCallMeeting");
+    if (getVideoCallMeeting) {
+      let currentMeeting = localStorage.getItem("currentMeetingID");
+      let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+      let data = {
+        MeetingId: Number(currentMeeting),
+        VideoCallURL: String(currentMeetingVideoURL),
+        IsMuted: false,
+        HideVideo: false,
+      };
+      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+    }
   };
 
   return (
@@ -59,6 +75,7 @@ const NonMeetingVideoModal = () => {
         setShow={dispatch(nonMeetingVideoGlobalModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
+        className={styles["modal-background-modal"]}
         onHide={() => {
           dispatch(nonMeetingVideoGlobalModal(false));
         }}

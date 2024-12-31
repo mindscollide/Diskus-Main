@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+.modal-background-modal {
+  z-index: 999999 !important;
+}
+
 .Yes-ButtonFor-NonMeetingVideo {
   padding: 12px 30px !important;
   border: none !important;
