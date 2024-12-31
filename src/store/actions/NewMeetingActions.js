@@ -9371,6 +9371,15 @@ const GetMeetingStatusDataAPI = (
   };
 };
 
+//Voting Agenda Poll has been Started Modal Action Method
+
+const AgendaPollVotingStartedAction = (response) => {
+  return {
+    type: actions.VOTING_POLL_STARTED_AGENDA_MODAL,
+    response: response,
+  };
+};
+
 export {
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
@@ -9550,4 +9559,5 @@ export {
   LeaveMeetingSideBarModalAction,
   GetMeetingStatusDataAPI,
   removeUpComingEvent,
+  AgendaPollVotingStartedAction,
 };

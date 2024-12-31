@@ -200,6 +200,7 @@ import {
   DiskusGlobalUnreadNotificationCount,
 } from "../../store/actions/UpdateUserNotificationSetting";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -301,6 +302,11 @@ const Dashboard = () => {
   );
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+  );
+
+  //Voting Poll Started in Agenda Intimination Modal
+  const votingStartedAgendaIntiminationModalState = useSelector(
+    (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
@@ -3201,6 +3207,9 @@ const Dashboard = () => {
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />
+          )}
+          {votingStartedAgendaIntiminationModalState && (
+            <VotingPollAgendaIntiminationModal />
           )}
         </Layout>
       </ConfigProvider>
