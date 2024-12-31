@@ -8151,8 +8151,8 @@ const JoinCurrentMeeting = (
                 setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
-                localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
+              localStorage.setItem("currentMeetingID", Data.FK_MDID);
               dispatch(currentMeetingStatus(10));
             } else if (
               response.data.responseResult.responseMessage
