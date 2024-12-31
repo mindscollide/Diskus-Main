@@ -606,7 +606,7 @@ const ProposedNewMeeting = ({
 
   //Removing the Date Time Rows
   const HandleCancelFunction = (index) => {
-    if (index === 0) {
+    if (rows.length === 1) {
       showMessage(
         t("At-least-one-date-time-slot-is-mandatory"),
         "error",

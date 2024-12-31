@@ -14,8 +14,6 @@ import { useDispatch } from "react-redux";
 import {
   GetMeetingStatusDataAPI,
   proposedMeetingDatesGlobalFlag,
-  scheduleMeetingPageFlag,
-  searchNewUserMeeting,
   showSceduleProposedMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
@@ -26,13 +24,13 @@ import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functi
 import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
 import {
+  MinutesWorkFlowActorStatusNotificationAPI,
   pendingApprovalPage,
   reviewMinutesPage,
 } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
 import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
 import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
-import { openDocumentViewer } from "../../../commen/functions/utils.js";
 import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
@@ -382,22 +380,30 @@ const WebNotfication = ({
       }
     } else if (NotificationData.notificationActionID === 7) {
       if (currentURL.includes("/Diskus/Minutes")) {
-        //Notification for being added as a minute reviewer
         localStorage.setItem("MinutesOperations", true);
         localStorage.setItem(
           "NotificationClickMinutesMeetingID",
           PayLoadData.MeetingID
         );
-        dispatch(reviewMinutesPage(true));
-        dispatch(pendingApprovalPage(false));
+        //Notification for being added as a minute reviewer
+        let Data = {
+          MeetingID: Number(PayLoadData.MeetingID),
+        };
+        dispatch(MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t));
       } else {
         //Notification for being added as a minute reviewer
         navigate("/Diskus/Minutes");
+
         localStorage.setItem("MinutesOperations", true);
         localStorage.setItem(
           "NotificationClickMinutesMeetingID",
           PayLoadData.MeetingID
         );
+        //Notification for being added as a minute reviewer
+        let Data = {
+          MeetingID: Number(PayLoadData.MeetingID),
+        };
+        dispatch(MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t));
       }
     } else if (NotificationData.notificationActionID === 8) {
       if (currentURL.includes("/Diskus/Minutes")) {

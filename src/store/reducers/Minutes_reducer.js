@@ -37,6 +37,7 @@ const initialState = {
   ResendUpdatedMinuteForReviewData: null,
   PendingApprovalStatsThisWeek: null,
   GetStatsForPublishingMinutesByWorkFlowIdData: null,
+  WorkFlowActorStatusData: null,
   ResponseMessage: "",
 };
 
@@ -604,6 +605,31 @@ const MinutesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetStatsForPublishingMinutesByWorkFlowIdData: null,
+        ResponseMessage: action.message,
+      };
+    }
+    //Work Flow Actor Status
+    case actions.MINUTES_WORKFLOW_ACTOR_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.MINUTES_WORKFLOW_ACTOR_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        WorkFlowActorStatusData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MINUTES_WORKFLOW_ACTOR_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        WorkFlowActorStatusData: null,
         ResponseMessage: action.message,
       };
     }
