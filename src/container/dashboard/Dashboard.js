@@ -308,6 +308,11 @@ const Dashboard = () => {
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
+
+  console.log(
+    votingStartedAgendaIntiminationModalState,
+    "votingStartedAgendaIntiminationModalState"
+  );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
