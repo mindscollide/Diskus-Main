@@ -21,7 +21,6 @@ const VotingPollAgendaIntiminationModal = () => {
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         centered={false}
-        // className={"MainVotingPollStartedParentClass"}
         className={styles["MainVotingPollStartedParentClass"]}
         onHide={() => {}}
         size={"xl"}

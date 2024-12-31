@@ -158,7 +158,7 @@ const initialState = {
   ProposedMeetingViewFlag: false,
   LeaveMeetingSidebarModal: false,
   getMeetingStatusResponseData: null,
-  agendavotingPollStartedData: true,
+  agendavotingPollStartedData: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
