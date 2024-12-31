@@ -197,6 +197,7 @@ const DataRoom = () => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
+  console.log(getAllData, "getAllDatagetAllDatagetAllData")
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [sortValue, setSortValue] = useState(1);
   const [isAscending, setIsAscending] = useState(true);
@@ -827,9 +828,9 @@ const DataRoom = () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
 
+    setGetAllData([]);
     localStorage.setItem("setTableView", 2);
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
-    setGetAllData([]);
     setSharedwithmebtn(true);
     localStorage.removeItem("folderID");
     if (searchoptions) {
@@ -840,10 +841,10 @@ const DataRoom = () => {
   const MydocumentButtonShow = async () => {
     setSRowsData(0);
     dispatch(BreadCrumbsList([]));
+    setGetAllData([]);
 
     localStorage.setItem("setTableView", 1);
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t, 1));
-    setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
     if (searchoptions) {
@@ -856,9 +857,9 @@ const DataRoom = () => {
     dispatch(BreadCrumbsList([]));
     localStorage.setItem("setTableView", 3);
     localStorage.removeItem("folderID");
+    setGetAllData([]);
 
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
-    setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
     if (searchoptions) {
@@ -872,13 +873,13 @@ const DataRoom = () => {
 
     localStorage.setItem("setTableView", 4);
     localStorage.removeItem("folderID");
+    setGetAllData([]);
 
     let Data = {
       UserID: Number(userID),
       OrganizationID: Number(organizationID),
     };
     await dispatch(getRecentDocumentsApi(navigate, t, Data));
-    setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
     if (searchoptions) {
