@@ -13,6 +13,12 @@ import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/vid
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 
+import MicOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Mic Enabled.svg";
+import VideoOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Video Enabled.svg";
+import MinToNormalIcon from "../../../../../components/layout/talk/talk-Video/video-images/Half Video Screen.svg";
+import ExpandIconWhite from "../../../../../components/layout/talk/talk-Video/video-images/Expand White.svg";
+import VideoOffHost from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
+
 import {
   getParticipantMeetingJoinMainApi,
   globalNavigatorVideoStream,
@@ -319,16 +325,15 @@ const ParticipantVideoCallComponent = ({
   };
 
   const onClickToNormalParticipantPanel = () => {
-    setMinimizeState(false);
     setIsNormalPanel((prevState) => !prevState);
-    // dispatch(maxParticipantVideoCallPanel(false));
-    // dispatch(normalParticipantVideoCallPanel(true));
+    setMinimizeState(false);
   };
 
   const toggleMinimizeState = () => {
     if (minimizeState) {
       // If currently minimized, clicking the icon will normalize the state
       setMinimizeState(false);
+      setIsNormalPanel(true);
     } else {
       // If not minimized, toggle to minimized state
       setMinimizeState(true);
@@ -412,7 +417,15 @@ const ParticipantVideoCallComponent = ({
       >
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
-            <p className="max-participant-title">{participantMeetingTitle}</p>
+            <p
+              className={
+                minimizeState
+                  ? "max-minimize-participant-title"
+                  : "max-participant-title"
+              }
+            >
+              {participantMeetingTitle}
+            </p>
           </Col>
           <Col
             lg={8}
@@ -456,18 +469,22 @@ const ParticipantVideoCallComponent = ({
                 />
               )}
             </div>
-            <div className="max-videoParticipant-Icons-state">
-              <img
-                dragable="false"
-                src={MinimizeIcon}
-                onClick={toggleMinimizeState}
-                alt="MinimizeIcon"
-              />
+            <div
+              className="max-videoParticipant-Icons-state"
+              onClick={toggleMinimizeState}
+            >
+              <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
-                src={minimizeState ? ExpandIcon : NormalizeIcon}
+                src={
+                  minimizeState
+                    ? ExpandIcon
+                    : NormalizeIcon && isNormalPanel
+                    ? ExpandIcon
+                    : NormalizeIcon
+                }
                 onClick={onClickToNormalParticipantPanel}
                 alt="ExpandIcon"
               />
@@ -483,43 +500,49 @@ const ParticipantVideoCallComponent = ({
           </Col>
         </Row>
 
-        {!minimizeState && (
-          <Row>
-            <Col lg={8} md={8} sm={12}>
-              {
-                <>
-                  <div
-                    className="max-videoParticipant-tag-name "
-                    style={{
-                      backgroundImage: `url(${ProfileUser})`,
-                      backgroundSize: "33%",
-                      backgroundRepeat: "no-repeat",
-                      height: isNormalPanel ? "44vh" : "78vh",
-                      backgroundPosition: "center center",
-                    }}
-                  >
-                    <div className="max-videoParticipant-gradient-sheet">
-                      <div className="avatar-class">
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                        >
-                          <video
-                            ref={videoRef}
-                            className={
-                              isNormalPanel
-                                ? "video-max-videoParticipantsvideo-panel"
-                                : "video-max-Participant"
-                            }
-                          />
-                        </div>
+        <Row>
+          <Col lg={8} md={8} sm={12}>
+            {
+              <>
+                <div
+                  className="max-videoParticipant-tag-name "
+                  style={{
+                    backgroundImage: `url(${ProfileUser})`,
+                    backgroundSize: "33%",
+                    backgroundRepeat: "no-repeat",
+                    height: minimizeState
+                      ? "7vh"
+                      : isNormalPanel
+                      ? "44vh"
+                      : "78vh",
+                    backgroundPosition: "center center",
+                  }}
+                >
+                  <div className="max-videoParticipant-gradient-sheet">
+                    <div className="avatar-class">
+                      <div
+                        style={{
+                          position: "relative",
+                        }}
+                      >
+                        <video
+                          ref={videoRef}
+                          className={
+                            minimizeState
+                              ? "video-max-minimize-videoParticipant-panel"
+                              : isNormalPanel
+                              ? "video-max-videoParticipantsvideo-panel"
+                              : "video-max-Participant"
+                          }
+                        />
                       </div>
                     </div>
                   </div>
-                </>
-              }
-            </Col>
+                </div>
+              </>
+            }
+          </Col>
+          {!minimizeState && (
             <Col lg={4} md={4} sm={12}>
               {isWaiting ? (
                 <>
@@ -550,8 +573,8 @@ const ParticipantVideoCallComponent = ({
                 </>
               ) : null}
             </Col>
-          </Row>
-        )}
+          )}
+        </Row>
       </div>
     </Container>
   );
