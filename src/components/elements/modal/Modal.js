@@ -20,6 +20,7 @@ const CustomModal = ({
   modalTitleClassName,
   fullscreen,
   htmlCode,
+  centered,
 }) => {
   return (
     <>
@@ -30,7 +31,7 @@ const CustomModal = ({
           backdrop={backdrop}
           data-backdrop="false"
           size={size}
-          centered={true}
+          centered={centered ?? true}
           className={className}
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
