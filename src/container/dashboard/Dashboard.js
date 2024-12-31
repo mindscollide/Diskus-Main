@@ -122,6 +122,7 @@ import {
   getDashboardMeetingCountMQTT,
   LeaveCurrentMeeting,
   removeUpComingEvent,
+  AgendaPollVotingStartedAction,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -1134,6 +1135,17 @@ const Dashboard = () => {
                   data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID
                 )
               );
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "AGENDA_VOTING_STARTED".toLowerCase()
+            ) {
+              try {
+                console.log(data.payload, "AGENDA_VOTING_STARTED");
+                console.log(data.payload.message, "AGENDA_VOTING_STARTED");
+                dispatch(AgendaPollVotingStartedAction(true));
+              } catch (error) {
+                console.log(error);
+              }
             }
           } catch (error) {
             console.log(error);
