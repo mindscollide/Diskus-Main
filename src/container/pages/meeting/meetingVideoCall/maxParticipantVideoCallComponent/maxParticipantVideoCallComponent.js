@@ -336,7 +336,7 @@ const ParticipantVideoCallComponent = ({
     }
   };
 
-  const onClickEndVideoCall = async (flag, flag2) => {
+  const onClickEndVideoCall = async (flag, flag2,flag3) => {
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -362,7 +362,6 @@ const ParticipantVideoCallComponent = ({
     }
     sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
     sessionStorage.removeItem("audioStreamId");
-    console.log(streamAudio, "streamstream");
     setIsMicEnabled(false); // Microphone is now disabled
     if (isWaiting) {
       let Data = {
@@ -394,27 +393,40 @@ const ParticipantVideoCallComponent = ({
       dispatch(endMeetingStatusForQuickMeetingVideo(false));
       dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
+    if (flag3) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
+      dispatch(leaveMeetingOnEndStatusMqtt(true));
+    }
   };
 
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
         console.log("mqtt mqmqmqmqmqmq");
-        onClickEndVideoCall(true);
+        onClickEndVideoCall(true,false,false);
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
-
+ 
   useEffect(() => {
     try {
       if (closeQuickMeetingVideoReducer) {
         console.log("mqtt mqmqmqmqmqmq");
 
-        onClickEndVideoCall(false, true);
+        onClickEndVideoCall(false, true,false);
       }
     } catch (error) {}
   }, [closeQuickMeetingVideoReducer]);
 
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoOnEndStatusMqttFlag) {
+        console.log("mqtt mqmqmqmqmqmq");
+        onClickEndVideoCall(false, false,true);
+      }
+    } catch (error) {}
+  }, [leaveMeetingVideoOnEndStatusMqttFlag]);
   return (
     <Container fluid>
       <div

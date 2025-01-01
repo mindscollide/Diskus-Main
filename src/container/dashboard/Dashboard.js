@@ -433,21 +433,33 @@ const Dashboard = () => {
 
   // For End QUick Meeting
 
-  const meetingEnded = async (payload) => {
+  const meetingEnded = (payload) => {
     console.log("mqtt mqmqmqmqmqmq", payload);
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (Number(meetingVideoID) === Number(payload?.meeting?.pK_MDID)) {
       console.log("mqtt mqmqmqmqmqmq");
       if (isMeeting) {
         console.log("mqtt mqmqmqmqmqmq");
-        if (isMeetingVideo) {
+        let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+        if (String(typeOfMeeting) === "isQuickMeeting") {
+          if (isMeetingVideo) {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(endMeetingStatusForQuickMeetingVideo(true));
+          } else {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(endMeetingStatusForQuickMeetingModal(true));
+          }
+        } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
           console.log("mqtt mqmqmqmqmqmq");
-          await dispatch(endMeetingStatusForQuickMeetingVideo(true));
-        } else {
-          console.log("mqtt mqmqmqmqmqmq");
-          await dispatch(endMeetingStatusForQuickMeetingModal(true));
+          if (isMeetingVideo) {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+          } else {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(leaveMeetingOnEndStatusMqtt(true));
+          }
         }
       }
     }
@@ -853,18 +865,6 @@ const Dashboard = () => {
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
               dispatch(guestJoinPopup(true));
-              // if (data.viewable) {
-              //   setNotification({
-              //     ...notification,
-              //     notificationShow: true,
-              //     message: changeMQTTJSONOne(
-              //       t("MeetingReminderNotification"),
-              //       "[Meeting Title]",
-              //       data.payload.title.substring(0, 100)
-              //     ),
-              //   });
-              //   setNotificationID(id);
-              // }
             } else if (
               //when Participant or attendee send Request to Host
               data.payload.message.toLowerCase() ===
