@@ -41,7 +41,12 @@ import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
+  maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+  setRaisedUnRaisedParticiant,
+  toggleParticipantsVisibility,
 } from "../../store/actions/VideoFeature_actions";
 import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -795,23 +800,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const handleClickEndMeeting = useCallback(async () => {
-    let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
-    if (getMeetingHost.isHost && getMeetingHost.isDashboardVideo) {
-      let newRoomID = localStorage.getItem("newRoomId");
-      let newUserGUID = localStorage.getItem("isGuid");
-      let newName = localStorage.getItem("name");
-      let currentMeetingID = JSON.parse(
-        localStorage.getItem("currentMeetingID")
-      );
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (isMeetingVideo === true) {
+      let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      if (getMeetingHost.isHost && getMeetingHost.isDashboardVideo) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let currentMeetingID = JSON.parse(
+          localStorage.getItem("currentMeetingID")
+        );
 
-      let Data = {
-        RoomID: String(newRoomID),
-        UserGUID: String(newUserGUID),
-        Name: String(newName),
-        IsHost: getMeetingHost?.isHost ? true : false,
-        MeetingID: Number(currentMeetingID),
-      };
-      dispatch(LeaveMeetingVideo(Data, navigate, t));
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: getMeetingHost?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
     }
     let checkMeetingID = null;
     if (
@@ -848,13 +856,68 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const leaveMeeting = async (id) => {
-    let leaveMeetingData = {
-      FK_MDID: Number(id),
-      DateTime: getCurrentDateTimeUTC(),
-    };
-    dispatch(
-      LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
-    );
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+    if (isMeetingVideo === true) {
+      const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      const currentMeetingID = JSON.parse(
+        localStorage.getItem("currentMeetingID")
+      );
+      await dispatch(normalizeVideoPanelFlag(false));
+      await dispatch(maximizeVideoPanelFlag(false));
+      await dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingTitle", "");
+      localStorage.setItem("acceptedRecipientID", 0);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
+      localStorage.setItem("meetingVideoID", 0);
+      localStorage.setItem("MicOff", true);
+      localStorage.setItem("VidOff", true);
+      if (meetHostFlag?.isHost) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      } else {
+        await dispatch(toggleParticipantsVisibility(false));
+        let participantRoomIds = localStorage.getItem("participantRoomId");
+        let participantUID = localStorage.getItem("participantUID");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(participantRoomIds),
+          UserGUID: String(participantUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(setRaisedUnRaisedParticiant(false));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
+      let leaveMeetingData = {
+        FK_MDID: Number(id),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      await dispatch(
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+      );
+    } else {
+      let leaveMeetingData = {
+        FK_MDID: Number(id),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      await dispatch(
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+      );
+    }
   };
 
   const downloadClick = (record) => {
@@ -896,7 +959,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       let isParticipant = findRoleId.MeetingAttendeeRole.PK_MARID === 2;
       console.log(isParticipant, "gadgetgadgetgadgetgadget");
 
-      if (isParticipant) {
+      let getMeetingVideoHost = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+
+      if (!getMeetingVideoHost) {
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
         if (currentMeetingVideoURL !== null) {
