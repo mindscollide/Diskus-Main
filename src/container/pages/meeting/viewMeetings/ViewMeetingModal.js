@@ -11,8 +11,11 @@ import {
   maximizeVideoPanelFlag,
   leaveCallModal,
   participantPopup,
+  leaveMeetingOnlogout,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
+  LeaveCurrentMeeting,
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
@@ -32,6 +35,8 @@ import { useNavigate } from "react-router-dom";
 import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
 import Attendees from "./attendees/Attendees";
 import { useMeetingContext } from "../../../../context/MeetingContext";
+import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
+import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -84,6 +89,14 @@ const ViewMeetingModal = ({
   const dispatch = useDispatch();
 
   const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
+
+  const leaveMeetingOnLogoutResponse = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
+  );
+
+  const leaveMeetingOnEndStatusMqttFlag = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag
+  );
 
   useEffect(() => {
     if (routeID !== null) {
@@ -265,6 +278,7 @@ const ViewMeetingModal = ({
     setAttendees(false);
     setPolls(false);
   };
+
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingAcRemoved !== null &&
@@ -367,6 +381,53 @@ const ViewMeetingModal = ({
       }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
+
+  const leaveMeeting = async (flag, flag2) => {
+    let currentMeeting = localStorage.getItem("currentMeetingID");
+    let leaveMeetingData = {
+      FK_MDID: Number(currentMeeting),
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    await dispatch(
+      LeaveCurrentMeeting(
+        navigate,
+        t,
+        leaveMeetingData,
+        false,
+        false,
+        setEditorRole,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal
+      )
+    );
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingOnlogout(false));
+      dispatch(userLogOutApiFunc(navigate, t));
+    }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingOnEndStatusMqtt(false));
+    }
+  };
+  useEffect(() => {
+    try {
+      if (leaveMeetingOnLogoutResponse) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(true, false);
+      }
+    } catch {}
+  }, [leaveMeetingOnLogoutResponse]);
+
+  useEffect(() => {
+    try {
+      if (leaveMeetingOnEndStatusMqttFlag) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(false, true);
+      }
+    } catch {}
+  }, [leaveMeetingOnEndStatusMqttFlag]);
+  
   return (
     <>
       <section className="position-relative">

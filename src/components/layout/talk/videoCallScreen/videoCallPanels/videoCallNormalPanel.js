@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
@@ -6,11 +6,9 @@ import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
 import { LoaderPanelVideoScreen } from "../../../../elements";
-import { MeetingContext } from "../../../../../context/MeetingContext";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
-
 import {
   endIndexUrl,
   extractedUrl,
@@ -30,7 +28,6 @@ import {
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
-
 import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
 import MaxHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import ParticipantVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
@@ -46,8 +43,6 @@ const VideoPanelNormal = () => {
   // Create a ref for the iframe element
   let iframeRef = useRef(null);
 
-  let currentUserID = Number(localStorage.getItem("userID"));
-
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
@@ -56,13 +51,6 @@ const VideoPanelNormal = () => {
 
   let activeRoomID = localStorage.getItem("activeRoomID");
 
-  let participantRoomId = localStorage.getItem("participantRoomId");
-
-  localStorage.setItem("VideoView", "Sidebar");
-
-  let callAcceptedRecipientID = Number(
-    localStorage.getItem("acceptedRecipientID")
-  );
   let currentUserName = localStorage.getItem("name");
 
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -71,9 +59,7 @@ const VideoPanelNormal = () => {
 
   let participantRoomIds = localStorage.getItem("participantRoomId");
 
-  const newUserGUID = localStorage.getItem("isGuid");
-
-  const { editorRole } = useContext(MeetingContext);
+  localStorage.setItem("VideoView", "Sidebar");
 
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
@@ -177,6 +163,7 @@ const VideoPanelNormal = () => {
   const makeParticipantAsHostData = useSelector(
     (state) => state.videoFeatureReducer.makeParticipantAsHostData
   );
+
   const hostTransferFlag = useSelector(
     (state) => state.GuestVideoReducer.hostTransferFlag
   );
@@ -211,6 +198,7 @@ const VideoPanelNormal = () => {
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
+
   function validateRoomID(input) {
     try {
       // Convert input to string if not already a string
@@ -235,6 +223,7 @@ const VideoPanelNormal = () => {
       return false;
     }
   }
+  
   useEffect(() => {
     if (
       isMeeting &&
@@ -669,6 +658,7 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
+
   return (
     <>
       {MaximizeHostVideoFlag ? (

@@ -54,6 +54,10 @@ import {
   participantWaitingListBox,
   participantListWaitingListMainApi,
   makeParticipantHost,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  leaveMeetingVideoOnEndStatusMqtt,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -429,6 +433,40 @@ const Dashboard = () => {
     }
   }, [checkInternet.onLine]);
 
+  // For End QUick Meeting
+
+  const meetingEnded = (payload) => {
+    console.log("mqtt mqmqmqmqmqmq", payload);
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (Number(meetingVideoID) === Number(payload?.meeting?.pK_MDID)) {
+      console.log("mqtt mqmqmqmqmqmq");
+      if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq");
+        let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+        if (String(typeOfMeeting) === "isQuickMeeting") {
+          if (isMeetingVideo) {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(endMeetingStatusForQuickMeetingVideo(true));
+          } else {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(endMeetingStatusForQuickMeetingModal(true));
+          }
+        } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
+          console.log("mqtt mqmqmqmqmqmq");
+          if (isMeetingVideo) {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+          } else {
+            console.log("mqtt mqmqmqmqmqmq");
+            dispatch(leaveMeetingOnEndStatusMqtt(true));
+          }
+        }
+      }
+    }
+  };
+
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
@@ -496,9 +534,7 @@ const Dashboard = () => {
                 .includes("MEETING_STATUS_EDITED_END".toLowerCase())
             ) {
               try {
-                let meetingVideoID = Number(
-                  localStorage.getItem("meetingVideoID")
-                );
+                let meetingVideoID = localStorage.getItem("currentMeetingID");
 
                 if (data.viewable) {
                   setNotification({
@@ -512,54 +548,67 @@ const Dashboard = () => {
                   });
                   setNotificationID(id);
                 }
-                if (
-                  Number(meetingVideoID) ===
-                  Number(data?.payload?.meeting?.pK_MDID)
-                ) {
-                  let newName = localStorage.getItem("name");
-                  let getMeetingParticipants =
-                    data.payload.meeting.meetingAttendees.filter(
-                      (attendeeData) =>
-                        attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                    );
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(minimizeVideoPanelFlag(false));
-                  localStorage.setItem("activeCall", false);
-                  localStorage.setItem("isMeeting", false);
-                  localStorage.setItem("meetingTitle", "");
-                  localStorage.setItem("acceptedRecipientID", 0);
-                  localStorage.setItem("acceptedRoomID", 0);
-                  localStorage.setItem("activeRoomID", 0);
-                  localStorage.setItem("meetingVideoID", 0);
-                  localStorage.setItem("MicOff", true);
-                  localStorage.setItem("VidOff", true);
-                  let Data = {
-                    RoomID: currentMeetingVideoID,
-                    UserGUID: userGUID,
-                    Name: String(newName),
-                  };
-                  dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-                  if (getMeetingParticipants.length > 0) {
-                    let userID = localStorage.getItem("userID");
-                    let meetingpageRow =
-                      localStorage.getItem("MeetingPageRows") || 30;
-                    let meetingPageCurrent =
-                      localStorage.getItem("MeetingPageCurrent") || 1;
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings: true,
-                    };
-                    dispatch(searchNewUserMeeting(navigate, searchData, t));
-                  }
-                }
+                console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
+                console.log(
+                  "mqtt mqmqmqmqmqmq",
+                  data?.payload?.meeting?.pK_MDID
+                );
+                // if (
+                //   Number(meetingVideoID) ===
+                //   Number(data?.payload?.meeting?.pK_MDID)
+                // ) {
+                //   console.log("mqtt mqmqmqmqmqmq");
+                meetingEnded(data.payload);
+                // }
 
-                dispatch(mqttCurrentMeetingEnded(data.payload));
+                // if (
+                //   Number(meetingVideoID) ===
+                //   Number(data?.payload?.meeting?.pK_MDID)
+                // ) {
+                //   let newName = localStorage.getItem("name");
+                //   let getMeetingParticipants =
+                //     data.payload.meeting.meetingAttendees.filter(
+                //       (attendeeData) =>
+                //         attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                //     );
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
+                //   localStorage.setItem("activeCall", false);
+                //   localStorage.setItem("isMeeting", false);
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   let Data = {
+                //     RoomID: currentMeetingVideoID,
+                //     UserGUID: userGUID,
+                //     Name: String(newName),
+                //   };
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                //   if (getMeetingParticipants.length > 0) {
+                //     let userID = localStorage.getItem("userID");
+                //     let meetingpageRow =
+                //       localStorage.getItem("MeetingPageRows") || 30;
+                //     let meetingPageCurrent =
+                //       localStorage.getItem("MeetingPageCurrent") || 1;
+                //     let searchData = {
+                //       Date: "",
+                //       Title: "",
+                //       HostName: "",
+                //       UserID: Number(userID),
+                //       PageNumber: Number(meetingPageCurrent),
+                //       Length: Number(meetingpageRow),
+                //       PublishedMeetings: true,
+                //     };
+                //     dispatch(searchNewUserMeeting(navigate, searchData, t));
+                //   }
+                // }
+
+                // dispatch(mqttCurrentMeetingEnded(data.payload));
               } catch (error) {
                 console.log(error);
               }
@@ -818,18 +867,6 @@ const Dashboard = () => {
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
               dispatch(guestJoinPopup(true));
-              // if (data.viewable) {
-              //   setNotification({
-              //     ...notification,
-              //     notificationShow: true,
-              //     message: changeMQTTJSONOne(
-              //       t("MeetingReminderNotification"),
-              //       "[Meeting Title]",
-              //       data.payload.title.substring(0, 100)
-              //     ),
-              //   });
-              //   setNotificationID(id);
-              // }
             } else if (
               //when Participant or attendee send Request to Host
               data.payload.message.toLowerCase() ===
@@ -2292,7 +2329,7 @@ const Dashboard = () => {
           if (callTypeID === 1) {
             console.log("mqtt", isMeetingVideo);
             let Data = {
-              OrganizationID: currentOrganization,
+              OrganizationID: Number(currentOrganization),
               RoomID: initiateRoomID,
               IsCaller: true,
               CallTypeID: callTypeID,
@@ -2344,7 +2381,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 console.log("mqtt", isMeetingVideo);
                 let Data = {
-                  OrganizationID: currentOrganization,
+                  OrganizationID: Number(currentOrganization),
                   RoomID: initiateRoomID,
                   IsCaller: true,
                   CallTypeID: callTypeID,
@@ -2454,7 +2491,7 @@ const Dashboard = () => {
               if (Number(callTypeID) === 1) {
                 console.log("mqtt", isMeetingVideo);
                 let Data = {
-                  OrganizationID: currentOrganization,
+                  OrganizationID: Number(currentOrganization),
                   RoomID: initiateRoomID,
                   IsCaller: true,
                   CallTypeID: callTypeID,
@@ -2471,7 +2508,7 @@ const Dashboard = () => {
                 if (checkCallStatus(existingData)) {
                   console.log("mqtt", isMeetingVideo);
                   let Data = {
-                    OrganizationID: currentOrganization,
+                    OrganizationID: Number(currentOrganization),
                     RoomID: initiateRoomID,
                     IsCaller: true,
                     CallTypeID: callTypeID,
@@ -2680,7 +2717,7 @@ const Dashboard = () => {
           if (callTypeID === 1) {
             console.log("mqtt", isMeetingVideo);
             let Data = {
-              OrganizationID: currentOrganization,
+              OrganizationID: Number(currentOrganization),
               RoomID: initiateRoomID,
               IsCaller: true,
               CallTypeID: callTypeID,

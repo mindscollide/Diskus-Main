@@ -1156,6 +1156,38 @@ const nonMeetingVideoGlobalModal = (response) => {
   };
 };
 
+//For Close QuickMeeting Video Call
+const endMeetingStatusForQuickMeetingVideo = (response) => {
+  return {
+    type: actions.CLOSE_VIDEOCALL_QUICK_MEETING,
+    response: response,
+  };
+};
+
+//For Close QuickMeeting Modal Call
+const endMeetingStatusForQuickMeetingModal = (response) => {
+  return {
+    type: actions.CLOSE_QUICK_MEETING_VIDEO_MODAL,
+    response: response,
+  };
+};
+
+//For End Video Status Mqtt Response
+const leaveMeetingVideoOnEndStatusMqtt = (response) => {
+  return {
+    type: actions.LEAVE_MEETINGVIDEO_END_STATUS_RESPONSE,
+    response: response,
+  };
+};
+
+//For End Meeting Status Mqtt Response
+const leaveMeetingOnEndStatusMqtt = (response) => {
+  return {
+    type: actions.LEAVE_MEETING_END_STATUS_RESPONSE,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1227,4 +1259,8 @@ export {
   leaveMeetingVideoOnlogout,
   makeParticipantHost,
   nonMeetingVideoGlobalModal,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  leaveMeetingVideoOnEndStatusMqtt,
+  leaveMeetingOnEndStatusMqtt,
 };
