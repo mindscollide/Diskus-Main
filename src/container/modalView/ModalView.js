@@ -39,6 +39,7 @@ import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
+  closeQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
   maximizeVideoPanelFlag,
@@ -102,17 +103,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
-
-  console.log(
-    { assigneesViewMeetingDetails, calendarReducereventsDetails },
-    "calendarReducereventsDetailscalendarReducereventsDetails"
+  const closeQuickMeetingVideoReducer = useSelector(
+    (state) => state.videoFeatureReducer.closeQuickMeetingModal
   );
 
   const assigneesuser = useSelector((state) => state.assignees.user);
-  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let currentUserID = Number(localStorage.getItem("userID"));
-  let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeeting = localStorage.getItem("currentMeetingID");
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
@@ -141,7 +136,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   //all Meeting details
   const [allMeetingDetails, setAllMeetingDetails] = useState([]);
+
   const [meetingDifference, setMeetingDifference] = useState(0);
+
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -150,13 +147,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  console.log(addedParticipantNameList, "addedParticipantNameList");
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
@@ -178,7 +174,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     ExternalMeetingAttendees: [],
     MinutesOfMeeting: [],
   });
-  console.log(createMeeting, "createMeetingcreateMeeting");
   const changeSelectDetails = () => {
     setIsDetails(true);
     setIsAgenda(false);
@@ -725,6 +720,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       setMeetingDifference(minutesDifference);
     }
   }, [allMeetingDetails]);
+
   useEffect(() => {
     return () => {
       dispatch(removeCalenderDataFunc(null));
@@ -762,8 +758,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {}
   }, [assigneesuser]);
 
-  console.log(calendarReducereventsDetails, "meetingDetails");
-  console.log("meetingDetails", assigneesViewMeetingDetails);
   const startMeeting = async () => {
     await setViewFlag(false);
     let checkMeetingID = null;
@@ -854,8 +848,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const endMeeting = async () => {
     setEndMeetingConfirmationModal(true);
   };
+  // for api reponce of list of all assignees
+  useEffect(() => {
+    try {
+      if (closeQuickMeetingVideoReducer) {
+        let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+      console.log("mqtt mqmqmqmqmqmq");
+      leaveMeeting(currentMeetingID, true);
+      }
+    } catch (error) {}
+  }, [closeQuickMeetingVideoReducer]);
 
-  const leaveMeeting = async (id) => {
+  const leaveMeeting = async (id, flag) => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
     if (isMeetingVideo === true) {
@@ -917,6 +921,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(
         LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
       );
+    }
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(closeQuickMeetingModal(false));
     }
   };
 

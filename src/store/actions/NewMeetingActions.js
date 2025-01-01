@@ -8121,7 +8121,15 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
-              localStorage.setItem("AdvanceMeetingOpen", true);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem(
+                "AdvanceMeetingOpen",
+                isQuickMeeting ? false : true
+              );
+              localStorage.setItem(
+                "typeOfMeeting",
+                isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting"
+              );
               localStorage.setItem(
                 "isMeetingVideoHostCheck",
                 response.data.responseResult.isMeetingVideoHost
