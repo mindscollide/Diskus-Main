@@ -12,15 +12,14 @@ import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
-
 import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
-import MicOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Mic Enabled.svg";
-import VideoOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Video Enabled.svg";
-import MinToNormalIcon from "../../../../../components/layout/talk/talk-Video/video-images/Half Video Screen.svg";
-import ExpandIconWhite from "../../../../../components/layout/talk/talk-Video/video-images/Expand White.svg";
-import VideoOffHost from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
+  closeQuickMeetingModal,
+  closeQuickMeetingVideo,
   getParticipantMeetingJoinMainApi,
   globalNavigatorVideoStream,
   globalStateForAudioStream,
@@ -33,10 +32,6 @@ import {
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { MeetingContext } from "../../../../../context/MeetingContext";
-import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const ParticipantVideoCallComponent = ({
   handleExpandToNormalPanelParticipant,
@@ -45,11 +40,8 @@ const ParticipantVideoCallComponent = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
-  );
-  const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  const closeQuickMeetingVideoReducer = useSelector(
+    (state) => state.videoFeatureReducer.closeQuickMeetingVideo
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
@@ -341,7 +333,7 @@ const ParticipantVideoCallComponent = ({
     }
   };
 
-  const onClickEndVideoCall = async (flag) => {
+  const onClickEndVideoCall = async (flag, flag2) => {
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -394,6 +386,11 @@ const ParticipantVideoCallComponent = ({
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      dispatch(closeQuickMeetingVideo(false));
+      dispatch(closeQuickMeetingModal(true));
+    }
   };
 
   useEffect(() => {
@@ -404,6 +401,16 @@ const ParticipantVideoCallComponent = ({
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
+
+  useEffect(() => {
+    try {
+      if (closeQuickMeetingVideoReducer) {
+        console.log("mqtt mqmqmqmqmqmq");
+
+        onClickEndVideoCall(false, true);
+      }
+    } catch (error) {}
+  }, [closeQuickMeetingVideoReducer]);
 
   return (
     <Container fluid>

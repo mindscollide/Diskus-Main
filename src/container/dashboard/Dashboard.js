@@ -55,6 +55,7 @@ import {
   participantListWaitingListMainApi,
   makeParticipantHost,
   closeQuickMeetingVideo,
+  closeQuickMeetingModal,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -431,11 +432,23 @@ const Dashboard = () => {
   }, [checkInternet.onLine]);
 
   // For End QUick Meeting
-  const meetingEnded = async () => {
-    let getIsMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let meetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
-    if (getIsMeeting && !meetingHostInfo.isHost) {
-      dispatch(closeQuickMeetingVideo(true));
+  const meetingEnded = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq",payload);
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    if (Number(meetingVideoID) === Number(payload?.meeting?.pK_MDID)) {
+      console.log("mqtt mqmqmqmqmqmq");
+      if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq");
+        if (isMeetingVideo) {
+          console.log("mqtt mqmqmqmqmqmq");
+          await dispatch(closeQuickMeetingVideo(true));
+        } else {
+          console.log("mqtt mqmqmqmqmqmq");
+          await dispatch(closeQuickMeetingModal(true));
+        }
+      }
     }
   };
 
@@ -520,12 +533,18 @@ const Dashboard = () => {
                   });
                   setNotificationID(id);
                 }
-                if (
-                  Number(meetingVideoID) ===
-                  Number(data?.payload?.meeting?.pK_MDID)
-                ) {
-                  meetingEnded(data.payload);
-                }
+                console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
+                console.log(
+                  "mqtt mqmqmqmqmqmq",
+                  data?.payload?.meeting?.pK_MDID
+                );
+                // if (
+                //   Number(meetingVideoID) ===
+                //   Number(data?.payload?.meeting?.pK_MDID)
+                // ) {
+                //   console.log("mqtt mqmqmqmqmqmq");
+                meetingEnded(data.payload);
+                // }
 
                 // if (
                 //   Number(meetingVideoID) ===
@@ -574,7 +593,7 @@ const Dashboard = () => {
                 //   }
                 // }
 
-                dispatch(mqttCurrentMeetingEnded(data.payload));
+                // dispatch(mqttCurrentMeetingEnded(data.payload));
               } catch (error) {
                 console.log(error);
               }
