@@ -1877,6 +1877,12 @@ const GetDataRoomFileSharedPersmission = {
   RequestMethod: "ServiceManager.GetDataRoomSharedFilePermission",
 };
 
+//Minutes Work Flow Actor Status WebNotification
+
+const MinutesWorkFlowActorStatusNotification = {
+  RequestMethod: "ServiceManager.GetWorkFlowStatusForActor",
+};
+
 export {
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
@@ -2371,4 +2377,5 @@ export {
   DiskusWebNotificationMarkAsRead,
   GetMeetingStatus,
   GetDataRoomFileSharedPersmission,
+  MinutesWorkFlowActorStatusNotification,
 };

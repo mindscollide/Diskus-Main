@@ -21,6 +21,7 @@ import {
   getDataForResendMinuteReview,
   getMinuteAndSignatureApprovalThisWeekRM,
   getStatsForPublishingMinutesByWorkFlowId,
+  MinutesWorkFlowActorStatusNotification,
 } from "../../commen/apis/Api_config";
 import { meetingApi, workflowApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -2569,6 +2570,106 @@ const GetStatsForPublishingMinutesByWorkFlowId = (
   };
 };
 
+//Minutes Work Flow Actor Status Web Notification API
+
+const MinutesWorkFlowActorStatusInit = () => {
+  return {
+    type: actions.MINUTES_WORKFLOW_ACTOR_STATUS_INIT,
+  };
+};
+
+const MinutesWorkFlowActorStatusSuccess = (response, message) => {
+  return {
+    type: actions.MINUTES_WORKFLOW_ACTOR_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const MinutesWorkFlowActorStatusFail = (message) => {
+  return {
+    type: actions.MINUTES_WORKFLOW_ACTOR_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(MinutesWorkFlowActorStatusInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      MinutesWorkFlowActorStatusNotification.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MinutesWorkFlowActorStatusSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+              dispatch(reviewMinutesPage(true));
+              dispatch(pendingApprovalPage(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_02".toLowerCase()
+                )
+            ) {
+              dispatch(MinutesWorkFlowActorStatusFail(t("")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_GetWorkFlowStatusForActor_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                MinutesWorkFlowActorStatusFail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                MinutesWorkFlowActorStatusFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(MinutesWorkFlowActorStatusFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(MinutesWorkFlowActorStatusFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(MinutesWorkFlowActorStatusFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getPendingApprovalStatsThisWeekApi,
   GetPublishedMeetingMinutesApi,
@@ -2606,4 +2707,5 @@ export {
   GetDataForResendMinuteReview,
   ResendUpdatedMinuteForReview,
   GetStatsForPublishingMinutesByWorkFlowId,
+  MinutesWorkFlowActorStatusNotificationAPI,
 };

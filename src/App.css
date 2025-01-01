@@ -8079,7 +8079,7 @@ td.ant-table-column-sort {
 /* Prevent animation or conflicting positioning */
 .google-visualization-tooltip {
   position: absolute !important; /* Ensure absolute positioning */
-  right: 0 !important;  /* Disable animations */
+  right: 0 !important; /* Disable animations */
 }
 
 /* Auto Close Resolution Select Dropdown in Organization Admin Configurations */

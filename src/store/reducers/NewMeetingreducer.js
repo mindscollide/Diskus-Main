@@ -158,6 +158,7 @@ const initialState = {
   ProposedMeetingViewFlag: false,
   LeaveMeetingSidebarModal: false,
   getMeetingStatusResponseData: null,
+  agendavotingPollStartedData: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1919,14 +1920,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         getUserProposedOrganizerData: [],
         getMeeingUsersRSVPDetails: null,
         cancelAgendaSavedModal: false,
-        removeUpcomingEventMeeting: null
+        removeUpcomingEventMeeting: null,
       };
     }
     case actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS: {
       return {
         ...state,
         removeUpcomingEventMeeting: action.response,
-      }
+      };
     }
     case actions.NEWMEETING_RESPONSEMESSAGE: {
       return {
@@ -2564,6 +2565,15 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getMeetingStatusResponseData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    //Voting agenda poll started
+
+    case actions.VOTING_POLL_STARTED_AGENDA_MODAL: {
+      return {
+        ...state,
+        agendavotingPollStartedData: action.response,
       };
     }
 
