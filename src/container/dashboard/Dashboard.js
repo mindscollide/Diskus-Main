@@ -54,6 +54,7 @@ import {
   participantWaitingListBox,
   participantListWaitingListMainApi,
   makeParticipantHost,
+  closeQuickMeetingVideo,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -428,7 +429,16 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
-  const meetingEnded = async () => {};
+
+  // For End QUick Meeting
+  const meetingEnded = async () => {
+    let getIsMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let meetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+    if (getIsMeeting && !meetingHostInfo.isHost) {
+      dispatch(closeQuickMeetingVideo(true));
+    }
+  };
+
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
