@@ -1156,6 +1156,22 @@ const nonMeetingVideoGlobalModal = (response) => {
   };
 };
 
+//For Close QuickMeeting Video Call
+const closeQuickMeetingVideo = (response) => {
+  return {
+    type: actions.CLOSE_VIDEOCALL_QUICK_MEETING,
+    response: response,
+  };
+};
+
+//For Close QuickMeeting Modal Call
+const closeQuickMeetingModal = (response) => {
+  return {
+    type: actions.CLOSE_QUICK_MEETING_VIDEO_MODAL,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1227,4 +1243,6 @@ export {
   leaveMeetingVideoOnlogout,
   makeParticipantHost,
   nonMeetingVideoGlobalModal,
+  closeQuickMeetingVideo,
+  closeQuickMeetingModal,
 };

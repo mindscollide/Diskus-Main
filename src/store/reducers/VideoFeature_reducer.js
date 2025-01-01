@@ -73,6 +73,8 @@ const initialState = {
   makeParticipantAsHost: false,
   makeParticipantAsHostData: [],
   nonMeetingVideo: false,
+  closeQuickMeetingVideo: false,
+  closeQuickMeetingModal: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -892,6 +894,22 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         nonMeetingVideo: action.response,
+      };
+    }
+
+    //For Close QuickMeeting Video Call
+    case actions.CLOSE_VIDEOCALL_QUICK_MEETING: {
+      return {
+        ...state,
+        closeQuickMeetingVideo: action.response,
+      };
+    }
+
+    //For Close QuickMeeting Modal Call
+    case actions.CLOSE_QUICK_MEETING_VIDEO_MODAL: {
+      return {
+        ...state,
+        closeQuickMeetingModal: action.response,
       };
     }
 
