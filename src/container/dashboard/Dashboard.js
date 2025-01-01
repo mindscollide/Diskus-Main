@@ -55,6 +55,7 @@ import {
   participantListWaitingListMainApi,
   makeParticipantHost,
   closeQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingVideo,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -435,7 +436,7 @@ const Dashboard = () => {
     let getIsMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let meetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
     if (getIsMeeting && !meetingHostInfo.isHost) {
-      dispatch(closeQuickMeetingVideo(true));
+      dispatch(endMeetingStatusForQuickMeetingVideo(true));
     }
   };
 

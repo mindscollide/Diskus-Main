@@ -1157,7 +1157,7 @@ const nonMeetingVideoGlobalModal = (response) => {
 };
 
 //For Close QuickMeeting Video Call
-const closeQuickMeetingVideo = (response) => {
+const endMeetingStatusForQuickMeetingVideo = (response) => {
   return {
     type: actions.CLOSE_VIDEOCALL_QUICK_MEETING,
     response: response,
@@ -1165,7 +1165,7 @@ const closeQuickMeetingVideo = (response) => {
 };
 
 //For Close QuickMeeting Modal Call
-const closeQuickMeetingModal = (response) => {
+const endMeetingStatusForQuickMeetingModal = (response) => {
   return {
     type: actions.CLOSE_QUICK_MEETING_VIDEO_MODAL,
     response: response,
@@ -1243,6 +1243,6 @@ export {
   leaveMeetingVideoOnlogout,
   makeParticipantHost,
   nonMeetingVideoGlobalModal,
-  closeQuickMeetingVideo,
-  closeQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
 };
