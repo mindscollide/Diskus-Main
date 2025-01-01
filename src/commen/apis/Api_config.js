@@ -1883,7 +1883,17 @@ const MinutesWorkFlowActorStatusNotification = {
   RequestMethod: "ServiceManager.GetWorkFlowStatusForActor",
 };
 
+// Email Related Api for Committees
+const ValidateEncryptedStringViewCommitteeListLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewCommitteeListLink",
+};
+const ValidateEncryptedStringViewCommitteeDetailLinkRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringViewCommitteeDetailsLink",
+};
 export {
+  ValidateEncryptedStringViewCommitteeListLinkRM,
+  ValidateEncryptedStringViewCommitteeDetailLinkRM,
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,

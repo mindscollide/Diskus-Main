@@ -556,3 +556,7 @@ export const maxFileSize = 1.5 * 1024 * 1024 * 1024;
 export const isFunction = (value) => {
   return typeof value === "function";
 };
+
+export const getActionValue = (url, key) => {
+  return url.split(key)[1];
+};
