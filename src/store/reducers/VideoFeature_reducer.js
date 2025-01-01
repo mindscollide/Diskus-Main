@@ -916,7 +916,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     //For End Meeting Status Mqtt Response
-    case actions.LEAVE_MEETINGVIDEO_END_STATUS_RESPONSE: {
+    case actions.LEAVE_MEETING_END_STATUS_RESPONSE: {
       return {
         ...state,
         leaveMeetingOnEndStatusMqttFlag: action.response,
