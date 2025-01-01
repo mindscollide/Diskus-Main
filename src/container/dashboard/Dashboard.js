@@ -428,7 +428,7 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
-
+  const meetingEnded = async () => {};
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
@@ -514,48 +514,55 @@ const Dashboard = () => {
                   Number(meetingVideoID) ===
                   Number(data?.payload?.meeting?.pK_MDID)
                 ) {
-                  let newName = localStorage.getItem("name");
-                  let getMeetingParticipants =
-                    data.payload.meeting.meetingAttendees.filter(
-                      (attendeeData) =>
-                        attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                    );
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(minimizeVideoPanelFlag(false));
-                  localStorage.setItem("activeCall", false);
-                  localStorage.setItem("isMeeting", false);
-                  localStorage.setItem("meetingTitle", "");
-                  localStorage.setItem("acceptedRecipientID", 0);
-                  localStorage.setItem("acceptedRoomID", 0);
-                  localStorage.setItem("activeRoomID", 0);
-                  localStorage.setItem("meetingVideoID", 0);
-                  localStorage.setItem("MicOff", true);
-                  localStorage.setItem("VidOff", true);
-                  let Data = {
-                    RoomID: currentMeetingVideoID,
-                    UserGUID: userGUID,
-                    Name: String(newName),
-                  };
-                  dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-                  if (getMeetingParticipants.length > 0) {
-                    let userID = localStorage.getItem("userID");
-                    let meetingpageRow =
-                      localStorage.getItem("MeetingPageRows") || 30;
-                    let meetingPageCurrent =
-                      localStorage.getItem("MeetingPageCurrent") || 1;
-                    let searchData = {
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: Number(meetingPageCurrent),
-                      Length: Number(meetingpageRow),
-                      PublishedMeetings: true,
-                    };
-                    dispatch(searchNewUserMeeting(navigate, searchData, t));
-                  }
+                  meetingEnded(data.payload);
                 }
+
+                // if (
+                //   Number(meetingVideoID) ===
+                //   Number(data?.payload?.meeting?.pK_MDID)
+                // ) {
+                //   let newName = localStorage.getItem("name");
+                //   let getMeetingParticipants =
+                //     data.payload.meeting.meetingAttendees.filter(
+                //       (attendeeData) =>
+                //         attendeeData.meetingAttendeeRole.pK_MARID !== 1
+                //     );
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
+                //   localStorage.setItem("activeCall", false);
+                //   localStorage.setItem("isMeeting", false);
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   let Data = {
+                //     RoomID: currentMeetingVideoID,
+                //     UserGUID: userGUID,
+                //     Name: String(newName),
+                //   };
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t, true));
+                //   if (getMeetingParticipants.length > 0) {
+                //     let userID = localStorage.getItem("userID");
+                //     let meetingpageRow =
+                //       localStorage.getItem("MeetingPageRows") || 30;
+                //     let meetingPageCurrent =
+                //       localStorage.getItem("MeetingPageCurrent") || 1;
+                //     let searchData = {
+                //       Date: "",
+                //       Title: "",
+                //       HostName: "",
+                //       UserID: Number(userID),
+                //       PageNumber: Number(meetingPageCurrent),
+                //       Length: Number(meetingpageRow),
+                //       PublishedMeetings: true,
+                //     };
+                //     dispatch(searchNewUserMeeting(navigate, searchData, t));
+                //   }
+                // }
 
                 dispatch(mqttCurrentMeetingEnded(data.payload));
               } catch (error) {
