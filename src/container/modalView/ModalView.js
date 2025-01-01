@@ -40,6 +40,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
   closeQuickMeetingModal,
+  endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
   maximizeVideoPanelFlag,
@@ -104,7 +105,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
   const closeQuickMeetingVideoReducer = useSelector(
-    (state) => state.videoFeatureReducer.closeQuickMeetingModal
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingModalFlag
   );
 
   const assigneesuser = useSelector((state) => state.assignees.user);
@@ -853,8 +855,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     try {
       if (closeQuickMeetingVideoReducer) {
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-      console.log("mqtt mqmqmqmqmqmq");
-      leaveMeeting(currentMeetingID, true);
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(currentMeetingID, true);
       }
     } catch (error) {}
   }, [closeQuickMeetingVideoReducer]);
@@ -924,7 +926,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
-      await dispatch(closeQuickMeetingModal(false));
+      await dispatch(endMeetingStatusForQuickMeetingModal(false));
     }
   };
 

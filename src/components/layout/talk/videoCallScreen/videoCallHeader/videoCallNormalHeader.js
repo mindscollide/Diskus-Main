@@ -44,6 +44,8 @@ import {
   makeParticipantHost,
   closeQuickMeetingVideo,
   closeQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -175,7 +177,8 @@ const VideoCallNormalHeader = ({
   );
 
   const closeQuickMeetingVideoReducer = useSelector(
-    (state) => state.videoFeatureReducer.closeQuickMeetingVideo
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -548,8 +551,8 @@ const VideoCallNormalHeader = ({
     }
     if (flag2) {
       console.log("mqtt mqmqmqmqmqmq");
-      dispatch(closeQuickMeetingVideo(false));
-      dispatch(closeQuickMeetingModal(true));
+      dispatch(endMeetingStatusForQuickMeetingVideo(false));
+      dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
   };
 

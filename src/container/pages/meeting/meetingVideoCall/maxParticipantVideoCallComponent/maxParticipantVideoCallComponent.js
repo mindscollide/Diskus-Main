@@ -20,6 +20,8 @@ import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingAction
 import {
   closeQuickMeetingModal,
   closeQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
   getParticipantMeetingJoinMainApi,
   globalNavigatorVideoStream,
   globalStateForAudioStream,
@@ -41,7 +43,8 @@ const ParticipantVideoCallComponent = ({
   const navigate = useNavigate();
 
   const closeQuickMeetingVideoReducer = useSelector(
-    (state) => state.videoFeatureReducer.closeQuickMeetingVideo
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
@@ -388,8 +391,8 @@ const ParticipantVideoCallComponent = ({
     }
     if (flag2) {
       console.log("mqtt mqmqmqmqmqmq");
-      dispatch(closeQuickMeetingVideo(false));
-      dispatch(closeQuickMeetingModal(true));
+      dispatch(endMeetingStatusForQuickMeetingVideo(false));
+      dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
   };
 
