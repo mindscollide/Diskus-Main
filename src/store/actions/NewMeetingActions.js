@@ -8166,7 +8166,15 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
-              localStorage.setItem("AdvanceMeetingOpen", true);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem(
+                "AdvanceMeetingOpen",
+                isQuickMeeting ? false : true
+              );
+              localStorage.setItem(
+                "typeOfMeeting",
+                isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting"
+              );
               localStorage.setItem(
                 "isMeetingVideoHostCheck",
                 response.data.responseResult.isMeetingVideoHost
@@ -8196,8 +8204,8 @@ const JoinCurrentMeeting = (
                 setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
-                localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
+              localStorage.setItem("currentMeetingID", Data.FK_MDID);
               dispatch(currentMeetingStatus(10));
             } else if (
               response.data.responseResult.responseMessage
@@ -8408,30 +8416,30 @@ const LeaveCurrentMeeting = (
                   dispatch(viewAdvanceMeetingPublishPageFlag(false));
                   dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                 }
-                let newName = localStorage.getItem("name");
 
-                let Data = {
-                  RoomID: roomID,
-                  UserGUID: userGUID,
-                  Name: String(newName),
-                };
-                if (roomID !== "0" && userGUID !== null) {
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(minimizeVideoPanelFlag(false));
+                // let newName = localStorage.getItem("name");
+                // let Data = {
+                //   RoomID: roomID,
+                //   UserGUID: userGUID,
+                //   Name: String(newName),
+                // };
+                // if (roomID !== "0" && userGUID !== null) {
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
 
-                  localStorage.setItem("activeCall", false);
+                //   localStorage.setItem("activeCall", false);
 
-                  localStorage.setItem("isMeeting", false);
-                  localStorage.setItem("meetingTitle", "");
-                  localStorage.setItem("acceptedRecipientID", 0);
-                  localStorage.setItem("acceptedRoomID", 0);
-                  localStorage.setItem("activeRoomID", 0);
-                  localStorage.setItem("meetingVideoID", 0);
-                  localStorage.setItem("MicOff", true);
-                  localStorage.setItem("VidOff", true);
-                  dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
+                //   localStorage.setItem("isMeeting", false);
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                // }
               } catch (error) {
                 console.log(error);
               }

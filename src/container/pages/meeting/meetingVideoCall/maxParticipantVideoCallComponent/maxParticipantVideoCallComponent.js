@@ -12,13 +12,23 @@ import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
-
+import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
+  closeQuickMeetingModal,
+  closeQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
   getParticipantMeetingJoinMainApi,
   globalNavigatorVideoStream,
   globalStateForAudioStream,
   globalStateForVideoStream,
+  leaveMeetingOnEndStatusMqtt,
   leaveMeetingOnlogout,
+  leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingVideoOnlogout,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
@@ -26,10 +36,6 @@ import {
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { MeetingContext } from "../../../../../context/MeetingContext";
-import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const ParticipantVideoCallComponent = ({
   handleExpandToNormalPanelParticipant,
@@ -38,11 +44,9 @@ const ParticipantVideoCallComponent = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
-  );
-  const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+  const closeQuickMeetingVideoReducer = useSelector(
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
@@ -59,10 +63,14 @@ const ParticipantVideoCallComponent = ({
   const allNavigatorVideoStream = useSelector(
     (state) => state.videoFeatureReducer.allNavigatorVideoStream
   );
+
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
   );
 
+  const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+  );
   const { editorRole } = useContext(MeetingContext);
 
   let meetingId = localStorage.getItem("currentMeetingID");
@@ -80,8 +88,10 @@ const ParticipantVideoCallComponent = ({
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isNormalPanel, setIsNormalPanel] = useState(false);
   const [joinButton, setJoinButton] = useState(false);
-  
-  console.log(isWebCamEnabled, "isWebCamEnabled");
+  // Other hooks and state declarations
+  const [minimizeState, setMinimizeState] = useState(false);
+
+  console.log(minimizeState, "minimizeState");
 
   useEffect(() => {
     // Enable webcam and microphone when isWebCamEnabled is true
@@ -291,7 +301,7 @@ const ParticipantVideoCallComponent = ({
   };
 
   const joinNewApiVideoCallOnClick = async () => {
-    setJoinButton(true)
+    setJoinButton(true);
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
@@ -318,11 +328,21 @@ const ParticipantVideoCallComponent = ({
 
   const onClickToNormalParticipantPanel = () => {
     setIsNormalPanel((prevState) => !prevState);
-    // dispatch(maxParticipantVideoCallPanel(false));
-    // dispatch(normalParticipantVideoCallPanel(true));
+    setMinimizeState(false);
   };
 
-  const onClickEndVideoCall = async (flag) => {
+  const toggleMinimizeState = () => {
+    if (minimizeState) {
+      // If currently minimized, clicking the icon will normalize the state
+      setMinimizeState(false);
+      setIsNormalPanel(true);
+    } else {
+      // If not minimized, toggle to minimized state
+      setMinimizeState(true);
+    }
+  };
+
+  const onClickEndVideoCall = async (flag, flag2, flag3) => {
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -348,7 +368,6 @@ const ParticipantVideoCallComponent = ({
     }
     sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
     sessionStorage.removeItem("audioStreamId");
-    console.log(streamAudio, "streamstream");
     setIsMicEnabled(false); // Microphone is now disabled
     if (isWaiting) {
       let Data = {
@@ -375,29 +394,67 @@ const ParticipantVideoCallComponent = ({
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      dispatch(endMeetingStatusForQuickMeetingVideo(false));
+      dispatch(endMeetingStatusForQuickMeetingModal(true));
+    }
+    if (flag3) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
+      dispatch(leaveMeetingOnEndStatusMqtt(true));
+    }
   };
 
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
         console.log("mqtt mqmqmqmqmqmq");
-        onClickEndVideoCall(true);
+        onClickEndVideoCall(true, false, false);
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
 
+  useEffect(() => {
+    try {
+      if (closeQuickMeetingVideoReducer) {
+        console.log("mqtt mqmqmqmqmqmq");
+
+        onClickEndVideoCall(false, true, false);
+      }
+    } catch (error) {}
+  }, [closeQuickMeetingVideoReducer]);
+
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoOnEndStatusMqttFlag) {
+        console.log("mqtt mqmqmqmqmqmq");
+        onClickEndVideoCall(false, false, true);
+      }
+    } catch (error) {}
+  }, [leaveMeetingVideoOnEndStatusMqttFlag]);
   return (
     <Container fluid>
       <div
         className={
-          isNormalPanel
+          minimizeState
+            ? "max-minimize-videoParticipantsvideo-panel"
+            : isNormalPanel
             ? "max-videoParticipantsvideo-panel"
             : "max-videoParticipant-panel"
         }
       >
         <Row>
           <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
-            <p className="max-participant-title">{participantMeetingTitle}</p>
+            <p
+              className={
+                minimizeState
+                  ? "max-minimize-participant-title"
+                  : "max-participant-title"
+              }
+            >
+              {participantMeetingTitle}
+            </p>
           </Col>
           <Col
             lg={8}
@@ -409,7 +466,7 @@ const ParticipantVideoCallComponent = ({
               {isMicEnabled ? (
                 <img
                   dragable="false"
-                  src={MicOff}
+                  src={minimizeState ? MicOffHost : MicOff}
                   className="cursor-pointer"
                   onClick={() => toggleAudio(false)}
                   alt=""
@@ -441,13 +498,22 @@ const ParticipantVideoCallComponent = ({
                 />
               )}
             </div>
-            <div className="max-videoParticipant-Icons-state">
+            <div
+              className="max-videoParticipant-Icons-state"
+              onClick={toggleMinimizeState}
+            >
               <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
-                src={isNormalPanel ? ExpandIcon : NormalizeIcon}
+                src={
+                  minimizeState
+                    ? ExpandIcon
+                    : NormalizeIcon && isNormalPanel
+                    ? ExpandIcon
+                    : NormalizeIcon
+                }
                 onClick={onClickToNormalParticipantPanel}
                 alt="ExpandIcon"
               />
@@ -462,6 +528,7 @@ const ParticipantVideoCallComponent = ({
             </div>
           </Col>
         </Row>
+
         <Row>
           <Col lg={8} md={8} sm={12}>
             {
@@ -472,7 +539,11 @@ const ParticipantVideoCallComponent = ({
                     backgroundImage: `url(${ProfileUser})`,
                     backgroundSize: "33%",
                     backgroundRepeat: "no-repeat",
-                    height: isNormalPanel ? "44vh" : "78vh",
+                    height: minimizeState
+                      ? "7vh"
+                      : isNormalPanel
+                      ? "44vh"
+                      : "78vh",
                     backgroundPosition: "center center",
                   }}
                 >
@@ -486,84 +557,52 @@ const ParticipantVideoCallComponent = ({
                         <video
                           ref={videoRef}
                           className={
-                            isNormalPanel
+                            minimizeState
+                              ? "video-max-minimize-videoParticipant-panel"
+                              : isNormalPanel
                               ? "video-max-videoParticipantsvideo-panel"
                               : "video-max-Participant"
                           }
                         />
                       </div>
                     </div>
-
-                    {/* <div className="mic-vid-buttons">
-                      {isMicEnabled ? (
-                        <img dragable="false"
-                          src={MicOn}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(false, 2)}
-                        />
-                      ) : (
-                        <img dragable="false"
-                          src={MicOff}
-                          className="cursor-pointer"
-                          onClick={() => toggleAudio(true, 1)}
-                        />
-                      )}
-                    </div> */}
                   </div>
                 </div>
               </>
             }
           </Col>
-          <Col lg={4} md={4} sm={12}>
-            {/* <div className="max-videoParticipant-component">
-              <p className="max-Hostvideo-left-meeting-text">
-                {t("You've-left-the-meeting")}
-              </p>
-              <p className="max-videoParticipant-left-meeting-rejoin-text">
-                {t("Want-to-rejoin?-click-here-to-return-to-the-session")}
-              </p>
-              <Button
-                text={t("Rejoin")}
-                className="normal-videoHost-Join-Now-Btn"
-              />
-            </div> */}
-            {/* <div className="max-videoParticipant-component">
-              <p className="max-videoParticipant-waiting-room-class">
-                {t("You-are-in-the-waiting-room")}
-              </p>
-              <p className="max-videoParticipant-organizer-allow-class">
-                {t("The-organizer-will-allow-you-to-join-shortly")}
-              </p>
-            </div> */}
-            {isWaiting ? (
-              <>
-                <div className="max-videoParticipant-component">
-                  <p className="max-videoParticipant-waiting-room-class">
-                    {t("You-are-in-the-waiting-room")}
-                  </p>
-                  <p className="max-Hostvideo-organizer-allow-class">
-                    {t("The-organizer-will-allow-you-to-join-shortly")}
-                  </p>
-                </div>
-              </>
-            ) : !getReady ? (
-              <>
-                <div className="max-videoParticipant-component">
-                  <>
-                    <p className="max-videoParticipant-ready-to-join">
-                      {t("Ready-to-join")}
+          {!minimizeState && (
+            <Col lg={4} md={4} sm={12}>
+              {isWaiting ? (
+                <>
+                  <div className="max-videoParticipant-component">
+                    <p className="max-videoParticipant-waiting-room-class">
+                      {t("You-are-in-the-waiting-room")}
                     </p>
-                    <Button
-                    disableBtn={joinButton}
-                      text={t("Join-now")}
-                      className="max-videoParticipant-Join-Now-Btn"
-                      onClick={joinNewApiVideoCallOnClick}
-                    />
-                  </>
-                </div>
-              </>
-            ) : null}
-          </Col>
+                    <p className="max-Hostvideo-organizer-allow-class">
+                      {t("The-organizer-will-allow-you-to-join-shortly")}
+                    </p>
+                  </div>
+                </>
+              ) : !getReady ? (
+                <>
+                  <div className="max-videoParticipant-component">
+                    <>
+                      <p className="max-videoParticipant-ready-to-join">
+                        {t("Ready-to-join")}
+                      </p>
+                      <Button
+                        disableBtn={joinButton}
+                        text={t("Join-now")}
+                        className="max-videoParticipant-Join-Now-Btn"
+                        onClick={joinNewApiVideoCallOnClick}
+                      />
+                    </>
+                  </div>
+                </>
+              ) : null}
+            </Col>
+          )}
         </Row>
       </div>
     </Container>

@@ -27,7 +27,6 @@ import CloseNotification from "../../../../../assets/images/Close-Notification.p
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
 import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
-
 import Menu from "./../../talk-Video/video-images/Menu.png";
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
@@ -43,6 +42,12 @@ import {
   leaveMeetingVideoOnlogout,
   leaveMeetingOnlogout,
   makeParticipantHost,
+  closeQuickMeetingVideo,
+  closeQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  leaveMeetingVideoOnEndStatusMqtt,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -172,6 +177,15 @@ const VideoCallNormalHeader = ({
   const makeParticipantAsHost = useSelector(
     (state) => state.videoFeatureReducer.makeParticipantAsHost
   );
+
+  const closeQuickMeetingVideoReducer = useSelector(
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
+  );
+  const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+  );
+
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
@@ -479,7 +493,7 @@ const VideoCallNormalHeader = ({
   };
 
   // for Host leave Call
-  const leaveCall = async (flag) => {
+  const leaveCall = async (flag, flag2,flag3) => {
     console.log("busyCall");
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
@@ -541,6 +555,16 @@ const VideoCallNormalHeader = ({
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      dispatch(endMeetingStatusForQuickMeetingVideo(false));
+      dispatch(endMeetingStatusForQuickMeetingModal(true));
+    }
+    if (flag3) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
+      dispatch(leaveMeetingOnEndStatusMqtt(true));
+    }
   };
 
   useEffect(() => {
@@ -550,6 +574,24 @@ const VideoCallNormalHeader = ({
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
+
+  useEffect(() => {
+    try {
+      if (closeQuickMeetingVideoReducer) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveCall(false, true);
+      }
+    } catch (error) {}
+  }, [closeQuickMeetingVideoReducer]);
+
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoOnEndStatusMqttFlag) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveCall(false, false,true);
+      }
+    } catch (error) {}
+  }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
   // For Participant Leave Call
   const participantLeaveCall = () => {
@@ -588,7 +630,7 @@ const VideoCallNormalHeader = ({
       isMeeting === false &&
       getDashboardVideo.isDashboardVideo === false
     ) {
-    console.log("busyCall");
+      console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateRoomID,

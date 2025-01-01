@@ -427,11 +427,11 @@ const AgendaViewer = ({
         setViewAdvanceMeetingModal
       )
     );
-    if (flag) {
-      console.log("mqtt mqmqmqmqmqmq");
-      await dispatch(leaveMeetingOnlogout(false));
-      dispatch(userLogOutApiFunc(navigate, t));
-    }
+    // if (flag) {
+    //   console.log("mqtt mqmqmqmqmqmq");
+    //   await dispatch(leaveMeetingOnlogout(false));
+    //   dispatch(userLogOutApiFunc(navigate, t));
+    // }
   };
 
   // useEffect(() => {
