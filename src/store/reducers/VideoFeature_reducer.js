@@ -75,6 +75,8 @@ const initialState = {
   nonMeetingVideo: false,
   endMeetingStatusForQuickMeetingVideoFlag: false,
   endMeetingStatusForQuickMeetingModalFlag: false,
+  leaveMeetingOnEndStatusMqttFlag: false,
+  leaveMeetingVideoOnEndStatusMqttFlag: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -910,6 +912,22 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         endMeetingStatusForQuickMeetingModalFlag: action.response,
+      };
+    }
+
+    //For End Meeting Status Mqtt Response
+    case actions.LEAVE_MEETINGVIDEO_END_STATUS_RESPONSE: {
+      return {
+        ...state,
+        leaveMeetingOnEndStatusMqttFlag: action.response,
+      };
+    }
+
+    //For End Video Status Mqtt Response
+    case actions.LEAVE_MEETINGVIDEO_END_STATUS_RESPONSE: {
+      return {
+        ...state,
+        leaveMeetingVideoOnEndStatusMqttFlag: action.response,
       };
     }
 
