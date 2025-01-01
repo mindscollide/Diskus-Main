@@ -26,7 +26,9 @@ import {
   globalNavigatorVideoStream,
   globalStateForAudioStream,
   globalStateForVideoStream,
+  leaveMeetingOnEndStatusMqtt,
   leaveMeetingOnlogout,
+  leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingVideoOnlogout,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
@@ -61,10 +63,14 @@ const ParticipantVideoCallComponent = ({
   const allNavigatorVideoStream = useSelector(
     (state) => state.videoFeatureReducer.allNavigatorVideoStream
   );
+
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
   );
 
+  const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+  );
   const { editorRole } = useContext(MeetingContext);
 
   let meetingId = localStorage.getItem("currentMeetingID");
@@ -336,7 +342,7 @@ const ParticipantVideoCallComponent = ({
     }
   };
 
-  const onClickEndVideoCall = async (flag, flag2,flag3) => {
+  const onClickEndVideoCall = async (flag, flag2, flag3) => {
     console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
@@ -404,17 +410,17 @@ const ParticipantVideoCallComponent = ({
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
         console.log("mqtt mqmqmqmqmqmq");
-        onClickEndVideoCall(true,false,false);
+        onClickEndVideoCall(true, false, false);
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
- 
+
   useEffect(() => {
     try {
       if (closeQuickMeetingVideoReducer) {
         console.log("mqtt mqmqmqmqmqmq");
 
-        onClickEndVideoCall(false, true,false);
+        onClickEndVideoCall(false, true, false);
       }
     } catch (error) {}
   }, [closeQuickMeetingVideoReducer]);
@@ -423,7 +429,7 @@ const ParticipantVideoCallComponent = ({
     try {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
         console.log("mqtt mqmqmqmqmqmq");
-        onClickEndVideoCall(false, false,true);
+        onClickEndVideoCall(false, false, true);
       }
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);

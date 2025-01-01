@@ -46,6 +46,8 @@ import {
   closeQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
+  leaveMeetingVideoOnEndStatusMqtt,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -590,7 +592,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
-  
+
   // For Participant Leave Call
   const participantLeaveCall = () => {
     console.log("busyCall");

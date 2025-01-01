@@ -12,6 +12,7 @@ import {
   leaveCallModal,
   participantPopup,
   leaveMeetingOnlogout,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   LeaveCurrentMeeting,
@@ -417,6 +418,7 @@ const ViewMeetingModal = ({
       }
     } catch {}
   }, [leaveMeetingOnLogoutResponse]);
+
   useEffect(() => {
     try {
       if (leaveMeetingOnEndStatusMqttFlag) {
@@ -425,6 +427,7 @@ const ViewMeetingModal = ({
       }
     } catch {}
   }, [leaveMeetingOnEndStatusMqttFlag]);
+  
   return (
     <>
       <section className="position-relative">
