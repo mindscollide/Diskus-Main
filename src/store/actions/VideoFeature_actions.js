@@ -1121,8 +1121,6 @@ const globalNavigatorVideoStream = (response) => {
 };
 // For Removed Max Patrticipant Video Compnent
 const leaveMeetingOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_ON_LOGOUT,
     response: response,

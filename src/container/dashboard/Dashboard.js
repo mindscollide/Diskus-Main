@@ -49,6 +49,7 @@ import {
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
+  leaveMeetingOnlogout,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -280,21 +281,25 @@ const Dashboard = () => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
 
+    console.log("mqtt mqmqmqmqmqmq");
     if (
       Number(getUserID) === Number(data?.authToken?.userID) &&
       Number(data?.deviceID) === 1
     ) {
+      console.log("mqtt mqmqmqmqmqmq");
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-      let AdvanceMeetingOpen = JSON.parse(
-        localStorage.getItem("AdvanceMeetingOpen")
-      );
       if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq");
         if (isMeetingVideo) {
+          console.log("mqtt mqmqmqmqmqmq");
           dispatch(leaveMeetingVideoOnlogout(true));
         } else {
+          console.log("mqtt mqmqmqmqmqmq");
+          dispatch(leaveMeetingOnlogout(true));
         }
       } else {
+        console.log("mqtt mqmqmqmqmqmq");
         dispatch(userLogOutApiFunc(navigate, t));
       }
     }
