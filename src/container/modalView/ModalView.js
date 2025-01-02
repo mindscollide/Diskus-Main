@@ -1070,7 +1070,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 allMeetingDetails.meetingStatus.status === "10" ||
                 allMeetingDetails.meetingStatus.status === 10
               ) {
-                leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+                // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+                setViewFlag(true);
               } else {
                 setViewFlag(false);
               }
