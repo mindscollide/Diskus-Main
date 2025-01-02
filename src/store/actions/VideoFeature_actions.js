@@ -593,6 +593,7 @@ const getParticipantMeetingJoinMainApi = (
                 isDashboardVideo: true,
               };
               await dispatch(makeHostNow(meetingHost));
+              dispatch(videoIconOrButtonState(false));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
@@ -1184,6 +1185,15 @@ const leaveMeetingOnEndStatusMqtt = (response) => {
   };
 };
 
+// For videoIcon enable and disable or button
+const videoIconOrButtonState = (response) => {
+  console.log(response, "enableDisableVideoState");
+  return {
+    type: actions.VIDEO_BUTTON_OR_ICON_STATE,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1259,4 +1269,5 @@ export {
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
+  videoIconOrButtonState,
 };
