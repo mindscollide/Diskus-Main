@@ -126,6 +126,8 @@ import {
   getDashboardMeetingCountMQTT,
   LeaveCurrentMeeting,
   removeUpComingEvent,
+  AgendaPollVotingStartedAction,
+  AgendaPollVotingStartedMQTTObjectDataAction,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -205,6 +207,7 @@ import {
 } from "../../store/actions/UpdateUserNotificationSetting";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
+import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -308,15 +311,6 @@ const Dashboard = () => {
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
 
-  //Voting Poll Started in Agenda Intimination Modal
-  const votingStartedAgendaIntiminationModalState = useSelector(
-    (state) => state.NewMeetingreducer.agendavotingPollStartedData
-  );
-
-  console.log(
-    votingStartedAgendaIntiminationModalState,
-    "votingStartedAgendaIntiminationModalState"
-  );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -704,6 +698,10 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
+              console.log(
+                data.payload,
+                "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+              );
               dispatch(meetingAgendaStartedMQTT(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -3249,9 +3247,6 @@ const Dashboard = () => {
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />
-          )}
-          {votingStartedAgendaIntiminationModalState && (
-            <VotingPollAgendaIntiminationModal />
           )}
         </Layout>
       </ConfigProvider>
