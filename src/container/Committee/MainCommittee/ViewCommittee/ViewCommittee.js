@@ -14,6 +14,7 @@ import {
   saveCommitteeDocumentsApi,
   saveFilesCommitteesApi,
   uploadDocumentsCommitteesApi,
+  viewCommitteePageFlag,
 } from "../../../../store/actions/Committee_actions";
 import { Col, Row } from "react-bootstrap";
 import featherupload from "../../../../assets/images/featherupload.svg";
@@ -58,6 +59,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const closebtn = async () => {
     setViewGroupPage(false);
     localStorage.removeItem("ViewCommitteeID");
+    dispatch(viewCommitteePageFlag(false));
   };
 
   const handleSave = async () => {
@@ -165,6 +167,11 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       }
     } catch (error) {
       console.log(error, "error");
+    }
+    return () => {
+      setViewGroupPage(false);
+      localStorage.removeItem("ViewCommitteeID");
+      dispatch(viewCommitteePageFlag(false));
     }
   }, [getCommitteeByCommitteeID]);
 

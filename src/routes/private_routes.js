@@ -208,17 +208,23 @@ const PrivateRoutes = () => {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
-    // if (
-    //   currentUrl
-    //     .toLowerCase()
-    //     .includes("DisKus/committee?id_action".toLowerCase())
-    // ) {
-    //   let getValue = getActionValue(currentUrl, "id_action=");
-    // let getResponse =   dispatch(
-    //     validateEncryptedStringViewCommitteeDetailLinkApi(getValue, navigate, t)
-    //   );
-    //   console.log(getValue, "getActionValuegetActionValuegetActionValue");
-    // }
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/committee?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("committeeView_Id", getValue);
+    }
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/committee?action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "action=");
+      console.log(getValue, "getValuegetValue")
+      localStorage.setItem("committeeList", getValue);
+    }
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");

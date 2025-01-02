@@ -531,7 +531,9 @@ const getFolderDocumentsApi = (
   t,
   no,
   record,
-  BreadCrumbsListArr
+  BreadCrumbsListArr,
+  sortValue, 
+  isDescending
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
@@ -543,8 +545,8 @@ const getFolderDocumentsApi = (
     OrganizationID: Number(OrganizationID),
     sRow: 0,
     Length: 10,
-    SortBy: 1,
-    isDescending: true,
+    SortBy: Number(sortValue) ?? 1,
+    isDescending:  isDescending ?? true,
   };
   return (dispatch) => {
     if (no !== 1) {
@@ -571,7 +573,9 @@ const getFolderDocumentsApi = (
               t,
               no,
               record,
-              BreadCrumbsListArr
+              BreadCrumbsListArr,
+              sortValue, 
+              isDescending
             )
           );
         } else if (response.data.responseCode === 200) {
