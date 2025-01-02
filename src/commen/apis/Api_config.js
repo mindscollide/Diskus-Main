@@ -1891,7 +1891,17 @@ const ValidateEncryptedStringViewCommitteeDetailLinkRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringViewCommitteeDetailsLink",
 };
+
+const ValidateEncryptedStringViewGroupDetailsLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewGroupDetailsLink",
+};
+const ValidateEncryptedStringViewGroupListLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewGroupListLink",
+};
+
 export {
+  ValidateEncryptedStringViewGroupDetailsLinkRM,
+  ValidateEncryptedStringViewGroupListLinkRM,
   ValidateEncryptedStringViewCommitteeListLinkRM,
   ValidateEncryptedStringViewCommitteeDetailLinkRM,
   GetSignatureFileAnnotationRM,

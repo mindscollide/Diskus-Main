@@ -1114,7 +1114,6 @@ const DataRoom = () => {
                 )
               );
             } else {
-
               dispatch(
                 getDocumentsAndFolderApi(
                   navigate,
@@ -1133,28 +1132,59 @@ const DataRoom = () => {
         //  Owner name sorting
         setAllOwnerSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  5,
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  5,
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
             return "descend";
           }
         });
@@ -1166,28 +1196,60 @@ const DataRoom = () => {
         // Last Modified Date Sorter
         setAllLastModifiedSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
+
             return "descend";
           }
         });
@@ -1198,28 +1260,60 @@ const DataRoom = () => {
         // setShareDateSorter
         setShareDateSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
+
             return "descend";
           }
         });

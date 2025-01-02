@@ -545,7 +545,7 @@ const getFolderDocumentsApi = (
     OrganizationID: Number(OrganizationID),
     sRow: 0,
     Length: 10,
-    SortBy: Number(sortValue) ?? 1,
+    SortBy: sortValue ?? 1,
     isDescending:  isDescending ?? true,
   };
   return (dispatch) => {

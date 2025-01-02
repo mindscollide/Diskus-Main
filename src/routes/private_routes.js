@@ -208,6 +208,7 @@ const PrivateRoutes = () => {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
+    // Committee View
     if (
       currentUrl
         .toLowerCase()
@@ -216,14 +217,27 @@ const PrivateRoutes = () => {
       let getValue = getActionValue(currentUrl, "id_action=");
       localStorage.setItem("committeeView_Id", getValue);
     }
+    // Committee List View
     if (
-      currentUrl
-        .toLowerCase()
-        .includes("DisKus/committee?action".toLowerCase())
+      currentUrl.toLowerCase().includes("DisKus/committee?action".toLowerCase())
     ) {
       let getValue = getActionValue(currentUrl, "action=");
-      console.log(getValue, "getValuegetValue")
+      console.log(getValue, "getValuegetValue");
       localStorage.setItem("committeeList", getValue);
+    }
+    // Group View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/groups?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("groupView_Id", getValue);
+    }
+    // Group List View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/groups?action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "action=");
+      localStorage.setItem("groupList", getValue);
     }
   }, [currentUrl]);
 
