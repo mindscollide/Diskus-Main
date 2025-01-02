@@ -2567,7 +2567,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     //Voting agenda poll started
-
     case actions.VOTING_POLL_STARTED_AGENDA_MODAL: {
       return {
         ...state,

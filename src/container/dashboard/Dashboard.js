@@ -112,6 +112,8 @@ import {
   meetingReminderNotifcation,
   getDashboardMeetingCountMQTT,
   removeUpComingEvent,
+  AgendaPollVotingStartedAction,
+  AgendaPollVotingStartedMQTTObjectDataAction,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -178,6 +180,7 @@ import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScr
 import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
+import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -245,9 +248,23 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.audioControlForParticipant
   );
 
-  //Voting Poll Started in Agenda Intimination Modal
-  const votingStartedAgendaIntiminationModalState = useSelector(
-    (state) => state.NewMeetingreducer.agendavotingPollStartedData
+  const getNewParticipantsMeetingJoin = useSelector(
+    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
+  );
+
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
+  );
+  console.log(
+    getAllParticipantMain,
+    "getAllParticipantMaingetAllParticipantMain"
+  );
+
+  const getVideoParticpantListandWaitingList = useSelector(
+    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  );
+  const viewAdvanceMeetingsPublishPageFlag = useSelector(
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -550,6 +567,10 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
+              console.log(
+                data.payload,
+                "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+              );
               dispatch(meetingAgendaStartedMQTT(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -3045,9 +3066,6 @@ const Dashboard = () => {
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />
-          )}
-          {votingStartedAgendaIntiminationModalState && (
-            <VotingPollAgendaIntiminationModal />
           )}
         </Layout>
       </ConfigProvider>

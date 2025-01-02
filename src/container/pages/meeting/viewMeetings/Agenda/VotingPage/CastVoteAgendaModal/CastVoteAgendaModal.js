@@ -8,9 +8,16 @@ import { Button, Modal } from "../../../../../../../components/elements";
 import { showCastVoteAgendaModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
-import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
+import {
+  CasteVoteForAgenda,
+  meetingAgendaStartedMQTT,
+} from "../../../../../../../store/actions/MeetingAgenda_action";
 
-const CastVoteAgendaModal = ({ rows,setRows }) => {
+const CastVoteAgendaModal = ({
+  rows,
+  setRows,
+  AgendaVotingModalStartedData,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,6 +57,10 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
     } else {
       setCastVoteData([]);
     }
+    return () => {
+      dispatch(meetingAgendaStartedMQTT(null));
+      localStorage.removeItem("CastedAgendaVoteFromIntimination");
+    };
   }, [AgendaVotingInfoData]);
 
   useEffect(() => {
@@ -73,23 +84,46 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
   };
 
   const castVoteHandler = () => {
-    let Data = {
-      AgendaID:
-        currentAgendaDetails && "id" in currentAgendaDetails
-          ? currentAgendaDetails.id
-          : currentAgendaDetails
-          ? currentAgendaDetails.subAgendaID
-          : 0,
-      AgendaVotingID: currentAgendaDetails.agendaVotingID,
-      Votes: [
-        {
-          UserID: currentUserID,
-          SelectedAnswerID: selectedAnswer.votingAnswerID,
-        },
-      ],
-    };
-    let isMainAgenda =  currentAgendaDetails && "id" in currentAgendaDetails  ;
-    dispatch(CasteVoteForAgenda(Data, navigate, t,isMainAgenda, setRows));
+    if (
+      JSON.parse(localStorage.getItem("CastedAgendaVoteFromIntimination")) ===
+      true
+    ) {
+      let Data = {
+        AgendaID: AgendaVotingModalStartedData.agendaID,
+        AgendaVotingID: Number(AgendaVotingModalStartedData.votingID),
+        Votes: [
+          {
+            UserID: currentUserID,
+            SelectedAnswerID: selectedAnswer.votingAnswerID,
+          },
+        ],
+      };
+      let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
+      console.log("Cast Vote Data castVoteData", Data);
+      console.log("Cast Vote Data castVoteData", isMainAgenda);
+      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setRows));
+    } else {
+      let Data = {
+        AgendaID:
+          currentAgendaDetails && "id" in currentAgendaDetails
+            ? currentAgendaDetails.id
+            : currentAgendaDetails
+            ? currentAgendaDetails.subAgendaID
+            : 0,
+        AgendaVotingID: currentAgendaDetails.agendaVotingID,
+        Votes: [
+          {
+            UserID: currentUserID,
+            SelectedAnswerID: selectedAnswer.votingAnswerID,
+          },
+        ],
+      };
+      let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
+      console.log("Cast Vote Data castVoteData", Data);
+      console.log("Cast Vote Data castVoteData", isMainAgenda);
+
+      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setRows));
+    }
   };
 
   return (
@@ -122,12 +156,13 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
             castVoteData !== undefined &&
             castVoteData.length !== 0
               ? castVoteData.votingAnswers.map((votingAnswerData, index) => (
-                  <Row key={index} className='mt-3'>
+                  <Row key={index} className="mt-3">
                     <Col
                       lg={1}
                       md={1}
                       sm={1}
-                      className='d-flex justify-content-center align-items-center'>
+                      className="d-flex justify-content-center align-items-center"
+                    >
                       <Radio
                         value={votingAnswerData.votingAnswerID}
                         onChange={handleRadioChange}
@@ -152,12 +187,13 @@ const CastVoteAgendaModal = ({ rows,setRows }) => {
                   </Row>
                 ))
               : null}
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 <Button
                   text={t("Cancel")}
                   className={styles["Cast_vote_CancelButton"]}
