@@ -9373,6 +9373,10 @@ const GetMeetingStatusDataAPI = (
                 )
               );
               localStorage.setItem(
+                "NotificationClickSendResponseByDate",
+                response.data.responseResult.sendResponseByDeadline
+              );
+              localStorage.setItem(
                 "MeetingStatusID",
                 response.data.responseResult.meetingStatusID
               );

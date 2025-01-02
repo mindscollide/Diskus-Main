@@ -24,6 +24,7 @@ import {
   maxFileSize,
 } from "../../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
+  console.log(committeeStatus, "committeeStatus");
   const { Dragger } = Upload;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -782,11 +783,13 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
               text={t("Close")}
               onClick={closebtn}
             />
-            <Button
-              className={styles["Save-ViewCommittee-btn"]}
-              text={t("Save")}
-              onClick={handleSave}
-            />
+            {committeeStatus !== 1 && (
+              <Button
+                className={styles["Save-ViewCommittee-btn"]}
+                text={t("Save")}
+                onClick={handleSave}
+              />
+            )}
           </Col>
         </Row>
       </section>
