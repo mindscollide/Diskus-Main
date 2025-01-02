@@ -46,6 +46,7 @@ import {
   normalizeVideoPanelFlag,
   setRaisedUnRaisedParticiant,
   toggleParticipantsVisibility,
+  videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
 import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -109,6 +110,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );
+
+  const enableDisableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.enableDisableVideoState
+  );
+
+  console.log(enableDisableVideoState, "enableDisableVideoState");
 
   const assigneesuser = useSelector((state) => state.assignees.user);
 
@@ -994,6 +1001,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (!getMeetingVideoHost) {
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
+        dispatch(videoIconOrButtonState(true));
         if (currentMeetingVideoURL !== null) {
           let data = {
             MeetingId: Number(currentMeeting),
@@ -1163,7 +1171,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         onClick={() => copyToClipboardd()}
                       />
                       <Button
-                        disableBtn={isVideo && meetStatus === 10 ? false : true}
+                        disableBtn={
+                          isVideo && meetStatus === 10
+                            ? false
+                            : true || enableDisableVideoState
+                            ? true
+                            : false
+                        }
                         text={t("Join-video-call")}
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}
