@@ -69,7 +69,7 @@ const VotingPollAgendaIntiminationModal = ({
                 <span className={styles["MeetingTitleSubheading"]}>
                   {t("Meeting-title")}&nbsp;:&nbsp;
                   <span className={styles["meetingTitleInnerSpan"]}>
-                    IT Department Meeting
+                    {AgendaVotingModalStartedData.meetingTitle}
                   </span>
                 </span>
               </Col>
