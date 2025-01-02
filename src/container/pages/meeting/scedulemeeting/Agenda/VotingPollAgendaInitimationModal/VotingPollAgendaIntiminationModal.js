@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./VotingPollAgendaIntiminationModal.module.css";
 import { useSelector } from "react-redux";
 import {
@@ -9,24 +9,38 @@ import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-const VotingPollAgendaIntiminationModal = () => {
+import { useNavigate } from "react-router-dom";
+import { GetAgendaAndVotingInfo } from "../../../../../../store/actions/MeetingAgenda_action";
+const VotingPollAgendaIntiminationModal = ({
+  AgendaVotingModalStartedData,
+}) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   //Global Stated for this Initmination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
 
+  console.log(
+    AgendaVotingModalStartedData,
+    "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+  );
   //Handle Discard Button
   const handleCastYourAgendaVoteBtn = () => {
-    dispatch(AgendaPollVotingStartedAction(false));
-    dispatch(showCastVoteAgendaModal(true));
-    localStorage.setItem("VotingAgendaModalCalledGlobally", true);
+    localStorage.setItem("CastedAgendaVoteFromIntimination", true);
+    let Data = {
+      MeetingID: Number(AgendaVotingModalStartedData.meetingID),
+      AgendaID: AgendaVotingModalStartedData.agendaID,
+      AgendaVotingID: Number(AgendaVotingModalStartedData.votingID),
+    };
+    dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
   };
 
   const handleDiscardFunction = () => {
     dispatch(AgendaPollVotingStartedAction(false));
   };
+
   return (
     <section>
       <Modal

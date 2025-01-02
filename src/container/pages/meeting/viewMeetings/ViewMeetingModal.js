@@ -39,7 +39,7 @@ import { useMeetingContext } from "../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
-import { meetingAgendaStartedMQTT } from "../../../../store/actions/MeetingAgenda_action";
+import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -480,10 +480,6 @@ const ViewMeetingModal = ({
     } catch (error) {
       console.log(error);
     }
-
-    return () => {
-      dispatch(meetingAgendaStartedMQTT(null));
-    };
   }, [AgendaVotingModalStartedData]);
 
   return (
@@ -802,7 +798,14 @@ const ViewMeetingModal = ({
         </Row>
       </section>
       {votingStartedAgendaIntiminationModalState && (
-        <VotingPollAgendaIntiminationModal />
+        <VotingPollAgendaIntiminationModal
+          AgendaVotingModalStartedData={AgendaVotingModalStartedData}
+        />
+      )}
+      {NewMeetingreducer.castVoteAgendaPage && (
+        <CastVoteAgendaModal
+          AgendaVotingModalStartedData={AgendaVotingModalStartedData}
+        />
       )}
     </>
   );

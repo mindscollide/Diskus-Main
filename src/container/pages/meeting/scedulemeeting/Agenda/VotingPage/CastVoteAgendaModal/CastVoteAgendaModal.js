@@ -63,8 +63,9 @@ const CastVoteAgendaModal = () => {
         },
       ],
     };
-    dispatch(CasteVoteForAgenda(Data, navigate, t));
-    dispatch(showCastVoteAgendaModal(false));
+    console.log("Cast Vote Data castVoteData", Data);
+    // dispatch(CasteVoteForAgenda(Data, navigate, t));
+    // dispatch(showCastVoteAgendaModal(false));
   };
 
   console.log("Cast Vote Data", castVoteData);

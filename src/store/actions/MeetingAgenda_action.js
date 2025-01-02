@@ -44,6 +44,7 @@ import {
   attendanceGlobalFlag,
   uploadGlobalFlag,
   showCastVoteAgendaModal,
+  AgendaPollVotingStartedAction,
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -388,6 +389,9 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
               dispatch(
                 getAgendaAndVotingInfo_success(response.data.responseResult, "")
               );
+
+              dispatch(AgendaPollVotingStartedAction(false));
+              dispatch(showCastVoteAgendaModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -438,7 +442,7 @@ const casteVoteForAgenda_fail = (message) => {
     message: message,
   };
 };
-const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
+const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(casteVoteForAgenda_init());
@@ -456,7 +460,7 @@ const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveAgendaVoting(Data, navigate, t,isMainAgenda, setRows));
+          dispatch(SaveAgendaVoting(Data, navigate, t, isMainAgenda, setRows));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -473,7 +477,7 @@ const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
                 )
               );
               dispatch(showCastVoteAgendaModal(false));
-              if(isMainAgenda) {
+              if (isMainAgenda) {
                 setRows((rowData) => {
                   return rowData.map((newData) => {
                     console.log(newData, "setDatasetDatasetData");
@@ -495,14 +499,17 @@ const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
                       return {
                         ...dataItem,
                         subAgenda: dataItem.subAgenda.map((subAgenda) => {
-                          if (String(subAgenda.subAgendaID) === String(Data.AgendaID)) {
+                          if (
+                            String(subAgenda.subAgendaID) ===
+                            String(Data.AgendaID)
+                          ) {
                             return {
                               ...subAgenda,
-                              hasAlreadyVoted: true
+                              hasAlreadyVoted: true,
                             };
                           }
                           return subAgenda;
-                        })
+                        }),
                       };
                     }
                     // Return the original item if it doesn't match the condition
@@ -510,7 +517,6 @@ const CasteVoteForAgenda = (Data, navigate, t,isMainAgenda, setRows) => {
                   });
                 });
               }
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1350,7 +1356,7 @@ const AddUpdateAdvanceMeetingAgenda = (
   currentMeeting,
   flag,
   publishMeetingData,
-setEditorRole,
+  setEditorRole,
   setAdvanceMeetingModalID,
   setDataroomMapFolderId,
   setSceduleMeeting,
@@ -1387,7 +1393,7 @@ setEditorRole,
               currentMeeting,
               flag,
               publishMeetingData,
-            setEditorRole,
+              setEditorRole,
               setAdvanceMeetingModalID,
               setDataroomMapFolderId,
               setSceduleMeeting,
@@ -1516,7 +1522,7 @@ setEditorRole,
                     t,
                     5,
                     publishMeetingData,
-                  setEditorRole,
+                    setEditorRole,
                     setAdvanceMeetingModalID,
                     setDataroomMapFolderId,
                     setSceduleMeeting,
@@ -1599,7 +1605,13 @@ const agendaVotingStatusUpdate_fail = (message) => {
     message: message,
   };
 };
-const AgendaVotingStatusUpdate = (Data, navigate, t, advanceMeetingModalID) => {
+const AgendaVotingStatusUpdate = (
+  Data,
+  navigate,
+  t,
+  advanceMeetingModalID,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(agendaVotingStatusUpdate_init());
@@ -1618,7 +1630,13 @@ const AgendaVotingStatusUpdate = (Data, navigate, t, advanceMeetingModalID) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+            AgendaVotingStatusUpdate(
+              Data,
+              navigate,
+              t,
+              advanceMeetingModalID,
+              flag
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1636,6 +1654,10 @@ const AgendaVotingStatusUpdate = (Data, navigate, t, advanceMeetingModalID) => {
               dispatch(
                 GetAdvanceMeetingAgendabyMeetingID(DataGet, navigate, t)
               );
+              if (flag === 1) {
+                dispatch(AgendaPollVotingStartedAction(false));
+                dispatch(showCastVoteAgendaModal(true));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1682,7 +1704,7 @@ const AgendaVotingStatusUpdate = (Data, navigate, t, advanceMeetingModalID) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_07".toLowerCase()
                 )
             ) {
               dispatch(
