@@ -553,6 +553,8 @@ const WebNotfication = ({
     } else if (NotificationData.notificationActionID === 12) {
     } else if (NotificationData.notificationActionID === 13) {
       if (currentURL.includes("/Diskus/Meeting")) {
+        let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+        dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         localStorage.setItem("ProposedMeetingOperations", true);
         //Before Date Selection Check
         localStorage.setItem("BeforeProposedDateSelectedCheck", true);
@@ -566,6 +568,8 @@ const WebNotfication = ({
         dispatch(viewProposeDateMeetingPageFlag(true));
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
       } else {
+        let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+        dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
         //Notification For Proposed Meeting Request
         navigate("/Diskus/Meeting");
         localStorage.setItem("ProposedMeetingOperations", true);
