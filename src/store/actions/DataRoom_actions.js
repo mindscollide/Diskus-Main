@@ -652,6 +652,11 @@ const getFolderDocumentsApi = (
                   t("No-record-found")
                 )
               );
+              let newFolderRecord = [
+                ...BreadCrumbsListArr,
+                { name: record?.name, id: record?.id },
+              ];
+              dispatch(BreadCrumbsList(newFolderRecord));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

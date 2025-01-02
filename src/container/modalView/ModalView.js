@@ -30,6 +30,7 @@ import {
   endMeetingStatusApi,
   FetchMeetingURLApi,
   LeaveCurrentMeeting,
+  LeaveMeetingVideo,
 } from "../../store/actions/NewMeetingActions";
 import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
 import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
@@ -38,9 +39,16 @@ import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
+  closeQuickMeetingModal,
+  endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   maxHostVideoCallPanel,
+  maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+  setRaisedUnRaisedParticiant,
+  toggleParticipantsVisibility,
 } from "../../store/actions/VideoFeature_actions";
 import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -96,17 +104,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
-
-  console.log(
-    { assigneesViewMeetingDetails, calendarReducereventsDetails },
-    "calendarReducereventsDetailscalendarReducereventsDetails"
+  const closeQuickMeetingVideoReducer = useSelector(
+    (state) =>
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingModalFlag
   );
 
   const assigneesuser = useSelector((state) => state.assignees.user);
-  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let currentUserID = Number(localStorage.getItem("userID"));
-  let currentOrganization = Number(localStorage.getItem("acceptedRoomID"));
   let currentMeeting = localStorage.getItem("currentMeetingID");
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
@@ -135,7 +138,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   //all Meeting details
   const [allMeetingDetails, setAllMeetingDetails] = useState([]);
+
   const [meetingDifference, setMeetingDifference] = useState(0);
+
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -144,13 +149,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  console.log(addedParticipantNameList, "addedParticipantNameList");
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
   const [isOrganizer, setOrganizer] = useState(false);
   const [isParticipant, setIsParticipant] = useState(false);
@@ -172,7 +176,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     ExternalMeetingAttendees: [],
     MinutesOfMeeting: [],
   });
-  console.log(createMeeting, "createMeetingcreateMeeting");
   const changeSelectDetails = () => {
     setIsDetails(true);
     setIsAgenda(false);
@@ -719,6 +722,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       setMeetingDifference(minutesDifference);
     }
   }, [allMeetingDetails]);
+
   useEffect(() => {
     return () => {
       dispatch(removeCalenderDataFunc(null));
@@ -756,8 +760,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {}
   }, [assigneesuser]);
 
-  console.log(calendarReducereventsDetails, "meetingDetails");
-  console.log("meetingDetails", assigneesViewMeetingDetails);
   const startMeeting = async () => {
     await setViewFlag(false);
     let checkMeetingID = null;
@@ -794,6 +796,27 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const handleClickEndMeeting = useCallback(async () => {
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (isMeetingVideo === true) {
+      let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      if (getMeetingHost.isHost && getMeetingHost.isDashboardVideo) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let currentMeetingID = JSON.parse(
+          localStorage.getItem("currentMeetingID")
+        );
+
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: getMeetingHost?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
+    }
     let checkMeetingID = null;
     if (
       assigneesViewMeetingDetails?.responseMessage ===
@@ -827,14 +850,84 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const endMeeting = async () => {
     setEndMeetingConfirmationModal(true);
   };
-  const leaveMeeting = async (id) => {
-    let leaveMeetingData = {
-      FK_MDID: Number(id),
-      DateTime: getCurrentDateTimeUTC(),
-    };
-    dispatch(
-      LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
-    );
+  // for api reponce of list of all assignees
+  useEffect(() => {
+    try {
+      if (closeQuickMeetingVideoReducer) {
+        let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(currentMeetingID, true);
+      }
+    } catch (error) {}
+  }, [closeQuickMeetingVideoReducer]);
+
+  const leaveMeeting = async (id, flag) => {
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+    if (isMeetingVideo === true) {
+      const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      const currentMeetingID = JSON.parse(
+        localStorage.getItem("currentMeetingID")
+      );
+      await dispatch(normalizeVideoPanelFlag(false));
+      await dispatch(maximizeVideoPanelFlag(false));
+      await dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingTitle", "");
+      localStorage.setItem("acceptedRecipientID", 0);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
+      localStorage.setItem("meetingVideoID", 0);
+      localStorage.setItem("MicOff", true);
+      localStorage.setItem("VidOff", true);
+      if (meetHostFlag?.isHost) {
+        let newRoomID = localStorage.getItem("newRoomId");
+        let newUserGUID = localStorage.getItem("isGuid");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      } else {
+        await dispatch(toggleParticipantsVisibility(false));
+        let participantRoomIds = localStorage.getItem("participantRoomId");
+        let participantUID = localStorage.getItem("participantUID");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(participantRoomIds),
+          UserGUID: String(participantUID),
+          Name: String(newName),
+          IsHost: meetHostFlag?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(setRaisedUnRaisedParticiant(false));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
+      let leaveMeetingData = {
+        FK_MDID: Number(id),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      await dispatch(
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+      );
+    } else {
+      let leaveMeetingData = {
+        FK_MDID: Number(id),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      await dispatch(
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+      );
+    }
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(endMeetingStatusForQuickMeetingModal(false));
+    }
   };
 
   const downloadClick = (record) => {
@@ -871,19 +964,27 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     let findRoleId = createMeeting.MeetingAttendees.find(
       (attendee, index) => attendee.User.PK_UID === parseInt(createrID)
     );
+    console.log(findRoleId, "gadgetgadgetgadgetgadget");
     if (findRoleId !== undefined) {
       let isParticipant = findRoleId.MeetingAttendeeRole.PK_MARID === 2;
-      if (isParticipant) {
+      console.log(isParticipant, "gadgetgadgetgadgetgadget");
+
+      let getMeetingVideoHost = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+
+      if (!getMeetingVideoHost) {
         dispatch(maxParticipantVideoCallPanel(true));
-      }
-      if (currentMeetingVideoURL !== null) {
-        let data = {
-          MeetingId: Number(currentMeeting),
-          VideoCallURL: String(currentMeetingVideoURL),
-          IsMuted: false,
-          HideVideo: false,
-        };
-        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      } else {
+        if (currentMeetingVideoURL !== null) {
+          let data = {
+            MeetingId: Number(currentMeeting),
+            VideoCallURL: String(currentMeetingVideoURL),
+            IsMuted: false,
+            HideVideo: false,
+          };
+          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        }
       }
     }
     console.log(findRoleId, "findRoleIdfindRoleIdfindRoleId");
@@ -976,18 +1077,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             }
           }}
           show={viewFlag}
-          size='md'
+          size="md"
           setShow={setViewFlag}
-          modalParentClass='modaldialog MeetingView'
-          className='MeetingView'
+          modalParentClass="modaldialog MeetingView"
+          className="MeetingView"
           ButtonTitle={ModalTitle}
-          modalBodyClassName='modalMeetingViewBody'
-          modalFooterClassName='modalMeetingViewFooter'
-          modalHeaderClassName='d-none'
+          modalBodyClassName="modalMeetingViewBody"
+          modalFooterClassName="modalMeetingViewFooter"
+          modalHeaderClassName="d-none"
           ModalBody={
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
+                <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
                   <Button
                     className={
                       isDetails
@@ -1007,7 +1108,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     variant={"Primary"}
                     text={t("Agendas")}
                     onClick={changeSelectAgenda}
-                    datatut='show-agenda'
+                    datatut="show-agenda"
                   />
                   <Button
                     className={
@@ -1017,7 +1118,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
-                    datatut='show-meeting-attendees'
+                    datatut="show-meeting-attendees"
                     onClick={changeSelectAttendees}
                   />
                   {minutesOftheMeatingStatus && (
@@ -1029,7 +1130,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
-                      datatut='show-minutes'
+                      datatut="show-minutes"
                       onClick={navigateToMinutes}
                     />
                   )}
@@ -1047,9 +1148,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               </Row>
               {isDetails ? (
                 <>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={6} md={6} xs={6}>
-                      <span className='MeetingViewDateTimeTextField'>
+                      <span className="MeetingViewDateTimeTextField">
                         {createMeeting.MeetingDate}
                       </span>
                     </Col>
@@ -1057,7 +1158,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={6}
                       md={6}
                       xs={6}
-                      className='MontserratRegular d-flex gap-2 align-items-start'>
+                      className="MontserratRegular d-flex gap-2 align-items-start"
+                    >
                       <Button
                         disableBtn={isVideo && meetStatus === 10 ? false : true}
                         text={t("Copy-link")}
@@ -1089,7 +1191,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   </Row>
                   <Row>
                     <Col sm={12} md={12} lg={12}>
-                      <span className='MeetingViewLocationText_Field'>
+                      <span className="MeetingViewLocationText_Field">
                         {createMeeting.MeetingLocation}
                       </span>
                     </Col>
@@ -1099,8 +1201,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=' MeetingViewTitleTextField p-0'>
-                      <p className='viewModalTitle'>
+                      className=" MeetingViewTitleTextField p-0"
+                    >
+                      <p className="viewModalTitle">
                         {createMeeting.MeetingTitle.length < 100
                           ? `${createMeeting.MeetingTitle}`
                           : `${createMeeting.MeetingTitle.substring(
@@ -1116,15 +1219,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className='MontserratRegular textAreaDivView p-0'>
+                      className="MontserratRegular textAreaDivView p-0"
+                    >
                       <TextField
                         change={detailsHandler}
-                        name='MeetingDescription'
-                        applyClass='form-control2 textbox-height-details-view'
-                        type='text'
+                        name="MeetingDescription"
+                        applyClass="form-control2 textbox-height-details-view"
+                        type="text"
                         disable={true}
                         as={"textarea"}
-                        rows='7'
+                        rows="7"
                         value={createMeeting.MeetingDescription}
                         required
                       />
@@ -1133,15 +1237,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <div className='agendaList'>
+                  <div className="agendaList">
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
                             <>
                               <div>
-                                <Row className='mt-4'>
+                                <Row className="mt-4">
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className=' agendaIndex'>
+                                    <span className=" agendaIndex">
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -1150,8 +1254,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     md={7}
                                     sm={7}
                                     xs={12}
-                                    className='MeetingAgendaView p-0'>
-                                    <p className=' agendaTitle'>
+                                    className="MeetingAgendaView p-0"
+                                  >
+                                    <p className=" agendaTitle">
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
                                   </Col>
@@ -1161,24 +1266,25 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                       lg={4}
                                       md={4}
                                       xs={12}
-                                      className='MeetingAgendaPresented MeetingAgendaURL'>
+                                      className="MeetingAgendaPresented MeetingAgendaURL"
+                                    >
                                       <TextField
                                         disable={true}
                                         name={"PresenterName"}
                                         value={
                                           data.ObjMeetingAgenda.PresenterName
                                         }
-                                        applyClass='form-control2'
-                                        type='text'
+                                        applyClass="form-control2"
+                                        type="text"
                                         label={t("Presented-by")}
                                       />
-                                      <p className='url m-0 p-0'>
+                                      <p className="url m-0 p-0">
                                         {data.ObjMeetingAgenda.URLs}
                                       </p>
                                     </Col>
                                   )}
                                 </Row>
-                                <div className='meetingView_documents'>
+                                <div className="meetingView_documents">
                                   <Row>
                                     {data.MeetingAgendaAttachments.length > 0
                                       ? data.MeetingAgendaAttachments.map(
@@ -1223,7 +1329,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=' meeting-view-attendee-organizer-tab'>
+                      className=" meeting-view-attendee-organizer-tab"
+                    >
                       <label>{t("Organizer")}</label>
                     </Col>
                   </Row>
@@ -1233,7 +1340,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className='meeting-view-attendee-organizer-list'>
+                      className="meeting-view-attendee-organizer-list"
+                    >
                       {addedParticipantNameList ? (
                         <>
                           <span>
@@ -1261,7 +1369,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=' meeting-view-attendee-participant-tab'>
+                      className=" meeting-view-attendee-participant-tab"
+                    >
                       <label>{t("Participants")}</label>
                     </Col>
                   </Row>
@@ -1270,7 +1379,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className='meeting-view-attendee-participant-list'>
+                      className="meeting-view-attendee-participant-list"
+                    >
                       {addedParticipantNameList ? (
                         <>
                           <span>
@@ -1296,26 +1406,27 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <>
                   <Row>
                     <Col sm={12}>
-                      <Row className='my-3 minutes-view px-3 d-flex flex-row '>
+                      <Row className="my-3 minutes-view px-3 d-flex flex-row ">
                         {createMeeting.MinutesOfMeeting.length > 0 ? (
                           createMeeting.MinutesOfMeeting.map(
                             (minutesOfMeetingLdata, index) => {
                               return (
                                 <Col
-                                  className='border p-2 minutes-box rounded my-2'
+                                  className="border p-2 minutes-box rounded my-2"
                                   sm={12}
                                   md={12}
-                                  lg={12}>
+                                  lg={12}
+                                >
                                   <Row>
                                     <Col sm={12}>
                                       <Row>
                                         <Col sm={1}>
-                                          <span className='agendaIndex'>
+                                          <span className="agendaIndex">
                                             {index + 1}
                                           </span>
                                         </Col>
-                                        <Col sm={11} className='fs-6'>
-                                          <p className='agendaTitle meeting-view-minutes-title'>
+                                        <Col sm={11} className="fs-6">
+                                          <p className="agendaTitle meeting-view-minutes-title">
                                             {minutesOfMeetingLdata.Description}
                                           </p>
                                         </Col>
@@ -1327,12 +1438,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             }
                           )
                         ) : (
-                          <Row className='meeting-view-minutes-tab'>
+                          <Row className="meeting-view-minutes-tab">
                             <Col
                               lg={12}
                               md={12}
                               xs={12}
-                              className='d-flex justify-content-center align-items-center'>
+                              className="d-flex justify-content-center align-items-center"
+                            >
                               <h3>{t("There-are-no-minutes-available")}</h3>
                             </Col>
                           </Row>
@@ -1343,7 +1455,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className='mt-2'>
+                  <Row className="mt-2">
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
                           return (
@@ -1371,7 +1483,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex justify-content-end'>
+                    className="d-flex justify-content-end"
+                  >
                     {meetingDifference <= remainingMinutesAgo &&
                     allMeetingDetails.meetingStatus.status === "1" &&
                     isDetails ? (

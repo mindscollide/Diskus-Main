@@ -2327,5 +2327,6 @@
   "Title-is-missing-in-agenda": "Title is missing in agenda",
   "Group-call-disconnection": "Group Call Disconnection ",
   "Are-You-Sure-you-Want-to-Leave-video": "Are You Sure you Want to Leave Video",
-  "Voting-for-the-agenda-of-the-meeting-has-now-started": "Voting for the agenda of the meeting has now started."
+  "Voting-for-the-agenda-of-the-meeting-has-now-started": "Voting for the agenda of the meeting has now started.",
+  "Please-confirm-your-password-before-deleting-the-meeting": "Please confirm your password before deleting the meeting"
 }

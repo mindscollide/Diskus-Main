@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { getActionValue } from "../commen/functions/utils";
+import { validateEncryptedStringViewCommitteeDetailLinkApi } from "../store/actions/Committee_actions";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const t = useTranslation();
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
@@ -202,6 +208,17 @@ const PrivateRoutes = () => {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
+    // if (
+    //   currentUrl
+    //     .toLowerCase()
+    //     .includes("DisKus/committee?id_action".toLowerCase())
+    // ) {
+    //   let getValue = getActionValue(currentUrl, "id_action=");
+    // let getResponse =   dispatch(
+    //     validateEncryptedStringViewCommitteeDetailLinkApi(getValue, navigate, t)
+    //   );
+    //   console.log(getValue, "getActionValuegetActionValuegetActionValue");
+    // }
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");

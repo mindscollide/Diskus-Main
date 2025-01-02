@@ -118,6 +118,12 @@
   font-weight: 600;
 }
 
+.max-minimize-participant-title {
+  color: #fff !important;
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .max-videoParticipantsvideo-panel {
   position: fixed;
   height: 55vh !important;
@@ -137,4 +143,26 @@
   object-fit: cover !important;
   max-height: 45vh;
   padding: 0px 0px;
+}
+
+.video-max-minimize-videoParticipant-panel {
+  width: 50%;
+  object-fit: cover !important;
+  max-height: 7vh;
+  padding: 0px 0px;
+}
+
+.max-minimize-videoParticipantsvideo-panel {
+  position: fixed;
+  height: 8vh !important;
+  bottom: 0px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: 1px solid #4adede !important;
+  border-radius: 4px !important;
+  z-index: 99 !important;
+  padding: 10px 40px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
+  width: 50%;
+  left: 65px;
+  color: #fff !important;
 }

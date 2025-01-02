@@ -7869,7 +7869,8 @@ const endMeetingStatusApi = (
   t,
   Data,
   setViewFlag,
-  setEndMeetingConfirmationModal
+  setEndMeetingConfirmationModal,
+  route
 ) => {
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -7917,6 +7918,7 @@ const endMeetingStatusApi = (
                   t("Record-updated")
                 )
               );
+
               dispatch(
                 LeaveCurrentMeeting(
                   navigate,
@@ -7930,6 +7932,7 @@ const endMeetingStatusApi = (
                   setEndMeetingConfirmationModal
                 )
               );
+              // }
               // let currentView = localStorage.getItem("MeetingCurrentView");
               // let meetingpageRow = localStorage.getItem("MeetingPageRows");
               // let meetingPageCurrent = parseInt(
@@ -8002,6 +8005,48 @@ const endMeetingStatusApi = (
                   t("Meeting-cannot-be-published-after-time-has-elapsed")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_08".toLowerCase()
+                )
+            ) {
+              // dispatch(
+              //   endMeetingFail(
+              //     t("Meeting-cannot-be-published-after-time-has-elapsed")
+              //   )
+              // );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_09".toLowerCase()
+                )
+            ) {
+              let currentView = localStorage.getItem("MeetingCurrentView");
+              let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
+              );
+              let userID = localStorage.getItem("userID");
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                PublishedMeetings:
+                  currentView && Number(currentView) === 1 ? true : false,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // dispatch(
+              //   endMeetingFail(
+              //     t("Meeting-cannot-be-published-after-time-has-elapsed")
+              //   )
+              // );
             } else {
               dispatch(endMeetingFail(t("Something-went-wrong")));
             }
@@ -8121,7 +8166,15 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
-              localStorage.setItem("AdvanceMeetingOpen", true);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem(
+                "AdvanceMeetingOpen",
+                isQuickMeeting ? false : true
+              );
+              localStorage.setItem(
+                "typeOfMeeting",
+                isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting"
+              );
               localStorage.setItem(
                 "isMeetingVideoHostCheck",
                 response.data.responseResult.isMeetingVideoHost
@@ -8151,8 +8204,8 @@ const JoinCurrentMeeting = (
                 setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
-                localStorage.setItem("currentMeetingID", Data.FK_MDID);
               }
+              localStorage.setItem("currentMeetingID", Data.FK_MDID);
               dispatch(currentMeetingStatus(10));
             } else if (
               response.data.responseResult.responseMessage
@@ -8363,30 +8416,30 @@ const LeaveCurrentMeeting = (
                   dispatch(viewAdvanceMeetingPublishPageFlag(false));
                   dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                 }
-                let newName = localStorage.getItem("name");
 
-                let Data = {
-                  RoomID: roomID,
-                  UserGUID: userGUID,
-                  Name: String(newName),
-                };
-                if (roomID !== "0" && userGUID !== null) {
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(minimizeVideoPanelFlag(false));
+                // let newName = localStorage.getItem("name");
+                // let Data = {
+                //   RoomID: roomID,
+                //   UserGUID: userGUID,
+                //   Name: String(newName),
+                // };
+                // if (roomID !== "0" && userGUID !== null) {
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
 
-                  localStorage.setItem("activeCall", false);
+                //   localStorage.setItem("activeCall", false);
 
-                  localStorage.setItem("isMeeting", false);
-                  localStorage.setItem("meetingTitle", "");
-                  localStorage.setItem("acceptedRecipientID", 0);
-                  localStorage.setItem("acceptedRoomID", 0);
-                  localStorage.setItem("activeRoomID", 0);
-                  localStorage.setItem("meetingVideoID", 0);
-                  localStorage.setItem("MicOff", true);
-                  localStorage.setItem("VidOff", true);
-                  dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
+                //   localStorage.setItem("isMeeting", false);
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                // }
               } catch (error) {
                 console.log(error);
               }

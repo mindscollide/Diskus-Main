@@ -41,11 +41,15 @@ const Stats = () => {
   });
 
   useEffect(() => {
-    dispatch(getDashbardMeetingDataApi(navigate, t));
-    if (checkFeatureIDAvailability(14)) {
-      dispatch(getDashbardTaskDataApi(navigate, t));
+    try {
+      dispatch(getDashbardMeetingDataApi(navigate, t));
+      if (checkFeatureIDAvailability(14)) {
+        dispatch(getDashbardTaskDataApi(navigate, t));
+      }
+      dispatch(getDashbardPendingApprovalDataApi(navigate, t));
+    } catch {
+      console.log("Error");
     }
-    dispatch(getDashbardPendingApprovalDataApi(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -131,7 +135,6 @@ const Stats = () => {
 
   let locale = localStorage.getItem("i18nextLng");
 
-
   return (
     <Row>
       <Col sm={12} md={6} lg={6}>
@@ -172,13 +175,22 @@ const Stats = () => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
           let checkisbothValueisEqual = bar.max === bar.now;
-          console.log(checkisbothValueisEqual,nowValue,calculateValue,bar,"progressBarData" )
+          console.log(
+            checkisbothValueisEqual,
+            nowValue,
+            calculateValue,
+            bar,
+            "progressBarData"
+          );
 
           return (
             <ProgressBar
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
-              label={`${convertToArabicNumerals(bar.now, locale)}/${convertToArabicNumerals(bar.max, locale)}`}
+              label={`${convertToArabicNumerals(
+                bar.now,
+                locale
+              )}/${convertToArabicNumerals(bar.max, locale)}`}
               className={
                 checkisbothValueisEqual
                   ? styles["dashboard_progress_upcomingmeeting_R"]

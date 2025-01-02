@@ -23,16 +23,56 @@ const initialState = {
   updateCommitteePageFlag: false,
   viewCommitteePageFlag: false,
   removeCommitteeMember: null,
+  viewCommitteesList: null,
+  viewCommitteeDetailLink: null,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case actions.COMMIITTEEID: {
-    //   return {
-    //     ...state,
-    //     committeeID: action.response,
-    //   };
-    // }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_DETAILS_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_DETAILS_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewCommitteeDetailLink: action.payload,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_DETAILS_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewCommitteeDetailLink: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewCommitteesList: action.payload,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewCommitteesList: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.GET_ALL_COMMITTEES_BY_USERID_INIT: {
       return {
         ...state,
