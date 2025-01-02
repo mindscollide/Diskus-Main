@@ -18,6 +18,7 @@ import {
 import {
   createConvert,
   get_CurrentDateTime,
+  multiDatePickerDateChangIntoUTC,
 } from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
@@ -43,9 +44,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const { currentTime, current_Date, dateObject, current_value } =
     get_CurrentDateTime();
+  console.log(
+    { currentTime, current_Date, dateObject, current_value },
+    "get_CurrentDateTime"
+  );
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoDate, setCreateTodoDate] = useState(current_Date);
+  const [createTodoDate, setCreateTodoDate] = useState(null);
 
   const toDoListReducerAllAssigneesData = useSelector(
     (state) => state.toDoListReducer.AllAssigneesData
@@ -67,7 +72,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     severity: "error",
   });
 
-  const [toDoDate, setToDoDate] = useState(current_value);
+  const [toDoDate, setToDoDate] = useState(null);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
@@ -103,12 +108,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Title: "",
     Description: "",
     IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
-    CreationDateTime: "",
-    timeforView: "",
+    creationDate: "",
+    creationTime: "",
   });
-
+  console.log(task, "tasktasktask");
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
@@ -129,17 +132,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //To Set task Creater ID
   useEffect(() => {
     try {
-      setTask({
-        ...task,
-        DeadLineDate: current_Date,
-        DeadLineTime: currentTime,
-        CreationDateTime: "",
-        timeforView: dateObject,
-      });
       setCreateTodoDate(current_Date);
       setToDoDate(current_value);
       setTaskCreatorID(parseInt(createrID));
-
+      setTask({
+        ...task,
+        // CreationDateTime: currentTime,
+        // timeforView: dateObject,
+        creationDate: dateObject,
+        creationTime: dateObject,
+      });
+      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
       return () => {
         setCloseConfirmationBox(false);
         setIsCreateTodo(true);
@@ -149,9 +152,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           Title: "",
           Description: "",
           IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
+          creationDate: "",
+          creationTime: "",
         });
         setCreateTodoDate("");
         setTaskAssignedTo([]);
@@ -161,7 +163,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
       };
-    } catch {}
+    } catch (error) {
+      console.log(error, "toDoListReducerAllAssigneesData");
+    }
   }, []);
 
   //To Set task Creater ID
@@ -184,14 +188,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex gap-2 align-items-center"
-                  >
+                    className='d-flex gap-2 align-items-center'>
                     <img
                       src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                      height="16.45px"
-                      width="18.32px"
-                      draggable="false"
-                      alt=""
+                      height='16.45px'
+                      width='18.32px'
+                      draggable='false'
+                      alt=''
                     />
                     <span>{user.name}</span>
                   </Col>
@@ -211,14 +214,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{user.name}</span>
                     </Col>
@@ -338,32 +340,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   useEffect(() => {
-    if (show) {
-      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
-    } else {
-      setShow(false);
-      setTask({
-        ...task,
-        PK_TID: 1,
-        Title: "",
-        Description: "",
-        IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setToDoDate("");
-      setTaskAssignedTo([]);
-      setTasksAttachments({ TasksAttachments: [] });
-      setTaskAssignedName([]);
-      setAssignees([]);
-    }
-  }, [show]);
-
-  useEffect(() => {
     if (taskAssignedName.length > 1) {
       showMessage(t("Only-one-assignee-allow"), "error", setOpen);
-    } else {
     }
   }, [taskAssignedName.length]);
 
@@ -374,73 +352,83 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
-    let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    setCreateTodoDate(toDoDateSaveFormat);
-    setToDoDate(toDoDateValueFormat);
+    let taskDate = new Date(date);
     setTask({
       ...task,
-      DeadLineDate: toDoDateSaveFormat,
+      creationDate: taskDate,
     });
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
     }
   };
 
-  //Save To-Do List Function
+  // Save To-Do List Function
   const createToDoList = async () => {
+    // Step 1: Initialize and validate task assignees
     let taskAssignedTO = [...TaskAssignedTo];
     if (taskAssignedTO.length === 0) {
-      taskAssignedTO.push(Number(createrID));
+      taskAssignedTO.push(Number(createrID)); // Assign task to creator if no one is assigned
       setTaskAssignedTo(taskAssignedTO);
     }
 
-    let newDate;
-    let newTime;
-    let finalDateTime;
-    if (createTodoDate !== "" && task.DeadLineTime !== "") {
-      finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
-      newDate = finalDateTime.slice(0, 8);
-      newTime = finalDateTime.slice(8, 14);
+    // Step 2: Validate and process task creation date and time
+    if (!task.creationDate) {
+      showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
+      return;
+    }
+    if (!task.creationTime) {
+      showMessage(t("Creation time is required"), "error", setOpen); // Validate task creation time
+      return;
     }
 
-    let Task = {
-      PK_TID: task.PK_TID,
-      Title: task.Title,
-      Description: task.Description,
-      IsMainTask: task.IsMainTask,
-      DeadLineDate: newDate,
-      DeadLineTime: newTime,
-      CreationDateTime: "",
-    };
-    if (finalDateTime === undefined) {
-      if (Task.DeadLineTime === "" || Task.DeadLineTime === undefined) {
-        showMessage(t("Time-missing"), "error", setOpen);
-      } else if (Task.DeadLineDate === "" || Task.DeadLineDate === undefined) {
-        showMessage(t("Enter-date-must"), "error", setOpen);
-      }
-    } else if (Task.Title === "") {
-      showMessage(t("Please-select-title-for-the-task"), "error", setOpen);
-    } else {
-      let Data;
-      if (TaskAssignedTo.length > 0) {
-        Data = {
-          Task,
-          TaskCreatorID,
-          TaskAssignedTo,
-          // TasksAttachments,
-        };
-      } else {
-        Data = {
-          Task,
-          TaskCreatorID,
-          TaskAssignedTo: taskAssignedTO,
-          // TasksAttachments,
-        };
-      }
-      dispatch(CreateToDoList(navigate, Data, t, setCreateTaskID, 2));
+    let newDate = multiDatePickerDateChangIntoUTC(task.creationDate).slice(
+      0,
+      8
+    ); // Extract UTC date
+    let newTime = multiDatePickerDateChangIntoUTC(task.creationTime).slice(
+      8,
+      14
+    ); // Extract UTC time
+
+    // Step 3: Validate task properties
+    if (!task.Title || task.Title.trim() === "") {
+      showMessage(t("Please select a title for the task"), "error", setOpen); // Validate task title
+      return;
     }
+    if (!newDate) {
+      showMessage(t("Deadline date is required"), "error", setOpen); // Validate deadline date
+      return;
+    }
+    if (!newTime) {
+      showMessage(t("Deadline time is required"), "error", setOpen); // Validate deadline time
+      return;
+    }
+
+    // Step 4: Construct the task object
+    let Task = {
+      PK_TID: task.PK_TID, // Task ID
+      Title: task.Title, // Task title
+      Description: task.Description, // Task description
+      IsMainTask: task.IsMainTask, // Indicates if it's a main task
+      DeadLineDate: newDate, // Deadline date
+      DeadLineTime: newTime, // Deadline time
+      CreationDateTime: `${newDate}${newTime}`, // Combined creation date and time
+    };
+
+    // Step 5: Prepare data for submission
+    let Data = {
+      Task,
+      TaskCreatorID, // ID of the task creator
+      TaskAssignedTo:
+        taskAssignedTO.length > 0 ? taskAssignedTO : TaskAssignedTo, // Assigned users
+      // TasksAttachments, // Uncomment if attachments are needed
+    };
+
+    // Step 6: Dispatch the create to-do action
+    // Uncomment the line below to enable the action
+    dispatch(CreateToDoList(navigate, Data, t, setCreateTaskID, 2));
   };
+
   const uploadTaskDocuments = async (folderID) => {
     try {
       let newfile = [];
@@ -509,16 +497,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      console.log(newDate, "newDatenewDate");
+      // const hours = ("0" + newDate.getHours()).slice(-2);
+      // const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
+      // const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+      //   .toString()
+      //   .padStart(2, "0")}${"00"}`;
       setTask({
         ...task,
-        DeadLineTime: formattedTime,
-        timeforView: newTime,
+        // DeadLineTime: formattedTime,
+        creationTime: newDate,
+        // timeforView: newTime,
       });
     }
   };
@@ -529,7 +519,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className="input-with-icon"
+        className='input-with-icon'
       />
     );
   }
@@ -557,10 +547,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }}
           show={show}
           setShow={setShow}
-          className="modaldialogTodoCreate"
+          className='modaldialogTodoCreate'
           modalBodyClassName={"bodytodoCreateModal"}
-          modalFooterClassName="footertodoCreateModal"
-          modalHeaderClassName="headertodoCreateModal"
+          modalFooterClassName='footertodoCreateModal'
+          modalHeaderClassName='headertodoCreateModal'
           ButtonTitle={ModalTitle}
           ModalBody={
             isCreateTodo ? (
@@ -572,18 +562,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
-                    >
+                      className='CreateMeetingTime d-flex align-items-center gap-2 h-100'>
                       <DatePicker
-                        arrowClassName="arrowClass"
-                        value={task.timeforView}
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
+                        arrowClassName='arrowClass'
+                        value={task.creationTime}
+                        containerClassName='containerClassTimePicker'
+                        className='timePicker'
                         disableDayPicker
-                        inputClass="inputTImeMeeting"
+                        inputClass='inputTImeMeeting'
                         calendar={calendarValue}
                         locale={localValue}
-                        format="hh:mm A"
+                        format='hh:mm A'
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
@@ -593,19 +582,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       <DatePicker
                         onFocusedDateChange={toDoDateHandler}
                         format={"DD/MM/YYYY"}
-                        value={toDoDate}
+                        value={task.creationDate}
                         minDate={moment().toDate()}
-                        placeholder="DD/MM/YYYY"
+                        placeholder='DD/MM/YYYY'
                         render={
                           <InputIcon
-                            placeholder="DD/MM/YYYY"
-                            className="datepicker_input"
+                            placeholder='DD/MM/YYYY'
+                            className='datepicker_input'
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2"
+                        className='datePickerTodoCreate2'
                         onOpenPickNewDate={true}
-                        inputMode=""
+                        inputMode=''
                         calendar={calendarValue}
                         locale={localValue}
                         ref={calendRef}
@@ -617,8 +606,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="todolist-modal-fields margin-top-0 d-flex  flex-column"
-                    >
+                      className='todolist-modal-fields margin-top-0 d-flex  flex-column'>
                       <Select
                         options={allPresenters}
                         maxMenuHeight={140}
@@ -627,32 +615,32 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           presenterValue.value === 0 ? null : presenterValue
                         }
                         placeholder={t("Add-assignee")}
-                        applyClass="assigneeFindInCreateToDo"
+                        applyClass='assigneeFindInCreateToDo'
                         filterOption={filterFunc}
                       />
                     </Col>
                   </Row>
-                  <Row className="create_todo_assignee d-flex justify-content-end">
+                  <Row className='create_todo_assignee d-flex justify-content-end'>
                     {assignees.length > 0 ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>
-                            <div className="dropdown-row-assignee w-100">
-                              <div className="d-flex align-items-center gap-2 mt-1 position-relative">
+                            <div className='dropdown-row-assignee w-100'>
+                              <div className='d-flex align-items-center gap-2 mt-1 position-relative'>
                                 <img
-                                  draggable="false"
-                                  alt=""
+                                  draggable='false'
+                                  alt=''
                                   src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
                                 />
-                                <p className=" m-0">{taskAssignedName.name}</p>
+                                <p className=' m-0'>{taskAssignedName.name}</p>
                               </div>
-                              <span className="todolist-remove-assignee-icon">
+                              <span className='todolist-remove-assignee-icon'>
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   width={20}
-                                  className="remove"
+                                  className='remove'
                                   height={20}
-                                  alt=""
+                                  alt=''
                                   src={deleteButtonCreateMeeting}
                                   onClick={() =>
                                     handleDeleteAttendee(
@@ -668,18 +656,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       </>
                     ) : null}
                   </Row>
-                  <Row className="my-0">
+                  <Row className='my-0'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="todolist-modal-fields"
-                    >
+                      className='todolist-modal-fields'>
                       <TextField
                         change={taskHandler}
-                        name="Title"
-                        applyClass="createtodo-title"
-                        type="text"
+                        name='Title'
+                        applyClass='createtodo-title'
+                        type='text'
                         placeholder={t("Title") + "*"}
                         required
                         value={task.Title}
@@ -688,35 +675,35 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={12} md={12} xs={12} className="FontArabicRegular">
+                    <Col lg={12} md={12} xs={12} className='FontArabicRegular'>
                       <TextField
                         change={taskHandler}
-                        name="Description"
-                        applyClass="createtodo-description"
-                        type="text"
+                        name='Description'
+                        applyClass='createtodo-description'
+                        type='text'
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
                         placeholder={t("Description")}
                         maxLength={2000}
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-4">
-                    <Col lg={12} md={12} xs={12} className=" attachmentCon ">
-                      <label className="ArabicFontSemiBold">
+                  <Row className='mt-4'>
+                    <Col lg={12} md={12} xs={12} className=' attachmentCon '>
+                      <label className='ArabicFontSemiBold'>
                         {t("Attachement")}
                       </label>
-                      <span className="custom-upload-input">
+                      <span className='custom-upload-input'>
                         <CustomUpload
                           change={uploadFilesToDo}
                           multiple={true}
                           onClick={(event) => {
                             event.target.value = null;
                           }}
-                          className="UploadFileButton"
+                          className='UploadFileButton'
                         />
                       </span>
-                      <section className="todolist_files ">
+                      <section className='todolist_files '>
                         {tasksAttachments.TasksAttachments.length > 0
                           ? tasksAttachments.TasksAttachments.map(
                               (data, index) => {
@@ -746,8 +733,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={"Confirmationmodal_body_text"}
-                  >
+                    className={"Confirmationmodal_body_text"}>
                     {t(
                       "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
                     )}
@@ -764,8 +750,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className="d-flex justify-content-end gap-3 p-0"
-                  >
+                    className='d-flex justify-content-end gap-3 p-0'>
                     <Button
                       onClick={() => {
                         setCloseConfirmationBox(true);
@@ -790,8 +775,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center gap-3"
-                  >
+                    className='d-flex justify-content-center gap-3'>
                     <Button
                       onClick={() => setIsCreateTodo(true)}
                       className={"cancelButton_createTodo"}

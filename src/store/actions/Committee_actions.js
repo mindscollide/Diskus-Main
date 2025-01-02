@@ -20,6 +20,8 @@ import {
   CreateUpdateCommitteeDatarRoomRM,
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
+  ValidateEncryptedStringViewCommitteeListLinkRM,
+  ValidateEncryptedStringViewCommitteeDetailLinkRM,
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
 
@@ -427,10 +429,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(
-                getArcheivedCommittees_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getArcheivedCommittees_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1577,8 +1576,285 @@ const removeCommitteeMemberMQTT = (response) => {
     response: response,
   };
 };
+// List Committees
+const validateEncryptedStringViewCommitteeListLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_INIT,
+});
+
+const validateEncryptedStringViewCommitteeListLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewCommitteeListLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewCommitteeListLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewCommitteeListLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewCommitteeListLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(getCommitteesApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewCommitteeListLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeListLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return responseResult.data;
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeListLink_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeListLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeListLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else {
+            dispatch(
+              validateEncryptedStringViewCommitteeListLink_Fail(
+                t("Unsuccessful")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewCommitteeListLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          throw new Error(t("Something-went-wrong"));
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewCommitteeListLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        throw new Error(t("Something-went-wrong"));
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewCommitteeListLink_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      throw new Error(t("Something-went-wrong"));
+    }
+  };
+};
+
+// Details Committees Email Routes
+const validateEncryptedStringViewCommitteeDetailLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_INIT,
+});
+
+const validateEncryptedStringViewCommitteeDetailLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewCommitteeDetailLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_COMMITTEE_LIST_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewCommitteeDetailLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewCommitteeDetailLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewCommitteeDetailLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(getCommitteesApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewCommitteeDetailLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeDetailLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return responseResult.data;
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeDetailLink_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeDetailLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else if (
+            message.includes(
+              "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewCommitteeDetailLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          } else {
+            dispatch(
+              validateEncryptedStringViewCommitteeDetailLink_Fail(
+                t("Unsuccessful")
+              )
+            );
+            throw new Error(t("Something-went-wrong"));
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewCommitteeDetailLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          throw new Error(t("Something-went-wrong"));
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewCommitteeDetailLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        throw new Error(t("Something-went-wrong"));
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewCommitteeDetailLink_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      throw new Error(t("Something-went-wrong"));
+    }
+  };
+};
 
 export {
+  validateEncryptedStringViewCommitteeDetailLinkApi,
+  validateEncryptedStringViewCommitteeListLinkApi,
   removeCommitteeMemberMQTT,
   viewDetailsCommitteeID,
   saveCommitteeDocumentsApi,

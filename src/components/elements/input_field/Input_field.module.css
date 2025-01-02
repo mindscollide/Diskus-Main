@@ -362,3 +362,13 @@ body[dir="rtl"] .updateNotes_titleInput {
   letter-spacing: 1px !important;
   color: rgba(162, 162, 162, 1) !important;
 } */
+
+/* Password Verify when meeting is delete */
+.passwordCheckField_parent {
+  position: relative !important;
+}
+.passwordCheckField {
+  height: 35px !important;
+  width: 100%;
+  font-size: 13px !important;
+}

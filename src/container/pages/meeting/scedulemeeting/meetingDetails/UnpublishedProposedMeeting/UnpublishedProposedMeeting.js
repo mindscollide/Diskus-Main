@@ -4,6 +4,8 @@ import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
+import deleteIcon from "../../../../../../assets/images/del.png";
+
 import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
@@ -43,6 +45,7 @@ import {
   validateStringUserMeetingProposedDatesPollsApi,
   ProposedMeetingViewFlagAction,
   meetingStatusProposedMqtt,
+  endMeetingStatusApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -76,6 +79,7 @@ import AscendIcon from "../../../../../../assets/images/sortingIcons/SorterIconA
 import ArrowDownIcon from "../../../../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
+import DeleteMeetingConfirmationModal from "../../../deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -99,7 +103,12 @@ const UnpublishedProposedMeeting = ({
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const {
+    deleteMeetingConfirmationModal,
+    setDeleteMeetingConfirmationModal,
+    setEditorRole,
+    setEndMeetingConfirmationModal,
+  } = useContext(MeetingContext);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -297,6 +306,23 @@ const UnpublishedProposedMeeting = ({
 
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
+  };
+
+  const handleClickDeleteMeeting = async (record) => {
+    let Data = {
+      MeetingID: record.pK_MDID,
+      StatusID: 4,
+    };
+    await dispatch(
+      endMeetingStatusApi(
+        navigate,
+        t,
+        Data,
+        false,
+        setEndMeetingConfirmationModal,
+        1
+      )
+    );
   };
 
   const menu = (
@@ -763,6 +789,25 @@ const UnpublishedProposedMeeting = ({
         );
       },
     },
+    // {
+    //   dataIndex: "Delete",
+    //   key: "Delete",
+    //   align: "center",
+    //   width: "33px",
+    //   render: (text, record) => {
+    //     console.log(record, "deleteIcon");
+    //     if (record.status === "11" && record.isPrimaryOrganizer) {
+    //       return (
+    //         <img
+    //           src={deleteIcon}
+    //           style={{ cursor: "pointer" }}
+    //           onClick={() => handleClickDeleteMeeting(record)}
+    //           // onClick={() => setDeleteMeetingConfirmationModal(true)}
+    //         />
+    //       );
+    //     }
+    //   },
+    // },
     {
       dataIndex: "Edit",
       key: "Edit",
@@ -866,9 +911,9 @@ const UnpublishedProposedMeeting = ({
           // 👇️ otherwise return object as is
           return obj;
         });
-        // setRow(newState);
+        setRow(newState);
       } else {
-        // setRow([allMeetingsSocketData, ...rows]);
+        setRow([allMeetingsSocketData, ...rows]);
       }
     }
   }, [allMeetingsSocketData]);
@@ -896,23 +941,23 @@ const UnpublishedProposedMeeting = ({
             });
             console.log(filterOutPropsed, "searchMeetingssearchMeetings");
 
-            // setRow(filterOutPropsed);
+            setRow(filterOutPropsed);
             setDublicatedrows(filterOutPropsed);
           }
         } else {
-          // setRow([]);
+          setRow([]);
           setDublicatedrows([]);
         }
       } else {
-        // setRow([]);
+        setRow([]);
         setDublicatedrows([]);
       }
     } catch (error) {
       // Handle errors here
     }
     return () => {
-      // setRow([]);
-      // setDublicatedrows([]);
+      setRow([]);
+      setDublicatedrows([]);
     };
   }, [searchMeetings]);
   console.log(rows, "searchMeetingssearchMeetings");
@@ -971,7 +1016,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        // setRow(updatedRows);
+        setRow(updatedRows);
       } catch {}
     }
   }, [meetingStatusPublishedMqttData]);
@@ -983,7 +1028,7 @@ const UnpublishedProposedMeeting = ({
           let newObj = mqttMeetingAcAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
-            // setRow([getData, ...rows]);
+            setRow([getData, ...rows]);
           } catch (error) {
             console.log(error, "getDatagetDatagetData");
           }
@@ -1006,7 +1051,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        // setRow(updatedRows);
+        setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
@@ -1022,7 +1067,7 @@ const UnpublishedProposedMeeting = ({
           let newObj = mqttMeetingOrgAdded;
           try {
             let getData = await mqttMeetingData(newObj, 2);
-            // setRow([getData, ...rows]);
+            setRow([getData, ...rows]);
             console.log(getData, "getDatagetDatagetData");
           } catch (error) {
             console.log(error, "getDatagetDatagetData");
@@ -1046,7 +1091,7 @@ const UnpublishedProposedMeeting = ({
         const updatedRows = rows.filter(
           (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
-        // setRow(updatedRows);
+        setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
@@ -1164,6 +1209,7 @@ const UnpublishedProposedMeeting = ({
         />
       )}
       {deleteMeetingModal && <DeleteMeetingModal />}
+      {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </section>
   );
 };
