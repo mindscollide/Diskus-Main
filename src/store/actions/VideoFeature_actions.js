@@ -1129,8 +1129,6 @@ const leaveMeetingOnlogout = (response) => {
   };
 };
 const leaveMeetingVideoOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_VIDEO_ON_LOGOUT,
     response: response,
