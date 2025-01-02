@@ -1072,6 +1072,37 @@ body[dir="rtl"] .box-agendas-camera {
   top: 0;
 }
 
+.disabled-box-agenda-camera {
+  border: 1px solid #c7c6c6;
+  background-color: #c7c6c6;
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  cursor: not-allowed;
+  right: 80px;
+  top: 0;
+}
+
+body[dir="rtl"] .disabled-box-agenda-camera {
+  border: 1px solid #c7c6c6;
+  background-color: #c7c6c6;
+  border-radius: 4px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  cursor: not-allowed;
+  right: auto;
+  left: 90px;
+  top: 0;
+}
+
 .icons-block {
   display: flex;
   gap: 20px;

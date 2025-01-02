@@ -134,6 +134,7 @@ const ViewMeetingModal = ({
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
+      localStorage.setItem("isMeeting", false);
     };
   }, []);
 

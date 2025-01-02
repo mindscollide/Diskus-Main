@@ -593,6 +593,7 @@ const getParticipantMeetingJoinMainApi = (
                 isDashboardVideo: true,
               };
               await dispatch(makeHostNow(meetingHost));
+              dispatch(videoIconOrButtonState(false));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
@@ -1121,16 +1122,12 @@ const globalNavigatorVideoStream = (response) => {
 };
 // For Removed Max Patrticipant Video Compnent
 const leaveMeetingOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_ON_LOGOUT,
     response: response,
   };
 };
 const leaveMeetingVideoOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_VIDEO_ON_LOGOUT,
     response: response,
@@ -1184,6 +1181,15 @@ const leaveMeetingVideoOnEndStatusMqtt = (response) => {
 const leaveMeetingOnEndStatusMqtt = (response) => {
   return {
     type: actions.LEAVE_MEETING_END_STATUS_RESPONSE,
+    response: response,
+  };
+};
+
+// For videoIcon enable and disable or button
+const videoIconOrButtonState = (response) => {
+  console.log(response, "enableDisableVideoState");
+  return {
+    type: actions.VIDEO_BUTTON_OR_ICON_STATE,
     response: response,
   };
 };
@@ -1263,4 +1269,5 @@ export {
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
+  videoIconOrButtonState,
 };

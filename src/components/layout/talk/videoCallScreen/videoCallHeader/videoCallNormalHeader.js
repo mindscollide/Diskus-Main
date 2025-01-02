@@ -186,7 +186,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
   );
 
-
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
@@ -493,7 +492,7 @@ const VideoCallNormalHeader = ({
   };
 
   // for Host leave Call
-  const leaveCall = async (flag, flag2,flag3) => {
+  const leaveCall = async (flag, flag2, flag3) => {
     console.log("busyCall");
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
@@ -570,7 +569,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
-        leaveCall(true);
+        leaveCall(true, false, false);
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
@@ -588,7 +587,7 @@ const VideoCallNormalHeader = ({
     try {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
         console.log("mqtt mqmqmqmqmqmq");
-        leaveCall(false, false,true);
+        leaveCall(false, false, true);
       }
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);

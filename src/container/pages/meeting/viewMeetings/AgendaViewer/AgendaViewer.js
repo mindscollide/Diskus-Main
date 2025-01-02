@@ -38,6 +38,7 @@ import {
   getParticipantMeetingJoinMainApi,
   leaveMeetingOnlogout,
   nonMeetingVideoGlobalModal,
+  videoIconOrButtonState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -165,6 +166,10 @@ const AgendaViewer = ({
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
 
+  const enableDisableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.enableDisableVideoState
+  );
+
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );
@@ -198,6 +203,7 @@ const AgendaViewer = ({
   const [agendaName, setAgendaName] = useState("");
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
+
   console.log(
     currentMeeting,
     advanceMeetingModalID,
@@ -652,6 +658,7 @@ const AgendaViewer = ({
       if (meetingVideoData.roleID === 2) {
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
+        dispatch(videoIconOrButtonState(true));
         let data = {
           MeetingId: Number(currentMeeting),
           VideoCallURL: String(currentMeetingVideoURL),
@@ -751,7 +758,11 @@ const AgendaViewer = ({
                           title={t("Enable-video-call")}
                         >
                           <div
-                            className={styles["box-agendas-camera"]}
+                            className={
+                              enableDisableVideoState
+                                ? styles["disabled-box-agenda-camera"]
+                                : styles["box-agendas-camera"]
+                            }
                             // onClick={joinMeetingCall}
                           >
                             <img
