@@ -392,7 +392,7 @@ const NewMeeting = () => {
         video: false,
         Agenda: false,
       });
-      dispatch(viewMeetingFlag(false))
+      dispatch(viewMeetingFlag(false));
       setViewFlag(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1973,8 +1973,12 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek call",record);
-                      console.log("end meeting chaek call",startMeetingRequest);
+                      record?.videoCallUR &&
+                        console.log("end meeting chaek call", record);
+                      console.log(
+                        "end meeting chaek call",
+                        startMeetingRequest
+                      );
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
@@ -2023,7 +2027,11 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek", startMeetingRequest,record);
+                      console.log(
+                        "end meeting chaek",
+                        startMeetingRequest,
+                        record
+                      );
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
