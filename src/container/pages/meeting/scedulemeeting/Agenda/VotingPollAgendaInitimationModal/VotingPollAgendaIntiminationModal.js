@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./VotingPollAgendaIntiminationModal.module.css";
 import { useSelector } from "react-redux";
-import { AgendaPollVotingStartedAction } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  AgendaPollVotingStartedAction,
+  showCastVoteAgendaModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
@@ -13,6 +16,17 @@ const VotingPollAgendaIntiminationModal = () => {
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
+
+  //Handle Discard Button
+  const handleCastYourAgendaVoteBtn = () => {
+    dispatch(AgendaPollVotingStartedAction(false));
+    dispatch(showCastVoteAgendaModal(true));
+    localStorage.setItem("VotingAgendaModalCalledGlobally", true);
+  };
+
+  const handleDiscardFunction = () => {
+    dispatch(AgendaPollVotingStartedAction(false));
+  };
   return (
     <section>
       <Modal
@@ -22,7 +36,9 @@ const VotingPollAgendaIntiminationModal = () => {
         modalHeaderClassName={"d-block"}
         centered={false}
         className={styles["MainVotingPollStartedParentClass"]}
-        onHide={() => {}}
+        onHide={() => {
+          dispatch(AgendaPollVotingStartedAction(false));
+        }}
         size={"xl"}
         ModalBody={
           <>
@@ -52,10 +68,12 @@ const VotingPollAgendaIntiminationModal = () => {
                 <Button
                   text={t("Discard")}
                   className={styles["DiscardButtonVotingStartedModal"]}
+                  onClick={handleDiscardFunction}
                 />
                 <Button
                   text={t("Cast-your-vote")}
                   className={styles["CastVoteButtonVotingStartedModal"]}
+                  onClick={handleCastYourAgendaVoteBtn}
                 />
               </Col>
             </Row>

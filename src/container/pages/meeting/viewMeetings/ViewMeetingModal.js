@@ -15,6 +15,7 @@ import {
   leaveMeetingOnEndStatusMqtt,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
+  AgendaPollVotingStartedAction,
   LeaveCurrentMeeting,
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
@@ -37,6 +38,8 @@ import Attendees from "./attendees/Attendees";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
+import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
+import { meetingAgendaStartedMQTT } from "../../../../store/actions/MeetingAgenda_action";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -51,6 +54,15 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
+
+  //Voting Poll Started in Agenda Intimination Modal
+  const votingStartedAgendaIntiminationModalState = useSelector(
+    (state) => state.NewMeetingreducer.agendavotingPollStartedData
+  );
+  //Agenda Voting Started PayLoad Data Fetching
+  const AgendaVotingModalStartedData = useSelector(
+    (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
+  );
   const { editorRole, setEditorRole } = useMeetingContext();
   const [meetingDetails, setmeetingDetails] = useState(
     (editorRole.role === "Organizer" ||
@@ -427,7 +439,53 @@ const ViewMeetingModal = ({
       }
     } catch {}
   }, [leaveMeetingOnEndStatusMqttFlag]);
-  
+
+  //Agenda Voting Modal MQTT Data Extracting
+  useEffect(() => {
+    try {
+      if (
+        AgendaVotingModalStartedData !== null &&
+        AgendaVotingModalStartedData !== undefined
+      ) {
+        console.log(
+          AgendaVotingModalStartedData,
+          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+        );
+        console.log(
+          Number(localStorage.getItem("currentMeetingID")) ===
+            AgendaVotingModalStartedData.meetingID,
+          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+        );
+        console.log(
+          localStorage.getItem("currentMeetingID"),
+          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+        );
+        console.log(
+          AgendaVotingModalStartedData.meetingID,
+          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+        );
+
+        if (
+          Number(localStorage.getItem("currentMeetingID")) ===
+            AgendaVotingModalStartedData.meetingID &&
+          !editorRole.isPrimaryOrganizer
+        ) {
+          console.log(
+            AgendaVotingModalStartedData,
+            "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+          );
+          dispatch(AgendaPollVotingStartedAction(true));
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return () => {
+      dispatch(meetingAgendaStartedMQTT(null));
+    };
+  }, [AgendaVotingModalStartedData]);
+
   return (
     <>
       <section className="position-relative">
@@ -743,6 +801,9 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
       </section>
+      {votingStartedAgendaIntiminationModalState && (
+        <VotingPollAgendaIntiminationModal />
+      )}
     </>
   );
 };
