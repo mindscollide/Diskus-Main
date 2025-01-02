@@ -77,6 +77,7 @@ const initialState = {
   endMeetingStatusForQuickMeetingModalFlag: false,
   leaveMeetingOnEndStatusMqttFlag: false,
   leaveMeetingVideoOnEndStatusMqttFlag: false,
+  enableDisableVideoState: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -673,7 +674,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     case actions.JOIN_MEETING_VIDEO_REQUEST_INIT: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
       };
     }
 
@@ -928,6 +929,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         leaveMeetingVideoOnEndStatusMqttFlag: action.response,
+      };
+    }
+
+    // For videoIcon enable and disable or button
+    case actions.VIDEO_BUTTON_OR_ICON_STATE: {
+      return {
+        ...state,
+        enableDisableVideoState: action.response,
       };
     }
 

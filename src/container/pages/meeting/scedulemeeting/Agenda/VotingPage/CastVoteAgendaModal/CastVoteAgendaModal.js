@@ -8,7 +8,10 @@ import { Button, Modal } from "../../../../../../../components/elements";
 import { showCastVoteAgendaModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Radio } from "antd";
-import { CasteVoteForAgenda } from "../../../../../../../store/actions/MeetingAgenda_action";
+import {
+  CasteVoteForAgenda,
+  GetAgendaAndVotingInfo,
+} from "../../../../../../../store/actions/MeetingAgenda_action";
 
 const CastVoteAgendaModal = () => {
   const { t } = useTranslation();
@@ -60,8 +63,9 @@ const CastVoteAgendaModal = () => {
         },
       ],
     };
-    dispatch(CasteVoteForAgenda(Data, navigate, t));
-    dispatch(showCastVoteAgendaModal(false));
+    console.log("Cast Vote Data castVoteData", Data);
+    // dispatch(CasteVoteForAgenda(Data, navigate, t));
+    // dispatch(showCastVoteAgendaModal(false));
   };
 
   console.log("Cast Vote Data", castVoteData);

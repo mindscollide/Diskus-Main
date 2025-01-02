@@ -2062,8 +2062,6 @@ const NewMeetingreducer = (state = initialState, action) => {
 
     case actions.VIEW_ADVANCE_MEETING_PUBLISH_PAGE_FLAG: {
       localStorage.setItem("AdvanceMeetingOpen", action.response);
-      console.log("mqtt mqmqmqmqmqmq", action.response);
-
       return {
         ...state,
         viewAdvanceMeetingPublishPageFlag: action.response,
@@ -2569,7 +2567,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     //Voting agenda poll started
-
     case actions.VOTING_POLL_STARTED_AGENDA_MODAL: {
       return {
         ...state,

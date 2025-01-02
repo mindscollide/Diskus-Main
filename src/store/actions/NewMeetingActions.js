@@ -88,6 +88,7 @@ import {
   setVideoControlForParticipant,
   setVideoControlHost,
   videoChatPanel,
+  videoIconOrButtonState,
 } from "./VideoFeature_actions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
@@ -9051,6 +9052,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
+              dispatch(videoIconOrButtonState(false));
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -9371,6 +9373,10 @@ const GetMeetingStatusDataAPI = (
                   response.data.responseResult,
                   t("Successful")
                 )
+              );
+              localStorage.setItem(
+                "NotificationClickSendResponseByDate",
+                response.data.responseResult.sendResponseByDeadline
               );
               localStorage.setItem(
                 "MeetingStatusID",

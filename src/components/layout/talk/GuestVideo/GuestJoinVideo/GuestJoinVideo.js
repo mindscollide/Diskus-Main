@@ -61,6 +61,9 @@ const GuestJoinVideo = ({
 
   const [validateRoomId, setValidateRoomId] = useState("");
   const [validateHostEmail, setValidateHostEmail] = useState("");
+  const [joinButton, setJoinButton] = useState(false);
+  console.log(joinButton, "joinButtonjoinButton");
+
   console.log(
     { validateRoomId, validateHostEmail },
     "validateRoomIdvalidateRoomId"
@@ -163,6 +166,7 @@ const GuestJoinVideo = ({
     if (joinName === "") {
       setErrorMessage(true);
     } else {
+      setJoinButton(true);
       setErrorMessage(false);
       setGetReady(true);
       setIsWaiting(true); // Show the waiting room text
@@ -170,6 +174,7 @@ const GuestJoinVideo = ({
       onJoinNameChange(joinName);
       sessionStorage.setItem("guestName", joinName);
       sessionStorage.removeItem("isRejoining");
+
       let data = {
         MeetingId: extractMeetingId,
         RoomID: validateRoomId,
@@ -178,7 +183,7 @@ const GuestJoinVideo = ({
         HideVideo: !isWebCamEnabled,
         HostEmail: validateHostEmail,
       };
-      dispatch(joinGuestVideoMainApi(navigate, t, data));
+      dispatch(joinGuestVideoMainApi(navigate, t, data, setJoinButton));
     }
   };
 
@@ -370,6 +375,7 @@ const GuestJoinVideo = ({
                               {t("Ready-to-join")}
                             </p>
                             <Button
+                              disableBtn={joinButton}
                               text={t("Join-now")}
                               className="Join-Now-Btn"
                               onClick={onJoinNowButton}

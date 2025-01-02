@@ -21,6 +21,7 @@ import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
+  console.log(groupStatus, "groupStatus");
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -503,11 +504,13 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
               text={t("Close")}
               onClick={handleClose}
             />
-            <Button
-              className={styles["Save-ViewGroup-btn"]}
-              text={t("Save")}
-              onClick={handleViewSave}
-            />
+            {groupStatus !== 1 && (
+              <Button
+                className={styles["Save-ViewGroup-btn"]}
+                text={t("Save")}
+                onClick={handleViewSave}
+              />
+            )}
           </Col>
         </Row>
       </section>

@@ -270,7 +270,7 @@ const joinGuestVideoFail = (message) => {
   };
 };
 
-const joinGuestVideoMainApi = (navigate, t, data) => {
+const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
   return (dispatch) => {
     dispatch(joinGuestVideoInit());
     let form = new FormData();
@@ -286,7 +286,7 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
-          dispatch(joinGuestVideoMainApi(navigate, t, data));
+          dispatch(joinGuestVideoMainApi(navigate, t, data, setJoinButton));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -296,6 +296,9 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
                 response.data.responseResult.guestGuid,
@@ -323,6 +326,9 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinGuestVideo_02".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               await dispatch(
                 joinGuestVideoFail(t("meeting-organizers-not-found"))
               );
@@ -333,16 +339,28 @@ const joinGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinGuestVideo_03".toLowerCase()
                 )
             ) {
+              try {
+                setJoinButton(false);
+              } catch {}
               await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
             }
           } else {
+            try {
+              setJoinButton(false);
+            } catch {}
             await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
           }
         } else {
+          try {
+            setJoinButton(false);
+          } catch {}
           await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        try {
+          setJoinButton(false);
+        } catch {}
         dispatch(joinGuestVideoFail(t("Something-went-wrong")));
       });
   };

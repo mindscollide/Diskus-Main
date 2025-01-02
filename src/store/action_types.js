@@ -3466,3 +3466,6 @@ export const LEAVE_MEETINGVIDEO_END_STATUS_RESPONSE =
 //For End Meeting Status Mqtt Response
 export const LEAVE_MEETING_END_STATUS_RESPONSE =
   "LEAVE_MEETING_END_STATUS_RESPONSE";
+
+// For videoIcon enable and disable or button
+export const VIDEO_BUTTON_OR_ICON_STATE = "VIDEO_BUTTON_OR_ICON_STATE";
