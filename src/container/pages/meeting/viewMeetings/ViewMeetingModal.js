@@ -122,6 +122,7 @@ const ViewMeetingModal = ({
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
+      localStorage.setItem("isMeeting", false);
     };
   }, []);
 
@@ -427,7 +428,7 @@ const ViewMeetingModal = ({
       }
     } catch {}
   }, [leaveMeetingOnEndStatusMqttFlag]);
-  
+
   return (
     <>
       <section className="position-relative">

@@ -1973,7 +1973,8 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek");
+                      console.log("end meeting chaek call",record);
+                      console.log("end meeting chaek call",startMeetingRequest);
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
@@ -2022,7 +2023,7 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log("end meeting chaek", startMeetingRequest);
+                      console.log("end meeting chaek", startMeetingRequest,record);
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,

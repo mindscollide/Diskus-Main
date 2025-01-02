@@ -96,8 +96,8 @@ const FullScreenAgendaModal = ({
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );
+
   const { setEditorRole, editorRole } = useMeetingContext();
-  console.log("Agenda View Full");
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -328,6 +328,15 @@ const FullScreenAgendaModal = ({
     setFullScreenView(false);
   };
 
+  useEffect(() => {
+    try {
+      if (leaveMeetingOnLogoutResponse) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveMeeting(true);
+      }
+    } catch {}
+  }, [leaveMeetingOnLogoutResponse]);
+  
   const leaveMeeting = async (flag) => {
     console.log("Agenda View Full");
     let leaveMeetingData = {
@@ -353,14 +362,6 @@ const FullScreenAgendaModal = ({
       dispatch(userLogOutApiFunc(navigate, t));
     }
   };
-  useEffect(() => {
-    try {
-      if (leaveMeetingOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
-        leaveMeeting(true);
-      }
-    } catch {}
-  }, [leaveMeetingOnLogoutResponse]);
 
   const handleOutsideClick = (event) => {
     console.log("Agenda View Full");
