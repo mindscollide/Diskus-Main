@@ -155,7 +155,7 @@ const Groups = () => {
           localStorage.setItem("groupsCurrent", 1);
           dispatch(getGroups(navigate, t, 1));
         }
-        localStorage.removeItem("groupList"); // Cleanup the localStorage key
+        localStorage.removeItem("groupList"); // Cleanup tnpmhe localStorage key
       };
       callApi(); // Invoke the API call
     }
@@ -175,13 +175,7 @@ const Groups = () => {
           setViewGroupTab(1);
           setViewGroupPage(true);
           dispatch(viewGroupPageFlag(true));
-        } else if (
-          getResponse.isExecuted === false &&
-          getResponse.responseCode === 2
-        ) {
-          localStorage.setItem("groupsCurrent", 1);
-          dispatch(getGroups(navigate, t, 1));
-        }
+        } 
         localStorage.removeItem("groupView_Id"); // Cleanup the localStorage key
       };
       callApi(); // Invoke the API call

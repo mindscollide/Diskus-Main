@@ -239,6 +239,22 @@ const PrivateRoutes = () => {
       let getValue = getActionValue(currentUrl, "action=");
       localStorage.setItem("groupList", getValue);
     }
+    // Tasks View
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/todolist?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("taskListView_Id", getValue);
+    }
+    // Tasks List View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/todolist?action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "action=");
+      localStorage.setItem("taskListList", getValue);
+    }
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");
