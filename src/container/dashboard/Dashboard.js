@@ -290,12 +290,16 @@ const Dashboard = () => {
         localStorage.getItem("AdvanceMeetingOpen")
       );
       if (isMeeting) {
-        dispatch(leaveMeetingVideoOnlogout(true));
+        if (isMeetingVideo) {
+          dispatch(leaveMeetingVideoOnlogout(true));
+        } else {
+        }
       } else {
         dispatch(userLogOutApiFunc(navigate, t));
       }
     }
   };
+
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
