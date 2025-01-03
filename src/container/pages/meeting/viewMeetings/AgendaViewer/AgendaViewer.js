@@ -170,6 +170,8 @@ const AgendaViewer = ({
     (state) => state.videoFeatureReducer.enableDisableVideoState
   );
 
+  console.log(enableDisableVideoState, "enableDisableVideoState");
+
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );

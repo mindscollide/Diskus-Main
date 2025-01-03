@@ -58,6 +58,7 @@
   display: flex;
   justify-content: center;
   cursor: pointer;
+  color: #e1e1e1 !important;
   align-items: center;
 }
 
@@ -119,9 +120,12 @@
 }
 
 .max-minimize-participant-title {
+  margin: 0px !important;
   color: #fff !important;
   font-size: 20px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .max-videoParticipantsvideo-panel {
@@ -154,13 +158,13 @@
 
 .max-minimize-videoParticipantsvideo-panel {
   position: fixed;
-  height: 8vh !important;
+  height: 7vh !important;
   bottom: 0px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: 1px solid #4adede !important;
   border-radius: 4px !important;
   z-index: 99 !important;
-  padding: 10px 40px;
+  padding: 12px 25px;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
   width: 50%;
   left: 65px;
