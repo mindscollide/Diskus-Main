@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "./DocumentViwer.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,268 +16,269 @@ import {
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
+import "./DocumentViwer.css";
+
 const DocumentViewer = () => {
-  const location = useLocation();
+  const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
+
+  // State Variables
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-  const { webViewer, DataRoomReducer } = useSelector((state) => state);
-  const viewer = useRef(null);
-  let name = localStorage.getItem("name");
-  // Parse the URL parameters to get the data
-  const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
-
-  // Deserialize the JSON string into an object
-  const pdfData = JSON.parse(pdfDataJson);
-
-  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
-
-  const [pdfResponceData, setPdfResponceData] = useState({
+  const [pdfResponseData, setPdfResponseData] = useState({
     xfdfData: "",
     attachmentBlob: "",
   });
 
-  useEffect(() => {
-    if (taskId && attachmentID) {
-      if (Number(commingFrom) === 1) {
-        let data = {
-          TaskID: Number(taskId),
-          TaskAttachementID: Number(attachmentID),
-        };
-        // for todo
-        dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
-      } else if (Number(commingFrom) === 2) {
-        let notesData = {
-          NoteID: Number(taskId),
-          NoteAttachementID: Number(attachmentID),
-        };
+  // Redux Selectors
+  const FileRemoveMQTT = useSelector(
+    (state) => state.DataRoomReducer.FileRemoveMQTT
+  );
+  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
+    (state) => state.webViewer
+  );
 
-        dispatch(getAnnotationsOfNotesAttachement(navigate, t, notesData));
-        // for notes
-      } else if (Number(commingFrom) === 3) {
-        let resolutionData = {
+  // Memoized PDF Data
+  const pdfData = useMemo(() => {
+    const params = new URLSearchParams(location.search).get("pdfData");
+    return JSON.parse(params || "{}");
+  }, [location.search]);
+
+  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
+
+  // Utility: Clear Local Storage
+  const clearLocalStorage = () => {
+    [
+      "DataRoomOperations",
+      "NotificationClickFileID",
+      "NotificationClickFileName",
+      "DataRoomOperationsForFileEditorRights",
+    ].forEach(localStorage.removeItem);
+  };
+
+  // Utility: Convert Base64 to Blob
+  const base64ToBlob = (base64) => {
+    const binaryString = window.atob(base64);
+    return new Blob(
+      [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
+      {
+        type: "application/pdf",
+      }
+    );
+  };
+
+  // Fetch Annotations
+  useEffect(() => {
+    const fetchAnnotations = () => {
+      const actions = {
+        1: getAnnotationsOfToDoAttachement,
+        2: getAnnotationsOfNotesAttachement,
+        3: getAnnotationsOfResolutionAttachement,
+        4: getAnnotationsOfDataroomAttachement,
+      };
+
+      const data = {
+        1: { TaskID: Number(taskId), TaskAttachementID: Number(attachmentID) },
+        2: { NoteID: Number(taskId), NoteAttachementID: Number(attachmentID) },
+        3: {
           ResolutionID: Number(taskId),
           ResolutionAttachementID: Number(attachmentID),
-        };
-        dispatch(
-          getAnnotationsOfResolutionAttachement(navigate, t, resolutionData)
-        );
-        // for resultion
-      } else if (Number(commingFrom) === 4) {
-        // for data room
-        let dataRoomData = {
-          FileID: attachmentID,
-        };
-        dispatch(
-          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
-        );
-      }
-    }
-    return () => {
-      localStorage.removeItem("DataRoomOperations");
-      localStorage.removeItem("NotificationClickFileID");
-      localStorage.removeItem("NotificationClickFileName");
-      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+        },
+        4: { FileID: attachmentID },
+      };
+
+      const action = actions[Number(commingFrom)];
+      if (action) dispatch(action(navigate, t, data[Number(commingFrom)]));
     };
-  }, []);
 
-  function base64ToBlob(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+    if (taskId && attachmentID) fetchAnnotations();
+    return clearLocalStorage;
+  }, [dispatch, navigate, t, taskId, attachmentID, commingFrom]);
 
-    return new Blob([bytes], { type: "application/pdf" });
-  }
-
-  // Remove File MQTT
+  // Handle File Removal via MQTT
   useEffect(() => {
-    if (DataRoomReducer.FileRemoveMQTT !== null) {
-      try {
-        let fileID = Number(DataRoomReducer.FileRemoveMQTT);
-        if (Number(attachmentID) === fileID) {
-          window.close();
-        }
-      } catch (error) {
-        console.log(error, "datadatadata");
-      }
+    if (FileRemoveMQTT && Number(FileRemoveMQTT) === Number(attachmentID)) {
+      window.close();
     }
-  }, [DataRoomReducer.FileRemoveMQTT]);
+  }, [FileRemoveMQTT, attachmentID]);
 
+  // Update PDF Data
   useEffect(() => {
-    if (webViewer.attachmentBlob) {
-      setPdfResponceData({
-        ...pdfResponceData,
-        xfdfData: webViewer.xfdfData,
-        pdfUrls: webViewer.attachmentBlob,
-      });
+    if (attachmentBlob) {
+      setPdfResponseData({ xfdfData, attachmentBlob });
     }
-  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-
-  // if using a class, equivalent of componentDidMount
+  }, [attachmentBlob, xfdfData]);
+  // Initialize WebViewer
   useEffect(() => {
-    if (webViewer.xfdfData || webViewer.attachmentBlob) {
+    if (pdfResponseData.attachmentBlob) {
       WebViewer(
         {
           path: "/webviewer/lib",
           licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
         },
-
         viewer.current
       ).then((instance) => {
-        instance.UI.loadDocument(base64ToBlob(webViewer.attachmentBlob), {
+        const { documentViewer, annotationManager } = instance.Core;
+
+        // Load document
+        console.log(
+          "pdfResponseDatapdfResponseData",
+          pdfResponseData.attachmentBlob
+        );
+        instance.UI.loadDocument(base64ToBlob(pdfResponseData.attachmentBlob), {
           filename: fileName,
         });
-        const { documentViewer, annotationManager } = instance.Core;
-        const annotManager = documentViewer.getAnnotationManager();
 
+        // Handle annotations
+        documentViewer.addEventListener("documentLoaded", () => {
+          annotationManager.setCurrentUser(localStorage.getItem("name"));
+          if (pdfResponseData.xfdfData) {
+            console.log(
+              "pdfResponseDatapdfResponseData",
+              pdfResponseData.xfdfData
+            );
+            // annotationManager.importAnnotations(pdfResponseData.xfdfData);
+            annotationManager.importAnnotationsAsync(pdfResponseData.xfdfData).then(() => {
+              const annotations = annotationManager.getAnnotationsList();
+            
+              annotations.forEach((annot) => {
+                if (annot.PageNumber > documentViewer.getPageCount()) {
+                  annot.PageNumber = documentViewer.getPageCount(); // Adjust invalid pages
+                }
+              });
+            
+              annotationManager.redrawAnnotations();
+            });
+          }
+        });
+
+        // Set permissions if needed
+        if (Number(isPermission) === 1) setPermissions(instance);
+
+        // Add custom save button
         instance.UI.setHeaderItems((header) => {
           header.push({
             type: "actionButton",
             img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => {
-              // save the annotations
-              const xfdfString = await annotationManager.exportAnnotations();
-
-              // Dispatch your Redux action to send the data to the API
-              if (Number(commingFrom) === 1) {
-                const apiData = {
-                  TaskID: taskId, // Assuming taskId is defined in your component
-                  TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
-                  AnnotationString: xfdfString, // Pass the annotations data here
-                };
-                // for todo
-                dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
-              } else if (Number(commingFrom) === 2) {
-                let notesData = {
-                  NoteID: taskId,
-                  NoteAttachementID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-                dispatch(
-                  addAnnotationsOnNotesAttachement(navigate, t, notesData)
-                );
-                // for notes
-              } else if (Number(commingFrom) === 3) {
-                let resolutionData = {
-                  ResolutionID: taskId,
-                  ResolutionAttachementID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-                dispatch(
-                  addAnnotationsOnResolutionAttachement(
-                    navigate,
-                    t,
-                    resolutionData
-                  )
-                );
-                // for resultion
-              } else if (Number(commingFrom) === 4) {
-                // for data room
-                let dataRoomData = {
-                  FileID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-
-                dispatch(
-                  addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
-                );
-              }
-              // );
-            },
+            onClick: async () => saveAnnotations(annotationManager),
           });
-        });
-
-        //======================================== disable header =====================================//
-        // if (isPermission) {
-        try {
-          if (Number(isPermission) === 1) {
-            //  for Viewer
-            instance.UI.disableElements([
-              "thumbRotateClockwise",
-              "toolsOverlay",
-              "toolbarGroup-Shapes",
-              "toolbarGroup-Edit",
-              "toolbarGroup-Insert",
-              "shapeToolGroupButton",
-              "menuButton",
-              "freeHandHighlightToolGroupButton",
-              "underlineToolGroupButton",
-              "freeHandToolGroupButton",
-              "stickyToolGroupButton",
-              "squigglyToolGroupButton",
-              "strikeoutToolGroupButton",
-              "notesPanel",
-              "viewControlsButton",
-              "selectToolButton",
-              "toggleNotesButton",
-              "searchButton",
-              "freeTextToolGroupButton",
-              "crossStampToolButton",
-              "checkStampToolButton",
-              "dotStampToolButton",
-              "rubberStampToolGroupButton",
-              "dateFreeTextToolButton",
-              "eraserToolButton",
-              "panToolButton",
-              "signatureToolGroupButton",
-              "viewControlsOverlay",
-              "contextMenuPopup",
-              "header",
-            ]);
-          } else if (Number(isPermission) === 3) {
-            // Not Ediable
-          } else if (Number(isPermission) === 1 || Number(isPermission) === 2) {
-          }
-        } catch (error) {
-          console.log(error);
-        }
-
-        //======================================== disable header =====================================//
-
-        documentViewer.addEventListener("documentLoaded", async () => {
-          annotManager.setCurrentUser(name);
-
-          // annotationManager.addAnnotation(rectangleAnnot);
-          // need to draw the annotation otherwise it won't show up until the page is refreshed
-
-          if (webViewer.xfdfData !== "") {
-            annotManager.importAnnotations(webViewer.xfdfData);
-            annotationManager.redrawAnnotation(webViewer.xfdfData);
-          }
         });
       });
     }
-    return () => {
-      localStorage.removeItem("DataRoomOperations");
-      localStorage.removeItem("NotificationClickFileID");
-      localStorage.removeItem("NotificationClickFileName");
-      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
-    };
-  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer");
-  useEffect(() => {
-    if (
-      webViewer.ResponseMessage !== "" &&
-      webViewer.ResponseMessage !== undefined
-    ) {
-      showMessage(webViewer.ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
+  }, [pdfResponseData, attachmentBlob, fileName, isPermission]);
+
+  // Save Annotations
+  const saveAnnotations = async (annotationManager) => {
+    try {
+      // Export annotations as XFDF
+      const xfdfString = await annotationManager.exportAnnotations();
+      console.log("pdfResponseDatapdfResponseData", xfdfString);
+
+      // Prepare API data dynamically based on 'commingFrom'
+      let apiData = { AnnotationString: xfdfString };
+
+      switch (Number(commingFrom)) {
+        case 1: // For To-Do
+          apiData = {
+            TaskID: taskId,
+            TaskAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
+          break;
+
+        case 2: // For Notes
+          apiData = {
+            NoteID: taskId,
+            NoteAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnNotesAttachement(navigate, t, apiData));
+          break;
+
+        case 3: // For Resolution
+          apiData = {
+            ResolutionID: taskId,
+            ResolutionAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnResolutionAttachement(navigate, t, apiData));
+          break;
+
+        case 4: // For Data Room
+          apiData = {
+            FileID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnDataroomAttachement(navigate, t, apiData));
+          break;
+
+        default:
+          console.error("Invalid 'commingFrom' value:", commingFrom);
+          break;
+      }
+
+      console.log("Annotations saved successfully!");
+    } catch (error) {
+      console.error("Failed to save annotations:", error);
     }
-  }, [webViewer.ResponseMessage]);
+  };
+
+  // Set Permissions
+  const setPermissions = (instance) => {
+    const disabledElements = [
+      "thumbRotateClockwise",
+      "toolsOverlay",
+      "toolbarGroup-Shapes",
+      "toolbarGroup-Edit",
+      "toolbarGroup-Insert",
+      "shapeToolGroupButton",
+      "menuButton",
+      "freeHandHighlightToolGroupButton",
+      "underlineToolGroupButton",
+      "freeHandToolGroupButton",
+      "stickyToolGroupButton",
+      "squigglyToolGroupButton",
+      "strikeoutToolGroupButton",
+      "notesPanel",
+      "viewControlsButton",
+      "selectToolButton",
+      "toggleNotesButton",
+      "searchButton",
+      "freeTextToolGroupButton",
+      "crossStampToolButton",
+      "checkStampToolButton",
+      "dotStampToolButton",
+      "rubberStampToolGroupButton",
+      "dateFreeTextToolButton",
+      "eraserToolButton",
+      "panToolButton",
+      "signatureToolGroupButton",
+      "viewControlsOverlay",
+      "contextMenuPopup",
+      "header",
+    ];
+    instance.UI.disableElements(disabledElements);
+  };
+
+  // Handle Notifications
+  useEffect(() => {
+    if (ResponseMessage) {
+      showMessage(ResponseMessage, "success", setOpen);
+      dispatch(ClearMessageAnnotations());
+    }
+  }, [ResponseMessage, dispatch]);
+
   return (
     <>
-      <div className="documnetviewer">
+      <div className="document-viewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
       <Notification open={open} setOpen={setOpen} />
