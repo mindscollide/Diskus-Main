@@ -251,7 +251,7 @@ const Task = () => {
                   {totalDataRecords >= 15 && (
                     <span
                       className="cursor-pointer"
-                      onClick={() => navigate("/DisKus/todolist")}
+                      onClick={() => navigate("/Diskus/todolist")}
                     >
                       {t("View-more")}
                     </span>

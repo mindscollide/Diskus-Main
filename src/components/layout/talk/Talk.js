@@ -177,7 +177,7 @@ const Talk = () => {
       localStorage.setItem("navigateLocation", "Minutes");
       console.log("This Check");
     } else {
-      navigate("/DisKus/Minutes");
+      navigate("/Diskus/Minutes");
       // let newData = { sRow: 0, Length: 10 };
       // await dispatch(
       //   GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)

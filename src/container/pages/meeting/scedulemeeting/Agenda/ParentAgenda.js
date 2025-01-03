@@ -185,7 +185,7 @@ const ParentAgenda = ({
       agendaVotingID: agendaVotingID,
     };
     if (Data.AgendaVotingID !== 0) {
-      await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+      // await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
       dispatch(showVoteAgendaModal(true));
       dispatch(GetCurrentAgendaDetails(agendaFiltered));
       dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));

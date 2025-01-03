@@ -2945,7 +2945,7 @@ const Dashboard = () => {
           <div className="overlay-incoming-videocall" />
         )}
         <Layout className="mainDashboardLayout">
-          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
+          {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />

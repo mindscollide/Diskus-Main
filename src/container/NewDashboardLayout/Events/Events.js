@@ -224,7 +224,7 @@ const Events = () => {
     console.log("startMeetingRequest", dashboardData);
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
-    navigate("/DisKus/Meeting");
+    navigate("/Diskus/Meeting");
   };
 
   const upcomingEventsHandler = (upComingEvents) => {

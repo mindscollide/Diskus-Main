@@ -159,12 +159,12 @@ const ExpandedMenu = () => {
               viewProposeOrganizerMeetingPageFlagReducer === true ||
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/calendar"
+              ? "/Diskus/Meeting"
+              : "/Diskus/calendar"
           }
           eventKey="link-5"
           className={
-            location.pathname === "/DisKus/calendar" ||
+            location.pathname === "/Diskus/calendar" ||
             location.pathname === "/Diskus/calendar"
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
@@ -203,13 +203,13 @@ const ExpandedMenu = () => {
               viewProposeOrganizerMeetingsPageFlag === true ||
               proposeNewMeetingsPageFlag === true) &&
             viewMeetingsFlag === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/groups"
+              ? "/Diskus/Meeting"
+              : "/Diskus/groups"
           }
           disabled={false}
           draggable="false"
           className={
-            location.pathname === "/DisKus/groups" ||
+            location.pathname === "/Diskus/groups" ||
             location.pathname === "/Diskus/groups"
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
@@ -250,12 +250,12 @@ const ExpandedMenu = () => {
               viewProposeOrganizerMeetingPageFlagReducer === true ||
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/todolist"
+              ? "/Diskus/Meeting"
+              : "/Diskus/todolist"
           }
           eventKey="link-3"
           className={
-            location.pathname === "/DisKus/todolist" ||
+            location.pathname === "/Diskus/todolist" ||
             location.pathname === "/Diskus/todolist"
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
@@ -295,12 +295,12 @@ const ExpandedMenu = () => {
               viewProposeOrganizerMeetingPageFlagReducer === true ||
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/Notes"
+              ? "/Diskus/Meeting"
+              : "/Diskus/Notes"
           }
           eventKey="link-4"
           className={
-            location.pathname === "/DisKus/Notes" ||
+            location.pathname === "/Diskus/Notes" ||
             location.pathname === "/Diskus/Notes"
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu
@@ -339,13 +339,13 @@ const ExpandedMenu = () => {
               viewProposeOrganizerMeetingsPageFlag === true ||
               proposeNewMeetingsPageFlag === true) &&
             viewMeetingsFlag === false
-              ? "/DisKus/Meeting"
-              : "/DisKus/polling"
+              ? "/Diskus/Meeting"
+              : "/Diskus/polling"
           }
           disabled={false}
           draggable="false"
           className={
-            location.pathname === "/DisKus/polling" ||
+            location.pathname === "/Diskus/polling" ||
             location.pathname === "/Diskus/polling"
               ? styles.iconItem_activeExpandedMenu
               : styles.iconItemExpandedMenu

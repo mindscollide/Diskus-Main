@@ -387,7 +387,7 @@ const Header2 = ({ isVideo }) => {
 
   const RecentFilesTabNoCall = async () => {
     localStorage.setItem("setTableView", 4);
-    navigate("/DisKus/dataroom");
+    navigate("/Diskus/dataroom");
   };
 
   const homePageDashboardClick = () => {
@@ -401,7 +401,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const homePageDashboardClickNoCall = () => {
-    navigate("/DisKus/");
+    navigate("/Diskus/");
   };
 
   const handleMeetingSidebarSettings = () => {
@@ -415,7 +415,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleMeetingSidebarSettingsNoCall = () => {
-    navigate("/DisKus/setting");
+    navigate("/Diskus/setting");
   };
 
   const handleMeetingPendingApprovals = () => {
@@ -429,7 +429,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleMeetingPendingApprovalsNoCall = () => {
-    navigate("/DisKus/Minutes");
+    navigate("/Diskus/Minutes");
   };
 
   const handleMeetingSidebarFAQ = () => {
@@ -443,7 +443,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleMeetingSidebarFAQNoCall = () => {
-    navigate("/DisKus/faq's");
+    navigate("/Diskus/faq's");
   };
 
   // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
@@ -492,7 +492,7 @@ const Header2 = ({ isVideo }) => {
                     : cancelSub
                     ? "/Admin/ManageUsers"
                     : "/Admin/ManageUsers"
-                  : "/DisKus"
+                  : "/Diskus"
               }>
               <img
                 src={DiskusLogoHeader}
@@ -549,8 +549,8 @@ const Header2 = ({ isVideo }) => {
                                 true ||
                               proposeNewMeetingPageFlagReducer === true) &&
                             viewMeetingFlagReducer === false
-                              ? "/DisKus/Meeting"
-                              : "/DisKus/Minutes"
+                              ? "/Diskus/Meeting"
+                              : "/Diskus/Minutes"
                           }
                           onClick={(e) => {
                             // Prevent default behavior
@@ -662,8 +662,8 @@ const Header2 = ({ isVideo }) => {
                               true ||
                             proposeNewMeetingPageFlagReducer === true) &&
                           viewMeetingFlagReducer === false
-                            ? "/DisKus/Meeting"
-                            : "/DisKus/setting"
+                            ? "/Diskus/Meeting"
+                            : "/Diskus/setting"
                         }
                         className='d-flex text-black FontClass'
                         onClick={(e) => {
@@ -698,8 +698,8 @@ const Header2 = ({ isVideo }) => {
                               true ||
                             proposeNewMeetingPageFlagReducer === true) &&
                           viewMeetingFlagReducer === false
-                            ? "/DisKus/Meeting"
-                            : "/DisKus/faq's"
+                            ? "/Diskus/Meeting"
+                            : "/Diskus/faq's"
                         }
                         // here FAQ
                         onClick={(e) => {
@@ -754,8 +754,8 @@ const Header2 = ({ isVideo }) => {
                         viewProposeOrganizerMeetingPageFlagReducer === true ||
                         proposeNewMeetingPageFlagReducer === true) &&
                       viewMeetingFlagReducer === false
-                    ? "/DisKus/Meeting"
-                    : "/DisKus/faq's"
+                    ? "/Diskus/Meeting"
+                    : "/Diskus/faq's"
                 }
                 onClick={(e) => {
                   // Prevent default behavior
@@ -1018,8 +1018,8 @@ const Header2 = ({ isVideo }) => {
                                     proposeNewMeetingPageFlagReducer ===
                                       true) &&
                                   viewMeetingFlagReducer === false
-                                    ? "/DisKus/Meeting"
-                                    : "/DisKus/Minutes"
+                                    ? "/Diskus/Meeting"
+                                    : "/Diskus/Minutes"
                                 }
                                 onClick={(e) => {
                                   // Prevent default behavior
@@ -1199,8 +1199,8 @@ const Header2 = ({ isVideo }) => {
                                     proposeNewMeetingPageFlagReducer ===
                                       true) &&
                                   viewMeetingFlagReducer === false
-                                    ? "/DisKus/Meeting"
-                                    : "/DisKus/setting"
+                                    ? "/Diskus/Meeting"
+                                    : "/Diskus/setting"
                                 }
                                 className='d-flex text-black FontClass'
                                 onClick={(e) => {
@@ -1238,8 +1238,8 @@ const Header2 = ({ isVideo }) => {
                                     proposeNewMeetingPageFlagReducer ===
                                       true) &&
                                   viewMeetingFlagReducer === false
-                                    ? "/DisKus/Meeting"
-                                    : "/DisKus/faq's"
+                                    ? "/Diskus/Meeting"
+                                    : "/Diskus/faq's"
                                 }
                                 onClick={(e) => {
                                   // Prevent default behavior
@@ -1329,8 +1329,8 @@ const Header2 = ({ isVideo }) => {
                                 true ||
                               proposeNewMeetingPageFlagReducer === true) &&
                             viewMeetingFlagReducer === false
-                          ? "/DisKus/Meeting"
-                          : "/DisKus/faq's"
+                          ? "/Diskus/Meeting"
+                          : "/Diskus/faq's"
                       }
                       className='mx-3'
                       onClick={(e) => {

@@ -111,7 +111,7 @@ const MeetingMaterial = ({
       };
       const documentDataJson = JSON.stringify(documentData);
       window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(
           documentDataJson
         )}`,
         "_blank",
@@ -131,7 +131,7 @@ const MeetingMaterial = ({
       };
       const documentDataJson = JSON.stringify(documentData);
       window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(
           documentDataJson
         )}`,
         "_blank",
@@ -191,7 +191,7 @@ const MeetingMaterial = ({
         };
         const documentDataJson = JSON.stringify(documentData);
         window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+          `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(
             documentDataJson
           )}`,
           "_blank",
@@ -221,7 +221,7 @@ const MeetingMaterial = ({
         };
         const documentDataJson = JSON.stringify(documentData);
         window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+          `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(
             documentDataJson
           )}`,
           "_blank",

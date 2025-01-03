@@ -89,7 +89,7 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
               );
 
               window.open(
-                `/#/DisKus/signatureviewer?documentID=${encodeURIComponent(
+                `/#/Diskus/signatureviewer?documentID=${encodeURIComponent(
                   reponseData
                 )}`,
                 "_blank",

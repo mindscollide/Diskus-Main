@@ -1906,7 +1906,17 @@ const ValidateEncryptedStringViewTaskDetailsLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewTaskDetailsLink",
 };
 
+const ValidateEncryptedStringViewFileLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewFileLink",
+};
+
+const ValidateEncryptedStringViewFolderLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewFolderLink",
+};
+
 export {
+  ValidateEncryptedStringViewFileLinkRM,
+  ValidateEncryptedStringViewFolderLinkRM,
   ValidateEncryptedStringViewTaskListLinkRM,
   ValidateEncryptedStringViewTaskDetailsLinkRM,
   ValidateEncryptedStringViewGroupDetailsLinkRM,

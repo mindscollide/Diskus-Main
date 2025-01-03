@@ -2382,5 +2382,7 @@
   "Group-call-disconnection": "Group Call Disconnection ",
   "Are-You-Sure-you-Want-to-Leave-video": "Are You Sure you Want to Leave Video",
   "Voting-for-the-agenda-of-the-meeting-has-now-started": "Voting for the agenda of the meeting has now started.",
-  "Please-confirm-your-password-before-deleting-the-meeting": "Please confirm your password before deleting the meeting"
+  "Please-confirm-your-password-before-deleting-the-meeting": "Please confirm your password before deleting the meeting",
+  "Cannot-add-option-with-same-name": "Cannot add option with same name",
+  "Voting-options-should-be-2-or-more-than-2": "Voting options should be 2 or more than 2"
 }
