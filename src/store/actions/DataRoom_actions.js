@@ -532,7 +532,7 @@ const getFolderDocumentsApi = (
   no,
   record,
   BreadCrumbsListArr,
-  sortValue, 
+  sortValue,
   isDescending
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -546,7 +546,7 @@ const getFolderDocumentsApi = (
     sRow: 0,
     Length: 10,
     SortBy: sortValue ?? 1,
-    isDescending:  isDescending ?? true,
+    isDescending: isDescending ?? true,
   };
   return (dispatch) => {
     if (no !== 1) {
@@ -574,7 +574,7 @@ const getFolderDocumentsApi = (
               no,
               record,
               BreadCrumbsListArr,
-              sortValue, 
+              sortValue,
               isDescending
             )
           );
@@ -656,11 +656,23 @@ const getFolderDocumentsApi = (
                   t("No-record-found")
                 )
               );
-              let newFolderRecord = [
-                ...BreadCrumbsListArr,
-                { name: record?.name, id: record?.id },
-              ];
-              dispatch(BreadCrumbsList(newFolderRecord));
+              let findIfItsExist = BreadCrumbsListArr.findIndex(
+                (breadCrumbData, index) => breadCrumbData.id === record.id
+              );
+              if (findIfItsExist !== -1) {
+                // Keep only the elements before index 2
+                let checkingisExist = BreadCrumbsListArr.slice(
+                  0,
+                  findIfItsExist + 1
+                );
+                dispatch(BreadCrumbsList(checkingisExist));
+              } else {
+                let newFolderRecord = [
+                  ...BreadCrumbsListArr,
+                  { name: record?.name, id: record?.id },
+                ];
+                dispatch(BreadCrumbsList(newFolderRecord));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

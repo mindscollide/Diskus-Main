@@ -3453,7 +3453,7 @@ const DataRoom = () => {
           navigate,
           Number(id),
           t,
-          1,
+          5,
           record,
           BreadCrumbsListArr
         )
