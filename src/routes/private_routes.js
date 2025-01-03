@@ -208,17 +208,53 @@ const PrivateRoutes = () => {
       const parts = currentUrl.split("action=")[1];
       localStorage.setItem("mtAgUpdate", parts);
     }
-    // if (
-    //   currentUrl
-    //     .toLowerCase()
-    //     .includes("DisKus/committee?id_action".toLowerCase())
-    // ) {
-    //   let getValue = getActionValue(currentUrl, "id_action=");
-    // let getResponse =   dispatch(
-    //     validateEncryptedStringViewCommitteeDetailLinkApi(getValue, navigate, t)
-    //   );
-    //   console.log(getValue, "getActionValuegetActionValuegetActionValue");
-    // }
+    // Committee View
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/committee?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("committeeView_Id", getValue);
+    }
+    // Committee List View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/committee?action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "action=");
+      console.log(getValue, "getValuegetValue");
+      localStorage.setItem("committeeList", getValue);
+    }
+    // Group View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/groups?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("groupView_Id", getValue);
+    }
+    // Group List View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/groups?action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "action=");
+      localStorage.setItem("groupList", getValue);
+    }
+    // Tasks View
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("DisKus/todolist?id_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "id_action=");
+      localStorage.setItem("taskListView_Id", getValue);
+    }
+    // Tasks List View
+    if (
+      currentUrl.toLowerCase().includes("DisKus/todolist?Tasks_action=".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "Tasks_action=");
+      localStorage.setItem("taskListView", getValue);
+    }
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");

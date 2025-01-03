@@ -12,10 +12,11 @@ import DeleteCommentGeneral from "./deleteCommentModal/DeleteCommentGeneral";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
-import { Upload } from "antd";
+import { Tooltip, Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
 import DropdownPurple from "./Images/Dropdown-Purple.png";
 import MenuIcon from "./Images/MenuIcon.png";
+import WarningIcon from "../../../../../assets/images/warning.png";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import {
@@ -727,6 +728,7 @@ const Minutes = ({
   const [minuteReviewData, setMinuteReviewData] = useState(null);
 
   const [minutesData, setMinutesData] = useState([]);
+  console.log(minutesData, "minutesDataminutesData");
   const [minutesDataAgenda, setMinutesDataAgenda] = useState(null);
 
   const [publishMinutesDataAgenda, setPublishMinutesDataAgenda] = useState([]);
@@ -1914,6 +1916,10 @@ const Minutes = ({
             {minutesData.map((data, index) => {
               const isOpen = openIndices.includes(index);
               const isOpenReviewer = openReviewerDetail.includes(index);
+              let isRejectedMemberHas =
+                data?.MinuteStats?.rejectedByUsers.length !== 0;
+
+              console.log(isRejectedMemberHas, "isRejectedMemberHas");
               return (
                 <Row className='mt-2'>
                   <Col
@@ -1938,6 +1944,18 @@ const Minutes = ({
                                 {`${t("General-minute")} ${+index + 1}`}
                               </p>
                               <span>
+                                {isRejectedMemberHas && (
+                                  <Tooltip
+                                    placement='top'
+                                    showArrow={false}
+                                    title={t("Rejected")}>
+                                    <img
+                                      className={styles["Attachment"]}
+                                      alt=''
+                                      src={WarningIcon}
+                                    />
+                                  </Tooltip>
+                                )}
                                 {data.attachments.length > 0 ? (
                                   <img
                                     className={styles["Attachment"]}
