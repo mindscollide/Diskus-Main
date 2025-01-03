@@ -531,7 +531,9 @@ const getFolderDocumentsApi = (
   t,
   no,
   record,
-  BreadCrumbsListArr
+  BreadCrumbsListArr,
+  sortValue,
+  isDescending
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
@@ -543,8 +545,8 @@ const getFolderDocumentsApi = (
     OrganizationID: Number(OrganizationID),
     sRow: 0,
     Length: 10,
-    SortBy: 1,
-    isDescending: true,
+    SortBy: sortValue ?? 1,
+    isDescending: isDescending ?? true,
   };
   return (dispatch) => {
     if (no !== 1) {
@@ -571,7 +573,9 @@ const getFolderDocumentsApi = (
               t,
               no,
               record,
-              BreadCrumbsListArr
+              BreadCrumbsListArr,
+              sortValue,
+              isDescending
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -652,11 +656,23 @@ const getFolderDocumentsApi = (
                   t("No-record-found")
                 )
               );
-              let newFolderRecord = [
-                ...BreadCrumbsListArr,
-                { name: record?.name, id: record?.id },
-              ];
-              dispatch(BreadCrumbsList(newFolderRecord));
+              let findIfItsExist = BreadCrumbsListArr.findIndex(
+                (breadCrumbData, index) => breadCrumbData.id === record.id
+              );
+              if (findIfItsExist !== -1) {
+                // Keep only the elements before index 2
+                let checkingisExist = BreadCrumbsListArr.slice(
+                  0,
+                  findIfItsExist + 1
+                );
+                dispatch(BreadCrumbsList(checkingisExist));
+              } else {
+                let newFolderRecord = [
+                  ...BreadCrumbsListArr,
+                  { name: record?.name, id: record?.id },
+                ];
+                dispatch(BreadCrumbsList(newFolderRecord));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
