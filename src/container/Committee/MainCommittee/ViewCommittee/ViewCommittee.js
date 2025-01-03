@@ -170,9 +170,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
       console.log(error, "error");
     }
     return () => {
-      setViewGroupPage(false);
-      localStorage.removeItem("ViewCommitteeID");
-      dispatch(viewCommitteePageFlag(false));
+ 
     }
   }, [getCommitteeByCommitteeID]);
 

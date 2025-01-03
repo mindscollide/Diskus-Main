@@ -250,10 +250,10 @@ const PrivateRoutes = () => {
     }
     // Tasks List View
     if (
-      currentUrl.toLowerCase().includes("DisKus/todolist?action".toLowerCase())
+      currentUrl.toLowerCase().includes("DisKus/todolist?Tasks_action=".toLowerCase())
     ) {
-      let getValue = getActionValue(currentUrl, "action=");
-      localStorage.setItem("taskListList", getValue);
+      let getValue = getActionValue(currentUrl, "Tasks_action=");
+      localStorage.setItem("taskListView", getValue);
     }
   }, [currentUrl]);
 

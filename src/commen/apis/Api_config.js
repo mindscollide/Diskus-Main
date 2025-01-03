@@ -1898,8 +1898,17 @@ const ValidateEncryptedStringViewGroupDetailsLinkRM = {
 const ValidateEncryptedStringViewGroupListLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewGroupListLink",
 };
+const ValidateEncryptedStringViewTaskListLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewTaskListLink",
+};
+
+const ValidateEncryptedStringViewTaskDetailsLinkRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringViewTaskDetailsLink",
+};
 
 export {
+  ValidateEncryptedStringViewTaskListLinkRM,
+  ValidateEncryptedStringViewTaskDetailsLinkRM,
   ValidateEncryptedStringViewGroupDetailsLinkRM,
   ValidateEncryptedStringViewGroupListLinkRM,
   ValidateEncryptedStringViewCommitteeListLinkRM,

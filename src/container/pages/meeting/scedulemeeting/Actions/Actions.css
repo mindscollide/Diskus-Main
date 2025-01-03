@@ -343,9 +343,9 @@ body[dir="rtl"]
   min-width: 100px !important;
 }
 
-.ant-tooltip.ant-tooltip-placement-top {
+/* .ant-tooltip.ant-tooltip-placement-top {
   display: none !important;
-}
+} */
 
 .ant-table-filter-column {
   display: inline-flex !important;

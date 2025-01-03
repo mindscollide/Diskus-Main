@@ -776,7 +776,7 @@ const Committee = () => {
                         className={"pagination-groups-table"}>
                         <CustomPagination
                           total={totalRecords}
-                          current={currentPage}
+                          current={JSON.parse(currentPage)}
                           pageSize={8}
                           onChange={handlechange}
                           showSizer={false}
