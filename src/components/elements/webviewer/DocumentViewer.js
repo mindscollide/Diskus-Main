@@ -63,12 +63,12 @@ const DocumentViewer = () => {
   };
 
   // Utility: Convert Base64 to Blob
-  const base64ToBlob = (base64) => {
+  const base64ToBlob = (base64, mimeType) => {
     const binaryString = window.atob(base64);
     return new Blob(
       [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
       {
-        type: "application/pdf",
+        type: mimeType,
       }
     );
   };
@@ -114,6 +114,52 @@ const DocumentViewer = () => {
       setPdfResponseData({ xfdfData, attachmentBlob });
     }
   }, [attachmentBlob, xfdfData]);
+
+  const getMimeTypeFromFileName = (fileName) => {
+    const mimeTypes = {
+      pdf: "application/pdf",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      txt: "text/plain",
+      csv: "text/csv",
+      doc: "application/msword",
+      dot: "application/msword",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      dotx: "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+      docm: "application/vnd.ms-word.document.macroEnabled.12",
+      dotm: "application/vnd.ms-word.template.macroEnabled.12",
+      xls: "application/vnd.ms-excel",
+      xlt: "application/vnd.ms-excel",
+      xla: "application/vnd.ms-excel",
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      xltx: "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+      xlsm: "application/vnd.ms-excel.sheet.macroEnabled.12",
+      xltm: "application/vnd.ms-excel.template.macroEnabled.12",
+      xlam: "application/vnd.ms-excel.addin.macroEnabled.12",
+      xlsb: "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+      ppt: "application/vnd.ms-powerpoint",
+      pot: "application/vnd.ms-powerpoint",
+      pps: "application/vnd.ms-powerpoint",
+      ppa: "application/vnd.ms-powerpoint",
+      pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      potx: "application/vnd.openxmlformats-officedocument.presentationml.template",
+      ppsx: "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+      ppam: "application/vnd.ms-powerpoint.addin.macroEnabled.12",
+      pptm: "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+      potm: "application/vnd.ms-powerpoint.template.macroEnabled.12",
+      ppsm: "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+      mdb: "application/vnd.ms-access",
+      // add more file types here
+    };
+
+    const fileExtension = fileName.split(".").pop().toLowerCase();
+    return mimeTypes[fileExtension] || "application/octet-stream"; // default to binary stream if not found
+  };
+  const getFileExtension = (fileName) => {
+    const parts = fileName.split(".");
+    return parts.length > 1 ? parts.pop() : ""; // Return the extension or an empty string if no extension
+  };
   // Initialize WebViewer
   useEffect(() => {
     if (pdfResponseData.attachmentBlob) {
@@ -122,40 +168,69 @@ const DocumentViewer = () => {
           path: "/webviewer/lib",
           licenseKey:
             "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
+          fullAPI: true,
+          officeEditor: true, // Enables Office file support
+          officeWorker: true, // Enables Office file conversion
         },
         viewer.current
       ).then((instance) => {
-        const { documentViewer, annotationManager } = instance.Core;
+        console.log("pdfResponseDatapdf", instance.Core); // Debugging step
 
-        // Load document
-        console.log(
-          "pdfResponseDatapdfResponseData",
-          pdfResponseData.attachmentBlob
-        );
-        instance.UI.loadDocument(base64ToBlob(pdfResponseData.attachmentBlob), {
-          filename: fileName,
-        });
+        const { documentViewer, annotationManager, officeToPDFBuffer, PDFNet } =
+          instance.Core;
+        // Example usage:
+        const extension = getFileExtension(fileName);
+        const mimeType = getMimeTypeFromFileName(fileName);
+        let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+        const supportedFormats = [
+          "pdf",
+          "webp",
+          "svg",
+          "png",
+          "jpeg",
+          "gif",
+          "avif",
+          "apng",
+        ];
+
+        // Check if the extension exists in the array (case-insensitive)
+        if (supportedFormats.includes(extension.toLowerCase())) {
+          instance.UI.loadDocument(blob, {
+            filename: fileName,
+          });
+        } else {
+          if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
+            try {
+              (async () => {
+                // Initialize Document Conversion
+                // Convert Blob into a File object
+                const file = new File([blob], `${fileName}`, {
+                  type: mimeType,
+                });
+                const buffer = await officeToPDFBuffer(file);
+                // Create a Blob for the converted PDF
+                const convertedBlob = new Blob([buffer], {
+                  type: "application/pdf",
+                });
+                // **Remove existing extension from fileName before appending '.pdf'**
+                const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
+                // Load the converted PDF into WebViewer
+                await instance.UI.loadDocument(convertedBlob, {
+                  filename: `${sanitizedFileName}.pdf`,
+                  extension: "pdf",
+                });
+              })();
+            } catch (error) {
+              console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
+            }
+          }
+        }
 
         // Handle annotations
         documentViewer.addEventListener("documentLoaded", () => {
           annotationManager.setCurrentUser(localStorage.getItem("name"));
           if (pdfResponseData.xfdfData) {
-            console.log(
-              "pdfResponseDatapdfResponseData",
-              pdfResponseData.xfdfData
-            );
-            // annotationManager.importAnnotations(pdfResponseData.xfdfData);
-            annotationManager.importAnnotationsAsync(pdfResponseData.xfdfData).then(() => {
-              const annotations = annotationManager.getAnnotationsList();
-            
-              annotations.forEach((annot) => {
-                if (annot.PageNumber > documentViewer.getPageCount()) {
-                  annot.PageNumber = documentViewer.getPageCount(); // Adjust invalid pages
-                }
-              });
-            
-              annotationManager.redrawAnnotations();
-            });
+            annotationManager.importAnnotations(pdfResponseData.xfdfData);
           }
         });
 
@@ -172,7 +247,7 @@ const DocumentViewer = () => {
         });
       });
     }
-  }, [pdfResponseData, attachmentBlob, fileName, isPermission]);
+  }, [pdfResponseData.attachmentBlob]);
 
   // Save Annotations
   const saveAnnotations = async (annotationManager) => {
