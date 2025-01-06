@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "./DocumentViwer.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,268 +16,344 @@ import {
 import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
+import "./DocumentViwer.css";
+
 const DocumentViewer = () => {
-  const location = useLocation();
+  const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
+
+  // State Variables
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-  const { webViewer, DataRoomReducer } = useSelector((state) => state);
-  const viewer = useRef(null);
-  let name = localStorage.getItem("name");
-  // Parse the URL parameters to get the data
-  const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
-
-  // Deserialize the JSON string into an object
-  const pdfData = JSON.parse(pdfDataJson);
-
-  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
-
-  const [pdfResponceData, setPdfResponceData] = useState({
+  const [pdfResponseData, setPdfResponseData] = useState({
     xfdfData: "",
     attachmentBlob: "",
   });
 
-  useEffect(() => {
-    if (taskId && attachmentID) {
-      if (Number(commingFrom) === 1) {
-        let data = {
-          TaskID: Number(taskId),
-          TaskAttachementID: Number(attachmentID),
-        };
-        // for todo
-        dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
-      } else if (Number(commingFrom) === 2) {
-        let notesData = {
-          NoteID: Number(taskId),
-          NoteAttachementID: Number(attachmentID),
-        };
+  // Redux Selectors
+  const FileRemoveMQTT = useSelector(
+    (state) => state.DataRoomReducer.FileRemoveMQTT
+  );
+  const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
+    (state) => state.webViewer
+  );
 
-        dispatch(getAnnotationsOfNotesAttachement(navigate, t, notesData));
-        // for notes
-      } else if (Number(commingFrom) === 3) {
-        let resolutionData = {
+  // Memoized PDF Data
+  const pdfData = useMemo(() => {
+    const params = new URLSearchParams(location.search).get("pdfData");
+    return JSON.parse(params || "{}");
+  }, [location.search]);
+
+  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
+
+  // Utility: Clear Local Storage
+  const clearLocalStorage = () => {
+    [
+      "DataRoomOperations",
+      "NotificationClickFileID",
+      "NotificationClickFileName",
+      "DataRoomOperationsForFileEditorRights",
+    ].forEach(localStorage.removeItem);
+  };
+
+  // Utility: Convert Base64 to Blob
+  const base64ToBlob = (base64, mimeType) => {
+    const binaryString = window.atob(base64);
+    return new Blob(
+      [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
+      {
+        type: mimeType,
+      }
+    );
+  };
+
+  // Fetch Annotations
+  useEffect(() => {
+    const fetchAnnotations = () => {
+      const actions = {
+        1: getAnnotationsOfToDoAttachement,
+        2: getAnnotationsOfNotesAttachement,
+        3: getAnnotationsOfResolutionAttachement,
+        4: getAnnotationsOfDataroomAttachement,
+      };
+
+      const data = {
+        1: { TaskID: Number(taskId), TaskAttachementID: Number(attachmentID) },
+        2: { NoteID: Number(taskId), NoteAttachementID: Number(attachmentID) },
+        3: {
           ResolutionID: Number(taskId),
           ResolutionAttachementID: Number(attachmentID),
-        };
-        dispatch(
-          getAnnotationsOfResolutionAttachement(navigate, t, resolutionData)
-        );
-        // for resultion
-      } else if (Number(commingFrom) === 4) {
-        // for data room
-        let dataRoomData = {
-          FileID: attachmentID,
-        };
-        dispatch(
-          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
-        );
-      }
-    }
-    return () => {
-      localStorage.removeItem("DataRoomOperations");
-      localStorage.removeItem("NotificationClickFileID");
-      localStorage.removeItem("NotificationClickFileName");
-      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
+        },
+        4: { FileID: attachmentID },
+      };
+
+      const action = actions[Number(commingFrom)];
+      if (action) dispatch(action(navigate, t, data[Number(commingFrom)]));
     };
-  }, []);
 
-  function base64ToBlob(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+    if (taskId && attachmentID) fetchAnnotations();
+    return clearLocalStorage;
+  }, [dispatch, navigate, t, taskId, attachmentID, commingFrom]);
 
-    return new Blob([bytes], { type: "application/pdf" });
-  }
-
-  // Remove File MQTT
+  // Handle File Removal via MQTT
   useEffect(() => {
-    if (DataRoomReducer.FileRemoveMQTT !== null) {
-      try {
-        let fileID = Number(DataRoomReducer.FileRemoveMQTT);
-        if (Number(attachmentID) === fileID) {
-          window.close();
-        }
-      } catch (error) {
-        console.log(error, "datadatadata");
-      }
+    if (FileRemoveMQTT && Number(FileRemoveMQTT) === Number(attachmentID)) {
+      window.close();
     }
-  }, [DataRoomReducer.FileRemoveMQTT]);
+  }, [FileRemoveMQTT, attachmentID]);
 
+  // Update PDF Data
   useEffect(() => {
-    if (webViewer.attachmentBlob) {
-      setPdfResponceData({
-        ...pdfResponceData,
-        xfdfData: webViewer.xfdfData,
-        pdfUrls: webViewer.attachmentBlob,
-      });
+    if (attachmentBlob) {
+      setPdfResponseData({ xfdfData, attachmentBlob });
     }
-  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
+  }, [attachmentBlob, xfdfData]);
 
-  // if using a class, equivalent of componentDidMount
+  const getMimeTypeFromFileName = (fileName) => {
+    const mimeTypes = {
+      pdf: "application/pdf",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      txt: "text/plain",
+      csv: "text/csv",
+      doc: "application/msword",
+      dot: "application/msword",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      dotx: "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+      docm: "application/vnd.ms-word.document.macroEnabled.12",
+      dotm: "application/vnd.ms-word.template.macroEnabled.12",
+      xls: "application/vnd.ms-excel",
+      xlt: "application/vnd.ms-excel",
+      xla: "application/vnd.ms-excel",
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      xltx: "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+      xlsm: "application/vnd.ms-excel.sheet.macroEnabled.12",
+      xltm: "application/vnd.ms-excel.template.macroEnabled.12",
+      xlam: "application/vnd.ms-excel.addin.macroEnabled.12",
+      xlsb: "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+      ppt: "application/vnd.ms-powerpoint",
+      pot: "application/vnd.ms-powerpoint",
+      pps: "application/vnd.ms-powerpoint",
+      ppa: "application/vnd.ms-powerpoint",
+      pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      potx: "application/vnd.openxmlformats-officedocument.presentationml.template",
+      ppsx: "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+      ppam: "application/vnd.ms-powerpoint.addin.macroEnabled.12",
+      pptm: "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+      potm: "application/vnd.ms-powerpoint.template.macroEnabled.12",
+      ppsm: "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+      mdb: "application/vnd.ms-access",
+      // add more file types here
+    };
+
+    const fileExtension = fileName.split(".").pop().toLowerCase();
+    return mimeTypes[fileExtension] || "application/octet-stream"; // default to binary stream if not found
+  };
+  const getFileExtension = (fileName) => {
+    const parts = fileName.split(".");
+    return parts.length > 1 ? parts.pop() : ""; // Return the extension or an empty string if no extension
+  };
+  // Initialize WebViewer
   useEffect(() => {
-    if (webViewer.xfdfData || webViewer.attachmentBlob) {
+    if (pdfResponseData.attachmentBlob) {
       WebViewer(
         {
           path: "/webviewer/lib",
           licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
+          fullAPI: true,
+          officeEditor: true, // Enables Office file support
+          officeWorker: true, // Enables Office file conversion
         },
-
         viewer.current
       ).then((instance) => {
-        instance.UI.loadDocument(base64ToBlob(webViewer.attachmentBlob), {
-          filename: fileName,
-        });
-        const { documentViewer, annotationManager } = instance.Core;
-        const annotManager = documentViewer.getAnnotationManager();
+        console.log("pdfResponseDatapdf", instance.Core); // Debugging step
 
+        const { documentViewer, annotationManager, officeToPDFBuffer, PDFNet } =
+          instance.Core;
+        // Example usage:
+        const extension = getFileExtension(fileName);
+        const mimeType = getMimeTypeFromFileName(fileName);
+        let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+        const supportedFormats = [
+          "pdf",
+          "webp",
+          "svg",
+          "png",
+          "jpeg",
+          "gif",
+          "avif",
+          "apng",
+        ];
+
+        // Check if the extension exists in the array (case-insensitive)
+        if (supportedFormats.includes(extension.toLowerCase())) {
+          instance.UI.loadDocument(blob, {
+            filename: fileName,
+          });
+        } else {
+          if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
+            try {
+              (async () => {
+                // Initialize Document Conversion
+                // Convert Blob into a File object
+                const file = new File([blob], `${fileName}`, {
+                  type: mimeType,
+                });
+                const buffer = await officeToPDFBuffer(file);
+                // Create a Blob for the converted PDF
+                const convertedBlob = new Blob([buffer], {
+                  type: "application/pdf",
+                });
+                // **Remove existing extension from fileName before appending '.pdf'**
+                const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
+                // Load the converted PDF into WebViewer
+                await instance.UI.loadDocument(convertedBlob, {
+                  filename: `${sanitizedFileName}.pdf`,
+                  extension: "pdf",
+                });
+              })();
+            } catch (error) {
+              console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
+            }
+          }
+        }
+
+        // Handle annotations
+        documentViewer.addEventListener("documentLoaded", () => {
+          annotationManager.setCurrentUser(localStorage.getItem("name"));
+          if (pdfResponseData.xfdfData) {
+            annotationManager.importAnnotations(pdfResponseData.xfdfData);
+          }
+        });
+
+        // Set permissions if needed
+        if (Number(isPermission) === 1) setPermissions(instance);
+
+        // Add custom save button
         instance.UI.setHeaderItems((header) => {
           header.push({
             type: "actionButton",
             img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => {
-              // save the annotations
-              const xfdfString = await annotationManager.exportAnnotations();
-
-              // Dispatch your Redux action to send the data to the API
-              if (Number(commingFrom) === 1) {
-                const apiData = {
-                  TaskID: taskId, // Assuming taskId is defined in your component
-                  TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
-                  AnnotationString: xfdfString, // Pass the annotations data here
-                };
-                // for todo
-                dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
-              } else if (Number(commingFrom) === 2) {
-                let notesData = {
-                  NoteID: taskId,
-                  NoteAttachementID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-                dispatch(
-                  addAnnotationsOnNotesAttachement(navigate, t, notesData)
-                );
-                // for notes
-              } else if (Number(commingFrom) === 3) {
-                let resolutionData = {
-                  ResolutionID: taskId,
-                  ResolutionAttachementID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-                dispatch(
-                  addAnnotationsOnResolutionAttachement(
-                    navigate,
-                    t,
-                    resolutionData
-                  )
-                );
-                // for resultion
-              } else if (Number(commingFrom) === 4) {
-                // for data room
-                let dataRoomData = {
-                  FileID: attachmentID,
-                  AnnotationString: xfdfString,
-                };
-
-                dispatch(
-                  addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
-                );
-              }
-              // );
-            },
+            onClick: async () => saveAnnotations(annotationManager),
           });
-        });
-
-        //======================================== disable header =====================================//
-        // if (isPermission) {
-        try {
-          if (Number(isPermission) === 1) {
-            //  for Viewer
-            instance.UI.disableElements([
-              "thumbRotateClockwise",
-              "toolsOverlay",
-              "toolbarGroup-Shapes",
-              "toolbarGroup-Edit",
-              "toolbarGroup-Insert",
-              "shapeToolGroupButton",
-              "menuButton",
-              "freeHandHighlightToolGroupButton",
-              "underlineToolGroupButton",
-              "freeHandToolGroupButton",
-              "stickyToolGroupButton",
-              "squigglyToolGroupButton",
-              "strikeoutToolGroupButton",
-              "notesPanel",
-              "viewControlsButton",
-              "selectToolButton",
-              "toggleNotesButton",
-              "searchButton",
-              "freeTextToolGroupButton",
-              "crossStampToolButton",
-              "checkStampToolButton",
-              "dotStampToolButton",
-              "rubberStampToolGroupButton",
-              "dateFreeTextToolButton",
-              "eraserToolButton",
-              "panToolButton",
-              "signatureToolGroupButton",
-              "viewControlsOverlay",
-              "contextMenuPopup",
-              "header",
-            ]);
-          } else if (Number(isPermission) === 3) {
-            // Not Ediable
-          } else if (Number(isPermission) === 1 || Number(isPermission) === 2) {
-          }
-        } catch (error) {
-          console.log(error);
-        }
-
-        //======================================== disable header =====================================//
-
-        documentViewer.addEventListener("documentLoaded", async () => {
-          annotManager.setCurrentUser(name);
-
-          // annotationManager.addAnnotation(rectangleAnnot);
-          // need to draw the annotation otherwise it won't show up until the page is refreshed
-
-          if (webViewer.xfdfData !== "") {
-            annotManager.importAnnotations(webViewer.xfdfData);
-            annotationManager.redrawAnnotation(webViewer.xfdfData);
-          }
         });
       });
     }
-    return () => {
-      localStorage.removeItem("DataRoomOperations");
-      localStorage.removeItem("NotificationClickFileID");
-      localStorage.removeItem("NotificationClickFileName");
-      localStorage.removeItem("DataRoomOperationsForFileEditorRights");
-    };
-  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-  console.log(webViewer.ResponseMessage, "webViewerwebViewerwebViewer");
-  useEffect(() => {
-    if (
-      webViewer.ResponseMessage !== "" &&
-      webViewer.ResponseMessage !== undefined
-    ) {
-      showMessage(webViewer.ResponseMessage, "success", setOpen);
-      setTimeout(() => {
-        dispatch(ClearMessageAnnotations());
-      }, 4000);
+  }, [pdfResponseData.attachmentBlob]);
+
+  // Save Annotations
+  const saveAnnotations = async (annotationManager) => {
+    try {
+      // Export annotations as XFDF
+      const xfdfString = await annotationManager.exportAnnotations();
+      console.log("pdfResponseDatapdfResponseData", xfdfString);
+
+      // Prepare API data dynamically based on 'commingFrom'
+      let apiData = { AnnotationString: xfdfString };
+
+      switch (Number(commingFrom)) {
+        case 1: // For To-Do
+          apiData = {
+            TaskID: taskId,
+            TaskAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
+          break;
+
+        case 2: // For Notes
+          apiData = {
+            NoteID: taskId,
+            NoteAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnNotesAttachement(navigate, t, apiData));
+          break;
+
+        case 3: // For Resolution
+          apiData = {
+            ResolutionID: taskId,
+            ResolutionAttachementID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnResolutionAttachement(navigate, t, apiData));
+          break;
+
+        case 4: // For Data Room
+          apiData = {
+            FileID: attachmentID,
+            AnnotationString: xfdfString,
+          };
+          dispatch(addAnnotationsOnDataroomAttachement(navigate, t, apiData));
+          break;
+
+        default:
+          console.error("Invalid 'commingFrom' value:", commingFrom);
+          break;
+      }
+
+      console.log("Annotations saved successfully!");
+    } catch (error) {
+      console.error("Failed to save annotations:", error);
     }
-  }, [webViewer.ResponseMessage]);
+  };
+
+  // Set Permissions
+  const setPermissions = (instance) => {
+    const disabledElements = [
+      "thumbRotateClockwise",
+      "toolsOverlay",
+      "toolbarGroup-Shapes",
+      "toolbarGroup-Edit",
+      "toolbarGroup-Insert",
+      "shapeToolGroupButton",
+      "menuButton",
+      "freeHandHighlightToolGroupButton",
+      "underlineToolGroupButton",
+      "freeHandToolGroupButton",
+      "stickyToolGroupButton",
+      "squigglyToolGroupButton",
+      "strikeoutToolGroupButton",
+      "notesPanel",
+      "viewControlsButton",
+      "selectToolButton",
+      "toggleNotesButton",
+      "searchButton",
+      "freeTextToolGroupButton",
+      "crossStampToolButton",
+      "checkStampToolButton",
+      "dotStampToolButton",
+      "rubberStampToolGroupButton",
+      "dateFreeTextToolButton",
+      "eraserToolButton",
+      "panToolButton",
+      "signatureToolGroupButton",
+      "viewControlsOverlay",
+      "contextMenuPopup",
+      "header",
+    ];
+    instance.UI.disableElements(disabledElements);
+  };
+
+  // Handle Notifications
+  useEffect(() => {
+    if (ResponseMessage) {
+      showMessage(ResponseMessage, "success", setOpen);
+      dispatch(ClearMessageAnnotations());
+    }
+  }, [ResponseMessage, dispatch]);
+
   return (
     <>
-      <div className="documnetviewer">
+      <div className="document-viewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
       <Notification open={open} setOpen={setOpen} />
