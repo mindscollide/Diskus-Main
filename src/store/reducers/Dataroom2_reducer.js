@@ -6,10 +6,57 @@ const initialState = {
   updateFileAndFolderDetails: null,
   getDataAnalyticsDetails: null,
   getDataAnalyticsCountDetails: [],
+  viewDocument: null,
+  viewFolder: null,
 };
 
 const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        viewDocument: action.response,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        viewDocument: null,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        viewFolder: action.response,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        viewFolder: null,
+      };
+    }
     case actions.GETFILESANDFOLDERS_DETAILS_INIT: {
       return {
         ...state,

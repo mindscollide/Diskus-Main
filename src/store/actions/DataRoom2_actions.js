@@ -3,6 +3,8 @@ import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import {
+  ValidateEncryptedStringViewFileLinkRM,
+  ValidateEncryptedStringViewFolderLinkRM,
   getDataAnalyticsCountRM,
   getDataAnalyticsRM,
   getFileFolderDetailsRM,
@@ -250,10 +252,7 @@ const getDataAnalyticsApi = (
               )
           ) {
             await dispatch(
-              getDataAnalytics_Success(
-                response.data.responseResult,
-                ""
-              )
+              getDataAnalytics_Success(response.data.responseResult, "")
             );
             setActivityState(true);
             setDetailsState(false);
@@ -393,10 +392,314 @@ const clearDataResponseMessageDataRoom2 = () => {
     type: actions.CLEAR_DATAROOM2_RESPONSE_MESSAGE,
   };
 };
+
+// List Committees
+const validateEncryptedStringViewFileLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_INIT,
+});
+
+const validateEncryptedStringViewFileLink_Success = (response, message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewFileLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewFileLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewFileLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewFileLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewFileLinkApi(encryptedString, navigate, t)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFileLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFileLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            let response = {
+              response: responseResult.data,
+              fileName: responseResult.folderOrFileName,
+            };
+            return {
+              response: response,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFileLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFileLink_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFileLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFileLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFileLink_0".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFileLink_Fail(t("Someting-went-wrong"))
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewFileLink_Fail(t("Unsuccessful"))
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewFileLink_Fail(t("Something-went-wrong"))
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewFileLink_Fail(t("Something-went-wrong"))
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewFileLink_Fail(t("Something-went-wrong"))
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
+// Details Committees Email Routes
+const validateEncryptedStringViewFolderLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_INIT,
+});
+
+const validateEncryptedStringViewFolderLink_Success = (response, message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewFolderLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewFolderLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewFolderLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewFolderLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewFolderLinkApi(encryptedString, navigate, t)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFolderLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFolderLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            let response = {
+              response: responseResult.data,
+              folderName: responseResult.folderOrFileName,
+            };
+            return {
+              response: response,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFolderLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(validateEncryptedStringViewFolderLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFolderLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFolderLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_ValidateEncryptedStringViewFolderLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewFolderLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewFolderLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewFolderLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewFolderLink_Fail(t("Something-went-wrong"))
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewFolderLink_Fail(t("Something-went-wrong"))
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
 export {
   getDataAnalyticsCountApi,
   getDataAnalyticsApi,
   updateFileandFolderDetailsApi,
   getFilesandFolderDetailsApi,
   clearDataResponseMessageDataRoom2,
+  validateEncryptedStringViewFolderLinkApi,
+  validateEncryptedStringViewFileLinkApi,
 };

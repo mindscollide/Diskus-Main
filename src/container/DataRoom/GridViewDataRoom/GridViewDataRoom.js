@@ -189,7 +189,7 @@ const GridViewDataRoom = ({
       const pdfDataJson = JSON.stringify(pdfData);
       if (validationExtension(ext)) {
         window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
           "_blank",
           "noopener noreferrer"
         );

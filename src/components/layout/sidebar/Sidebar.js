@@ -212,7 +212,7 @@ const Sidebar = () => {
                   eventKey="link-2"
                   data-tut="meeting-iconSidebar"
                   className={
-                    location.pathname === "/DisKus/Meeting" ||
+                    location.pathname === "/Diskus/Meeting" ||
                     location.pathname === "/Diskus/Meeting"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
@@ -257,7 +257,7 @@ const Sidebar = () => {
                   to="todolist"
                   eventKey="link-3"
                   className={
-                    location.pathname === "/DisKus/todolist" ||
+                    location.pathname === "/Diskus/todolist" ||
                     location.pathname === "/Diskus/todolist"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
@@ -302,7 +302,7 @@ const Sidebar = () => {
                   to="calendar"
                   eventKey="link-4"
                   className={
-                    location.pathname === "/DisKus/calendar" ||
+                    location.pathname === "/Diskus/calendar" ||
                     location.pathname === "/Diskus/calendar"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
@@ -389,7 +389,7 @@ const Sidebar = () => {
                   to="faq's"
                   eventKey="link-5"
                   className={
-                    location.pathname === "/DisKus/faq's" ||
+                    location.pathname === "/Diskus/faq's" ||
                     location.pathname === "/Diskus/faq's"
                       ? "m-0 p-0 faqMenu iconSidebar"
                       : "m-0 p-0 faqMenu iconSidebar"
@@ -620,14 +620,14 @@ const Sidebar = () => {
                         viewProposeOrganizerMeetingPageFlagReducer === true ||
                         proposeNewMeetingPageFlagReducer === true) &&
                       viewMeetingFlagReducer === false
-                        ? "/DisKus/Meeting"
-                        : "/DisKus/Meeting"
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/Meeting"
                     }
                     eventKey="link-2"
                     className={
-                      location.pathname === "/DisKus/Meeting" ||
                       location.pathname === "/Diskus/Meeting" ||
-                      location.pathname === "/DisKus/meeting" ||
+                      location.pathname === "/Diskus/Meeting" ||
+                      location.pathname === "/Diskus/meeting" ||
                       location.pathname === "/Diskus/meeting"
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
@@ -667,12 +667,12 @@ const Sidebar = () => {
                         viewProposeOrganizerMeetingsPageFlag === true ||
                         proposeNewMeetingsPageFlag === true) &&
                       viewMeetingsFlag === false
-                        ? "/DisKus/Meeting"
-                        : "/DisKus/dataroom"
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/dataroom"
                     }
                     draggable="false"
                     className={
-                      location.pathname === "/DisKus/dataroom" ||
+                      location.pathname === "/Diskus/dataroom" ||
                       location.pathname === "/Diskus/dataroom"
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
@@ -713,13 +713,13 @@ const Sidebar = () => {
                         viewProposeOrganizerMeetingsPageFlag === true ||
                         proposeNewMeetingsPageFlag === true) &&
                       viewMeetingsFlag === false
-                        ? "/DisKus/Meeting"
-                        : "/DisKus/resolution"
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/resolution"
                     }
                     disabled={false}
                     draggable="false"
                     className={
-                      location.pathname === "/DisKus/resolution" ||
+                      location.pathname === "/Diskus/resolution" ||
                       location.pathname === "/Diskus/resolution"
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
@@ -761,13 +761,13 @@ const Sidebar = () => {
                         viewProposeOrganizerMeetingsPageFlag === true ||
                         proposeNewMeetingsPageFlag === true) &&
                       viewMeetingsFlag === false
-                        ? "/DisKus/Meeting"
-                        : "/DisKus/committee"
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/committee"
                     }
                     disabled={false}
                     draggable="false"
                     className={
-                      location.pathname === "/DisKus/committee" ||
+                      location.pathname === "/Diskus/committee" ||
                       location.pathname === "/Diskus/committee"
                         ? "m-0 p-0 iconItem_activeSideBarMain"
                         : "m-0 p-0 iconItemSideBarMain"
@@ -815,11 +815,11 @@ const Sidebar = () => {
                       draggable="false"
                       className={
                         showMore ||
-                        location.pathname === "/DisKus/Notes" ||
-                        location.pathname === "/DisKus/groups" ||
+                        location.pathname === "/Diskus/Notes" ||
+                        location.pathname === "/Diskus/groups" ||
                         location.pathname === "/Diskus/todolist" ||
                         location.pathname === "/Diskus/calendar" ||
-                        location.pathname === "/DisKus/polling"
+                        location.pathname === "/Diskus/polling"
                           ? "m-0 p-0 iconItem_activeSideBarMainShowMore position-relative"
                           : "m-0 p-0 iconItemSideBarMain  position-relative"
                       }
@@ -847,11 +847,11 @@ const Sidebar = () => {
                           alt="ShowMoreImage"
                           className={
                             showMore ||
-                            location.pathname === "/DisKus/Notes" ||
-                            location.pathname === "/DisKus/groups" ||
+                            location.pathname === "/Diskus/Notes" ||
+                            location.pathname === "/Diskus/groups" ||
                             location.pathname === "/Diskus/calendar" ||
                             location.pathname === "/Diskus/todolist" ||
-                            location.pathname === "/DisKus/polling"
+                            location.pathname === "/Diskus/polling"
                               ? "m-0 p-0 ForActive"
                               : ""
                           }

@@ -73,7 +73,7 @@ const CancelButtonModal = () => {
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
       dispatch(uploadGlobalFlag(false));
-      navigate(`/DisKus/Meeting`);
+      navigate(`/Diskus/Meeting`);
       // Trigger the file input programmatically
       const fileInput = document.createElement("input");
       fileInput.type = "file";
@@ -100,7 +100,7 @@ const CancelButtonModal = () => {
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
       dispatch(uploadGlobalFlag(false));
-      navigate(`/DisKus/${navigateLocation}`);
+      navigate(`/Diskus/${navigateLocation}`);
       if (navigateLocation === "Meeting") {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           let searchData = {
@@ -175,7 +175,7 @@ const CancelButtonModal = () => {
       dispatch(pollsGlobalFlag(false));
       dispatch(attendanceGlobalFlag(false));
       dispatch(uploadGlobalFlag(false));
-      navigate(`/DisKus/${navigateLocation}`);
+      navigate(`/Diskus/${navigateLocation}`);
       if (navigateLocation === "Meeting") {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           let searchData = {

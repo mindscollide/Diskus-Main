@@ -137,7 +137,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
     const pdfDataJson = JSON.stringify(pdfData);
     if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );

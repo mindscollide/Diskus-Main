@@ -110,6 +110,8 @@ import {
   clearDataResponseMessageDataRoom2,
   getDataAnalyticsCountApi,
   getFilesandFolderDetailsApi,
+  validateEncryptedStringViewFileLinkApi,
+  validateEncryptedStringViewFolderLinkApi,
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
@@ -317,7 +319,7 @@ const DataRoom = () => {
           )
         );
       } else {
-        navigate("/DisKus/dataroom");
+        navigate("/Diskus/dataroom");
       }
     } catch (error) {
       console.log("Test Dataroom", error);
@@ -357,8 +359,6 @@ const DataRoom = () => {
 
   useEffect(() => {
     try {
-      if (performance.navigation.type === 1) {
-      }
       window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
@@ -380,6 +380,8 @@ const DataRoom = () => {
         }
       });
     } catch {}
+    let viewFol_action = localStorage.getItem("viewFolderLink");
+    let documentViewer = localStorage.getItem("documentViewer");
     if (currentView !== null) {
       if (localStorage.getItem("BoardDeckFolderID") === null) {
         apiCalling();
@@ -389,6 +391,67 @@ const DataRoom = () => {
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
       localStorage.removeItem("folderID");
       localStorage.removeItem("BoardDeckFolderID");
+    }
+    if (viewFol_action !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewFolderLinkApi(viewFol_action, navigate, t)
+        );
+        console.log(getResponse, "viewFol_action");
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          // Set necessary states and flags for viewing committee details
+          localStorage.setItem("folderID", getResponse.response.response.folderID);
+          await dispatch(
+            getFolderDocumentsApi(
+              navigate,
+              getResponse?.response?.response?.folderID,
+              t,
+              2,
+              null,
+              BreadCrumbsListArr
+            )
+          );
+        }
+        localStorage.removeItem("viewFolderLink"); // Cleanup the localStorage key
+      };
+      callApi();
+      // let ext = documentViewer?.split(".").pop();
+      // openDocumentViewer(ext, documentViewer, dispatch, navigate, t, null);
+    }
+    if (documentViewer !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t)
+        );
+        console.log(getResponse, "viewFol_action");
+
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          let ext = getResponse.response.fileName?.split(".").pop();
+          let record = { id: getResponse.response.response.fileID };
+          console.log(
+            record,
+            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi"
+          );
+          const pdfData = {
+            taskId: getResponse.response.response.fileID,
+            commingFrom: 4,
+            fileName: getResponse.response.fileName,
+            attachmentID: getResponse.response.response.fileID,
+            isPermission: getResponse.response.response.permissionID,
+          };
+          console.log(
+            pdfData,
+            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi"
+          );
+
+          const pdfDataJson = JSON.stringify(pdfData);
+          openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+        }
+      };
+      callApi();
+      localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
     }
     return () => {
       localStorage.removeItem("folderID");
