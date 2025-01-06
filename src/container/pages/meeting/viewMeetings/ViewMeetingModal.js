@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -134,6 +134,8 @@ const ViewMeetingModal = ({
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationAdvanceMeetingID");
     };
   }, []);
 
