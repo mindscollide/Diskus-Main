@@ -16,6 +16,8 @@ import {
   saveFilesRequestMethod,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  ValidateEncryptedStringViewGroupListLinkRM,
+  ValidateEncryptedStringViewGroupDetailsLinkRM,
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
 import axios from "axios";
@@ -1576,7 +1578,327 @@ const removeGroupMemberMQTT = (response) => {
   };
 };
 
+// List Groups Email Routes
+const validateEncryptedStringViewGroupListLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_INIT,
+});
+
+const validateEncryptedStringViewGroupListLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewGroupListLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewGroupsListLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewGroupListLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewGroupListLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(getGroupsApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewGroupsListLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupListLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupListLink_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            return {
+              isExecuted: true,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupListLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupListLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupListLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewGroupListLink_Fail(t("Unsuccessful"))
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewGroupListLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewGroupListLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewGroupListLink_Fail(t("Something-went-wrong"))
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
+// Details Groups Email Routes
+const validateEncryptedStringViewGroupDetailLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_INIT,
+});
+
+const validateEncryptedStringViewGroupDetailLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewGroupDetailLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewGroupDetailLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewGroupDetailLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewGroupDetailsLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(getGroupsApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewGroupDetailLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupDetailLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(validateEncryptedStringViewGroupDetailLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupDetailLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "Group_GroupServiceManager_ValidateEncryptedStringViewGroupDetailsLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewGroupDetailLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewGroupDetailLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewGroupDetailLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewGroupDetailLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewGroupDetailLink_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
 export {
+  validateEncryptedStringViewGroupDetailLinkApi,
+  validateEncryptedStringViewGroupsListLinkApi,
   removeGroupMemberMQTT,
   getGroups,
   getAllGroups,

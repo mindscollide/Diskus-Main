@@ -30,6 +30,8 @@ const initialState = {
   createTaskMeeting: null,
   getDashboardTaskData: null,
   getDashboardTaskCountMQTT: null,
+  viewTaskList: null,
+  viewTaskDetailLink: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {
@@ -40,6 +42,52 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: action.loader,
       };
     }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewTaskDetailLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewTaskDetailLink: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewTaskList: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewTaskList: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.TASK_FOLDER_MAPPING_ID: {
       return {
         ...state,

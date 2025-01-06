@@ -20,6 +20,8 @@ import {
   createCommitteePageFlag,
   viewCommitteePageFlag,
   realtimeCommitteeResponse,
+  validateEncryptedStringViewCommitteeDetailLinkApi,
+  validateEncryptedStringViewCommitteeListLinkApi,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -51,7 +53,7 @@ const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+  let currentPage = localStorage.getItem("CocurrentPage");
   const { ViewGroupPage, setViewGroupPage, showModal, setShowModal } =
     useGroupsContext();
   //Current User ID
@@ -108,6 +110,7 @@ const Committee = () => {
   const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
+  let committeeView_Id = localStorage.getItem("committeeView_Id");
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
@@ -121,37 +124,97 @@ const Committee = () => {
 
   useEffect(() => {
     try {
+      const committeeList = localStorage.getItem("committeeList");
+      const committeeViewId = localStorage.getItem("committeeView_Id");
+      // Handle the current page logic
       if (currentPage !== null) {
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+        // Dispatch an action to fetch committees by user ID for the current page
+        dispatch(
+          getAllCommitteesByUserIdActions(navigate, t, JSON.parse(currentPage))
+        );
       } else {
+        // Reset localStorage values and fetch committees for the first page
         localStorage.removeItem("CoArcurrentPage");
         localStorage.setItem("CocurrentPage", 1);
         dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
       }
-      //For Notification Redirections
-      if (
-        JSON.parse(
-          localStorage.getItem("NotificationClickCommitteeArchived")
-        ) === true
-      ) {
-        setShowModal(true);
+
+      // Check for notification redirection to Committee Archived
+      const notificationClickCommitteeArchived = JSON.parse(
+        localStorage.getItem("NotificationClickCommitteeArchived")
+      );
+      if (notificationClickCommitteeArchived === true) {
+        setShowModal(true); // Show a modal if the notification was clicked
       }
-      if (
-        JSON.parse(
-          localStorage.getItem("NotificationClickCommitteeOperations")
-        ) === true
-      ) {
-        setViewGroupPage(true);
-        dispatch(viewCommitteePageFlag(true));
+
+      // Check for notification redirection to Committee Operations
+      const notificationClickCommitteeOperations = JSON.parse(
+        localStorage.getItem("NotificationClickCommitteeOperations")
+      );
+      if (notificationClickCommitteeOperations === true) {
+        setViewGroupPage(true); // Navigate to group page
+        dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
+      }
+
+      // Validate and process committee view by ID if present in localStorage
+
+      if (committeeViewId !== null) {
+        const callApi = async () => {
+          // Validate the encrypted committee view ID
+          const getResponse = await dispatch(
+            validateEncryptedStringViewCommitteeDetailLinkApi(
+              committeeViewId,
+              navigate,
+              t
+            )
+          );
+          
+          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+            // Set necessary states and flags for viewing committee details
+            setViewCommitteeViewTab(1); // Switch to the committee details tab
+            localStorage.setItem(
+              "ViewCommitteeID",
+              getResponse.response.committeeID
+            ); // Save the committee ID in localStorage
+            setViewGroupPage(true); // Navigate to group page
+            dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
+          }
+          localStorage.removeItem("committeeView_Id"); // Cleanup the localStorage key
+        };
+        callApi(); // Invoke the API call
+      }
+
+      if (committeeList !== null) {
+        const callApi = async () => {
+          // Validate the encrypted committee view ID
+          const getResponse = await dispatch(
+            validateEncryptedStringViewCommitteeListLinkApi(
+              committeeList,
+              navigate,
+              t
+            )
+          );
+          console.log(getResponse, "getResponse");
+          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+            localStorage.removeItem("CoArcurrentPage");
+            localStorage.setItem("CocurrentPage", 1);
+            dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+          }
+
+          localStorage.removeItem("committeeList"); // Cleanup the localStorage key
+        };
+        callApi(); // Invoke the API call
       }
     } catch (error) {
-      console.log(error, "error");
+      console.error("Error in useEffect:", error); // Log any errors for debugging
     }
+
+    // Cleanup logic for unmount
     return () => {
-      localStorage.removeItem("NotificationClickCommitteeArchived");
-      setShowModal(false);
+      localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
+      setShowModal(false); // Reset modal visibility
     };
-  }, []);
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
   useEffect(() => {
     try {
@@ -502,8 +565,8 @@ const Committee = () => {
           </>
         ) : (
           <>
-            <Row className="mt-3">
-              <Col md={6} sm={6} lg={6} className="d-flex gap-3 ">
+            <Row className='mt-3'>
+              <Col md={6} sm={6} lg={6} className='d-flex gap-3 '>
                 <span className={styles["Committee-heading-size"]}>
                   {t("Committees")}
                 </span>
@@ -513,12 +576,12 @@ const Committee = () => {
                   onClick={groupModal}
                   icon={
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={plusbutton}
-                      height="7.6px"
-                      width="7.6px"
+                      height='7.6px'
+                      width='7.6px'
                       className={styles["PLusICon"]}
-                      alt=""
+                      alt=''
                     />
                   }
                 />
@@ -528,33 +591,31 @@ const Committee = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex justify-content-end mt-2 "
-              >
+                className='d-flex justify-content-end mt-2 '>
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
                   text={t("Archived-committees")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={archivedbtn}
-                      width="18px"
-                      height="18px"
+                      width='18px'
+                      height='18px'
                       className={styles["archivedbtnIcon"]}
-                      alt=""
+                      alt=''
                     />
                   }
                 />
               </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col lg={12} md={12} sm={12}>
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
-                  }`}
-                >
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
+                  }`}>
+                  <Col sm={12} md={12} lg={12} className='m-0 p-0 mt-2 '>
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
@@ -563,9 +624,8 @@ const Committee = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className="mb-3"
-                              key={index}
-                            >
+                              className='mb-3'
+                              key={index}>
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -620,11 +680,11 @@ const Committee = () => {
                                 changeHandleStatus={changeHandleStatus}
                                 Icon={
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={committeeicon}
-                                    width="32.88px"
-                                    height="28.19px"
-                                    alt=""
+                                    width='32.88px'
+                                    height='28.19px'
+                                    alt=''
                                   />
                                 }
                                 BtnText={
@@ -645,50 +705,46 @@ const Committee = () => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles["CommiiteeNotFoundContainer"]}
-                        >
+                          className={styles["CommiiteeNotFoundContainer"]}>
                           <Row>
-                            <Col sm={12} md={12} lg={12} className="mb-3">
+                            <Col sm={12} md={12} lg={12} className='mb-3'>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 src={NoCommitteeImg}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}
-                            >
+                              className={styles["CommitteeNotFoundText"]}>
                               {t("You-dont-have-any-committee-yet")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}
-                            >
+                              className={styles["CommitteeNotFoundText"]}>
                               {t("Click-create-new-committee")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className="d-flex justify-content-center mt-3"
-                            >
+                              className='d-flex justify-content-center mt-3'>
                               <Button
                                 className={styles["create-Committee-btn"]}
                                 text={t("Create-new-committee")}
                                 onClick={groupModal}
                                 icon={
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     src={plusbutton}
-                                    height="7.6px"
-                                    width="7.6px"
+                                    height='7.6px'
+                                    width='7.6px'
                                     className={styles["PLusICon"]}
-                                    alt=""
+                                    alt=''
                                   />
                                 }
                               />
@@ -705,24 +761,22 @@ const Committee = () => {
               </Col>
             </Row>
             {getcommitteedata.length > 0 && (
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center "
-                >
+                  className='d-flex justify-content-center '>
                   <Container className={styles["PaginationStyle-Committee"]}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={"pagination-groups-table"}
-                      >
+                        className={"pagination-groups-table"}>
                         <CustomPagination
                           total={totalRecords}
-                          current={currentPage}
+                          current={JSON.parse(currentPage)}
                           pageSize={8}
                           onChange={handlechange}
                           showSizer={false}

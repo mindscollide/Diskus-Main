@@ -5,7 +5,7 @@ import { Button } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCommitteesbyCommitteeId } from "../../../../store/actions/Committee_actions";
+import { getCommitteesbyCommitteeId, viewCommitteePageFlag } from "../../../../store/actions/Committee_actions";
 import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.js";
 import Polls from "../../ViewPolls/Polls/Polls.js";
 import CommitteeTodo from "../../ViewTodo/CommitteeTodo.js";
@@ -69,6 +69,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
 
   const handleClose = () => {
     setViewGroupPage(false);
+    dispatch(viewCommitteePageFlag(false));
     localStorage.removeItem("ViewCommitteeID");
   };
 

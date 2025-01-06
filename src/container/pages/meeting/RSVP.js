@@ -38,7 +38,7 @@ const RSVP = () => {
 
   useEffect(() => {
     if (
-      currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
+      currentUrl.includes("Diskus/Meeting/Useravailabilityformeeting?action=")
     ) {
       const remainingString = currentUrl.split("?action=")[1];
       if (remainingString) {

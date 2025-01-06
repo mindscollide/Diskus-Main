@@ -665,6 +665,14 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               let pollExpire = localStorage.getItem("pollExpire");
               let PollUpd = localStorage.getItem("poUpda");
               let PollPublish = localStorage.getItem("poPub");
+              let documentViewer = localStorage.getItem("documentViewer");
+              let viewFolderLink = localStorage.getItem("viewFolderLink");
+              let committeeView_Id = localStorage.getItem("committeeView_Id");
+              let committeeList = localStorage.getItem("committeeList");
+              let groupView_Id = localStorage.getItem("groupView_Id");
+              let groupList = localStorage.getItem("groupList");
+              let taskListView_Id = localStorage.getItem("taskListView_Id");
+              let taskListView = localStorage.getItem("taskListView");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -688,10 +696,11 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   navigate("/onboard");
                 } else {
                   if (RSVP !== undefined && RSVP !== null) {
-                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                    navigate("/Diskus/Meeting/Useravailabilityformeeting");
                   } else if (
-                    dataroomValue !== null &&
-                    dataroomValue !== undefined
+                    dataroomValue !== null ||
+                    documentViewer !== null ||
+                    viewFolderLink !== null
                   ) {
                     navigate("/Diskus/dataroom");
                   } else if (
@@ -712,8 +721,20 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                     pollExpire !== null
                   ) {
                     navigate("/Diskus/polling");
+                  } else if (
+                    committeeView_Id !== null ||
+                    committeeList !== null
+                  ) {
+                    navigate("/Diskus/committee");
+                  } else if (groupView_Id !== null || groupList !== null) {
+                    navigate("/Diskus/groups");
+                  } else if (
+                    taskListView_Id !== null ||
+                    taskListView !== null
+                  ) {
+                    navigate("/Diskus/todolist");
                   } else {
-                    navigate("/DisKus/");
+                    navigate("/Diskus/");
                   }
                 }
               }

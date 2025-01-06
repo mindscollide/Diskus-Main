@@ -317,7 +317,7 @@ const ApprovalSend = () => {
     let reponseData = JSON.stringify(record.fileID);
     if (Number(record.workFlowStatusID) === 4) {
       window.open(
-        `/#/DisKus/signatureviewer?documentID=${encodeURIComponent(
+        `/#/Diskus/signatureviewer?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -325,7 +325,7 @@ const ApprovalSend = () => {
       );
     } else if (Number(record.workFlowStatusID) === 1) {
       window.open(
-        `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+        `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -334,7 +334,7 @@ const ApprovalSend = () => {
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/#/DisKus/viewSignDocument?documentID=${encodeURIComponent(
+        `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",

@@ -20,6 +20,8 @@ import {
   createupdateTaskDataroom,
   saveTaskDocuments,
   getDashboardTaskStatsRM,
+  ValidateEncryptedStringViewTaskListLinkRM,
+  ValidateEncryptedStringViewTaskDetailsLinkRM,
 } from "../../commen/apis/Api_config";
 import {
   getTaskCommitteeIDApi,
@@ -1886,7 +1888,331 @@ const getDashbardTaskDataApi = (navigate, t) => {
   };
 };
 
+// List Task
+const validateEncryptedStringViewTaskListLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_INIT,
+});
+
+const validateEncryptedStringViewTaskListLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewTaskListLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_LIST_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewTaskListLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewTaskListLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewTaskListLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(toDoListApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewTaskListLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskListLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskListLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskListLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskListLink_Fail(
+                t("Something-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskListLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskListLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskListLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskListLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewTaskListLink_Fail(
+                t("Unsuccessful")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewTaskListLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewTaskListLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewTaskListLink_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
+// Details Committees Email Routes
+const validateEncryptedStringViewTaskDetailLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_INIT,
+});
+
+const validateEncryptedStringViewTaskDetailLink_Success = (
+  response,
+  message
+) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewTaskDetailLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_VIEW_TASK_DETAILS_LINK_FAIL,
+  message,
+});
+const validateEncryptedStringViewTaskDetailLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewTaskDetailLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringViewTaskDetailsLinkRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(toDoListApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewTaskDetailLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskDetailsLink_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskDetailLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskDetailsLink_02".toLowerCase()
+            )
+          ) {
+            dispatch(validateEncryptedStringViewTaskDetailLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskDetailsLink_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskDetailLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "ToDoList_ToDoListServiceManager_ValidateEncryptedStringViewTaskDetailsLink_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewTaskDetailLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewTaskDetailLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewTaskDetailLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewTaskDetailLink_Fail(
+            t("Something-went-wrong")
+          )
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewTaskDetailLink_Fail(
+          t("Something-went-wrong")
+        )
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
 export {
+  validateEncryptedStringViewTaskDetailLinkApi,
+  validateEncryptedStringViewTaskListLinkApi,
   getDashbardTaskDataApi,
   createTaskGroupMQTT,
   createTaskCommitteeMQTT,

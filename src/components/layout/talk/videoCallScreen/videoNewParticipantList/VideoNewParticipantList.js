@@ -342,7 +342,7 @@ const VideoNewParticipantList = () => {
             </Col>
             <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
               <Button
-                text={isForAll ? t("Unmute-All") : t("Mute-All")}
+                text={isForAll ? t("Unmute-all") : t("Mute-all")}
                 className={styles["Waiting-New-Participant-muteAll"]}
                 onClick={() => muteUnmuteAllByHost(isForAll)}
               />
@@ -448,16 +448,16 @@ const VideoNewParticipantList = () => {
                           <img
                             draggable="false"
                             src={MicDisabled}
-                            width="22px"
-                            height="22px"
+                            width="19px"
+                            height="19px"
                             alt="Microphone Disabled"
                           />
                         ) : (
                           <img
                             draggable="false"
                             src={MicOnEnabled}
-                            width="18px"
-                            height="18px"
+                            width="15px"
+                            height="19px"
                             alt="Microphone Enabled"
                           />
                         )
@@ -465,16 +465,16 @@ const VideoNewParticipantList = () => {
                         <img
                           draggable="false"
                           src={MicDisabled}
-                          width="22px"
-                          height="22px"
+                          width="19px"
+                          height="19px"
                           alt="Microphone Disabled"
                         />
                       ) : (
                         <img
                           draggable="false"
                           src={MicOnEnabled}
-                          width="18px"
-                          height="18px"
+                          width="15px"
+                          height="19px"
                           alt="Microphone Enabled"
                         />
                       )}

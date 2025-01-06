@@ -7,9 +7,14 @@ import { Button } from "../../../../../components/elements";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOn2 from "../../../../../assets/images/Recent Activity Icons/Video/MicOn2.png";
+import VideoOn from "../../../../../components/layout/talk/talk-Video/video-images/Minimize Video Enabled.svg";
+import MinToNormalIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Half Video Screen.svg";
+
 import VideoOn2 from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
+import MinimizeIcon2 from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize White.svg";
+import MicOn from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Mic Enabled.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
@@ -18,8 +23,6 @@ import { useNavigate } from "react-router-dom";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
-  closeQuickMeetingModal,
-  closeQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
   getParticipantMeetingJoinMainApi,
@@ -37,9 +40,7 @@ import {
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
 
-const ParticipantVideoCallComponent = ({
-  handleExpandToNormalPanelParticipant,
-}) => {
+const ParticipantVideoCallComponent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,7 +111,6 @@ const ParticipantVideoCallComponent = ({
             videoRef.current.muted = true;
             await videoRef.current.play();
           }
-          console.log(videoRef.current, "streamstream");
           localStorage.setItem("isWebCamEnabled", false);
           setStream(stream); // Store the video and audio stream
 
@@ -122,9 +122,6 @@ const ParticipantVideoCallComponent = ({
           }
           localStorage.setItem("isMicEnabled", false);
           setStreamAudio(audioStream);
-          console.log(streamAudio, "streamstream");
-          console.log(audioStream, "streamstream");
-          console.log(stream, "streamstream");
           sessionStorage.setItem("streamOnOff", JSON.stringify(true));
           sessionStorage.setItem("videoStreamId", stream.id); // Save video stream ID
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
@@ -140,7 +137,6 @@ const ParticipantVideoCallComponent = ({
     // Cleanup on unmount or when isWebCamEnabled changes
     return () => {
       if (videoRef.current) {
-        console.log(videoRef.current, "streamstream");
         videoRef.current.srcObject = null; // Clear the video source
       }
 
@@ -151,8 +147,6 @@ const ParticipantVideoCallComponent = ({
 
       // Stop audio stream
       if (streamAudio) {
-        console.log(streamAudio, "streamstream");
-
         streamAudio.getTracks().forEach((track) => track.stop());
       }
     };
@@ -167,7 +161,6 @@ const ParticipantVideoCallComponent = ({
           if (videoRef.current) {
             videoRef.current.srcObject = null; // Clear the video source
           }
-          console.log(stream, "streamstream");
           sessionStorage.setItem("streamOnOff", JSON.stringify(false));
           sessionStorage.removeItem("videoStreamId");
         }
@@ -176,8 +169,6 @@ const ParticipantVideoCallComponent = ({
       if (isAudioGlobalStream) {
         // Stop audio stream
         if (streamAudio) {
-          console.log(streamAudio, "streamstream");
-
           streamAudio.getAudioTracks().forEach((track) => track.stop());
           setStreamAudio(null); // Clear the stream from state
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
@@ -195,7 +186,6 @@ const ParticipantVideoCallComponent = ({
           if (videoRef.current) {
             videoRef.current.srcObject = null; // Clear the video source
           }
-          console.log(stream, "streamstream");
           sessionStorage.setItem("streamOnOff", JSON.stringify(false));
           sessionStorage.removeItem("videoStreamId");
         }
@@ -204,8 +194,6 @@ const ParticipantVideoCallComponent = ({
       if (isAudioGlobalStream) {
         // Stop audio stream
         if (streamAudio) {
-          console.log(streamAudio, "streamstream");
-
           streamAudio.getAudioTracks().forEach((track) => track.stop());
           setStreamAudio(null); // Clear the stream from state
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
@@ -217,6 +205,7 @@ const ParticipantVideoCallComponent = ({
       dispatch(maximizeVideoPanelFlag(true));
     }
   }, [allNavigatorVideoStream]);
+
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
     dispatch(setAudioControlForParticipant(enable));
@@ -233,7 +222,6 @@ const ParticipantVideoCallComponent = ({
           const newStream = new MediaStream([audioStream.getAudioTracks()[0]]);
           setStreamAudio(newStream);
           setIsMicEnabled(enable);
-          console.log(streamAudio, "streamstream");
 
           // Store audio stream state in sessionStorage
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
@@ -249,14 +237,12 @@ const ParticipantVideoCallComponent = ({
       }
       sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
       sessionStorage.removeItem("audioStreamId");
-      console.log(streamAudio, "streamstream");
       setIsMicEnabled(enable); // Microphone is now disabled
     }
   };
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    console.log("toggleVideo", enable);
     dispatch(setVideoControlForParticipant(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     if (!enable) {
@@ -322,9 +308,17 @@ const ParticipantVideoCallComponent = ({
         setJoinButton
       )
     );
-    // setIsWaiting(true);
-    // setGetReady(false);
   };
+
+  //it's Ensure that videoRef is stream or open when transitioning or state changes between minimizeState
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch((error) => {
+        console.error("Error playing video:", error);
+      });
+    }
+  }, [minimizeState]);
 
   const onClickToNormalParticipantPanel = () => {
     setIsNormalPanel((prevState) => !prevState);
@@ -339,11 +333,11 @@ const ParticipantVideoCallComponent = ({
     } else {
       // If not minimized, toggle to minimized state
       setMinimizeState(true);
+      setIsNormalPanel(false);
     }
   };
 
   const onClickEndVideoCall = async (flag, flag2, flag3) => {
-    console.log("onClickEndVideoCall", getJoinMeetingParticipantorHostrequest);
     let userGUID = getJoinMeetingParticipantorHostrequest
       ? getJoinMeetingParticipantorHostrequest.guid
       : 0;
@@ -390,17 +384,14 @@ const ParticipantVideoCallComponent = ({
     // Clear session storage related to participant
     sessionStorage.removeItem("participantData");
     if (flag) {
-      console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
     if (flag2) {
-      console.log("mqtt mqmqmqmqmqmq");
       dispatch(endMeetingStatusForQuickMeetingVideo(false));
       dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
     if (flag3) {
-      console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
@@ -409,7 +400,6 @@ const ParticipantVideoCallComponent = ({
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
         onClickEndVideoCall(true, false, false);
       }
     } catch {}
@@ -418,8 +408,6 @@ const ParticipantVideoCallComponent = ({
   useEffect(() => {
     try {
       if (closeQuickMeetingVideoReducer) {
-        console.log("mqtt mqmqmqmqmqmq");
-
         onClickEndVideoCall(false, true, false);
       }
     } catch (error) {}
@@ -428,11 +416,11 @@ const ParticipantVideoCallComponent = ({
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
-        console.log("mqtt mqmqmqmqmqmq");
         onClickEndVideoCall(false, false, true);
       }
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
+
   return (
     <Container fluid>
       <div
@@ -445,7 +433,12 @@ const ParticipantVideoCallComponent = ({
         }
       >
         <Row>
-          <Col lg={4} md={4} sm={12} className="d-flex justify-content-start">
+          <Col
+            lg={minimizeState ? 3 : 4}
+            md={minimizeState ? 3 : 4}
+            sm={12}
+            className="d-flex justify-content-start"
+          >
             <p
               className={
                 minimizeState
@@ -457,8 +450,8 @@ const ParticipantVideoCallComponent = ({
             </p>
           </Col>
           <Col
-            lg={8}
-            md={8}
+            lg={minimizeState ? 9 : 8}
+            md={minimizeState ? 9 : 8}
             sm={12}
             className="d-flex justify-content-end align-items-center gap-2"
           >
@@ -466,7 +459,7 @@ const ParticipantVideoCallComponent = ({
               {isMicEnabled ? (
                 <img
                   dragable="false"
-                  src={minimizeState ? MicOffHost : MicOff}
+                  src={MicOff}
                   className="cursor-pointer"
                   onClick={() => toggleAudio(false)}
                   alt=""
@@ -474,7 +467,7 @@ const ParticipantVideoCallComponent = ({
               ) : (
                 <img
                   dragable="false"
-                  src={MicOn2}
+                  src={minimizeState ? MicOn : MicOn2}
                   onClick={() => toggleAudio(true)}
                   className="cursor-pointer"
                   alt=""
@@ -492,7 +485,7 @@ const ParticipantVideoCallComponent = ({
               ) : (
                 <img
                   dragable="false"
-                  src={VideoOn2}
+                  src={minimizeState ? VideoOn : VideoOn2}
                   onClick={() => toggleVideo(true)}
                   alt=""
                 />
@@ -502,14 +495,18 @@ const ParticipantVideoCallComponent = ({
               className="max-videoParticipant-Icons-state"
               onClick={toggleMinimizeState}
             >
-              <img dragable="false" src={MinimizeIcon} alt="MinimizeIcon" />
+              <img
+                dragable="false"
+                src={minimizeState ? MinimizeIcon2 : MinimizeIcon}
+                alt="MinimizeIcon"
+              />
             </div>
             <div className="max-videoParticipant-Icons-state">
               <img
                 dragable="false"
                 src={
                   minimizeState
-                    ? ExpandIcon
+                    ? MinToNormalIcon
                     : NormalizeIcon && isNormalPanel
                     ? ExpandIcon
                     : NormalizeIcon
@@ -529,81 +526,83 @@ const ParticipantVideoCallComponent = ({
           </Col>
         </Row>
 
-        <Row>
-          <Col lg={8} md={8} sm={12}>
-            {
-              <>
-                <div
-                  className="max-videoParticipant-tag-name "
-                  style={{
-                    backgroundImage: `url(${ProfileUser})`,
-                    backgroundSize: "33%",
-                    backgroundRepeat: "no-repeat",
-                    height: minimizeState
-                      ? "7vh"
-                      : isNormalPanel
-                      ? "44vh"
-                      : "78vh",
-                    backgroundPosition: "center center",
-                  }}
-                >
-                  <div className="max-videoParticipant-gradient-sheet">
-                    <div className="avatar-class">
-                      <div
-                        style={{
-                          position: "relative",
-                        }}
-                      >
-                        <video
-                          ref={videoRef}
-                          className={
-                            minimizeState
-                              ? "video-max-minimize-videoParticipant-panel"
-                              : isNormalPanel
-                              ? "video-max-videoParticipantsvideo-panel"
-                              : "video-max-Participant"
-                          }
-                        />
+        {!minimizeState && (
+          <Row>
+            <Col lg={8} md={8} sm={12}>
+              {
+                <>
+                  <div
+                    className="max-videoParticipant-tag-name "
+                    style={{
+                      backgroundImage: `url(${ProfileUser})`,
+                      backgroundSize: "33%",
+                      backgroundRepeat: "no-repeat",
+                      height: minimizeState
+                        ? "7vh"
+                        : isNormalPanel
+                        ? "44vh"
+                        : "78vh",
+                      backgroundPosition: "center center",
+                    }}
+                  >
+                    <div className="max-videoParticipant-gradient-sheet">
+                      <div className="avatar-class">
+                        <div
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <video
+                            ref={videoRef}
+                            className={
+                              minimizeState
+                                ? "video-max-minimize-videoParticipant-panel"
+                                : isNormalPanel
+                                ? "video-max-videoParticipantsvideo-panel"
+                                : "video-max-Participant"
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            }
-          </Col>
-          {!minimizeState && (
-            <Col lg={4} md={4} sm={12}>
-              {isWaiting ? (
-                <>
-                  <div className="max-videoParticipant-component">
-                    <p className="max-videoParticipant-waiting-room-class">
-                      {t("You-are-in-the-waiting-room")}
-                    </p>
-                    <p className="max-Hostvideo-organizer-allow-class">
-                      {t("The-organizer-will-allow-you-to-join-shortly")}
-                    </p>
-                  </div>
                 </>
-              ) : !getReady ? (
-                <>
-                  <div className="max-videoParticipant-component">
-                    <>
-                      <p className="max-videoParticipant-ready-to-join">
-                        {t("Ready-to-join")}
-                      </p>
-                      <Button
-                        disableBtn={joinButton}
-                        text={t("Join-now")}
-                        className="max-videoParticipant-Join-Now-Btn"
-                        onClick={joinNewApiVideoCallOnClick}
-                      />
-                    </>
-                  </div>
-                </>
-              ) : null}
+              }
             </Col>
-          )}
-        </Row>
+            {!minimizeState && (
+              <Col lg={4} md={4} sm={12}>
+                {isWaiting ? (
+                  <>
+                    <div className="max-videoParticipant-component">
+                      <p className="max-videoParticipant-waiting-room-class">
+                        {t("You-are-in-the-waiting-room")}
+                      </p>
+                      <p className="max-Hostvideo-organizer-allow-class">
+                        {t("The-organizer-will-allow-you-to-join-shortly")}
+                      </p>
+                    </div>
+                  </>
+                ) : !getReady ? (
+                  <>
+                    <div className="max-videoParticipant-component">
+                      <>
+                        <p className="max-videoParticipant-ready-to-join">
+                          {t("Ready-to-join")}
+                        </p>
+                        <Button
+                          disableBtn={joinButton}
+                          text={t("Join-now")}
+                          className="max-videoParticipant-Join-Now-Btn"
+                          onClick={joinNewApiVideoCallOnClick}
+                        />
+                      </>
+                    </div>
+                  </>
+                ) : null}
+              </Col>
+            )}
+          </Row>
+        )}
       </div>
     </Container>
   );

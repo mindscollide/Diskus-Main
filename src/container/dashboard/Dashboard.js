@@ -2288,7 +2288,12 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+          // For the caller side
           let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+
+          // For Receiver Side
+          let NewRoomID = localStorage.getItem("NewRoomID");
+
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           localStorage.setItem("newCallerID", callerID);
@@ -2357,13 +2362,28 @@ const Dashboard = () => {
             } else {
               if (Number(callTypeID) === 1) {
                 console.log("mqtt", isMeetingVideo);
-                let Data = {
-                  OrganizationID: Number(currentOrganization),
-                  RoomID: initiateRoomID,
-                  IsCaller: true,
-                  CallTypeID: callTypeID,
-                };
-                dispatch(LeaveCall(Data, navigate, t));
+                console.log("Participant Caller");
+                let unAnsweredCheck = JSON.parse(
+                  localStorage.getItem("unansweredFlag")
+                );
+
+                if (unAnsweredCheck) {
+                  let Data = {
+                    OrganizationID: Number(currentOrganization),
+                    RoomID: initiateRoomID,
+                    IsCaller: true,
+                    CallTypeID: callTypeID,
+                  };
+                  dispatch(LeaveCall(Data, navigate, t));
+                } else {
+                  let Data = {
+                    OrganizationID: Number(currentOrganization),
+                    RoomID: NewRoomID,
+                    IsCaller: true,
+                    CallTypeID: callTypeID,
+                  };
+                  dispatch(LeaveCall(Data, navigate, t));
+                }
                 dispatch(
                   callRequestReceivedMQTT(data.payload, data.payload.message)
                 );
@@ -2374,6 +2394,7 @@ const Dashboard = () => {
                 console.log("mqtt", checkCallStatus(existingData));
                 if (checkCallStatus(existingData)) {
                   console.log("mqtt", isMeetingVideo);
+                  console.log("host Caller");
                   let Data = {
                     OrganizationID: Number(currentOrganization),
                     RoomID: initiateRoomID,
@@ -2945,7 +2966,7 @@ const Dashboard = () => {
           <div className="overlay-incoming-videocall" />
         )}
         <Layout className="mainDashboardLayout">
-          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
+          {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />

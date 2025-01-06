@@ -8167,6 +8167,7 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
+              dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
               localStorage.setItem(
                 "AdvanceMeetingOpen",

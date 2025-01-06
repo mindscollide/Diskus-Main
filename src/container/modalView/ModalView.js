@@ -1171,12 +1171,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         onClick={() => copyToClipboardd()}
                       />
                       <Button
+                        // disableBtn={
+                        //   isVideo && meetStatus === 10
+                        //     ? false
+                        //     : true || enableDisableVideoState
+                        // }
                         disableBtn={
-                          isVideo && meetStatus === 10
-                            ? false
-                            : true || enableDisableVideoState
-                            ? true
-                            : false
+                          !isVideo ||
+                          meetStatus !== 10 ||
+                          enableDisableVideoState
                         }
                         text={t("Join-video-call")}
                         className={"JoinMeetingButton"}

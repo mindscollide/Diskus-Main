@@ -674,6 +674,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(
@@ -689,6 +690,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call"))
@@ -702,6 +704,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -710,6 +713,7 @@ const getParticipantMeetingJoinMainApi = (
           } else {
             try {
               setJoinButton(false);
+              dispatch(videoIconOrButtonState(false));
             } catch {}
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -718,6 +722,7 @@ const getParticipantMeetingJoinMainApi = (
         } else {
           try {
             setJoinButton(false);
+            dispatch(videoIconOrButtonState(false));
           } catch {}
           await dispatch(
             getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -727,6 +732,7 @@ const getParticipantMeetingJoinMainApi = (
       .catch((response) => {
         try {
           setJoinButton(false);
+          dispatch(videoIconOrButtonState(false));
         } catch {}
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
