@@ -175,7 +175,7 @@ const LanguageSelector = () => {
     >
       <span
         className={
-          location.pathname.includes("/DisKus/") ||
+          location.pathname.includes("/Diskus/") ||
           location.pathname.includes("/Diskus") ||
           location.pathname.includes("/Diskus/") ||
           location.pathname.includes("/paymentForm") ||
@@ -194,7 +194,7 @@ const LanguageSelector = () => {
         {languageDropdown ? (
           <img
             src={
-              location.pathname.includes("/DisKus/") ||
+              location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/Diskus") ||
               location.pathname.includes("/paymentForm") ||
@@ -210,7 +210,7 @@ const LanguageSelector = () => {
         ) : (
           <img
             src={
-              location.pathname.includes("/DisKus/") ||
+              location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/Diskus/") ||
               location.pathname.includes("/Diskus") ||
               location.pathname.includes("/paymentForm") ||

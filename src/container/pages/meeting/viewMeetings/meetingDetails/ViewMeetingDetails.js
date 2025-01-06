@@ -64,6 +64,7 @@ import {
   normalParticipantVideoCallPanel,
   getParticipantMeetingJoinMainApi,
   nonMeetingVideoGlobalModal,
+  videoIconOrButtonState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -141,6 +142,12 @@ const ViewMeetingDetails = ({
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
+
+  const enableDisableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.enableDisableVideoState
+  );
+
+  console.log(enableDisableVideoState, "videoIconOrButtonStatehavsh");
 
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
@@ -600,6 +607,7 @@ const ViewMeetingDetails = ({
       if (meetingVideoData.roleID === 2) {
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
+        dispatch(videoIconOrButtonState(true));
         let data = {
           MeetingId: Number(currentMeetingID),
           VideoCallURL: String(currentMeetingVideoURL),
@@ -895,6 +903,9 @@ const ViewMeetingDetails = ({
                             />
                             {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
                               <Button
+                                disableBtn={
+                                  enableDisableVideoState ? true : false
+                                }
                                 text="Join Video Call"
                                 className="JoinMeetingButton"
                                 onClick={joinMeetingCall}

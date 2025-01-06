@@ -181,7 +181,7 @@ const Notes = () => {
                 <div key={index} className='d-flex justify-content-center'>
                   <p
                     className={styles['ViewMoreLink_notes']}
-                    onClick={() => navigate("/DisKus/Notes")}>
+                    onClick={() => navigate("/Diskus/Notes")}>
                     {t("View-more")}
                   </p>
                 </div>

@@ -171,7 +171,7 @@ const CalendarPage = () => {
           talkGroupID: value.talkGroupID,
         };
         console.log(advancemeetingData, "valuevaluevaluevalues");
-        navigate("/DisKus/Meeting", {
+        navigate("/Diskus/Meeting", {
           state: { advancemeetingData, CalendaradvanceMeeting: true },
         });
       } else {

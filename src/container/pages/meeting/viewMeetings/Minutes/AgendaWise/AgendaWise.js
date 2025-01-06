@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "antd";
 import { useDispatch } from "react-redux";
 import {
   AttachmentViewer,
@@ -33,6 +34,7 @@ import DropdownPurple from "./../Images/Dropdown-Purple.png";
 import EditIcon from "./../Images/Edit-Icon.png";
 import MenuIcon from "./../Images/MenuIcon.png";
 import DeleteIcon from "./../Images/DeleteIcon.png";
+import WarningIcon from "../../../../../../assets/images/warning.png";
 import {
   GetMinuteReviewDetailsByOrganizerByMinuteId_Api,
   GetMinutesVersionHistoryWithCommentsApi,
@@ -481,7 +483,7 @@ const AgendaWise = ({
       ext === "xlsx"
     ) {
       window.open(
-        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );
@@ -1158,6 +1160,13 @@ const AgendaWise = ({
         console.log(data, "minutesDataminutesDataminutesData");
         const isOpen = openIndices.includes(index);
         let attachmentResult = hasAttachments(data);
+        let isRejectedMemberHas = data.minuteData.filter(
+          (data, index) => data?.MinuteStats?.rejectedByUsers.length !== 0
+        );
+        console.log(
+          isRejectedMemberHas,
+          "isRejectedMemberHasisRejectedMemberHas"
+        );
         return (
           <Row className='mt-2'>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1177,7 +1186,20 @@ const AgendaWise = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
+                  
                         <span className='d-flex align-items-start justify-content-center'>
+                          {isRejectedMemberHas.length > 0 && (
+                            <Tooltip
+                              placement='top'
+                              showArrow={false}
+                              title={`Rejected By ${isRejectedMemberHas[0].MinuteStats.rejected} Members`}>
+                              <img
+                                className={styles["Attachment"]}
+                                alt=''
+                                src={WarningIcon}
+                              />
+                            </Tooltip>
+                          )}
                           {/* //data.minuteData.length > 0 && */}
                           {attachmentResult ? (
                             <img

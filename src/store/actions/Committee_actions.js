@@ -1645,7 +1645,11 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
                 t("Successfully")
               )
             );
-            return responseResult.data;
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_02".toLowerCase()
@@ -1656,7 +1660,10 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
                 t("Something-went-wrong")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_03".toLowerCase()
@@ -1667,7 +1674,10 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
                 t("Invalid-request-data")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeListLink_04".toLowerCase()
@@ -1678,14 +1688,20 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
                 t("Someting-went-wrong")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
           } else {
             dispatch(
               validateEncryptedStringViewCommitteeListLink_Fail(
                 t("Unsuccessful")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
           }
         } else {
           dispatch(
@@ -1693,7 +1709,10 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
               t("Something-went-wrong")
             )
           );
-          throw new Error(t("Something-went-wrong"));
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
         }
       } else {
         dispatch(
@@ -1701,7 +1720,10 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
             t("Something-went-wrong")
           )
         );
-        throw new Error(t("Something-went-wrong"));
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
       }
     } catch (error) {
       dispatch(
@@ -1709,7 +1731,10 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
           t("Something-went-wrong")
         )
       );
-      throw new Error(t("Something-went-wrong"));
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
     }
   };
 };
@@ -1783,18 +1808,21 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
                 t("Successfully")
               )
             );
-            return responseResult.data;
+            return {
+              response: responseResult.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_02".toLowerCase()
             )
           ) {
-            dispatch(
-              validateEncryptedStringViewCommitteeDetailLink_Fail(
-                t("Something-went-wrong")
-              )
-            );
-            throw new Error(t("Something-went-wrong"));
+            dispatch(validateEncryptedStringViewCommitteeDetailLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_03".toLowerCase()
@@ -1805,7 +1833,10 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
                 t("Invalid-request-data")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
           } else if (
             message.includes(
               "Committee_CommitteeServiceManager_ValidateEncryptedStringViewCommitteeDetailsLink_04".toLowerCase()
@@ -1816,14 +1847,20 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
                 t("Someting-went-wrong")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
           } else {
             dispatch(
               validateEncryptedStringViewCommitteeDetailLink_Fail(
-                t("Unsuccessful")
+                t("Someting-went-wrong")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
           }
         } else {
           dispatch(
@@ -1831,7 +1868,10 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
               t("Something-went-wrong")
             )
           );
-          throw new Error(t("Something-went-wrong"));
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
         }
       } else {
         dispatch(
@@ -1839,7 +1879,10 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
             t("Something-went-wrong")
           )
         );
-        throw new Error(t("Something-went-wrong"));
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
       }
     } catch (error) {
       dispatch(
@@ -1847,7 +1890,10 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
           t("Something-went-wrong")
         )
       );
-      throw new Error(t("Something-went-wrong"));
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
     }
   };
 };

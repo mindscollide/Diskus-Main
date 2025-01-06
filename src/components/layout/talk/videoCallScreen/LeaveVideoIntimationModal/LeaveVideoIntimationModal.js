@@ -144,7 +144,7 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingPageFlagReducer === true) &&
           viewMeetingFlagReducer === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
@@ -227,11 +227,11 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingPageFlagReducer === true) &&
           viewMeetingFlagReducer === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
-          navigate("/DisKus/todolist");
+          navigate("/Diskus/todolist");
           dispatch(showCancelModalmeetingDeitals(false));
           dispatch(scheduleMeetingPageFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
@@ -262,11 +262,11 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingPageFlagReducer === true) &&
           viewMeetingFlagReducer === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
-          navigate("/DisKus/calendar");
+          navigate("/Diskus/calendar");
           dispatch(showCancelModalmeetingDeitals(false));
           dispatch(scheduleMeetingPageFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
@@ -296,11 +296,11 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingPageFlagReducer === true) &&
           viewMeetingFlagReducer === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
-          navigate("/DisKus/Notes");
+          navigate("/Diskus/Notes");
           dispatch(showCancelModalmeetingDeitals(false));
           dispatch(scheduleMeetingPageFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
@@ -330,7 +330,7 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingsPageFlag === true) &&
           viewMeetingsFlag === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
@@ -364,7 +364,7 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingsPageFlag === true) &&
           viewMeetingsFlag === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
@@ -401,7 +401,7 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingsPageFlag === true) &&
           viewMeetingsFlag === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
@@ -438,7 +438,7 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingsPageFlag === true) &&
           viewMeetingsFlag === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
@@ -477,11 +477,11 @@ const LeaveVideoIntimationModal = () => {
             proposeNewMeetingsPageFlag === true) &&
           viewMeetingsFlag === false
         ) {
-          navigate("/DisKus/Meeting");
+          navigate("/Diskus/Meeting");
           dispatch(showCancelModalmeetingDeitals(true));
           dispatch(uploadGlobalFlag(false));
         } else {
-          navigate("/DisKus/polling");
+          navigate("/Diskus/polling");
           dispatch(showCancelModalmeetingDeitals(false));
           dispatch(scheduleMeetingPageFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
@@ -514,7 +514,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(showCancelModalmeetingDeitals(true));
         } else {
           localStorage.setItem("setTableView", 4);
-          navigate("/DisKus/dataroom");
+          navigate("/Diskus/dataroom");
           dispatch(showCancelModalmeetingDeitals(false));
           dispatch(scheduleMeetingPageFlag(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
@@ -545,10 +545,10 @@ const LeaveVideoIntimationModal = () => {
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
           ) {
-            navigate("/DisKus/Meeting");
+            navigate("/Diskus/Meeting");
             dispatch(showCancelModalmeetingDeitals(true));
           } else {
-            navigate("/DisKus/");
+            navigate("/Diskus/");
             dispatch(showCancelModalmeetingDeitals(false));
             dispatch(scheduleMeetingPageFlag(false));
             dispatch(viewProposeDateMeetingPageFlag(false));
@@ -580,10 +580,10 @@ const LeaveVideoIntimationModal = () => {
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
           ) {
-            navigate("/DisKus/Meeting");
+            navigate("/Diskus/Meeting");
             dispatch(showCancelModalmeetingDeitals(true));
           } else {
-            navigate("/DisKus/setting");
+            navigate("/Diskus/setting");
             dispatch(showCancelModalmeetingDeitals(false));
             dispatch(scheduleMeetingPageFlag(false));
             dispatch(viewProposeDateMeetingPageFlag(false));
@@ -615,10 +615,10 @@ const LeaveVideoIntimationModal = () => {
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
           ) {
-            navigate("/DisKus/Meeting");
+            navigate("/Diskus/Meeting");
             dispatch(showCancelModalmeetingDeitals(true));
           } else {
-            navigate("/DisKus/Minutes");
+            navigate("/Diskus/Minutes");
             dispatch(showCancelModalmeetingDeitals(false));
             dispatch(scheduleMeetingPageFlag(false));
             dispatch(viewProposeDateMeetingPageFlag(false));
@@ -649,10 +649,10 @@ const LeaveVideoIntimationModal = () => {
               proposeNewMeetingPageFlagReducer === true) &&
             viewMeetingFlagReducer === false
           ) {
-            navigate("/DisKus/Meeting");
+            navigate("/Diskus/Meeting");
             dispatch(showCancelModalmeetingDeitals(true));
           } else {
-            navigate("/DisKus/faq's");
+            navigate("/Diskus/faq's");
             dispatch(showCancelModalmeetingDeitals(false));
             dispatch(scheduleMeetingPageFlag(false));
             dispatch(viewProposeDateMeetingPageFlag(false));

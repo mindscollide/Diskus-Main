@@ -75,13 +75,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const [meetingParticipants, setMeetingParticipants] = useState([]);
 
   const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
-
+  const [voteAnswerValue, setVoteAnswerValue] = useState("");
   const [saveOptions, setSaveOptions] = useState([
-    { votingAnswer: "Pending", votingAnswerID: 0 },
-    { votingAnswer: "Yes", votingAnswerID: 1 },
-    { votingAnswer: "No", votingAnswerID: 2 },
+    { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
+    { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
+    { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
   ]);
-
+  console.log(saveOptions, "saveOptionssaveOptionssaveOptions");
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     voteQuestion: "",
     Answer: "",
@@ -119,7 +119,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const AddOptions = () => {
     const optionExists = saveOptions.some(
-      (option) => option.votingAnswer === saveOptions.votingAnswer
+      (option) => option.votingAnswer === voteAnswerValue
     );
 
     if (!optionExists) {
@@ -127,11 +127,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       setSaveOptions([
         ...saveOptions,
         {
-          votingAnswer: saveOptions.votingAnswer,
+          votingAnswer: voteAnswerValue,
           votingAnswerID: 0,
         },
       ]);
       setAddOptions(false);
+      setVoteAnswerValue("");
     } else {
       showMessage(t("Cannot-add-option-with-same-name"), "error", setOpen);
     }
@@ -261,9 +262,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   // Function for the Saved Add TExt filed
   const handleOptionTextChange = (e) => {
     let value = e.target.value;
-    const updatedOptions = [...saveOptions];
-    updatedOptions.votingAnswer = value;
-    setSaveOptions(updatedOptions);
+    setVoteAnswerValue(value);
+    // const updatedOptions = [...saveOptions];
+    // updatedOptions.votingAnswer = value;
+    // setSaveOptions(updatedOptions);
   };
 
   const handleChangeVotingAnswer = (e, index) => {
@@ -492,26 +494,20 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         agendaVotingID: agendaVotingDetails.agendaVotingID,
         isvotingClosed: false,
       });
-      const newSaveOptions = [...saveOptions];
       let votingAnswerData = agendaVotingDetails.votingAnswers;
-
-      if (Array.isArray(votingAnswerData)) {
+      console.log(votingAnswerData, "votingAnswerDatavotingAnswerData");
+      if (Array.isArray(votingAnswerData) && votingAnswerData.length > 0) {
+        let newAnswers = [];
         votingAnswerData.forEach((item) => {
-          if (
-            !newSaveOptions.some(
-              (option) => option.votingAnswer === item.votingAnswer
-            )
-          ) {
-            newSaveOptions.push({
-              votingAnswer: item.votingAnswer,
-              votingAnswerID: item.votingAnswerID,
-              agendaID: item.agendaID,
-            });
-          }
+          newAnswers.push({
+            votingAnswer: item.votingAnswer,
+            votingAnswerID: item.votingAnswerID,
+            agendaID: item.agendaID,
+            isHidden: item.votingAnswer === "Pending" ? true : false,
+          });
         });
-        setSaveOptions(newSaveOptions);
-      } else {
-        setSaveOptions(saveOptions);
+
+        setSaveOptions(newAnswers);
       }
     }
   }, [
@@ -579,7 +575,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       }));
 
       console.log("votingOptionData", typeof votingOptionData);
-      if (Object.keys(votingOptionData).length >= 2) {
+      if (Object.keys(votingOptionData).length > 2) {
         let Data = {
           MeetingID: currentMeeting,
           AgendaVoting: {
@@ -675,11 +671,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     setOrganizers([]);
     setVotingResultDisplayData([]);
     setMeetingParticipants([]);
-    setSaveOptions([
-      { votingAnswer: "Pending", votingAnswerID: 0 },
-      { votingAnswer: "Yes", votingAnswerID: 1 },
-      { votingAnswer: "No", votingAnswerID: 2 },
-    ]);
+    // setSaveOptions([
+    //   { votingAnswer: "Pending", votingAnswerID: 0 },
+    //   { votingAnswer: "Yes", votingAnswerID: 1 },
+    //   { votingAnswer: "No", votingAnswerID: 2 },
+    // ]);
     dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(showAllMeetingParticipantsSuccess([], "", false));
     localStorage.setItem("currentAgendaVotingID", 0);
@@ -797,7 +793,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         <TextField
                           labelclass={"d-none"}
                           applyClass={"NewMeetingFileds"}
-                          value={saveOptions.votingAnswer}
+                          value={voteAnswerValue}
                           change={(e) => handleOptionTextChange(e)}
                         />
                       </Col>
@@ -841,32 +837,28 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         sm={10}
                         className='Scroller-x-Meeting'
                         id='Slider'>
-                        <Col lg={2} md={2} sm={2}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Button
-                                icon={
-                                  <Row className='m-2'>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className='d-flex justify-content-center align-items-center p-0'>
-                                      <img
-                                        src={Plus}
-                                        height='20.68px'
-                                        width='20.68px'
-                                        className={styles["IconClass"]}
-                                        alt=''
-                                      />
-                                    </Col>
-                                  </Row>
-                                }
-                                className={styles["plus_button"]}
-                                onClick={plusButtonFunc}
-                              />
-                            </Col>
-                          </Row>
+                        <Col lg={1} md={1} sm={1}>
+                          <Button
+                            icon={
+                              <Row className='m-2'>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className='d-flex justify-content-center align-items-center p-0'>
+                                  <img
+                                    src={Plus}
+                                    height='20.68px'
+                                    width='20.68px'
+                                    className={styles["IconClass"]}
+                                    alt=''
+                                  />
+                                </Col>
+                              </Row>
+                            }
+                            className={styles["plus_button"]}
+                            onClick={plusButtonFunc}
+                          />
                         </Col>
                         <Col lg={10} md={10} sm={10}>
                           <Row>
@@ -877,28 +869,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                               className='d-flex gap-2 '>
                               {saveOptions.length > 0
                                 ? saveOptions.map((data, index) => {
-                                    return (
-                                      <span
-                                        className='position-relative'
-                                        key={index}>
-                                        {data.votingAnswer === "Pending" ? (
-                                          <TextField
-                                            labelclass={"d-none"}
-                                            applyClass={
-                                              "NewMeetingFileds_withIcon"
-                                            }
-                                            width={"145px"}
-                                            change={(e) =>
-                                              handleChangeVotingAnswer(e, index)
-                                            }
-                                            value={data.votingAnswer}
-                                            name={"OptionsAdded"}
-                                            iconclassname={
-                                              styles["ResCrossIcon"]
-                                            }
-                                            disable={true}
-                                          />
-                                        ) : (
+                                    if (!data.isHidden) {
+                                      return (
+                                        <span
+                                          className='position-relative'
+                                          key={index}>
                                           <TextField
                                             labelclass={"d-none"}
                                             applyClass={
@@ -926,9 +901,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                                               />
                                             }
                                           />
-                                        )}
-                                      </span>
-                                    );
+                                        </span>
+                                      );
+                                    }
                                   })
                                 : null}
                             </Col>

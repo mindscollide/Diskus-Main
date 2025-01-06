@@ -136,6 +136,7 @@ const ViewMeetingModal = ({
       setAdvanceMeetingModalID(null);
       localStorage.removeItem("AdvanceMeetingOperations");
       localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.setItem("isMeeting", false);
     };
   }, []);
 

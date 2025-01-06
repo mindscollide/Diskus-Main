@@ -22,11 +22,58 @@ const initialState = {
   createGroupPageFlag: false,
   updateGroupPageFlag: false,
   viewGroupPageFlag: false,
-  removeGroupMember: null
+  removeGroupMember: null,
+  viewGroupsList: null,
+  viewGroupDetailLink: null,
 };
 
 const GroupsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewGroupDetailLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_DETAILS_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewGroupDetailLink: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewGroupsList: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_VIEW_GROUP_LIST_LINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewGroupsList: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.GET_GROUPS_BYUSERID_INIT: {
       return {
         ...state,
@@ -394,11 +441,11 @@ const GroupsReducer = (state = initialState, action) => {
         viewGroupPageFlag: action.response,
       };
     }
-    case actions.REMOVE_GROUP_MEMBER : {
+    case actions.REMOVE_GROUP_MEMBER: {
       return {
         ...state,
-        removeGroupMember: action.response
-      }
+        removeGroupMember: action.response,
+      };
     }
     default:
       return { ...state };

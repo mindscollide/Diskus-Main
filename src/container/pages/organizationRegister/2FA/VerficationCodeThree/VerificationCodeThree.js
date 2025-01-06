@@ -95,7 +95,7 @@ const VerificationCodeThree = () => {
           } else {
             let RSVP = localStorage.getItem("RSVP");
             if (RSVP !== undefined && RSVP !== null) {
-              navigate("/DisKus/Meeting/Useravailabilityformeeting");
+              navigate("/Diskus/Meeting/Useravailabilityformeeting");
             } else {
               if (
                 localStorage.getItem("RSVP") !== null &&

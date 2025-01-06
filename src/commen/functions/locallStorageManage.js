@@ -58,6 +58,14 @@ export const localStorageManage = (
     meetingCanc: localStorage.getItem("meetingCanc"),
     resVot: localStorage.getItem("resVot"),
     resNonVot: localStorage.getItem("resNonVot"),
+    committeeView_Id: localStorage.getItem("committeeView_Id"),
+    committeeList: localStorage.getItem("committeeList"),
+    groupView_Id: localStorage.getItem("groupView_Id"),
+    groupList: localStorage.getItem("groupList"),
+    taskListView_Id: localStorage.getItem("taskListView_Id"),
+    taskListView: localStorage.getItem("taskListView"),
+    documentViewer: localStorage.getItem("documentViewer"),
+    viewFolderLink: localStorage.getItem("viewFolderLink"),
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

@@ -28,27 +28,25 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
   endMeetingStatusApi,
-  FetchMeetingURLApi,
   LeaveCurrentMeeting,
   LeaveMeetingVideo,
 } from "../../store/actions/NewMeetingActions";
-import { callRequestReceivedMQTT } from "../../store/actions/VideoMain_actions";
 import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
 import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
-  closeQuickMeetingModal,
   endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
-  maxHostVideoCallPanel,
+  leaveMeetingOnlogout,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   setRaisedUnRaisedParticiant,
   toggleParticipantsVisibility,
+  videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
 import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -56,14 +54,15 @@ import ParticipantVideoCallComponent from "../pages/meeting/meetingVideoCall/max
 import NormalParticipantVideoComponent from "../pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { editorRole } = useContext(MeetingContext);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails
@@ -104,15 +103,24 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
-  const closeQuickMeetingVideoReducer = useSelector(
+  const endMeetingStatusForQuickMeetingModalFlag = useSelector(
     (state) =>
       state.videoFeatureReducer.endMeetingStatusForQuickMeetingModalFlag
   );
+  const leaveMeetingOnLogoutResponse = useSelector(
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
+  );
+
+  const enableDisableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.enableDisableVideoState
+  );
+
+  console.log(enableDisableVideoState, "enableDisableVideoState");
 
   const assigneesuser = useSelector((state) => state.assignees.user);
-  let currentMeeting = localStorage.getItem("currentMeetingID");
-  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+
   const { setEndMeetingConfirmationModal } = useContext(MeetingContext);
+
   const [getMeetID, setMeetID] = useState(0);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
@@ -121,38 +129,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [isAttachments, setIsAttachments] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
   const [meetStatus, setMeetStatus] = useState(0);
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-
-  // for meatings  Attendees List
-  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
-
   // for   List Of Attachments
   const [attachmentsList, setattachmentsList] = useState([]);
-
   //all Meeting details
   const [allMeetingDetails, setAllMeetingDetails] = useState([]);
-
   const [meetingDifference, setMeetingDifference] = useState(0);
-
-  let now = new Date();
-  let year = now.getUTCFullYear();
-  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
-  let day = now.getUTCDate().toString().padStart(2, "0");
-  let hours = now.getUTCHours().toString().padStart(2, "0");
-  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
-  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
-  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  let currentLanguage = localStorage.getItem("i18nextLng");
-
+  // for meatings  Attendees List
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
-
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
   const [startMeetingStatus, setStartMeetingStatus] = useState(false);
@@ -176,6 +160,28 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     ExternalMeetingAttendees: [],
     MinutesOfMeeting: [],
   });
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+  //Get Current User ID
+  let createrID = localStorage.getItem("userID");
+
+  let currentMeeting = localStorage.getItem("currentMeetingID");
+
+  let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+  let now = new Date();
+  let year = now.getUTCFullYear();
+  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+  let day = now.getUTCDate().toString().padStart(2, "0");
+  let hours = now.getUTCHours().toString().padStart(2, "0");
+  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
+  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
+  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
   const changeSelectDetails = () => {
     setIsDetails(true);
     setIsAgenda(false);
@@ -725,6 +731,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   useEffect(() => {
     return () => {
+      console.log("isMeeting");
+      localStorage.setItem("isMeeting", false);
       dispatch(removeCalenderDataFunc(null));
       setViewFlag(false);
       dispatch(cleareAssigneesState());
@@ -853,18 +861,29 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
-      if (closeQuickMeetingVideoReducer) {
+      if (endMeetingStatusForQuickMeetingModalFlag) {
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         console.log("mqtt mqmqmqmqmqmq");
-        leaveMeeting(currentMeetingID, true);
+        leaveMeeting(currentMeetingID, true, false);
       }
     } catch (error) {}
-  }, [closeQuickMeetingVideoReducer]);
+  }, [endMeetingStatusForQuickMeetingModalFlag]);
 
-  const leaveMeeting = async (id, flag) => {
+  useEffect(() => {
+    try {
+      if (leaveMeetingOnLogoutResponse) {
+        console.log("mqtt mqmqmqmqmqmq");
+        let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+        leaveMeeting(currentMeetingID, false, true);
+      }
+    } catch {}
+  }, [leaveMeetingOnLogoutResponse]);
+
+  const leaveMeeting = async (id, flag, flag2) => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let typeOfMeeting = localStorage.getItem("typeOfMeeting");
 
-    if (isMeetingVideo === true) {
+    if (isMeetingVideo === true && String(typeOfMeeting) === "isQuickMeeting") {
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       const currentMeetingID = JSON.parse(
         localStorage.getItem("currentMeetingID")
@@ -915,7 +934,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(
         LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
       );
-    } else {
+    } else if (String(typeOfMeeting) === "isQuickMeeting") {
+      console.log("mqtt mqmqmqmqmqmq");
       let leaveMeetingData = {
         FK_MDID: Number(id),
         DateTime: getCurrentDateTimeUTC(),
@@ -927,6 +947,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(endMeetingStatusForQuickMeetingModal(false));
+    }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingOnlogout(false));
+      dispatch(userLogOutApiFunc(navigate, t));
     }
   };
 
@@ -976,6 +1001,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (!getMeetingVideoHost) {
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
+        dispatch(videoIconOrButtonState(true));
         if (currentMeetingVideoURL !== null) {
           let data = {
             MeetingId: Number(currentMeeting),
@@ -987,29 +1013,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         }
       }
     }
-    console.log(findRoleId, "findRoleIdfindRoleIdfindRoleId");
-
-    // }
-    // if (activeCall === false && isMeeting === false) {
-    //   let Data = {
-    //     VideoCallURL: currentMeetingVideoURL,
-    //   };
-    //   dispatch(
-    //     FetchMeetingURLApi(
-    //       Data,
-    //       navigate,
-    //       t,
-    //       currentUserID,
-    //       currentOrganization,
-    //       0,
-    //       createMeeting.MeetingTitle
-    //     )
-    //   );
-    //   localStorage.setItem("meetingTitle", createMeeting.MeetingTitle);
-    // } else if (activeCall === true && isMeeting === false) {
-    //   dispatch(callRequestReceivedMQTT({}, ""));
-    // }
   };
+
   useEffect(() => {
     try {
       if (
@@ -1052,8 +1057,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
   }, [meetingIdReducerMeetingStatusEnded]);
 
-  console.log("MeetingDetailsMeetingDetails", allMeetingDetails);
-
   return (
     <>
       <Container>
@@ -1070,7 +1073,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 allMeetingDetails.meetingStatus.status === "10" ||
                 allMeetingDetails.meetingStatus.status === 10
               ) {
-                leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+                // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+                setViewFlag(true);
               } else {
                 setViewFlag(false);
               }
@@ -1167,7 +1171,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         onClick={() => copyToClipboardd()}
                       />
                       <Button
-                        disableBtn={isVideo && meetStatus === 10 ? false : true}
+                        // disableBtn={
+                        //   isVideo && meetStatus === 10
+                        //     ? false
+                        //     : true || enableDisableVideoState
+                        // }
+                        disableBtn={
+                          !isVideo ||
+                          meetStatus !== 10 ||
+                          enableDisableVideoState
+                        }
                         text={t("Join-video-call")}
                         className={"JoinMeetingButton"}
                         onClick={joinMeetingCall}

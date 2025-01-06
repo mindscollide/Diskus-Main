@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -28,44 +28,33 @@ import {
   leaveCallModal,
   guestJoinPopup,
   participantWaitingList,
-  participantAcceptandReject,
   guestLeaveVideoMeeting,
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
   getParticipantsNewJoin,
-  participantVideoNavigationScreen,
-  maxParticipantVideoCallPanel,
   getVideoUrlForParticipant,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
   setRaisedUnRaisedParticiant,
-  checkHostNow,
   makeHostNow,
-  maxParticipantVideoDenied,
   maxParticipantVideoRemoved,
   participantLeaveVideoMeeting,
   globalStateForAudioStream,
   globalStateForVideoStream,
   globalNavigatorVideoStream,
-  leaveMeetingOnlogout,
   leaveMeetingVideoOnlogout,
-  toggleParticipantsVisibility,
-  participantWaitingListBox,
-  participantListWaitingListMainApi,
   makeParticipantHost,
   endMeetingStatusForQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
+  leaveMeetingOnlogout,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
-  meetingCount,
   setMQTTRequestUpcomingEvents,
-  mqttCurrentMeetingEnded,
-  GetUpcomingEventsForMQTT,
   createGroupMeeting,
   createCommitteeMeeting,
 } from "../../store/actions/GetMeetingUserId";
@@ -108,7 +97,6 @@ import {
   getDashboardTaskCountMQTT,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
-  TodoCounter,
 } from "../../store/actions/ToDoList_action";
 import {
   meetingStatusProposedMqtt,
@@ -122,9 +110,7 @@ import {
   meetingParticipantAdded,
   LeaveMeetingVideo,
   meetingReminderNotifcation,
-  searchNewUserMeeting,
   getDashboardMeetingCountMQTT,
-  LeaveCurrentMeeting,
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
   AgendaPollVotingStartedMQTTObjectDataAction,
@@ -191,21 +177,8 @@ import {
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScreen/LeaveVideoIntimationModal/LeaveVideoIntimationModal";
-import {
-  admitGuestUserRequest,
-  muteUnMuteByHost,
-  raiseUnRaisedHandMainApi,
-  setVoiceControleGuest,
-} from "../../store/actions/Guest_Video";
-import {
-  MeetingContext,
-  useMeetingContext,
-} from "../../context/MeetingContext";
-import {
-  DiskusGlobalDataIsReadFlag,
-  DiskusGlobalUnreadNotificationCount,
-} from "../../store/actions/UpdateUserNotificationSetting";
-import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
+import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 
@@ -215,21 +188,12 @@ const Dashboard = () => {
   const { Sider, Content } = Layout;
 
   const navigate = useNavigate();
-  //Translation
+
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const { setEditorRole } = useMeetingContext();
-
   let i18nextLng = localStorage.getItem("i18nextLng");
-
-  // let createrID = 5;
-  let userGUID = localStorage.getItem("userGUID");
-
-  let currentMeetingVideoID = localStorage.getItem("acceptedRoomID");
-
-  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   let createrID = localStorage.getItem("userID");
 
@@ -237,15 +201,7 @@ const Dashboard = () => {
 
   let currentUserName = localStorage.getItem("name");
 
-  const { editorRole } = useContext(MeetingContext);
-
-  const meetingUrlData = useSelector(
-    (state) => state.NewMeetingreducer.getmeetingURL
-  );
-  // For Participant Raise Un Raised Hand
-  const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
-  );
+  const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const cancelModalMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.cancelModalMeetingDetails
@@ -318,7 +274,6 @@ const Dashboard = () => {
     notificationShow: false,
     message: "",
   });
-  // for sub menus Icons
 
   //State For Meeting Data
   const [open, setOpen] = useState({
@@ -326,91 +281,60 @@ const Dashboard = () => {
     message: "",
     severity: "error",
   });
+
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState("en");
-  const [meetingURLLocalData, setMeetingURLLocalData] = useState(null);
-  const [handsRaisedCount, setHandsRaisedCount] = useState(0);
-  const [participantsList, setParticipantsList] = useState([]);
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+
+  localStorage.setItem("MqttConnectionState", isOnline);
 
   let Blur = localStorage.getItem("blur");
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
 
-  const leaveMeetingCall = async () => {
-    // dispatch(leaveMeetingOnlogout(true))
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    let AdvanceMeetingOpen = JSON.parse(
-      localStorage.getItem("AdvanceMeetingOpen")
-    );
+  const leaveMeetingCall = async (data) => {
+    let getUserID =
+      localStorage.getItem("userID") !== null && localStorage.getItem("userID");
 
-    console.log("mqtt mqmqmqmqmqmq", viewAdvanceMeetingsPublishPageFlag);
-    if (isMeetingVideo || AdvanceMeetingOpen) {
-      dispatch(leaveMeetingVideoOnlogout(true));
-    } else {
-      dispatch(userLogOutApiFunc(navigate, t));
+    console.log("mqtt mqmqmqmqmqmq");
+    if (
+      Number(getUserID) === Number(data?.authToken?.userID) &&
+      Number(data?.deviceID) === 1
+    ) {
+      console.log("mqtt mqmqmqmqmqmq");
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+      if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq");
+        if (isMeetingVideo) {
+          console.log("mqtt mqmqmqmqmqmq");
+          dispatch(leaveMeetingVideoOnlogout(true));
+        } else {
+          console.log("mqtt mqmqmqmqmqmq");
+          dispatch(leaveMeetingOnlogout(true));
+        }
+      } else {
+        console.log("mqtt mqmqmqmqmqmq");
+        dispatch(userLogOutApiFunc(navigate, t));
+      }
     }
-
-    // const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
-    // let newName = localStorage.getItem("name");
-    // let participantUID = localStorage.getItem("participantUID");
-    // let participantRoomIds = localStorage.getItem("participantRoomId")
-    // let currentMeeting = localStorage.getItem("currentMeetingID");
-    // let newUserGUID = localStorage.getItem("isGuid");
-    // let newRoomId = localStorage.getItem("newRoomId");
-    // let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
-    // dispatch(normalizeVideoPanelFlag(false));
-    // dispatch(maximizeVideoPanelFlag(false));
-    // dispatch(minimizeVideoPanelFlag(false));
-    // localStorage.setItem("activeCall", false);
-    // localStorage.setItem("isMeeting", false);
-    // localStorage.setItem("meetingTitle", "");
-    // localStorage.setItem("acceptedRecipientID", 0);
-    // localStorage.setItem("acceptedRoomID", 0);
-    // localStorage.setItem("activeRoomID", 0);
-    // localStorage.setItem("meetingVideoID", 0);
-    // localStorage.setItem("MicOff", true);
-    // localStorage.setItem("VidOff", true);
-    // let Data = {
-    //   RoomID: meetHostFlag?.isHost?newRoomId:participantRoomIds,
-    //   UserGUID: meetHostFlag?.isHost?newUserGUID:participantUID,
-    //   Name: String(newName),
-    //   IsHost: meetHostFlag?.isHost ? true : false,
-    //   MeetingID: Number(currentMeetingID),
-
-    // };
-    // await dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-    // let leaveMeetingData = {
-    //   FK_MDID: currentMeeting,
-    //   DateTime: getCurrentDateTimeUTC(),
-    // };
-    // //await dispatch(
-    // //   LeaveCurrentMeeting(
-    // //     navigate,
-    // //     t,
-    // //     leaveMeetingData,
-    // //     false,
-    // //     false,
-    // //     setEditorRole,
-    // //     setAdvanceMeetingModalID,
-    // //     setViewAdvanceMeetingModal
-    // //   )
-    // // );
-    // dispatch(userLogOutApiFunc(navigate, t));
   };
+
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
       message: "",
     });
   };
+
   function checkCallStatus(data) {
     return !data.some(
       (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing"
     );
   }
+
   const closeModal = () => {
     localStorage.removeItem("packageFeatureIDs");
     localStorage.removeItem("LocalUserRoutes");
@@ -547,62 +471,7 @@ const Dashboard = () => {
                   "mqtt mqmqmqmqmqmq",
                   data?.payload?.meeting?.pK_MDID
                 );
-                // if (
-                //   Number(meetingVideoID) ===
-                //   Number(data?.payload?.meeting?.pK_MDID)
-                // ) {
-                //   console.log("mqtt mqmqmqmqmqmq");
                 meetingEnded(data.payload);
-                // }
-
-                // if (
-                //   Number(meetingVideoID) ===
-                //   Number(data?.payload?.meeting?.pK_MDID)
-                // ) {
-                //   let newName = localStorage.getItem("name");
-                //   let getMeetingParticipants =
-                //     data.payload.meeting.meetingAttendees.filter(
-                //       (attendeeData) =>
-                //         attendeeData.meetingAttendeeRole.pK_MARID !== 1
-                //     );
-                //   dispatch(normalizeVideoPanelFlag(false));
-                //   dispatch(maximizeVideoPanelFlag(false));
-                //   dispatch(minimizeVideoPanelFlag(false));
-                //   localStorage.setItem("activeCall", false);
-                //   localStorage.setItem("isMeeting", false);
-                //   localStorage.setItem("meetingTitle", "");
-                //   localStorage.setItem("acceptedRecipientID", 0);
-                //   localStorage.setItem("acceptedRoomID", 0);
-                //   localStorage.setItem("activeRoomID", 0);
-                //   localStorage.setItem("meetingVideoID", 0);
-                //   localStorage.setItem("MicOff", true);
-                //   localStorage.setItem("VidOff", true);
-                //   let Data = {
-                //     RoomID: currentMeetingVideoID,
-                //     UserGUID: userGUID,
-                //     Name: String(newName),
-                //   };
-                //   dispatch(LeaveMeetingVideo(Data, navigate, t, true));
-                //   if (getMeetingParticipants.length > 0) {
-                //     let userID = localStorage.getItem("userID");
-                //     let meetingpageRow =
-                //       localStorage.getItem("MeetingPageRows") || 30;
-                //     let meetingPageCurrent =
-                //       localStorage.getItem("MeetingPageCurrent") || 1;
-                //     let searchData = {
-                //       Date: "",
-                //       Title: "",
-                //       HostName: "",
-                //       UserID: Number(userID),
-                //       PageNumber: Number(meetingPageCurrent),
-                //       Length: Number(meetingpageRow),
-                //       PublishedMeetings: true,
-                //     };
-                //     dispatch(searchNewUserMeeting(navigate, searchData, t));
-                //   }
-                // }
-
-                // dispatch(mqttCurrentMeetingEnded(data.payload));
               } catch (error) {
                 console.log(error);
               }
@@ -2419,7 +2288,12 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+          // For the caller side
           let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+
+          // For Receiver Side
+          let NewRoomID = localStorage.getItem("NewRoomID");
+
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
           localStorage.setItem("newCallerID", callerID);
@@ -2488,13 +2362,28 @@ const Dashboard = () => {
             } else {
               if (Number(callTypeID) === 1) {
                 console.log("mqtt", isMeetingVideo);
-                let Data = {
-                  OrganizationID: Number(currentOrganization),
-                  RoomID: initiateRoomID,
-                  IsCaller: true,
-                  CallTypeID: callTypeID,
-                };
-                dispatch(LeaveCall(Data, navigate, t));
+                console.log("Participant Caller");
+                let unAnsweredCheck = JSON.parse(
+                  localStorage.getItem("unansweredFlag")
+                );
+
+                if (unAnsweredCheck) {
+                  let Data = {
+                    OrganizationID: Number(currentOrganization),
+                    RoomID: initiateRoomID,
+                    IsCaller: true,
+                    CallTypeID: callTypeID,
+                  };
+                  dispatch(LeaveCall(Data, navigate, t));
+                } else {
+                  let Data = {
+                    OrganizationID: Number(currentOrganization),
+                    RoomID: NewRoomID,
+                    IsCaller: true,
+                    CallTypeID: callTypeID,
+                  };
+                  dispatch(LeaveCall(Data, navigate, t));
+                }
                 dispatch(
                   callRequestReceivedMQTT(data.payload, data.payload.message)
                 );
@@ -2505,6 +2394,7 @@ const Dashboard = () => {
                 console.log("mqtt", checkCallStatus(existingData));
                 if (checkCallStatus(existingData)) {
                   console.log("mqtt", isMeetingVideo);
+                  console.log("host Caller");
                   let Data = {
                     OrganizationID: Number(currentOrganization),
                     RoomID: initiateRoomID,
@@ -2865,16 +2755,7 @@ const Dashboard = () => {
         if (
           data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
         ) {
-          let getUserID =
-            localStorage.getItem("userID") !== null &&
-            localStorage.getItem("userID");
-
-          if (
-            Number(getUserID) === Number(data?.payload?.authToken?.userID) &&
-            Number(data?.payload?.deviceID) === 1
-          ) {
-            leaveMeetingCall();
-          }
+          leaveMeetingCall(data?.payload);
         }
       }
       if (data.action.toLowerCase() === "DATAROOM".toLowerCase()) {
@@ -2951,19 +2832,6 @@ const Dashboard = () => {
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
         }
-        //  else if (
-        //   data.payload.message.toLowerCase() ===
-        //   "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
-        // ) {
-        //   setHandsRaisedCount(data.payload.handsRaisedCount || 0);
-        //   setParticipantsList(data.payload.particpantsList || []);
-        //   // Log roomID or raise hand status if available
-        //   if (data.payload.roomID) {
-        //     console.log("Room ID:", data.payload.roomID);
-        //   } else if (data.payload.raiseHand === true) {
-        //     console.log("Hand Raised:", data.payload.raiseHand);
-        //   }
-        // }
       }
       //Web Notification
       if (data.action.toLowerCase() === "WEBNOTIFICATION".toLowerCase()) {
@@ -2982,23 +2850,14 @@ const Dashboard = () => {
   async function joinRequestForMeetingVideo(mqttData) {
     try {
       const currentMeetingID = localStorage.getItem("currentMeetingID");
-      console.log("Mqtt Data", currentMeetingID);
-
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-      console.log("Mqtt Data");
       if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
         if (isMeetingVideo) {
-          console.log("Mqtt Data");
-
           if (mqttData.payload.isGuest) {
-            console.log("Mqtt Data");
-
             dispatch(admitGuestUserRequest(mqttData.payload));
           } else {
             dispatch(participantWaitingList(mqttData.payload));
           }
-          console.log("Mqtt Data");
-
           dispatch(guestJoinPopup(true));
         }
     } catch {}
@@ -3007,14 +2866,6 @@ const Dashboard = () => {
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
   };
-
-  useEffect(() => {
-    if (meetingUrlData !== null && meetingUrlData !== undefined) {
-      setMeetingURLLocalData(meetingUrlData);
-    } else {
-      setMeetingURLLocalData(null);
-    }
-  }, [meetingUrlData]);
 
   useEffect(() => {
     if (Helper.socket === null) {
@@ -3053,21 +2904,28 @@ const Dashboard = () => {
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
-  localStorage.setItem("MqttConnectionState", isOnline);
-
-  useEffect(() => {
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
     dispatch(GetUserMissedCallCount(navigate, t));
     //Owais Pending APproval Count
     dispatch(GetPendingApprovalsCount(navigate, t));
     localStorage.setItem("activeOtoChatID", 0);
+
+    let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+    if (window.performance) {
+      const navigationEntries = performance.getEntriesByType("navigation");
+      if (navigationEntries.length > 0) {
+        const navigationType = navigationEntries[0].type;
+        if (navigationType === "reload" && activeCall === true) {
+          dispatch(normalizeVideoPanelFlag(true));
+        } else {
+        }
+      }
+    }
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
   }, []);
 
   useEffect(() => {
@@ -3098,24 +2956,6 @@ const Dashboard = () => {
     }
   }, [MeetingStatusEnded]);
 
-  useEffect(() => {
-    let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-
-    if (window.performance) {
-      const navigationEntries = performance.getEntriesByType("navigation");
-      if (navigationEntries.length > 0) {
-        const navigationType = navigationEntries[0].type;
-        if (navigationType === "reload" && activeCall === true) {
-          dispatch(normalizeVideoPanelFlag(true));
-        } else {
-        }
-      }
-    }
-  }, []);
-  console.log(
-    "isInternetDisconnectModalVisible",
-    isInternetDisconnectModalVisible
-  );
   return (
     <>
       <ConfigProvider
@@ -3126,7 +2966,7 @@ const Dashboard = () => {
           <div className="overlay-incoming-videocall" />
         )}
         <Layout className="mainDashboardLayout">
-          {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
+          {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
             <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />

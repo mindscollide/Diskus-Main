@@ -110,6 +110,8 @@ import {
   clearDataResponseMessageDataRoom2,
   getDataAnalyticsCountApi,
   getFilesandFolderDetailsApi,
+  validateEncryptedStringViewFileLinkApi,
+  validateEncryptedStringViewFolderLinkApi,
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 import copyToClipboard from "../../hooks/useClipBoard";
@@ -153,16 +155,13 @@ const DataRoom = () => {
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [dataRoomString, setDataRoomString] = useState("");
 
-  const { DataRoomReducer, SignatureWorkFlowReducer, webViewer } = useSelector(
-    (state) => state
-  );
+  const { DataRoomReducer, webViewer } = useSelector((state) => state);
   const SignatureResponseMessage = useSelector(
     (state) => state.SignatureWorkFlowReducer.ResponseMessage
   );
   const BreadCrumbsListArr = useSelector(
     (state) => state.DataRoomReducer.BreadCrumbsList
   );
-  console.log(BreadCrumbsListArr, "BreadCrumbsListBreadCrumbsList");
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -197,12 +196,9 @@ const DataRoom = () => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState(0);
   const [getAllData, setGetAllData] = useState([]);
-  console.log(getAllData, "getAllDatagetAllDatagetAllData");
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [sortValue, setSortValue] = useState(1);
   const [isAscending, setIsAscending] = useState(true);
-  const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
-  const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID");
   // thi state contains current file name which is ude to creat new folder
@@ -223,21 +219,6 @@ const DataRoom = () => {
   const [allDocumentsTitleSorter, setAllDocumentsTitleSorter] = useState(null);
   const [allOwnerSorter, setAllOwnerSorter] = useState(null);
   const [allLastModifiedSorter, setAllLastModifiedSorter] = useState(null);
-  const [allLastModifiedValue, setAllLastModifiedValue] = useState(
-    t("Last-modified")
-  );
-  const [recentDocumentsTitleSorter, setRecentDocumentsTitleSorter] =
-    useState(null);
-  const [recentDocumentsOwnerSorter, setRecentDocumentsOwnerSorter] =
-    useState(null);
-  const [
-    recentDocumentsLastModifiedSorter,
-    setRecentDocumentsLastModifiedSorter,
-  ] = useState(null);
-  const [
-    recentDocumentsLastModifiedValue,
-    setRecentDocumentsLastModifiedValue,
-  ] = useState("");
   const [shareDateSorter, setShareDateSorter] = useState(null);
 
   const [canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder] =
@@ -338,7 +319,7 @@ const DataRoom = () => {
           )
         );
       } else {
-        navigate("/DisKus/dataroom");
+        navigate("/Diskus/dataroom");
       }
     } catch (error) {
       console.log("Test Dataroom", error);
@@ -378,8 +359,6 @@ const DataRoom = () => {
 
   useEffect(() => {
     try {
-      if (performance.navigation.type === 1) {
-      }
       window.addEventListener("click", async function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
@@ -401,6 +380,8 @@ const DataRoom = () => {
         }
       });
     } catch {}
+    let viewFol_action = localStorage.getItem("viewFolderLink");
+    let documentViewer = localStorage.getItem("documentViewer");
     if (currentView !== null) {
       if (localStorage.getItem("BoardDeckFolderID") === null) {
         apiCalling();
@@ -410,6 +391,67 @@ const DataRoom = () => {
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
       localStorage.removeItem("folderID");
       localStorage.removeItem("BoardDeckFolderID");
+    }
+    if (viewFol_action !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewFolderLinkApi(viewFol_action, navigate, t)
+        );
+        console.log(getResponse, "viewFol_action");
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          // Set necessary states and flags for viewing committee details
+          localStorage.setItem("folderID", getResponse.response.response.folderID);
+          await dispatch(
+            getFolderDocumentsApi(
+              navigate,
+              getResponse?.response?.response?.folderID,
+              t,
+              2,
+              null,
+              BreadCrumbsListArr
+            )
+          );
+        }
+        localStorage.removeItem("viewFolderLink"); // Cleanup the localStorage key
+      };
+      callApi();
+      // let ext = documentViewer?.split(".").pop();
+      // openDocumentViewer(ext, documentViewer, dispatch, navigate, t, null);
+    }
+    if (documentViewer !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t)
+        );
+        console.log(getResponse, "viewFol_action");
+
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          let ext = getResponse.response.fileName?.split(".").pop();
+          let record = { id: getResponse.response.response.fileID };
+          console.log(
+            record,
+            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi"
+          );
+          const pdfData = {
+            taskId: getResponse.response.response.fileID,
+            commingFrom: 4,
+            fileName: getResponse.response.fileName,
+            attachmentID: getResponse.response.response.fileID,
+            isPermission: getResponse.response.response.permissionID,
+          };
+          console.log(
+            pdfData,
+            "validateEncryptedStringViewFileLinkApivalidateEncryptedStringViewFileLinkApi"
+          );
+
+          const pdfDataJson = JSON.stringify(pdfData);
+          openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+        }
+      };
+      callApi();
+      localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
     }
     return () => {
       localStorage.removeItem("folderID");
@@ -898,7 +940,7 @@ const DataRoom = () => {
         navigate,
         folderid,
         t,
-        1,
+        2,
         record,
         BreadCrumbsListArr
       )
@@ -1087,39 +1129,65 @@ const DataRoom = () => {
   //
 
   const handeClickSortingFunc = (viewValue, statusID) => {
-    console.log(
-      viewValue,
-      statusID,
-      "handeClickSortingFunchandeClickSortingFunc"
-    );
     if (Number(viewValue) === 1 || Number(viewValue) === 3) {
       // this is for All Tab and My Document tab
       if (Number(statusID) === 1) {
         // Document Name Sorter
         setAllDocumentsTitleSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  1,
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  1,
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
             return "descend";
           }
         });
@@ -1127,28 +1195,59 @@ const DataRoom = () => {
         //  Owner name sorting
         setAllOwnerSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  5,
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  5,
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
             return "descend";
           }
         });
@@ -1160,28 +1259,60 @@ const DataRoom = () => {
         // Last Modified Date Sorter
         setAllLastModifiedSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
+
             return "descend";
           }
         });
@@ -1192,28 +1323,60 @@ const DataRoom = () => {
         // setShareDateSorter
         setShareDateSorter((order) => {
           if (order === "descend") {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                false
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  false
+                )
+              );
+            }
+
             return "ascend";
           } else {
-            dispatch(
-              getDocumentsAndFolderApi(
-                navigate,
-                Number(currentView),
-                t,
-                1,
-                Number(statusID),
-                true
-              )
-            );
+            if (viewFolderID !== null) {
+              dispatch(
+                getFolderDocumentsApi(
+                  navigate,
+                  Number(viewFolderID),
+                  t,
+                  1,
+                  null,
+                  null,
+                  Number(statusID),
+                  true
+                )
+              );
+            } else {
+              dispatch(
+                getDocumentsAndFolderApi(
+                  navigate,
+                  Number(currentView),
+                  t,
+                  1,
+                  Number(statusID),
+                  true
+                )
+              );
+            }
+
             return "descend";
           }
         });
@@ -3353,7 +3516,7 @@ const DataRoom = () => {
           navigate,
           Number(id),
           t,
-          1,
+          5,
           record,
           BreadCrumbsListArr
         )

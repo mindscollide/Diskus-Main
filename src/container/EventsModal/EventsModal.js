@@ -44,7 +44,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
     console.log("startMeetingRequest", data);
     dispatch(dashboardCalendarEvent(data));
     localStorage.setItem("meetingTitle", data.title);
-    navigate("/DisKus/Meeting");
+    navigate("/Diskus/Meeting");
   };
   useEffect(() => {
     if (settingReducer?.UserProfileData !== null) {

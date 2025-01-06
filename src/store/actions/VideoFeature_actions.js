@@ -593,6 +593,7 @@ const getParticipantMeetingJoinMainApi = (
                 isDashboardVideo: true,
               };
               await dispatch(makeHostNow(meetingHost));
+              dispatch(videoIconOrButtonState(false));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
@@ -673,6 +674,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(
@@ -688,6 +690,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call"))
@@ -701,6 +704,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               try {
                 setJoinButton(false);
+                dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -709,6 +713,7 @@ const getParticipantMeetingJoinMainApi = (
           } else {
             try {
               setJoinButton(false);
+              dispatch(videoIconOrButtonState(false));
             } catch {}
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -717,6 +722,7 @@ const getParticipantMeetingJoinMainApi = (
         } else {
           try {
             setJoinButton(false);
+            dispatch(videoIconOrButtonState(false));
           } catch {}
           await dispatch(
             getParticipantMeetingJoinFail(t("Something-went-wrong"))
@@ -726,6 +732,7 @@ const getParticipantMeetingJoinMainApi = (
       .catch((response) => {
         try {
           setJoinButton(false);
+          dispatch(videoIconOrButtonState(false));
         } catch {}
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
@@ -1121,16 +1128,12 @@ const globalNavigatorVideoStream = (response) => {
 };
 // For Removed Max Patrticipant Video Compnent
 const leaveMeetingOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_ON_LOGOUT,
     response: response,
   };
 };
 const leaveMeetingVideoOnlogout = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
   return {
     type: actions.LEAVE_MEETING_VIDEO_ON_LOGOUT,
     response: response,
@@ -1184,6 +1187,15 @@ const leaveMeetingVideoOnEndStatusMqtt = (response) => {
 const leaveMeetingOnEndStatusMqtt = (response) => {
   return {
     type: actions.LEAVE_MEETING_END_STATUS_RESPONSE,
+    response: response,
+  };
+};
+
+// For videoIcon enable and disable or button
+const videoIconOrButtonState = (response) => {
+  console.log(response, "enableDisableVideoState");
+  return {
+    type: actions.VIDEO_BUTTON_OR_ICON_STATE,
     response: response,
   };
 };
@@ -1263,4 +1275,5 @@ export {
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
+  videoIconOrButtonState,
 };

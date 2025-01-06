@@ -91,7 +91,7 @@ const ReviewSignature = () => {
     if (record.status === "Pending Signature") {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/#/DisKus/signeddocument?documentID=${encodeURIComponent(
+        `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -100,7 +100,7 @@ const ReviewSignature = () => {
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/#/DisKus/viewSignDocument?documentID=${encodeURIComponent(
+        `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
