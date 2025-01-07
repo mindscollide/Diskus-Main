@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -11,12 +11,12 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
 import { useDispatch } from "react-redux";
-import {
-  FileUploadToDo,
-  uploaddocumentloader,
-} from "../../../store/actions/Upload_action";
 import CustomUpload from "../../../components/elements/upload/Upload";
-import { SaveNotesAPI } from "../../../store/actions/Notes_actions";
+import {
+  saveFilesNotesApi,
+  SaveNotesAPI,
+  SaveNotesDocumentAPI,
+} from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
@@ -26,10 +26,22 @@ import {
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
+import { useSelector } from "react-redux";
+import { uploadDocumentsGroupsApi } from "../../../store/actions/Groups_actions";
 
 const ModalAddNote = ({ ModalTitle }) => {
   //Context State for the Modal Globally Defined
   const { addNotes, setAddNotes } = useNotesContext();
+
+  //GlobalState For Folder ID Against the Notes Created
+  const NotesReducerFolderID = useSelector(
+    (state) => state.NotesReducer.createUpdateNotesDataRoomMapData
+  );
+
+  const NotesReducerFolderIDwhole = useSelector((state) => state.NotesReducer);
+
+  console.log(NotesReducerFolderIDwhole, "fileForSendfileForSend");
+  console.log(NotesReducerFolderID, "fileForSendfileForSend");
   //For Localization
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -44,7 +56,7 @@ const ModalAddNote = ({ ModalTitle }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-
+  console.log(fileForSend, "fileForSendfileForSend");
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -250,7 +262,7 @@ const ModalAddNote = ({ ModalTitle }) => {
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
       };
-      dispatch(SaveNotesAPI(navigate, Data, t, setAddNotes));
+      dispatch(SaveNotesAPI(navigate, Data, t));
     } else {
       setAddNoteFields({
         ...addNoteFields,
@@ -274,6 +286,50 @@ const ModalAddNote = ({ ModalTitle }) => {
       });
     }
   };
+
+  //File For Send Work in Notes
+  const NotesDocumentCallUpload = async (folderID) => {
+    let newFolder = [];
+    let newfile = [];
+    if (fileForSend.length > 0) {
+      console.log(fileForSend, "fileForSendfileForSend");
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsGroupsApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            // newFolder,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      await dispatch(
+        saveFilesNotesApi(navigate, t, newfile, folderID, newFolder)
+      );
+    }
+
+    let groupID = localStorage.getItem("groupID");
+
+    let Data = {
+      GroupID: Number(groupID),
+      UpdateFileList: newFolder.map((data, index) => {
+        return { PK_FileID: data.pK_FileID };
+      }),
+    };
+    dispatch(SaveNotesDocumentAPI(navigate, Data, t, setAddNotes));
+  };
+
+  useEffect(() => {
+    if (NotesReducerFolderID) {
+      let folderIDCreated = NotesReducerFolderID;
+      NotesDocumentCallUpload(folderIDCreated);
+    }
+  }, [NotesReducerFolderID]);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {

@@ -10,6 +10,7 @@ import {
   CreateUpdateNotesDataRoomMap,
   SaveNotesDocument,
   RetrieveNotesDocument,
+  saveFilesRequestMethod,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { isFunction } from "../../commen/functions/utils";
@@ -112,7 +113,7 @@ const saveNotes_Fail = (message) => {
     message: message,
   };
 };
-const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
+const SaveNotesAPI = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(saveNotes_Init());
@@ -130,7 +131,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
+          dispatch(SaveNotesAPI(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -156,8 +157,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
                 CreateUpdateNotesDataRoomMapAPI(
                   navigate,
                   CreateUpdateDataRoomData,
-                  t,
-                  setAddNewModal //Modal False State
+                  t
                 )
               );
             } else if (
@@ -571,7 +571,7 @@ const CreateUpadateNotesDataRoomMapFail = (message) => {
   };
 };
 
-const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
+const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(CreateUpadateNotesDataRoomMapInit());
@@ -589,9 +589,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            CreateUpdateNotesDataRoomMapAPI(navigate, Data, t, setAddNewModal)
-          );
+          dispatch(CreateUpdateNotesDataRoomMapAPI(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -603,11 +601,14 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   t("Folder-mapped-with-dataroom")
                 )
               );
-              setAddNewModal(false);
+              console.log(
+                response.data.responseResult.folderID,
+                "fileForSendfileForSend"
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -627,7 +628,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   t("Updated")
                 )
               );
@@ -720,8 +721,10 @@ const SaveNotesDocumentFail = (message) => {
   };
 };
 
-const SaveNotesDocumentAPI = (navigate, Data, t) => {
+const SaveNotesDocumentAPI = (navigate, Data, t, setAddNotes) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let UserID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(SaveNotesDocumentInit());
     let form = new FormData();
@@ -729,7 +732,7 @@ const SaveNotesDocumentAPI = (navigate, Data, t) => {
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
-      url: getNotesApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
@@ -738,7 +741,7 @@ const SaveNotesDocumentAPI = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveNotesDocumentAPI(navigate, Data, t));
+          dispatch(SaveNotesDocumentAPI(navigate, Data, t, setAddNotes));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -754,6 +757,25 @@ const SaveNotesDocumentAPI = (navigate, Data, t) => {
                   t("List-updated-successfully")
                 )
               );
+              setAddNotes(false);
+              let Data = {
+                UserID: parseInt(UserID),
+                OrganizationID: JSON.parse(OrganizationID),
+                Title: "",
+                isDocument: false,
+                isSpreadSheet: false,
+                isPresentation: false,
+                isForms: false,
+                isImages: false,
+                isPDF: false,
+                isVideos: false,
+                isAudios: false,
+                isSites: false,
+                CreatedDate: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetNotes(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -809,7 +831,7 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
-      url: getNotesApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
@@ -866,6 +888,113 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
   };
 };
 
+// Save Files Notes just like Save Files Groups
+
+// Save Files Init
+const saveFilesNotes_init = () => {
+  return {
+    type: actions.SAVE_FILES_NOTES_INIT,
+  };
+};
+
+// Save Files Success
+const saveFilesNotes_success = (response, message) => {
+  return {
+    type: actions.SAVE_FILES_NOTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFilesNotes_fail = (message) => {
+  return {
+    type: actions.SAVE_FILES_NOTES_FALSE,
+    message: message,
+  };
+};
+
+// Save Files API for Resolution
+const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: data,
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFilesNotes_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesNotesApi(navigate, t, data, folderID, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              console.log(response.data.responseResult, "consoleconsole");
+              try {
+                let fileIds = response.data.responseResult.fileID;
+                console.log(fileIds, "newFileID");
+                fileIds.map((newFileID, index) => {
+                  console.log(newFileID, "newFileID");
+
+                  return newFolder.push({ pK_FileID: newFileID.pK_FileID });
+                });
+              } catch (error) {
+                console.log(error, "newFileID");
+              }
+              await dispatch(
+                saveFilesNotes_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFilesNotes_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFilesNotes_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFilesNotes_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFilesNotes_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(saveFilesNotes_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetNotes,
   SaveNotesAPI,
@@ -878,4 +1007,5 @@ export {
   CreateUpdateNotesDataRoomMapAPI,
   SaveNotesDocumentAPI,
   RetrieveNotesDocumentAPI,
+  saveFilesNotesApi,
 };

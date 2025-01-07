@@ -12,6 +12,7 @@ const initialState = {
   createUpdateNotesDataRoomMapData: null,
   saveNotesDocumentData: null,
   retrieveNotesDocumentData: null,
+  saveFilesNotes: null,
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -207,6 +208,32 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         retrieveNotesDocumentData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Save Files Notes Just like Save Files Groups
+    case actions.SAVE_FILES_NOTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_FILES_NOTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveFilesNotes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_FILES_NOTES_FALSE: {
+      return {
+        ...state,
+        Loading: false,
+        saveFilesNotes: null,
         ResponseMessage: action.message,
       };
     }
