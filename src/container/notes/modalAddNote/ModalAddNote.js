@@ -16,6 +16,7 @@ import {
   saveFilesNotesApi,
   SaveNotesAPI,
   SaveNotesDocumentAPI,
+  uploadDocumentsNotesApi,
 } from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,6 @@ import {
 } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
 import { useSelector } from "react-redux";
-import { uploadDocumentsGroupsApi } from "../../../store/actions/Groups_actions";
 
 const ModalAddNote = ({ ModalTitle }) => {
   //Context State for the Modal Globally Defined
@@ -38,10 +38,6 @@ const ModalAddNote = ({ ModalTitle }) => {
     (state) => state.NotesReducer.createUpdateNotesDataRoomMapData
   );
 
-  const NotesReducerFolderIDwhole = useSelector((state) => state.NotesReducer);
-
-  console.log(NotesReducerFolderIDwhole, "fileForSendfileForSend");
-  console.log(NotesReducerFolderID, "fileForSendfileForSend");
   //For Localization
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -294,7 +290,7 @@ const ModalAddNote = ({ ModalTitle }) => {
       console.log(fileForSend, "fileForSendfileForSend");
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          uploadDocumentsGroupsApi(
+          uploadDocumentsNotesApi(
             navigate,
             t,
             newData,

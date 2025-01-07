@@ -13,6 +13,7 @@ const initialState = {
   saveNotesDocumentData: null,
   retrieveNotesDocumentData: null,
   saveFilesNotes: null,
+  uploadDocumentNotes: null,
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -234,6 +235,33 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         saveFilesNotes: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Upload Document Notes
+
+    case actions.UPLOAD_DOCUMENT_NOTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPLOAD_DOCUMENT_NOTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        uploadDocumentNotes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPLOAD_DOCUMENT_NOTES_FAILED: {
+      return {
+        ...state,
+        Loading: true,
+        uploadDocumentNotes: null,
         ResponseMessage: action.message,
       };
     }

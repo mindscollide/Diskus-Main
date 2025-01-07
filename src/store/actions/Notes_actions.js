@@ -11,6 +11,7 @@ import {
   SaveNotesDocument,
   RetrieveNotesDocument,
   saveFilesRequestMethod,
+  uploadDocumentsRequestMethod,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { isFunction } from "../../commen/functions/utils";
@@ -999,6 +1000,119 @@ const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
+// upload Document Notes
+const uploadDocumentNotes_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENT_NOTES_INIT,
+  };
+};
+
+const uploadDocumentNotes_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENT_NOTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const uploadDocumentNotes_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENT_NOTES_FAILED,
+    message: message,
+  };
+};
+
+const uploadDocumentsNotesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  // newFolder,
+  newfile
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  return async (dispatch) => {
+    dispatch(uploadDocumentNotes_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsNotesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              // newFolder,
+              newfile
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
+              await dispatch(
+                uploadDocumentNotes_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocumentNotes_fail(t("Failed-to-update-document"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocumentNotes_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocumentNotes_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocumentNotes_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocumentNotes_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetNotes,
   SaveNotesAPI,
@@ -1012,4 +1126,5 @@ export {
   SaveNotesDocumentAPI,
   RetrieveNotesDocumentAPI,
   saveFilesNotesApi,
+  uploadDocumentsNotesApi,
 };
