@@ -142,7 +142,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         createUpdateNotesDataRoomMapData: action.response,
         ResponseMessage: action.message,
       };

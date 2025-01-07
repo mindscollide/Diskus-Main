@@ -1,6 +1,6 @@
 import * as actions from "../action_types";
 import axios from "axios";
-import { getNotesApi } from "../../commen/apis/Api_ends_points";
+import { dataRoomApi, getNotesApi } from "../../commen/apis/Api_ends_points";
 import {
   SavesNotesRequestMethod,
   UpdateNotesRequestMethod,
@@ -580,7 +580,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
-      url: getNotesApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
