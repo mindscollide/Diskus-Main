@@ -239,45 +239,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      if (Object.keys(fileForSend).length > 0) {
-        let newfile = [];
-        let newData = [];
-        const uploadPromises = fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-        await Promise.all(uploadPromises);
-        await dispatch(uploaddocumentloader(false));
-        newfile.forEach((attachmentData, index) => {
-          newData.push({
-            DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-            OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-            FK_NotesID: 0,
-          });
-        });
-        let Data = {
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarrted,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          NotesAttachments: newData,
-        };
-
-        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-      } else {
-        setAddNewModal(false);
-        let notesAttachment = [];
-        let Data = {
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarrted,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          NotesAttachments: notesAttachment,
-        };
-
-        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-      }
+      setAddNewModal(false);
+      let Data = {
+        Title: addNoteFields.Title.value,
+        Description: addNoteFields.Description.value,
+        isStarred: isStarrted,
+        FK_UserID: JSON.parse(createrID),
+        FK_OrganizationID: JSON.parse(OrganizationID),
+      };
+      dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
     } else {
       setAddNoteFields({
         ...addNoteFields,

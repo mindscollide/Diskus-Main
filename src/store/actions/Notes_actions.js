@@ -161,23 +161,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
                   t("Notes-saved-successfully")
                 )
               );
-              dispatch(GetNotes(navigate, searchData, t));
-              setAddNewModal(false);
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Notes_NotesServiceManager_SaveNotes_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                saveNotes_Success(
-                  response.data.responseResult.getNotes,
-                  t("Note-created-successfully-with-attachments")
-                )
-              );
-              dispatch(GetNotes(navigate, searchData, t));
-              setAddNewModal(false);
+              // setAddNewModal(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
