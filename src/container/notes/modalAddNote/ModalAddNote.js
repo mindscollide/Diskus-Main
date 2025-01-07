@@ -25,8 +25,11 @@ import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
+import { useNotesContext } from "../../../context/NotesContext";
 
-const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
+const ModalAddNote = ({ ModalTitle }) => {
+  //Context State for the Modal Globally Defined
+  const { addNotes, setAddNotes } = useNotesContext();
   //For Localization
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -239,7 +242,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      setAddNewModal(false);
+      setAddNotes(false);
       let Data = {
         Title: addNoteFields.Title.value,
         Description: addNoteFields.Description.value,
@@ -247,7 +250,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
       };
-      dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
+      dispatch(SaveNotesAPI(navigate, Data, t, setAddNotes));
     } else {
       setAddNoteFields({
         ...addNoteFields,
@@ -285,14 +288,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     <>
       <Container>
         <Modal
-          show={addNewModal}
+          show={addNotes}
           onHide={() => {
             setCloseConfirmationBox(true);
             setIsCreateNote(false);
             setIsAddNote(false);
           }}
           setShow={(value) => {
-            setAddNewModal(value);
+            setAddNotes(value);
           }}
           ButtonTitle={ModalTitle}
           modalHeaderClassName={
@@ -546,7 +549,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         text={t("Cancel")}
                       />
                       <Button
-                        onClick={() => setAddNewModal(false)}
+                        onClick={() => setAddNotes(false)}
                         className={styles["close-Add-notes-Modal"]}
                         text={t("Close")}
                       />

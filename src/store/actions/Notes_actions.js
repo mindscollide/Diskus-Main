@@ -146,7 +146,20 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
                   t("Notes-saved-successfully")
                 )
               );
-              // setAddNewModal(false);
+              //Create Update Notes Data Room Map
+              let CreateUpdateDataRoomData = {
+                NotesID: Number(response.data.responseResult.notesID),
+                NoteTitle: response.data.responseResult.notesTitle,
+                IsUpdateFlow: false,
+              };
+              dispatch(
+                CreateUpdateNotesDataRoomMapAPI(
+                  navigate,
+                  CreateUpdateDataRoomData,
+                  t,
+                  setAddNewModal //Modal False State
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -558,7 +571,7 @@ const CreateUpadateNotesDataRoomMapFail = (message) => {
   };
 };
 
-const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
+const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t, setAddNewModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(CreateUpadateNotesDataRoomMapInit());
@@ -576,7 +589,9 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetNotesByIdAPI(navigate, Data, t));
+          dispatch(
+            CreateUpdateNotesDataRoomMapAPI(navigate, Data, t, setAddNewModal)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -592,6 +607,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
                   t("Folder-mapped-with-dataroom")
                 )
               );
+              setAddNewModal(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -18,11 +18,7 @@ import {
   Notification,
 } from "../../components/elements";
 import { Tooltip } from "antd";
-import {
-  ClearNotesResponseMessage,
-  GetNotes,
-  GetNotesByIdAPI,
-} from "../../store/actions/Notes_actions";
+import { GetNotes, GetNotesByIdAPI } from "../../store/actions/Notes_actions";
 import {
   _justShowDateformat,
   _justShowDay,
@@ -30,16 +26,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useNotesContext } from "../../context/NotesContext";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NotesReducer } = useSelector((state) => state);
-
-  const NotesResponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage
-  );
+  const { addNotes, setAddNotes } = useNotesContext();
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -49,7 +42,7 @@ const Notes = () => {
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
   // for modal Add notes
-  const [addNotes, setAddNotes] = useState(false);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -276,36 +269,6 @@ const Notes = () => {
                     centerField={
                       <>
                         {" "}
-                        {/* {data.isStarred ? (
-                          <Tooltip placement="bottomLeft" title={t("Starred")}>
-                            <img
-                              draggable="false"
-                              src={hollowstar}
-                              width="15.86px"
-                              alt=""
-                              height="15.19px"
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip
-                            placement="bottomLeft"
-                            title={t("Unstarred")}
-                          >
-                            <img
-                              draggable="false"
-                              src={StarIcon}
-                              width="15.86px"
-                              height="15.19px"
-                              alt=""
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        )} */}
                         {data?.isAttachment ? (
                           <span>
                             <img
@@ -458,9 +421,7 @@ const Notes = () => {
         </Row>
         {/* Test Accordian Ends  */}
       </div>
-      {addNotes ? (
-        <ModalAddNote addNewModal={addNotes} setAddNewModal={setAddNotes} />
-      ) : null}
+      {addNotes ? <ModalAddNote /> : null}
 
       {updateShow ? (
         <ModalUpdateNote
