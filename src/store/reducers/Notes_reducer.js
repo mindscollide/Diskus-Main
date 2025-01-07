@@ -170,7 +170,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.SAVE_NOTES_DOCUMENT_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         saveNotesDocumentData: action.response,
         ResponseMessage: action.message,
       };

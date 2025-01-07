@@ -254,7 +254,6 @@ const ModalAddNote = ({ ModalTitle }) => {
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      setAddNotes(false);
       let Data = {
         Title: addNoteFields.Title.value,
         Description: addNoteFields.Description.value,
@@ -313,10 +312,10 @@ const ModalAddNote = ({ ModalTitle }) => {
       );
     }
 
-    let groupID = localStorage.getItem("groupID");
+    let notesID = localStorage.getItem("notesID");
 
     let Data = {
-      GroupID: Number(groupID),
+      NoteID: Number(notesID),
       UpdateFileList: newFolder.map((data, index) => {
         return { PK_FileID: data.pK_FileID };
       }),

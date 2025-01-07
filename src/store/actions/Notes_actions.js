@@ -147,6 +147,10 @@ const SaveNotesAPI = (navigate, Data, t) => {
                   t("Notes-saved-successfully")
                 )
               );
+              localStorage.setItem(
+                "notesID",
+                response.data.responseResult.notesID
+              );
               //Create Update Notes Data Room Map
               let CreateUpdateDataRoomData = {
                 NotesID: Number(response.data.responseResult.notesID),
