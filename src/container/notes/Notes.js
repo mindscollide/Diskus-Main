@@ -18,7 +18,11 @@ import {
   Notification,
 } from "../../components/elements";
 import { Tooltip } from "antd";
-import { GetNotes, GetNotesByIdAPI } from "../../store/actions/Notes_actions";
+import {
+  GetNotes,
+  GetNotesByIdAPI,
+  RetrieveNotesDocumentAPI,
+} from "../../store/actions/Notes_actions";
 import {
   _justShowDateformat,
   _justShowDay,
@@ -364,7 +368,7 @@ const Notes = () => {
                                       <AttachmentViewer
                                         data={file}
                                         id={0}
-                                        name={file.displayAttachmentName}
+                                        name={file.displayFileName}
                                       />
                                     );
                                   })
