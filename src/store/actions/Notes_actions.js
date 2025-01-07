@@ -763,6 +763,7 @@ const SaveNotesDocumentAPI = (navigate, Data, t, setAddNotes) => {
                 )
               );
               setAddNotes(false);
+              localStorage.removeItem("notesID");
               let Data = {
                 UserID: parseInt(UserID),
                 OrganizationID: JSON.parse(OrganizationID),
