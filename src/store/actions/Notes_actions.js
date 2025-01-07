@@ -114,21 +114,6 @@ const saveNotes_Fail = (message) => {
 };
 const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = localStorage.getItem("notesPage");
-  let notesPagesize = localStorage.getItem("notesPageSize");
-  let searchData = {
-    UserID: parseInt(createrID),
-    OrganizationID: JSON.parse(OrganizationID),
-    Title: "",
-    PageNumber:
-      notesPage !== null && notesPage !== undefined ? Number(notesPage) : 1,
-    Length:
-      notesPagesize !== null && notesPagesize !== undefined
-        ? Number(notesPagesize)
-        : 50,
-  };
   return (dispatch) => {
     dispatch(saveNotes_Init());
     let form = new FormData();
