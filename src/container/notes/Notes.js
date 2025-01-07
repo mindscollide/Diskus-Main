@@ -69,6 +69,16 @@ const Notes = () => {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: JSON.parse(notesPage),
           Length: JSON.parse(notesPagesize),
         };
@@ -76,10 +86,21 @@ const Notes = () => {
       } else {
         localStorage.setItem("notesPage", 1);
         localStorage.setItem("notesPageSize", 50);
+
         let Data = {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: 1,
           Length: 50,
         };

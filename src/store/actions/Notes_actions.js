@@ -7,6 +7,9 @@ import {
   GetNotesByNotesIDRequestMethod,
   deleteNotes,
   searchNoteRequetMethod,
+  CreateUpdateNotesDataRoomMap,
+  SaveNotesDocument,
+  RetrieveNotesDocument,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { isFunction } from "../../commen/functions/utils";
@@ -563,6 +566,321 @@ const ClearNotesResponseMessage = () => {
   };
 };
 
+//Create Update Data Room Map API
+
+const CreateUpadateNotesDataRoomMapInit = () => {
+  return {
+    type: actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_INIT,
+  };
+};
+
+const CreateUpadateNotesDataRoomMapSuccess = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const CreateUpadateNotesDataRoomMapFail = (message) => {
+  return {
+    type: actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_FAIL,
+    message: message,
+  };
+};
+
+const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(CreateUpadateNotesDataRoomMapInit());
+    let form = new FormData();
+    form.append("RequestMethod", CreateUpdateNotesDataRoomMap.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: getNotesApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetNotesByIdAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapSuccess(
+                  response.data.responseResult,
+                  t("Folder-mapped-with-dataroom")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapFail(t("Unable-to-save-folder"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapSuccess(
+                  response.data.responseResult,
+                  t("Updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapFail(t("Unable-to-update-folder"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapSuccess(
+                  response.data.responseResult,
+                  t("New-mapping-created")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapFail(
+                  t("Failed-to-create-new-mapping")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_CreateUpdateNotesDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Notes Document API
+const SaveNotesDocumentInit = () => {
+  return {
+    type: actions.SAVE_NOTES_DOCUMENT_INIT,
+  };
+};
+
+const SaveNotesDocumentSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_NOTES_DOCUMENT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const SaveNotesDocumentFail = (message) => {
+  return {
+    type: actions.SAVE_NOTES_DOCUMENT_FAILED,
+    message: message,
+  };
+};
+
+const SaveNotesDocumentAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(SaveNotesDocumentInit());
+    let form = new FormData();
+    form.append("RequestMethod", SaveNotesDocument.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: getNotesApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveNotesDocumentAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveNotesDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                SaveNotesDocumentSuccess(
+                  response.data.responseResult,
+                  t("List-updated-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveNotesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+            } else {
+              dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Retrieve Notes Document
+const RetrieveNotesDocumentInit = () => {
+  return {
+    type: actions.RETRIEVE_NOTES_DOCUMENT_INIT,
+  };
+};
+
+const RetrieveNotesDocumentSuccess = (response, message) => {
+  return {
+    type: actions.RETRIEVE_NOTES_DOCUMENT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const RetrieveNotesDocumentFailed = (message) => {
+  return {
+    type: actions.RETRIEVE_NOTES_DOCUMENT_FAILED,
+    message: message,
+  };
+};
+
+const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(RetrieveNotesDocumentInit());
+    let form = new FormData();
+    form.append("RequestMethod", RetrieveNotesDocument.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: getNotesApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                RetrieveNotesDocumentSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(RetrieveNotesDocumentFailed(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetNotes,
   SaveNotesAPI,
@@ -572,4 +890,7 @@ export {
   ClearNotesResponseMessage,
   getNotes_Init,
   GetNotesById_Init,
+  CreateUpdateNotesDataRoomMapAPI,
+  SaveNotesDocumentAPI,
+  RetrieveNotesDocumentAPI,
 };
