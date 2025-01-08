@@ -443,7 +443,10 @@ const Notes = () => {
       isSites: false,
       isImages: false,
     });
-
+    setSearchResultFields((prevState) => ({
+      ...prevState,
+      Type: null,
+    }));
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
@@ -778,7 +781,7 @@ const Notes = () => {
                         <Col lg={6} md={6} sm={6}>
                           <Select
                             options={OptionsDocument(t)}
-                            placeholder={t("Documents")}
+                            placeholder={t("With-attachments")}
                             isSearchable={false}
                             onChange={handleChangeDocumentsOptions}
                             value={searchResultsFields.Type}
