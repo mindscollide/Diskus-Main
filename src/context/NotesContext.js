@@ -6,9 +6,12 @@ export const NotesContext = createContext();
 // Create a Provider component
 export const NotesProvider = ({ children }) => {
   // Add  Note Modal
-  const [addNotes, setAddNotes] = useState(false);
+  const [createNotesModal, setCreateNotesModal] = useState(false);
+  const [modalNote, setModalNote] = useState(false);
   return (
-    <NotesContext.Provider value={{ addNotes, setAddNotes }}>
+    <NotesContext.Provider
+      value={{ createNotesModal, setCreateNotesModal, modalNote, setModalNote }}
+    >
       {children}
     </NotesContext.Provider>
   );

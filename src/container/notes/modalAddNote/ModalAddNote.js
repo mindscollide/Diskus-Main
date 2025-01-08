@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 
 const ModalAddNote = ({ ModalTitle }) => {
   //Context State for the Modal Globally Defined
-  const { addNotes, setAddNotes } = useNotesContext();
+  const { createNotesModal, setCreateNotesModal } = useNotesContext();
 
   //GlobalState For Folder ID Against the Notes Created
   const NotesReducerFolderID = useSelector(
@@ -317,7 +317,15 @@ const ModalAddNote = ({ ModalTitle }) => {
       }),
     };
     dispatch(
-      SaveNotesDocumentAPI(navigate, Data, t, setAddNotes, false, false, 1)
+      SaveNotesDocumentAPI(
+        navigate,
+        Data,
+        t,
+        setCreateNotesModal,
+        false,
+        false,
+        1
+      )
     );
   };
 
@@ -341,15 +349,13 @@ const ModalAddNote = ({ ModalTitle }) => {
     <>
       <Container>
         <Modal
-          show={addNotes}
+          show={createNotesModal}
           onHide={() => {
             setCloseConfirmationBox(true);
             setIsCreateNote(false);
             setIsAddNote(false);
           }}
-          setShow={(value) => {
-            setAddNotes(value);
-          }}
+          setShow={setCreateNotesModal}
           ButtonTitle={ModalTitle}
           modalHeaderClassName={
             isCreateNote === true
@@ -602,7 +608,7 @@ const ModalAddNote = ({ ModalTitle }) => {
                         text={t("Cancel")}
                       />
                       <Button
-                        onClick={() => setAddNotes(false)}
+                        onClick={() => setCreateNotesModal(false)}
                         className={styles["close-Add-notes-Modal"]}
                         text={t("Close")}
                       />
