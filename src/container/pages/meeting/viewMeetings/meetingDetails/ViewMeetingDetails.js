@@ -91,6 +91,7 @@ const ViewMeetingDetails = ({
   setAdvanceMeetingModalID,
   setDataroomMapFolderId,
   setMeetingMaterial,
+  setAgenda
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -344,6 +345,10 @@ const ViewMeetingDetails = ({
     if (editorRole.role === "Participant") {
       setmeetingDetails(false);
       setMeetingMaterial(true);
+    } else if(editorRole.role === "Agenda Contributor") {
+      setAgenda(true)
+      setmeetingDetails(false);
+      
     } else {
       setmeetingDetails(false);
       setorganizers(true);

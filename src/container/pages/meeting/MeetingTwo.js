@@ -1720,7 +1720,7 @@ const NewMeeting = () => {
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
               // setIsOrganisers(isOrganiser);
             }}>
             {text}
