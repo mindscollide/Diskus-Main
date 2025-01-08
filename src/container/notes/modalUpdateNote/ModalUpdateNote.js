@@ -11,10 +11,6 @@ import "react-quill/dist/quill.snow.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
-import {
-  FileUploadToDo,
-  uploaddocumentloader,
-} from "../../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import {
   deleteNotesApi,
@@ -24,15 +20,13 @@ import {
   uploadDocumentsNotesApi,
 } from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
+
 import {
   newTimeFormaterAsPerUTC,
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
-import { Tooltip } from "antd";
 import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
@@ -169,29 +163,25 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
   //For Deleting the particular File
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, "removeFilefromAttachments");
-    console.log(index, "removeFilefromAttachments");
-
-    let searchIndex = [...tasksAttachments.TasksAttachments];
-    let removeFilefromAttachments = attachments.findIndex(
-      (attacData, index) => data.displayFileName === attacData.displayFileName
-    );
-    console.log(removeFilefromAttachments, "removeFilefromAttachments");
-    let copyattachments = [...attachments];
-    let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
-    );
-    copyattachments.splice(removeFilefromAttachments, 1);
-    searchIndex.splice(index, 1);
-    fileForSend.splice(fileForSendingIndex, 1);
-    setFileForSend(fileForSend);
-    setFileSize(fileSizefound);
-    setAttachments(copyattachments);
-    setTasksAttachments({
-      ...tasksAttachments,
-      TasksAttachments: searchIndex,
+    setAttachments((filesData) => {
+      return filesData.filter(
+        (fileData, index) =>
+          fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
     });
+    setPreviousIDs((prevFilesData) => {
+      return prevFilesData.filter(
+        (prevdata, index) =>
+          prevdata.DisplayAttachmentName !== data.DisplayAttachmentName
+      );
+    });
+    if (Object.values(fileForSend).length > 0) {
+      setFileForSend((filesData) => {
+        return filesData.filter(
+          (fileData, index) => fileData.name !== data.DisplayAttachmentName
+        );
+      });
+    }
   };
 
   const [open, setOpen] = useState({
