@@ -386,10 +386,15 @@ const Notes = () => {
 
   const handleMainSearchModal = () => {
     setSearchnotes(false);
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByTitle: "",
+      Date: "",
+      DateView: "",
+    });
   };
 
   //Search Date Picker OnChange
-
   const meetingDateChangeHandler = (date) => {
     // Always format the API date in a standard format
     let DateFormat = new DateObject(date).format("YYYY-MM-DD");
@@ -399,20 +404,27 @@ const Notes = () => {
       .setLocale(localValue)
       .format("DD/MM/YYYY");
 
-    searchBoxState({
+    setsearchBoxState({
       ...searchBoxState,
       Date: DateFormat, // Standard date for API
       DateView: DateFormatView, // Localized display date
     });
   };
 
-  const handleSearchEvent = () => {
-    setSearchnotes(false);
+  const ResetSearchBtn = () => {
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByTitle: "",
+      Date: "",
+      DateView: "",
+    });
+  };
 
+  const handleSearchEvent = () => {
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
-      Title: noteSearchState.searchValue,
+      Title: searchBoxState.searchByTitle,
       isDocument: false,
       isSpreadSheet: false,
       isPresentation: false,
@@ -522,7 +534,7 @@ const Notes = () => {
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <TextField
-                            placeholder={t("Search-by-title")}
+                            placeholder={t("Notes-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelclass="d-none"
                             name={"searchbytitle"}
@@ -566,7 +578,7 @@ const Notes = () => {
                           <Button
                             text={t("Reset")}
                             className={styles["Reset_Button_polls_SearchModal"]}
-                            // onClick={ResetSearchBtn}
+                            onClick={ResetSearchBtn}
                           />
                           <Button
                             text={t("Search")}
