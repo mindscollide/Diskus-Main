@@ -49,6 +49,7 @@ import {
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,
 } from "../../../store/actions/UpdateUserNotificationSetting.js";
+import { useNotesContext } from "../../../context/NotesContext.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const Header2 = ({ isVideo }) => {
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
+  const { setAddNotes } = useNotesContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
   );
@@ -367,7 +369,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const openModalAddNote = () => {
-    setModalNoteHeader(true);
+    setAddNotes(true);
   };
 
   const openHeaderCreateTaskModal = () => {
@@ -1490,12 +1492,7 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
-      {modalNoteHeader && (
-        <ModalAddNote
-          addNewModal={modalNoteHeader}
-          setAddNewModal={setModalNoteHeader}
-        />
-      )}
+      {modalNoteHeader && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
           show={showTaskModalHeader}
