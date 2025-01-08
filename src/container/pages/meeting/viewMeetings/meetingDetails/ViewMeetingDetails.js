@@ -65,6 +65,8 @@ import {
   getParticipantMeetingJoinMainApi,
   nonMeetingVideoGlobalModal,
   videoIconOrButtonState,
+  participantVideoButtonState,
+  clearMessegesVideoFeature,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -147,7 +149,19 @@ const ViewMeetingDetails = ({
     (state) => state.videoFeatureReducer.enableDisableVideoState
   );
 
+  const AgendaVideoResponseMessage = useSelector(
+    (state) => state.videoFeatureReducer.ResponseMessage
+  );
+  console.log(AgendaVideoResponseMessage, "ResponseMessageResponseMessage");
+
   console.log(enableDisableVideoState, "videoIconOrButtonStatehavsh");
+
+  // FOr Participant Enable and Disable check Video Icon
+  const participantEnableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.participantEnableVideoState
+  );
+
+  console.log(participantEnableVideoState, "participantEnableVideoState");
 
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
@@ -605,16 +619,23 @@ const ViewMeetingDetails = ({
         roleID: editorRole.role === "Participant" ? 2 : 10,
       };
       if (meetingVideoData.roleID === 2) {
-        dispatch(maxParticipantVideoCallPanel(true));
+        dispatch(participantVideoButtonState(true));
+        if (!participantEnableVideoState) {
+          dispatch(maxParticipantVideoCallPanel(true));
+        }
       } else {
         dispatch(videoIconOrButtonState(true));
-        let data = {
-          MeetingId: Number(currentMeetingID),
-          VideoCallURL: String(currentMeetingVideoURL),
-          IsMuted: false,
-          HideVideo: false,
-        };
-        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        if (!enableDisableVideoState) {
+          let data = {
+            MeetingId: Number(currentMeetingID),
+            VideoCallURL: String(currentMeetingVideoURL),
+            IsMuted: false,
+            HideVideo: false,
+          };
+          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        } else {
+          console.log("No Need To Hit");
+        }
       }
       console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
       localStorage.setItem(
@@ -752,6 +773,14 @@ const ViewMeetingDetails = ({
       )
     );
   }, []);
+
+  // to show message when join meeting Video Response comes 4
+  useEffect(() => {
+    if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
+      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      dispatch(clearMessegesVideoFeature(""));
+    }
+  }, [AgendaVideoResponseMessage]);
 
   return (
     <>
@@ -904,7 +933,10 @@ const ViewMeetingDetails = ({
                             {!MaximizeHostVideoFlag && !NormalHostVideoFlag && (
                               <Button
                                 disableBtn={
-                                  enableDisableVideoState ? true : false
+                                  enableDisableVideoState ||
+                                  participantEnableVideoState
+                                    ? true
+                                    : false
                                 }
                                 text="Join Video Call"
                                 className="JoinMeetingButton"

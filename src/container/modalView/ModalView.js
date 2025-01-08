@@ -37,6 +37,7 @@ import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
+  clearMessegesVideoFeature,
   endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   leaveMeetingOnlogout,
@@ -44,6 +45,7 @@ import {
   maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  participantVideoButtonState,
   setRaisedUnRaisedParticiant,
   toggleParticipantsVisibility,
   videoIconOrButtonState,
@@ -116,6 +118,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   );
 
   console.log(enableDisableVideoState, "enableDisableVideoState");
+
+  // FOr Participant Enable and Disable check Video Icon
+  const participantEnableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.participantEnableVideoState
+  );
+
+  console.log(participantEnableVideoState, "participantEnableVideoState");
+
+  const AgendaVideoResponseMessage = useSelector(
+    (state) => state.videoFeatureReducer.ResponseMessage
+  );
+  console.log(AgendaVideoResponseMessage, "ResponseMessageResponseMessage");
 
   const assigneesuser = useSelector((state) => state.assignees.user);
 
@@ -1032,10 +1046,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       );
 
       if (!getMeetingVideoHost) {
+        dispatch(participantVideoButtonState(true));
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
         dispatch(videoIconOrButtonState(true));
-        if (currentMeetingVideoURL !== null) {
+        if (!enableDisableVideoState) {
           let data = {
             MeetingId: Number(currentMeeting),
             VideoCallURL: String(currentMeetingVideoURL),
@@ -1043,6 +1058,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
             HideVideo: false,
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        } else {
+          console.log("No Need To Hit");
         }
       }
     }
@@ -1089,6 +1106,13 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       console.log(error);
     }
   }, [meetingIdReducerMeetingStatusEnded]);
+
+  useEffect(() => {
+    if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
+      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      dispatch(clearMessegesVideoFeature(""));
+    }
+  }, [AgendaVideoResponseMessage]);
 
   return (
     <>
@@ -1212,7 +1236,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         disableBtn={
                           !isVideo ||
                           meetStatus !== 10 ||
-                          enableDisableVideoState
+                          enableDisableVideoState ||
+                          participantEnableVideoState
                         }
                         text={t("Join-video-call")}
                         className={"JoinMeetingButton"}
