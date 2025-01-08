@@ -186,6 +186,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase()
                 )
             ) {
+              sessionStorage.setItem("isLeftCheck", false);
               dispatch(getValidateString(response.data.responseResult));
               console.log("reponsepreodjfdfds", response.data.responseResult);
               // sessionStorage.setItem("viewState", 1);
@@ -918,7 +919,12 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                 )
               );
               sessionStorage.setItem("isRejoining", "true");
-              dispatch(guestVideoNavigationScreen(1));
+              let leftCheck = JSON.parse(sessionStorage.getItem("isLeftCheck"));
+              if (leftCheck) {
+                dispatch(guestVideoNavigationScreen(4));
+              } else {
+                dispatch(guestVideoNavigationScreen(1));
+              }
               dispatch(setVideoCameraGuest(false));
               dispatch(setVoiceControleGuest(false));
             } else if (
