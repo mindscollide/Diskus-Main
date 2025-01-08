@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
   getVideoCallParticipantGuestSuccess,
+  guestLeaveMeetingVideoApi,
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
@@ -109,7 +110,7 @@ const GuestVideoCall = () => {
     setTimeout(mqttConnectionGuestUser(guestUserId, dispatch), 3000);
   };
 
-  const onMessageArrived = (msg) => {
+  const onMessageArrived = async (msg) => {
     try {
       console.log(msg, "msgmsgmsgmsg");
       let data = JSON.parse(msg.payloadString);
@@ -134,6 +135,7 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "REMOVED_FROM_MEETING".toLowerCase()
         ) {
+          sessionStorage.setItem("isLeftCheck", false);
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));
           dispatch(guestVideoNavigationScreen(5));
@@ -216,6 +218,20 @@ const GuestVideoCall = () => {
           dispatch(
             getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3)
           );
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "VIDEO_PARTICIPANT_LEFT".toLowerCase()
+        ) {
+          let guestName = sessionStorage.getItem("guestName");
+          let roomId = sessionStorage.getItem("roomId");
+          let GuestUserID = sessionStorage.getItem("GuestUserID");
+          let data = {
+            RoomID: String(roomId),
+            UID: String(GuestUserID),
+            Name: String(guestName),
+          };
+          sessionStorage.setItem("isLeftCheck", true);
+          await dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
         }
       }
     } catch (error) {}
