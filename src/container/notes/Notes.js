@@ -50,7 +50,8 @@ const Notes = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NotesReducer } = useSelector((state) => state);
 
-  const { addNotes, setAddNotes } = useNotesContext();
+  const { createNotesModal, setCreateNotesModal } = useNotesContext();
+
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -154,7 +155,7 @@ const Notes = () => {
         };
         dispatch(GetNotes(navigate, Data, t));
       }
-      setAddNotes(false);
+      setCreateNotesModal(false);
       setViewModalShow(false);
       setUpdateShow(false);
       return () => {
@@ -239,7 +240,7 @@ const Notes = () => {
 
   //for open Add User Notes Modal
   const modalAddUserModal = async (e) => {
-    setAddNotes(true);
+    setCreateNotesModal(true);
   };
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
@@ -986,7 +987,7 @@ const Notes = () => {
         </Row>
         {/* Test Accordian Ends  */}
       </div>
-      {addNotes ? <ModalAddNote /> : null}
+      {createNotesModal && <ModalAddNote />}
 
       {updateShow ? (
         <ModalUpdateNote

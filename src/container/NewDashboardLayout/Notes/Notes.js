@@ -3,8 +3,6 @@ import styles from "./Notes.module.css";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import StarIcon from "../../../assets/images/Star.svg";
-import hollowstar from "../../../assets/images/Hollowstar.svg";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
 import PlusButton from "../../../assets/images/PlusButton.svg";
 import Notes_Empty from "../../../assets/images/Notes_Dashboard.png";
@@ -17,17 +15,15 @@ import {
 } from "../../../store/actions/Notes_actions";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import { Col, Row } from "react-bootstrap";
-import { Tooltip } from "antd";
-import {
-  _justShowDateformat,
-  _justShowDay,
-  formatToLocalTimezone,
-} from "../../../commen/functions/date_formater";
+import { formatToLocalTimezone } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
+import { useNotesContext } from "../../../context/NotesContext";
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const NotesReducer = useSelector((state) => state.NotesReducer);
+  const { createNotesModal, setCreateNotesModal } = useNotesContext();
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +32,6 @@ const Notes = () => {
   const [getNoteID, setGetNoteID] = useState(0);
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  const [modalNote, setModalNote] = useState(false);
 
   const calApi = async () => {
     // Notes Feature
@@ -134,7 +129,7 @@ const Notes = () => {
         {checkFeatureIDAvailability(6) && (
           <img
             src={PlusButton}
-            onClick={() => setModalNote(true)}
+            onClick={() => setCreateNotesModal(true)}
             className="cursor-pointer"
             alt=""
             draggable="false"
@@ -227,9 +222,7 @@ const Notes = () => {
           setGetNoteID={setGetNoteID}
         />
       )}
-      {modalNote && (
-        <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
-      )}
+      {createNotesModal && <ModalAddNote />}
     </>
   );
 };
