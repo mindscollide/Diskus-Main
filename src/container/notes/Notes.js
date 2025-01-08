@@ -419,6 +419,25 @@ const Notes = () => {
       Date: "",
       DateView: "",
     });
+
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isImages: false,
+      isPDF: false,
+      isVideos: false,
+      isAudios: false,
+      isSites: false,
+      CreatedDate: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(GetNotes(navigate, Data, t));
   };
 
   const handleSearchEvent = () => {
