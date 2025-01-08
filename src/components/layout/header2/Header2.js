@@ -45,10 +45,7 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../store/actions/VideoFeature_actions.js";
-import {
-  DiskusWebNotificationActionMethodAPI,
-  DiskusWebNotificationMarkAsReadAPI,
-} from "../../../store/actions/UpdateUserNotificationSetting.js";
+import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { useNotesContext } from "../../../context/NotesContext.js";
 
 const Header2 = ({ isVideo }) => {
@@ -60,7 +57,7 @@ const Header2 = ({ isVideo }) => {
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
-  const { setAddNotes } = useNotesContext();
+  const { createNotesModal, setCreateNotesModal } = useNotesContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
   );
@@ -369,7 +366,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const openModalAddNote = () => {
-    setAddNotes(true);
+    setCreateNotesModal(true);
   };
 
   const openHeaderCreateTaskModal = () => {
@@ -1492,7 +1489,7 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
-      {modalNoteHeader && <ModalAddNote />}
+      {createNotesModal && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
           show={showTaskModalHeader}
