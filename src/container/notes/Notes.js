@@ -41,6 +41,7 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
+import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -72,10 +73,23 @@ const Notes = () => {
   const [viewModalShow, setViewModalShow] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [searchnotes, setSearchnotes] = useState(false);
+  const [searchResultsFields, setSearchResultFields] = useState({
+    Type: null,
+  });
   const [searchBoxState, setsearchBoxState] = useState({
     searchByTitle: "",
     Date: "",
     DateView: "",
+    isDocument: false,
+    isSpreadSheet: false,
+    isPresentation: false,
+    isForms: false,
+    isPDF: false,
+    isFolders: false,
+    isVideos: false,
+    isAudios: false,
+    isSites: false,
+    isImages: false,
   });
   const [noteSearchState, setNoteSearchState] = useState({
     searchValue: "",
@@ -418,6 +432,16 @@ const Notes = () => {
       searchByTitle: "",
       Date: "",
       DateView: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isPDF: false,
+      isFolders: false,
+      isVideos: false,
+      isAudios: false,
+      isSites: false,
+      isImages: false,
     });
 
     let Data = {
@@ -440,20 +464,187 @@ const Notes = () => {
     dispatch(GetNotes(navigate, Data, t));
   };
 
+  //Searching Through Documents
+
+  // this is onchange envent of search modal Documnet
+  const handleChangeDocumentsOptions = (event) => {
+    console.log(event, "eventeventevent");
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Type: event, // Update the Type field
+    }));
+    if (event.value === 1) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isImages: true,
+        isAudios: true,
+        isSites: true,
+      });
+    } else if (event.value === 2) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: true,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 3) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: true,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 4) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: true,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 5) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: true,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 6) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: true,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 7) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: true,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 8) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: true,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 10) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 11) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: true,
+      });
+    } else if (event.value === 12) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: true,
+        isSites: false,
+      });
+    } else {
+    }
+  };
+
   const handleSearchEvent = () => {
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
       Title: searchBoxState.searchByTitle,
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isImages: false,
-      isPDF: false,
-      isVideos: false,
-      isAudios: false,
-      isSites: false,
+      isDocument: searchBoxState.isDocument,
+      isSpreadSheet: searchBoxState.isSpreadSheet,
+      isPresentation: searchBoxState.isPresentation,
+      isForms: searchBoxState.isForms,
+      isImages: searchBoxState.isImages,
+      isPDF: searchBoxState.isPDF,
+      isVideos: searchBoxState.isVideos,
+      isAudios: searchBoxState.isAudios,
+      isSites: searchBoxState.isSites,
       CreatedDate: searchBoxState.Date,
       PageNumber: 1,
       Length: 50,
@@ -585,7 +776,13 @@ const Notes = () => {
                           />
                         </Col>
                         <Col lg={6} md={6} sm={6}>
-                          <Select placeholder={t("With-attachments")} />
+                          <Select
+                            options={OptionsDocument(t)}
+                            placeholder={t("Documents")}
+                            isSearchable={false}
+                            onChange={handleChangeDocumentsOptions}
+                            value={searchResultsFields.Type}
+                          />
                         </Col>
                       </Row>
                       <Row className="mt-4">
