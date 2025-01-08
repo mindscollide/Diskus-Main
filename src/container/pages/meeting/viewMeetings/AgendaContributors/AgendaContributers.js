@@ -42,7 +42,7 @@ const AgendaContributers = ({
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);
-  console.log(columnsData, "columnsDatacolumnsData")
+  console.log(columnsData, "columnsDatacolumnsData");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -157,7 +157,7 @@ const AgendaContributers = ({
           align: "left",
           ellipsis: true,
           render: (text, record) => {
-            console.log(record, )
+            console.log(record);
             if (record.attendeeAvailability === 1) {
               return (
                 <img
@@ -277,7 +277,7 @@ const AgendaContributers = ({
           dataIndex: "isContributedNotified",
           key: "isContributedNotified",
           ellipsis: true,
-          render: (text,record) => {
+          render: (text, record) => {
             if (record.isContributedNotified === true) {
               return (
                 <Row>
@@ -321,133 +321,6 @@ const AgendaContributers = ({
     }
     setColumnsData(AgendaContributorViewColoumns);
   }, [NewMeetingreducer?.getAllAgendaContributorsAllowRSVP]);
-  // let allowRSVPValue = NewMeetingreducer?.getAllAgendaContributorsAllowRSVP;
-  // console.log(allowRSVPValue, "allowRSVPValueallowRSVPValue");
-  // let AgendaContributorViewColoumns = [];
-  // if (allowRSVPValue === true) {
-  //   AgendaContributorViewColoumns = [
-  //     {
-  //       title: t("Name"),
-  //       dataIndex: "userName",
-  //       key: "userName",
-  //       align: "left",
-  //       ellipsis: true,
-  //     },
-
-  //     {
-  //       title: t("Email"),
-  //       dataIndex: "email",
-  //       key: "email",
-  //       align: "left",
-  //       ellipsis: true,
-  //     },
-  //     {
-  //       title: t("Contributor-title"),
-  //       dataIndex: "Title",
-  //       key: "Title",
-  //       align: "left",
-  //       ellipsis: true,
-  //     },
-
-  //     {
-  //       title: "RSVP",
-  //       dataIndex: "attendeeAvailability",
-  //       key: "attendeeAvailability",
-  //       align: "left",
-  //       ellipsis: true,
-  //       render: (record) => {
-  //         if (record.attendeeAvailability === 1) {
-  //           return (
-  //             <img
-  //               draggable={false}
-  //               src={AwaitingResponse}
-  //               height='30px'
-  //               width='30px'
-  //               alt=''
-  //             />
-  //           );
-  //         } else if (record.attendeeAvailability === 2) {
-  //           return (
-  //             <img
-  //               draggable={false}
-  //               src={thumbsup}
-  //               height='30px'
-  //               width='30px'
-  //               alt=''
-  //             />
-  //           );
-  //         } else if (record.attendeeAvailability === 3) {
-  //           return (
-  //             <img
-  //               draggable={false}
-  //               src={thumbsdown}
-  //               height='30px'
-  //               width='30px'
-  //               alt=''
-  //             />
-  //           );
-  //         } else if (record.attendeeAvailability === 4) {
-  //           return (
-  //             <img
-  //               draggable={false}
-  //               src={TentativelyAccepted}
-  //               height='30px'
-  //               width='30px'
-  //               alt=''
-  //             />
-  //           );
-  //         }
-  //       },
-  //     },
-
-  //     {
-  //       title: t("Notification"),
-  //       dataIndex: "isContributedNotified",
-  //       key: "isContributedNotified",
-  //       ellipsis: true,
-  //       render: (record) => {
-  //         if (record.isContributedNotified === true) {
-  //           return (
-  //             <Row>
-  //               <Col
-  //                 lg={7}
-  //                 md={7}
-  //                 sm={7}
-  //                 className='d-flex justify-content-center'>
-  //                 <img
-  //                   draggable={false}
-  //                   src={greenMailIcon}
-  //                   height='30px'
-  //                   width='30px'
-  //                   alt=''
-  //                 />
-  //               </Col>
-  //             </Row>
-  //           );
-  //         } else if (record.isContributedNotified === false) {
-  //           return (
-  //             <Row>
-  //               <Col
-  //                 lg={7}
-  //                 md={7}
-  //                 sm={7}
-  //                 className='d-flex justify-content-center'>
-  //                 <img
-  //                   draggable={false}
-  //                   src={redMailIcon}
-  //                   height='30px'
-  //                   width='30px'
-  //                   alt=''
-  //                 />
-  //               </Col>
-  //             </Row>
-  //           );
-  //         }
-  //       },
-  //     },
-  //   ];
-  // } else {
-  // }
 
   useEffect(() => {
     if (
