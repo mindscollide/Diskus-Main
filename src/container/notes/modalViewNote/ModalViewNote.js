@@ -18,6 +18,18 @@ const ModalViewNote = ({
   setGetNoteID,
   flag,
 }) => {
+  const { t } = useTranslation();
+
+  const GetNotesByNotesId = useSelector(
+    (state) => state.NotesReducer.GetNotesByNotesId
+  );
+
+  //Getting Notes Files Data From Global State
+  const RetrieveDocsNotes = useSelector(
+    (state) => state.NotesReducer.retrieveNotesDocumentData
+  );
+
+  const [attachments, setAttachments] = useState([]);
   const [notesData, setNotesData] = useState({
     date: "",
     description: "",
@@ -28,7 +40,6 @@ const ModalViewNote = ({
     isStarred: false,
     modifiedDate: "",
     modifiedTime: "",
-    notesAttachments: [],
     notesStatus: "",
     organizationName: "",
     pK_NotesID: 0,
@@ -36,18 +47,13 @@ const ModalViewNote = ({
     title: "",
     username: "",
   });
-  //For Localization
-  const GetNotesByNotesId = useSelector(
-    (state) => state.NotesReducer.GetNotesByNotesId
-  );
-
-  const [isUpdateNote, setIsUpdateNote] = useState(true);
-  const { t } = useTranslation();
 
   useEffect(() => {
-    if (GetNotesByNotesId !== null && GetNotesByNotesId !== undefined) {
-      try {
+    try {
+      if (GetNotesByNotesId && GetNotesByNotesId !== null) {
+        console.log(GetNotesByNotesId, "GetNotesByNotesId");
         setNotesData({
+          ...notesData,
           date: GetNotesByNotesId.date,
           description: GetNotesByNotesId.description,
           fK_NotesStatus: GetNotesByNotesId.fK_NotesStatus,
@@ -57,7 +63,6 @@ const ModalViewNote = ({
           isStarred: GetNotesByNotesId.isStarred,
           modifiedDate: GetNotesByNotesId.modifiedDate,
           modifiedTime: GetNotesByNotesId.modifiedTime,
-          notesAttachments: GetNotesByNotesId.notesAttachments,
           notesStatus: GetNotesByNotesId.notesStatus,
           organizationName: GetNotesByNotesId.organizationName,
           pK_NotesID: GetNotesByNotesId.pK_NotesID,
@@ -65,11 +70,21 @@ const ModalViewNote = ({
           title: GetNotesByNotesId.title,
           username: GetNotesByNotesId.username,
         });
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error);
     }
   }, [GetNotesByNotesId]);
+
+  //UseEffect Extracting the Files Data
+  useEffect(() => {
+    try {
+      if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
+        console.log(RetrieveDocsNotes, "notesAttachments");
+        setAttachments(RetrieveDocsNotes.data);
+      }
+    } catch (error) {}
+  }, [RetrieveDocsNotes]);
 
   const handleCloseViewModal = () => {
     if (flag) {
@@ -93,40 +108,9 @@ const ModalViewNote = ({
           ButtonTitle={ModalTitle}
           centered
           modalFooterClassName={styles["modalViewNoteClass"]}
-          size={isUpdateNote === true ? "md" : "md"}
+          size={"md"}
           ModalBody={
             <>
-              {/* <Row className="d-flex align-items-center">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className="d-flex  gap-2 align-items-center"
-                >
-                  <p className={styles["Viewnote-heading"]}>{t("View-note")}</p>
-                  {notesData.isStarred ? (
-                    <img
-                      draggable="false"
-                      src={hollowstar}
-                      alt=""
-                      width={17}
-                      height={17}
-                      className={styles["star-addnote"]}
-                    />
-                  ) : (
-                    <img
-                      draggable="false"
-                      className={styles["star-addnote"]}
-                      alt=""
-                      width={17}
-                      height={17}
-                      src={StarIcon}
-                    />
-                  )}
-                </Col>
-              </Row> */}
-
               <Row>
                 <Col
                   lg={12}
@@ -177,14 +161,15 @@ const ModalViewNote = ({
               </Row>
               <section className={styles["NotesViewAttachment"]}>
                 <Row>
-                  {notesData.notesAttachments.length > 0
-                    ? notesData.notesAttachments.map((data, index) => {
+                  {attachments.length > 0
+                    ? attachments.map((data, index) => {
+                        console.log(data, "datav");
                         return (
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
                               data={data}
                               id={0}
-                              name={data.displayAttachmentName}
+                              name={data.displayFileName}
                             />
                           </Col>
                         );

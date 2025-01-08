@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import styles from "./Notes.module.css";
 import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg";
@@ -6,22 +6,31 @@ import ModalViewNote from "./modalViewNote/ModalViewNote";
 import ModalAddNote from "./modalAddNote/ModalAddNote";
 import ModalUpdateNote from "./modalUpdateNote/ModalUpdateNote";
 import ClipIcon from "../../assets/images/AttachmentNotes.svg";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import searchicon from "../../assets/images/searchicon.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
+import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Plus } from "react-bootstrap-icons";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import InputIcon from "react-multi-date-picker/components/input_icon";
+import Select from "react-select";
 import {
   AttachmentViewer,
   Button,
   Notification,
+  TextField,
 } from "../../components/elements";
 import { Tooltip } from "antd";
 import {
-  ClearNotesResponseMessage,
   GetNotes,
   GetNotesByIdAPI,
+  RetrieveNotesDocumentAPI,
 } from "../../store/actions/Notes_actions";
 import {
   _justShowDateformat,
@@ -30,16 +39,18 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useNotesContext } from "../../context/NotesContext";
+import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
+import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const calendRef = useRef();
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const { NotesReducer } = useSelector((state) => state);
 
-  const NotesResponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage
-  );
+  const { addNotes, setAddNotes } = useNotesContext();
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -49,7 +60,7 @@ const Notes = () => {
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
   // for modal Add notes
-  const [addNotes, setAddNotes] = useState(false);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -61,7 +72,44 @@ const Notes = () => {
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
+  const [searchnotes, setSearchnotes] = useState(false);
+  const [searchResultsFields, setSearchResultFields] = useState({
+    Type: null,
+  });
+  const [searchBoxState, setsearchBoxState] = useState({
+    searchByTitle: "",
+    Date: "",
+    DateView: "",
+    isDocument: false,
+    isSpreadSheet: false,
+    isPresentation: false,
+    isForms: false,
+    isPDF: false,
+    isFolders: false,
+    isVideos: false,
+    isAudios: false,
+    isSites: false,
+    isImages: false,
+  });
+  const [noteSearchState, setNoteSearchState] = useState({
+    searchValue: "",
+  });
+  const [enterpressed, setEnterpressed] = useState(false);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
 
+  //For Arabic lanaguage
+  useEffect(() => {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
   useEffect(() => {
     try {
       if (notesPagesize !== null && notesPage !== null) {
@@ -69,6 +117,16 @@ const Notes = () => {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: JSON.parse(notesPage),
           Length: JSON.parse(notesPagesize),
         };
@@ -76,10 +134,21 @@ const Notes = () => {
       } else {
         localStorage.setItem("notesPage", 1);
         localStorage.setItem("notesPageSize", 50);
+
         let Data = {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: 1,
           Length: 50,
         };
@@ -182,9 +251,14 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        2
+        4
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   //for open View User Notes Modal
@@ -200,6 +274,11 @@ const Notes = () => {
         1
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   const handelChangeNotesPagination = async (current, pageSize) => {
@@ -223,11 +302,364 @@ const Notes = () => {
     }
   };
 
+  //Searching Notes
+
+  const HandleSearchboxNameTitle = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "searchbytitle") {
+      let UpdateValue = regexOnlyForNumberNCharacters(value);
+      if (UpdateValue !== "") {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByTitle: UpdateValue,
+        });
+      } else {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByTitle: "",
+        });
+      }
+    }
+  };
+
+  const HandleSearchNotessMain = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "SearchVal") {
+      if (value !== "") {
+        setNoteSearchState({
+          ...noteSearchState,
+          searchValue: value,
+        });
+      } else {
+        setNoteSearchState({
+          ...noteSearchState,
+          searchValue: "",
+        });
+      }
+    }
+  };
+
+  const handleKeyDownSearch = (e) => {
+    if (e.key === "Enter") {
+      setEnterpressed(true);
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: noteSearchState.searchValue,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isImages: false,
+        isPDF: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        CreatedDate: "",
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    }
+  };
+
+  const handleResettingPage = () => {
+    setNoteSearchState({
+      ...noteSearchState,
+      searchValue: "",
+    });
+    setSearchnotes(false);
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isImages: false,
+      isPDF: false,
+      isVideos: false,
+      isAudios: false,
+      isSites: false,
+      CreatedDate: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(GetNotes(navigate, Data, t));
+  };
+
+  const HandleShowSearch = () => {
+    setNoteSearchState({
+      ...noteSearchState,
+      searchValue: "",
+    });
+    setSearchnotes(true);
+  };
+
+  const handleMainSearchModal = () => {
+    setSearchnotes(false);
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByTitle: "",
+      Date: "",
+      DateView: "",
+    });
+  };
+
+  //Search Date Picker OnChange
+  const meetingDateChangeHandler = (date) => {
+    // Always format the API date in a standard format
+    let DateFormat = new DateObject(date).format("YYYY-MM-DD");
+
+    // Format the display date based on the locale
+    let DateFormatView = new DateObject(date)
+      .setLocale(localValue)
+      .format("DD/MM/YYYY");
+
+    setsearchBoxState({
+      ...searchBoxState,
+      Date: DateFormat, // Standard date for API
+      DateView: DateFormatView, // Localized display date
+    });
+  };
+
+  const ResetSearchBtn = () => {
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByTitle: "",
+      Date: "",
+      DateView: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isPDF: false,
+      isFolders: false,
+      isVideos: false,
+      isAudios: false,
+      isSites: false,
+      isImages: false,
+    });
+    setSearchResultFields((prevState) => ({
+      ...prevState,
+      Type: null,
+    }));
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isImages: false,
+      isPDF: false,
+      isVideos: false,
+      isAudios: false,
+      isSites: false,
+      CreatedDate: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(GetNotes(navigate, Data, t));
+  };
+
+  //Searching Through Documents
+
+  // this is onchange envent of search modal Documnet
+  const handleChangeDocumentsOptions = (event) => {
+    console.log(event, "eventeventevent");
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Type: event, // Update the Type field
+    }));
+    if (event.value === 1) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isImages: true,
+        isAudios: true,
+        isSites: true,
+      });
+    } else if (event.value === 2) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: true,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 3) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: true,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 4) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: true,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 5) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: true,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 6) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: true,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 7) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: true,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 8) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: true,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 10) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 11) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: true,
+      });
+    } else if (event.value === 12) {
+      setsearchBoxState({
+        ...searchBoxState,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: true,
+        isSites: false,
+      });
+    } else {
+    }
+  };
+
+  const handleSearchEvent = () => {
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: searchBoxState.searchByTitle,
+      isDocument: searchBoxState.isDocument,
+      isSpreadSheet: searchBoxState.isSpreadSheet,
+      isPresentation: searchBoxState.isPresentation,
+      isForms: searchBoxState.isForms,
+      isImages: searchBoxState.isImages,
+      isPDF: searchBoxState.isPDF,
+      isVideos: searchBoxState.isVideos,
+      isAudios: searchBoxState.isAudios,
+      isSites: searchBoxState.isSites,
+      CreatedDate: searchBoxState.Date,
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(GetNotes(navigate, Data, t));
+  };
+
   return (
     <>
       <div className={styles["notescontainer"]}>
         <Row className="mt-3">
-          <Col lg={12} md={12} sm={12} className="d-flex gap-4 ">
+          <Col lg={8} md={8} sm={12} className="d-flex gap-4 ">
             <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
 
             <Button
@@ -236,6 +668,153 @@ const Notes = () => {
               className={styles["create-note-btn"]}
               onClick={modalAddUserModal}
             />
+          </Col>
+          <Col sm={12} md={4} lg={4}>
+            <span className="position-relative w-100">
+              <TextField
+                width={"100%"}
+                placeholder={t("Search")}
+                applyClass={"PollingSearchInput"}
+                name={"SearchVal"}
+                value={noteSearchState.searchValue}
+                change={HandleSearchNotessMain}
+                onKeyDown={handleKeyDownSearch}
+                labelclass="d-none"
+                inputicon={
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        {noteSearchState.searchValue && enterpressed ? (
+                          <>
+                            <img
+                              src={BlackCrossIcon}
+                              className="cursor-pointer"
+                              draggable="false"
+                              alt=""
+                              onClick={handleResettingPage}
+                            />
+                          </>
+                        ) : null}
+                        <Tooltip
+                          placement="bottomLeft"
+                          title={t("Search-filters")}
+                        >
+                          <img
+                            src={searchicon}
+                            alt=""
+                            className={styles["Search_Bar_icon_class"]}
+                            draggable="false"
+                            onClick={HandleShowSearch}
+                          />
+                        </Tooltip>
+                      </Col>
+                    </Row>
+                  </>
+                }
+                iconclassname={styles["polling_searchinput"]}
+              />
+              {searchnotes ? (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["SearhBar_Polls"]}
+                    >
+                      <Row className="mt-2">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-end"
+                        >
+                          <img
+                            src={BlackCrossIcon}
+                            className={styles["Cross_Icon_Styling"]}
+                            width="16px"
+                            height="16px"
+                            alt=""
+                            onClick={handleMainSearchModal}
+                            draggable="false"
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={12} md={12} sm={12}>
+                          <TextField
+                            placeholder={t("Notes-title")}
+                            applyClass={"Search_Modal_Fields"}
+                            labelclass="d-none"
+                            name={"searchbytitle"}
+                            value={searchBoxState.searchByTitle}
+                            change={HandleSearchboxNameTitle}
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={6} md={6} sm={6}>
+                          <DatePicker
+                            value={searchBoxState.DateView}
+                            format={"DD/MM/YYYY"}
+                            placeholder="DD/MM/YYYY"
+                            render={
+                              <InputIcon
+                                placeholder="DD/MM/YYYY"
+                                className="datepicker_input"
+                              />
+                            }
+                            editable={false}
+                            className="datePickerTodoCreate2"
+                            onOpenPickNewDate={false}
+                            calendar={calendarValue} // Arabic calendar
+                            locale={localValue} // Arabic locale
+                            ref={calendRef}
+                            onFocusedDateChange={meetingDateChangeHandler}
+                          />
+                        </Col>
+                        <Col lg={6} md={6} sm={6}>
+                          <Select
+                            options={OptionsDocument(t)}
+                            placeholder={t("With-attachments")}
+                            isSearchable={false}
+                            onChange={handleChangeDocumentsOptions}
+                            value={searchResultsFields.Type}
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-4">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-end gap-2"
+                        >
+                          <Button
+                            text={t("Reset")}
+                            className={styles["Reset_Button_polls_SearchModal"]}
+                            onClick={ResetSearchBtn}
+                          />
+                          <Button
+                            text={t("Search")}
+                            type={"submit"}
+                            className={
+                              styles["Search_Button_polls_SearchModal"]
+                            }
+                            onClick={handleSearchEvent}
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </span>
           </Col>
         </Row>
         <Row>
@@ -255,36 +834,6 @@ const Notes = () => {
                     centerField={
                       <>
                         {" "}
-                        {/* {data.isStarred ? (
-                          <Tooltip placement="bottomLeft" title={t("Starred")}>
-                            <img
-                              draggable="false"
-                              src={hollowstar}
-                              width="15.86px"
-                              alt=""
-                              height="15.19px"
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip
-                            placement="bottomLeft"
-                            title={t("Unstarred")}
-                          >
-                            <img
-                              draggable="false"
-                              src={StarIcon}
-                              width="15.86px"
-                              height="15.19px"
-                              alt=""
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        )} */}
                         {data?.isAttachment ? (
                           <span>
                             <img
@@ -380,7 +929,7 @@ const Notes = () => {
                                       <AttachmentViewer
                                         data={file}
                                         id={0}
-                                        name={file.displayAttachmentName}
+                                        name={file.displayFileName}
                                       />
                                     );
                                   })
@@ -437,9 +986,7 @@ const Notes = () => {
         </Row>
         {/* Test Accordian Ends  */}
       </div>
-      {addNotes ? (
-        <ModalAddNote addNewModal={addNotes} setAddNewModal={setAddNotes} />
-      ) : null}
+      {addNotes ? <ModalAddNote /> : null}
 
       {updateShow ? (
         <ModalUpdateNote
