@@ -8170,6 +8170,7 @@ const JoinCurrentMeeting = (
             ) {
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
+              localStorage.setItem("videoCallURL", Data.VideoCallURL)
               localStorage.setItem(
                 "AdvanceMeetingOpen",
                 isQuickMeeting ? false : true

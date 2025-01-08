@@ -510,22 +510,9 @@ const NewMeeting = () => {
             talkGroupId,
             isVideo,
             videoCallUrl,
+            isMinutePublished,
           } = getResponse.response;
-          console.log(
-            {
-              attendeeId,
-              isQuickMeeting,
-              meetingID,
-              meetingStatusId,
-              organizationID,
-              userID,
-              isChat,
-              talkGroupId,
-              isVideo,
-              videoCallUrl,
-            },
-            "getResponsegetResponse"
-          );
+
           if (meetingStatusId === "10" || meetingStatusId === 10) {
             if (isQuickMeeting) {
               let joinMeetingData = {
@@ -587,16 +574,7 @@ const NewMeeting = () => {
               localStorage.setItem("videoCallURL", videoCallUrl);
 
               dispatch(viewMeetingFlag(true));
-              localStorage.setItem("isMinutePublished", false);
-
-              // dispatch(
-              //   GetAllUserChats(
-              //     navigate,
-              //     parseInt(currentUserId),
-              //     parseInt(currentOrganizationId),
-              //     t
-              //   )
-              // );
+              localStorage.setItem("isMinutePublished", isMinutePublished);
             }
           } else {
             if (isQuickMeeting) {
@@ -634,6 +612,7 @@ const NewMeeting = () => {
               dispatch(viewAdvanceMeetingPublishPageFlag(true));
               dispatch(scheduleMeetingPageFlag(false));
               localStorage.setItem("currentMeetingID", meetingID);
+              localStorage.setItem("isMinutePublished", isMinutePublished);
             }
           }
         }
