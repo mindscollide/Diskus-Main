@@ -2332,5 +2332,6 @@
   "Cannot-add-option-with-same-name": "Cannot add option with same name",
   "Voting-options-should-be-2-or-more-than-2": "Voting options should be 2 or more than 2",
   "Mute-all": "Mute All",
-  "Unmute-all": "Unmute all"
+  "Unmute-all": "Unmute all",
+  "With-attachments": "With Attachments"
 }
