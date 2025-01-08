@@ -3470,6 +3470,13 @@ export const LEAVE_MEETING_END_STATUS_RESPONSE =
 // For videoIcon enable and disable or button
 export const VIDEO_BUTTON_OR_ICON_STATE = "VIDEO_BUTTON_OR_ICON_STATE";
 
+//For VideoIcon Enable and Disable button From Participant Side
+export const PARTICIPANT_BUTTON_VIDEO_ENABLE_DISABLE =
+  "PARTICIPANT_BUTTON_VIDEO_ENABLE_DISABLE";
+
+//For Cleare Message of Video Feature Reducer
+export const CLEAR_VIDEOFEATURE_MESSAGES = "CLEAR_VIDEOFEATURE_MESSAGES";
+
 //Notes  Create Update Notes Data Room Map
 export const CREATE_UPDATE_NOTES_DATAROOM_MAP_INIT =
   "CREATE_UPDATE_NOTES_DATAROOM_MAP_INIT";

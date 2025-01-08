@@ -83,6 +83,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  participantVideoButtonState,
   participantVideoNavigationScreen,
   setAudioControlForParticipant,
   setAudioControlHost,
@@ -9055,7 +9056,14 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              dispatch(videoIconOrButtonState(false));
+              let meetingFlag = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+              if (meetingFlag?.isHost) {
+                dispatch(videoIconOrButtonState(false));
+              } else {
+                dispatch(participantVideoButtonState(false));
+              }
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
