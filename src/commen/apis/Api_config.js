@@ -1913,8 +1913,12 @@ const ValidateEncryptedStringViewFileLinkRM = {
 const ValidateEncryptedStringViewFolderLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewFolderLink",
 };
-
+const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
 export {
+  ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,
   ValidateEncryptedStringViewFolderLinkRM,
   ValidateEncryptedStringViewTaskListLinkRM,

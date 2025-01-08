@@ -289,6 +289,10 @@ const PrivateRoutes = () => {
         let getValue = getActionValue(currentUrl, "viewFol_action=");
         localStorage.setItem("viewFolderLink", getValue);
       }
+      if(currentUrl.toLowerCase().includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())) {
+        let getValue = getActionValue(currentUrl, "viewMeeting_action=");
+        localStorage.setItem("viewMeetingLink", getValue);
+      }
     };
     callRoutingFunction();
     // Action: Meeting RSVP

@@ -306,6 +306,9 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
                   t("Voting-updated")
                 )
               );
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(getAgendaData, navigate, t)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2470,4 +2473,5 @@ export {
   ExportAgendaPDF,
   PrintMeetingAgenda,
   GetAdvanceMeetingAgendabyMeetingIDForView,
+  getAgendaVotingDetails_fail
 };
