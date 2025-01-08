@@ -1192,7 +1192,7 @@ const AgendaWise = ({
                             <Tooltip
                               placement='top'
                               showArrow={false}
-                              title={`Rejected By ${isRejectedMemberHas[0].MinuteStats.rejected} Members`}>
+                              title={`Rejected By ${isRejectedMemberHas[0]?.MinuteStats?.rejected} Members`}>
                               <img
                                 className={styles["Attachment"]}
                                 alt=''

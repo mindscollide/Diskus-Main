@@ -184,7 +184,7 @@ const ParentAgenda = ({
     if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
       showMessage(
         t("Thank-you-for-participanting-in-voting"),
-        "error",
+        "success",
         setOpen
       );
       dispatch(clearResponseMessage(""));
