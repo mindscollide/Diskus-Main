@@ -175,8 +175,18 @@ const Home = () => {
         UserID: parseInt(createrID),
         OrganizationID: JSON.parse(OrganizationID),
         Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isImages: false,
+        isPDF: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        CreatedDate: "",
         PageNumber: 1,
-        Length: 50,
+        Length: 10,
       };
       dispatch(GetNotes(navigate, Data, t));
     }

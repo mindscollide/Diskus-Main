@@ -599,19 +599,32 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="mt-2">
-          <Col lg={12} md={12} sm={12}>
+      <section className='position-relative'>
+        <Row className='my-2'>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
+            {Number(editorRole?.status) === 10 && (
+              <span>
+                <Button
+                  text={t("Leave-meeting")}
+                  onClick={leaveMeeting}
+                  className={styles["LeavemeetingBtn"]}
+                />
+              </span>
+            )}
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -794,6 +807,7 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setDataroomMapFolderId={setDataroomMapFolderId}
+                  setAgenda={setAgenda}
                 />
               )}
               {attendees && (

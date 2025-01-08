@@ -300,3 +300,82 @@ body[dir="rtl"] .PaginationStyle-Notes {
   width: 20px;
   height: 20px;
 }
+
+/* Searching Notes Styles Same as polls as resused polls Styles  */
+
+.Search_Button_polls_SearchModal {
+  padding: 12px 30px !important;
+  background: #6172d6;
+  color: #fff;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: none !important;
+}
+
+.Search_Button_polls_SearchModal:hover,
+.Search_Button_polls_SearchModal:focus-visible,
+.Search_Button_polls_SearchModal:focus,
+.Search_Button_polls_SearchModal:active {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: none !important;
+}
+
+.Reset_Button_polls_SearchModal {
+  padding: 12px 30px !important;
+  background: #fff;
+  color: #5a5a5a;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Reset_Button_polls_SearchModal:hover,
+.Reset_Button_polls_SearchModal:active,
+.Reset_Button_polls_SearchModal:focus,
+.Reset_Button_polls_SearchModal:focus-visible {
+  padding: 12px 30px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Cross_Icon_Styling {
+  cursor: pointer;
+}
+
+.SearhBar_Polls {
+  width: 100% !important;
+  height: auto !important;
+  background: #ffffff !important;
+  position: absolute;
+  right: 0;
+  z-index: 1 !important;
+  top: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 20px 10px;
+}
+
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 25px;
+}
+
+body[dir="rtl"] .polling_searchinput {
+  position: absolute !important;
+  right: 88% !important;
+  cursor: pointer !important;
+}
+
+.Search_Bar_icon_class {
+  cursor: pointer;
+}

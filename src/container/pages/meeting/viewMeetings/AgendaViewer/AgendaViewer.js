@@ -765,7 +765,7 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null}
 
-                      {editorRole.status === "10" ||
+                      {/* {editorRole.status === "10" ||
                       editorRole.status === 10 ? (
                         <Tooltip
                           placement="topRight"
@@ -778,7 +778,7 @@ const AgendaViewer = ({
                             <img src={LeaveMeetingIcon} alt="" />
                           </div>
                         </Tooltip>
-                      ) : null}
+                      ) : null} */}
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&

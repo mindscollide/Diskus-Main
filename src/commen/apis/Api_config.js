@@ -1914,7 +1914,25 @@ const ValidateEncryptedStringViewFolderLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewFolderLink",
 };
 
+const CreateUpdateNotesDataRoomMap = {
+  RequestMethod: "ServiceManager.CreateUpdateNotesDataRoomMap",
+};
+
+const SaveNotesDocument = {
+  RequestMethod: "ServiceManager.SaveNotesDocuments",
+};
+
+const RetrieveNotesDocument = {
+  RequestMethod: "ServiceManager.ReteriveNotesDocuments",
+};
+
+const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
+
 export {
+  ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,
   ValidateEncryptedStringViewFolderLinkRM,
   ValidateEncryptedStringViewTaskListLinkRM,
@@ -2417,4 +2435,7 @@ export {
   GetMeetingStatus,
   GetDataRoomFileSharedPersmission,
   MinutesWorkFlowActorStatusNotification,
+  CreateUpdateNotesDataRoomMap,
+  SaveNotesDocument,
+  RetrieveNotesDocument,
 };

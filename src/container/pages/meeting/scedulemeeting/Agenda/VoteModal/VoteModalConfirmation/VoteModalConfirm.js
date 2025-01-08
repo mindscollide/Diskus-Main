@@ -8,6 +8,7 @@ import {
   showVoteAgendaModal,
   showVoteConfirmationModal,
 } from "../../../../../../../store/actions/NewMeetingActions";
+import { getAgendaVotingDetails_fail } from "../../../../../../../store/actions/MeetingAgenda_action";
 const VoteModalConfirm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const VoteModalConfirm = () => {
 
   const yesBtnFunctionality = () => {
     dispatch(showVoteConfirmationModal(false));
+    dispatch(getAgendaVotingDetails_fail(""));
   };
   return (
     <section>
@@ -38,8 +40,7 @@ const VoteModalConfirm = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["Advance_permission_Confirmation"]}>
                   {t("Any-unsaved-changes-will")}
                 </span>
@@ -50,8 +51,7 @@ const VoteModalConfirm = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["Advance_permission_Confirmation"]}>
                   {t("Be-lost-continue")}
                 </span>
@@ -66,8 +66,7 @@ const VoteModalConfirm = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2"
-              >
+                className='d-flex justify-content-center gap-2'>
                 <Button
                   text={t("No")}
                   className={styles["No_confirmation"]}

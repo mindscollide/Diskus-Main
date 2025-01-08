@@ -9,6 +9,11 @@ const initialState = {
   GetAllAttachments: null,
   GetNotesByNotesId: null,
   deleteNoteResponse: null,
+  createUpdateNotesDataRoomMapData: null,
+  saveNotesDocumentData: null,
+  retrieveNotesDocumentData: null,
+  saveFilesNotes: null,
+  uploadDocumentNotes: null,
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -124,6 +129,140 @@ const NotesReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         deleteNoteResponse: null,
+      };
+    }
+
+    //Create Update Notes DataRoom Map Reducer Work
+
+    case actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        createUpdateNotesDataRoomMapData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        createUpdateNotesDataRoomMapData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Save Notes Document
+
+    case actions.SAVE_NOTES_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_NOTES_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveNotesDocumentData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_NOTES_DOCUMENT_FAILED: {
+      return {
+        ...state,
+        Loading: true,
+        saveNotesDocumentData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Retrive Notes Document
+
+    case actions.RETRIEVE_NOTES_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETRIEVE_NOTES_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        retrieveNotesDocumentData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETRIEVE_NOTES_DOCUMENT_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        retrieveNotesDocumentData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Save Files Notes Just like Save Files Groups
+    case actions.SAVE_FILES_NOTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_FILES_NOTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        saveFilesNotes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_FILES_NOTES_FALSE: {
+      return {
+        ...state,
+        Loading: false,
+        saveFilesNotes: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Upload Document Notes
+
+    case actions.UPLOAD_DOCUMENT_NOTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPLOAD_DOCUMENT_NOTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        uploadDocumentNotes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPLOAD_DOCUMENT_NOTES_FAILED: {
+      return {
+        ...state,
+        Loading: true,
+        uploadDocumentNotes: null,
+        ResponseMessage: action.message,
       };
     }
 
