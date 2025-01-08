@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -11,12 +11,13 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
 import { useDispatch } from "react-redux";
-import {
-  FileUploadToDo,
-  uploaddocumentloader,
-} from "../../../store/actions/Upload_action";
 import CustomUpload from "../../../components/elements/upload/Upload";
-import { SaveNotesAPI } from "../../../store/actions/Notes_actions";
+import {
+  saveFilesNotesApi,
+  SaveNotesAPI,
+  SaveNotesDocumentAPI,
+  uploadDocumentsNotesApi,
+} from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { validateInput } from "../../../commen/functions/regex";
@@ -25,8 +26,18 @@ import {
   maxFileSize,
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
+import { useNotesContext } from "../../../context/NotesContext";
+import { useSelector } from "react-redux";
 
-const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
+const ModalAddNote = ({ ModalTitle }) => {
+  //Context State for the Modal Globally Defined
+  const { addNotes, setAddNotes } = useNotesContext();
+
+  //GlobalState For Folder ID Against the Notes Created
+  const NotesReducerFolderID = useSelector(
+    (state) => state.NotesReducer.createUpdateNotesDataRoomMapData
+  );
+
   //For Localization
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
@@ -41,7 +52,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-
+  console.log(fileForSend, "fileForSendfileForSend");
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -239,45 +250,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      if (Object.keys(fileForSend).length > 0) {
-        let newfile = [];
-        let newData = [];
-        const uploadPromises = fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-        await Promise.all(uploadPromises);
-        await dispatch(uploaddocumentloader(false));
-        newfile.forEach((attachmentData, index) => {
-          newData.push({
-            DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-            OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-            FK_NotesID: 0,
-          });
-        });
-        let Data = {
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarrted,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          NotesAttachments: newData,
-        };
-
-        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-      } else {
-        setAddNewModal(false);
-        let notesAttachment = [];
-        let Data = {
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarrted,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          NotesAttachments: notesAttachment,
-        };
-
-        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-      }
+      let Data = {
+        Title: addNoteFields.Title.value,
+        Description: addNoteFields.Description.value,
+        isStarred: isStarrted,
+        FK_UserID: JSON.parse(createrID),
+        FK_OrganizationID: JSON.parse(OrganizationID),
+      };
+      dispatch(SaveNotesAPI(navigate, Data, t));
     } else {
       setAddNoteFields({
         ...addNoteFields,
@@ -302,6 +282,52 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
+  //File For Send Work in Notes
+  const NotesDocumentCallUpload = async (folderID) => {
+    let newFolder = [];
+    let newfile = [];
+    if (fileForSend.length > 0) {
+      console.log(fileForSend, "fileForSendfileForSend");
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsNotesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            // newFolder,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      await dispatch(
+        saveFilesNotesApi(navigate, t, newfile, folderID, newFolder)
+      );
+    }
+
+    let notesID = localStorage.getItem("notesID");
+
+    let Data = {
+      NoteID: Number(notesID),
+      UpdateFileList: newFolder.map((data, index) => {
+        return { PK_FileID: data.pK_FileID };
+      }),
+    };
+    dispatch(
+      SaveNotesDocumentAPI(navigate, Data, t, setAddNotes, false, false, 1)
+    );
+  };
+
+  useEffect(() => {
+    if (NotesReducerFolderID) {
+      let folderIDCreated = NotesReducerFolderID;
+      NotesDocumentCallUpload(folderIDCreated);
+    }
+  }, [NotesReducerFolderID]);
+
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
       event.preventDefault();
@@ -315,14 +341,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     <>
       <Container>
         <Modal
-          show={addNewModal}
+          show={addNotes}
           onHide={() => {
             setCloseConfirmationBox(true);
             setIsCreateNote(false);
             setIsAddNote(false);
           }}
           setShow={(value) => {
-            setAddNewModal(value);
+            setAddNotes(value);
           }}
           ButtonTitle={ModalTitle}
           modalHeaderClassName={
@@ -576,7 +602,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         text={t("Cancel")}
                       />
                       <Button
-                        onClick={() => setAddNewModal(false)}
+                        onClick={() => setAddNotes(false)}
                         className={styles["close-Add-notes-Modal"]}
                         text={t("Close")}
                       />

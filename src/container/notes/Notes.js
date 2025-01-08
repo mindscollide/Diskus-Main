@@ -19,9 +19,9 @@ import {
 } from "../../components/elements";
 import { Tooltip } from "antd";
 import {
-  ClearNotesResponseMessage,
   GetNotes,
   GetNotesByIdAPI,
+  RetrieveNotesDocumentAPI,
 } from "../../store/actions/Notes_actions";
 import {
   _justShowDateformat,
@@ -30,16 +30,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import CustomAccordion from "../../components/elements/accordian/CustomAccordion";
-import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useNotesContext } from "../../context/NotesContext";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NotesReducer } = useSelector((state) => state);
-
-  const NotesResponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage
-  );
+  const { addNotes, setAddNotes } = useNotesContext();
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -49,7 +46,7 @@ const Notes = () => {
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
   // for modal Add notes
-  const [addNotes, setAddNotes] = useState(false);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -69,6 +66,16 @@ const Notes = () => {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: JSON.parse(notesPage),
           Length: JSON.parse(notesPagesize),
         };
@@ -76,10 +83,21 @@ const Notes = () => {
       } else {
         localStorage.setItem("notesPage", 1);
         localStorage.setItem("notesPageSize", 50);
+
         let Data = {
           UserID: parseInt(createrID),
           OrganizationID: JSON.parse(OrganizationID),
           Title: "",
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isImages: false,
+          isPDF: false,
+          isVideos: false,
+          isAudios: false,
+          isSites: false,
+          CreatedDate: "",
           PageNumber: 1,
           Length: 50,
         };
@@ -182,9 +200,14 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        2
+        4
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   //for open View User Notes Modal
@@ -200,6 +223,11 @@ const Notes = () => {
         1
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   const handelChangeNotesPagination = async (current, pageSize) => {
@@ -255,36 +283,6 @@ const Notes = () => {
                     centerField={
                       <>
                         {" "}
-                        {/* {data.isStarred ? (
-                          <Tooltip placement="bottomLeft" title={t("Starred")}>
-                            <img
-                              draggable="false"
-                              src={hollowstar}
-                              width="15.86px"
-                              alt=""
-                              height="15.19px"
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip
-                            placement="bottomLeft"
-                            title={t("Unstarred")}
-                          >
-                            <img
-                              draggable="false"
-                              src={StarIcon}
-                              width="15.86px"
-                              height="15.19px"
-                              alt=""
-                              className={
-                                styles["starIcon-In-Collapse-material"]
-                              }
-                            />
-                          </Tooltip>
-                        )} */}
                         {data?.isAttachment ? (
                           <span>
                             <img
@@ -380,7 +378,7 @@ const Notes = () => {
                                       <AttachmentViewer
                                         data={file}
                                         id={0}
-                                        name={file.displayAttachmentName}
+                                        name={file.displayFileName}
                                       />
                                     );
                                   })
@@ -437,9 +435,7 @@ const Notes = () => {
         </Row>
         {/* Test Accordian Ends  */}
       </div>
-      {addNotes ? (
-        <ModalAddNote addNewModal={addNotes} setAddNewModal={setAddNotes} />
-      ) : null}
+      {addNotes ? <ModalAddNote /> : null}
 
       {updateShow ? (
         <ModalUpdateNote
