@@ -446,7 +446,7 @@ const FullScreenAgendaModal = ({
                   </Tooltip>
                 ) : null}
 
-                {editorRole.status === "10" || editorRole.status === 10 ? (
+                {/* {editorRole.status === "10" || editorRole.status === 10 ? (
                   <Tooltip placement="topRight" title={t("Leave-meeting")}>
                     <div
                       className={styles["box-agendas-leave"]}
@@ -455,7 +455,7 @@ const FullScreenAgendaModal = ({
                       <img src={LeaveMeetingIcon} alt="" />
                     </div>
                   </Tooltip>
-                ) : null}
+                ) : null} */}
 
                 {(editorRole.status === "10" || editorRole.status === 10) &&
                 videoTalk?.isVideoCall ? (
