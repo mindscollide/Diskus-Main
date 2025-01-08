@@ -1489,7 +1489,7 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
-      {createNotesModal && <ModalAddNote />}
+      {modalNoteHeader && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
           show={showTaskModalHeader}
