@@ -730,7 +730,40 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   }, [allMeetingDetails]);
 
   useEffect(() => {
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    const handleBeforeUnload = async (event) => {
+      if (isMeeting) {
+        let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+        leaveMeeting(currentMeetingID, false, false);
+        localStorage.setItem("isMeeting", false);
+        dispatch(removeCalenderDataFunc(null));
+        setViewFlag(false);
+        dispatch(cleareAssigneesState());
+        setIsDetails(true);
+        setIsMinutes(false);
+        setIsAttachments(false);
+        setIsAgenda(false);
+        setIsAttendees(false);
+        setCreateMeeting({
+          MeetingTitle: "",
+          MeetingDescription: "",
+          MeetingTypeID: 0,
+          MeetingDate: "",
+          MeetingStartTime: "",
+          MeetingEndTime: "",
+          MeetingLocation: "",
+          MeetingReminderID: [],
+          MeetingAgendas: [],
+          MeetingAttendees: [],
+          ExternalMeetingAttendees: [],
+          MinutesOfMeeting: [],
+          MeetingID: 0,
+        });
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("isMeeting");
       localStorage.setItem("isMeeting", false);
       dispatch(removeCalenderDataFunc(null));

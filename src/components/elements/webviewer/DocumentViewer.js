@@ -160,6 +160,18 @@ const DocumentViewer = () => {
     const parts = fileName.split(".");
     return parts.length > 1 ? parts.pop() : ""; // Return the extension or an empty string if no extension
   };
+
+  const supportedFormats = [
+    "pdf",
+    "webp",
+    "svg",
+    "png",
+    "jpeg",
+    "gif",
+    "avif",
+    "apng",
+  ];
+
   // Initialize WebViewer
   useEffect(() => {
     if (pdfResponseData.attachmentBlob) {
@@ -174,24 +186,14 @@ const DocumentViewer = () => {
         },
         viewer.current
       ).then((instance) => {
-        console.log("pdfResponseDatapdf", instance.Core); // Debugging step
-
         const { documentViewer, annotationManager, officeToPDFBuffer, PDFNet } =
           instance.Core;
         // Example usage:
         const extension = getFileExtension(fileName);
+
         const mimeType = getMimeTypeFromFileName(fileName);
+
         let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
-        const supportedFormats = [
-          "pdf",
-          "webp",
-          "svg",
-          "png",
-          "jpeg",
-          "gif",
-          "avif",
-          "apng",
-        ];
 
         // Check if the extension exists in the array (case-insensitive)
         if (supportedFormats.includes(extension.toLowerCase())) {
@@ -235,7 +237,13 @@ const DocumentViewer = () => {
         });
 
         // Set permissions if needed
-        if (Number(isPermission) === 1) setPermissions(instance);
+        if (
+          Number(isPermission) === 1 ||
+          Number(isPermission) === 2 ||
+          Number(isPermission) === 3
+        ) {
+          setPermissions(instance);
+        }
 
         // Add custom save button
         instance.UI.setHeaderItems((header) => {
@@ -254,11 +262,8 @@ const DocumentViewer = () => {
     try {
       // Export annotations as XFDF
       const xfdfString = await annotationManager.exportAnnotations();
-      console.log("pdfResponseDatapdfResponseData", xfdfString);
-
       // Prepare API data dynamically based on 'commingFrom'
       let apiData = { AnnotationString: xfdfString };
-
       switch (Number(commingFrom)) {
         case 1: // For To-Do
           apiData = {
@@ -349,7 +354,7 @@ const DocumentViewer = () => {
       showMessage(ResponseMessage, "success", setOpen);
       dispatch(ClearMessageAnnotations());
     }
-  }, [ResponseMessage, dispatch]);
+  }, [ResponseMessage]);
 
   return (
     <>

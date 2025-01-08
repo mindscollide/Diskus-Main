@@ -35,6 +35,7 @@ const SearchBarComponent = ({
   setSearchResultFields,
   searchResultsFields,
 }) => {
+  console.log("searchDataFieldssearchDataFields");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
