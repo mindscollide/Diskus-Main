@@ -13,10 +13,12 @@ import {
   participantPopup,
   leaveMeetingOnlogout,
   leaveMeetingOnEndStatusMqtt,
+  setRaisedUnRaisedParticiant,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   AgendaPollVotingStartedAction,
   LeaveCurrentMeeting,
+  LeaveMeetingVideo,
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
@@ -128,9 +130,136 @@ const ViewMeetingModal = ({
       }
     }
   }, [routeID]);
+  const callBeforeLeave = () => {
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (isMeetingVideo) {
+      localStorage.setItem("isMeeting", false);
+      localStorage.setItem("isMeetingVideo", false);
+      let newName = localStorage.getItem("name");
+      let currentMeetingID = JSON.parse(
+        localStorage.getItem("currentMeetingID")
+      );
+      const meetHostFlag = localStorage.getItem("meetinHostInfo");
+      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
+      if (meetHostFlag) {
+        const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
+        console.log(parsedHostFlag, "parsedHostFlag");
+        if (parsedHostFlag.isHost) {
+          let newRoomID = localStorage.getItem("newRoomId");
+          let newUserGUID = localStorage.getItem("isGuid");
 
+          let Data = {
+            RoomID: String(newRoomID),
+            UserGUID: String(newUserGUID),
+            Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          localStorage.setItem("isMeeting", false);
+          let currentMeeting = localStorage.getItem("currentMeetingID");
+          let leaveMeetingData = {
+            FK_MDID: Number(currentMeeting),
+            DateTime: getCurrentDateTimeUTC(),
+          };
+          dispatch(
+            LeaveCurrentMeeting(
+              navigate,
+              t,
+              leaveMeetingData,
+              false,
+              false,
+              setEditorRole,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+        } else {
+          let participantUID = localStorage.getItem("participantUID");
+          let participantRoomIds = localStorage.getItem("participantRoomId");
+          let Data = {
+            RoomID: String(participantRoomIds),
+            UserGUID: String(participantUID),
+            Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          localStorage.setItem("isMeeting", false);
+          let currentMeeting = localStorage.getItem("currentMeetingID");
+          let leaveMeetingData = {
+            FK_MDID: Number(currentMeeting),
+            DateTime: getCurrentDateTimeUTC(),
+          };
+          dispatch(
+            LeaveCurrentMeeting(
+              navigate,
+              t,
+              leaveMeetingData,
+              false,
+              false,
+              setEditorRole,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+        }
+      }
+      // dispatch(LeaveCall(Data, navigate, t));
+      localStorage.setItem("isCaller", false);
+      localStorage.setItem("isMeetingVideo", false);
+      const emptyArray = [];
+      localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isCaller", false);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      dispatch(leaveCallModal(false));
+      dispatch(participantPopup(false));
+      localStorage.setItem("MicOff", true);
+      localStorage.setItem("VidOff", true);
+    } else {
+      localStorage.setItem("isMeeting", false);
+      let currentMeeting = localStorage.getItem("currentMeetingID");
+      let leaveMeetingData = {
+        FK_MDID: Number(currentMeeting),
+        DateTime: getCurrentDateTimeUTC(),
+      };
+      dispatch(
+        LeaveCurrentMeeting(
+          navigate,
+          t,
+          leaveMeetingData,
+          false,
+          false,
+          setEditorRole,
+          setAdvanceMeetingModalID,
+          setViewAdvanceMeetingModal
+        )
+      );
+    }
+  };
   useEffect(() => {
+    // Handler for beforeunload event
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    const handleBeforeUnload = async (event) => {
+      if (isMeeting) {
+        dispatch(cleareAllState());
+        setEditorRole({ status: null, role: null });
+        setAdvanceMeetingModalID(null);
+        localStorage.setItem("isMeeting", false);
+        callBeforeLeave();
+      }
+    };
+
+    // Add event listener for beforeunload
+    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
@@ -425,6 +554,7 @@ const ViewMeetingModal = ({
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
   };
+
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) {
@@ -450,24 +580,6 @@ const ViewMeetingModal = ({
         AgendaVotingModalStartedData !== null &&
         AgendaVotingModalStartedData !== undefined
       ) {
-        console.log(
-          AgendaVotingModalStartedData,
-          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-        );
-        console.log(
-          Number(localStorage.getItem("currentMeetingID")) ===
-            AgendaVotingModalStartedData.meetingID,
-          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-        );
-        console.log(
-          localStorage.getItem("currentMeetingID"),
-          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-        );
-        console.log(
-          AgendaVotingModalStartedData.meetingID,
-          "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-        );
-
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
             AgendaVotingModalStartedData.meetingID &&
