@@ -68,17 +68,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     (state) => state.NotesReducer.createUpdateNotesDataRoomMapData
   );
 
-  console.log(RetrieveDocsNotes, "RetrieveDocsNotesRetrieveDocsNotes");
-
   //Extrating Files Data of Particular Notes
-  const [notesDocsFolderID, setNotesDocsFolderID] = useState(0);
   const [previousIDs, setPreviousIDs] = useState([]);
 
   useEffect(() => {
     try {
       if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
         if (RetrieveDocsNotes.data.length > 0) {
-          setNotesDocsFolderID(RetrieveDocsNotes.folderID);
           let retirveArray = [];
           let PrevIds = [];
           RetrieveDocsNotes.data.forEach((docsData, docsDataindex) => {

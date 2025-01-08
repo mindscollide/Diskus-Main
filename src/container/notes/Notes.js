@@ -223,6 +223,11 @@ const Notes = () => {
         1
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   const handelChangeNotesPagination = async (current, pageSize) => {
