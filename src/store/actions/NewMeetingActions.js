@@ -70,6 +70,7 @@ import {
   ProposeNewMeetingSaveParticipants,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   GetMeetingStatus,
+  ValidateEncryptedStringMeetingRelatedEmailDataRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -9440,7 +9441,157 @@ const AgendaPollVotingStartedAction = (response) => {
   };
 };
 
+// Details Committees Email Routes
+const validateEncryptedStringViewMeetingLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_INIT,
+});
+
+const validateEncryptedStringViewMeetingLink_Success = (response, message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewMeetingLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_FAIL,
+  message,
+});
+const validateEncryptedStringViewMeetingLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewMeetingLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringMeetingRelatedEmailDataRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(meetingApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewMeetingLinkApi(encryptedString, navigate, t)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+        
+            return {
+              response: response.data.responseResult?.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+            )
+          ) {
+            dispatch(validateEncryptedStringViewMeetingLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewMeetingLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewMeetingLink_Fail(t("Something-went-wrong"))
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewMeetingLink_Fail(t("Something-went-wrong"))
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
 export {
+  validateEncryptedStringViewMeetingLinkApi,
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
   getAllMeetingUsersRSVPApi,

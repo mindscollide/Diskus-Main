@@ -450,6 +450,7 @@ const ViewMeeting = (
               try {
                 if (Number(no) === 1) {
                   setViewFlag(true);
+                  localStorage.setItem("typeOfMeeting", "isQuickMeeting")
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (no === 2) {
                   dispatch(GetAllReminders(navigate, t));

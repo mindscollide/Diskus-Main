@@ -1926,7 +1926,13 @@ const RetrieveNotesDocument = {
   RequestMethod: "ServiceManager.ReteriveNotesDocuments",
 };
 
+const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
+};
+
 export {
+  ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,
   ValidateEncryptedStringViewFolderLinkRM,
   ValidateEncryptedStringViewTaskListLinkRM,

@@ -1115,8 +1115,8 @@ const Agenda = ({
             </Col>
           </Row> */}
           <section>
-            {editorRole.role === "Agenda Contributor" &&
-            rows[0].title === "" ? null : (
+            {editorRole.role === "Agenda Contributor" && rows.length > 0 &&
+            rows[0]?.title === "" ? null : (
               <DragDropContext
                 onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
                 {emptyStateRows === true &&
@@ -1224,7 +1224,7 @@ const Agenda = ({
               (editorRole.role === "Agenda Contributor" ||
                 editorRole.role === "Participant")) ||
             (editorRole.role === "Agenda Contributor" &&
-              rows[0].title === "") ? (
+            rows.length > 0 && rows[0].title === "") ? (
               <>
                 <Row>
                   <Col

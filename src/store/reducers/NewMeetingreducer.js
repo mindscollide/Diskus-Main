@@ -159,6 +159,7 @@ const initialState = {
   LeaveMeetingSidebarModal: false,
   getMeetingStatusResponseData: null,
   agendavotingPollStartedData: false,
+  viewMeetingLink: null
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1921,9 +1922,33 @@ const NewMeetingreducer = (state = initialState, action) => {
         getMeeingUsersRSVPDetails: null,
         cancelAgendaSavedModal: false,
         removeUpcomingEventMeeting: null,
+        viewMeetingLink: null
       };
     }
+    case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewMeetingLink: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        viewMeetingLink: null,
+        ResponseMessage: action.message
+      }
+    }
     case actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS: {
+    
       return {
         ...state,
         removeUpcomingEventMeeting: action.response,
