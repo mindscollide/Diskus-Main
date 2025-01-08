@@ -316,7 +316,9 @@ const ModalAddNote = ({ ModalTitle }) => {
         return { PK_FileID: data.pK_FileID };
       }),
     };
-    dispatch(SaveNotesDocumentAPI(navigate, Data, t, setAddNotes));
+    dispatch(
+      SaveNotesDocumentAPI(navigate, Data, t, setAddNotes, false, false, 1)
+    );
   };
 
   useEffect(() => {

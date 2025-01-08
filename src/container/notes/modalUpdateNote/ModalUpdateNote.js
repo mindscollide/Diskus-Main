@@ -18,7 +18,10 @@ import {
 import Form from "react-bootstrap/Form";
 import {
   deleteNotesApi,
+  saveFilesNotesApi,
+  SaveNotesDocumentAPI,
   UpdateNotesAPI,
+  uploadDocumentsNotesApi,
 } from "../../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../../assets/images/Star.svg";
@@ -53,6 +56,49 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [isdescription, setDescription] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //Getting Notes Files Data From Global State
+  const RetrieveDocsNotes = useSelector(
+    (state) => state.NotesReducer.retrieveNotesDocumentData
+  );
+
+  //Extracting the Folder ID from CreateUpdateNotes DataRoom Map
+  //GlobalState For Folder ID Against the Notes Created
+  const NotesReducerFolderID = useSelector(
+    (state) => state.NotesReducer.createUpdateNotesDataRoomMapData
+  );
+
+  console.log(RetrieveDocsNotes, "RetrieveDocsNotesRetrieveDocsNotes");
+
+  //Extrating Files Data of Particular Notes
+  const [notesDocsFolderID, setNotesDocsFolderID] = useState(0);
+  const [previousIDs, setPreviousIDs] = useState([]);
+
+  useEffect(() => {
+    try {
+      if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
+        if (RetrieveDocsNotes.data.length > 0) {
+          setNotesDocsFolderID(RetrieveDocsNotes.folderID);
+          let retirveArray = [];
+          let PrevIds = [];
+          RetrieveDocsNotes.data.forEach((docsData, docsDataindex) => {
+            retirveArray.push({
+              pK_FileID: docsData.pK_FileID,
+              DisplayAttachmentName: docsData.displayFileName,
+              fk_UserID: docsData.fK_UserID,
+            });
+
+            PrevIds.push({
+              pK_FileID: docsData.pK_FileID,
+              DisplayAttachmentName: docsData.displayFileName,
+            });
+          });
+          setAttachments(retirveArray);
+          setPreviousIDs(PrevIds);
+        }
+      }
+    } catch (error) {}
+  }, [RetrieveDocsNotes]);
 
   const [addNoteFields, setAddNoteFields] = useState({
     Title: {
@@ -125,14 +171,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     TasksAttachments: [],
   });
 
+  //For Deleting the particular File
   const deleteFilefromAttachments = (data, index) => {
     console.log(data, "removeFilefromAttachments");
     console.log(index, "removeFilefromAttachments");
 
     let searchIndex = [...tasksAttachments.TasksAttachments];
     let removeFilefromAttachments = attachments.findIndex(
-      (attacData, index) =>
-        data.DisplayAttachmentName === attacData.DisplayAttachmentName
+      (attacData, index) => data.displayFileName === attacData.displayFileName
     );
     console.log(removeFilefromAttachments, "removeFilefromAttachments");
     let copyattachments = [...attachments];
@@ -404,90 +450,27 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
-        if (Object.keys(fileForSend).length > 0) {
-          let newfiles = [...tasksAttachments.TasksAttachments];
-          console.log(newfiles, "DataDataData");
-          const uploadPromises = fileForSend.map((newData, index) => {
-            // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfiles, 10));
-          });
-
-          // Wait for all uploadPromises to resolve
-          await Promise.all(uploadPromises);
-          setErrorBar(false);
-          let createrID = localStorage.getItem("userID");
-          let OrganizationID = localStorage.getItem("organizationID");
-          let notesAttachment = [];
-          newfiles.forEach((data) => {
-            notesAttachment.push({
-              DisplayAttachmentName: data.DisplayAttachmentName,
-              OriginalAttachmentName: data.OriginalAttachmentName,
-              FK_NotesID:
-                data.FK_NotesID !== null && data.FK_NotesID !== undefined
-                  ? data.FK_NotesID
-                  : 0,
-            });
-          });
-          let Data = {
-            PK_NotesID: addNoteFields.PK_NotesID,
-            Title: addNoteFields.Title.value,
-            Description: addNoteFields.Description.value,
-            isStarred: isStarred,
-            FK_UserID: JSON.parse(createrID),
-            FK_OrganizationID: JSON.parse(OrganizationID),
-            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-            NotesAttachments: notesAttachment,
-          };
-          dispatch(
-            UpdateNotesAPI(
-              navigate,
-              Data,
-              t,
-              setIsUpdateNote,
-              setIsDeleteNote,
-              setUpdateNotes
-            )
-          );
-          dispatch(uploaddocumentloader(false));
-        } else {
-          setErrorBar(false);
-          let createrID = localStorage.getItem("userID");
-          let OrganizationID = localStorage.getItem("organizationID");
-          let notesAttachment = [];
-          let copData = [...tasksAttachments.TasksAttachments];
-          copData.forEach((data, index) => {
-            notesAttachment.push({
-              DisplayAttachmentName: data.DisplayAttachmentName,
-              OriginalAttachmentName: data.OriginalAttachmentName,
-              FK_NotesID:
-                data.FK_NotesID !== null && data.FK_NotesID !== undefined
-                  ? data.FK_NotesID
-                  : 0,
-              attachmentID: Number(data.pK_NAID),
-            });
-          });
-          let Data = {
-            PK_NotesID: addNoteFields.PK_NotesID,
-            Title: addNoteFields.Title.value,
-            Description: addNoteFields.Description.value,
-            isStarred: isStarred,
-            FK_UserID: JSON.parse(createrID),
-            FK_OrganizationID: JSON.parse(OrganizationID),
-            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-            NotesAttachments: notesAttachment,
-          };
-          console.log(Data, "DataDataData");
-          dispatch(
-            UpdateNotesAPI(
-              navigate,
-              Data,
-              t,
-              setIsUpdateNote,
-              setIsDeleteNote,
-              setUpdateNotes
-            )
-          );
-        }
+        let createrID = localStorage.getItem("userID");
+        let OrganizationID = localStorage.getItem("organizationID");
+        let Data = {
+          PK_NotesID: addNoteFields.PK_NotesID,
+          Title: addNoteFields.Title.value,
+          Description: addNoteFields.Description.value,
+          isStarred: isStarred,
+          FK_UserID: JSON.parse(createrID),
+          FK_OrganizationID: JSON.parse(OrganizationID),
+          FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+        };
+        dispatch(
+          UpdateNotesAPI(
+            navigate,
+            Data,
+            t,
+            setIsUpdateNote,
+            setIsDeleteNote,
+            setUpdateNotes
+          )
+        );
       } else {
         setErrorBar(true);
         showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
@@ -496,6 +479,58 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       console.log(error, "error");
     }
   };
+
+  //Updating the Notes Files
+  const NotesDocumentCallUpload = async (folderID) => {
+    let newFolder = [...previousIDs];
+    let newfile = [];
+    if (fileForSend.length > 0) {
+      console.log(fileForSend, "fileForSendfileForSend");
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsNotesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            // newFolder,
+            newfile
+          )
+        );
+      });
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      await dispatch(
+        saveFilesNotesApi(navigate, t, newfile, folderID, newFolder)
+      );
+    }
+
+    let Data = {
+      NoteID: Number(addNoteFields.PK_NotesID),
+      UpdateFileList: newFolder.map((data, index) => {
+        return { PK_FileID: data.pK_FileID };
+      }),
+    };
+    dispatch(
+      SaveNotesDocumentAPI(
+        navigate,
+        Data,
+        t,
+        false,
+        setCloseConfirmationBox,
+        setUpdateNotes,
+        2
+      )
+    );
+  };
+  console.log(NotesReducerFolderID, "NotesReducerFolderID");
+  useEffect(() => {
+    if (NotesReducerFolderID) {
+      let folderIDCreated = NotesReducerFolderID;
+      NotesDocumentCallUpload(folderIDCreated);
+    }
+  }, [NotesReducerFolderID]);
 
   const handleClickCancelDeleteModal = () => {
     setIsUpdateNote(true);
@@ -555,27 +590,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
                       </p>
-                      {/* {isStarred ? (
-                        <Tooltip placement="topLeft" title={t("Starred")}>
-                          <img
-                            draggable="false"
-                            src={hollowstar}
-                            className={styles["star-updatenote"]}
-                            alt=""
-                            onClick={() => setIsStarrted(!isStarred)}
-                          />
-                        </Tooltip>
-                      ) : (
-                        <Tooltip placement="topLeft" title={t("unstarred")}>
-                          <img
-                            draggable="false"
-                            className={styles["star-updatenote"]}
-                            src={StarIcon}
-                            alt=""
-                            onClick={() => setIsStarrted(!isStarred)}
-                          />
-                        </Tooltip>
-                      )} */}
                     </Col>
                   </Row>
 

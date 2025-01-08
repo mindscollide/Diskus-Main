@@ -268,27 +268,19 @@ const UpdateNotesAPI = (
                   t("Notes-updated-successfully")
                 )
               );
-              dispatch(GetNotes(navigate, searchData, t));
-              setIsUpdateNote(false);
-              setUpdateNotes(false);
-              setIsDeleteNote(false);
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Notes_NotesServiceManager_UpdateNotes_02".toLowerCase()
-                )
-            ) {
+              //Create Update Notes Data Room Map
+              let CreateUpdateDataRoomData = {
+                NotesID: Number(response.data.responseResult.notesID),
+                NoteTitle: response.data.responseResult.notesTitle,
+                IsUpdateFlow: true,
+              };
               dispatch(
-                UpdateNotes_Success(
-                  response.data.responseResult.getNotes,
-                  t("Notes-updated-successfully-with-attachments")
+                CreateUpdateNotesDataRoomMapAPI(
+                  navigate,
+                  CreateUpdateDataRoomData,
+                  t
                 )
               );
-              dispatch(GetNotes(navigate, searchData, t));
-              setIsUpdateNote(false);
-              setUpdateNotes(false);
-              setIsDeleteNote(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -726,7 +718,15 @@ const SaveNotesDocumentFail = (message) => {
   };
 };
 
-const SaveNotesDocumentAPI = (navigate, Data, t, setAddNotes) => {
+const SaveNotesDocumentAPI = (
+  navigate,
+  Data,
+  t,
+  setAddNotes,
+  setCloseConfirmationBox,
+  setUpdateNotes,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let UserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -746,7 +746,17 @@ const SaveNotesDocumentAPI = (navigate, Data, t, setAddNotes) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveNotesDocumentAPI(navigate, Data, t, setAddNotes));
+          dispatch(
+            SaveNotesDocumentAPI(
+              navigate,
+              Data,
+              t,
+              setAddNotes,
+              setCloseConfirmationBox,
+              setUpdateNotes,
+              flag
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -762,26 +772,52 @@ const SaveNotesDocumentAPI = (navigate, Data, t, setAddNotes) => {
                   t("List-updated-successfully")
                 )
               );
-              setAddNotes(false);
-              localStorage.removeItem("notesID");
-              let Data = {
-                UserID: parseInt(UserID),
-                OrganizationID: JSON.parse(OrganizationID),
-                Title: "",
-                isDocument: false,
-                isSpreadSheet: false,
-                isPresentation: false,
-                isForms: false,
-                isImages: false,
-                isPDF: false,
-                isVideos: false,
-                isAudios: false,
-                isSites: false,
-                CreatedDate: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              dispatch(GetNotes(navigate, Data, t));
+              dispatch(CreateUpadateNotesDataRoomMapFail(""));
+              if (flag === 1) {
+                setAddNotes(false);
+                localStorage.removeItem("notesID");
+                let Data = {
+                  UserID: parseInt(UserID),
+                  OrganizationID: JSON.parse(OrganizationID),
+                  Title: "",
+                  isDocument: false,
+                  isSpreadSheet: false,
+                  isPresentation: false,
+                  isForms: false,
+                  isImages: false,
+                  isPDF: false,
+                  isVideos: false,
+                  isAudios: false,
+                  isSites: false,
+                  CreatedDate: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetNotes(navigate, Data, t));
+              } else if (flag === 2) {
+                console.log("Coming");
+                let Data = {
+                  UserID: parseInt(UserID),
+                  OrganizationID: JSON.parse(OrganizationID),
+                  Title: "",
+                  isDocument: false,
+                  isSpreadSheet: false,
+                  isPresentation: false,
+                  isForms: false,
+                  isImages: false,
+                  isPDF: false,
+                  isVideos: false,
+                  isAudios: false,
+                  isSites: false,
+                  CreatedDate: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetNotes(navigate, Data, t));
+                (await isFunction(setCloseConfirmationBox)) &&
+                  setCloseConfirmationBox(false);
+                (await isFunction(setUpdateNotes)) && setUpdateNotes(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

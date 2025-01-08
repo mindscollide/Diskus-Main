@@ -200,9 +200,14 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        2
+        4
       )
     );
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
 
   //for open View User Notes Modal
