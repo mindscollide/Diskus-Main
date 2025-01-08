@@ -48,6 +48,7 @@ const Notes = () => {
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NotesReducer } = useSelector((state) => state);
+
   const { addNotes, setAddNotes } = useNotesContext();
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
