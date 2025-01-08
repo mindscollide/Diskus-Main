@@ -23,11 +23,7 @@ import { useMeetingContext } from "../../../context/MeetingContext";
 import { getCurrentDateTimeMarkAsReadNotification } from "../../../commen/functions/time_formatter.js";
 import { DiskusWebNotificationMarkAsReadAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
-import {
-  MinutesWorkFlowActorStatusNotificationAPI,
-  pendingApprovalPage,
-  reviewMinutesPage,
-} from "../../../store/actions/Minutes_action.js";
+import { MinutesWorkFlowActorStatusNotificationAPI } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
 import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
 import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";

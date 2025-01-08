@@ -661,13 +661,17 @@ const AgendaViewer = ({
         dispatch(maxParticipantVideoCallPanel(true));
       } else {
         dispatch(videoIconOrButtonState(true));
-        let data = {
-          MeetingId: Number(currentMeeting),
-          VideoCallURL: String(currentMeetingVideoURL),
-          IsMuted: false,
-          HideVideo: false,
-        };
-        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        if (!enableDisableVideoState) {
+          let data = {
+            MeetingId: Number(currentMeeting),
+            VideoCallURL: String(currentMeetingVideoURL),
+            IsMuted: false,
+            HideVideo: false,
+          };
+          dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+        } else {
+          console.log("No Need To Hit");
+        }
       }
     }
   };
