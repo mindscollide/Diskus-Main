@@ -848,6 +848,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PublishedMeetings: true,
     };
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewFlag(false)
   };
 
   const handleClickEndMeeting = useCallback(async () => {

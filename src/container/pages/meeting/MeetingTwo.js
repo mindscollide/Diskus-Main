@@ -498,41 +498,145 @@ const NewMeeting = () => {
         );
         console.log(getResponse, "viewFol_action");
 
-        // if (getResponse.isExecuted === true && getResponse.responseCode) {
-        //   if (getResponse.response.isQuickMeeting === true) {
-        //     let requestDataForMeetingDetails = {
-        //       MeetingID: Number(getResponse.response.meetingID),
-        //     };
-        //     await dispatch(
-        //       ViewMeeting(
-        //         navigate,
-        //         requestDataForMeetingDetails,
-        //         t,
-        //         setViewFlag,
-        //         setEditFlag,
-        //         "",
-        //         1
-        //       )
-        //     );
-        //   } else {
-        //     await setAdvanceMeetingModalID(
-        //       Number(getResponse.response.meetingID)
-        //     );
-        //     await setViewAdvanceMeetingModalUnpublish(true);
-        //     await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
-        //     setEditorRole({
-        //       ...editorRole,
-        //       isPrimaryOrganizer: false,
-        //       role:
-        //         Number(getResponse.response.attendeeId) === 2
-        //           ? "Participant"
-        //           : Number(getResponse.response.attendeeId) === 4
-        //           ? "Agenda Contributor"
-        //           : "Organizer",
-        //       status: Number(getResponse.response.meetingStatusId),
-        //     });
-        //   }
-        // }
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          const {
+            attendeeId,
+            isQuickMeeting,
+            meetingID,
+            meetingStatusId,
+            organizationID,
+            userID,
+            isChat,
+            talkGroupId,
+            isVideo,
+            videoCallUrl,
+          } = getResponse.response;
+          console.log(
+            {
+              attendeeId,
+              isQuickMeeting,
+              meetingID,
+              meetingStatusId,
+              organizationID,
+              userID,
+              isChat,
+              talkGroupId,
+              isVideo,
+              videoCallUrl,
+            },
+            "getResponsegetResponse"
+          );
+          if (meetingStatusId === "10" || meetingStatusId === 10) {
+            if (isQuickMeeting) {
+              let joinMeetingData = {
+                VideoCallURL: videoCallUrl,
+                FK_MDID: meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+
+              dispatch(
+                JoinCurrentMeeting(
+                  isQuickMeeting,
+                  navigate,
+                  t,
+                  joinMeetingData,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
+            } else {
+              let joinMeetingData = {
+                VideoCallURL: videoCallUrl,
+                FK_MDID: meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+
+              dispatch(
+                JoinCurrentMeeting(
+                  isQuickMeeting,
+                  navigate,
+                  t,
+                  joinMeetingData,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
+              setEditorRole({
+                status: String(meetingStatusId),
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              localStorage.setItem("videoCallURL", videoCallUrl);
+
+              dispatch(viewMeetingFlag(true));
+              localStorage.setItem("isMinutePublished", false);
+
+              // dispatch(
+              //   GetAllUserChats(
+              //     navigate,
+              //     parseInt(currentUserId),
+              //     parseInt(currentOrganizationId),
+              //     t
+              //   )
+              // );
+            }
+          } else {
+            if (isQuickMeeting) {
+              let Data = { MeetingID: meetingID };
+              await dispatch(
+                ViewMeeting(
+                  navigate,
+                  Data,
+                  t,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1
+                )
+              );
+              // setViewFlag(true);
+            } else {
+              setEditorRole({
+                status: String(meetingStatusId),
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              setAdvanceMeetingModalID(meetingID);
+              setViewAdvanceMeetingModal(true);
+              dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              dispatch(scheduleMeetingPageFlag(false));
+              localStorage.setItem("currentMeetingID", meetingID);
+            }
+          }
+        }
         localStorage.removeItem("viewMeetingLink");
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
@@ -701,15 +805,6 @@ const NewMeeting = () => {
                 setViewAdvanceMeetingModal
               )
             );
-
-            // dispatch(
-            //   GetAllUserChats(
-            //     navigate,
-            //     parseInt(currentUserId),
-            //     parseInt(currentOrganizationId),
-            //     t
-            //   )
-            // );
           } else {
             setAdvanceMeetingModalID(meetingID);
             setViewAdvanceMeetingModal(true);
