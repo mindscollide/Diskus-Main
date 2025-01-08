@@ -144,7 +144,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.CREATE_UPDATE_NOTES_DATAROOM_MAP_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         createUpdateNotesDataRoomMapData: action.response,
         ResponseMessage: action.message,
       };
@@ -224,7 +224,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.SAVE_FILES_NOTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         saveFilesNotes: action.response,
         ResponseMessage: action.message,
       };
