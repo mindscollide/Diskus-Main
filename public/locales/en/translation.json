@@ -2385,5 +2385,7 @@
   "Please-confirm-your-password-before-deleting-the-meeting": "Please confirm your password before deleting the meeting",
   "Cannot-add-option-with-same-name": "Cannot add option with same name",
   "Voting-options-should-be-2-or-more-than-2": "Voting options should be 2 or more than 2",
-  "Unmute-all": "Unmute all"
+  "Unmute-all": "Unmute all",
+  "None-of-above": "None of the above",
+  "Stop-sharing": "Stop Sharing"
 }
