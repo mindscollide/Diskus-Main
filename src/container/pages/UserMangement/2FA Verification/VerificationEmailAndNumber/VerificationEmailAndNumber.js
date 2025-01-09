@@ -54,7 +54,6 @@ const VerificationEmailAndNumber = () => {
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
-  const [key, setKey] = useState(1);
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
@@ -62,14 +61,6 @@ const VerificationEmailAndNumber = () => {
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase());
   };
-
-  useEffect(() => {
-    // if value was cleared, set key to re-render the element
-    if (otpCode.length === 0) {
-      setKey(key + 1);
-      return;
-    }
-  }, [otpCode]);
 
   // Languages
   const languages = [
@@ -230,7 +221,7 @@ const VerificationEmailAndNumber = () => {
   return (
     <div>
       <Container fluid className={styles["VerifyCodeOneOverflow"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -240,33 +231,30 @@ const VerificationEmailAndNumber = () => {
             lg={5}
             md={5}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span className={styles["OTP_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["EmailVerifyOTPbox"]}
-              >
+                className={styles["EmailVerifyOTPbox"]}>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mb-3"
-                  >
+                    className='d-flex justify-content-center mb-3'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={DiskusLogo}
-                      alt="diskus_logo"
+                      alt='diskus_logo'
                       width={220}
                     />
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col className="mt-4">
+                  <Col className='mt-4'>
                     <span className={styles["TwoFa_heading"]}>
                       {t("2fa-verification")}
                     </span>
@@ -297,59 +285,55 @@ const VerificationEmailAndNumber = () => {
                     )}
                   </Col>
                 </Row>
-                <Row className="mt-4">
-                  <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
+                <Row className='mt-4'>
+                  <Col sm={12} md={12} lg={12} className='Enter-Code-Label'>
                     <VerificationInputField
                       label={t("Enter-code")}
                       fields={6}
-                      applyClass="OTPInput"
+                      applyClass='OTPInput'
                       change={handleChange}
-                      key={key}
                       value={otpCode}
                     />
                   </Col>
                 </Row>
                 <Row>
-                  <Col className="text-left d-flex justify-content-start align-items-center gap-2">
+                  <Col className='text-left d-flex justify-content-start align-items-center gap-2'>
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
                       text={t("Resend-code-in")}
                       onClick={resendOtpHandleClick}
                     />
-                    <span className="OTPCounter">
+                    <span className='OTPCounter'>
                       0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                     </span>
                   </Col>
                 </Row>
 
-                <Row className=" mt-5 d-flex justify-content-center">
+                <Row className=' mt-5 d-flex justify-content-center'>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       text={t("Verify")}
                       disableBtn={otpCode.length !== 6 ? true : false}
                       className={styles["subscribNow_button_EmailVerify"]}
                       onClick={handleSubmit}
-                      type="submit"
+                      type='submit'
                     />
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["Go_back_link_VerifyCodeOne"]}
-                  >
+                    className={styles["Go_back_link_VerifyCodeOne"]}>
                     <span
-                      className="d-flex justify-content-center cursor-pointer"
-                      onClick={handleGoBackButton}
-                    >
+                      className='d-flex justify-content-center cursor-pointer'
+                      onClick={handleGoBackButton}>
                       {" "}
                       {t("Go-back")}
                     </span>
@@ -358,21 +342,21 @@ const VerificationEmailAndNumber = () => {
               </Col>
             </span>
           </Col>
-          <Col md={7} lg={7} sm={12} className="p-0">
+          <Col md={7} lg={7} sm={12} className='p-0'>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["Auth_Icon"]}
                 />
               </Col>
