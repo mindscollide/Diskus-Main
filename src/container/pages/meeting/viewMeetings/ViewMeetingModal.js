@@ -19,6 +19,7 @@ import {
   AgendaPollVotingStartedAction,
   LeaveCurrentMeeting,
   LeaveMeetingVideo,
+  emailRouteID,
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
@@ -82,6 +83,7 @@ const ViewMeetingModal = ({
     (editorRole.role === "Organizer" ||
       editorRole.role === "Participant" ||
       editorRole.role === "Agenda Contributor") &&
+      routeID !== 5 &&
       Number(editorRole.status) === 10
       ? true
       : false
@@ -111,9 +113,16 @@ const ViewMeetingModal = ({
   const leaveMeetingOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag
   );
-
+  console.log(
+    agendaContributors,
+    meetingDetails,
+    organizers,
+    agenda,
+    minutes,
+    "routeIDrouteID"
+  );
   useEffect(() => {
-    if (routeID !== null) {
+    if (routeID !== null && routeID !== 0) {
       if (Number(routeID) === 1) {
         // Agenda Contributor Tab
         setAgendaContributors(true);
@@ -126,9 +135,14 @@ const ViewMeetingModal = ({
         setmeetingDetails(false);
       } else if (Number(routeID) === 5) {
         setmeetingDetails(false);
+        setAgenda(false);
+        setAgendaContributors(false);
         setMinutes(true);
       }
     }
+    return () => {
+      dispatch(emailRouteID(0));
+    };
   }, [routeID]);
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -527,6 +541,8 @@ const ViewMeetingModal = ({
   }, [meetingIdReducer.MeetingStatusEnded]);
 
   const leaveMeeting = async (flag, flag2) => {
+    console.log(flag, flag2, "mqtt mqmqmqmqmqmq");
+
     let currentMeeting = localStorage.getItem("currentMeetingID");
     let leaveMeetingData = {
       FK_MDID: Number(currentMeeting),
@@ -544,12 +560,12 @@ const ViewMeetingModal = ({
         setViewAdvanceMeetingModal
       )
     );
-    if (flag) {
+    if (flag === true) {
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnlogout(false));
       dispatch(userLogOutApiFunc(navigate, t));
     }
-    if (flag2) {
+    if (flag2 === true) {
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
@@ -692,8 +708,8 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {Number(editorRole.status) === 9 &&
-                    isMinutePublished === "true" ? (
+                    {isMinutePublished === "true" &&
+                    Number(editorRole.status) === 9 ? (
                       <Button
                         text={t("Minutes")}
                         className={

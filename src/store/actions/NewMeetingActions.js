@@ -83,6 +83,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  participantVideoButtonState,
   participantVideoNavigationScreen,
   setAudioControlForParticipant,
   setAudioControlHost,
@@ -8170,6 +8171,7 @@ const JoinCurrentMeeting = (
             ) {
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
+              localStorage.setItem("videoCallURL", Data.VideoCallURL)
               localStorage.setItem(
                 "AdvanceMeetingOpen",
                 isQuickMeeting ? false : true
@@ -8291,7 +8293,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-
+  let currentView = localStorage.getItem("MeetingCurrentView")
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8382,7 +8384,7 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: true,
+                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8406,7 +8408,7 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
+                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -9054,7 +9056,14 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              dispatch(videoIconOrButtonState(false));
+              let meetingFlag = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+              if (meetingFlag?.isHost) {
+                dispatch(videoIconOrButtonState(false));
+              } else {
+                dispatch(participantVideoButtonState(false));
+              }
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,

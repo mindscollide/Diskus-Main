@@ -43,6 +43,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [decisionId, setDecisionId] = useState(0);
   const options = {
     backgroundColor: "transparent",
+    height: 320,
     border: "1px solid #ffffff",
     hAxis: {
       viewWindow: {
@@ -515,7 +516,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-4">
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}

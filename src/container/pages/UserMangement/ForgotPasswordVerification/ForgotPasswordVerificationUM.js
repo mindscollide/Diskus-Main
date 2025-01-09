@@ -25,7 +25,7 @@ const ForgotPasswordVerificationUM = () => {
 
   const { t } = useTranslation();
 
-  const [key, setKey] = useState(1);
+  // const [key, setKey] = useState(1);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -108,13 +108,13 @@ const ForgotPasswordVerificationUM = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // if value was cleared, set key to re-render the element
-    if (verifyOTP.length === 0) {
-      setKey(key + 1);
-      return;
-    }
-  }, [verifyOTP]);
+  // useEffect(() => {
+  //   // if value was cleared, set key to re-render the element
+  //   if (verifyOTP.length === 0) {
+  //     setKey(key + 1);
+  //     return;
+  //   }
+  // }, [verifyOTP]);
 
   //onChange For OTP
   const changeHandler = (e) => {
@@ -213,7 +213,6 @@ const ForgotPasswordVerificationUM = () => {
                       <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
-                        key={key}
                         value={verifyOTP}
                         change={changeHandler}
                       />
