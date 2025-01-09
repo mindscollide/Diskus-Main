@@ -114,7 +114,7 @@ const ProposedNewMeeting = ({
       Type: "",
     },
   });
-  console.log(isProposedMeetEdit, "isProposedMeetEditisProposedMeetEdit");
+
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: isProposedMeetEdit
@@ -135,7 +135,7 @@ const ProposedNewMeeting = ({
     try {
       if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
         const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
-        console.log(EditFlowData, "EditFlowData");
+
         if (isProposedMeetEdit) {
           setEditmeetingTypeDetails({
             MeetingType: {
@@ -192,7 +192,6 @@ const ProposedNewMeeting = ({
     date: getCurrentDateforMeeting.DateGMT,
   });
 
-  console.log(sendResponseBy.date, "sendResponseBy");
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
@@ -201,8 +200,6 @@ const ProposedNewMeeting = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-
-  console.log(rows[0].dateSelect, "dateSelectdateSelect");
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
@@ -234,10 +231,8 @@ const ProposedNewMeeting = ({
       ) {
         let DatesDataEditFlow =
           getAllProposedDatesEditFlow.meetingProposedDates;
-        console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
 
         let dateArray = DatesDataEditFlow.map((datedata) => {
-          console.log(datedata, "datedata");
           if (
             datedata.proposedDate === "10000101" &&
             datedata.endTime === "000000" &&
@@ -631,7 +626,7 @@ const ProposedNewMeeting = ({
     ? firstSelectedDate
     : today;
   const maxSelectableDate = firstSelectedDate;
-  console.log(sendResponseBy.date, "setProposedMeetingDateApiFunc");
+
   //Send Response By Handler
   const SendResponseHndler = (date) => {
     setSendResponseBy({
@@ -659,7 +654,11 @@ const ProposedNewMeeting = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
-
+  console.log(sendResponseBy.date, "handleProposedButtonProposedMeeting");
+  console.log(
+    getCurrentDateforMeeting.DateGMT,
+    "handleProposedButtonProposedMeeting"
+  );
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
     if (isProposedMeetEdit) {
@@ -731,8 +730,7 @@ const ProposedNewMeeting = ({
             MeetingStatusID: 11,
           },
         };
-        console.log(data, "datadatadata");
-        console.log(sortedDates, "datadatadata");
+
         dispatch(
           SaveMeetingDetialsNewApiFunction(
             navigate,
@@ -832,8 +830,6 @@ const ProposedNewMeeting = ({
             MeetingStatusID: 11,
           },
         };
-        console.log(data, "datadatadata");
-        console.log(sortedDates, "datadatadata");
 
         dispatch(
           SaveMeetingDetialsNewApiFunction(
@@ -938,7 +934,6 @@ const ProposedNewMeeting = ({
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     let tem = [...membersParticipants];
 
@@ -1203,10 +1198,6 @@ const ProposedNewMeeting = ({
                       <Row className="mt-2">
                         {membersParticipants.length > 0
                           ? membersParticipants.map((participant, index) => {
-                              console.log(
-                                participant,
-                                "participantparticipant"
-                              );
                               return (
                                 <>
                                   <Col
@@ -1316,7 +1307,6 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
-                          console.log(data, "indexindexindex");
                           return (
                             <>
                               <Row key={index}>

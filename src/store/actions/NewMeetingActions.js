@@ -1579,7 +1579,7 @@ const saveParcipantsProposeMeetingAPI = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
-                console.log(Data, "setProposedMeetingDateApiFunc");
+
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
