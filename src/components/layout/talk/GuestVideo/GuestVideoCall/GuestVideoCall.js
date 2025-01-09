@@ -220,7 +220,7 @@ const GuestVideoCall = () => {
           );
         } else if (
           data.payload.message.toLowerCase() ===
-          "VIDEO_PARTICIPANT_LEFT".toLowerCase()
+          "MEETING_VIDEO_END_FOR_GUEST".toLowerCase()
         ) {
           let guestName = sessionStorage.getItem("guestName");
           let roomId = sessionStorage.getItem("roomId");

@@ -8171,7 +8171,7 @@ const JoinCurrentMeeting = (
             ) {
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
-              localStorage.setItem("videoCallURL", Data.VideoCallURL)
+              localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
                 isQuickMeeting ? false : true
@@ -9057,12 +9057,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 )
             ) {
               let meetingFlag = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("isMeetingVideoHostCheck")
               );
-              if (meetingFlag?.isHost) {
-                dispatch(videoIconOrButtonState(false));
+              if (meetingFlag) {
+                await dispatch(videoIconOrButtonState(false));
               } else {
-                dispatch(participantVideoButtonState(false));
+                await dispatch(participantVideoButtonState(false));
               }
               const meetingHost = {
                 isHost: false,
@@ -9491,7 +9491,11 @@ const validateEncryptedStringViewMeetingLinkApi = (
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         return dispatch(
-          validateEncryptedStringViewMeetingLinkApi(encryptedString, navigate, t)
+          validateEncryptedStringViewMeetingLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
         );
       }
 
@@ -9512,7 +9516,7 @@ const validateEncryptedStringViewMeetingLinkApi = (
                 t("Successfully")
               )
             );
-        
+
             return {
               response: response.data.responseResult?.data,
               responseCode: 1,

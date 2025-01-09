@@ -665,6 +665,7 @@ const AgendaViewer = ({
       sessionStorage.getItem("NonMeetingVideoCall")
     );
     console.log(nonMeetingCheck, "nonMeetingChecknonMeetingCheck");
+
     if (nonMeetingCheck) {
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
