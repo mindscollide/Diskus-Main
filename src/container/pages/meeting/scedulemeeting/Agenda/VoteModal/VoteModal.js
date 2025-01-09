@@ -282,45 +282,55 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   };
 
   useEffect(() => {
-    let dataForAllOrganizers = { MeetingID: currentMeeting };
-    let dataForAllMeetingParticipants = {
-      MeetingID: currentMeeting,
+    const fetchData = async () => {
+      try {
+        let dataForAllOrganizers = { MeetingID: currentMeeting };
+        let dataForAllMeetingParticipants = { MeetingID: currentMeeting };
+
+        await dispatch(
+          GetAllSavedparticipantsAPI(
+            dataForAllMeetingParticipants,
+            navigate,
+            t,
+            false
+          )
+        );
+
+        await dispatch(
+          GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t)
+        );
+
+        await dispatch(GetAllVotingResultDisplay(navigate, t));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-    dispatch(
-      GetAllSavedparticipantsAPI(
-        dataForAllMeetingParticipants,
-        navigate,
-        t,
-        false
-      )
-    );
 
-    dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
-    dispatch(GetAllVotingResultDisplay(navigate, t));
-  }, []);
+    fetchData();
+  }, []); // Add dependencies for re-execution if needed
 
-  useEffect(() => {
-    if (
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
-    ) {
-      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
-    } else {
-      setCurrentAgendaDetails([]);
-    }
-  }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
+  // useEffect(() => {
+  //   if (
+  //     MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
+  //     MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
+  //     MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
+  //   ) {
+  //     setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
+  //   } else {
+  //     setCurrentAgendaDetails([]);
+  //   }
+  // }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
-  useEffect(() => {
-    if (currentAgendaDetails.length !== 0) {
-      setAgendaDetails({
-        ...agendaDetails,
-        agendaTitle: currentAgendaDetails.title,
-        agendaId: currentAgendaDetails.iD,
-        agendaVotingID: currentAgendaDetails.agendaVotingID,
-      });
-    }
-  }, [currentAgendaDetails]);
+  // useEffect(() => {
+  //   if (currentAgendaDetails.length !== 0) {
+  //     setAgendaDetails({
+  //       ...agendaDetails,
+  //       agendaTitle: currentAgendaDetails.title,
+  //       agendaId: currentAgendaDetails.iD,
+  //       agendaVotingID: currentAgendaDetails.agendaVotingID,
+  //     });
+  //   }
+  // }, [currentAgendaDetails]);
 
   useEffect(() => {
     if (currentAgendaVotingID === 0) {
@@ -431,89 +441,89 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
-      MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
-      MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0 &&
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
-      MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
-    ) {
-      console.log(
-        "matchedOrganizer",
-        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers,
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
-          .userID
-      );
-      const matchedOrganizer =
-        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers.find(
-          (obj) =>
-            obj.userID ===
-            MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-              .agendaVotingDetails.userID
-        );
-      console.log("matchedOrganizer", matchedOrganizer);
-      if (matchedOrganizer !== undefined) {
-        setAgendaDetails({
-          ...agendaDetails,
-          organizerUserID: matchedOrganizer.userID,
-          organizerUserName: (
-            <>
-              <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
-                  <img
-                    src={`data:image/jpeg;base64,${matchedOrganizer.userProfilePicture.displayProfilePictureName}`}
-                    width='17px'
-                    height='17px'
-                    className={styles["Image_profile"]}
-                    alt=''
-                  />
-                  <span className={styles["Participant_names"]}>
-                    {matchedOrganizer.userName}
-                  </span>
-                </Col>
-              </Row>
-            </>
-          ),
-        });
-      }
-      console.log("Going in the condition");
-      let agendaVotingDetails =
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails;
-      console.log("Going in the condition", agendaVotingDetails);
-      setAgendaDetails({
-        ...agendaDetails,
-        userID: agendaVotingDetails.userID,
-        voteQuestion: agendaVotingDetails.voteQuestion,
-        agendaTitle: currentAgendaDetails.title,
-        votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
-        votingResultDisplayID:
-          agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
-        agendaId: currentAgendaDetails.iD,
-        agendaVotingID: agendaVotingDetails.agendaVotingID,
-        isvotingClosed: false,
-      });
-      let votingAnswerData = agendaVotingDetails.votingAnswers;
-      console.log(votingAnswerData, "votingAnswerDatavotingAnswerData");
-      if (Array.isArray(votingAnswerData) && votingAnswerData.length > 0) {
-        let newAnswers = [];
-        votingAnswerData.forEach((item) => {
-          newAnswers.push({
-            votingAnswer: item.votingAnswer,
-            votingAnswerID: item.votingAnswerID,
-            agendaID: item.agendaID,
-            isHidden: item.votingAnswer === "Pending" ? true : false,
-          });
-        });
+  // useEffect(() => {
+  //   if (
+  //     MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
+  //     MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
+  //     MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0 &&
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+  //     MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+  //   ) {
+  //     console.log(
+  //       "matchedOrganizer",
+  //       MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers,
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
+  //         .userID
+  //     );
+  //     const matchedOrganizer =
+  //       MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers.find(
+  //         (obj) =>
+  //           obj.userID ===
+  //           MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+  //             .agendaVotingDetails.userID
+  //       );
+  //     console.log("matchedOrganizer", matchedOrganizer);
+  //     if (matchedOrganizer !== undefined) {
+  //       setAgendaDetails({
+  //         ...agendaDetails,
+  //         organizerUserID: matchedOrganizer.userID,
+  //         organizerUserName: (
+  //           <>
+  //             <Row>
+  //               <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+  //                 <img
+  //                   src={`data:image/jpeg;base64,${matchedOrganizer.userProfilePicture.displayProfilePictureName}`}
+  //                   width='17px'
+  //                   height='17px'
+  //                   className={styles["Image_profile"]}
+  //                   alt=''
+  //                 />
+  //                 <span className={styles["Participant_names"]}>
+  //                   {matchedOrganizer.userName}
+  //                 </span>
+  //               </Col>
+  //             </Row>
+  //           </>
+  //         ),
+  //       });
+  //     }
+  //     console.log("Going in the condition");
+  //     let agendaVotingDetails =
+  //       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails;
+  //     console.log("Going in the condition", agendaVotingDetails);
+  //     setAgendaDetails({
+  //       ...agendaDetails,
+  //       userID: agendaVotingDetails.userID,
+  //       voteQuestion: agendaVotingDetails.voteQuestion,
+  //       agendaTitle: currentAgendaDetails.title,
+  //       votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
+  //       votingResultDisplayID:
+  //         agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
+  //       agendaId: currentAgendaDetails.iD,
+  //       agendaVotingID: agendaVotingDetails.agendaVotingID,
+  //       isvotingClosed: false,
+  //     });
+  //     let votingAnswerData = agendaVotingDetails.votingAnswers;
+  //     console.log(votingAnswerData, "votingAnswerDatavotingAnswerData");
+  //     if (Array.isArray(votingAnswerData) && votingAnswerData.length > 0) {
+  //       let newAnswers = [];
+  //       votingAnswerData.forEach((item) => {
+  //         newAnswers.push({
+  //           votingAnswer: item.votingAnswer,
+  //           votingAnswerID: item.votingAnswerID,
+  //           agendaID: item.agendaID,
+  //           isHidden: item.votingAnswer === "Pending" ? true : false,
+  //         });
+  //       });
 
-        setSaveOptions(newAnswers);
-      }
-    }
-  }, [
-    MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
-    MeetingOrganizersReducer.AllMeetingOrganizersData,
-  ]);
+  //       setSaveOptions(newAnswers);
+  //     }
+  //   }
+  // }, [
+  //   MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
+  //   MeetingOrganizersReducer.AllMeetingOrganizersData,
+  // ]);
 
   useEffect(() => {
     if (
