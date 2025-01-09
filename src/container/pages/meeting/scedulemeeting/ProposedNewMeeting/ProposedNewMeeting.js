@@ -627,8 +627,16 @@ const ProposedNewMeeting = ({
     : today;
   const maxSelectableDate = firstSelectedDate;
 
-  //Send Response By Handler
+  console.log(sendResponseBy.date, rows[0].dateSelect, "datedatedatedate");
+
+  //Send Response By Handler isProposedMeetEdit;
   const SendResponseHndler = (date) => {
+    console.log(
+      sendResponseBy.date,
+      rows[0].dateSelect,
+      date,
+      "datedatedatedate"
+    );
     setSendResponseBy({
       ...sendResponseBy,
       date: new Date(date),
@@ -654,11 +662,7 @@ const ProposedNewMeeting = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
-  console.log(sendResponseBy.date, "handleProposedButtonProposedMeeting");
-  console.log(
-    getCurrentDateforMeeting.DateGMT,
-    "handleProposedButtonProposedMeeting"
-  );
+
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
     if (isProposedMeetEdit) {
@@ -704,7 +708,15 @@ const ProposedNewMeeting = ({
         }
       });
 
-      if (
+      // Compare sendResponseBy.date with current date
+      const currentDate = new Date(getCurrentDateforMeeting.DateGMT);
+      const sendDate = new Date(sendResponseBy.date);
+      console.log(currentDate, "currentDatecurrentDatecurrentDate");
+      console.log(sendDate, "currentDatecurrentDatecurrentDate");
+      console.log(sendDate < currentDate, "currentDatecurrentDatecurrentDate");
+      if (sendDate < currentDate) {
+        showMessage(t("Send Response  Date has expired"), "error", setOpen);
+      } else if (
         proposedMeetingDetails.MeetingTitle !== "" &&
         membersParticipants.length !== 0 &&
         sendResponseBy.date !== "" &&
@@ -1629,7 +1641,7 @@ const ProposedNewMeeting = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onChange={(date) => {
+                          onFocusedDateChange={(date) => {
                             SendResponseHndler(date);
                           }}
                         />
