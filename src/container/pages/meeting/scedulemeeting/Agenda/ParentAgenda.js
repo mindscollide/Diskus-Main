@@ -510,7 +510,7 @@ const ParentAgenda = ({
                       <Col lg={11} md={11} sm={11}>
                         <section className={styles["SectionInnerClass"]}>
                           <Row key={index + 2} className='mt-4'>
-                            <Col lg={5} md={5} sm={12}>
+                            <Col lg={6} md={6} sm={12}>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
@@ -544,7 +544,7 @@ const ParentAgenda = ({
                                 }
                               />
                             </Col>
-                            <Col lg={3} md={3} sm={12}>
+                            <Col lg={6} md={6} sm={12}>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
@@ -588,7 +588,7 @@ const ParentAgenda = ({
                               md={4}
                               lg={4}
                               className='d-flex gap-4 justify-content-start align-items-center'>
-                              <Row>
+                              {/* <Row>
                                 <Col lg={5} md={5} sm={5}>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
@@ -689,7 +689,7 @@ const ParentAgenda = ({
                                     editable={false}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                               {index !== 0 &&
                                 (editorRole.role === "Participant" ||
                                 editorRole.role === "Agenda Contributor" ||
