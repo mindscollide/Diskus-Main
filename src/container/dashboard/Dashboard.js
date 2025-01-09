@@ -761,7 +761,15 @@ const Dashboard = () => {
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
             ) {
               dispatch(participanRaisedUnRaisedHand(data.payload));
-              if (data.payload.isHandRaised === true) {
+              let isParticipantGuid = localStorage.getItem("participantUID");
+              console.log(
+                data.payload.participantGuid === isParticipantGuid,
+                "checkchekc"
+              );
+              if (
+                data.payload.isHandRaised &&
+                data.payload.participantGuid === isParticipantGuid
+              ) {
                 dispatch(setRaisedUnRaisedParticiant(true));
               } else {
                 dispatch(setRaisedUnRaisedParticiant(false));

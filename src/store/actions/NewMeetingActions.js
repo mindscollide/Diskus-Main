@@ -8173,7 +8173,7 @@ const JoinCurrentMeeting = (
             ) {
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
-              localStorage.setItem("videoCallURL", Data.VideoCallURL)
+              localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
                 isQuickMeeting ? false : true
@@ -9059,12 +9059,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 )
             ) {
               let meetingFlag = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("isMeetingVideoHostCheck")
               );
-              if (meetingFlag?.isHost) {
-                dispatch(videoIconOrButtonState(false));
+              if (meetingFlag) {
+                await dispatch(videoIconOrButtonState(false));
               } else {
-                dispatch(participantVideoButtonState(false));
+                await dispatch(participantVideoButtonState(false));
               }
               const meetingHost = {
                 isHost: false,

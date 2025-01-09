@@ -547,19 +547,146 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [callAcceptedRoomID]);
 
+  // Listener for messages from the iframe
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data === "CancelScreenShare") {
+        setIsScreenActive(false); // Update the state when cancel is clicked
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
   // Function to trigger the action in the iframe
-  const handleScreenShareButton = () => {
+  // const handleScreenShareButton = async () => {
+  //   if (LeaveCallModalFlag === false) {
+  //     if (isScreenActive) {
+  //       // If screen sharing is already active, stop it
+  //       console.log("Ending screen sharing...");
+  //       const stream = await navigator.mediaDevices.enumerateDevices();
+
+  //       const videoTracks = stream.filter(
+  //         (device) => device.kind === "videoinput"
+  //       );
+  //       const videoTrack = videoTracks[0];
+
+  //       // Assuming we have access to the current screen-sharing stream or its track
+  //       const track = videoTrack?.track;
+
+  //       if (track && track.stop) {
+  //         track.stop();
+  //       }
+
+  //       setIsScreenActive(false);
+  //       window.parent.postMessage("ScreenShareEnded", "*");
+  //       console.log("Screen sharing ended");
+  //     } else {
+  //       console.log("Screen sharing started");
+  //       window.parent.postMessage("ScreenShareStarted", "*");
+
+  //       navigator.mediaDevices
+  //         .getDisplayMedia({ video: true, audio: false })
+  //         .then((stream) => {
+  //           // Screen sharing started successfully
+  //           console.log("Screen sharing started");
+  //           setIsScreenActive(true);
+  //           // Listen for when the stream ends (i.e., user stops sharing)
+  //           stream.getVideoTracks()[0].addEventListener("ended", () => {
+  //             window.parent.postMessage("ScreenShareEnded", "*");
+  //             setIsScreenActive(false);
+  //             console.log("Screen sharing ended");
+  //           });
+  //         })
+  //         .catch((err) => {
+  //           // User canceled or failed to get media
+  //           window.parent.postMessage("ScreenShareCanceled", "*");
+  //           setIsScreenActive(false);
+  //           console.log("Screen sharing canceled", err);
+  //         });
+  //     }
+  //   }
+  // };
+
+  const handleScreenShareButton = async () => {
     if (LeaveCallModalFlag === false) {
+      console.log("Screen sharing started");
       const iframe = iframeRef.current;
 
       if (iframe) {
-        iframe.contentWindow.postMessage("ScreenShare", "*");
-        setIsScreenActive(!isScreenActive);
+        iframe.contentWindow.postMessage("ScreenShareStarted", "*");
       }
-      // console.log(iframe, "iframeiframeiframe");
+      iframe.addEventListener("message", (event) => {
+        if (event.data === "ScreenShareStarted") {
+          console.log("Iframe received screen share request, starting...");
+
+          navigator.mediaDevices
+            .getDisplayMedia({ video: true, audio: false })
+            .then((stream) => {
+              console.log("Screen sharing started in iframe");
+              window.parent.postMessage("ScreenShareStarted", "*"); // Notify parent
+
+              // Set the stream to an element in the iframe to show the shared screen
+              const videoElement = document.getElementById("screenShareVideo");
+              if (videoElement) {
+                videoElement.srcObject = stream;
+              }
+
+              // Listen for when the stream ends (i.e., user stops sharing)
+              stream.getVideoTracks()[0].addEventListener("ended", () => {
+                window.parent.postMessage("ScreenShareEnded", "*");
+                console.log("Screen sharing ended");
+              });
+            })
+            .catch((err) => {
+              console.log("Screen sharing canceled", err);
+              window.parent.postMessage("ScreenShareCanceled", "*");
+            });
+        }
+      });
+      // window.parent.postMessage("ScreenShareStarted", "*");
+
+      // try {
+      //   const stream = await navigator.mediaDevices.getDisplayMedia({
+      //     video: true,
+      //     audio: false,
+      //   });
+
+      //   // Screen sharing started successfully
+      //   console.log("Screen sharing started");
+
+      //   // Set screen sharing stream to a video element
+      //   const videoElement = document.getElementById("screenShareVideo");
+      //   if (videoElement) {
+      //     videoElement.srcObject = stream;
+      //     videoElement.play(); // Ensure video playback starts
+      //   }
+
+      //   setIsScreenActive(true);
+
+      //   // Listen for when the stream ends (i.e., user stops sharing)
+      //   stream.getVideoTracks()[0].addEventListener("ended", () => {
+      //     window.parent.postMessage("ScreenShareEnded", "*");
+      //     setIsScreenActive(false);
+      //     console.log("Screen sharing ended");
+
+      //     // Optionally, stop the video element
+      //     if (videoElement) {
+      //       videoElement.srcObject = null; // Stop the stream from being displayed
+      //     }
+      //   });
+      // } catch (err) {
+      //   // User canceled or failed to get media
+      //   window.parent.postMessage("ScreenShareCanceled", "*");
+      //   setIsScreenActive(false);
+      //   console.log("Screen sharing canceled", err);
+      // }
     }
   };
-
   const layoutCurrentChange = () => {
     let videoView = localStorage.getItem("VideoView");
     if (LeaveCallModalFlag === false) {
