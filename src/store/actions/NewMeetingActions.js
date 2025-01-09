@@ -1580,6 +1580,7 @@ const saveParcipantsProposeMeetingAPI = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -1736,6 +1737,7 @@ const SaveparticipantsApi = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+                console.log(Data, "setProposedMeetingDateApiFunc");
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -9491,7 +9493,11 @@ const validateEncryptedStringViewMeetingLinkApi = (
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         return dispatch(
-          validateEncryptedStringViewMeetingLinkApi(encryptedString, navigate, t)
+          validateEncryptedStringViewMeetingLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
         );
       }
 
@@ -9512,7 +9518,7 @@ const validateEncryptedStringViewMeetingLinkApi = (
                 t("Successfully")
               )
             );
-        
+
             return {
               response: response.data.responseResult?.data,
               responseCode: 1,

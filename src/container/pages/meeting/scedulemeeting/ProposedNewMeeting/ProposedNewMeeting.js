@@ -70,6 +70,7 @@ const ProposedNewMeeting = ({
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
+
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -113,7 +114,7 @@ const ProposedNewMeeting = ({
       Type: "",
     },
   });
-  console.log(isProposedMeetEdit, "isProposedMeetEditisProposedMeetEdit");
+
   const [meetingTypeDetails, setMeetingTypeDetails] = useState({
     MeetingType: {
       PK_MTID: isProposedMeetEdit
@@ -134,7 +135,7 @@ const ProposedNewMeeting = ({
     try {
       if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
         const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
-        console.log(EditFlowData, "EditFlowData");
+
         if (isProposedMeetEdit) {
           setEditmeetingTypeDetails({
             MeetingType: {
@@ -188,7 +189,7 @@ const ProposedNewMeeting = ({
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
-    date: "",
+    date: getCurrentDateforMeeting.DateGMT,
   });
 
   //state for adding Date and Time Rows
@@ -230,10 +231,8 @@ const ProposedNewMeeting = ({
       ) {
         let DatesDataEditFlow =
           getAllProposedDatesEditFlow.meetingProposedDates;
-        console.log(DatesDataEditFlow, "DatesDataEditFlowDatesDataEditFlow");
 
         let dateArray = DatesDataEditFlow.map((datedata) => {
-          console.log(datedata, "datedata");
           if (
             datedata.proposedDate === "10000101" &&
             datedata.endTime === "000000" &&
@@ -620,13 +619,30 @@ const ProposedNewMeeting = ({
     }
   };
 
-  //Send Response By Handler
+  //Min Max Send Response By Date
+  const today = moment().startOf("day");
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
+  const minSelectableDate = today.isAfter(firstSelectedDate)
+    ? firstSelectedDate
+    : today;
+  const maxSelectableDate = firstSelectedDate;
+
+  console.log(sendResponseBy.date, rows[0].dateSelect, "datedatedatedate");
+
+  //Send Response By Handler isProposedMeetEdit;
   const SendResponseHndler = (date) => {
+    console.log(
+      sendResponseBy.date,
+      rows[0].dateSelect,
+      date,
+      "datedatedatedate"
+    );
     setSendResponseBy({
       ...sendResponseBy,
       date: new Date(date),
     });
   };
+
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
@@ -692,7 +708,15 @@ const ProposedNewMeeting = ({
         }
       });
 
-      if (
+      // Compare sendResponseBy.date with current date
+      const currentDate = new Date(getCurrentDateforMeeting.DateGMT);
+      const sendDate = new Date(sendResponseBy.date);
+      console.log(currentDate, "currentDatecurrentDatecurrentDate");
+      console.log(sendDate, "currentDatecurrentDatecurrentDate");
+      console.log(sendDate < currentDate, "currentDatecurrentDatecurrentDate");
+      if (sendDate < currentDate) {
+        showMessage(t("Send Response  Date has expired"), "error", setOpen);
+      } else if (
         proposedMeetingDetails.MeetingTitle !== "" &&
         membersParticipants.length !== 0 &&
         sendResponseBy.date !== "" &&
@@ -718,8 +742,6 @@ const ProposedNewMeeting = ({
             MeetingStatusID: 11,
           },
         };
-        console.log(data, "datadatadata");
-        console.log(sortedDates, "datadatadata");
 
         dispatch(
           SaveMeetingDetialsNewApiFunction(
@@ -820,8 +842,6 @@ const ProposedNewMeeting = ({
             MeetingStatusID: 11,
           },
         };
-        console.log(data, "datadatadata");
-        console.log(sortedDates, "datadatadata");
 
         dispatch(
           SaveMeetingDetialsNewApiFunction(
@@ -914,13 +934,6 @@ const ProposedNewMeeting = ({
     }
   }, [currentLanguage]);
 
-  const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
-  const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
-    ? today
-    : firstSelectedDate;
-  const maxSelectableDate = firstSelectedDate;
-
   //Custom Filter for Selector
   const customFilter = (options, searchText) => {
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -933,7 +946,6 @@ const ProposedNewMeeting = ({
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     let tem = [...membersParticipants];
 
@@ -1198,10 +1210,6 @@ const ProposedNewMeeting = ({
                       <Row className="mt-2">
                         {membersParticipants.length > 0
                           ? membersParticipants.map((participant, index) => {
-                              console.log(
-                                participant,
-                                "participantparticipant"
-                              );
                               return (
                                 <>
                                   <Col
@@ -1311,7 +1319,6 @@ const ProposedNewMeeting = ({
                   >
                     {rows.length > 0
                       ? rows.map((data, index) => {
-                          console.log(data, "indexindexindex");
                           return (
                             <>
                               <Row key={index}>
@@ -1616,7 +1623,7 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={sendResponseBy.date}
+                          value={sendResponseBy.date || rows[0].dateSelect}
                           format={"DD/MM/YYYY"}
                           minDate={minSelectableDate.toDate()}
                           maxDate={maxSelectableDate.toDate()}
@@ -1634,9 +1641,9 @@ const ProposedNewMeeting = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onFocusedDateChange={(value) =>
-                            SendResponseHndler(value)
-                          }
+                          onFocusedDateChange={(date) => {
+                            SendResponseHndler(date);
+                          }}
                         />
                       </Col>
                     </Row>
