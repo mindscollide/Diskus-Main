@@ -70,6 +70,7 @@ const ProposedNewMeeting = ({
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
+
   let OrganizationID = localStorage.getItem("organizationID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -188,9 +189,10 @@ const ProposedNewMeeting = ({
 
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
-    date: "",
+    date: getCurrentDateforMeeting.DateGMT,
   });
 
+  console.log(sendResponseBy.date, "sendResponseBy");
   //state for adding Date and Time Rows
   const [rows, setRows] = useState([
     {
@@ -199,6 +201,8 @@ const ProposedNewMeeting = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
+
+  console.log(rows[0].dateSelect, "dateSelectdateSelect");
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
@@ -620,13 +624,38 @@ const ProposedNewMeeting = ({
     }
   };
 
+  //Min Max Send Response By Date
+  const today = moment().startOf("day");
+  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
+  const minSelectableDate = today.isAfter(firstSelectedDate)
+    ? firstSelectedDate
+    : today;
+  const maxSelectableDate = firstSelectedDate;
+  console.log(sendResponseBy.date, "setProposedMeetingDateApiFunc");
+  console.log(
+    multiDatePickerDateChangIntoUTC(sendResponseBy.date),
+    "setProposedMeetingDateApiFunc"
+  );
+  console.log(
+    multiDatePickerDateChangIntoUTC(rows[0].dateSelect),
+    "setProposedMeetingDateApiFunc"
+  );
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    setSendResponseBy({
-      ...sendResponseBy,
-      date: new Date(date),
-    });
+    if (sendResponseBy.date === "") {
+      setSendResponseBy({
+        ...sendResponseBy,
+        date: rows[0].dateSelect,
+      });
+    } else {
+      console.log(new Date(date), "datedate");
+      setSendResponseBy({
+        ...sendResponseBy,
+        date: new Date(date),
+      });
+    }
   };
+
   //for handling Cancel the ProposedMeeting Page
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
@@ -720,7 +749,6 @@ const ProposedNewMeeting = ({
         };
         console.log(data, "datadatadata");
         console.log(sortedDates, "datadatadata");
-
         dispatch(
           SaveMeetingDetialsNewApiFunction(
             navigate,
@@ -913,13 +941,6 @@ const ProposedNewMeeting = ({
       }
     }
   }, [currentLanguage]);
-
-  const today = moment().startOf("day");
-  const firstSelectedDate = moment(rows[0].dateSelect).startOf("day");
-  const minSelectableDate = today.isSameOrBefore(firstSelectedDate)
-    ? today
-    : firstSelectedDate;
-  const maxSelectableDate = firstSelectedDate;
 
   //Custom Filter for Selector
   const customFilter = (options, searchText) => {
@@ -1616,10 +1637,10 @@ const ProposedNewMeeting = ({
                         </span>
 
                         <DatePicker
-                          value={sendResponseBy.date}
+                          value={sendResponseBy.date || rows[0].dateSelect}
                           format={"DD/MM/YYYY"}
-                          minDate={minSelectableDate.toDate()}
-                          maxDate={maxSelectableDate.toDate()}
+                          minDate={minSelectableDate.toLocaleString()}
+                          maxDate={maxSelectableDate.toLocaleString()}
                           placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
@@ -1634,9 +1655,9 @@ const ProposedNewMeeting = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onFocusedDateChange={(value) =>
-                            SendResponseHndler(value)
-                          }
+                          onChange={(date) => {
+                            SendResponseHndler(date);
+                          }}
                         />
                       </Col>
                     </Row>
