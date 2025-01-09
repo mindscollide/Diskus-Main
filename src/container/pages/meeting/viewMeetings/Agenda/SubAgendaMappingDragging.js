@@ -481,7 +481,7 @@ const SubAgendaMappingDragging = ({
                                                         alt=""
                                                         draggable={false}
                                                       />
-                                                      <p
+                                                      {/* <p
                                                         className={
                                                           styles[
                                                             "agendaCreater"
@@ -502,7 +502,7 @@ const SubAgendaMappingDragging = ({
                                                             )
                                                           ).format("hh:mm a") +
                                                           ")"}
-                                                      </p>
+                                                      </p> */}
                                                     </div>
                                                   </Col>
                                                 </Row>

@@ -1161,7 +1161,7 @@ const AgendaWise = ({
         const isOpen = openIndices.includes(index);
         let attachmentResult = hasAttachments(data);
         let isRejectedMemberHas = data.minuteData.filter(
-          (data, index) => data?.MinuteStats?.rejectedByUsers.length !== 0
+          (data, index) => data?.MinuteStats?.rejectedByUsers.length > 0
         );
         console.log(
           isRejectedMemberHas,

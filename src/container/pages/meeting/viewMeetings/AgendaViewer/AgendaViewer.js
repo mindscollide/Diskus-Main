@@ -39,6 +39,8 @@ import {
   leaveMeetingOnlogout,
   nonMeetingVideoGlobalModal,
   videoIconOrButtonState,
+  participantVideoButtonState,
+  clearMessegesVideoFeature,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -137,6 +139,11 @@ const AgendaViewer = ({
     (state) => state.MeetingAgendaReducer.ResponseMessage
   );
 
+  const AgendaVideoResponseMessage = useSelector(
+    (state) => state.videoFeatureReducer.ResponseMessage
+  );
+  console.log(AgendaVideoResponseMessage, "ResponseMessageResponseMessage");
+
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
   );
@@ -171,6 +178,13 @@ const AgendaViewer = ({
   );
 
   console.log(enableDisableVideoState, "enableDisableVideoState");
+
+  // FOr Participant Enable and Disable check Video Icon
+  const participantEnableVideoState = useSelector(
+    (state) => state.videoFeatureReducer.participantEnableVideoState
+  );
+
+  console.log(participantEnableVideoState, "participantEnableVideoState");
 
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
@@ -512,6 +526,13 @@ const AgendaViewer = ({
   }, [agendaResponseMessage]);
 
   useEffect(() => {
+    if (AgendaVideoResponseMessage === t("Could-not-join-call")) {
+      showMessage(t("Could-not-join-call"), "Success", setOpen);
+      dispatch(clearMessegesVideoFeature(""));
+    }
+  }, [AgendaVideoResponseMessage]);
+
+  useEffect(() => {
     if (
       MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
       MeetingAgendaReducer.MeetingAgendaStartedData !== null
@@ -658,7 +679,10 @@ const AgendaViewer = ({
       console.log(meetingVideoData, "meetingVideoData");
 
       if (meetingVideoData.roleID === 2) {
-        dispatch(maxParticipantVideoCallPanel(true));
+        dispatch(participantVideoButtonState(true));
+        if (!participantEnableVideoState) {
+          dispatch(maxParticipantVideoCallPanel(true));
+        }
       } else {
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
@@ -765,7 +789,8 @@ const AgendaViewer = ({
                         >
                           <div
                             className={
-                              enableDisableVideoState
+                              enableDisableVideoState ||
+                              participantEnableVideoState
                                 ? styles["disabled-box-agenda-camera"]
                                 : styles["box-agendas-camera"]
                             }

@@ -1499,7 +1499,7 @@
   "Leave-meeting": "Leave Meeting",
   "Contributor-title": "Contributor Title",
   "Participant-title": "Participant Title",
-  "Attendence": "Attendence",
+  "Attendence": "Attendance",
   "Clone-meeting": "Clone Meeting",
   "Unpublished-proposed-meetings": "Unpublished / Proposed Meetings",
   "Published-meetings": "Published Meetings",
@@ -2368,7 +2368,7 @@
   "There-are-no-Participants": "There are no Participants",
   "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway",
   "In-progress-tasks": "In Progress Tasks",
-  "The-meeting-has-ended": "The meeting has ended",
+  "The-meeting-has-ended": "The Meting Has Ended",
   "Has-archived-the-committee": "Has archived the committee",
   "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
   "Copy-invite-link": "Copy Invite Link",
@@ -2386,5 +2386,9 @@
   "Cannot-add-option-with-same-name": "Cannot add option with same name",
   "Voting-options-should-be-2-or-more-than-2": "Voting options should be 2 or more than 2",
   "Unmute-all": "Unmute all",
+  "None-of-above": "None of the above",
+  "Stop-sharing": "Stop Sharing",
+  "The-host-has-ended-the-meeting": "The host has ended the meeting.",
+  "Thanks-for-joining": "Thanks for joining!",
   "With-attachments": "With Attachments"
 }

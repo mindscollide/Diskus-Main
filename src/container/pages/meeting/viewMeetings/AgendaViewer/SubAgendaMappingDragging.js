@@ -345,7 +345,7 @@ const SubAgendaMappingDragging = ({
                                                       : "p-0 text-end"
                                                   }
                                                 >
-                                                  <p
+                                                  {/* <p
                                                     className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                                   >
                                                     {moment(
@@ -365,7 +365,7 @@ const SubAgendaMappingDragging = ({
                                                         subAgendaData?.endDate
                                                       )
                                                     ).format("hh:mm a")}
-                                                  </p>
+                                                  </p> */}
                                                   {printFlag === true ||
                                                   exportFlag === true ? null : (
                                                     <>

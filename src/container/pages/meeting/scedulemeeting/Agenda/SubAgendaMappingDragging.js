@@ -531,7 +531,7 @@ const SubAgendaMappingDragging = ({
                                           className={styles["SubAgendaSection"]}
                                         >
                                           <Row className="mt-2 mb-2">
-                                            <Col lg={5} md={5} sm={12}>
+                                            <Col lg={6} md={6} sm={12}>
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
@@ -589,7 +589,7 @@ const SubAgendaMappingDragging = ({
                                                 }
                                               />
                                             </Col>
-                                            <Col lg={3} md={3} sm={12}>
+                                            <Col lg={6} md={6} sm={12}>
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
@@ -654,7 +654,7 @@ const SubAgendaMappingDragging = ({
                                               lg={4}
                                               className="d-flex gap-4 justify-content-start align-items-center"
                                             >
-                                              <Row>
+                                              {/* <Row>
                                                 <Col lg={5} md={5} sm={5}>
                                                   <Row>
                                                     <Col
@@ -810,7 +810,7 @@ const SubAgendaMappingDragging = ({
                                                     editable={false}
                                                   />
                                                 </Col>
-                                              </Row>
+                                              </Row> */}
                                               {editorRole.role ===
                                                 "Participant" ||
                                               editorRole.role ===

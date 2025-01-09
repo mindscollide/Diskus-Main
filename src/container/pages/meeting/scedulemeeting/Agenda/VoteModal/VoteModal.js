@@ -45,13 +45,19 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
+  console.log(
+    NewMeetingreducer,
+    MeetingAgendaReducer,
+    MeetingOrganizersReducer,
+    ""
+  );
   const [addOptions, setAddOptions] = useState(false);
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
+  const [errorShow, setErrorShow] = useState(false);
 
   const [agendaDetails, setAgendaDetails] = useState({
     agendaTitle: "",
@@ -60,39 +66,24 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     isvotingClosed: false,
     userID: 0,
     voteQuestion: "",
-    organizerUserID: 0,
-    organizerUserName: "",
     votingResultDisplay: "",
     votingResultDisplayID: 0,
   });
 
-  const [organizers, setOrganizers] = useState([]);
-
-  const [votingResultDisplayData, setVotingResultDisplayData] = useState([]);
-
-  // const [agendaVotingDetails, setAgendaVotingDetails] = useState([]);
+  const [organizerDropdown, setOrganizersDropdown] = useState([]);
 
   const [meetingParticipants, setMeetingParticipants] = useState([]);
 
-  const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
+  const [IsOrganizer, setIsOrganizer] = useState(null);
+
+  const [votingResultDataList, setVotingResultDataList] = useState([]);
+
   const [voteAnswerValue, setVoteAnswerValue] = useState("");
   const [saveOptions, setSaveOptions] = useState([
     { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
     { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
     { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
   ]);
-  console.log(saveOptions, "saveOptionssaveOptionssaveOptions");
-  const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
-    voteQuestion: "",
-    Answer: "",
-    OptionsAdded: "",
-    SelectOrganizers: 0,
-    SelectOptions: 0,
-    YesAnswer: "Yes",
-    NOAnswer: "No",
-    AbstainAnswer: "Abstain",
-    Pending: "Pending",
-  });
 
   const plusButtonFunc = () => {
     setAddOptions(true);
@@ -129,6 +120,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         {
           votingAnswer: voteAnswerValue,
           votingAnswerID: 0,
+          isHidden: false,
         },
       ]);
       setAddOptions(false);
@@ -152,21 +144,19 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     setSaveOptions(updatedSaveOptions);
   };
 
-  const dropDownSelectOrganizers = (e) => {
-    console.log("e.target dropdown", e);
+  const dropDownSelectOrganizers = (event) => {
+    setIsOrganizer(event);
     setAgendaDetails({
       ...agendaDetails,
-      organizerUserID: e.value,
-      organizerUserName: e.label,
+      userID: event.value,
     });
   };
 
-  const dropDownSelectOptions = (e) => {
-    console.log("e.target dropdown", e);
+  const dropDownSelectOptions = (event) => {
     setAgendaDetails({
       ...agendaDetails,
-      votingResultDisplayID: e.value,
-      votingResultDisplay: e.label,
+      votingResultDisplayID: event.value,
+      votingResultDisplay: event.label,
     });
   };
 
@@ -187,85 +177,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         });
       }
     }
-    if (name === "Answer") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          Answer: valueCheck,
-        });
-      } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          Answer: "",
-        });
-      }
-    }
-    if (name === "YesAnswers") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          YesAnswer: valueCheck,
-        });
-      } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          YesAnswer: "",
-        });
-      }
-    }
-    if (name === "Noanswers") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          NOAnswer: valueCheck,
-        });
-      } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          NOAnswer: "",
-        });
-      }
-    }
-    if (name === "AbstainAnswers") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          AbstainAnswer: valueCheck,
-        });
-      } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          AbstainAnswer: "",
-        });
-      }
-    }
-    if (name === "Pending") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          Pending: valueCheck,
-        });
-      } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          Pending: "",
-        });
-      }
-    }
   };
 
   // Function for the Saved Add TExt filed
   const handleOptionTextChange = (e) => {
     let value = e.target.value;
     setVoteAnswerValue(value);
-    // const updatedOptions = [...saveOptions];
-    // updatedOptions.votingAnswer = value;
-    // setSaveOptions(updatedOptions);
   };
 
   const handleChangeVotingAnswer = (e, index) => {
@@ -282,75 +199,80 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   };
 
   useEffect(() => {
-    let dataForAllOrganizers = { MeetingID: currentMeeting };
-    let dataForAllMeetingParticipants = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(
-      GetAllSavedparticipantsAPI(
-        dataForAllMeetingParticipants,
-        navigate,
-        t,
-        false
-      )
-    );
+    const fetchData = async () => {
+      try {
+        let dataForAllOrganizers = { MeetingID: currentMeeting };
+        let dataForAllMeetingParticipants = { MeetingID: currentMeeting };
 
-    dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
-    dispatch(GetAllVotingResultDisplay(navigate, t));
-  }, []);
+        await dispatch(
+          GetAllSavedparticipantsAPI(
+            dataForAllMeetingParticipants,
+            navigate,
+            t,
+            false
+          )
+        );
+
+        await dispatch(
+          GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t)
+        );
+
+        await dispatch(GetAllVotingResultDisplay(navigate, t));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Add dependencies for re-execution if needed
+  console.log(
+    "GetCurrentAgendaDetails vote :",
+    MeetingAgendaReducer.GetCurrentAgendaDetails
+  );
+  console.log(
+    "getAllSavedparticipants vote : ",
+    NewMeetingreducer.getAllSavedparticipants
+  );
+  console.log(
+    "MeetingAgendaVotingDetailsData vote :",
+    MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+  );
+  console.log("agendaDetails vote :", agendaDetails);
 
   useEffect(() => {
-    if (
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
-      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
-    ) {
-      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
-    } else {
-      setCurrentAgendaDetails([]);
+    try {
+      if (
+        MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
+        MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
+        MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
+      ) {
+        setAgendaDetails({
+          ...agendaDetails,
+          agendaTitle: MeetingAgendaReducer.GetCurrentAgendaDetails.title,
+          agendaId: MeetingAgendaReducer.GetCurrentAgendaDetails.iD,
+          agendaVotingID:
+            MeetingAgendaReducer.GetCurrentAgendaDetails.agendaVotingID,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
   useEffect(() => {
-    if (currentAgendaDetails.length !== 0) {
-      setAgendaDetails({
-        ...agendaDetails,
-        agendaTitle: currentAgendaDetails.title,
-        agendaId: currentAgendaDetails.iD,
-        agendaVotingID: currentAgendaDetails.agendaVotingID,
-      });
-    }
-  }, [currentAgendaDetails]);
-
-  useEffect(() => {
-    if (currentAgendaVotingID === 0) {
+    try {
       if (
         NewMeetingreducer.getAllSavedparticipants !== undefined &&
         NewMeetingreducer.getAllSavedparticipants !== null &&
-        NewMeetingreducer.getAllSavedparticipants.length !== 0
+        NewMeetingreducer.getAllSavedparticipants.length !== 0 &&
+        currentAgendaVotingID === 0
       ) {
         setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
-      } else {
-        setMeetingParticipants([]);
       }
-    } else {
-      if (
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
-      ) {
-        setMeetingParticipants(
-          MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-            .agendaVotingDetails.votingMembers
-        );
-      } else {
-        setMeetingParticipants([]);
-      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [
-    NewMeetingreducer.getAllSavedparticipants,
-    MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
-  ]);
+  }, [NewMeetingreducer.getAllSavedparticipants]);
 
   const MeetingColoumns = [
     {
@@ -366,6 +288,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       dataIndex: "userName",
       key: "userName",
       width: "100px",
+      ellipsis: true,
     },
     {
       title: (
@@ -380,6 +303,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       dataIndex: "participantTitle",
       key: "participantTitle",
       width: "100px",
+      align: "center",
     },
     {
       title: (
@@ -394,11 +318,15 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       dataIndex: "emailAddress",
       key: "emailAddress",
       width: "150px",
+      ellipsis: true,
+      align: "center",
     },
     {
       dataIndex: "userID",
       key: "userID",
       width: "80px",
+      align: "center",
+
       render: (text, record) => {
         if (record.userID) {
           return (
@@ -425,12 +353,41 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
       MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0
     ) {
-      setOrganizers(
+      let newOrganizerData = [];
+      if (
         MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers
-      );
+          .length > 0
+      ) {
+        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers.map(
+          (oranizerData, index) => {
+            return newOrganizerData.push({
+              value: oranizerData.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+                      <img
+                        src={`data:image/jpeg;base64,${oranizerData.userProfilePicture.displayProfilePictureName}`}
+                        width='17px'
+                        height='17px'
+                        className={styles["Image_profile"]}
+                        alt=''
+                      />
+                      <span className={styles["Participant_names"]}>
+                        {oranizerData.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+            });
+          }
+        );
+      }
+
+      setOrganizersDropdown(newOrganizerData);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
-
   useEffect(() => {
     if (
       MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
@@ -440,12 +397,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
       MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
     ) {
-      console.log(
-        "matchedOrganizer",
-        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers,
-        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
-          .userID
-      );
+      if (currentAgendaVotingID !== 0) {
+        setMeetingParticipants(
+          MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+            .agendaVotingDetails.votingMembers
+        );
+      }
+
       const matchedOrganizer =
         MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers.find(
           (obj) =>
@@ -455,10 +413,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         );
       console.log("matchedOrganizer", matchedOrganizer);
       if (matchedOrganizer !== undefined) {
-        setAgendaDetails({
-          ...agendaDetails,
-          organizerUserID: matchedOrganizer.userID,
-          organizerUserName: (
+        setIsOrganizer({
+          value: matchedOrganizer.userID,
+          label: (
             <>
               <Row>
                 <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
@@ -477,6 +434,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             </>
           ),
         });
+        setAgendaDetails({
+          ...agendaDetails,
+          userID: matchedOrganizer.userID,
+        });
       }
       console.log("Going in the condition");
       let agendaVotingDetails =
@@ -486,11 +447,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         ...agendaDetails,
         userID: agendaVotingDetails.userID,
         voteQuestion: agendaVotingDetails.voteQuestion,
-        agendaTitle: currentAgendaDetails.title,
+        // agendaTitle: agendaVotingDetails.title,
         votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
         votingResultDisplayID:
           agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
-        agendaId: currentAgendaDetails.iD,
+        agendaId: agendaVotingDetails.agendaId,
         agendaVotingID: agendaVotingDetails.agendaVotingID,
         isvotingClosed: false,
       });
@@ -521,46 +482,26 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       MeetingAgendaReducer.VotingResultDisplayData !== null &&
       MeetingAgendaReducer.VotingResultDisplayData.length !== 0
     ) {
-      setVotingResultDisplayData(
-        MeetingAgendaReducer.VotingResultDisplayData.votingResultDisplays
+      let newVotingResultData = [];
+      MeetingAgendaReducer.VotingResultDisplayData.votingResultDisplays.map(
+        (votingOptions, index) => {
+          return newVotingResultData.push({
+            value: votingOptions.votingResultDisplayID,
+            label: (
+              <>
+                <span>{votingOptions.result}</span>
+              </>
+            ),
+          });
+        }
       );
+      setVotingResultDataList(newVotingResultData);
     }
   }, [MeetingAgendaReducer.VotingResultDisplayData]);
 
-  const optionsIndividualOpenCloseVoting = organizers.map((organizer) => ({
-    value: organizer.userID,
-    label: (
-      <>
-        <Row>
-          <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
-            <img
-              src={`data:image/jpeg;base64,${organizer.userProfilePicture.displayProfilePictureName}`}
-              width='17px'
-              height='17px'
-              className={styles["Image_profile"]}
-              alt=''
-            />
-            <span className={styles["Participant_names"]}>
-              {organizer.userName}
-            </span>
-          </Col>
-        </Row>
-      </>
-    ),
-  }));
-
-  const options = votingResultDisplayData.map((votingResults) => ({
-    value: votingResults.votingResultDisplayID,
-    label: (
-      <>
-        <span>{votingResults.result}</span>
-      </>
-    ),
-  }));
-
   const handleVoteSaveModal = () => {
     if (
-      agendaDetails.organizerUserID !== 0 &&
+      agendaDetails.userID !== 0 &&
       agendaDetails.votingResultDisplayID !== 0 &&
       agendaDetails.voteQuestion !== ""
     ) {
@@ -584,7 +525,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             VoteQuestion: agendaDetails.voteQuestion,
             VotingResultDisplayID: agendaDetails.votingResultDisplayID,
             IsVotingClosed: false,
-            UserID: agendaDetails.organizerUserID,
+            UserID: agendaDetails.userID,
             IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
             VotingAnswers: votingOptionData,
             AgendaVotingParticipants: participantData,
@@ -602,30 +543,17 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           isvotingClosed: false,
           userID: 0,
           voteQuestion: "",
-          organizerUserID: 0,
-          organizerUserName: "",
           votingResultDisplay: "",
           votingResultDisplayID: 0,
         });
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          voteQuestion: "",
-          Answer: "",
-          OptionsAdded: "",
-          SelectOrganizers: 0,
-          SelectOptions: 0,
-          YesAnswer: "Yes",
-          NOAnswer: "No",
-          AbstainAnswer: "Abstain",
-          Pending: "Pending",
-        });
-        setOrganizers([]);
-        setVotingResultDisplayData([]);
+
+        setOrganizersDropdown([]);
+        setVotingResultDataList([]);
         setMeetingParticipants([]);
         setSaveOptions([
-          { votingAnswer: "Pending", votingAnswerID: 0 },
-          { votingAnswer: "Yes", votingAnswerID: 1 },
-          { votingAnswer: "No", votingAnswerID: 2 },
+          { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
+          { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
+          { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
         ]);
         dispatch(GetCurrentAgendaDetails([]));
         dispatch(showVoteAgendaModal(false));
@@ -637,6 +565,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         );
       }
     } else {
+      setErrorShow(true);
       showMessage(t("Required-fields-should-not-be-empty"), "error", setOpen);
     }
   };
@@ -651,31 +580,19 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       isvotingClosed: false,
       userID: 0,
       voteQuestion: "",
-      organizerUserID: 0,
-      organizerUserName: "",
       votingResultDisplay: "",
       votingResultDisplayID: 0,
     });
-    setVoteModalAttrbutes({
-      ...voteModalAttrbutes,
-      voteQuestion: "",
-      Answer: "",
-      OptionsAdded: "",
-      SelectOrganizers: 0,
-      SelectOptions: 0,
-      YesAnswer: "Yes",
-      NOAnswer: "No",
-      AbstainAnswer: "Abstain",
-      Pending: "Pending",
-    });
-    setOrganizers([]);
-    setVotingResultDisplayData([]);
+
+    setOrganizersDropdown([]);
     setMeetingParticipants([]);
-    // setSaveOptions([
-    //   { votingAnswer: "Pending", votingAnswerID: 0 },
-    //   { votingAnswer: "Yes", votingAnswerID: 1 },
-    //   { votingAnswer: "No", votingAnswerID: 2 },
-    // ]);
+    setVotingResultDataList([]);
+
+    setSaveOptions([
+      { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
+      { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
+      { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
+    ]);
     dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(showAllMeetingParticipantsSuccess([], "", false));
     localStorage.setItem("currentAgendaVotingID", 0);
@@ -769,10 +686,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     <Col>
                       <p
                         className={
-                          // error && agendaDetails.voteQuestion === ""
-                          //   ? ` ${styles["errorMessage-inLogin"]} `
-                          //   :
-                          `${styles["errorMessage-inLogin_hidden"]}`
+                          errorShow && agendaDetails.voteQuestion === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
                         }>
                         {t("Please-enter-vote-question")}
                       </p>
@@ -942,13 +858,11 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Select
-                          options={optionsIndividualOpenCloseVoting}
+                          options={organizerDropdown}
                           onChange={dropDownSelectOrganizers}
-                          value={{
-                            value: agendaDetails.organizerUserID,
-                            label: agendaDetails.organizerUserName,
-                          }}
+                          value={IsOrganizer !== null ? IsOrganizer : null}
                           classNamePrefix={"SelectOrganizersSelect_active"}
+                          placeholder={t("Add-organizer")}
                           isSearchable={false}
                         />
                       </Col>
@@ -956,10 +870,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         <Col>
                           <p
                             className={
-                              // error && voteModalAttrbutes.SelectOrganizers === 0
-                              //   ? ` ${styles["errorMessage-inLogin"]} `
-                              //   :
-                              `${styles["errorMessage-inLogin_hidden"]}`
+                              errorShow && agendaDetails.userID === 0
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
                             }>
                             {t("Please-select-organizers")}
                           </p>
@@ -979,13 +892,18 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                     <Row className='mt-2'>
                       <Col lg={12} md={12} sm={12}>
                         <Select
-                          options={options}
+                          options={votingResultDataList}
                           classNamePrefix={"SelectOptions_drop_active"}
                           onChange={dropDownSelectOptions}
-                          value={{
-                            value: agendaDetails.votingResultDisplayID,
-                            label: agendaDetails.votingResultDisplay,
-                          }}
+                          placeholder={t("Select-option")}
+                          value={
+                            agendaDetails.votingResultDisplayID === 0
+                              ? null
+                              : {
+                                  value: agendaDetails.votingResultDisplayID,
+                                  label: agendaDetails.votingResultDisplay,
+                                }
+                          }
                           isSearchable={false}
                         />
                       </Col>
@@ -993,10 +911,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                         <Col>
                           <p
                             className={
-                              // error && voteModalAttrbutes.SelectOptions === 0
-                              //   ? ` ${styles["errorMessage-inLogin"]} `
-                              //   :
-                              `${styles["errorMessage-inLogin_hidden"]}`
+                              errorShow &&
+                              agendaDetails.votingResultDisplayID === 0
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
                             }>
                             {t("Please-select-any-one-option")}
                           </p>

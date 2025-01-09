@@ -24,7 +24,6 @@ const VerifyOTPUM = () => {
 
   const navigate = useNavigate();
 
-  const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
@@ -50,13 +49,7 @@ const VerifyOTPUM = () => {
     setVerifyOTP(otpval);
   };
 
-  useEffect(() => {
-    // if value was cleared, set key to re-render the element
-    if (verifyOTP.length === 0) {
-      setKey(key + 1);
-      return;
-    }
-  }, [verifyOTP]);
+
 
   const verifyOTPClickHandler = (e) => {
     console.log("hello");
@@ -212,7 +205,6 @@ const VerifyOTPUM = () => {
                       fields={6}
                       applyClass={styles["OTPInput"]}
                       change={changeHandler}
-                      key={key}
                       value={verifyOTP}
                     />
                   </Col>

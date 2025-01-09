@@ -25,7 +25,7 @@ const props = {
   },
 };
 
-const VerificationInputField = ({ label, change, value, ref, fields, key }) => {
+const VerificationInputField = ({ label, change, value, ref, fields }) => {
   return (
     <>
       <Form.Label className="MontserratMedium-500 d-inline-block">
@@ -39,7 +39,7 @@ const VerificationInputField = ({ label, change, value, ref, fields, key }) => {
           display: "flex",
           justifyContent: "center",
         }}
-        key={key}
+        // key={key}
         onChange={change}
         type="text"
         pattern="[A-Z0-9]"

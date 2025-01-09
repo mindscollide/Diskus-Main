@@ -55,11 +55,7 @@ const OnboardDashboard = () => {
   const { settingReducer, calendarReducer, auth, Authreducer } = state;
   const { RecentActivityData } = settingReducer;
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -114,15 +110,13 @@ const OnboardDashboard = () => {
     setDates(temp);
   }, [calenderData]);
 
-  // calling Api for getting data for calendar
-  useEffect(() => {
-    const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(navigate, t, userID, true));
-  }, []);
+  // // calling Api for getting data for calendar
+  // useEffect(() => {
+  //   const userID = localStorage.getItem("userID");
+  //   dispatch(getCalendarDataResponse(navigate, t, userID, true));
+  // }, []);
 
-  //ToDo Table Data
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
+
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -141,11 +135,11 @@ const OnboardDashboard = () => {
     }
   }, [lang]);
 
-  //dispatch gettodolist api
-  useEffect(() => {
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(navigate, data, t));
-  }, []);
+  // //dispatch gettodolist api
+  // useEffect(() => {
+  //   let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+  //   dispatch(GetTodoListByUser(navigate, data, t));
+  // }, []);
 
   const columnsToDo = [
     {
@@ -231,24 +225,24 @@ const OnboardDashboard = () => {
     },
   ];
 
-  // Api Hit Meeting Count
-  useEffect(() => {
-    let Data2 = {
-      UserID: parseInt(createrID),
-    };
-    dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
-    dispatch(GetWeeklyToDoCount(navigate, Data2, t));
-    dispatch(GetUpcomingEvents(navigate, Data2, t));
-  }, []);
-  useEffect(() => {
-    dispatch(getNotifications(navigate, createrID, t));
-  }, []);
+  // // Api Hit Meeting Count
+  // useEffect(() => {
+  //   let Data2 = {
+  //     UserID: parseInt(createrID),
+  //   };
+  //   dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
+  //   dispatch(GetWeeklyToDoCount(navigate, Data2, t));
+  //   dispatch(GetUpcomingEvents(navigate, Data2, t));
+  // }, []);
+  // useEffect(() => {
+  //   dispatch(getNotifications(navigate, createrID, t));
+  // }, []);
 
-  useEffect(() => {
-    if (Object.keys(RecentActivityData).length > 0) {
-      setRecentActivityData(RecentActivityData);
-    }
-  }, [RecentActivityData]);
+  // useEffect(() => {
+  //   if (Object.keys(RecentActivityData).length > 0) {
+  //     setRecentActivityData(RecentActivityData);
+  //   }
+  // }, [RecentActivityData]);
 
   useEffect(() => {
     dispatch(HideNotificationAuth());
@@ -259,65 +253,7 @@ const OnboardDashboard = () => {
     dispatch(HideNotification());
   }, [auth.ResponseMessage]);
 
-  useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      showMessage(
-        Authreducer.VerifyOTPEmailResponseMessage,
-        "success",
-        setOpen
-      );
 
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      showMessage(
-        Authreducer.OrganizationCreateResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else if (
-      Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
-    ) {
-      showMessage(
-        Authreducer.CreatePasswordResponseMessage,
-        "success",
-        setOpen
-      );
-
-      dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      showMessage(
-        Authreducer.GetSelectedPackageResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      showMessage(
-        Authreducer.EmailValidationResponseMessage,
-        "success",
-        setOpen
-      );
-      dispatch(cleareMessage());
-    } else {
-    }
-  }, [
-    Authreducer.EnterPasswordResponseMessage,
-    Authreducer.VerifyOTPEmailResponseMessage,
-    Authreducer.OrganizationCreateResponseMessage,
-    Authreducer.CreatePasswordResponseMessage,
-    Authreducer.EmailValidationResponseMessage,
-    Authreducer.GetSelectedPackageResponseMessage,
-  ]);
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
 
@@ -821,12 +757,7 @@ const OnboardDashboard = () => {
           </Col>
         </Row>
       </Container>
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+
       <ModalMeeting
         show={show}
         setShow={setShow}

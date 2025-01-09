@@ -223,7 +223,7 @@ const VideoPanelNormal = () => {
       return false;
     }
   }
-  
+
   useEffect(() => {
     if (
       isMeeting &&
@@ -556,6 +556,7 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("ScreenShare", "*");
         setIsScreenActive(!isScreenActive);
       }
+      // console.log(iframe, "iframeiframeiframe");
     }
   };
 
