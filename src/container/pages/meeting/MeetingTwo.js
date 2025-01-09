@@ -86,6 +86,7 @@ import {
   showSceduleProposedMeeting,
   validateEncryptedStringViewMeetingLinkApi,
   clearMeetingState,
+  emailRouteID,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -286,7 +287,6 @@ const NewMeeting = () => {
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
   console.log(isMeetingTypeFilter, "isMeetingTypeFilterisMeetingTypeFilter");
-
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
     Organizer: false,
@@ -618,7 +618,53 @@ const NewMeeting = () => {
           }
         }
         localStorage.removeItem("viewMeetingLink");
-      } else {
+      }
+      //  else if (localStorage.getItem("viewPublishMinutesLink") !== null) {
+      //   let getURL = localStorage.getItem("viewPublishMinutesLink");
+      //   const getResponse = await dispatch(
+      //     validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
+      //   );
+      //   console.log(getResponse, "viewFol_action");
+      //   if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+      //     const {
+      //       attendeeId,
+      //       isQuickMeeting,
+      //       meetingID,
+      //       meetingStatusId,
+      //       organizationID,
+      //       userID,
+      //       isChat,
+      //       talkGroupId,
+      //       isVideo,
+      //       videoCallUrl,
+      //       isMinutePublished,
+      //     } = getResponse.response;
+      //     setEditorRole({
+      //       status: String(meetingStatusId),
+      //       role:
+      //         attendeeId === 2
+      //           ? "Participant"
+      //           : attendeeId === 4
+      //           ? "Agenda Contributor"
+      //           : "Organizer",
+      //       isPrimaryOrganizer: false,
+      //     });
+      //     setVideoTalk({
+      //       isChat: isChat,
+      //       isVideoCall: isVideo,
+      //       talkGroupID: talkGroupId,
+      //     });
+      //     dispatch(emailRouteID(5));
+      //     setAdvanceMeetingModalID(meetingID);
+      //     setViewAdvanceMeetingModal(true);
+      //     dispatch(viewAdvanceMeetingPublishPageFlag(true));
+      //     dispatch(scheduleMeetingPageFlag(false));
+      //     localStorage.setItem("currentMeetingID", meetingID);
+      //     localStorage.setItem("isMinutePublished", isMinutePublished);
+      //   }
+      //   localStorage.removeItem("viewPublishMinutesLink");
+      // }
+      else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           console.log(meetingpageRow, "QuicMeetingOperations");
           let searchData = {

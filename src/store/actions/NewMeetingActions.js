@@ -1580,6 +1580,7 @@ const saveParcipantsProposeMeetingAPI = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -1736,6 +1737,7 @@ const SaveparticipantsApi = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+                console.log(Data, "setProposedMeetingDateApiFunc");
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -8293,7 +8295,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-
+  let currentView = localStorage.getItem("MeetingCurrentView")
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8384,7 +8386,7 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: true,
+                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8408,7 +8410,7 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
+                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));

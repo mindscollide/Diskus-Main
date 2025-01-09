@@ -367,7 +367,7 @@ const ParentAgenda = ({
                                       alt=""
                                       draggable={false}
                                     />
-                                    <p className={styles["agendaCreater"]}>
+                                    {/* <p className={styles["agendaCreater"]}>
                                       {data?.presenterName +
                                         " - (" +
                                         moment(
@@ -378,7 +378,7 @@ const ParentAgenda = ({
                                           timeFormatFunction(data.endDate)
                                         ).format("hh:mm a") +
                                         ")"}
-                                    </p>
+                                    </p> */}
                                   </div>
                                 </Col>
                               </Row>
