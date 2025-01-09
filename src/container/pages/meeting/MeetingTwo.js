@@ -85,6 +85,7 @@ import {
   boardDeckModal,
   showSceduleProposedMeeting,
   validateEncryptedStringViewMeetingLinkApi,
+  clearMeetingState,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -1104,6 +1105,7 @@ const NewMeeting = () => {
       setSearchMeeting(false);
       setSearchText("");
       setentereventIcon(false);
+      dispatch(clearMeetingState());
     };
   }, [CalendarDashboardEventData]);
 
@@ -1334,6 +1336,7 @@ const NewMeeting = () => {
 
   //Published Meeting Page
   const handlePublishedMeeting = async () => {
+    dispatch(clearMeetingState());
     let searchData = {
       Date: "",
       Title: "",
@@ -1368,6 +1371,8 @@ const NewMeeting = () => {
 
   //UnPublished Meeting Page
   const handleUnPublishedMeeting = async () => {
+    dispatch(clearMeetingState());
+
     let searchData = {
       Date: "",
       Title: "",
