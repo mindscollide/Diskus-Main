@@ -708,7 +708,8 @@ const ViewMeetingModal = ({
                     onClick={showMeetingMaterial}
                   />
                   <>
-                    {isMinutePublished === "true" ? (
+                    {isMinutePublished === "true" &&
+                    Number(editorRole.status) === 9 ? (
                       <Button
                         text={t("Minutes")}
                         className={
