@@ -632,28 +632,12 @@ const ProposedNewMeeting = ({
     : today;
   const maxSelectableDate = firstSelectedDate;
   console.log(sendResponseBy.date, "setProposedMeetingDateApiFunc");
-  console.log(
-    multiDatePickerDateChangIntoUTC(sendResponseBy.date),
-    "setProposedMeetingDateApiFunc"
-  );
-  console.log(
-    multiDatePickerDateChangIntoUTC(rows[0].dateSelect),
-    "setProposedMeetingDateApiFunc"
-  );
   //Send Response By Handler
   const SendResponseHndler = (date) => {
-    if (sendResponseBy.date === "") {
-      setSendResponseBy({
-        ...sendResponseBy,
-        date: rows[0].dateSelect,
-      });
-    } else {
-      console.log(new Date(date), "datedate");
-      setSendResponseBy({
-        ...sendResponseBy,
-        date: new Date(date),
-      });
-    }
+    setSendResponseBy({
+      ...sendResponseBy,
+      date: new Date(date),
+    });
   };
 
   //for handling Cancel the ProposedMeeting Page
@@ -1639,8 +1623,8 @@ const ProposedNewMeeting = ({
                         <DatePicker
                           value={sendResponseBy.date || rows[0].dateSelect}
                           format={"DD/MM/YYYY"}
-                          minDate={minSelectableDate.toLocaleString()}
-                          maxDate={maxSelectableDate.toLocaleString()}
+                          minDate={minSelectableDate.toDate()}
+                          maxDate={maxSelectableDate.toDate()}
                           placeholder="DD/MM/YYYY"
                           render={
                             <InputIcon
