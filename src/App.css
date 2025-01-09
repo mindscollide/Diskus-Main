@@ -5375,11 +5375,11 @@ body[dir="rtl"] .ant-result-subtitle {
 }
 
 .selectMember__control {
-  width: 412px !important;
+  width: 100% !important;
 }
 
 .selectMember__value-container {
-  width: 412px !important;
+  width: 100% !important;
 }
 
 .selectMember__multi-value {

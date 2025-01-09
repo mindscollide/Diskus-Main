@@ -1917,9 +1917,12 @@ const Minutes = ({
               const isOpen = openIndices.includes(index);
               const isOpenReviewer = openReviewerDetail.includes(index);
               let isRejectedMemberHas =
-                data?.MinuteStats?.rejectedByUsers.length !== 0;
+                data?.MinuteStats &&
+                data?.MinuteStats?.rejectedByUsers.length > 0
+                  ? true
+                  : false;
 
-              console.log(isRejectedMemberHas, "isRejectedMemberHas");
+              console.log({ isRejectedMemberHas, data }, "isRejectedMemberHas");
               return (
                 <Row className='mt-2'>
                   <Col
