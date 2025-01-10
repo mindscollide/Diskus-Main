@@ -1266,7 +1266,14 @@ const VideoCallNormalHeader = ({
                           : "screenShare-Toggle inactive-state"
                       }
                     >
-                      <Tooltip placement="topRight" title={t("Screen-share")}>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          isScreenActive
+                            ? t("Screen-share")
+                            : t("Stop-screen-share")
+                        }
+                      >
                         <img
                           onClick={screenShareButton}
                           src={NonActiveScreenShare}
