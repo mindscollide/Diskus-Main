@@ -36,6 +36,7 @@ import {
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   maxParticipantVideoDenied,
+  participantVideoButtonState,
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -362,6 +363,8 @@ const ParticipantVideoCallComponent = () => {
     }
     sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
     sessionStorage.removeItem("audioStreamId");
+    await dispatch(participantVideoButtonState(false));
+
     setIsMicEnabled(false); // Microphone is now disabled
     if (isWaiting) {
       let Data = {
@@ -373,7 +376,6 @@ const ParticipantVideoCallComponent = () => {
       };
       await dispatch(LeaveMeetingVideo(Data, navigate, t));
       // Stop video stream
-
       dispatch(maxParticipantVideoCallPanel(false));
     } else {
       dispatch(maxParticipantVideoCallPanel(false));

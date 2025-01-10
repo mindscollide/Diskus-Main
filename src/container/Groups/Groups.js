@@ -434,12 +434,8 @@ const Groups = () => {
       GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID),
     };
-    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
-    setGroupStatusUpdateData({
-      GroupID: 0,
-      StatusID: 0,
-    });
-    setStatusValue("");
+    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange,));
+
   };
 
   useEffect(() => {
@@ -704,6 +700,11 @@ const Groups = () => {
           show={modalStatusChange}
           onHide={() => {
             setModalStatusChange(false);
+            setGroupStatusUpdateData({
+              GroupID: 0,
+              StatusID: 0,
+            });
+            setStatusValue("");
           }}
           setShow={setModalStatusChange}
           modalFooterClassName='d-block'

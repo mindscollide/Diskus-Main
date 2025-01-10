@@ -70,6 +70,7 @@ import {
   ProposeNewMeetingSaveParticipants,
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   GetMeetingStatus,
+  ValidateEncryptedStringMeetingRelatedEmailDataRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -82,6 +83,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  participantVideoButtonState,
   participantVideoNavigationScreen,
   setAudioControlForParticipant,
   setAudioControlHost,
@@ -1578,6 +1580,7 @@ const saveParcipantsProposeMeetingAPI = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -1734,6 +1737,7 @@ const SaveparticipantsApi = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
+                console.log(Data, "setProposedMeetingDateApiFunc");
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -8169,6 +8173,7 @@ const JoinCurrentMeeting = (
             ) {
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
+              localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
                 isQuickMeeting ? false : true
@@ -8290,7 +8295,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-
+  let currentView = localStorage.getItem("MeetingCurrentView")
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8381,7 +8386,7 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: true,
+                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8405,7 +8410,7 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: true,
+                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -9053,7 +9058,14 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              dispatch(videoIconOrButtonState(false));
+              let meetingFlag = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              if (meetingFlag) {
+                await dispatch(videoIconOrButtonState(false));
+              } else {
+                await dispatch(participantVideoButtonState(false));
+              }
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -9440,7 +9452,161 @@ const AgendaPollVotingStartedAction = (response) => {
   };
 };
 
+// Details Committees Email Routes
+const validateEncryptedStringViewMeetingLink_Init = () => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_INIT,
+});
+
+const validateEncryptedStringViewMeetingLink_Success = (response, message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_SUCCESS,
+  response,
+  message,
+});
+
+const validateEncryptedStringViewMeetingLink_Fail = (message) => ({
+  type: actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_FAIL,
+  message,
+});
+const validateEncryptedStringViewMeetingLinkApi = (
+  encryptedString,
+  navigate,
+  t
+) => {
+  return async (dispatch) => {
+    try {
+      let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
+
+      dispatch(validateEncryptedStringViewMeetingLink_Init());
+
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ValidateEncryptedStringMeetingRelatedEmailDataRM.RequestMethod
+      );
+      form.append("RequestData", JSON.stringify(data));
+
+      let response = await axios.post(meetingApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          validateEncryptedStringViewMeetingLinkApi(
+            encryptedString,
+            navigate,
+            t
+          )
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_01".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Success(
+                responseResult.data,
+                t("Successfully")
+              )
+            );
+
+            return {
+              response: response.data.responseResult?.data,
+              responseCode: 1,
+              isExecuted: true,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_02".toLowerCase()
+            )
+          ) {
+            dispatch(validateEncryptedStringViewMeetingLink_Fail(""));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Invalid-request-data")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else if (
+            message.includes(
+              "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_04".toLowerCase()
+            )
+          ) {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          } else {
+            dispatch(
+              validateEncryptedStringViewMeetingLink_Fail(
+                t("Someting-went-wrong")
+              )
+            );
+            return {
+              isExecuted: false,
+              responseCode: 5,
+            };
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringViewMeetingLink_Fail(
+              t("Something-went-wrong")
+            )
+          );
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(
+          validateEncryptedStringViewMeetingLink_Fail(t("Something-went-wrong"))
+        );
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(
+        validateEncryptedStringViewMeetingLink_Fail(t("Something-went-wrong"))
+      );
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
 export {
+  validateEncryptedStringViewMeetingLinkApi,
   newMeetingGlobalLoader,
   meetingReminderNotifcation,
   getAllMeetingUsersRSVPApi,

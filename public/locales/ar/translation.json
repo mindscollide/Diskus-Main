@@ -1181,7 +1181,7 @@
   "Upload-document": "تحميل وثيقة",
   "Recently-added-files": "الملفات المضافة مؤخرا",
   "Dormant-inactive-users-for": "المستخدمون الخاملون غير النشطين لـ",
-  "Calendar-months-span": "فترة أشهر التقويم",
+  "Calendar-months-span": "نطاق التقويم (بالأشهر)",
   "Auto-close-resolution": "دقة الإغلاق التلقائي",
   "Recent-Chats": "اخر الدردشات",
   "Private-Message": "رسالة خاصة",
@@ -2315,7 +2315,7 @@
   "Assign-tasks-in-real-time-while-the-meeting-is-underway": "Assign tasks in real-time while the meeting is underway",
   "Copy-invite-link": "Copy Invite Link",
   "In-progress-tasks": "In Progress Tasks",
-  "The-meeting-has-ended": "The meeting has ended",
+  "The-meeting-has-ended": "The Meeting Has Ended",
   "Has-archived-the-committee": "Has archived the committee",
   "Has-shared-a-file-with-you-as-viewer": "Has shared a file with you as viewer",
   "Required-fields-should-not-be-empty": "Required fields should not be empty",
@@ -2332,5 +2332,10 @@
   "Cannot-add-option-with-same-name": "Cannot add option with same name",
   "Voting-options-should-be-2-or-more-than-2": "Voting options should be 2 or more than 2",
   "Mute-all": "Mute All",
-  "Unmute-all": "Unmute all"
+  "Unmute-all": "Unmute all",
+  "None-of-above": "None of the above",
+  "Stop-sharing": "Stop Sharing",
+  "The-host-has-ended-the-meeting": "The host has ended the meeting.",
+  "Thanks-for-joining": "Thanks for joining!",
+  "With-attachments": "With Attachments"
 }

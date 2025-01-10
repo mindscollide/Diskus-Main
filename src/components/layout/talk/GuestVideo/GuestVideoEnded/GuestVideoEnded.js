@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import imageChair from "../../../../../assets/images/Recent Activity Icons/Video/ChairImage.png";
+import VideoEnd from "../../../../../assets/images/Recent Activity Icons/Video/VideoEnd.png";
+
 import "./GuestVideoEnded.css";
 
 const GuestVideoEnded = () => {
@@ -23,18 +25,20 @@ const GuestVideoEnded = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <img src={imageChair} />
+                      <img src={VideoEnd} />
                     </Col>
                   </Row>
 
-                  <Row>
+                  <Row className="mt-4">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <p className="main-heading">{t("We-re-Sorry")}</p>
+                      <p className="main-heading">
+                        {t("The-meeting-has-ended")}
+                      </p>
                     </Col>
                   </Row>
 
@@ -43,12 +47,23 @@ const GuestVideoEnded = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex justify-content-center"
+                      className="d-flex justify-content-center "
                     >
                       <p className="sub-Heading-main">
-                        {t(
-                          "The-meeting-has-ended-and-this-link-is-no-longer-active"
-                        )}
+                        {t("The-host-has-ended-the-meeting")}
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center "
+                    >
+                      <p className="sub-Heading-main">
+                        {t("Thanks-for-joining")}
                       </p>
                     </Col>
                   </Row>

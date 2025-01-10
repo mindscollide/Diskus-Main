@@ -10,6 +10,7 @@ import { DataroomProvider } from "./context/DataroomContext";
 import { GroupsProvider } from "./context/GroupsContext";
 import { CommitteeProvider } from "./context/CommitteeContext";
 import { PollsProvider } from "./context/PollsContext";
+import { NotesProvider } from "./context/NotesContext";
 const root = ReactDOM.createRoot(document.getElementById("root")); // Assuming you're using BrowserRouter
 
 // Disable console.* in production
@@ -28,7 +29,9 @@ root.render(
           <CommitteeProvider>
             <DataroomProvider>
               <PollsProvider>
-                <App />
+                <NotesProvider>
+                  <App />
+                </NotesProvider>
               </PollsProvider>
             </DataroomProvider>
           </CommitteeProvider>

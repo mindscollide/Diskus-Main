@@ -9,10 +9,12 @@
   font-size: 30px;
   font-weight: 600;
   color: #6172d6 !important;
+  margin-bottom: 10px;
 }
 
 .sub-Heading-main {
   font-size: 26px;
   font-weight: 600;
   color: #5a5a5a !important;
+  margin-bottom: 0px !important;
 }

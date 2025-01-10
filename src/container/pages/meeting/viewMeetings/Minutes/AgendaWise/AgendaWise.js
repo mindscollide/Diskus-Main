@@ -1161,7 +1161,7 @@ const AgendaWise = ({
         const isOpen = openIndices.includes(index);
         let attachmentResult = hasAttachments(data);
         let isRejectedMemberHas = data.minuteData.filter(
-          (data, index) => data?.MinuteStats?.rejectedByUsers.length !== 0
+          (data, index) => data?.MinuteStats?.rejectedByUsers.length > 0
         );
         console.log(
           isRejectedMemberHas,
@@ -1192,7 +1192,7 @@ const AgendaWise = ({
                             <Tooltip
                               placement='top'
                               showArrow={false}
-                              title={`Rejected By ${isRejectedMemberHas[0].MinuteStats.rejected} Members`}>
+                              title={`Rejected By ${isRejectedMemberHas[0]?.MinuteStats?.rejected} Members`}>
                               <img
                                 className={styles["Attachment"]}
                                 alt=''

@@ -35,8 +35,6 @@ const ModalMeeting = ({ ModalTitle }) => {
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
   const { setCurrentStep } = useTour();
-  const [checked, setChecked] = useState(true);
-  console.log(setChecked, "checkedchecked");
 
   let meetingDateTime =
     TimeHHMMFormat("010101") + ", " + moment("20220505").format("Do MMM, YYYY");
@@ -167,7 +165,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         className='SearchCheckbox'
                         name='IsChat'
                         label={t("Group-chat")}
-                        checked={checked}
+                        checked={true}
                         classNameDiv='checkboxParentClass'></Checkbox>
                     </Col>
                   </Row>

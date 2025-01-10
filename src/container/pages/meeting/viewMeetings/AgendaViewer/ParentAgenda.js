@@ -194,16 +194,16 @@ const ParentAgenda = ({
     );
   };
 
-  // useEffect(() => {
-  //   if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-  //     showMessage(
-  //       t("Thank-you-for-participanting-in-voting"),
-  //       "error",
-  //       setOpen
-  //     );
-  //     dispatch(clearResponseMessage(""));
-  //   }
-  // }, [MeetingAgendaReducer.ResponseMessage]);
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+      showMessage(
+        t("Thank-you-for-participanting-in-voting"),
+        "success",
+        setOpen
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
 
   const pdfData = (record, ext) => {
     let Data = {
@@ -302,7 +302,7 @@ const ParentAgenda = ({
                               ? "p-0 text-start"
                               : "p-0 text-end"
                           }>
-                          <p
+                          {/* <p
                             className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                           >
                             {moment(timeFormatFunction(data.startDate)).format(
@@ -312,7 +312,7 @@ const ParentAgenda = ({
                             {moment(timeFormatFunction(data.endDate)).format(
                               "hh:mm a"
                             )}
-                          </p>
+                          </p> */}
                           {printFlag === true || exportFlag === true ? null : (
                             <>
                               {Number(data.agendaVotingID) !== 0 &&

@@ -234,6 +234,8 @@ const VideoCallNormalHeader = ({
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
+  console.log(isScreenActive, "isScreenActiveisScreenActive");
+
   // to show a host participants list counter
   const participantCounter = participantCounterList?.length;
 
@@ -926,7 +928,12 @@ const VideoCallNormalHeader = ({
                           : "screenShare-Toggle inactive-state"
                       }
                     >
-                      <Tooltip placement="topRight" title={t("Screen-share")}>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          isScreenActive ? t("Stop-sharing") : t("Screen-share")
+                        }
+                      >
                         <img
                           onClick={screenShareButton}
                           src={NonActiveScreenShare}
@@ -1215,7 +1222,7 @@ const VideoCallNormalHeader = ({
                       title={
                         audioControlForParticipant
                           ? t("Enable-mic")
-                          : t("sadfasdfasdf-mic")
+                          : t("Disable-mic")
                       }
                     >
                       <img
@@ -1269,9 +1276,7 @@ const VideoCallNormalHeader = ({
                       <Tooltip
                         placement="topRight"
                         title={
-                          isScreenActive
-                            ? t("Screen-share")
-                            : t("Stop-screen-share")
+                          isScreenActive ? t("Stop-sharing") : t("Screen-share")
                         }
                       >
                         <img
@@ -1585,7 +1590,12 @@ const VideoCallNormalHeader = ({
                         : "screenShare-Toggle inactive-state"
                     }
                   >
-                    <Tooltip placement="topRight" title={t("Screen-share")}>
+                    <Tooltip
+                      placement="topRight"
+                      title={
+                        isScreenActive ? t("Stop-sharing") : t("Screen-share")
+                      }
+                    >
                       <img
                         onClick={screenShareButton}
                         src={NonActiveScreenShare}

@@ -272,7 +272,9 @@ const PrivateRoutes = () => {
       if (
         currentUrl
           .toLowerCase()
-          .includes("/Diskus/documentViewer?documentViewer_action=".toLowerCase())
+          .includes(
+            "/Diskus/documentViewer?documentViewer_action=".toLowerCase()
+          )
       ) {
         let getValue = await getActionValue(
           currentUrl,
@@ -289,6 +291,22 @@ const PrivateRoutes = () => {
         let getValue = getActionValue(currentUrl, "viewFol_action=");
         localStorage.setItem("viewFolderLink", getValue);
       }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "viewMeeting_action=");
+        localStorage.setItem("viewMeetingLink", getValue);
+      }
+      // if (
+      //   currentUrl
+      //     .toLowerCase()
+      //     .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
+      // ) {
+      //   let getValue = getActionValue(currentUrl, "viewMeetingMinutes_action=");
+      //   localStorage.setItem("viewPublishMinutesLink", getValue);
+      // }
     };
     callRoutingFunction();
     // Action: Meeting RSVP
@@ -323,7 +341,9 @@ const PrivateRoutes = () => {
           currentUrl.toLowerCase().includes("Diskus/dataroom".toLowerCase()) ||
           currentUrl
             .toLowerCase()
-            .includes("Diskus/documentViewer?documentViewer_action".toLowerCase()) ||
+            .includes(
+              "Diskus/documentViewer?documentViewer_action".toLowerCase()
+            ) ||
           currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
           currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
           currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||

@@ -56,6 +56,7 @@ const NewDashobard = () => {
     ) {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
     }
+ 
   }, []);
 
   const closeModal = () => {

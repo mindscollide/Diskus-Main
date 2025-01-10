@@ -230,7 +230,8 @@ const SceduleProposedmeeting = ({
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}>
+                title={record.userName}
+              >
                 {record.userName}
               </span>
             ) : (
@@ -243,6 +244,7 @@ const SceduleProposedmeeting = ({
         </>
       ),
     },
+
     ...formattedDates.map((formattedDate, index) => {
       let record = proposedDatesData[index];
 
@@ -268,7 +270,8 @@ const SceduleProposedmeeting = ({
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}>
+            onClick={() => toggleActive(index, record, formattedDate)}
+          >
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -293,14 +296,15 @@ const SceduleProposedmeeting = ({
               (date) =>
                 date.proposedDate === moment(formattedDate).format("YYYYMMDD")
             );
+            console.log(proposedDate, "proposedDateasaddad");
             if (proposedDate?.isSelected) {
               return (
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width='20.7px'
-                  height='14.21px'
-                  alt=''
+                  width="20.7px"
+                  height="14.21px"
+                  alt=""
                 />
               );
             }
@@ -309,6 +313,33 @@ const SceduleProposedmeeting = ({
         },
       };
     }),
+
+    {
+      title: t("None-of-above"),
+      dataIndex: "NoneOfAbove",
+      key: "NoneOfAbove",
+      render: (text, record) => {
+        // ye by default blue tick show nahi krega is column ka Total ki row ma
+        if (record?.userName === "Total") {
+          return null;
+        }
+
+        // ye all proposedDates ma isSelected ko check krega ka wo is equal to false
+        const allDatedIsUnSelected = record?.selectedProposedDates?.every(
+          (date) => date.isSelected === false
+        );
+        console.log(allDatedIsUnSelected, "allDatedIsUnSelected");
+        return allDatedIsUnSelected ? (
+          <img
+            src={BlueTick}
+            className={styles["TickIconClass"]}
+            width="20.7px"
+            height="14.21px"
+            alt=""
+          />
+        ) : null;
+      },
+    },
   ];
 
   return (
@@ -333,10 +364,10 @@ const SceduleProposedmeeting = ({
                   {t("Schedule-proposed-meetings")}
                 </span>
               </Col>
-              <Col lg={1} md={1} sm={1} className='d-flex justify-content-end'>
+              <Col lg={1} md={1} sm={1} className="d-flex justify-content-end">
                 <img
                   src={BlackCrossIcon}
-                  alt=''
+                  alt=""
                   width={15}
                   onClick={handleCrossIconClass}
                 />
@@ -353,7 +384,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className='SceduleProposedMeeting'
+                    className="SceduleProposedMeeting"
                     rows={updateTableRows}
                   />
                   <span>
@@ -362,7 +393,8 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center mt-4'>
+                        className="d-flex justify-content-center mt-4"
+                      >
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}

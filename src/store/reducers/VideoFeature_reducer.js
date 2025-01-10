@@ -78,6 +78,7 @@ const initialState = {
   leaveMeetingOnEndStatusMqttFlag: false,
   leaveMeetingVideoOnEndStatusMqttFlag: false,
   enableDisableVideoState: false,
+  participantEnableVideoState: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -940,6 +941,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
+    //For VideoIcon Enable and Disable button From Participant Side
+    case actions.PARTICIPANT_BUTTON_VIDEO_ENABLE_DISABLE: {
+      return {
+        ...state,
+        participantEnableVideoState: action.response,
+      };
+    }
+
     case actions.LEAVE_MEETING_ON_LOGOUT:
       return {
         ...state,
@@ -950,6 +959,12 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         leaveMeetingVideoOnLogoutResponse: action.response,
+      };
+
+    case actions.CLEAR_VIDEOFEATURE_MESSAGES:
+      return {
+        ...state,
+        ResponseMessage: "",
       };
 
     default:

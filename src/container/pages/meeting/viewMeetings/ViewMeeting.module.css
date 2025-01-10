@@ -55,3 +55,14 @@
   font-weight: 600 !important;
   color: #fff !important;
 }
+.LeavemeetingBtn {
+  padding: 12px 30px !important;
+  width: 100%;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
