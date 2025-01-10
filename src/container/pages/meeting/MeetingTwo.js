@@ -3527,17 +3527,8 @@ const NewMeeting = () => {
     }
   }, [meetingReminderNotification]);
 
-  //WebNotification Global Fucntion trigger UseEffect
-  console.log(
-    "webNotifactionDataRoutecheckFlag",
-    globalFunctionWebnotificationFlag
-  );
   useEffect(() => {
     try {
-      console.log(
-        "webNotifactionDataRoutecheckFlag",
-        globalFunctionWebnotificationFlag
-      );
       if (globalFunctionWebnotificationFlag) {
         if (webNotifactionDataRoutecheckFlag) {
           console.log("webNotifactionDataRoutecheckFlag");
@@ -3564,6 +3555,7 @@ const NewMeeting = () => {
 
     return () => {};
   }, [globalFunctionWebnotificationFlag]);
+
   return (
     <>
       <section className={styles["NewMeeting_container"]}>

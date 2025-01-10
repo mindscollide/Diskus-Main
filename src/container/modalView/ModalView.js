@@ -58,7 +58,6 @@ import NormalParticipantVideoComponent from "../pages/meeting/meetingVideoCall/n
 import MaxParticipantVideoDeniedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
-import { webnotificationGlobalFlag } from "../../store/actions/UpdateUserNotificationSetting";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization

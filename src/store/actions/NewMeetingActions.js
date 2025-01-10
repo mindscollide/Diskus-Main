@@ -1025,14 +1025,7 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 localStorage.getItem("webNotifactionDataRoutecheckFlag")
               );
               try {
-                console.log(
-                  "webNotifactionDataRoutecheckFlag",
-                  webNotifactionDataRoutecheckFlag
-                );
-
                 if (webNotifactionDataRoutecheckFlag) {
-                  console.log("webNotifactionDataRoutecheckFlag");
-
                   dispatch(webnotificationGlobalFlag(true));
                 }
               } catch (error) {
@@ -9366,13 +9359,6 @@ const GetMeetingStatusDataAPI = (
   FlagOnRouteClickAdvanceMeet,
   setViewAdvanceMeetingModal
 ) => {
-  console.log(
-    "webNotifactionDataRoutecheckFlag",
-    Data,
-    setEditorRole,
-    FlagOnRouteClickAdvanceMeet,
-    setViewAdvanceMeetingModal
-  );
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());

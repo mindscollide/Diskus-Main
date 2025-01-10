@@ -416,15 +416,14 @@ const ParticipantVideoCallComponent = () => {
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
-    console.log("webNotifactionDataRoutecheckFlag");
+
     const webNotifactionDataRoutecheckFlag = JSON.parse(
       localStorage.getItem("webNotifactionDataRoutecheckFlag")
     );
     try {
       if (webNotifactionDataRoutecheckFlag) {
-        console.log("webNotifactionDataRoutecheckFlag");
         let currentURL = window.location.href;
-        console.log("webNotifactionDataRoutecheckFlag");
+
         WebNotificationExportRoutFunc(
           currentURL,
           dispatch,

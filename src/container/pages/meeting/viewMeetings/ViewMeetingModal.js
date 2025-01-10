@@ -570,21 +570,6 @@ const ViewMeetingModal = ({
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
-    // let webNotifactionDataRoutecheckFlag = JSON.parse(
-    //   localStorage.getItem("webNotifactionDataRoutecheckFlag")
-    // );
-    // try {
-    //   console.log(
-    //     "webNotifactionDataRoutecheckFlag",
-    //     webNotifactionDataRoutecheckFlag
-    //   );
-    //   if (webNotifactionDataRoutecheckFlag) {
-    //     console.log("webNotifactionDataRoutecheckFlag");
-    //     dispatch(webnotificationGlobalFlag(true));
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   useEffect(() => {
