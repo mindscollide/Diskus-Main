@@ -33,6 +33,12 @@ import {
 } from "../../../store/actions/DataRoom_actions.js";
 import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
 import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
+import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -74,6 +80,11 @@ const WebNotfication = ({
     (state) => state.settingReducer.realTimeNotificationCountGlobalData
   );
 
+  //Extracting Current Meeting Status
+  const CurrentMeetingStatus = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingStatus
+  );
+  console.log(CurrentMeetingStatus, "CurrentMeetingStatus");
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
@@ -163,50 +174,55 @@ const WebNotfication = ({
     console.log(PayLoadData, "PayLoadData");
     if (NotificationData.notificationActionID === 1) {
       // Check if the current URL contains the target path
-      if (currentURL.includes("/Diskus/Meeting")) {
-        //If you already on the Meeting Page
-        if (PayLoadData.IsQuickMeeting === true) {
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
-          );
-        } else {
-          localStorage.setItem("AdvanceMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationAdvanceMeetingID",
-            PayLoadData.MeetingID
-          );
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(
-            GetMeetingStatusDataAPI(
-              navigate,
-              t,
-              Data,
-              setEditorRole,
-              true,
-              setViewAdvanceMeetingModal
-            )
-          );
-        }
+      if (CurrentMeetingStatus === 10) {
+        localStorage.setItem("navigateLocation", "Meeting");
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       } else {
-        //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
-        if (PayLoadData.IsQuickMeeting === true) {
-          navigate("/Diskus/Meeting");
-          localStorage.setItem("QuicMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationQuickMeetingID",
-            PayLoadData.MeetingID
-          );
+        if (currentURL.includes("/Diskus/Meeting")) {
+          //If you already on the Meeting Page
+          if (PayLoadData.IsQuickMeeting === true) {
+            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+            dispatch(
+              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+            );
+          } else {
+            localStorage.setItem("AdvanceMeetingOperations", true);
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal
+              )
+            );
+          }
         } else {
-          //Advance Meeting
-          navigate("/Diskus/Meeting");
-          localStorage.setItem("AdvanceMeetingOperations", true);
-          localStorage.setItem(
-            "NotificationAdvanceMeetingID",
-            PayLoadData.MeetingID
-          );
-          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+          //Notification For Meeting Updated And Published For Participant (Create Update Both scenarios are same A/c SRS)
+          if (PayLoadData.IsQuickMeeting === true) {
+            navigate("/Diskus/Meeting");
+            localStorage.setItem("QuicMeetingOperations", true);
+            localStorage.setItem(
+              "NotificationQuickMeetingID",
+              PayLoadData.MeetingID
+            );
+          } else {
+            //Advance Meeting
+            navigate("/Diskus/Meeting");
+            localStorage.setItem("AdvanceMeetingOperations", true);
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+            dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+          }
         }
       }
     } else if (NotificationData.notificationActionID === 2) {
