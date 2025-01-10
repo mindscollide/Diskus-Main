@@ -574,7 +574,6 @@ const VideoPanelNormal = () => {
           videoElement.play(); // Ensure video playback starts
         }
 
-
         // Listen for when the stream ends (i.e., user stops sharing)
         stream.getVideoTracks()[0].addEventListener("ended", () => {
           window.parent.postMessage("ScreenShareEnded", "*");
@@ -595,31 +594,6 @@ const VideoPanelNormal = () => {
       }
     }
   };
-  useEffect(() => {
-    const handleIframeMessages = (event) => {
-      // Ensure the message comes from the expected iframe's origin
-      console.log("Screen sharing status:", event);
-      if (event.origin === callerURL) {
-        // Replace with your iframe's origin
-        const data = event.data;
-
-        // Handle specific messages
-        if (data.type === "ScreenShareStatus") {
-          console.log("Screen sharing status:", data.payload);
-        } else if (data.type === "WebRTCLogs") {
-          console.log("WebRTC Logs:", data.payload);
-        }
-      }
-    };
-
-    // Attach event listener
-    window.addEventListener("message", handleIframeMessages);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener("message", handleIframeMessages);
-    };
-  }, []);
 
   const layoutCurrentChange = () => {
     let videoView = localStorage.getItem("VideoView");
