@@ -43,6 +43,7 @@ import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -569,6 +570,21 @@ const ViewMeetingModal = ({
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
+    // let webNotifactionDataRoutecheckFlag = JSON.parse(
+    //   localStorage.getItem("webNotifactionDataRoutecheckFlag")
+    // );
+    // try {
+    //   console.log(
+    //     "webNotifactionDataRoutecheckFlag",
+    //     webNotifactionDataRoutecheckFlag
+    //   );
+    //   if (webNotifactionDataRoutecheckFlag) {
+    //     console.log("webNotifactionDataRoutecheckFlag");
+    //     dispatch(webnotificationGlobalFlag(true));
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   useEffect(() => {
@@ -615,13 +631,14 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -637,10 +654,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={

@@ -473,7 +473,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleWebNotication = () => {
-    if (CurrentMeetingStatus === 10) {
+    if (JSON.parse(localStorage.getItem("isMeetingVideo")) === true) {
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
