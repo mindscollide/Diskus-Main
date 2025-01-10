@@ -8295,7 +8295,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-  let currentView = localStorage.getItem("MeetingCurrentView")
+  let currentView = localStorage.getItem("MeetingCurrentView");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8386,7 +8386,8 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8410,7 +8411,8 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -9058,14 +9060,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              let meetingFlag = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
-              if (meetingFlag) {
-                await dispatch(videoIconOrButtonState(false));
-              } else {
-                await dispatch(participantVideoButtonState(false));
-              }
+              // let meetingFlag = JSON.parse(
+              //   localStorage.getItem("isMeetingVideoHostCheck")
+              // );
+
+              await dispatch(videoIconOrButtonState(false));
+              await dispatch(participantVideoButtonState(false));
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,

@@ -50,6 +50,7 @@ import {
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingOnlogout,
+  participantVideoButtonState,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -893,6 +894,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
             ) {
+              dispatch(participantVideoButtonState(false));
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
@@ -981,6 +983,25 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
+              const meetingHost = {
+                isHost: true,
+                isHostId: Number(localStorage.getItem("userID")),
+                isDashboardVideo: true,
+              };
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              let getMeetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+
+              if (getMeetingHost.isHost) {
+                localStorage.setItem("isMeetingVideoHostCheck", true);
+              } else {
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+              }
+              // console.log(getMeetingHost.isHost, "getMeetingHostisHost");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
