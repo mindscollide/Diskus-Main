@@ -140,6 +140,7 @@ import {
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import { useTranslation } from "react-i18next";
 import {
+  castYourVotePollModal,
   createPollCommitteesMQTT,
   createPollGroupsMQTT,
   createPollMeetingMQTT,
@@ -299,26 +300,19 @@ const Dashboard = () => {
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
-
-    console.log("mqtt mqmqmqmqmqmq");
     if (
       Number(getUserID) === Number(data?.authToken?.userID) &&
       Number(data?.deviceID) === 1
     ) {
-      console.log("mqtt mqmqmqmqmqmq");
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
       if (isMeeting) {
-        console.log("mqtt mqmqmqmqmqmq");
         if (isMeetingVideo) {
-          console.log("mqtt mqmqmqmqmqmq");
           dispatch(leaveMeetingVideoOnlogout(true));
         } else {
-          console.log("mqtt mqmqmqmqmqmq");
           dispatch(leaveMeetingOnlogout(true));
         }
       } else {
-        console.log("mqtt mqmqmqmqmqmq");
         dispatch(userLogOutApiFunc(navigate, t));
       }
     }
@@ -361,16 +355,12 @@ const Dashboard = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (Number(meetingVideoID) === Number(payload?.meeting?.pK_MDID)) {
-      console.log("mqtt mqmqmqmqmqmq");
       if (isMeeting) {
-        console.log("mqtt mqmqmqmqmqmq");
         let typeOfMeeting = localStorage.getItem("typeOfMeeting");
         if (String(typeOfMeeting) === "isQuickMeeting") {
           if (isMeetingVideo) {
-            console.log("mqtt mqmqmqmqmqmq");
             dispatch(endMeetingStatusForQuickMeetingVideo(true));
           } else {
-            console.log("mqtt mqmqmqmqmqmq");
             dispatch(endMeetingStatusForQuickMeetingModal(true));
           }
         } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
@@ -2037,7 +2027,16 @@ const Dashboard = () => {
         ) {
           dispatch(createPollMeetingMQTT(data.payload));
           setNotificationID(id);
-
+          let currentMeetingActive =
+            localStorage.getItem("currentMeetingID") !== null
+              ? Number(localStorage.getItem("currentMeetingID"))
+              : 0;
+          console.log(currentMeetingActive, "currentMeetingActive");
+          if (
+            Number(data?.payload?.meetingID) === Number(currentMeetingActive)
+          ) {
+            dispatch(castYourVotePollModal(true));
+          }
           if (data.viewable) {
             setNotification({
               ...notification,
@@ -2996,29 +2995,28 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className="sidebar_layout" width={"4%"}>
+            <Sider className='sidebar_layout' width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className="dashbaord_data">
+              <div className='dashbaord_data'>
                 <Outlet />
               </div>
-              <div className="talk_features_home">
+              <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt="" draggable="false" />
+              <img src={IconMetroAttachment} alt='' draggable='false' />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3035,8 +3033,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3067,25 +3065,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
                   <>
-                    <Row className="mb-1">
+                    <Row className='mb-1'>
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className="d-flex justify-content-center">
+                          <Col className='d-flex justify-content-center'>
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className="text-center mt-4">
+                          <Col className='text-center mt-4'>
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3101,13 +3099,12 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-3">
+                    <Row className='mb-3'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

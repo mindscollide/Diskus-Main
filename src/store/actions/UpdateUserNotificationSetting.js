@@ -331,9 +331,27 @@ const DiskusGlobalUnreadNotificationCount = (response) => {
   };
 };
 
+//Notification Data Global State if Clicked in bettween Video
+const webNotificationDataLeaveVideoIntiminationModal = (response) => {
+  return {
+    type: actions.WEB_NOTIFICATION_DATA_VIDEO_INITIMINATION,
+    response: response,
+  };
+};
+
+//Notification Data Global State if Clicked in bettween Video
+const webnotificationGlobalFlag = (response) => {
+  return {
+    type: actions.GLOBAL_FLAG_WEB_NOTIFICATION_FUNCTION,
+    response: response,
+  };
+};
+
 export {
   getUserNotificationSetting,
   DiskusWebNotificationActionMethodAPI,
   DiskusWebNotificationMarkAsReadAPI,
   DiskusGlobalUnreadNotificationCount,
+  webNotificationDataLeaveVideoIntiminationModal,
+  webnotificationGlobalFlag,
 };

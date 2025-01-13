@@ -71,6 +71,11 @@ import OrganizationLevelConfigUM from "../container/pages/UserMangement/Organzia
 import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin.js";
 import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin.js";
 import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin.js";
+import {
+  ErrorFallback,
+  logErrors,
+} from "../components/elements/ErrorFallBack/index.jsx";
+import { ErrorBoundary } from "react-error-boundary";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -269,7 +274,9 @@ export const router = createHashRouter(
             path='dataroom'
             element={
               <RouteWrapperUser name='dataroom'>
-                <DataRoom />
+                <ErrorBoundary fallback={ErrorFallback} onError={logErrors}>
+                  <DataRoom />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />

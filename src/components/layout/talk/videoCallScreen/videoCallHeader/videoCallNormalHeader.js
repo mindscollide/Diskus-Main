@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Row, Col, Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
-import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  WebNotificationExportRoutFunc,
+} from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
@@ -60,8 +63,13 @@ import {
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,
 } from "../../../../../store/actions/Guest_Video";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
+import { webnotificationGlobalFlag } from "../../../../../store/actions/UpdateUserNotificationSetting";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -78,6 +86,8 @@ const VideoCallNormalHeader = ({
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+  const location = useLocation();
 
   const { editorRole } = useContext(MeetingContext);
 
@@ -551,6 +561,7 @@ const VideoCallNormalHeader = ({
     dispatch(participantPopup(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
       await dispatch(leaveMeetingVideoOnlogout(false));
