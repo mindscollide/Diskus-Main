@@ -2659,7 +2659,23 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
       });
   });
 };
+
+const castYourVotePollModal = (response) => {
+  return {
+    type: actions.CAST_VOTE_POLL_MODAL,
+    response: response,
+  };
+};
+
+const setCastVoteID = (response) => {
+  return {
+    type: actions.POLL_ID_FOR_CAST_VOTE,
+    response: response,
+  };
+};
 export {
+  setCastVoteID,
+  castYourVotePollModal,
   validateStringPollApi,
   deletePollsMQTT,
   createPollGroupsMQTT,
