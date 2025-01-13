@@ -2072,6 +2072,7 @@ const Dashboard = () => {
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
         ) {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+          localStorage.setItem("RingerCallCheckFlag", true);
           localStorage.setItem("callType", data.payload.callType);
           console.log("leavecallMeetingVideo");
           localStorage.setItem("callTypeID", data.payload.callTypeID);
