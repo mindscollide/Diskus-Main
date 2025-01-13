@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import sharedIcon from "../../../assets/images/shared_icon.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
-
+import EmptyPNGScreenSearch from "../../../assets/images/EmptySearchPNGDataRoom.png";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd/lib";
 import { Row, Col } from "react-bootstrap";
@@ -2473,6 +2473,34 @@ const SearchComponent = ({
               rows={searchAllData}
               pagination={false}
               size={"middle"}
+              locale={{
+                emptyText: (
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex flex-column flex-wrap gap-1 justify-content-center align-items-center"
+                    >
+                      <img
+                        src={EmptyPNGScreenSearch}
+                        alt=""
+                        height="227.48px"
+                        width="199.04px"
+                      />
+                      <span className={styles["NoMatchFoundHeading"]}>
+                        {t("No-match-found")}
+                      </span>
+                      <span className={styles["NoMatchFoundSubHeading"]}>
+                        {t("Try-another-search")}
+                      </span>
+                      <span className={styles["NoMatchFoundSubHeading"]}>
+                        {t("Find-a-file-by-type-owner-and-more.")}
+                      </span>
+                    </Col>
+                  </Row>
+                ),
+              }}
             />
           </InfiniteScroll>
         </>
