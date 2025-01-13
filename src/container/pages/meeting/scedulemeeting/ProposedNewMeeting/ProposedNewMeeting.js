@@ -711,10 +711,10 @@ const ProposedNewMeeting = ({
       // Compare sendResponseBy.date with current date
       const currentDate = new Date(getCurrentDateforMeeting.DateGMT);
       const sendDate = new Date(sendResponseBy.date);
-      console.log(currentDate, "currentDatecurrentDatecurrentDate");
-      console.log(sendDate, "currentDatecurrentDatecurrentDate");
-      console.log(sendDate < currentDate, "currentDatecurrentDatecurrentDate");
-      if (sendDate < currentDate) {
+      if (
+        multiDatePickerDateChangIntoUTC(sendDate).slice(0, 8) <
+        multiDatePickerDateChangIntoUTC(currentDate).slice(0, 8)
+      ) {
         showMessage(t("Send Response  Date has expired"), "error", setOpen);
       } else if (
         proposedMeetingDetails.MeetingTitle !== "" &&

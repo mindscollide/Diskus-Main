@@ -101,6 +101,7 @@ import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 
 const boardDeckModal = (response) => {
   return {
@@ -1019,7 +1020,17 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
               };
-              dispatch(SearchMeeting_Success(newMeetingData, ""));
+              await dispatch(SearchMeeting_Success(newMeetingData, ""));
+              let webNotifactionDataRoutecheckFlag = JSON.parse(
+                localStorage.getItem("webNotifactionDataRoutecheckFlag")
+              );
+              try {
+                if (webNotifactionDataRoutecheckFlag) {
+                  dispatch(webnotificationGlobalFlag(true));
+                }
+              } catch (error) {
+                console.log(error);
+              }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -8295,7 +8306,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-  let currentView = localStorage.getItem("MeetingCurrentView")
+  let currentView = localStorage.getItem("MeetingCurrentView");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8386,7 +8397,8 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8410,7 +8422,8 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
