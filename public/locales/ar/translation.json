@@ -2337,5 +2337,8 @@
   "Stop-sharing": "Stop Sharing",
   "The-host-has-ended-the-meeting": "The host has ended the meeting.",
   "Thanks-for-joining": "Thanks for joining!",
-  "With-attachments": "With Attachments"
+  "With-attachments": "With Attachments",
+  "No-match-found": "NO MATCH FOUND",
+  "Try-another-search": "Try another search, or click the search box to",
+  "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more."
 }

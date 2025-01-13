@@ -2357,5 +2357,8 @@
   "UserID/Note-is-missing-in-agenda": "UserID/Note is missing in agenda",
   "Title-is-missing-in-agenda": "Title is missing in agenda",
   "Voting-for-the-agenda-of-the-meeting-has-now-started": "Voting for the agenda of the meeting has now started.",
-  "With-attachments": "With Attachments"
+  "With-attachments": "With Attachments",
+  "No-match-found": "NO MATCH FOUND",
+  "Try-another-search": "Try another search, or click the search box to",
+  "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more."
 }
