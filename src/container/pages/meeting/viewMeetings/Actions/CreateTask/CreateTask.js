@@ -28,7 +28,7 @@ import {
   saveTaskDocumentsAndAssigneesApi,
 } from "../../../../../../store/actions/Action_Meeting";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
+import { convertGMTDateintoUTC, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import {
   CreateToDoList,
   saveFilesTaskApi,
@@ -375,20 +375,28 @@ const CreateTask = ({
   const changeDateActionCreate = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let meetingDateValueFormat2 = new Date(date);
-    setAgendaDueDate(meetingDateValueFormat);
-    setcreateTaskDetails({
-      ...createTaskDetails,
-      date: convertGMTDateintoUTC(meetingDateValueFormat2).slice(0, 8),
-      DeadLineTime: convertGMTDateintoUTC(meetingDateValueFormat2).slice(8, 14),
-    });
+    meetingDateValueFormat2.setHours(23)
+    meetingDateValueFormat2.setMinutes(59)
+    meetingDateValueFormat2.setSeconds(58)
+    setAgendaDueDate(meetingDateValueFormat2);
+    console.log(
+      { meetingDateValueFormat, meetingDateValueFormat2 },
+      "changeDateActionCreate"
+    );
+    // setAgendaDueDate(meetingDateValueFormat);
+    // setcreateTaskDetails({
+    //   ...createTaskDetails,
+    //   date: convertGMTDateintoUTC(meetingDateValueFormat2).slice(0, 8),
+    //   DeadLineTime: convertGMTDateintoUTC(meetingDateValueFormat2).slice(8, 14),
+    // });
   };
-
+  console.log(agendaDueDate, "agendaDueDateagendaDueDate")
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
       // createTaskDetails.Description !== "" &&
       createTaskDetails.AssignedTo > 0 &&
-      createTaskDetails.date !== ""
+      agendaDueDate !== ""
     ) {
       let Task = {
         Task: {
@@ -396,8 +404,8 @@ const CreateTask = ({
           Title: createTaskDetails.ActionsToTake,
           Description: createTaskDetails.Description,
           IsMainTask: true,
-          DeadLineDate: createTaskDetails.date,
-          DeadLineTime: createTaskDetails.DeadLineTime,
+          DeadLineDate: multiDatePickerDateChangIntoUTC(agendaDueDate).slice(0, 8),
+          DeadLineTime: multiDatePickerDateChangIntoUTC(agendaDueDate).slice(8, 14),
           CreationDateTime: "",
         },
       };
@@ -786,7 +794,7 @@ const CreateTask = ({
                       <Col>
                         <p
                           className={
-                            error && createTaskDetails.date === ""
+                            error && agendaDueDate === ""
                               ? ` ${styles["errorMessage-inLogin"]} `
                               : `${styles["errorMessage-inLogin_hidden"]}`
                           }>

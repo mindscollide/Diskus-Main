@@ -43,7 +43,7 @@ import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
+import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -58,6 +58,9 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
+  const castYourVotePollModalState = useSelector(
+    (state) => state.PollsReducer.castPollVoteModal
+  );
 
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -616,14 +619,13 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -639,10 +641,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -949,6 +951,19 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
+      <PollsCastVoteInitimationModal
+        setAgenda={setAgenda}
+        setParticipants={setParticipants}
+        setAgendaContributors={setAgendaContributors}
+        setorganizers={setorganizers}
+        setmeetingDetails={setmeetingDetails}
+        setMinutes={setMinutes}
+        setactionsPage={setactionsPage}
+        setAttendance={setAttendance}
+        setPolls={setPolls}
+        setMeetingMaterial={setMeetingMaterial}
+        setAttendees={setAttendees}
+      />
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}

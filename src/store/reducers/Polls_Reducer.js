@@ -38,6 +38,8 @@ const initialState = {
   newPollMeeting: null,
   newPollDelete: null,
   validateEmailString: null,
+  castPollVoteModal: false,
+  setPollIdForCastVote: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -625,6 +627,18 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         validateEmailString: null,
         responseMessage: action.message,
+      };
+    }
+    case actions.CAST_VOTE_POLL_MODAL: {
+      return {
+        ...state,
+        castPollVoteModal: action.response,
+      };
+    }
+    case actions.POLL_ID_FOR_CAST_VOTE: {
+      return {
+        ...state,
+        setPollIdForCastVote: action.response,
       };
     }
     default: {
