@@ -1,61 +1,61 @@
 .VotingStartedModalheading {
-    color: #6172d6 !important;
-    font-weight: 600 !important;
-    font-size: 20px !important;
-  }
-  
-  .MeetingTitleSubheading {
-    color: #6172d6 !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-  }
-  .meetingTitleInnerSpan {
-    color: #5a5a5a !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-  }
-  
-  .DiscardButtonVotingStartedModal {
-    padding: 12px 30px !important;
-    color: #5a5a5a !important;
-    background: #fff !important;
-    border: 1px solid #e1e1e1 !important;
-    border-radius: 4px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-  }
-  
-  .DiscardButtonVotingStartedModal:is(:hover, :focus, :focus-visible, :active) {
-    padding: 12px 30px !important;
-    color: #5a5a5a !important;
-    background: #fff !important;
-    border: 1px solid #e1e1e1 !important;
-    border-radius: 4px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-  }
-  
-  .CastVoteButtonVotingStartedModal {
-    padding: 12px 30px !important;
-    color: #fff !important;
-    background: #6172d6 !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-  }
-  
-  .CastVoteButtonVotingStartedModal:is(:hover, :focus, :focus-visible, :active) {
-    padding: 12px 30px !important;
-    color: #fff !important;
-    background: #6172d6 !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-  }
-  
-  .MainVotingPollStartedParentClass {
-    margin-top: 92px !important;
-  }
-  
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+}
+
+.MeetingTitleSubheading {
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+}
+.meetingTitleInnerSpan {
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+}
+
+.DiscardButtonVotingStartedModal {
+  padding: 12px 30px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.DiscardButtonVotingStartedModal:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.CastVoteButtonVotingStartedModal {
+  padding: 12px 30px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.CastVoteButtonVotingStartedModal:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.MainVotingPollStartedParentClass {
+  margin-top: 92px !important;
+  z-index: 999999 !important;
+}

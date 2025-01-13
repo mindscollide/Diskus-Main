@@ -1,32 +1,112 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./pollsCastVoteInitimationModal.module.css";
 import { useSelector } from "react-redux";
-import { castYourVotePollModal } from "../../../../store/actions/Polls_actions";
+import {
+  castYourVotePollModal,
+  setCastVoteID,
+} from "../../../../store/actions/Polls_actions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-const PollsCastVoteInitimationModal = () => {
+import {
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+} from "../../../../store/actions/VideoFeature_actions";
+const PollsCastVoteInitimationModal = ({
+  setAgenda,
+  setParticipants,
+  setAgendaContributors,
+  setorganizers,
+  setmeetingDetails,
+  setMinutes,
+  setactionsPage,
+  setAttendance,
+  setPolls,
+  setMeetingMaterial,
+  setAttendees,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [pollDetails, setPollDetails] = useState(null);
   const castYourVotePollModalState = useSelector(
     (state) => state.PollsReducer.castPollVoteModal
   );
-  console.log(castYourVotePollModalState, )
+  console.log(castYourVotePollModalState);
   const newPollMeeting = useSelector(
     (state) => state.PollsReducer.newPollMeeting
   );
-  console.log(
-    castYourVotePollModal,
-    newPollMeeting,
-    "PollsCastVoteInitimationModal"
-  );
+  console.log(newPollMeeting, "PollsCastVoteInitimationModal");
+
+  useEffect(() => {
+    try {
+      if (newPollMeeting !== null) {
+        let currentMeetingActive =
+          localStorage.getItem("currentMeetingID") !== null
+            ? Number(localStorage.getItem("currentMeetingID"))
+            : 0;
+        let meetingTitle =
+          localStorage.getItem("meetingTitle") !== null
+            ? localStorage.getItem("meetingTitle")
+            : "";
+        if (newPollMeeting.meetingID === currentMeetingActive) {
+          let pollData = {
+            title: newPollMeeting.polls.pollTitle,
+            pollId: newPollMeeting.polls.pollID,
+            isVoter: newPollMeeting.polls.isVoter,
+            meetingTitle: meetingTitle,
+          };
+          setPollDetails(pollData);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [newPollMeeting]);
+
+  const handleClickCastYourVote = () => {
+    try {
+      dispatch(setCastVoteID(pollDetails));
+      setAgenda(false);
+      setParticipants(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(false);
+      setMinutes(false);
+      setactionsPage(false);
+      setAttendance(false);
+      setPolls(true);
+      setMeetingMaterial(false);
+      setAttendees(false);
+      console.log(
+        localStorage.getItem("isMeeting") === "true" &&
+          localStorage.getItem("isMeetingVideo") === "true",
+        localStorage.getItem("isMeeting") === "true",
+        localStorage.getItem("isMeetingVideo") === "true",
+        typeof localStorage.getItem("isMeeting") === "true",
+        typeof localStorage.getItem("isMeetingVideo") === "true"
+      );
+      if (
+        localStorage.getItem("isMeeting") === "true" &&
+        localStorage.getItem("isMeetingVideo") === "true"
+      ) {
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(pollDetails, "pollDetailspollDetailspollDetails");
   return (
     <Modal
       show={castYourVotePollModalState}
       setShow={dispatch(castYourVotePollModal)}
-      modalFooterClassName={"d-block"}
-      modalHeaderClassName={"d-block"}
+      modalFooterClassName={"d-none"}
+      modalHeaderClassName={"d-none"}
       centered={false}
       className={styles["MainVotingPollStartedParentClass"]}
       onHide={() => {
@@ -38,12 +118,13 @@ const PollsCastVoteInitimationModal = () => {
           <Row>
             <Col lg={8} md={8} sm={8} className='d-flex flex-column flex-wrap'>
               <span className={styles["VotingStartedModalheading"]}>
-                {t("Voting-for-the-agenda-of-the-meeting-has-now-started")}
+              {pollDetails?.title}
               </span>
               <span className={styles["MeetingTitleSubheading"]}>
-                {t("Meeting-title")}&nbsp;:&nbsp;
+                {/* `${}: ` */}
+                {`${t("Meeting-title")} : `}
                 <span className={styles["meetingTitleInnerSpan"]}>
-                  {/* {AgendaVotingModalStartedData.meetingTitle} */}
+                  {pollDetails?.meetingTitle}
                 </span>
               </span>
             </Col>
@@ -55,12 +136,12 @@ const PollsCastVoteInitimationModal = () => {
               <Button
                 text={t("Discard")}
                 className={styles["DiscardButtonVotingStartedModal"]}
-                // onClick={handleDiscardFunction}
+                onClick={() => dispatch(castYourVotePollModal(false))}
               />
               <Button
                 text={t("Cast-your-vote")}
                 className={styles["CastVoteButtonVotingStartedModal"]}
-                // onClick={handleCastYourAgendaVoteBtn}
+                onClick={handleClickCastYourVote}
               />
             </Col>
           </Row>

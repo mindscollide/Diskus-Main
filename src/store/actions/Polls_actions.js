@@ -2666,7 +2666,15 @@ const castYourVotePollModal = (response) => {
     response: response,
   };
 };
+
+const setCastVoteID = (response) => {
+  return {
+    type: actions.POLL_ID_FOR_CAST_VOTE,
+    response: response,
+  };
+};
 export {
+  setCastVoteID,
   castYourVotePollModal,
   validateStringPollApi,
   deletePollsMQTT,
