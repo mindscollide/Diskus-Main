@@ -94,6 +94,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const todoComments = useRef();
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
+  console.log(TaskAssignedTo, "TaskAssignedToTaskAssignedTo")
   const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedToDesignation, setTaskAssignedToDesignation] =
     useState("");
@@ -147,8 +148,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         viewData.taskAssignedTo.forEach((data, index) => {
           console.log(data, "taskAssignedTotaskAssignedTo");
           setTaskAssignedToDesignation(data.designation);
-          if (data.pK_UID === TaskAssignedTo) {
-          }
+         
         });
       }
       let listOfAssignees = TodoListReducerData.taskAssignedTo;

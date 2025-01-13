@@ -656,23 +656,48 @@ const getFolderDocumentsApi = (
                   t("No-record-found")
                 )
               );
-              let findIfItsExist = BreadCrumbsListArr.findIndex(
-                (breadCrumbData, index) => breadCrumbData.id === record.id
-              );
-              if (findIfItsExist !== -1) {
-                // Keep only the elements before index 2
-                let checkingisExist = BreadCrumbsListArr.slice(
-                  0,
-                  findIfItsExist + 1
-                );
-                dispatch(BreadCrumbsList(checkingisExist));
-              } else {
-                let newFolderRecord = [
-                  ...BreadCrumbsListArr,
+
+              if (
+                BreadCrumbsListArr !== null &&
+                BreadCrumbsListArr !== undefined &&
+                BreadCrumbsListArr.length === 0
+              ) {
+                let getCurrentView = localStorage.getItem("setTableView");
+                let newArr;
+                // if User click from main root folder
+                let viewName =
+                  Number(getCurrentView) === 1
+                    ? t("My-document")
+                    : Number(getCurrentView) === 2
+                    ? t("Shared-with-me")
+                    : Number(getCurrentView) === 3
+                    ? t("All")
+                    : t("Recently-added");
+                newArr = [
+                  { name: viewName, id: Number(getCurrentView), main: true },
                   { name: record?.name, id: record?.id },
                 ];
-                dispatch(BreadCrumbsList(newFolderRecord));
+                dispatch(BreadCrumbsList(newArr));
+              } else {
+                let findIfItsExist = BreadCrumbsListArr.findIndex(
+                  (breadCrumbData, index) => breadCrumbData.id === record.id
+                );
+                if (findIfItsExist !== -1) {
+                  // Keep only the elements before index 2
+                  let checkingisExist = BreadCrumbsListArr.slice(
+                    0,
+                    findIfItsExist + 1
+                  );
+                  dispatch(BreadCrumbsList(checkingisExist));
+                } else {
+                  let newFolderRecord = [
+                    ...BreadCrumbsListArr,
+                    { name: record?.name, id: record?.id },
+                  ];
+                  dispatch(BreadCrumbsList(newFolderRecord));
+                }
               }
+     
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

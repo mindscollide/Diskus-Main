@@ -2009,7 +2009,7 @@ const Dashboard = () => {
         ) {
           dispatch(createPollMeetingMQTT(data.payload));
           setNotificationID(id);
-
+          
           if (data.viewable) {
             setNotification({
               ...notification,
