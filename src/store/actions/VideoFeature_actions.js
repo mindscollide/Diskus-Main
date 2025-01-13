@@ -597,6 +597,10 @@ const getParticipantMeetingJoinMainApi = (
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
+              localStorage.setItem(
+                "isHost",
+                response.data.responseResult.isHost
+              );
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               try {

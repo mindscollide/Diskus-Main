@@ -51,6 +51,7 @@ import {
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingOnlogout,
   participantVideoButtonState,
+  videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -997,8 +998,14 @@ const Dashboard = () => {
               );
 
               if (getMeetingHost.isHost) {
+                console.log("check 22");
+                dispatch(videoIconOrButtonState(true));
+                dispatch(participantVideoButtonState(false));
                 localStorage.setItem("isMeetingVideoHostCheck", true);
               } else {
+                console.log("check 22");
+                dispatch(videoIconOrButtonState(false));
+                dispatch(participantVideoButtonState(true));
                 localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // console.log(getMeetingHost.isHost, "getMeetingHostisHost");

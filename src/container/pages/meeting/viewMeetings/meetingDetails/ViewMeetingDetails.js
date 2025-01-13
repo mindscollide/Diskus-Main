@@ -615,27 +615,19 @@ const ViewMeetingDetails = ({
       sessionStorage.getItem("NonMeetingVideoCall")
     );
 
-    const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
-    console.log(meetingHost, "editorRoleeditorRole");
     // Orgainzer  = 10 ,Participant = 2 , Agenda Contributor = 3,
 
     if (nonMeetingCheck) {
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
-      let meetingVideoData = {
-        roleID:
-          editorRole.role === "Participant"
-            ? 2
-            : isMeetingVideoHostCheck
-            ? 10
-            : 2,
-      };
-      if (meetingVideoData.roleID === 2) {
+      if (!isMeetingVideoHostCheck) {
         dispatch(participantVideoButtonState(true));
+        // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
+        localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
           let data = {
@@ -649,49 +641,7 @@ const ViewMeetingDetails = ({
           console.log("No Need To Hit");
         }
       }
-      console.log(meetingVideoData, "meetingVideoDatameetingVideoData");
-      // localStorage.setItem(
-      //   "meetingVideoDetails",
-      //   JSON.stringify(meetingVideoData)
-      // );
     }
-
-    // let Data = {
-    //   VideoCallURL: currentMeetingVideoURL,
-    // };
-    // dispatch(
-    //   FetchMeetingURLApi(
-    //     Data,
-    //     navigate,
-    //     t,
-    //     currentUserID,
-    //     currentOrganization,
-    //     0,
-    //     meetingDetails.MeetingTitle,
-    //     advanceMeetingModalID
-    //   )
-    // );
-    //   localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
-    // } else if (activeCall === true && isMeeting === false) {
-    //   setInitiateVideoModalOto(true);
-    //   dispatch(callRequestReceivedMQTT({}, ""));
-    // }
-  };
-
-  const handleExpandToNormal = () => {
-    dispatch(normalHostVideoCallPanel(true));
-  };
-
-  const handleExpandToMax = () => {
-    dispatch(maxHostVideoCallPanel(true)); // Set Maximize flag to true
-  };
-
-  const handleExpandToParticipantMax = () => {
-    dispatch(maxParticipantVideoCallPanel(true)); // Set Maximize flag to true
-  };
-
-  const handleExpandToNormalPanelParticipant = () => {
-    dispatch(normalParticipantVideoCallPanel(true));
   };
 
   const copyToClipboardd = () => {
