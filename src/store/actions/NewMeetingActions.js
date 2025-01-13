@@ -1008,10 +1008,6 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 response.data.responseResult.meetings,
                 1
               );
-              console.log(
-                getMeetingData,
-                "getMeetingDatagetMeetingDatagetMeetingData"
-              );
               let newMeetingData = {
                 meetingStartedMinuteAgo:
                   response.data.responseResult.meetingStartedMinuteAgo,
@@ -1019,7 +1015,8 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
               };
-              dispatch(SearchMeeting_Success(newMeetingData, ""));
+          console.log("handleViewMeeting", newMeetingData);
+          dispatch(SearchMeeting_Success(newMeetingData, ""));
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
