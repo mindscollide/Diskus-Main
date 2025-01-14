@@ -1,8 +1,10 @@
 .video-max-Participant {
-  width: 100%;
-  object-fit: cover !important;
-  max-height: 77vh;
-  padding: 0px 0px;
+  position: relative;
+  top: 172px !important;
+  width: 100% !important;
+  object-fit: contain !important;
+  height: 77vh !important;
+  padding: 0px 10px;
 }
 
 .max-videoParticipant-panel {
@@ -143,10 +145,12 @@
 }
 
 .video-max-videoParticipantsvideo-panel {
+  position: relative;
+  top: 46px;
   width: 100%;
   object-fit: cover !important;
-  max-height: 45vh;
-  padding: 0px 0px;
+  max-height: 43vh;
+  padding: 0px 10px !important;
 }
 
 .video-max-minimize-videoParticipant-panel {

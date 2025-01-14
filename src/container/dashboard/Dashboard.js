@@ -50,6 +50,8 @@ import {
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingOnlogout,
+  participantVideoButtonState,
+  videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -883,6 +885,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
             ) {
+              dispatch(participantVideoButtonState(false));
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
@@ -971,6 +974,31 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
+              const meetingHost = {
+                isHost: true,
+                isHostId: Number(localStorage.getItem("userID")),
+                isDashboardVideo: true,
+              };
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              let getMeetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo")
+              );
+
+              if (getMeetingHost.isHost) {
+                console.log("check 22");
+                dispatch(videoIconOrButtonState(true));
+                dispatch(participantVideoButtonState(false));
+                localStorage.setItem("isMeetingVideoHostCheck", true);
+              } else {
+                console.log("check 22");
+                dispatch(videoIconOrButtonState(false));
+                dispatch(participantVideoButtonState(true));
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+              }
+              // console.log(getMeetingHost.isHost, "getMeetingHostisHost");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()

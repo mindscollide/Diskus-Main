@@ -594,22 +594,16 @@ const ParticipantVideoCallComponent = () => {
                   >
                     <div className="max-videoParticipant-gradient-sheet">
                       <div className="avatar-class">
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                        >
-                          <video
-                            ref={videoRef}
-                            className={
-                              minimizeState
-                                ? "video-max-minimize-videoParticipant-panel"
-                                : isNormalPanel
-                                ? "video-max-videoParticipantsvideo-panel"
-                                : "video-max-Participant"
-                            }
-                          />
-                        </div>
+                        <video
+                          ref={videoRef}
+                          className={
+                            minimizeState
+                              ? "video-max-minimize-videoParticipant-panel"
+                              : isNormalPanel
+                              ? "video-max-videoParticipantsvideo-panel"
+                              : "video-max-Participant"
+                          }
+                        />
                       </div>
                     </div>
                   </div>
