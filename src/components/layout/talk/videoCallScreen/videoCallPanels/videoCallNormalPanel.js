@@ -614,7 +614,7 @@ const VideoPanelNormal = () => {
       console.log("share screen Message received:", event);
 
       // Check the origin for security
-      if (callerURL.toLowerCase().includes(event.origin)) {
+      if (event.origin === "https://portal.letsdiskus.com:9414") {
         // Example actions based on the message received
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
