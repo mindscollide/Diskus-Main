@@ -1009,10 +1009,6 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 response.data.responseResult.meetings,
                 1
               );
-              console.log(
-                getMeetingData,
-                "getMeetingDatagetMeetingDatagetMeetingData"
-              );
               let newMeetingData = {
                 meetingStartedMinuteAgo:
                   response.data.responseResult.meetingStartedMinuteAgo,
