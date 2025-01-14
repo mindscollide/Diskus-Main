@@ -31,7 +31,6 @@ import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
-import ErrorBoundary from "./components/elements/errorPage/ErrorPage";
 const MIN_LOADER_DISPLAY_TIME = 500;
 
 const POLLING_INTERVAL = 60000; // 1 minute
@@ -105,6 +104,10 @@ const App = () => {
   const adminReducer = useSelector((state) => state.adminReducer);
   const UserReportReducer = useSelector((state) => state.UserReportReducer);
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
+  const castYourVotePollModalState = useSelector(
+    (state) => state.PollsReducer.castPollVoteModal
+  );
+  console.log(castYourVotePollModalState, "castYourVotePollModalState")
   const UserManagementModals = useSelector(
     (state) => state.UserManagementModals
   );
@@ -294,6 +297,7 @@ const App = () => {
     <>
       {/* Define your routes here */}
         <RouterProvider router={router} />
+
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}
       {updateVersion && (

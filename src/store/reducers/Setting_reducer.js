@@ -34,6 +34,8 @@ const initialState = {
   diskusNotificationMarkAsRead: null,
   realTimeNotificationCountGlobalData: [],
   realTimeIsReadFlag: false,
+  webNotificationDataVideoIntimination: null,
+  globalFunctionWebnotificationFlag: false,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -500,6 +502,20 @@ const settingReducer = (state = initialState, action) => {
           ...state.realTimeNotificationCountGlobalData,
           action.response,
         ],
+      };
+    }
+
+    case actions.WEB_NOTIFICATION_DATA_VIDEO_INITIMINATION: {
+      return {
+        ...state,
+        webNotificationDataVideoIntimination: action.response,
+      };
+    }
+
+    case actions.GLOBAL_FLAG_WEB_NOTIFICATION_FUNCTION: {
+      return {
+        ...state,
+        globalFunctionWebnotificationFlag: action.response,
       };
     }
 

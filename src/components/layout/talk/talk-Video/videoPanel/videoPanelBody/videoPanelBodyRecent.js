@@ -422,6 +422,7 @@ const VideoPanelBodyRecent = () => {
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", false);
   };
+
   const leaveCallOnMeetingVideoForGroup = async () => {
     console.log("leavecallMeetingVideo");
     const emptyArray = [];
@@ -467,6 +468,7 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
     await dispatch(LeaveMeetingVideo(Data, navigate, t));
   };
+
   const leaveCallHostGroup = async () => {
     console.log("leaveCallHostGroup");
     const recipientIds =

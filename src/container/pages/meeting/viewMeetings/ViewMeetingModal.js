@@ -43,6 +43,7 @@ import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -57,6 +58,9 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
+  const castYourVotePollModalState = useSelector(
+    (state) => state.PollsReducer.castPollVoteModal
+  );
 
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -941,6 +945,19 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
+      <PollsCastVoteInitimationModal
+        setAgenda={setAgenda}
+        setParticipants={setParticipants}
+        setAgendaContributors={setAgendaContributors}
+        setorganizers={setorganizers}
+        setmeetingDetails={setmeetingDetails}
+        setMinutes={setMinutes}
+        setactionsPage={setactionsPage}
+        setAttendance={setAttendance}
+        setPolls={setPolls}
+        setMeetingMaterial={setMeetingMaterial}
+        setAttendees={setAttendees}
+      />
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}

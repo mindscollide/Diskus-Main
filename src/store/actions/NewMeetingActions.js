@@ -101,6 +101,7 @@ import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 
 const boardDeckModal = (response) => {
   return {
@@ -1015,8 +1016,17 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
               };
-          console.log("handleViewMeeting", newMeetingData);
-          dispatch(SearchMeeting_Success(newMeetingData, ""));
+              await dispatch(SearchMeeting_Success(newMeetingData, ""));
+              let webNotifactionDataRoutecheckFlag = JSON.parse(
+                localStorage.getItem("webNotifactionDataRoutecheckFlag")
+              );
+              try {
+                if (webNotifactionDataRoutecheckFlag) {
+                  dispatch(webnotificationGlobalFlag(true));
+                }
+              } catch (error) {
+                console.log(error);
+              }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -8292,7 +8302,7 @@ const LeaveCurrentMeeting = (
   let userGUID = localStorage.getItem("userGUID");
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   let ViewGroupID = localStorage.getItem("ViewGroupID");
-  let currentView = localStorage.getItem("MeetingCurrentView")
+  let currentView = localStorage.getItem("MeetingCurrentView");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8383,7 +8393,8 @@ const LeaveCurrentMeeting = (
                       UserID: Number(userID),
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
-                      PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8407,7 +8418,8 @@ const LeaveCurrentMeeting = (
                     UserID: Number(userID),
                     PageNumber: Number(meetingPageCurrent),
                     Length: Number(meetingpageRow),
-                    PublishedMeetings: currentView && Number(currentView) === 1 ? true : false ,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -9055,14 +9067,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              let meetingFlag = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
-              if (meetingFlag) {
-                await dispatch(videoIconOrButtonState(false));
-              } else {
-                await dispatch(participantVideoButtonState(false));
-              }
+              // let meetingFlag = JSON.parse(
+              //   localStorage.getItem("isMeetingVideoHostCheck")
+              // );
+
+              await dispatch(videoIconOrButtonState(false));
+              await dispatch(participantVideoButtonState(false));
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -9083,6 +9093,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               await dispatch(setAudioControlForParticipant(false));
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlForParticipant(false));
+
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
@@ -9100,8 +9111,33 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 )
             ) {
               dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_04".toLowerCase()
+                )
+            ) {
+              await dispatch(videoIconOrButtonState(false));
+              await dispatch(participantVideoButtonState(false));
+              localStorage.setItem("isMeetingVideo", false);
+              localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("refinedVideoGiven", false);
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
+              localStorage.setItem("activeCall", false);
+              await dispatch(setAudioControlHost(false));
+              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
+              await dispatch(setVideoControlForParticipant(false));
+              let getMeetingHostData = Data.IsHost;
+              console.log(getMeetingHostData, "asdadadadadaddda");
+              // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
+              if (getMeetingHostData) {
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+              }
             } else {
-              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+              dispatch(leaveMeetingVideoFail(t("On-host-transfer-flow")));
             }
           } else {
             dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));

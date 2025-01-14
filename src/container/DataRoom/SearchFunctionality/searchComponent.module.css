@@ -72,3 +72,17 @@
 .datePickerTodoCreate2 .rmdp-container {
   width: 100% !important;
 }
+
+.NoMatchFoundHeading {
+  font-weight: 600 !important;
+  font-size: 30px !important;
+  color: #707070;
+  margin-top: 19px !important;
+}
+
+.NoMatchFoundSubHeading {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  color: #707070;
+  line-height: 13px !important;
+}

@@ -3,6 +3,10 @@
   list-style: none !important;
   font-weight: 600;
 }
+.dataroombreadCrumbs ol li {
+  display: flex;
+  align-items: center;
+}
 .dataroombreadCrumbs ol {
   list-style: none !important;
   display: flex !important;
@@ -14,6 +18,10 @@
   width: 100%;
   height: 25px;
   padding: 5px 10px;
+  display: block;
+  max-width: 125px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .dataroombreadCrumbs ol li span.ant-breadcrumb-link:not(:first-child) {
   padding: 5px;

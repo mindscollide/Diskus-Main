@@ -56,6 +56,7 @@ const NewCalendar = () => {
     message: "",
     severity: "error",
   });
+  console.log(open, "openopen")
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") !== undefined &&
     localStorage.getItem("calenderMonthsSpan") !== null
@@ -279,7 +280,7 @@ const NewCalendar = () => {
             }
           });
         } else {
-          showMessage("No-events-available-on-this-date", "error", setOpen);
+          showMessage(t("No-events-available-on-this-date"), "error", setOpen);
         }
       }
     } catch (error) {

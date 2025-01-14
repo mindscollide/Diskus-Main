@@ -103,7 +103,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     ".000Z";
 
   const date = new Date(fullDateyear);
-
+  console.log(date, "datedatedate");
   // Define month names in English and Arabic
   const monthNamesEn = [
     "January",
@@ -143,14 +143,17 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     minute: "2-digit",
     hour12: true,
   });
+  console.log(formattedTime, "datedatedate");
 
   // Format the date components
   const formattedDay = String(date.getDate()).padStart(2, "0");
   const formattedMonth = monthNames[date.getMonth()];
   const formattedYear = date.getFullYear();
+  console.log({ formattedDay, formattedMonth, formattedYear }, "datedatedate");
 
   // Format the full date as "h:mm A, Do MMM, YYYY"
   const formattedDate = `${formattedTime}, ${formattedDay} ${formattedMonth} ${formattedYear}`;
+  console.log(formattedDate, "datedatedate");
 
   return locale === "ar"
     ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
@@ -1656,7 +1659,7 @@ export const isSameAsToday = (utcDateString) => {
 export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   // Check if newDate is a Date instance, return empty string if true
   if (!(newDate instanceof Date)) {
-    return ''; // Return empty string if newDate is not a Date instance
+    return ""; // Return empty string if newDate is not a Date instance
   }
 
   if (no === 1) {
@@ -1680,7 +1683,6 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   console.log(formattedDate, "UTC formatted date");
   return formattedDate;
 };
-
 
 //Review Minutes Send Date Format
 

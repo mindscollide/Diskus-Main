@@ -286,6 +286,24 @@ const VideoMaxIncoming = () => {
 
   useEffect(() => {}, [activeCallState]);
 
+  //For Ringer Incoming If page is Refereshed
+  useEffect(() => {
+    let RingerCallCheckFlag = JSON.parse(
+      localStorage.getItem("RingerCallCheckFlag")
+    );
+
+    const handleBeforeUnload = async (event) => {
+      if (RingerCallCheckFlag) {
+        localStorage.removeItem("RingerCallCheckFlag");
+        await rejectCall();
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [dispatch]);
+
   return (
     <>
       {isVisible && (

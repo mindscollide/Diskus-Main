@@ -39,27 +39,35 @@ const DefaultDragger = ({
       console.log(fileList, "fileListfileList");
       let sizezero = true;
       let newRows = [...rows];
-
       let size = true;
+
       // Check if the fileList is the same as the previous one
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return; // Skip processing if it's the same fileList
       }
+
       console.log(newRows[index], "checkingIndex");
       let getRowData = newRows[index];
-      if (getRowData.files.length > 9) {
+
+      // Check the total number of files, including new uploads
+      const totalFilesCount = getRowData.files.length + fileList.length;
+      if (totalFilesCount > 10) {
         showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+        return; // Stop further processing
       }
+
       if (getRowData.files.length > 0) {
-        fileList.forEach((fileData, index) => {
+        fileList.forEach((fileData) => {
           if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
           }
+
           let fileExists = getRowData.files.some(
             (oldFileData) => oldFileData.displayAttachmentName === fileData.name
           );
+
           if (!size) {
             showMessage(
               t("File-size-should-not-be-greater-then-1-5GB"),
@@ -78,7 +86,6 @@ const DefaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -87,12 +94,13 @@ const DefaultDragger = ({
           }
         });
       } else {
-        fileList.forEach((fileData, index) => {
+        fileList.forEach((fileData) => {
           if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
           }
+
           if (!size) {
             showMessage(
               t("File-size-should-not-be-greater-then-1-5GB"),
@@ -109,7 +117,6 @@ const DefaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -122,12 +129,13 @@ const DefaultDragger = ({
     },
     customRequest() {},
   };
+
   // Initialize previousFileList to an empty array
   let previousFileList = [];
   console.log(fileForSend, "fileForSendfileForSendfileForSend");
   return (
     <>
-      <Row key={index + 5} className='mt-4 mb-2'>
+      <Row key={index + 5} className="mt-4 mb-2">
         <Col lg={12} md={12} sm={12}>
           <Dragger
             {...props}
@@ -144,28 +152,31 @@ const DefaultDragger = ({
                   !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
-            }>
+            }
+          >
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className='d-flex justify-content-end align-items-center'>
+                className="d-flex justify-content-end align-items-center"
+              >
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=''
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -176,7 +187,8 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -187,7 +199,8 @@ const DefaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>

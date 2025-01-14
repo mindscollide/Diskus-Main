@@ -119,7 +119,10 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
 import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
-import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  WebNotificationExportRoutFunc,
+} from "../../../commen/functions/utils";
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
@@ -130,6 +133,8 @@ import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actio
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
 import ViewProposedMeetingModal from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/ViewProposedMeetingModal/ViewProposedMeetingModal";
+import { useGroupsContext } from "../../../context/GroupsContext";
+import { webnotificationGlobalFlag } from "../../../store/actions/UpdateUserNotificationSetting";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -171,7 +176,6 @@ const NewMeeting = () => {
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
 
-  console.log(scheduleMeetingsPageFlag, "scheduleMeetingsPageFlag");
   const mqtMeetingPrRemoved = useSelector(
     (state) => state.NewMeetingreducer.mqtMeetingPrRemoved
   );
@@ -374,6 +378,20 @@ const NewMeeting = () => {
       text: t("Not-conducted"),
     },
   ];
+
+  const globalFunctionWebnotificationFlag = useSelector(
+    (state) => state.settingReducer.globalFunctionWebnotificationFlag
+  );
+
+  const webNotifactionDataRoutecheckFlag = JSON.parse(
+    localStorage.getItem("webNotifactionDataRoutecheckFlag")
+  );
+
+  const webNotificationData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
+  );
+
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
 
   useEffect(() => {
     return () => {
@@ -3503,6 +3521,35 @@ const NewMeeting = () => {
       }
     }
   }, [meetingReminderNotification]);
+
+  useEffect(() => {
+    try {
+      if (globalFunctionWebnotificationFlag) {
+        if (webNotifactionDataRoutecheckFlag) {
+          console.log("webNotifactionDataRoutecheckFlag");
+          let currentURL = window.location.href;
+          WebNotificationExportRoutFunc(
+            currentURL,
+            dispatch,
+            t,
+            location,
+            navigate,
+            webNotificationData,
+            setViewFlag,
+            setEditorRole,
+            setViewAdvanceMeetingModal,
+            setViewProposeDatePoll,
+            setViewGroupPage,
+            setShowModal
+          );
+          dispatch(webnotificationGlobalFlag(false));
+        }
+      }
+      console.log("webNotifactionDataRoutecheckFlag");
+    } catch (error) {}
+
+    return () => {};
+  }, [globalFunctionWebnotificationFlag]);
 
   return (
     <>

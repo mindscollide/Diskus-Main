@@ -61,6 +61,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-dropzone-uploader": "^2.11.0",
+    "react-error-boundary": "^5.0.0",
     "react-file-icon": "0.2.0",
     "react-flags-select": "^2.2.3",
     "react-form-stepper": "^2.0.3",

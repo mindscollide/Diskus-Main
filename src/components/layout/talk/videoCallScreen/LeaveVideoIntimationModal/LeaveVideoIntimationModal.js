@@ -12,6 +12,7 @@ import {
   agendaGlobalFlag,
   attendanceGlobalFlag,
   currentMeetingStatus,
+  GetMeetingStatusDataAPI,
   LeaveCurrentMeetingOtherMenus,
   meetingDetailsGlobalFlag,
   meetingMaterialGlobalFlag,
@@ -50,6 +51,14 @@ import {
   createResolutionModal,
   viewResolutionModal,
 } from "../../../../../store/actions/Resolution_actions";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { ViewMeeting } from "../../../../../store/actions/Get_List_Of_Assignees";
+import {
+  endMeetingStatusForQuickMeetingModal,
+  endMeetingStatusForQuickMeetingVideo,
+  leaveMeetingOnEndStatusMqtt,
+  leaveMeetingVideoOnEndStatusMqtt,
+} from "../../../../../store/actions/VideoFeature_actions";
 
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
@@ -59,6 +68,13 @@ const LeaveVideoIntimationModal = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  const {
+    setEditorRole,
+    setViewFlag,
+    setViewAdvanceMeetingModal,
+    setViewProposeDatePoll,
+  } = useMeetingContext();
 
   //LocalStorage Entiites
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -116,18 +132,44 @@ const LeaveVideoIntimationModal = () => {
     (state) => state.NewMeetingreducer.viewMeetingFlag
   );
 
+  const LeaveVideoIntiminationNotificationClickData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
+  );
+
+  console.log(LeaveVideoIntiminationNotificationClickData, "first");
+
   //Local States
 
   //handle NO button
   const handleNoButtonLeaveVideoMeeting = () => {
     dispatch(LeaveInitmationMessegeVideoMeetAction(false));
+    localStorage.setItem("webNotifactionDataRoutecheckFlag", false);
   };
 
   //handle Yes button
   const handleYesButtonLeaveVideoMeeting = () => {
     try {
-      //If Navigating to Meeting Tab
-      if (NavigationLocation === "Meeting") {
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+      let webNotifactionDataRoutecheckFlag = JSON.parse(
+        localStorage.getItem("webNotifactionDataRoutecheckFlag")
+      );
+      if (webNotifactionDataRoutecheckFlag) {
+        if (String(typeOfMeeting) === "isQuickMeeting") {
+          if (isMeetingVideo) {
+            dispatch(endMeetingStatusForQuickMeetingVideo(true));
+          } else {
+            dispatch(endMeetingStatusForQuickMeetingModal(true));
+          }
+        } else if (String(typeOfMeeting) === "isAdvanceMeeting") {
+          if (isMeetingVideo) {
+            dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+          } else {
+            dispatch(leaveMeetingOnEndStatusMqtt(true));
+          }
+        }
+        dispatch(LeaveInitmationMessegeVideoMeetAction(false));
+      } else if (NavigationLocation === "Meeting") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -206,10 +248,8 @@ const LeaveVideoIntimationModal = () => {
             dispatch(uploadGlobalFlag(false));
           }
         }
-      }
-
-      //If Navigating to Task Tab
-      if (NavigationLocation === "todolist") {
+      } else if (NavigationLocation === "todolist") {
+        //If Navigating to Task Tab
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -241,10 +281,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Calender Tab
-      if (NavigationLocation === "calendar") {
+      } else if (NavigationLocation === "calendar") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -276,10 +313,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Notes Tab
-      if (NavigationLocation === "Notes") {
+      } else if (NavigationLocation === "Notes") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -310,10 +344,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to DataRoom Tab
-      if (NavigationLocation === "dataroom") {
+      } else if (NavigationLocation === "dataroom") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -344,10 +375,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Groups
-      if (NavigationLocation === "groups") {
+      } else if (NavigationLocation === "groups") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -381,10 +409,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Committees
-      if (NavigationLocation === "committee") {
+      } else if (NavigationLocation === "committee") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -418,10 +443,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Resolution
-      if (NavigationLocation === "resolution") {
+      } else if (NavigationLocation === "resolution") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -457,10 +479,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Navigating to Polls
-      if (NavigationLocation === "polling") {
+      } else if (NavigationLocation === "polling") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -491,10 +510,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Clicked on Recently Added Files
-      if (NavigationLocation === "dataroomRecentAddedFiles") {
+      } else if (NavigationLocation === "dataroomRecentAddedFiles") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -524,10 +540,7 @@ const LeaveVideoIntimationModal = () => {
           dispatch(proposeNewMeetingPageFlag(false));
           dispatch(viewMeetingFlag(false));
         }
-      }
-
-      //If Clicked On Home Button
-      if (NavigationLocation === "home") {
+      } else if (NavigationLocation === "home") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -559,10 +572,7 @@ const LeaveVideoIntimationModal = () => {
             dispatch(viewMeetingFlag(false));
           }
         }
-      }
-
-      //If Clicked on Settings Options
-      if (NavigationLocation === "setting") {
+      } else if (NavigationLocation === "setting") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -594,10 +604,7 @@ const LeaveVideoIntimationModal = () => {
             dispatch(viewMeetingFlag(false));
           }
         }
-      }
-
-      //If Navigate to Pending Approval
-      if (NavigationLocation === "Minutes") {
+      } else if (NavigationLocation === "Minutes") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,
@@ -629,9 +636,7 @@ const LeaveVideoIntimationModal = () => {
             dispatch(viewMeetingFlag(false));
           }
         }
-      }
-
-      if (NavigationLocation === "faq's") {
+      } else if (NavigationLocation === "faq's") {
         let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
         let Data = {
           FK_MDID: currentMeeting,

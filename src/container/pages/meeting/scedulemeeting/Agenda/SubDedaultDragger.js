@@ -45,26 +45,32 @@ const SubDedaultDragger = ({
       let sizezero = true;
       let size = true;
 
+      // Prevent processing if fileList hasn't changed
       if (JSON.stringify(fileList) === JSON.stringify(previousFileList)) {
         return;
       }
 
       let getRowData = newRows[index].subAgenda[subIndex];
 
-      if (getRowData.subfiles.length > 9) {
+      // Check the total number of files, including new uploads
+      const totalFilesCount = getRowData.subfiles.length + fileList.length;
+      if (totalFilesCount > 10) {
         showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
-        return;
+        return; // Stop further processing
       }
+
       if (getRowData.subfiles.length > 0) {
-        fileList.forEach((fileData, index) => {
+        fileList.forEach((fileData) => {
           if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
             sizezero = false;
           }
+
           let fileExists = getRowData.subfiles.some(
             (oldFileData) => oldFileData.displayAttachmentName === fileData.name
           );
+
           if (!size) {
             showMessage(
               t("File-size-should-not-be-greater-then-1-5GB"),
@@ -83,7 +89,6 @@ const SubDedaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -92,7 +97,7 @@ const SubDedaultDragger = ({
           }
         });
       } else {
-        fileList.forEach((fileData, index) => {
+        fileList.forEach((fileData) => {
           if (fileData.size > maxFileSize) {
             size = false;
           } else if (fileData.size === 0) {
@@ -115,7 +120,6 @@ const SubDedaultDragger = ({
               fK_MAID: 0,
               fK_UID: currentUserID,
             };
-            // setFileForSend([...fileForSend, fileData.originFileObj]);
             setFileForSend((prevFiles) => [
               ...prevFiles,
               fileData.originFileObj,
@@ -131,7 +135,7 @@ const SubDedaultDragger = ({
 
   return (
     <>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <Dragger
             fileList={[]}
@@ -148,28 +152,31 @@ const SubDedaultDragger = ({
                   !isAgendaUpdateWhenMeetingActive
                 ? true
                 : false
-            }>
+            }
+          >
             <Row>
               <Col
                 lg={5}
                 md={5}
                 sm={12}
-                className='d-flex justify-content-end align-items-center'>
+                className="d-flex justify-content-end align-items-center"
+              >
                 <img
                   draggable={false}
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
-                  alt=''
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["ant-upload-text-Meetings"]}>
                       {t("Drag-file-here")}
                     </span>
@@ -180,7 +187,8 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("The-following-file-formats-are")}
                     </span>
@@ -191,7 +199,8 @@ const SubDedaultDragger = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-start'>
+                    className="d-flex justify-content-start"
+                  >
                     <span className={styles["Choose_file_style-Meeting"]}>
                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
                     </span>

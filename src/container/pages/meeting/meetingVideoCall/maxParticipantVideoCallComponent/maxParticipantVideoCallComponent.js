@@ -19,8 +19,11 @@ import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/En
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
   endMeetingStatusForQuickMeetingModal,
@@ -40,12 +43,29 @@ import {
   setAudioControlForParticipant,
   setVideoControlForParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
+import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 
 const ParticipantVideoCallComponent = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
+  const location = useLocation();
+
+  const {
+    setEditorRole,
+    setViewFlag,
+    setViewAdvanceMeetingModal,
+    setViewProposeDatePoll,
+    editorRole,
+  } = useMeetingContext();
+
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
+
+  const webNotificationData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
+  );
   const closeQuickMeetingVideoReducer = useSelector(
     (state) =>
       state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
@@ -73,7 +93,6 @@ const ParticipantVideoCallComponent = () => {
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
   );
-  const { editorRole } = useContext(MeetingContext);
 
   let meetingId = localStorage.getItem("currentMeetingID");
 
@@ -397,6 +416,32 @@ const ParticipantVideoCallComponent = () => {
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
+
+    const webNotifactionDataRoutecheckFlag = JSON.parse(
+      localStorage.getItem("webNotifactionDataRoutecheckFlag")
+    );
+    try {
+      if (webNotifactionDataRoutecheckFlag) {
+        let currentURL = window.location.href;
+
+        WebNotificationExportRoutFunc(
+          currentURL,
+          dispatch,
+          t,
+          location,
+          navigate,
+          webNotificationData,
+          setViewFlag,
+          setEditorRole,
+          setViewAdvanceMeetingModal,
+          setViewProposeDatePoll,
+          setViewGroupPage,
+          setShowModal
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -549,22 +594,16 @@ const ParticipantVideoCallComponent = () => {
                   >
                     <div className="max-videoParticipant-gradient-sheet">
                       <div className="avatar-class">
-                        <div
-                          style={{
-                            position: "relative",
-                          }}
-                        >
-                          <video
-                            ref={videoRef}
-                            className={
-                              minimizeState
-                                ? "video-max-minimize-videoParticipant-panel"
-                                : isNormalPanel
-                                ? "video-max-videoParticipantsvideo-panel"
-                                : "video-max-Participant"
-                            }
-                          />
-                        </div>
+                        <video
+                          ref={videoRef}
+                          className={
+                            minimizeState
+                              ? "video-max-minimize-videoParticipant-panel"
+                              : isNormalPanel
+                              ? "video-max-videoParticipantsvideo-panel"
+                              : "video-max-Participant"
+                          }
+                        />
                       </div>
                     </div>
                   </div>

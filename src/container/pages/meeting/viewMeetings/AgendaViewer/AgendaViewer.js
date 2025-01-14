@@ -656,7 +656,6 @@ const AgendaViewer = ({
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
   const onClickVideoIconOpenVideo = () => {
-    console.log("Agenda View Full");
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
@@ -664,27 +663,18 @@ const AgendaViewer = ({
     let nonMeetingCheck = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
-    console.log(nonMeetingCheck, "nonMeetingChecknonMeetingCheck");
 
     if (nonMeetingCheck) {
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
-      let meetingVideoData = {
-        roleID:
-          editorRole.role === "Participant"
-            ? 2
-            : isMeetingVideoHostCheck
-            ? 10
-            : 2,
-      };
-      console.log(meetingVideoData, "meetingVideoData");
-
-      if (meetingVideoData.roleID === 2) {
+      if (!isMeetingVideoHostCheck) {
         dispatch(participantVideoButtonState(true));
+        // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
+        localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
           let data = {
