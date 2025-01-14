@@ -1013,7 +1013,6 @@
   "Push-notification-when-when-resolution-is-cancelled-after-circulation": "إشعار الدفع عند إلغاء القرار بعد التداول",
   "User-allow-google-calendar-synch": "يسمح المستخدم بمزامنة تقويم جوجل",
   "User-allow-microsoft-calendar-synch": "يسمح المستخدم بمزامنة تقويم ميكروسوفت",
-  "Calender-month-span": "فترة شهر التقويم",
   "Google-calender-color": "لون تقويم جوجل",
   "Microsoft-calender-color": "لون تقويم ميكروسوفت",
   "Diskus-color-theme": "وضع لون ديسكوس",
@@ -2337,5 +2336,9 @@
   "Stop-sharing": "Stop Sharing",
   "The-host-has-ended-the-meeting": "The host has ended the meeting.",
   "Thanks-for-joining": "Thanks for joining!",
-  "With-attachments": "With Attachments"
+  "On-host-transfer-flow": "On Host Transfer Flow",
+  "With-attachments": "With Attachments",
+  "No-match-found": "NO MATCH FOUND",
+  "Try-another-search": "Try another search, or click the search box to",
+  "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more."
 }

@@ -9071,14 +9071,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase()
                 )
             ) {
-              let meetingFlag = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
-              if (meetingFlag) {
-                await dispatch(videoIconOrButtonState(false));
-              } else {
-                await dispatch(participantVideoButtonState(false));
-              }
+              // let meetingFlag = JSON.parse(
+              //   localStorage.getItem("isMeetingVideoHostCheck")
+              // );
+
+              await dispatch(videoIconOrButtonState(false));
+              await dispatch(participantVideoButtonState(false));
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -9099,6 +9097,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               await dispatch(setAudioControlForParticipant(false));
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlForParticipant(false));
+
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
               response.data.responseResult.responseMessage
@@ -9116,8 +9115,33 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 )
             ) {
               dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeetingVideo_04".toLowerCase()
+                )
+            ) {
+              await dispatch(videoIconOrButtonState(false));
+              await dispatch(participantVideoButtonState(false));
+              localStorage.setItem("isMeetingVideo", false);
+              localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("refinedVideoGiven", false);
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
+              localStorage.setItem("activeCall", false);
+              await dispatch(setAudioControlHost(false));
+              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
+              await dispatch(setVideoControlForParticipant(false));
+              let getMeetingHostData = Data.IsHost;
+              console.log(getMeetingHostData, "asdadadadadaddda");
+              // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
+              if (getMeetingHostData) {
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+              }
             } else {
-              dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
+              dispatch(leaveMeetingVideoFail(t("On-host-transfer-flow")));
             }
           } else {
             dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));

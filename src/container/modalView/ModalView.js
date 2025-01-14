@@ -1062,8 +1062,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
       if (!getMeetingVideoHost) {
         dispatch(participantVideoButtonState(true));
-        dispatch(maxParticipantVideoCallPanel(true));
+        // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
+        if (!participantEnableVideoState) {
+          dispatch(maxParticipantVideoCallPanel(true));
+        }
       } else {
+        localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
           let data = {
