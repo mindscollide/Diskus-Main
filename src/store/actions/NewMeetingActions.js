@@ -9381,7 +9381,8 @@ const GetMeetingStatusDataAPI = (
   Data,
   setEditorRole,
   FlagOnRouteClickAdvanceMeet,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  Check
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9432,6 +9433,7 @@ const GetMeetingStatusDataAPI = (
                 "MeetingStatusID",
                 response.data.responseResult.meetingStatusID
               );
+
               setEditorRole({
                 status: Number(response.data.responseResult.meetingStatusID),
                 role:
@@ -9447,6 +9449,26 @@ const GetMeetingStatusDataAPI = (
                 isFunction(setViewAdvanceMeetingModal) &&
                   setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              }
+              if (Check === 1) {
+                let joinMeetingData = {
+                  VideoCallURL: response.data.responseResult.videoCallUrl,
+                  FK_MDID: Number(
+                    localStorage.getItem("NotificationAdvanceMeetingID")
+                  ),
+                  DateTime: getCurrentDateTimeUTC(),
+                };
+
+                dispatch(
+                  JoinCurrentMeeting(
+                    JSON.parse(
+                      localStorage.getItem("QuickMeetingCheckNotification")
+                    ),
+                    navigate,
+                    t,
+                    joinMeetingData
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage

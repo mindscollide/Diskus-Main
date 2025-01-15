@@ -71,27 +71,69 @@ const ViewMeetingModal = ({
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
   const { editorRole, setEditorRole } = useMeetingContext();
-  const [meetingDetails, setmeetingDetails] = useState(
-    (editorRole.role === "Organizer" ||
-      editorRole.role === "Participant" ||
-      editorRole.role === "Agenda Contributor") &&
+  // const [meetingDetails, setmeetingDetails] = useState(
+  //   (editorRole.role === "Organizer" ||
+  //     editorRole.role === "Participant" ||
+  //     editorRole.role === "Agenda Contributor") &&
+  //     Number(editorRole.status) === 10
+  //     ? false
+  //     : true
+  // );
+  //Applied One Condition just for WebNotification CR #0011344
+  const [meetingDetails, setmeetingDetails] = useState(() => {
+    const advanceMeetingOperations =
+      JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+
+    if (advanceMeetingOperations) {
+      return false;
+    }
+
+    return !(
+      (editorRole.role === "Organizer" ||
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor") &&
       Number(editorRole.status) === 10
-      ? false
-      : true
-  );
+    );
+  });
+
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(
-    (editorRole.role === "Organizer" ||
-      editorRole.role === "Participant" ||
-      editorRole.role === "Agenda Contributor") &&
+  // const [meetingMaterial, setMeetingMaterial] = useState(
+  //   JSON.parse(localStorage.getItem("AdvanceMeetingOperations") === true)(
+  //     editorRole.role === "Organizer" ||
+  //       editorRole.role === "Participant" ||
+  //       editorRole.role === "Agenda Contributor"
+  //   ) &&
+  //     routeID !== 5 &&
+  //     Number(editorRole.status) === 10
+  //     ? true
+  //     : false
+  // );
+  //Applied One Condition just for WebNotification CR #0011344
+  const [meetingMaterial, setMeetingMaterial] = useState(() => {
+    const advanceMeetingOperations =
+      JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+
+    if (advanceMeetingOperations) {
+      return true;
+    }
+
+    return (
+      (editorRole.role === "Organizer" ||
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor") &&
       routeID !== 5 &&
       Number(editorRole.status) === 10
-      ? true
-      : false
-  );
+    );
+  });
+
+  console.log(meetingMaterial, "meetingMaterialmeetingMaterial");
+  console.log(meetingDetails, "meetingMaterialmeetingMaterial");
+  // console.log(editorRole.role, "meetingMaterialmeetingMaterial");
+  // console.log(routeID, "meetingMaterialmeetingMaterial");
+  // console.log(editorRole.status, "meetingMaterialmeetingMaterial");
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
@@ -283,6 +325,7 @@ const ViewMeetingModal = ({
       setAdvanceMeetingModalID(null);
       localStorage.removeItem("AdvanceMeetingOperations");
       localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("QuickMeetingCheckNotification");
       localStorage.setItem("isMeeting", false);
     };
   }, []);
@@ -619,13 +662,14 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -641,10 +685,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
