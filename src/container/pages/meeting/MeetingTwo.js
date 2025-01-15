@@ -151,6 +151,8 @@ const NewMeeting = () => {
     setViewAdvanceMeetingModal,
     viewProposeDatePoll,
     setViewProposeDatePoll,
+    viewFlag,
+    setViewFlag,
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -303,7 +305,7 @@ const NewMeeting = () => {
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
-  const [viewFlag, setViewFlag] = useState(false);
+
   const [currentMeetingID, setCurrentMeetingID] = useState(0);
   const [isEditMeeting, setEditMeeting] = useState(false);
   const [open, setOpen] = useState({

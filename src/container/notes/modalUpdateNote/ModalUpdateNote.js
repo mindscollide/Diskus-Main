@@ -526,7 +526,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     if (flag) {
       setUpdateNotes(false);
     }
-    dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
+    dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes, id));
   };
 
   return (
