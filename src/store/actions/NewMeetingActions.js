@@ -8218,8 +8218,10 @@ const JoinCurrentMeeting = (
                   )
                 );
               } else {
-                setAdvanceMeetingModalID(Number(Data.FK_MDID));
-                setViewAdvanceMeetingModal(true);
+                isFunction(setAdvanceMeetingModalID) &&
+                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
+                isFunction(setViewAdvanceMeetingModal) &&
+                  setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
               }

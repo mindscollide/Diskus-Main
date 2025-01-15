@@ -68,6 +68,8 @@ const ViewMeetingModal = ({
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
+  const advanceMeetingOperations =
+    JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -77,70 +79,35 @@ const ViewMeetingModal = ({
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
+  console.log(typeof advanceMeetingOperations);
   const { editorRole, setEditorRole } = useMeetingContext();
-  // const [meetingDetails, setmeetingDetails] = useState(
-  //   (editorRole.role === "Organizer" ||
-  //     editorRole.role === "Participant" ||
-  //     editorRole.role === "Agenda Contributor") &&
-  //     Number(editorRole.status) === 10
-  //     ? false
-  //     : true
-  // );
-  //Applied One Condition just for WebNotification CR #0011344
-  const [meetingDetails, setmeetingDetails] = useState(() => {
-    const advanceMeetingOperations =
-      JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
-
-    if (advanceMeetingOperations) {
-      return false;
-    }
-
-    return !(
-      (editorRole.role === "Organizer" ||
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor") &&
-      Number(editorRole.status) === 10
-    );
-  });
+  const [meetingDetails, setmeetingDetails] = useState(
+    advanceMeetingOperations
+      ? false
+      : (editorRole.role === "Organizer" ||
+          editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor") &&
+        Number(editorRole.status) === 10
+      ? false
+      : true
+  );
 
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
-  // const [meetingMaterial, setMeetingMaterial] = useState(
-  //   JSON.parse(localStorage.getItem("AdvanceMeetingOperations") === true)(
-  //     editorRole.role === "Organizer" ||
-  //       editorRole.role === "Participant" ||
-  //       editorRole.role === "Agenda Contributor"
-  //   ) &&
-  //     routeID !== 5 &&
-  //     Number(editorRole.status) === 10
-  //     ? true
-  //     : false
-  // );
-  //Applied One Condition just for WebNotification CR #0011344
-  const [meetingMaterial, setMeetingMaterial] = useState(() => {
-    const advanceMeetingOperations =
-      JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+  const [meetingMaterial, setMeetingMaterial] = useState(
+    advanceMeetingOperations
+      ? true
+      : (editorRole.role === "Organizer" ||
+          editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor") &&
+        routeID !== 5 &&
+        Number(editorRole.status) === 10
+      ? true
+      : false
+  );
 
-    if (advanceMeetingOperations) {
-      return true;
-    }
-
-    return (
-      (editorRole.role === "Organizer" ||
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor") &&
-      routeID !== 5 &&
-      Number(editorRole.status) === 10
-    );
-  });
-
-  console.log(meetingMaterial, "meetingMaterialmeetingMaterial");
-  console.log(meetingDetails, "meetingMaterialmeetingMaterial");
-  // console.log(editorRole.role, "meetingMaterialmeetingMaterial");
-  // console.log(routeID, "meetingMaterialmeetingMaterial");
-  // console.log(editorRole.status, "meetingMaterialmeetingMaterial");
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
