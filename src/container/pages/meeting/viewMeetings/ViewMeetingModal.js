@@ -154,6 +154,7 @@ const ViewMeetingModal = ({
     minutes,
     "routeIDrouteID"
   );
+
   useEffect(() => {
     if (routeID !== null && routeID !== 0) {
       if (Number(routeID) === 1) {
@@ -177,6 +178,7 @@ const ViewMeetingModal = ({
       dispatch(emailRouteID(0));
     };
   }, [routeID]);
+
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {

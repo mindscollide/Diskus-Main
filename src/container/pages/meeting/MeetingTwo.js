@@ -223,11 +223,6 @@ const NewMeeting = () => {
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
-
-  console.log(
-    viewAdvanceMeetingsPublishPageFlag,
-    "viewAdvanceMeetingsPublishPageFlag"
-  );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
   );
@@ -794,7 +789,7 @@ const NewMeeting = () => {
   };
 
   let calendarMainMeeting = location.state?.CalendaradvanceMeeting;
-  console.log(calendarMainMeeting, "calendarMeetingcalendarMeeting");
+
   useEffect(() => {
     if (
       location.state !== null &&
@@ -1479,6 +1474,7 @@ const NewMeeting = () => {
     isQuickMeeting,
     status
   ) => {
+    console.log("handleViewMeeting", videoCallURL, id, isQuickMeeting, status);
     try {
       if (status === "10" || status === 10) {
         if (isQuickMeeting) {
@@ -2629,10 +2625,7 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
-  console.log(
-    boardDeckMeetingTitle,
-    "boardDeckMeetingTitleboardDeckMeetingTitle"
-  );
+
   //Board Deck Onclick function
   const boardDeckOnClick = (record) => {
     setBoardDeckMeetingID(record.pK_MDID);
@@ -2640,6 +2633,7 @@ const NewMeeting = () => {
     dispatch(boardDeckModal(true));
     localStorage.setItem("meetingTitle", record.title);
   };
+
   const callStartMeetingFromEvents = async (dashboardEventData) => {
     let startMeetingRequest = {
       VideoCallURL: dashboardEventData.videoCallURL,
@@ -2687,6 +2681,7 @@ const NewMeeting = () => {
     dispatch(viewAdvanceMeetingPublishPageFlag(true));
     dispatch(scheduleMeetingPageFlag(false));
   };
+
   useEffect(() => {
     if (
       CalendarDashboardEventData !== null &&
@@ -2859,7 +2854,7 @@ const NewMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-
+          console.log("handleViewMeeting", copyMeetingData);
           setRow(copyMeetingData);
           setDublicatedrows(copyMeetingData);
         }
