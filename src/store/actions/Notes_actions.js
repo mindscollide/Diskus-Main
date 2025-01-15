@@ -12,6 +12,7 @@ import {
   RetrieveNotesDocument,
   saveFilesRequestMethod,
   uploadDocumentsRequestMethod,
+  DeleteNotesDocuments,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { isFunction } from "../../commen/functions/utils";
@@ -1150,6 +1151,94 @@ const uploadDocumentsNotesApi = (
   };
 };
 
+// Delete Notes Document
+const DeleteNotesDocumentsInit = () => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_INIT,
+  };
+};
+
+const DeleteNotesDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DeleteNotesDocumentsFailed = (message) => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_FAIL,
+    message: message,
+  };
+};
+
+const DeleteNotesDocumentsAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(DeleteNotesDocumentsInit());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteNotesDocuments.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DeleteNotesDocumentsAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                DeleteNotesDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Notes-attachment-deleted-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteNotesDocumentsFailed(t("No-attachment-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetNotes,
   SaveNotesAPI,
@@ -1164,4 +1253,5 @@ export {
   RetrieveNotesDocumentAPI,
   saveFilesNotesApi,
   uploadDocumentsNotesApi,
+  DeleteNotesDocumentsAPI,
 };
