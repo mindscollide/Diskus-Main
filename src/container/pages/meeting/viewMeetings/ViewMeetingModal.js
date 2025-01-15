@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -35,15 +35,23 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  checkFeatureIDAvailability,
+  WebNotificationExportRoutFunc,
+} from "../../../../commen/functions/utils";
 import Attendees from "./attendees/Attendees";
-import { useMeetingContext } from "../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
+import { useGroupsContext } from "../../../../context/GroupsContext";
+import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -56,12 +64,11 @@ const ViewMeetingModal = ({
   setVideoTalk,
 }) => {
   const { t } = useTranslation();
+  const location = useLocation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
-  const castYourVotePollModalState = useSelector(
-    (state) => state.PollsReducer.castPollVoteModal
-  );
-
+  const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
@@ -159,6 +166,19 @@ const ViewMeetingModal = ({
   const leaveMeetingOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag
   );
+
+  const globalFunctionWebnotificationFlag = useSelector(
+    (state) => state.settingReducer.globalFunctionWebnotificationFlag
+  );
+
+  const webNotifactionDataRoutecheckFlag = JSON.parse(
+    localStorage.getItem("webNotifactionDataRoutecheckFlag")
+  );
+
+  const webNotificationData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
+  );
+
   console.log(
     agendaContributors,
     meetingDetails,
@@ -659,6 +679,35 @@ const ViewMeetingModal = ({
       console.log(error);
     }
   }, [AgendaVotingModalStartedData]);
+
+  useEffect(() => {
+    try {
+      if (globalFunctionWebnotificationFlag) {
+        if (webNotifactionDataRoutecheckFlag) {
+          console.log("webNotifactionDataRoutecheckFlag");
+          let currentURL = window.location.href;
+          WebNotificationExportRoutFunc(
+            currentURL,
+            dispatch,
+            t,
+            location,
+            navigate,
+            webNotificationData,
+            setViewFlag,
+            setEditorRole,
+            setViewAdvanceMeetingModal,
+            setViewProposeDatePoll,
+            setViewGroupPage,
+            setShowModal
+          );
+          dispatch(webnotificationGlobalFlag(false));
+        }
+      }
+      console.log("webNotifactionDataRoutecheckFlag");
+    } catch (error) {}
+
+    return () => {};
+  }, [globalFunctionWebnotificationFlag]);
 
   return (
     <>
