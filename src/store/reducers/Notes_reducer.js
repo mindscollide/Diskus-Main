@@ -119,7 +119,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.DELETE_NOTE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         ResponseMessage: action.message,
         deleteNoteResponse: action.response,
       };
