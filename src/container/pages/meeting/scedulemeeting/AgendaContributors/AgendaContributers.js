@@ -757,7 +757,7 @@ const AgendaContributers = ({
     <>
       <section className='position-relative'>
         <Row className='mt-5'>
-          {((Number(editorRole.status) === 9 ||
+          {/* {((Number(editorRole.status) === 9 ||
             Number(editorRole.status) === 8 ||
             Number(editorRole.status) === 10) &&
             editorRole.role === "Organizer" &&
@@ -777,11 +777,11 @@ const AgendaContributers = ({
                 }}
               />
             </Col>
-          )}
+          )} */}
 
           <Col
-            lg={8}
-            md={8}
+            lg={12}
+            md={12}
             sm={12}
             className='d-flex justify-content-end gap-3'>
             {((Number(editorRole.status) === 9 ||

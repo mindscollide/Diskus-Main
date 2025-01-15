@@ -104,10 +104,7 @@ const App = () => {
   const adminReducer = useSelector((state) => state.adminReducer);
   const UserReportReducer = useSelector((state) => state.UserReportReducer);
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
-  const castYourVotePollModalState = useSelector(
-    (state) => state.PollsReducer.castPollVoteModal
-  );
-  console.log(castYourVotePollModalState, "castYourVotePollModalState")
+
   const UserManagementModals = useSelector(
     (state) => state.UserManagementModals
   );
@@ -131,14 +128,11 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-  console.log("loader checking ");
   // Show modal if accessed on a mobile browser
   useEffect(() => {
     if (isMobileDevice()) {
-      console.log("Mobile device detected. Showing modal.");
       dispatch(mobileAppPopModal(true));
     } else {
-      console.log("Not a mobile device. Modal not shown.");
     }
   }, []);
 

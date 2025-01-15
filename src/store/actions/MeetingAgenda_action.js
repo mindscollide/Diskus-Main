@@ -45,6 +45,7 @@ import {
   uploadGlobalFlag,
   showCastVoteAgendaModal,
   AgendaPollVotingStartedAction,
+  moveFilesAndFoldersApi,
 } from "./NewMeetingActions";
 
 const clearAgendaReducerState = () => {
@@ -795,7 +796,13 @@ const createUpdateMeetingDataRoomMap_fail = (message) => {
 };
 
 // Folder ID
-const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
+const CreateUpdateMeetingDataRoomMap = (
+  navigate,
+  t,
+  data,
+  attachmentIds,
+  checkFlag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -814,7 +821,15 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, data));
+          dispatch(
+            CreateUpdateMeetingDataRoomMap(
+              navigate,
+              t,
+              data,
+              attachmentIds,
+              checkFlag
+            )
+          );
         } else if (
           response.data.responseCode === 200 &&
           response.data.responseResult.isExecuted === true
@@ -829,6 +844,26 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
                 ""
               )
             );
+            if (checkFlag !== null && checkFlag !== undefined) {
+              let moveFilesandFolders = {
+                FolderID: response.data.responseResult.folderID,
+                FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
+                // FileIds: [{ PK_FileID: 2230 }],
+              };
+              dispatch(
+                moveFilesAndFoldersApi(
+                  navigate,
+                  t,
+                  moveFilesandFolders,
+                  checkFlag
+                )
+              );
+              console.log(
+                moveFilesandFolders,
+                "moveFilesandFoldersmoveFilesandFolders"
+              );
+            }
+
             localStorage.setItem("MeetingID", data.MeetingID);
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
@@ -2473,5 +2508,5 @@ export {
   ExportAgendaPDF,
   PrintMeetingAgenda,
   GetAdvanceMeetingAgendabyMeetingIDForView,
-  getAgendaVotingDetails_fail
+  getAgendaVotingDetails_fail,
 };

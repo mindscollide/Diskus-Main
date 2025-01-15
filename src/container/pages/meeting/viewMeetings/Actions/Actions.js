@@ -846,7 +846,7 @@ const Actions = ({
                   )}
                 </section>
               </>
-              <Row className="mt-3">
+              {/* <Row className="mt-3">
                 <Col
                   lg={12}
                   md={12}
@@ -871,7 +871,7 @@ const Actions = ({
                     </>
                   )}
                 </Col>
-              </Row>
+              </Row> */}
             </Col>
           </Row>
         </>

@@ -781,7 +781,7 @@ const Polls = ({
                 </Col>
               </Row>
             )}
-            <Row className='mt-5'>
+            {/* <Row className='mt-5'>
               <Col
                 lg={12}
                 md={12}
@@ -802,7 +802,7 @@ const Polls = ({
                   />
                 ) : null}
               </Col>
-            </Row>
+            </Row> */}
           </>
         )}
 

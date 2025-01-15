@@ -1931,7 +1931,12 @@ const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
+const MoveFilesToFoldersRM = {
+  RequestMethod: "ServiceManager.MoveFilesToFolders",
+};
+
 export {
+  MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,
   ValidateEncryptedStringViewFolderLinkRM,

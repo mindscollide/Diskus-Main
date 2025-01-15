@@ -24,6 +24,7 @@ import {
   getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
+import { CreateUpdateMeetingDataRoomMap } from "./MeetingAgenda_action";
 
 const meetingLoaderDashboard = (payload) => {
   return {
@@ -193,43 +194,65 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
             ) {
               await dispatch(SetLoaderFalse(false));
               dispatch(meetingLoaderDashboard(false));
-              if (checkFlag === 2) {
-                await dispatch(getCalendarDataResponse(navigate, t, createrID));
-              } else if (checkFlag === 4) {
-                let meetingpageRow =
-                  localStorage.getItem("MeetingPageRows") || 30;
-                let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent") || 1;
-                let currentView = localStorage.getItem("MeetingCurrentView");
+              let MappedData = {
+                MeetingID: Number(response.data.responseResult.mdid),
+                MeetingTitle: object.MeetingTitle,
+                IsUpdateFlow: false,
+              };
+              // Extract all OriginalAttachmentName values as numbers
+              const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
+                agenda.MeetingAgendaAttachments.map((attachment) =>
+                  Number(attachment.OriginalAttachmentName)
+                )
+              );
+              dispatch(
+                CreateUpdateMeetingDataRoomMap(
+                  navigate,
+                  t,
+                  MappedData,
+                  attachmentIds,
+                  checkFlag
+                )
+              );
 
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
-                  PublishedMeetings:
-                    currentView && Number(currentView) === 1 ? true : false,
-                };
-                console.log("chek search meeting");
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              } else if (checkFlag === 6) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              // if (checkFlag === 2) {
+              //   await dispatch(getCalendarDataResponse(navigate, t, createrID));
+              // } else if (checkFlag === 4) {
+              //   let meetingpageRow =
+              //     localStorage.getItem("MeetingPageRows") || 30;
+              //   let meetingPageCurrent =
+              //     localStorage.getItem("MeetingPageCurrent") || 1;
+              //   let currentView = localStorage.getItem("MeetingCurrentView");
 
-                let Data = {
-                  MeetingID: Number(response.data.responseResult.mdid),
-                  CommitteeID: Number(ViewCommitteeID),
-                };
-                dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
-              } else if (checkFlag === 7) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  MeetingID: Number(response.data.responseResult.mdid),
-                  GroupID: Number(ViewGroupID),
-                };
-                dispatch(setMeetingByGroupIDApi(navigate, t, Data));
-              }
+              //   let searchData = {
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: Number(meetingPageCurrent),
+              //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
+              //     PublishedMeetings:
+              //       currentView && Number(currentView) === 1 ? true : false,
+              //   };
+              //   console.log("chek search meeting");
+              //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // } else if (checkFlag === 6) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              //   let Data = {
+              //     MeetingID: Number(response.data.responseResult.mdid),
+              //     CommitteeID: Number(ViewCommitteeID),
+              //   };
+              //   dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+              // } else if (checkFlag === 7) {
+              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
+              //   let Data = {
+              //     MeetingID: Number(response.data.responseResult.mdid),
+              //     GroupID: Number(ViewGroupID),
+              //   };
+              //   dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -296,50 +319,72 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
-              if (checkFlag === 4) {
-                let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent") || 1;
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
-                  PublishedMeetings: true,
-                };
-                console.log("chek search meeting");
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              } else if (checkFlag === 7) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  GroupID: Number(ViewGroupID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingbyGroupApi(navigate, t, Data));
-              } else if (checkFlag === 6) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                let Data = {
-                  CommitteeID: Number(ViewCommitteeID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
-              }
-              await dispatch(meetingLoaderDashboard(false));
-              await dispatch(SetLoaderFalse(false));
+              let MappedData = {
+                MeetingID: Number(response.data.responseResult.mdid),
+                MeetingTitle: object.MeetingTitle,
+                IsUpdateFlow: true,
+              };
+              // Extract all OriginalAttachmentName values as numbers
+              const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
+                agenda.MeetingAgendaAttachments.map((attachment) =>
+                  Number(attachment.OriginalAttachmentName)
+                )
+              );
+              dispatch(
+                CreateUpdateMeetingDataRoomMap(
+                  navigate,
+                  t,
+                  MappedData,
+                  attachmentIds,
+                  checkFlag
+                )
+              );
+
+              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              // if (checkFlag === 4) {
+              //   let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              //   let meetingPageCurrent =
+              //     localStorage.getItem("MeetingPageCurrent") || 1;
+              //   let searchData = {
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: Number(meetingPageCurrent),
+              //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   console.log("chek search meeting");
+              //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // } else if (checkFlag === 7) {
+              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
+              //   let Data = {
+              //     GroupID: Number(ViewGroupID),
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: 1,
+              //     Length: 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   dispatch(getMeetingbyGroupApi(navigate, t, Data));
+              // } else if (checkFlag === 6) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              //   let Data = {
+              //     CommitteeID: Number(ViewCommitteeID),
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: 1,
+              //     Length: 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+              // }
+              // await dispatch(meetingLoaderDashboard(false));
+              // await dispatch(SetLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -450,7 +495,7 @@ const ViewMeeting = (
               try {
                 if (Number(no) === 1) {
                   setViewFlag(true);
-                  localStorage.setItem("typeOfMeeting", "isQuickMeeting")
+                  localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (no === 2) {
                   dispatch(GetAllReminders(navigate, t));
