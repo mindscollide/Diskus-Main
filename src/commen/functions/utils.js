@@ -708,6 +708,7 @@ export const WebNotificationExportRoutFunc = (
           "NotificationAdvanceMeetingID",
           PayLoadData.MeetingID
         );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
           GetMeetingStatusDataAPI(
@@ -716,7 +717,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal
+            setViewAdvanceMeetingModal,
+            1
           )
         );
       }
@@ -737,8 +739,23 @@ export const WebNotificationExportRoutFunc = (
           "NotificationAdvanceMeetingID",
           PayLoadData.MeetingID
         );
+        localStorage.setItem(
+          "QuickMeetingCheckNotification",
+          PayLoadData.IsQuickMeeting
+        );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-        dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+        dispatch(
+          GetMeetingStatusDataAPI(
+            navigate,
+            t,
+            Data,
+            setEditorRole,
+            false,
+            false,
+            1
+          )
+        );
       }
     }
   } else if (NotificationData.notificationActionID === 4) {
