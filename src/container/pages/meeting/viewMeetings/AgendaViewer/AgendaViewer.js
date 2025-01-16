@@ -26,6 +26,8 @@ import {
   callRequestReceivedMQTT,
   LeaveCall,
 } from "../../../../../store/actions/VideoMain_actions";
+import PresenterView from "../../../../../assets/images/Recent Activity Icons/Video/PresenterView.png";
+
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
@@ -770,6 +772,14 @@ const AgendaViewer = ({
                           </div>
                         </Tooltip>
                       ) : null} */}
+                      {/* {
+                        <Tooltip>
+                          <div className={styles["presenter-view-class"]}>
+                            <img src={PresenterView} />
+                            <p>{t("Start-presenting")}</p>
+                          </div>
+                        </Tooltip>
+                      } */}
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&
@@ -795,6 +805,7 @@ const AgendaViewer = ({
                           </div>
                         </Tooltip>
                       ) : null}
+
                       {/* 
                       <Tooltip placement="topRight" title={t("Expand")}>
                         <div
