@@ -25,6 +25,7 @@ import {
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
 import { CreateUpdateMeetingDataRoomMap } from "./MeetingAgenda_action";
+import { generateRandomPositiveId } from "../../commen/functions/utils";
 
 const meetingLoaderDashboard = (payload) => {
   return {
@@ -143,7 +144,7 @@ const allAssignessList = (navigate, t, loader) => {
 
 const SetLoaderFalse = () => {
   return {
-    type: actions.SET_LOADER_FALSE,
+    type: actions.SET_LOADER_FALSE_GETLISTOFASSIGNEES,
   };
 };
 
@@ -161,7 +162,7 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
+const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
 
@@ -182,7 +183,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
+          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, setShow));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -192,30 +193,65 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
-              await dispatch(SetLoaderFalse(false));
-              dispatch(meetingLoaderDashboard(false));
-              let MappedData = {
-                MeetingID: Number(response.data.responseResult.mdid),
-                MeetingTitle: object.MeetingTitle,
-                IsUpdateFlow: false,
-              };
-              // Extract all OriginalAttachmentName values as numbers
-              const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
-                agenda.MeetingAgendaAttachments.map((attachment) =>
-                  Number(attachment.OriginalAttachmentName)
-                )
-              );
-              dispatch(
-                CreateUpdateMeetingDataRoomMap(
-                  navigate,
-                  t,
-                  MappedData,
-                  attachmentIds,
-                  checkFlag
-                )
-              );
+              await dispatch(SetLoaderFalse());
+              try {
+                let MappedData = {
+                  MeetingID: Number(response.data.responseResult.mdid),
+                  MeetingTitle: object.MeetingTitle,
+                  IsUpdateFlow: false,
+                };
+                if (
+                  response.data.responseResult?.agendaMappings !== null &&
+                  response.data.responseResult?.agendaMappings?.length > 0
+                ) {
+                  let newAgendas = {
+                    MeetingID: response.data.responseResult.mdid, // Meeting ID remains the same for all agendas
+                    UpdateFileList: object.MeetingAgendas.map((doc) => {
+                      const mainMatch =
+                        response.data.responseResult.agendaMappings.find(
+                          (item) =>
+                            item.oldPK_MAID === doc.ObjMeetingAgenda.PK_MAID
+                        );
 
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+                      if (mainMatch) {
+                        // Map FileIds correctly
+                        return {
+                          AgendaID: String(mainMatch.newPK_MAID),
+                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
+                            PK_FileID: Number(file.OriginalAttachmentName),
+                          })),
+                        };
+                      }
+
+                      return null; // Return null if no match is found
+                    }).filter((agenda) => agenda !== null), // Filter out null values
+                  };
+
+                  // Extract all OriginalAttachmentName values as numbers
+                  const attachmentIds = object.MeetingAgendas.flatMap(
+                    (agenda) =>
+                      agenda.MeetingAgendaAttachments.map((attachment) =>
+                        Number(attachment.OriginalAttachmentName)
+                      )
+                  );
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMap(
+                      navigate,
+                      t,
+                      MappedData,
+                      attachmentIds,
+                      newAgendas,
+                      checkFlag,
+                      setShow
+                    )
+                  );
+                }
+                // dispatch(meetingLoaderDashboard(false));
+              } catch (error) {
+                dispatch(meetingLoaderDashboard(false));
+                throw new Error(error);
+              }
+
               // if (checkFlag === 2) {
               //   await dispatch(getCalendarDataResponse(navigate, t, createrID));
               // } else if (checkFlag === 4) {
@@ -290,7 +326,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
+const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
@@ -309,7 +345,9 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
+          dispatch(
+            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -319,28 +357,81 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
-              let MappedData = {
-                MeetingID: Number(response.data.responseResult.mdid),
-                MeetingTitle: object.MeetingTitle,
-                IsUpdateFlow: true,
-              };
-              // Extract all OriginalAttachmentName values as numbers
-              const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
-                agenda.MeetingAgendaAttachments.map((attachment) =>
-                  Number(attachment.OriginalAttachmentName)
-                )
-              );
-              dispatch(
-                CreateUpdateMeetingDataRoomMap(
-                  navigate,
-                  t,
-                  MappedData,
-                  attachmentIds,
-                  checkFlag
-                )
-              );
+              await dispatch(SetLoaderFalse());
+              try {
+                let MappedData = {
+                  MeetingID: Number(object.MeetingID),
+                  MeetingTitle: object.MeetingTitle,
+                  IsUpdateFlow: true,
+                };
 
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+                if (
+                  response.data.responseResult?.agendaIdMappings !== null &&
+                  response.data.responseResult?.agendaIdMappings?.length > 0
+                ) {
+                  let newAgendas = {
+                    MeetingID: Number(object.MeetingID), // Meeting ID remains the same for all agendas
+                    UpdateFileList: object.MeetingAgendas.map((doc) => {
+                      const mainMatch =
+                        response.data.responseResult.agendaIdMappings.find(
+                          (item) =>
+                            item.oldId === doc.ObjMeetingAgenda.PK_MAID
+                        );
+
+                      if (mainMatch) {
+                        // Map FileIds correctly
+                        return {
+                          AgendaID: String(mainMatch.newId),
+                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
+                            PK_FileID: Number(file.OriginalAttachmentName),
+                          })),
+                        };
+                      } else {
+                        return {
+                          AgendaID: String(doc.ObjMeetingAgenda.PK_MAID),
+                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
+                            PK_FileID: Number(file.OriginalAttachmentName),
+                          })),
+                        };
+                      }
+
+                      return null; // Return null if no match is found
+                    }).filter((agenda) => agenda !== null), // Filter out null values
+                  };
+
+                  // Extract all OriginalAttachmentName values as numbers
+                  const attachmentIds = object.MeetingAgendas.flatMap(
+                    (agenda) =>
+                      agenda.MeetingAgendaAttachments.map((attachment) =>
+                        Number(attachment.OriginalAttachmentName)
+                      )
+                  );
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMap(
+                      navigate,
+                      t,
+                      MappedData,
+                      attachmentIds,
+                      newAgendas,
+                      checkFlag,
+                      setEditFlag
+                    )
+                  );
+                }
+              } catch (error) {
+                console.log(error)
+              }
+
+              // dispatch(
+              //   CreateUpdateMeetingDataRoomMap(
+              //     navigate,
+              //     t,
+              //     MappedData,
+              //     attachmentIds,
+              //     checkFlag
+              //   )
+              // );
+
               // if (checkFlag === 4) {
               //   let meetingpageRow = localStorage.getItem("MeetingPageRows");
               //   let meetingPageCurrent =
@@ -383,8 +474,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
               //   };
               //   dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
               // }
-              // await dispatch(meetingLoaderDashboard(false));
-              // await dispatch(SetLoaderFalse(false));
+              await dispatch(meetingLoaderDashboard(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -97,7 +97,10 @@ import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
-import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
+import {
+  GetAdvanceMeetingAgendabyMeetingID,
+  SaveMeetingDocuments,
+} from "./MeetingAgenda_action";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
@@ -9912,7 +9915,7 @@ const moveFilesAndFolder_fail = () => {
   };
 };
 
-const moveFilesAndFoldersApi = (navigate, t, Data, checkFlag) => {
+const moveFilesAndFoldersApi = (navigate, t, Data, newAgendas, checkFlag,setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
@@ -9929,7 +9932,9 @@ const moveFilesAndFoldersApi = (navigate, t, Data, checkFlag) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          dispatch(moveFilesAndFoldersApi(navigate, t, Data));
+          dispatch(
+            moveFilesAndFoldersApi(navigate, t, Data, newAgendas, checkFlag,setShow)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9944,6 +9949,9 @@ const moveFilesAndFoldersApi = (navigate, t, Data, checkFlag) => {
                   response.data.responseResult,
                   t("Files-moved-successfully")
                 )
+              );
+              await dispatch(
+                SaveMeetingDocuments(newAgendas, navigate, t, checkFlag,setShow)
               );
               console.log(checkFlag, "checkFlagcheckFlag");
             } else if (

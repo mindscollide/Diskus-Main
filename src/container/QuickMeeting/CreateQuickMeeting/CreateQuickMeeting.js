@@ -50,7 +50,10 @@ import { ConvertFileSizeInMB } from "../../../commen/functions/convertFileSizeIn
 import Select from "react-select";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { maxFileSize } from "../../../commen/functions/utils";
+import {
+  generateRandomNegativeAuto,
+  maxFileSize,
+} from "../../../commen/functions/utils";
 import {
   saveFilesQuickMeetingApi,
   uploadDocumentsQuickMeetingApi,
@@ -108,13 +111,17 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const generateRandomAgendaID = generateRandomNegativeAuto();
   //   const [fileForSend, setFileForSend] = useState([])
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
     Title: "",
     PresenterName: "",
     URLs: "",
     FK_MDID: 0,
+    PK_MAID: 0,
   });
+
+  console.log(objMeetingAgenda, "objMeetingAgendaobjMeetingAgenda");
   const [defaultMeetingAgenda, setDefaultObjMeetingAgenda] = useState({
     Title: "",
     PresenterName: "",
@@ -308,6 +315,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         ...objMeetingAgenda,
         Title: t("No-agenda-available"),
         PresenterName: userName,
+        PK_MAID: generateRandomAgendaID,
       };
 
       let previousAdendas = [...createMeeting.MeetingAgendas];
@@ -379,6 +387,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         ...objMeetingAgenda,
         Title: t("No-agenda-available"),
         PresenterName: userName,
+        PK_MAID: generateRandomAgendaID,
       };
 
       let previousAdendas = [...createMeeting.MeetingAgendas];
@@ -546,6 +555,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
+        PK_MAID: generateRandomAgendaID,
       });
     } else if (name === "PresenterName") {
       setObjMeetingAgenda({
@@ -1744,56 +1754,52 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    // setShow(false);
-    // setIsDetails(true);
-    // setCurrentStep(1);
 
-    // setIsAgenda(false);
-    // setIsAttendees(false);
-    // setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(navigate, t, checkFlag, newData));
+  await dispatch(ScheduleNewMeeting(navigate, t, checkFlag, newData,setShow));
     setObjMeetingAgenda(defaultMeetingAgenda);
+    setIsDetails(true);
+    setCurrentStep(1);
 
-    // setPresenterValue(defaultPresenter);
+    setIsAgenda(false);
+    setIsAttendees(false);
+    setIsPublishMeeting(false);
+    setPresenterValue(defaultPresenter);
 
-    // setParticipantRoleValue({
-    //   label: t("Participant"),
-    //   value: 2,
-    // });
-    // setCreateMeeting({
-    //   MeetingTitle: "",
-    //   MeetingDescription: "",
-    //   MeetingTypeID: 0,
-    //   OrganizationId: parseInt(OrganizationId),
-    //   MeetingDate: "",
-    //   MeetingStartTime: "",
-    //   MeetingEndTime: "",
-    //   IsVideoCall: false,
-    //   IsChat: false,
-    //   MeetingLocation: "",
-    //   MeetingReminderID: [],
-    //   MeetingAgendas: [],
-    //   MeetingAttendees: [],
-    //   ExternalMeetingAttendees: [],
-    // });
-    // setMeetingDate("");
-    // setMeetingAttendees({
-    //   User: {
-    //     PK_UID: 0,
-    //   },
-    //   MeetingAttendeeRole: {
-    //     PK_MARID: 2,
-    //   },
-    //   AttendeeAvailability: {
-    //     PK_AAID: 1,
-    //   },
-    // });
-    // setAddedParticipantNameList([]);
-    // setCreateMeetingTime("");
-    // setModalField(false);
-    // setIsDetails(false);
-    // setIsAgenda(false);
-    // setIsAttendees(false);
+    setParticipantRoleValue({
+      label: t("Participant"),
+      value: 2,
+    });
+    setCreateMeeting({
+      MeetingTitle: "",
+      MeetingDescription: "",
+      MeetingTypeID: 0,
+      OrganizationId: parseInt(OrganizationId),
+      MeetingDate: "",
+      MeetingStartTime: "",
+      MeetingEndTime: "",
+      IsVideoCall: false,
+      IsChat: false,
+      MeetingLocation: "",
+      MeetingReminderID: [],
+      MeetingAgendas: [],
+      MeetingAttendees: [],
+      ExternalMeetingAttendees: [],
+    });
+    setMeetingDate("");
+    setMeetingAttendees({
+      User: {
+        PK_UID: 0,
+      },
+      MeetingAttendeeRole: {
+        PK_MARID: 2,
+      },
+      AttendeeAvailability: {
+        PK_AAID: 1,
+      },
+    });
+    setAddedParticipantNameList([]);
+    setCreateMeetingTime("");
+
   };
 
   const deleteFilefromAttachments = (data, index) => {

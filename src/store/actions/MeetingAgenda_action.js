@@ -46,7 +46,11 @@ import {
   showCastVoteAgendaModal,
   AgendaPollVotingStartedAction,
   moveFilesAndFoldersApi,
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
+  searchNewUserMeeting,
 } from "./NewMeetingActions";
+import { meetingLoaderDashboard } from "./Get_List_Of_Assignees";
 
 const clearAgendaReducerState = () => {
   return {
@@ -801,7 +805,9 @@ const CreateUpdateMeetingDataRoomMap = (
   t,
   data,
   attachmentIds,
-  checkFlag
+  newAgendas,
+  checkFlag,
+  setShow
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -827,7 +833,9 @@ const CreateUpdateMeetingDataRoomMap = (
               t,
               data,
               attachmentIds,
-              checkFlag
+              newAgendas,
+              checkFlag,
+              setShow
             )
           );
         } else if (
@@ -855,7 +863,9 @@ const CreateUpdateMeetingDataRoomMap = (
                   navigate,
                   t,
                   moveFilesandFolders,
-                  checkFlag
+                  newAgendas,
+                  checkFlag,
+                  setShow
                 )
               );
               console.log(
@@ -884,6 +894,22 @@ const CreateUpdateMeetingDataRoomMap = (
                 ""
               )
             );
+            if (checkFlag !== null && checkFlag !== undefined) {
+              let moveFilesandFolders = {
+                FolderID: response.data.responseResult.folderID,
+                FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
+              };
+              dispatch(
+                moveFilesAndFoldersApi(
+                  navigate,
+                  t,
+                  moveFilesandFolders,
+                  newAgendas,
+                  checkFlag,
+                  setShow
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_04".toLowerCase()
@@ -901,6 +927,22 @@ const CreateUpdateMeetingDataRoomMap = (
                 ""
               )
             );
+            if (checkFlag !== null && checkFlag !== undefined) {
+              let moveFilesandFolders = {
+                FolderID: response.data.responseResult.folderID,
+                FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
+              };
+              dispatch(
+                moveFilesAndFoldersApi(
+                  navigate,
+                  t,
+                  moveFilesandFolders,
+                  newAgendas,
+                  checkFlag,
+                  setShow
+                )
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_06".toLowerCase()
@@ -1314,14 +1356,14 @@ const saveMeetingDocuments_fail = (message) => {
 };
 
 // Upload Documents API
-const SaveMeetingDocuments = (data, navigate, t) => {
+const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(saveMeetingDocuments_init());
     let form = new FormData();
     form.append("RequestMethod", saveMeetingDocuments.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    form.append("File", data);
+    // form.append("File", data);
     await axios({
       method: "post",
       url: dataRoomApi,
@@ -1333,7 +1375,7 @@ const SaveMeetingDocuments = (data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMeetingDocuments(data, navigate, t));
+          dispatch(SaveMeetingDocuments(data, navigate, t, checkFlag, setShow));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1346,6 +1388,57 @@ const SaveMeetingDocuments = (data, navigate, t) => {
               dispatch(
                 saveMeetingDocuments_success(response.data.responseResult, "")
               );
+              if (checkFlag !== null && checkFlag !== undefined) {
+                let createrID = localStorage.getItem("userID");
+                if (checkFlag === 4) {
+                  setShow(false);
+                  dispatch(meetingLoaderDashboard(false));
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent =
+                    localStorage.getItem("MeetingPageCurrent") || 1;
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow)
+                      ? Number(meetingpageRow)
+                      : 50,
+                    PublishedMeetings: true,
+                  };
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else if (checkFlag === 7) {
+                  let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  let Data = {
+                    GroupID: Number(ViewGroupID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                } else if (checkFlag === 6) {
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                  let Data = {
+                    CommitteeID: Number(ViewCommitteeID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                }
+                // await dispatch(meetingLoaderDashboard(false));
+                // await dispatch(SetLoaderFalse(false));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2509,4 +2602,5 @@ export {
   PrintMeetingAgenda,
   GetAdvanceMeetingAgendabyMeetingIDForView,
   getAgendaVotingDetails_fail,
+  SaveMeetingDocuments,
 };

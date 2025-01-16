@@ -51,7 +51,10 @@ import {
 } from "../../../commen/functions/time_formatter";
 import { ConvertFileSizeInMB } from "../../../commen/functions/convertFileSizeInMB";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
-import { maxFileSize } from "../../../commen/functions/utils";
+import {
+  generateRandomNegativeAuto,
+  maxFileSize,
+} from "../../../commen/functions/utils";
 import {
   saveFilesQuickMeetingApi,
   uploadDocumentsQuickMeetingApi,
@@ -216,7 +219,7 @@ const UpdateQuickMeeting = ({
   const [allPresenters, setAllPresenters] = useState([]);
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
-
+  const generateRandomAgendaID = generateRandomNegativeAuto();
   const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
@@ -589,7 +592,10 @@ const UpdateQuickMeeting = ({
     if (name === "Title") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
-        PK_MAID: objMeetingAgenda.PK_MAID,
+        PK_MAID:
+          objMeetingAgenda.PK_MAID !== 0
+            ? objMeetingAgenda.PK_MAID
+            : generateRandomAgendaID,
         [name]: valueCheck.trimStart(),
         FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
@@ -1088,6 +1094,7 @@ const UpdateQuickMeeting = ({
                   ObjMeetingAgenda: {
                     ...agenda.ObjMeetingAgenda,
                     Title: `Agenda ${index + 1}`,
+                    PK_MAID: generateRandomAgendaID,
                   },
                 };
               }
@@ -1098,6 +1105,8 @@ const UpdateQuickMeeting = ({
           const newObjMeetingAgenda = {
             ...objMeetingAgenda,
             Title: `Agenda ${agendaCount}`,
+            PK_MAID: generateRandomAgendaID,
+
             PresenterName: userName,
           };
 
@@ -2026,7 +2035,7 @@ const UpdateQuickMeeting = ({
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
       console.log(newData, "newDatanewDatanewData");
-      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData,setEditFlag));
       await setObjMeetingAgenda({
         PK_MAID: 0,
         Title: "",
@@ -2374,7 +2383,6 @@ const UpdateQuickMeeting = ({
           attachmentdata.DisplayAttachmentName !== fileData.name
       );
     });
-
   };
 
   const handleDeleteAttendee = (data, index) => {

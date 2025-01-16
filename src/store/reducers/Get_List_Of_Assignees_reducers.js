@@ -58,7 +58,7 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.SET_LOADER_FALSE: {
+    case actions.SET_LOADER_FALSE_GETLISTOFASSIGNEES: {
       return {
         ...state,
         Loading: false,

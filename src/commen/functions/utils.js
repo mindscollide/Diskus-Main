@@ -1411,3 +1411,21 @@ export const WebNotificationExportRoutFunc = (
   } else {
   }
 };
+
+export const generateRandomNegativeAuto = () => {
+  // Define default range for negative numbers
+  const min = -1000; // More negative
+  const max = -10; // Closer to zero
+
+  // Generate a random negative integer in the range [min, max]
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+export const generateRandomPositiveId = () => {
+  // Define the range for positive IDs
+  const min = 1; // Smallest positive ID
+  const max = 1000; // Largest positive ID
+
+  // Generate a random positive integer in the range [min, max]
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
