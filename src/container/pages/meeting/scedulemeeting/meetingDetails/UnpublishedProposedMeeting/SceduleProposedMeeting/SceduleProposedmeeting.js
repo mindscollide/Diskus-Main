@@ -206,6 +206,10 @@ const SceduleProposedmeeting = ({
           : Number(viewProposeDatePollMeetingID),
         ProposedDateID: findIsSelected.proposedDateID,
       };
+      console.log(
+        NotificationClickOrganizerProposedMeetingID,
+        "MeetingIDMeetingIDMeetingID"
+      );
       dispatch(
         scheduleMeetingMainApi(
           navigate,
@@ -214,7 +218,7 @@ const SceduleProposedmeeting = ({
           setDataroomMapFolderId,
           setCurrentMeetingID,
           setSceduleMeeting,
-          viewProposeDatePollMeetingID
+          NotificationClickOrganizerProposedMeetingID
         )
       );
     }
