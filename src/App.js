@@ -290,7 +290,7 @@ const App = () => {
   return (
     <>
       {/* Define your routes here */}
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
 
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}

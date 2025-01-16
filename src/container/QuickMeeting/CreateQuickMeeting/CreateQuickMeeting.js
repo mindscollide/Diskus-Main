@@ -1122,7 +1122,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             ...createMeeting,
             MeetingAttendees: [userData],
           });
-          if (checkFlag !== 6 && checkFlag !== 7) {
+          if (checkFlag !== 5 && checkFlag !== 7) {
             setAttendeesParticipant(PresenterData);
             setAllPresenters(PresenterData);
           }
@@ -1154,7 +1154,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       let usersData = [];
       let userData;
 
-      if (Number(checkFlag) === 6) {
+      if (Number(checkFlag) === 5) {
         // Committees MembersData
         let CommitteeMembers =
           CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
@@ -1755,51 +1755,9 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
 
-  await dispatch(ScheduleNewMeeting(navigate, t, checkFlag, newData,setShow));
-    setObjMeetingAgenda(defaultMeetingAgenda);
-    setIsDetails(true);
-    setCurrentStep(1);
-
-    setIsAgenda(false);
-    setIsAttendees(false);
-    setIsPublishMeeting(false);
-    setPresenterValue(defaultPresenter);
-
-    setParticipantRoleValue({
-      label: t("Participant"),
-      value: 2,
-    });
-    setCreateMeeting({
-      MeetingTitle: "",
-      MeetingDescription: "",
-      MeetingTypeID: 0,
-      OrganizationId: parseInt(OrganizationId),
-      MeetingDate: "",
-      MeetingStartTime: "",
-      MeetingEndTime: "",
-      IsVideoCall: false,
-      IsChat: false,
-      MeetingLocation: "",
-      MeetingReminderID: [],
-      MeetingAgendas: [],
-      MeetingAttendees: [],
-      ExternalMeetingAttendees: [],
-    });
-    setMeetingDate("");
-    setMeetingAttendees({
-      User: {
-        PK_UID: 0,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 2,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-    setAddedParticipantNameList([]);
-    setCreateMeetingTime("");
-
+    await dispatch(
+      ScheduleNewMeeting(navigate, t, checkFlag, newData, setShow)
+    );
   };
 
   const deleteFilefromAttachments = (data, index) => {

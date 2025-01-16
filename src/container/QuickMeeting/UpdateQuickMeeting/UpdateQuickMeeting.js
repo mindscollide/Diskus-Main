@@ -1371,7 +1371,7 @@ const UpdateQuickMeeting = ({
             }
           });
 
-          if (checkFlag !== 6 && checkFlag !== 7) {
+          if (checkFlag !== 6 && checkFlag !== 8) {
             setAttendeesParticipant(PresenterData);
           }
           setAllPresenters(PresenterData);
@@ -1784,7 +1784,7 @@ const UpdateQuickMeeting = ({
         setAttendeesParticipant(membersData);
 
         setMeetingAttendeesList(usersData);
-      } else if (Number(checkFlag) === 7) {
+      } else if (Number(checkFlag) === 8) {
         let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
         if (
           GroupMembers !== null &&
@@ -2035,7 +2035,9 @@ const UpdateQuickMeeting = ({
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
       console.log(newData, "newDatanewDatanewData");
-      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData,setEditFlag));
+      await dispatch(
+        UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
+      );
       await setObjMeetingAgenda({
         PK_MAID: 0,
         Title: "",

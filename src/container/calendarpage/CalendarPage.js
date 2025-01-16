@@ -21,11 +21,9 @@ import {
   utcConvertintoGMT,
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
-import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
 import {
   clearResponseMessage,
-  cleareAssigneesState,
 } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../store/actions/Admin_AddUser";
@@ -40,6 +38,7 @@ import {
   JoinCurrentMeeting,
   meetingStatusPublishedMqtt,
 } from "../../store/actions/NewMeetingActions";
+import CreateQuickMeeting from "../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const CalendarPage = () => {
   const { t } = useTranslation();
@@ -944,7 +943,7 @@ const CalendarPage = () => {
       )}
 
       {meetingModalShow && (
-        <ModalMeeting
+        <CreateQuickMeeting
           // this is check from where its called 2 is from Calendar
           checkFlag={2}
           show={meetingModalShow}

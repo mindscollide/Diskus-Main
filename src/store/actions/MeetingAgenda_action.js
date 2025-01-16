@@ -49,8 +49,13 @@ import {
   getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
   searchNewUserMeeting,
+  setMeetingByGroupIDApi,
+  setMeetingbyCommitteeIDApi,
 } from "./NewMeetingActions";
-import { meetingLoaderDashboard } from "./Get_List_Of_Assignees";
+import {
+  SetLoaderFalse,
+  meetingLoaderDashboard,
+} from "./Get_List_Of_Assignees";
 
 const clearAgendaReducerState = () => {
   return {
@@ -858,16 +863,85 @@ const CreateUpdateMeetingDataRoomMap = (
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
                 // FileIds: [{ PK_FileID: 2230 }],
               };
-              dispatch(
-                moveFilesAndFoldersApi(
-                  navigate,
-                  t,
-                  moveFilesandFolders,
-                  newAgendas,
-                  checkFlag,
-                  setShow
-                )
-              );
+              if (moveFilesandFolders.FileIds.length > 0) {
+                dispatch(
+                  moveFilesAndFoldersApi(
+                    navigate,
+                    t,
+                    moveFilesandFolders,
+                    newAgendas,
+                    checkFlag,
+                    setShow
+                  )
+                );
+              } else {
+                let createrID = localStorage.getItem("userID");
+
+                if (checkFlag === 4) {
+                  dispatch(meetingLoaderDashboard(false));
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent =
+                    localStorage.getItem("MeetingPageCurrent") || 1;
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: Number(meetingPageCurrent),
+                    Length: Number(meetingpageRow)
+                      ? Number(meetingpageRow)
+                      : 50,
+                    PublishedMeetings: true,
+                  };
+                  console.log("chek search meeting");
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else if (checkFlag === 5) {
+                  //  Create Committee Meeting 5
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                  let Data = {
+                    MeetingID: Number(data.MeetingID),
+                    CommitteeID: Number(ViewCommitteeID),
+                  };
+                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+                } else if (checkFlag === 6) {
+                  // Update Committee Meeting 6
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                  let Data = {
+                    CommitteeID: Number(ViewCommitteeID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+                } else if (checkFlag === 7) {
+                  // Create Group Meeting 7
+                  let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  let Data = {
+                    MeetingID: Number(data.MeetingID),
+                    GroupID: Number(ViewGroupID),
+                  };
+                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                } else if (checkFlag === 8) {
+                  let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  let Data = {
+                    GroupID: Number(ViewGroupID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingbyGroupApi(navigate, t, Data));
+                }
+              }
+
               console.log(
                 moveFilesandFolders,
                 "moveFilesandFoldersmoveFilesandFolders"
@@ -1389,9 +1463,10 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                 saveMeetingDocuments_success(response.data.responseResult, "")
               );
               if (checkFlag !== null && checkFlag !== undefined) {
+                await dispatch(SetLoaderFalse());
                 let createrID = localStorage.getItem("userID");
+                setShow(false);
                 if (checkFlag === 4) {
-                  setShow(false);
                   dispatch(meetingLoaderDashboard(false));
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
@@ -1409,7 +1484,38 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else if (checkFlag === 5) {
+                  //  Create Committee Meeting 5
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                  let Data = {
+                    MeetingID: Number(data.MeetingID),
+                    CommitteeID: Number(ViewCommitteeID),
+                  };
+                  dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+                } else if (checkFlag === 6) {
+                  // Update Committee Meeting 6
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                  let Data = {
+                    CommitteeID: Number(ViewCommitteeID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(createrID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
                 } else if (checkFlag === 7) {
+                  // Create Group Meeting 7
+                  let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  let Data = {
+                    MeetingID: Number(data.MeetingID),
+                    GroupID: Number(ViewGroupID),
+                  };
+                  dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                } else if (checkFlag === 8) {
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
                     GroupID: Number(ViewGroupID),
@@ -1422,22 +1528,8 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                     PublishedMeetings: true,
                   };
                   dispatch(getMeetingbyGroupApi(navigate, t, Data));
-                } else if (checkFlag === 6) {
-                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                  let Data = {
-                    CommitteeID: Number(ViewCommitteeID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(createrID),
-                    PageNumber: 1,
-                    Length: 50,
-                    PublishedMeetings: true,
-                  };
-                  dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
                 }
                 // await dispatch(meetingLoaderDashboard(false));
-                // await dispatch(SetLoaderFalse(false));
               }
             } else if (
               response.data.responseResult.responseMessage

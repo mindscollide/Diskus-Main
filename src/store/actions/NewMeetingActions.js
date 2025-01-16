@@ -9904,18 +9904,28 @@ const moveFilesAndFolder_init = () => {
     type: actions.MOVEFILEANDFODLER_INIT,
   };
 };
-const moveFilesAndFolder_success = () => {
+const moveFilesAndFolder_success = (response, message) => {
   return {
     type: actions.MOVEFILEANDFODLER_SUCCESS,
+    response: response,
+    message: message
   };
 };
-const moveFilesAndFolder_fail = () => {
+const moveFilesAndFolder_fail = (message) => {
   return {
     type: actions.MOVEFILEANDFODLER_FAIL,
+    message: message
   };
 };
 
-const moveFilesAndFoldersApi = (navigate, t, Data, newAgendas, checkFlag,setShow) => {
+const moveFilesAndFoldersApi = (
+  navigate,
+  t,
+  Data,
+  newAgendas,
+  checkFlag,
+  setShow
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
@@ -9932,8 +9942,16 @@ const moveFilesAndFoldersApi = (navigate, t, Data, newAgendas, checkFlag,setShow
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
           dispatch(
-            moveFilesAndFoldersApi(navigate, t, Data, newAgendas, checkFlag,setShow)
+            moveFilesAndFoldersApi(
+              navigate,
+              t,
+              Data,
+              newAgendas,
+              checkFlag,
+              setShow
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -9951,7 +9969,13 @@ const moveFilesAndFoldersApi = (navigate, t, Data, newAgendas, checkFlag,setShow
                 )
               );
               await dispatch(
-                SaveMeetingDocuments(newAgendas, navigate, t, checkFlag,setShow)
+                SaveMeetingDocuments(
+                  newAgendas,
+                  navigate,
+                  t,
+                  checkFlag,
+                  setShow
+                )
               );
               console.log(checkFlag, "checkFlagcheckFlag");
             } else if (

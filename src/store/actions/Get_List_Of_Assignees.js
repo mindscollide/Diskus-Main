@@ -193,7 +193,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
-              await dispatch(SetLoaderFalse());
+              dispatch(SetLoaderFalse());
               try {
                 let MappedData = {
                   MeetingID: Number(response.data.responseResult.mdid),
@@ -212,19 +212,20 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                           (item) =>
                             item.oldPK_MAID === doc.ObjMeetingAgenda.PK_MAID
                         );
-
-                      if (mainMatch) {
-                        // Map FileIds correctly
-                        return {
-                          AgendaID: String(mainMatch.newPK_MAID),
-                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
+                      // Only include agendas with attachments
+                      if (doc.MeetingAgendaAttachments.length > 0) {
+                        const AgendaID = String(mainMatch.newPK_MAID);
+                        const FileIds = doc.MeetingAgendaAttachments.map(
+                          (file) => ({
                             PK_FileID: Number(file.OriginalAttachmentName),
-                          })),
-                        };
+                          })
+                        );
+
+                        return { AgendaID, FileIds };
                       }
 
-                      return null; // Return null if no match is found
-                    }).filter((agenda) => agenda !== null), // Filter out null values
+                      return null; // Return null for agendas without attachments
+                    }).filter((agenda) => agenda !== null), // Remove null entries
                   };
 
                   // Extract all OriginalAttachmentName values as numbers
@@ -251,44 +252,6 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                 dispatch(meetingLoaderDashboard(false));
                 throw new Error(error);
               }
-
-              // if (checkFlag === 2) {
-              //   await dispatch(getCalendarDataResponse(navigate, t, createrID));
-              // } else if (checkFlag === 4) {
-              //   let meetingpageRow =
-              //     localStorage.getItem("MeetingPageRows") || 30;
-              //   let meetingPageCurrent =
-              //     localStorage.getItem("MeetingPageCurrent") || 1;
-              //   let currentView = localStorage.getItem("MeetingCurrentView");
-
-              //   let searchData = {
-              //     Date: "",
-              //     Title: "",
-              //     HostName: "",
-              //     UserID: Number(createrID),
-              //     PageNumber: Number(meetingPageCurrent),
-              //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
-              //     PublishedMeetings:
-              //       currentView && Number(currentView) === 1 ? true : false,
-              //   };
-              //   console.log("chek search meeting");
-              //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              // } else if (checkFlag === 6) {
-              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
-              //   let Data = {
-              //     MeetingID: Number(response.data.responseResult.mdid),
-              //     CommitteeID: Number(ViewCommitteeID),
-              //   };
-              //   dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
-              // } else if (checkFlag === 7) {
-              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
-              //   let Data = {
-              //     MeetingID: Number(response.data.responseResult.mdid),
-              //     GroupID: Number(ViewGroupID),
-              //   };
-              //   dispatch(setMeetingByGroupIDApi(navigate, t, Data));
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -369,34 +332,32 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   response.data.responseResult?.agendaIdMappings !== null &&
                   response.data.responseResult?.agendaIdMappings?.length > 0
                 ) {
-                  let newAgendas = {
+                  const newAgendas = {
                     MeetingID: Number(object.MeetingID), // Meeting ID remains the same for all agendas
                     UpdateFileList: object.MeetingAgendas.map((doc) => {
                       const mainMatch =
                         response.data.responseResult.agendaIdMappings.find(
-                          (item) =>
-                            item.oldId === doc.ObjMeetingAgenda.PK_MAID
+                          (item) => item.oldId === doc.ObjMeetingAgenda.PK_MAID
                         );
 
-                      if (mainMatch) {
-                        // Map FileIds correctly
-                        return {
-                          AgendaID: String(mainMatch.newId),
-                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
+                      // Only include agendas with attachments
+                      if (doc.MeetingAgendaAttachments.length > 0) {
+                        const AgendaID = String(
+                          mainMatch
+                            ? mainMatch.newId
+                            : doc.ObjMeetingAgenda.PK_MAID
+                        );
+                        const FileIds = doc.MeetingAgendaAttachments.map(
+                          (file) => ({
                             PK_FileID: Number(file.OriginalAttachmentName),
-                          })),
-                        };
-                      } else {
-                        return {
-                          AgendaID: String(doc.ObjMeetingAgenda.PK_MAID),
-                          FileIds: doc.MeetingAgendaAttachments.map((file) => ({
-                            PK_FileID: Number(file.OriginalAttachmentName),
-                          })),
-                        };
+                          })
+                        );
+
+                        return { AgendaID, FileIds };
                       }
 
-                      return null; // Return null if no match is found
-                    }).filter((agenda) => agenda !== null), // Filter out null values
+                      return null; // Return null for agendas without attachments
+                    }).filter((agenda) => agenda !== null), // Remove null entries
                   };
 
                   // Extract all OriginalAttachmentName values as numbers
@@ -406,6 +367,8 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                         Number(attachment.OriginalAttachmentName)
                       )
                   );
+
+                  // Dispatch the updated data
                   dispatch(
                     CreateUpdateMeetingDataRoomMap(
                       navigate,
@@ -419,7 +382,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   );
                 }
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
 
               // dispatch(
