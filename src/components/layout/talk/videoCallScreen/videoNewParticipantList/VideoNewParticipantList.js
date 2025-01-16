@@ -369,7 +369,11 @@ const VideoNewParticipantList = () => {
                       <p className="participant-name">{usersData?.name}</p>
                       {usersData.isHost ? (
                         <>
-                          <p className={styles["Host-name"]}>{t("Host")}</p>
+                          <p className={styles["Host-name"]}>
+                            <span className={styles["Host-title-name"]}>
+                              {t("(Host)")}
+                            </span>
+                          </p>
                         </>
                       ) : null}
                       {usersData.raiseHand === true ? (
