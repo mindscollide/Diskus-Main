@@ -9380,6 +9380,7 @@ const GetMeetingStatusDataAPI = (
   setVideoTalk
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
     let form = new FormData();
@@ -9422,60 +9423,69 @@ const GetMeetingStatusDataAPI = (
                   t("Successful")
                 )
               );
-              //Send Response By Date for Proposed Meeting
-              localStorage.setItem(
-                "NotificationClickSendResponseByDate",
-                response.data.responseResult.sendResponseByDeadline
-              );
-              //Meeting Status ID
-              localStorage.setItem(
-                "MeetingStatusID",
-                response.data.responseResult.meetingStatusID
-              );
-
-              //Global Video Chat And Group ID Context State
-              setVideoTalk({
-                isChat: response.data.responseResult.isChat,
-                isVideoCall: response.data.responseResult.isVideoCall,
-                talkGroupID: response.data.responseResult.talkGroupID,
-              });
-
-              //Global Edit States Context State
-              setEditorRole({
-                status: Number(response.data.responseResult.meetingStatusID),
-                role:
-                  Number(response.data.responseResult.attendeeRoleID) === 2
-                    ? "Participant"
-                    : Number(response.data.responseResult.attendeeRoleID) === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
-                isPrimaryOrganizer: false,
-              });
-              if (FlagOnRouteClickAdvanceMeet) {
-                dispatch(scheduleMeetingPageFlag(false));
-                isFunction(setViewAdvanceMeetingModal) &&
-                  setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
-              }
-              if (Check === 1) {
-                let joinMeetingData = {
-                  VideoCallURL: response.data.responseResult.videoCallUrl,
-                  FK_MDID: Number(
-                    localStorage.getItem("NotificationAdvanceMeetingID")
-                  ),
-                  DateTime: getCurrentDateTimeUTC(),
-                };
-
-                dispatch(
-                  JoinCurrentMeeting(
-                    JSON.parse(
-                      localStorage.getItem("QuickMeetingCheckNotification")
-                    ),
-                    navigate,
-                    t,
-                    joinMeetingData
-                  )
+              try {
+                //Send Response By Date for Proposed Meeting
+                localStorage.setItem(
+                  "NotificationClickSendResponseByDate",
+                  response.data.responseResult.sendResponseByDeadline
                 );
+
+                // Meeting Status ID
+                localStorage.setItem(
+                  "MeetingStatusID",
+                  response.data.responseResult.meetingStatusID
+                );
+
+                //Global Edit States Context State
+                setEditorRole({
+                  status: Number(response.data.responseResult.meetingStatusID),
+                  role:
+                    Number(response.data.responseResult.attendeeRoleID) === 2
+                      ? "Participant"
+                      : Number(response.data.responseResult.attendeeRoleID) ===
+                        4
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                  isPrimaryOrganizer: false,
+                });
+
+                // For Notification ID === 9
+                if (FlagOnRouteClickAdvanceMeet === true) {
+                  dispatch(scheduleMeetingPageFlag(false));
+                  isFunction(setViewAdvanceMeetingModal) &&
+                    setViewAdvanceMeetingModal(true);
+                  dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                }
+
+                //Global Video Chat And Group ID Context State
+                setVideoTalk({
+                  isChat: response.data.responseResult.isChat,
+                  isVideoCall: response.data.responseResult.isVideoCall,
+                  talkGroupID: response.data.responseResult.talkGroupID,
+                });
+
+                if (Check === 1) {
+                  let joinMeetingData = {
+                    VideoCallURL: response.data.responseResult.videoCallUrl,
+                    FK_MDID: Number(
+                      localStorage.getItem("NotificationAdvanceMeetingID")
+                    ),
+                    DateTime: getCurrentDateTimeUTC(),
+                  };
+
+                  dispatch(
+                    JoinCurrentMeeting(
+                      JSON.parse(
+                        localStorage.getItem("QuickMeetingCheckNotification")
+                      ),
+                      navigate,
+                      t,
+                      joinMeetingData
+                    )
+                  );
+                }
+              } catch (error) {
+                console.log(error, "errorerrorerror");
               }
             } else if (
               response.data.responseResult.responseMessage
