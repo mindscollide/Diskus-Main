@@ -54,6 +54,7 @@ const WebNotfication = ({
     setViewFlag,
     setViewAdvanceMeetingModal,
     setViewProposeDatePoll,
+    setVideoTalk,
   } = useMeetingContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -297,7 +298,8 @@ const WebNotfication = ({
                 setEditorRole,
                 true,
                 setViewAdvanceMeetingModal,
-                1
+                1,
+                setVideoTalk
               )
             );
           }
@@ -332,7 +334,8 @@ const WebNotfication = ({
                 setEditorRole,
                 false,
                 false,
-                1
+                1,
+                setVideoTalk
               )
             );
           }
