@@ -6593,13 +6593,7 @@ const scheduleMeetingMainApi = (
   MeetingID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log(
-    scheduleMeeting,
-    setDataroomMapFolderId,
-    setCurrentMeetingID,
-    setSceduleMeeting,
-    "scheduleMeetingMainApischeduleMeetingMainApi"
-  );
+  console.log(MeetingID, "MeetingIDMeetingIDMeetingID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6643,9 +6637,11 @@ const scheduleMeetingMainApi = (
                 )
               );
               dispatch(showSceduleProposedMeeting(false));
+
               let MeetingData = {
                 MeetingID: Number(MeetingID),
               };
+              console.log(MeetingData, "MeetingIDMeetingIDMeetingID");
               await dispatch(
                 GetAllMeetingDetailsApiFunc(
                   navigate,
@@ -9380,7 +9376,8 @@ const GetMeetingStatusDataAPI = (
   setEditorRole,
   FlagOnRouteClickAdvanceMeet,
   setViewAdvanceMeetingModal,
-  Check
+  Check,
+  setVideoTalk
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9405,7 +9402,9 @@ const GetMeetingStatusDataAPI = (
               Data,
               setEditorRole,
               FlagOnRouteClickAdvanceMeet,
-              setViewAdvanceMeetingModal
+              setViewAdvanceMeetingModal,
+              Check,
+              setVideoTalk
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -9423,15 +9422,25 @@ const GetMeetingStatusDataAPI = (
                   t("Successful")
                 )
               );
+              //Send Response By Date for Proposed Meeting
               localStorage.setItem(
                 "NotificationClickSendResponseByDate",
                 response.data.responseResult.sendResponseByDeadline
               );
+              //Meeting Status ID
               localStorage.setItem(
                 "MeetingStatusID",
                 response.data.responseResult.meetingStatusID
               );
 
+              //Global Video Chat And Group ID Context State
+              setVideoTalk({
+                isChat: response.data.responseResult.isChat,
+                isVideoCall: response.data.responseResult.isVideoCall,
+                talkGroupID: response.data.responseResult.talkGroupID,
+              });
+
+              //Global Edit States Context State
               setEditorRole({
                 status: Number(response.data.responseResult.meetingStatusID),
                 role:
