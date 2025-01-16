@@ -2394,5 +2394,7 @@
   "With-attachments": "With Attachments",
   "No-match-found": "NO MATCH FOUND",
   "Try-another-search": "Try another search, or click the search box to",
-  "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more."
+  "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more.",
+  "Notes-attachment-deleted-successfully": "Notes attachment deleted successfully",
+  "No-attachment-deleted": "No attachment deleted"
 }

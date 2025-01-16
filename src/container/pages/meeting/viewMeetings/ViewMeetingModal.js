@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -35,15 +35,23 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  checkFeatureIDAvailability,
+  WebNotificationExportRoutFunc,
+} from "../../../../commen/functions/utils";
 import Attendees from "./attendees/Attendees";
-import { useMeetingContext } from "../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
+import { useGroupsContext } from "../../../../context/GroupsContext";
+import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -56,12 +64,13 @@ const ViewMeetingModal = ({
   setVideoTalk,
 }) => {
   const { t } = useTranslation();
+  const location = useLocation();
   const navigate = useNavigate();
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
-  const castYourVotePollModalState = useSelector(
-    (state) => state.PollsReducer.castPollVoteModal
-  );
-
+  const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
+  const advanceMeetingOperations =
+    JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+  const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
@@ -70,28 +79,35 @@ const ViewMeetingModal = ({
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
+  console.log(typeof advanceMeetingOperations);
   const { editorRole, setEditorRole } = useMeetingContext();
   const [meetingDetails, setmeetingDetails] = useState(
-    (editorRole.role === "Organizer" ||
-      editorRole.role === "Participant" ||
-      editorRole.role === "Agenda Contributor") &&
-      Number(editorRole.status) === 10
+    advanceMeetingOperations
+      ? false
+      : (editorRole.role === "Organizer" ||
+          editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor") &&
+        Number(editorRole.status) === 10
       ? false
       : true
   );
+
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
   const [meetingMaterial, setMeetingMaterial] = useState(
-    (editorRole.role === "Organizer" ||
-      editorRole.role === "Participant" ||
-      editorRole.role === "Agenda Contributor") &&
-      routeID !== 5 &&
-      Number(editorRole.status) === 10
+    advanceMeetingOperations
+      ? true
+      : (editorRole.role === "Organizer" ||
+          editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor") &&
+        routeID !== 5 &&
+        Number(editorRole.status) === 10
       ? true
       : false
   );
+
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
@@ -117,6 +133,19 @@ const ViewMeetingModal = ({
   const leaveMeetingOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag
   );
+
+  const globalFunctionWebnotificationFlag = useSelector(
+    (state) => state.settingReducer.globalFunctionWebnotificationFlag
+  );
+
+  const webNotifactionDataRoutecheckFlag = JSON.parse(
+    localStorage.getItem("webNotifactionDataRoutecheckFlag")
+  );
+
+  const webNotificationData = useSelector(
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
+  );
+
   console.log(
     agendaContributors,
     meetingDetails,
@@ -125,6 +154,7 @@ const ViewMeetingModal = ({
     minutes,
     "routeIDrouteID"
   );
+
   useEffect(() => {
     if (routeID !== null && routeID !== 0) {
       if (Number(routeID) === 1) {
@@ -148,6 +178,7 @@ const ViewMeetingModal = ({
       dispatch(emailRouteID(0));
     };
   }, [routeID]);
+
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
@@ -283,6 +314,7 @@ const ViewMeetingModal = ({
       setAdvanceMeetingModalID(null);
       localStorage.removeItem("AdvanceMeetingOperations");
       localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("QuickMeetingCheckNotification");
       localStorage.setItem("isMeeting", false);
     };
   }, []);
@@ -617,15 +649,45 @@ const ViewMeetingModal = ({
     }
   }, [AgendaVotingModalStartedData]);
 
+  useEffect(() => {
+    try {
+      if (globalFunctionWebnotificationFlag) {
+        if (webNotifactionDataRoutecheckFlag) {
+          console.log("webNotifactionDataRoutecheckFlag");
+          let currentURL = window.location.href;
+          WebNotificationExportRoutFunc(
+            currentURL,
+            dispatch,
+            t,
+            location,
+            navigate,
+            webNotificationData,
+            setViewFlag,
+            setEditorRole,
+            setViewAdvanceMeetingModal,
+            setViewProposeDatePoll,
+            setViewGroupPage,
+            setShowModal
+          );
+          dispatch(webnotificationGlobalFlag(false));
+        }
+      }
+      console.log("webNotifactionDataRoutecheckFlag");
+    } catch (error) {}
+
+    return () => {};
+  }, [globalFunctionWebnotificationFlag]);
+
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -641,10 +703,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={

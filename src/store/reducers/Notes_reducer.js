@@ -14,6 +14,7 @@ const initialState = {
   retrieveNotesDocumentData: null,
   saveFilesNotes: null,
   uploadDocumentNotes: null,
+  deleteNotesDocument: null,
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -118,7 +119,7 @@ const NotesReducer = (state = initialState, action) => {
     case actions.DELETE_NOTE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         ResponseMessage: action.message,
         deleteNoteResponse: action.response,
       };
@@ -262,6 +263,33 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         Loading: true,
         uploadDocumentNotes: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // Delete Notes Documents
+
+    case actions.DELETE_NOTES_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_NOTES_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteNotesDocument: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_NOTES_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteNotesDocument: null,
         ResponseMessage: action.message,
       };
     }

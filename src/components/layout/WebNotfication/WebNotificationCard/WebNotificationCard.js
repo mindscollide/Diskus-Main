@@ -111,7 +111,7 @@ const WebNotificationCard = ({
             "Has-created-a-poll-in-the-meeting"
           )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 13) {
-          message = `${NotificationMessege.NotifierName} ${t(
+          message = `${t(
             "Provide-your-preferred-slot-for-the-upcoming-meeting"
           )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 14) {

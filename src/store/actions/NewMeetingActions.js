@@ -1009,10 +1009,6 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 response.data.responseResult.meetings,
                 1
               );
-              console.log(
-                getMeetingData,
-                "getMeetingDatagetMeetingDatagetMeetingData"
-              );
               let newMeetingData = {
                 meetingStartedMinuteAgo:
                   response.data.responseResult.meetingStartedMinuteAgo,
@@ -8218,8 +8214,10 @@ const JoinCurrentMeeting = (
                   )
                 );
               } else {
-                setAdvanceMeetingModalID(Number(Data.FK_MDID));
-                setViewAdvanceMeetingModal(true);
+                isFunction(setAdvanceMeetingModalID) &&
+                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
+                isFunction(setViewAdvanceMeetingModal) &&
+                  setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
               }
@@ -9381,7 +9379,8 @@ const GetMeetingStatusDataAPI = (
   Data,
   setEditorRole,
   FlagOnRouteClickAdvanceMeet,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  Check
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -9432,6 +9431,7 @@ const GetMeetingStatusDataAPI = (
                 "MeetingStatusID",
                 response.data.responseResult.meetingStatusID
               );
+
               setEditorRole({
                 status: Number(response.data.responseResult.meetingStatusID),
                 role:
@@ -9447,6 +9447,26 @@ const GetMeetingStatusDataAPI = (
                 isFunction(setViewAdvanceMeetingModal) &&
                   setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              }
+              if (Check === 1) {
+                let joinMeetingData = {
+                  VideoCallURL: response.data.responseResult.videoCallUrl,
+                  FK_MDID: Number(
+                    localStorage.getItem("NotificationAdvanceMeetingID")
+                  ),
+                  DateTime: getCurrentDateTimeUTC(),
+                };
+
+                dispatch(
+                  JoinCurrentMeeting(
+                    JSON.parse(
+                      localStorage.getItem("QuickMeetingCheckNotification")
+                    ),
+                    navigate,
+                    t,
+                    joinMeetingData
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage

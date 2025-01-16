@@ -12,6 +12,7 @@ import {
   RetrieveNotesDocument,
   saveFilesRequestMethod,
   uploadDocumentsRequestMethod,
+  DeleteNotesDocuments,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { isFunction } from "../../commen/functions/utils";
@@ -460,22 +461,13 @@ const deleteNotes_Fail = (message) => {
     message: message,
   };
 };
-const deleteNotesApi = (navigate, ID, t, setUpdateNotes) => {
+const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = parseInt(localStorage.getItem("notesPage"));
-  let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
+
   let deleteNotData = {
     PK_NotesID: JSON.parse(ID),
   };
-  let searchData = {
-    UserID: parseInt(createrID),
-    OrganizationID: JSON.parse(OrganizationID),
-    Title: "",
-    PageNumber: notesPage,
-    Length: notesPagesize,
-  };
+
   return (dispatch) => {
     dispatch(deleteNotes_Init());
     let form = new FormData();
@@ -492,7 +484,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteNotesApi(navigate, ID, t, setUpdateNotes));
+          dispatch(deleteNotesApi(navigate, ID, t, setUpdateNotes, id));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -508,8 +500,18 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes) => {
                   t("Notes-deleted-successfully")
                 )
               );
-              dispatch(GetNotes(navigate, searchData, t));
-              setUpdateNotes(false);
+              //Delete Notes Documents Api
+              let DelNotesAttachmentData = {
+                NoteID: Number(id),
+              };
+              dispatch(
+                DeleteNotesDocumentsAPI(
+                  navigate,
+                  DelNotesAttachmentData,
+                  t,
+                  setUpdateNotes
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1150,6 +1152,108 @@ const uploadDocumentsNotesApi = (
   };
 };
 
+// Delete Notes Document
+const DeleteNotesDocumentsInit = () => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_INIT,
+  };
+};
+
+const DeleteNotesDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DeleteNotesDocumentsFailed = (message) => {
+  return {
+    type: actions.DELETE_NOTES_DOCUMENTS_FAIL,
+    message: message,
+  };
+};
+
+const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let notesPage = parseInt(localStorage.getItem("notesPage"));
+  let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
+  return (dispatch) => {
+    dispatch(DeleteNotesDocumentsInit());
+    let form = new FormData();
+    form.append("RequestMethod", DeleteNotesDocuments.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DeleteNotesDocumentsAPI(navigate, Data, t, setUpdateNotes));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                DeleteNotesDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Notes-attachment-deleted-successfully")
+                )
+              );
+
+              let searchData = {
+                UserID: parseInt(createrID),
+                OrganizationID: JSON.parse(OrganizationID),
+                Title: "",
+                PageNumber: notesPage,
+                Length: notesPagesize,
+              };
+              dispatch(GetNotes(navigate, searchData, t));
+              setUpdateNotes(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteNotesDocumentsFailed(t("No-attachment-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetNotes,
   SaveNotesAPI,
@@ -1164,4 +1268,5 @@ export {
   RetrieveNotesDocumentAPI,
   saveFilesNotesApi,
   uploadDocumentsNotesApi,
+  DeleteNotesDocumentsAPI,
 };

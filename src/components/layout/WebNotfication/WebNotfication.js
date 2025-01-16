@@ -37,12 +37,6 @@ import {
 import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
 import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
-import {
-  endMeetingStatusForQuickMeetingModal,
-  endMeetingStatusForQuickMeetingVideo,
-  leaveMeetingOnEndStatusMqtt,
-  leaveMeetingVideoOnEndStatusMqtt,
-} from "../../../store/actions/VideoFeature_actions.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -172,6 +166,7 @@ const WebNotfication = ({
 
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
+    console.log(NotificationData, "NotificationDataNotificationData");
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -184,17 +179,6 @@ const WebNotfication = ({
       await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
     } else {
       if (NotificationData.notificationActionID === 1) {
-        // Check if the current URL contains the target path
-        // if (JSON.parse(localStorage.getItem("isMeetingVideo")) === true) {
-        //   //Notification click Intimination Video Call
-        //   localStorage.setItem(
-        //     "navigateLocation",
-        //     "NotificationClickVideoIntimination"
-        //   );
-        //   console.log(PayLoadData, "first");
-        //   dispatch(webNotificationDataLeaveVideoIntiminationModal(PayLoadData));
-        //   dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-        // } else {
         if (currentURL.includes("/Diskus/Meeting")) {
           //If you already on the Meeting Page
           if (PayLoadData.IsQuickMeeting === true) {
@@ -241,7 +225,6 @@ const WebNotfication = ({
             dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
           }
         }
-        // }
       } else if (NotificationData.notificationActionID === 2) {
         // Check if the current URL contains the target path
         if (currentURL.includes("/Diskus/Meeting")) {
@@ -304,6 +287,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -312,7 +296,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -333,8 +318,23 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem(
+              "QuickMeetingCheckNotification",
+              PayLoadData.IsQuickMeeting
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                false,
+                false,
+                1
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 4) {
