@@ -317,7 +317,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.SAVE_DOCUMENTS_AGENDA_SUCCESS: {
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         SaveMeetingFilesResponse: action.response,
         ResponseMessage: action.message,
       };

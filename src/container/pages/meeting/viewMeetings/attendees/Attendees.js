@@ -220,7 +220,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
           </div>
         </section>
       </Col>
-      <Col
+      {/* <Col
         sm={12}
         md={12}
         lg={12}
@@ -231,7 +231,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
           text={"Cancel"}
           className={styles["CancelAttendeesBtn"]}
         />
-      </Col>
+      </Col> */}
     </Row>
   );
 };

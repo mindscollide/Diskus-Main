@@ -214,7 +214,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [replyFeature, setReplyFeature] = useState(false);
 
   const [allMessages, setAllMessages] = useState([]);
-
+  console.log(allMessages, "allMessagesallMessagesallMessages")
   const [allUsers, setAllUsers] = useState([]);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
@@ -1498,6 +1498,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   useEffect(() => {
     let allChatMessages = talkStateData.AllMessagesData;
+    console.log(allChatMessages, "allChatMessages")
+
     if (
       allChatMessages !== undefined &&
       allChatMessages !== null &&
@@ -1509,6 +1511,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       allChatMessages !== null &&
       talkStateData.ActiveChatData.messageType === "G"
     ) {
+      console.log(allChatMessages, "allChatMessages")
       groupMessages(allChatMessages.groupMessages, setAllMessages);
     } else if (
       allChatMessages !== undefined &&
@@ -4255,6 +4258,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 "G" &&
                               talkStateData.ChatSpinner === false ? (
                               allMessages.map((messageData, index) => {
+                                console.log(messageData, "messageDatamessageDatamessageData")
                                 var ext = messageData.attachmentLocation
                                   .split(".")
                                   .pop();

@@ -159,11 +159,76 @@ const initialState = {
   LeaveMeetingSidebarModal: false,
   getMeetingStatusResponseData: null,
   agendavotingPollStartedData: false,
-  viewMeetingLink: null
+  viewMeetingLink: null,
+  uploadQuickMeetingDocment: null,
+  saveQuickMeetingDocuments: null,
+  moveFilesandFolders: null
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.MOVEFILEANDFODLER_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.MOVEFILEANDFODLER_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        moveFilesandFolders: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.MOVEFILEANDFODLER_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        moveFilesandFolders: null,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.QUICKMEETING_DOCUMENTS_UPLOAD_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.QUICKMEETING_DOCUMENTS_UPLOAD_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        uploadQuickMeetingDocment: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.QUICKMEETING_DOCUMENTS_UPLOAD_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        uploadQuickMeetingDocment: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.QUICKMEETING_SAVE_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.QUICKMEETING_SAVE_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveQuickMeetingDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.QUICKMEETING_SAVE_DOCUMENTS_FAIL: {
+    }
+
     case actions.EMAIL_ROUTE_ID: {
       return {
         ...state,
@@ -1922,33 +1987,32 @@ const NewMeetingreducer = (state = initialState, action) => {
         getMeeingUsersRSVPDetails: null,
         cancelAgendaSavedModal: false,
         removeUpcomingEventMeeting: null,
-        viewMeetingLink: null
+        viewMeetingLink: null,
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_SUCCESS: {
       return {
         ...state,
         Loading: false,
         viewMeetingLink: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_MEETING_RELATED_EMAIL_DATA_FAIL: {
       return {
         ...state,
         Loading: false,
         viewMeetingLink: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.REMOVE_PARTICIPANT_FROM_UPCOMINGEVENTS: {
-    
       return {
         ...state,
         removeUpcomingEventMeeting: action.response,

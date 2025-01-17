@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ModalUpdate.css";
+import "./updateQuickMeeting.css";
 import Select from "react-select";
 import {
   convertDateTimeObject,
@@ -7,7 +7,7 @@ import {
   createConvert,
   EditmeetingDateFormat,
   RemoveTimeDashes,
-} from "../../commen/functions/date_formater";
+} from "../../../commen/functions/date_formater";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   TextField,
@@ -18,17 +18,17 @@ import {
   Notification,
   Checkbox,
   AttachmentViewer,
-} from "./../../components/elements";
+} from "./../../../components/elements";
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
-} from "../../store/actions/Upload_action";
+} from "../../../store/actions/Upload_action";
 import { Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import CustomUpload from "../../components/elements/upload/Upload";
+import CustomUpload from "../../../components/elements/upload/Upload";
 import { CameraVideo } from "react-bootstrap-icons";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useSelector, useDispatch } from "react-redux";
@@ -38,7 +38,7 @@ import {
   CancelMeeting,
   allAssignessList,
   GetAllReminders,
-} from "../../store/actions/Get_List_Of_Assignees";
+} from "../../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -48,12 +48,24 @@ import {
   getCurrentDateTime,
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
-} from "../../commen/functions/time_formatter";
-import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
-import { showMessage } from "../../components/elements/snack_bar/utill";
-import { maxFileSize } from "../../commen/functions/utils";
+} from "../../../commen/functions/time_formatter";
+import { ConvertFileSizeInMB } from "../../../commen/functions/convertFileSizeInMB";
+import { showMessage } from "../../../components/elements/snack_bar/utill";
+import {
+  generateRandomNegativeAuto,
+  maxFileSize,
+} from "../../../commen/functions/utils";
+import {
+  saveFilesQuickMeetingApi,
+  uploadDocumentsQuickMeetingApi,
+} from "../../../store/actions/NewMeetingActions";
 
-const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
+const UpdateQuickMeeting = ({
+  editFlag,
+  setEditFlag,
+  ModalTitle,
+  checkFlag,
+}) => {
   //For Localization
   const { t } = useTranslation();
   const getStartTime = getStartTimeWithCeilFunction();
@@ -204,8 +216,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [fileSize, setFileSize] = useState(0);
   const [allPresenters, setAllPresenters] = useState([]);
+  const [fileForSend, setFileForSend] = useState([]);
+  const [attachments, setAttachments] = useState([]);
+  const generateRandomAgendaID = generateRandomNegativeAuto();
+  const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
   const [reminderOptValue, setReminderOptValue] = useState({
@@ -577,7 +592,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (name === "Title") {
       setObjMeetingAgenda({
         ...objMeetingAgenda,
-        PK_MAID: objMeetingAgenda.PK_MAID,
+        PK_MAID:
+          objMeetingAgenda.PK_MAID !== 0
+            ? objMeetingAgenda.PK_MAID
+            : generateRandomAgendaID,
         [name]: valueCheck.trimStart(),
         FK_MDID: assigneesViewMeetingDetails.meetingDetails.pK_MDID,
       });
@@ -597,14 +615,266 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     }
   };
 
+  //   // for add another agenda main inputs handler
+  //   const uploadFilesAgenda = (data) => {
+  //     let filesArray = Object.values(data.target.files);
+  //     let currentFiles = meetingAgendaAttachments.MeetingAgendaAttachments;
+  //     let fileSizeArr = fileSize;
+
+  //     // Check if adding the new files exceeds the limit
+  //     if (currentFiles.length + filesArray.length > 10) {
+  //       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
+  //       return;
+  //     }
+
+  //     filesArray.forEach((uploadedFile) => {
+  //       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+  //       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
+  //       let ext = uploadedFile.name.split(".").pop().toLowerCase();
+
+  //       // Check total size after adding each file
+  //       if (mergeFileSizes + fileSizeinMB > 15) {
+  //         showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+  //         return;
+  //       }
+
+  //       if (
+  //         [
+  //           "doc",
+  //           "docx",
+  //           "xls",
+  //           "xlsx",
+  //           "pdf",
+  //           "png",
+  //           "txt",
+  //           "jpg",
+  //           "jpeg",
+  //           "gif",
+  //           "csv",
+  //         ].includes(ext)
+  //       ) {
+  //         let fileExists = currentFiles.some(
+  //           (filename) => filename.DisplayAttachmentName === uploadedFile.name
+  //         );
+
+  //         if (fileExists) {
+  //           showMessage(t("File-already-exists"), "error", setOpen);
+  //         } else if (fileSizeinMB > maxFileSize) {
+  //           showMessage(
+  //             t("File-size-should-not-be-greater-then-1-5GB"),
+  //             "error",
+  //             setOpen
+  //           );
+  //         } else if (fileSizeinMB === 0) {
+  //           showMessage(t("File-size-is-0mb"), "error", setOpen);
+  //         } else {
+  //           dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
+  //           fileSizeArr += uploadedFile.size;
+  //           currentFiles.push({
+  //             PK_MAAID: 0,
+  //             DisplayAttachmentName: uploadedFile.name,
+  //             OriginalAttachmentName: uploadedFile.name,
+  //             CreationDateTime: "111111",
+  //             FK_MAID: 0,
+  //           });
+  //           setFileSize(fileSizeArr);
+  //         }
+  //       }
+  //     });
+
+  //     setMeetingAgendaAttachments({
+  //       ...meetingAgendaAttachments,
+  //       MeetingAgendaAttachments: currentFiles,
+  //     });
+  //   };
+
+  //   useEffect(() => {
+  //     let newData = uploadReduceruploadDocumentsList;
+
+  //     let MeetingAgendaAttachment =
+  //       meetingAgendaAttachments.MeetingAgendaAttachments;
+  //     if (newData !== undefined && newData?.length !== 0 && newData !== null) {
+  //       MeetingAgendaAttachment.push({
+  //         PK_MAAID: 0,
+  //         DisplayAttachmentName: newData.displayFileName,
+  //         OriginalAttachmentName: newData.originalFileName,
+  //         CreationDateTime: "111111",
+  //         FK_MAID: objMeetingAgenda.PK_MAID,
+  //       });
+  //       setMeetingAgendaAttachments({
+  //         ...meetingAgendaAttachments,
+  //         MeetingAgendaAttachments: MeetingAgendaAttachment,
+  //       });
+  //       dispatch(ResetAllFilesUpload());
+  //     }
+  //   }, [uploadReduceruploadDocumentsList]);
+
+  function urlPatternValidation(URL) {
+    const regex = new RegExp(
+      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
+    );
+    return regex.test(URL);
+  }
+
+  //   // for add another agenda main inputs handler
+  //   const addAnOtherAgenda = (e) => {
+  //     e.preventDefault();
+  //     let previousAdendas = createMeeting.MeetingAgendas;
+  //     if (editRecordFlag != null && editRecordFlag === true) {
+  //       if (objMeetingAgenda.Title !== "") {
+  //         if (objMeetingAgenda.URLs !== "") {
+  //           if (urlPatternValidation(objMeetingAgenda.URLs)) {
+  //             let newData = {
+  //               ObjMeetingAgenda: objMeetingAgenda,
+  //               MeetingAgendaAttachments:
+  //                 meetingAgendaAttachments.MeetingAgendaAttachments,
+  //             };
+  //             previousAdendas[editRecordIndex] = newData;
+  //             setCreateMeeting({
+  //               ...createMeeting,
+  //               MeetingAgendas: previousAdendas,
+  //             });
+  //             seteditRecordIndex(null);
+  //             seteditRecordFlag(false);
+  //             setObjMeetingAgenda(defaultMeetingAgenda);
+  //             setPresenterValue(defaultPresenter);
+
+  //             setMeetingAgendaAttachments({
+  //               MeetingAgendaAttachments: [],
+  //             });
+  //           } else {
+  //             setModalField(false);
+  //             showMessage(t("Enter-valid-url"), "error", setOpen);
+  //           }
+  //         } else {
+  //           let newData = {
+  //             ObjMeetingAgenda: objMeetingAgenda,
+  //             MeetingAgendaAttachments:
+  //               meetingAgendaAttachments.MeetingAgendaAttachments,
+  //           };
+  //           previousAdendas[editRecordIndex] = newData;
+  //           setCreateMeeting({
+  //             ...createMeeting,
+  //             MeetingAgendas: previousAdendas,
+  //           });
+  //           seteditRecordIndex(null);
+  //           seteditRecordFlag(false);
+  //           setPresenterValue(defaultPresenter);
+  //           setObjMeetingAgenda(defaultMeetingAgenda);
+  //           setMeetingAgendaAttachments({
+  //             MeetingAgendaAttachments: [],
+  //           });
+  //           setFileSize(0);
+  //         }
+  //       } else {
+  //         setModalField(true);
+  //       }
+  //     } else {
+  //       if (objMeetingAgenda.Title !== "") {
+  //         if (objMeetingAgenda.URLs !== "") {
+  //           if (urlPatternValidation(objMeetingAgenda.URLs)) {
+  //             setModalField(false);
+  //             let previousAdendas = createMeeting.MeetingAgendas;
+  //             let newData = {
+  //               ObjMeetingAgenda: objMeetingAgenda,
+  //               MeetingAgendaAttachments:
+  //                 meetingAgendaAttachments.MeetingAgendaAttachments,
+  //             };
+  //             previousAdendas.push(newData);
+  //             setCreateMeeting({
+  //               ...createMeeting,
+  //               MeetingAgendas: previousAdendas,
+  //             });
+  //             setObjMeetingAgenda(defaultMeetingAgenda);
+  //             setMeetingAgendaAttachments({
+  //               MeetingAgendaAttachments: [],
+  //             });
+  //             setPresenterValue(defaultPresenter);
+  //             setFileSize(0);
+  //           } else {
+  //             setModalField(false);
+  //             showMessage(t("Enter-valid-url"), "error", setOpen);
+  //           }
+  //         } else {
+  //           setModalField(false);
+  //           let previousAdendas = createMeeting.MeetingAgendas;
+  //           let newData = {
+  //             ObjMeetingAgenda: objMeetingAgenda,
+  //             MeetingAgendaAttachments:
+  //               meetingAgendaAttachments.MeetingAgendaAttachments,
+  //           };
+  //           previousAdendas.push(newData);
+  //           setCreateMeeting({
+  //             ...createMeeting,
+  //             MeetingAgendas: previousAdendas,
+  //           });
+  //           setObjMeetingAgenda(defaultMeetingAgenda);
+  //           setPresenterValue(defaultPresenter);
+  //           setMeetingAgendaAttachments({
+  //             MeetingAgendaAttachments: [],
+  //           });
+  //           setFileSize(0);
+  //         }
+  //       } else {
+  //         if (previousAdendas) {
+  //           // Get the current count of agendas (starting from 1)
+  //           const agendaCount = createMeeting.MeetingAgendas.length + 1;
+
+  //           // Modify the existing agendas to replace "No Agenda Available" with "Agenda X"
+  //           let previousAdendas = [...createMeeting.MeetingAgendas].map(
+  //             (agenda, index) => {
+  //               if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
+  //                 return {
+  //                   ...agenda,
+  //                   ObjMeetingAgenda: {
+  //                     ...agenda.ObjMeetingAgenda,
+  //                     Title: `Agenda ${index + 1}`, // Replace "No Agenda Available" with numbered agenda
+  //                   },
+  //                 };
+  //               }
+  //               return agenda;
+  //             }
+  //           );
+
+  //           // Create a new agenda object with the next available title
+  //           const newObjMeetingAgenda = {
+  //             ...objMeetingAgenda,
+  //             Title: `Agenda ${agendaCount}`, // Increment the title for the new agenda
+  //           };
+
+  //           let newData = {
+  //             ObjMeetingAgenda: newObjMeetingAgenda,
+  //             MeetingAgendaAttachments: [],
+  //           };
+
+  //           // Add the new agenda object to the list
+  //           previousAdendas.push(newData);
+
+  //           // Update the state with the modified list of agendas
+  //           setCreateMeeting({
+  //             ...createMeeting,
+  //             MeetingAgendas: previousAdendas,
+  //           });
+
+  //           // Open the modal field
+  //           setModalField(true);
+  //         }
+  //       }
+  //     }
+  //   };
+
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
-    let currentFiles = meetingAgendaAttachments.MeetingAgendaAttachments;
     let fileSizeArr = fileSize;
 
-    // Check if adding the new files exceeds the limit
-    if (currentFiles.length + filesArray.length > 10) {
+    // Start with the existing files in fileForSend
+    let updatedFilesForSend = [...fileForSend];
+
+    let size = true;
+    let sizezero = true;
+
+    if (updatedFilesForSend.length + filesArray.length > 10) {
       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
@@ -612,13 +882,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     filesArray.forEach((uploadedFile) => {
       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
       let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
-      let ext = uploadedFile.name.split(".").pop().toLowerCase();
 
-      // Check total size after adding each file
-      if (mergeFileSizes + fileSizeinMB > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+      if (mergeFileSizes + fileSizeinMB > maxFileSize) {
+        showMessage(
+          t("File-size-should-not-be-greater-then-1-5GB"),
+          "error",
+          setOpen
+        );
         return;
       }
+
+      let ext = uploadedFile.name.split(".").pop().toLowerCase();
 
       if (
         [
@@ -635,104 +909,78 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           "csv",
         ].includes(ext)
       ) {
-        let fileExists = currentFiles.some(
+        let fileExists = attachments.some(
           (filename) => filename.DisplayAttachmentName === uploadedFile.name
         );
 
+        if (fileSizeinMB > 10) {
+          size = false;
+        } else if (fileSizeinMB === 0) {
+          sizezero = false;
+        }
+
         if (fileExists) {
-          showMessage(t("File-already-exists"), "error", setOpen);
-        } else if (fileSizeinMB > maxFileSize) {
+          showMessage(t("This-file-already-exist"), "error", setOpen);
+        } else if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("You-can-not-upload-more-then-10MB-file"),
             "error",
             setOpen
           );
-        } else if (fileSizeinMB === 0) {
+        } else if (!sizezero) {
           showMessage(t("File-size-is-0mb"), "error", setOpen);
         } else {
-          dispatch(FileUploadToDo(navigate, uploadedFile, t, 2));
-          fileSizeArr += uploadedFile.size;
-          currentFiles.push({
-            PK_MAAID: 0,
+          let fileData = {
             DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: uploadedFile.name,
-            CreationDateTime: "111111",
-            FK_MAID: 0,
-          });
-          setFileSize(fileSizeArr);
+            OriginalAttachmentName: "",
+          };
+          setAttachments((prev) => [...prev, fileData]);
+          fileSizeArr += uploadedFile.size;
+          updatedFilesForSend.push(uploadedFile); // Append new file to the existing ones
         }
       }
     });
 
-    setMeetingAgendaAttachments({
-      ...meetingAgendaAttachments,
-      MeetingAgendaAttachments: currentFiles,
-    });
+    // Update the states with the accumulated values
+    setFileForSend(updatedFilesForSend);
+    setFileSize(fileSizeArr);
   };
-
-  useEffect(() => {
-    let newData = uploadReduceruploadDocumentsList;
-
-    let MeetingAgendaAttachment =
-      meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (newData !== undefined && newData?.length !== 0 && newData !== null) {
-      MeetingAgendaAttachment.push({
-        PK_MAAID: 0,
-        DisplayAttachmentName: newData.displayFileName,
-        OriginalAttachmentName: newData.originalFileName,
-        CreationDateTime: "111111",
-        FK_MAID: objMeetingAgenda.PK_MAID,
-      });
-      setMeetingAgendaAttachments({
-        ...meetingAgendaAttachments,
-        MeetingAgendaAttachments: MeetingAgendaAttachment,
-      });
-      dispatch(ResetAllFilesUpload());
-    }
-  }, [uploadReduceruploadDocumentsList]);
-
-  function urlPatternValidation(URL) {
-    const regex = new RegExp(
-      "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
-    );
-    return regex.test(URL);
-  }
-
   // for add another agenda main inputs handler
-  const addAnOtherAgenda = (e) => {
+  const addAnOtherAgenda = async (e) => {
     e.preventDefault();
     let previousAdendas = createMeeting.MeetingAgendas;
-    if (editRecordFlag != null && editRecordFlag === true) {
+    if (editRecordFlag !== null && editRecordFlag === true) {
       if (objMeetingAgenda.Title !== "") {
-        if (objMeetingAgenda.URLs !== "") {
-          if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            let newData = {
-              ObjMeetingAgenda: objMeetingAgenda,
-              MeetingAgendaAttachments:
-                meetingAgendaAttachments.MeetingAgendaAttachments,
-            };
-            previousAdendas[editRecordIndex] = newData;
-            setCreateMeeting({
-              ...createMeeting,
-              MeetingAgendas: previousAdendas,
+        if (fileForSend.length > 0) {
+          setModalField(false);
+          let fileforSend = [...attachments];
+          let newfile = [];
+          const uploadPromises = fileForSend.map(async (newData) => {
+            // Return the promise from FileUploadToDo
+            return await dispatch(
+              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
+            );
+          });
+          // Wait for all uploadPromises to resolve
+          await Promise.all(uploadPromises);
+          let newFolder = [];
+          const getSaveFilesRepsonse = await dispatch(
+            saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
+          );
+          if (
+            getSaveFilesRepsonse.isExecuted &&
+            getSaveFilesRepsonse.responseCode === 1
+          ) {
+            getSaveFilesRepsonse.newFolder.forEach((fileData, index) => {
+              fileforSend.push({
+                DisplayAttachmentName: fileData.displayFileName,
+                OriginalAttachmentName: String(fileData.pK_FileID),
+              });
             });
-            seteditRecordIndex(null);
-            seteditRecordFlag(false);
-            setObjMeetingAgenda(defaultMeetingAgenda);
-            setPresenterValue(defaultPresenter);
-
-            setMeetingAgendaAttachments({
-              MeetingAgendaAttachments: [],
-            });
-          } else {
-            setModalField(false);
-            showMessage(t("Enter-valid-url"), "error", setOpen);
           }
-        } else {
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments:
-              meetingAgendaAttachments.MeetingAgendaAttachments,
+            MeetingAgendaAttachments: fileforSend,
           };
           previousAdendas[editRecordIndex] = newData;
           setCreateMeeting({
@@ -741,49 +989,84 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
           seteditRecordIndex(null);
           seteditRecordFlag(false);
-          setPresenterValue(defaultPresenter);
           setObjMeetingAgenda(defaultMeetingAgenda);
-          setMeetingAgendaAttachments({
-            MeetingAgendaAttachments: [],
+
+          setPresenterValue(defaultPresenter);
+
+          setAttachments([]);
+          setFileForSend([]);
+        } else {
+          let newData = {
+            ObjMeetingAgenda: objMeetingAgenda,
+            MeetingAgendaAttachments: attachments,
+          };
+          previousAdendas[editRecordIndex] = newData;
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
           });
-          setFileSize(0);
+          seteditRecordIndex(null);
+          seteditRecordFlag(false);
+          setObjMeetingAgenda(defaultMeetingAgenda);
+          setAttachments([]);
+          setPresenterValue(defaultPresenter);
         }
       } else {
         setModalField(true);
       }
+      setModalField(false);
     } else {
-      if (objMeetingAgenda.Title !== "") {
-        if (objMeetingAgenda.URLs !== "") {
-          if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            setModalField(false);
-            let previousAdendas = createMeeting.MeetingAgendas;
-            let newData = {
-              ObjMeetingAgenda: objMeetingAgenda,
-              MeetingAgendaAttachments:
-                meetingAgendaAttachments.MeetingAgendaAttachments,
-            };
-            previousAdendas.push(newData);
-            setCreateMeeting({
-              ...createMeeting,
-              MeetingAgendas: previousAdendas,
-            });
-            setObjMeetingAgenda(defaultMeetingAgenda);
-            setMeetingAgendaAttachments({
-              MeetingAgendaAttachments: [],
-            });
-            setPresenterValue(defaultPresenter);
-            setFileSize(0);
-          } else {
-            setModalField(false);
-            showMessage(t("Enter-valid-url"), "error", setOpen);
-          }
-        } else {
+      if (objMeetingAgenda.Title) {
+        if (fileForSend.length > 0) {
           setModalField(false);
-          let previousAdendas = createMeeting.MeetingAgendas;
+          setObjMeetingAgenda(defaultMeetingAgenda);
+
+          let fileforSend = [];
+          let newfile = [];
+
+          const uploadPromises = fileForSend.map(async (newData) => {
+            // Return the promise from FileUploadToDo
+            return await dispatch(
+              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
+            );
+          });
+          // Wait for all uploadPromises to resolve
+          await Promise.all(uploadPromises);
+          let newFolder = [];
+          const getSaveFilesRepsonse = await dispatch(
+            saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
+          );
+          if (
+            getSaveFilesRepsonse.isExecuted &&
+            getSaveFilesRepsonse.responseCode === 1
+          ) {
+            getSaveFilesRepsonse.newFolder.forEach((fileData, index) => {
+              fileforSend.push({
+                DisplayAttachmentName: fileData.displayFileName,
+                OriginalAttachmentName: String(fileData.pK_FileID),
+              });
+            });
+          }
+
+          let previousAdendas = [...createMeeting.MeetingAgendas];
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments:
-              meetingAgendaAttachments.MeetingAgendaAttachments,
+            MeetingAgendaAttachments: fileforSend,
+          };
+          previousAdendas.push(newData);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAdendas,
+          });
+          setFileForSend([]);
+
+          setAttachments([]);
+        } else {
+          setModalField(false);
+          let previousAdendas = [...createMeeting.MeetingAgendas];
+          let newData = {
+            ObjMeetingAgenda: objMeetingAgenda,
+            MeetingAgendaAttachments: attachments,
           };
           previousAdendas.push(newData);
           setCreateMeeting({
@@ -791,18 +1074,18 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             MeetingAgendas: previousAdendas,
           });
           setObjMeetingAgenda(defaultMeetingAgenda);
+
           setPresenterValue(defaultPresenter);
-          setMeetingAgendaAttachments({
-            MeetingAgendaAttachments: [],
-          });
-          setFileSize(0);
+
+          setAttachments([]);
         }
+        // }
       } else {
-        if (previousAdendas) {
+        if (createMeeting.MeetingAgendas) {
           // Get the current count of agendas (starting from 1)
           const agendaCount = createMeeting.MeetingAgendas.length + 1;
 
-          // Modify the existing agendas to replace "No Agenda Available" with "Agenda X"
+          // Modify the existing object to conditionally set the title
           let previousAdendas = [...createMeeting.MeetingAgendas].map(
             (agenda, index) => {
               if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
@@ -810,7 +1093,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                   ...agenda,
                   ObjMeetingAgenda: {
                     ...agenda.ObjMeetingAgenda,
-                    Title: `Agenda ${index + 1}`, // Replace "No Agenda Available" with numbered agenda
+                    Title: `Agenda ${index + 1}`,
+                    PK_MAID: generateRandomAgendaID,
                   },
                 };
               }
@@ -818,10 +1102,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             }
           );
 
-          // Create a new agenda object with the next available title
           const newObjMeetingAgenda = {
             ...objMeetingAgenda,
-            Title: `Agenda ${agendaCount}`, // Increment the title for the new agenda
+            Title: `Agenda ${agendaCount}`,
+            PK_MAID: generateRandomAgendaID,
+
+            PresenterName: userName,
           };
 
           let newData = {
@@ -829,16 +1115,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             MeetingAgendaAttachments: [],
           };
 
-          // Add the new agenda object to the list
           previousAdendas.push(newData);
 
-          // Update the state with the modified list of agendas
           setCreateMeeting({
             ...createMeeting,
             MeetingAgendas: previousAdendas,
           });
 
-          // Open the modal field
           setModalField(true);
         }
       }
@@ -1011,14 +1294,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{user.name}</span>
                     </Col>
@@ -1038,14 +1320,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
+                        className='d-flex gap-2 align-items-center'>
                         <img
                           src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
                         />
                         <span>{user?.name}</span>
                       </Col>
@@ -1063,14 +1344,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
+                        className='d-flex gap-2 align-items-center'>
                         <img
                           src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
                         />
                         <span>{user?.name}</span>
                       </Col>
@@ -1091,7 +1371,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             }
           });
 
-          if (checkFlag !== 6 && checkFlag !== 7) {
+          if (checkFlag !== 6 && checkFlag !== 8) {
             setAttendeesParticipant(PresenterData);
           }
           setAllPresenters(PresenterData);
@@ -1229,12 +1509,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
-                    PK_MAAID: atchmenDataaa.pK_MAAID,
                     DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
                     OriginalAttachmentName:
                       atchmenDataaa.originalAttachmentName,
-                    CreationDateTime: atchmenDataaa.creationDateTime,
-                    FK_MAID: atchmenDataaa.fK_MAID,
                   });
                 }
               );
@@ -1324,14 +1601,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
+                  className='d-flex gap-2 align-items-center'>
                   <img
                     src={`data:image/jpeg;base64,${user?.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
                   />
                   <span>{user.name}</span>
                 </Col>
@@ -1354,10 +1630,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       URLs: datarecord.ObjMeetingAgenda.URLs,
       FK_MDID: datarecord.ObjMeetingAgenda.FK_MDID,
     });
-    setMeetingAgendaAttachments({
-      ...meetingAgendaAttachments,
-      MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
-    });
+    setAttachments(datarecord.MeetingAgendaAttachments);
+    // setMeetingAgendaAttachments({
+    //   ...meetingAgendaAttachments,
+    //   MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
+    // });
   };
 
   useEffect(() => {
@@ -1387,14 +1664,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{userName}</span>
                     </Col>
@@ -1412,14 +1688,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{userName}</span>
                     </Col>
@@ -1462,14 +1737,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{committeesMember.userName}</span>
                     </Col>
@@ -1487,14 +1761,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{committeesMember.name}</span>
                     </Col>
@@ -1511,7 +1784,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         setAttendeesParticipant(membersData);
 
         setMeetingAttendeesList(usersData);
-      } else if (Number(checkFlag) === 7) {
+      } else if (Number(checkFlag) === 8) {
         let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
         if (
           GroupMembers !== null &&
@@ -1527,14 +1800,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{groupMemberData.userName}</span>
                     </Col>
@@ -1552,14 +1824,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{groupMemberData.name}</span>
                     </Col>
@@ -1589,14 +1860,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height="16.45px"
-                        width="18.32px"
-                        draggable="false"
-                        alt=""
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
                       />
                       <span>{assigneeMember.name}</span>
                     </Col>
@@ -1765,7 +2035,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
       console.log(newData, "newDatanewDatanewData");
-      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+      await dispatch(
+        UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
+      );
       await setObjMeetingAgenda({
         PK_MAID: 0,
         Title: "",
@@ -2100,12 +2372,18 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const deleteAttachmentfromAgenda = (attachmentdata, index) => {
-    setMeetingAgendaAttachments({
-      ...meetingAgendaAttachments,
-      MeetingAgendaAttachments:
-        meetingAgendaAttachments.MeetingAgendaAttachments.filter(
-          (agenda) => agenda.PK_MAAID !== attachmentdata.PK_MAAID
-        ),
+    setAttachments((prevAttachments) => {
+      return prevAttachments.filter(
+        (fileData, index) =>
+          attachmentdata.DisplayAttachmentName !==
+          fileData.DisplayAttachmentName
+      );
+    });
+    setFileForSend((prevAttachments) => {
+      return prevAttachments.filter(
+        (fileData, index) =>
+          attachmentdata.DisplayAttachmentName !== fileData.name
+      );
     });
   };
 
@@ -2166,7 +2444,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className="input-with-icon"
+        className='input-with-icon'
       />
     );
   }
@@ -2252,6 +2530,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     });
     setTaskAssignedTo(attendeeData.value);
   };
+
+  console.log({ attachments, createMeeting }, "createMeetingcreateMeeting");
   return (
     <>
       <Container>
@@ -2279,7 +2559,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               isCancelMeetingModal === false &&
               closeConfirmationModal === false ? (
                 <Row>
-                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
+                  <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
                     <Button
                       className={
                         isDetails
@@ -2299,7 +2579,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       variant={"Primary"}
                       text={t("Agendas")}
                       onClick={changeSelectAgenda}
-                      datatut="show-agenda"
+                      datatut='show-agenda'
                     />
                     <Button
                       className={
@@ -2309,7 +2589,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       }
                       variant={"Primary"}
                       text={t("Attendees")}
-                      datatut="show-meeting-attendees"
+                      datatut='show-meeting-attendees'
                       onClick={changeSelectAttendees}
                     />
                     {minutesOftheMeatingStatus && (
@@ -2321,7 +2601,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         }
                         variant={"Primary"}
                         text={t("Minutes")}
-                        datatut="show-minutes"
+                        datatut='show-minutes'
                         onClick={changeSelectMinutes}
                       />
                     )}
@@ -2330,24 +2610,23 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               ) : null}
               {isDetails ? (
                 <>
-                  <Row className="udpateeetingtime-row-1">
+                  <Row className='udpateeetingtime-row-1'>
                     <Col
                       lg={3}
                       md={3}
                       sm={3}
                       xs={12}
-                      className="CreateMeetingTime"
-                    >
+                      className='CreateMeetingTime'>
                       <DatePicker
-                        arrowClassName="arrowClass"
+                        arrowClassName='arrowClass'
                         value={createMeetingTime}
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
+                        containerClassName='containerClassTimePicker'
+                        className='timePicker'
                         disableDayPicker
-                        inputClass="inputTImeMeeting"
+                        inputClass='inputTImeMeeting'
                         calendar={calendarValue}
                         locale={localValue}
-                        format="hh:mm A"
+                        format='hh:mm A'
                         selected={selectedTime}
                         editable={false}
                         render={<CustomInput />}
@@ -2363,8 +2642,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             createMeeting.MeetingStartTime === ""
                               ? "errorMessage"
                               : "errorMessage_hidden"
-                          }
-                        >
+                          }>
                           {t("Select-time")}
                         </p>
                       ) : null}
@@ -2374,22 +2652,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className="CreateMeetingDate"
-                    >
+                      className='CreateMeetingDate'>
                       <DatePicker
                         format={"DD/MM/YYYY"}
                         minDate={moment().toDate()}
-                        placeholder="DD/MM/YYYY"
+                        placeholder='DD/MM/YYYY'
                         render={
                           <InputIcon
-                            placeholder="DD/MM/YYYY"
-                            className="datepicker_input"
+                            placeholder='DD/MM/YYYY'
+                            className='datepicker_input'
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2"
+                        className='datePickerTodoCreate2'
                         onOpenPickNewDate={true}
-                        inputMode=""
+                        inputMode=''
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
@@ -2404,8 +2681,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             createMeeting.MeetingDate === ""
                               ? "errorMessage"
                               : "errorMessage_hidden"
-                          }
-                        >
+                          }>
                           {t("Select-date")}
                         </p>
                       ) : null}
@@ -2422,18 +2698,17 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     </Col>
                   </Row>
 
-                  <Row className="updatemeetingvideoiconbtrrow">
+                  <Row className='updatemeetingvideoiconbtrrow'>
                     <Col
                       lg={1}
                       md={1}
                       sm={2}
                       xs={12}
-                      className="CreateMeetingInput"
-                    >
+                      className='CreateMeetingInput'>
                       <Button
                         disableBtn={endMeetingStatus}
                         text={<CameraVideo />}
-                        name="IsVideoCall"
+                        name='IsVideoCall'
                         className={
                           createMeeting.IsVideoCall === false
                             ? "cameraButton update"
@@ -2447,14 +2722,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       md={7}
                       sm={6}
                       xs={12}
-                      className="location-textbox CreateMeetingInput"
-                    >
+                      className='location-textbox CreateMeetingInput'>
                       <TextField
                         disable={endMeetingStatus}
                         change={detailsHandler}
-                        name="MeetingLocation"
-                        applyClass="form-control2"
-                        type="text"
+                        name='MeetingLocation'
+                        applyClass='form-control2'
+                        type='text'
                         placeholder={t("Location-Videourl")}
                         value={createMeeting.MeetingLocation}
                         required={true}
@@ -2466,36 +2740,33 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className="UpdateCheckbox mt-2"
-                    >
+                      className='UpdateCheckbox mt-2'>
                       <Checkbox
                         disabled={endMeetingStatus}
-                        className="SearchCheckbox"
-                        name="IsChat"
+                        className='SearchCheckbox'
+                        name='IsChat'
                         label={t("Group-chat")}
                         checked={createMeeting.IsChat}
                         onChange={onChange}
-                        classNameDiv="checkboxParentClass"
-                      ></Checkbox>
+                        classNameDiv='checkboxParentClass'></Checkbox>
                     </Col>
                   </Row>
 
-                  <Row className="updatemeetingvideoiconbtrrow">
+                  <Row className='updatemeetingvideoiconbtrrow'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className="location-textbox CreateMeetingInput"
-                    >
+                      className='location-textbox CreateMeetingInput'>
                       <TextField
                         disable={endMeetingStatus}
                         change={detailsHandler}
                         value={createMeeting.MeetingTitle}
-                        name="MeetingTitle"
+                        name='MeetingTitle'
                         applyClass={"form-control2"}
-                        type="text"
-                        size="small"
+                        type='text'
+                        size='small'
                         placeholder={t("Meeting-title")}
                         required={true}
                         maxLength={245}
@@ -2503,22 +2774,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     </Col>
                   </Row>
 
-                  <Row className="updatemeetingtextarearow">
+                  <Row className='updatemeetingtextarearow'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className="CreateMeetingInput textAreaDiv"
-                    >
+                      className='CreateMeetingInput textAreaDiv'>
                       <TextField
                         disable={endMeetingStatus}
                         change={detailsHandler}
-                        name="MeetingDescription"
-                        applyClass="form-control2 updatemeetingtextarea"
-                        type="text"
+                        name='MeetingDescription'
+                        applyClass='form-control2 updatemeetingtextarea'
+                        type='text'
                         as={"textarea"}
-                        rows="7"
+                        rows='7'
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
@@ -2529,7 +2799,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               ) : isAgenda ? (
                 <>
                   {!endMeetingStatus ? (
-                    <div className="agenda_container">
+                    <div className='agenda_container'>
                       <Form onSubmit={addAnOtherAgenda}>
                         <Row>
                           <Col
@@ -2537,16 +2807,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             md={7}
                             sm={12}
                             xs={12}
-                            className="agenda-title-field CreateMeetingAgenda margin-bottom-10"
-                          >
+                            className='agenda-title-field CreateMeetingAgenda margin-bottom-10'>
                             <TextField
                               disable={endMeetingStatus}
                               change={agendaHandler}
                               name={"Title"}
                               value={objMeetingAgenda.Title}
-                              applyClass="form-control2"
+                              applyClass='form-control2'
                               maxLength={300}
-                              type="text"
+                              type='text'
                               placeholder={t("Agenda-title") + "*"}
                             />
                           </Col>
@@ -2555,8 +2824,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             md={5}
                             sm={12}
                             xs={12}
-                            className="agenda-title-field "
-                          >
+                            className='agenda-title-field '>
                             <Select
                               options={allPresenters}
                               isDisabled={endMeetingStatus}
@@ -2568,7 +2836,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                   ? null
                                   : presenterValue
                               }
-                              placeholder="Select Presenter"
+                              placeholder='Select Presenter'
                               filterOption={filterFunc}
                             />
                           </Col>
@@ -2580,60 +2848,55 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             md={12}
                             sm={12}
                             xs={12}
-                            className="agenda-title-field CreateMeetingAgenda"
-                          >
+                            className='agenda-title-field CreateMeetingAgenda'>
                             <TextField
                               disable={endMeetingStatus}
                               change={agendaHandler}
                               name={"URLs"}
                               value={objMeetingAgenda.URLs}
-                              applyClass="form-control2"
-                              type="text"
+                              applyClass='form-control2'
+                              type='text'
                               placeholder={t("Url")}
                             />
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
                             xs={12}
-                            className="d-flex justify-content-start flex-column "
-                          >
+                            className='d-flex justify-content-start flex-column '>
                             <label>{t("Attachement")}</label>
-                            <span className="custom-upload-input">
+                            <span className='custom-upload-input'>
                               <CustomUpload
                                 change={uploadFilesAgenda}
                                 multiple={true}
                                 onClick={(event) => {
                                   event.target.value = null;
                                 }}
-                                className="UploadFileButton"
+                                className='UploadFileButton'
                               />
                               <Row>
-                                {meetingAgendaAttachments
-                                  .MeetingAgendaAttachments.length > 0
-                                  ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
-                                      (data, index) => {
-                                        return (
-                                          <Col sm={4} md={4} lg={4}>
-                                            <AttachmentViewer
-                                              data={data}
-                                              handleClickRemove={() => {
-                                                deleteAttachmentfromAgenda(
-                                                  data,
-                                                  index
-                                                );
-                                              }}
-                                              name={data.DisplayAttachmentName}
-                                              fk_UID={createrID}
-                                              id={0}
-                                            />
-                                          </Col>
-                                        );
-                                      }
-                                    )
+                                {attachments.length > 0
+                                  ? attachments.map((data, index) => {
+                                      return (
+                                        <Col sm={4} md={4} lg={4}>
+                                          <AttachmentViewer
+                                            data={data}
+                                            handleClickRemove={() => {
+                                              deleteAttachmentfromAgenda(
+                                                data,
+                                                index
+                                              );
+                                            }}
+                                            name={data.DisplayAttachmentName}
+                                            fk_UID={createrID}
+                                            id={0}
+                                          />
+                                        </Col>
+                                      );
+                                    })
                                   : null}
                               </Row>
                             </span>
@@ -2657,12 +2920,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       endMeetingStatus
                         ? "agendaList update endmeeting"
                         : "agendaList update"
-                    }
-                  >
+                    }>
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className="margin-top-20">
+                            <div className='margin-top-20'>
                               <Accordian
                                 AccordioonHeader={data.ObjMeetingAgenda.Title}
                                 AccordioonBody={
@@ -2673,15 +2935,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                         md={12}
                                         sm={12}
                                         xs={12}
-                                        className="d-flex gap-2"
-                                      >
+                                        className='d-flex gap-2'>
                                         <Button
                                           disableBtn={endMeetingStatus}
                                           className={"btn editAgendaGridBtn"}
                                           variant={"Primary"}
                                           text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
-                                          datatut="show-agenda"
+                                          datatut='show-agenda'
                                         />
                                         <Button
                                           disableBtn={endMeetingStatus}
@@ -2691,7 +2952,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                           onClick={() =>
                                             handleDeleteAgenda(data, index)
                                           }
-                                          datatut="show-agenda"
+                                          datatut='show-agenda'
                                         />
                                       </Col>
                                     </Row>
@@ -2701,8 +2962,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                           disable={true}
                                           name={"Title"}
                                           value={data.ObjMeetingAgenda.Title}
-                                          applyClass="form-control2"
-                                          type="text"
+                                          applyClass='form-control2'
+                                          type='text'
                                           placeholder={t("Agenda-title")}
                                         />
                                       </Col>
@@ -2713,8 +2974,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                           value={
                                             data.ObjMeetingAgenda.PresenterName
                                           }
-                                          applyClass="form-control2"
-                                          type="text"
+                                          applyClass='form-control2'
+                                          type='text'
                                           placeholder={t(
                                             "Presenter-Title-Placeholder"
                                           )}
@@ -2727,8 +2988,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                           disable={true}
                                           name={"URLs"}
                                           value={data.ObjMeetingAgenda.URLs}
-                                          applyClass="form-control2"
-                                          type="text"
+                                          applyClass='form-control2'
+                                          type='text'
                                           placeholder={"URL"}
                                         />
                                       </Col>
@@ -2769,13 +3030,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               ) : isAttendees ? (
                 <>
                   {!endMeetingStatus ? (
-                    <Row className="updatemeeting-attendees-row ">
+                    <Row className='updatemeeting-attendees-row '>
                       <Col lg={5} md={5} sm={12} xs={12}>
                         <Select
                           options={attendeesParticipant}
                           classNamePrefix={"ModalOrganizerSelect"}
                           filterOption={filterFunc}
-                          placeholder="Please Select"
+                          placeholder='Please Select'
                           onChange={handleChangeAttenddes}
                           isSearchable={true}
                           value={
@@ -2804,14 +3065,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     </Row>
                   ) : null}
 
-                  <div className="updatemeeting-participant-scroll">
+                  <div className='updatemeeting-participant-scroll'>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         xs={12}
-                        className="updatemeeting-participant-scroll-organizer"
-                      >
+                        className='updatemeeting-participant-scroll-organizer'>
                         <label>{t("Organizer")}</label>
                       </Col>
                       <Col lg={12} md={12} xs={12}>
@@ -2864,8 +3124,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="updatemeeting-participant-scroll-participant"
-                      >
+                        className='updatemeeting-participant-scroll-participant'>
                         <label>{t("Participants")}</label>
                       </Col>
                     </Row>
@@ -2905,13 +3164,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                 <>
                   {endMeetingStatusForMinutes ? null : (
                     <form onSubmit={addMinutes}>
-                      <Row className="align-items-center">
+                      <Row className='align-items-center'>
                         <Col
                           lg={10}
                           md={10}
                           sm={12}
-                          className="CreateMeetingInput"
-                        >
+                          className='CreateMeetingInput'>
                           <TextField
                             placeholder={t("Enter-minutes")}
                             value={recordsMinutesOfTheMeeting.Description}
@@ -2919,9 +3177,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             maxLength={65}
                           />
                         </Col>
-                        <Col lg={2} md={2} sm={12} className="updateMinute">
+                        <Col lg={2} md={2} sm={12} className='updateMinute'>
                           <Button
-                            className="btn btn-primary update-isminutes-addbtn"
+                            className='btn btn-primary update-isminutes-addbtn'
                             text={t("Add")}
                             disableBtn={
                               recordsMinutesOfTheMeeting.Description !== ""
@@ -2934,27 +3192,26 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     </form>
                   )}
 
-                  <Row className="updatemeetingofminutes-row">
+                  <Row className='updatemeetingofminutes-row'>
                     <Col sm={12}>
-                      <Row className="mt-3 minutes-view-2  px-3 d-flex flex-row ">
+                      <Row className='mt-3 minutes-view-2  px-3 d-flex flex-row '>
                         {minutesOfMeeting.length > 0 ? (
                           minutesOfMeeting.map(
                             (minutesOfMeetingLdata, index) => {
                               return (
                                 <Col
-                                  className="border p-2 minutes-box rounded my-2"
+                                  className='border p-2 minutes-box rounded my-2'
                                   sm={12}
                                   md={12}
-                                  lg={12}
-                                >
+                                  lg={12}>
                                   <Row>
                                     <Col sm={1}>
-                                      <span className="agendaIndex">
+                                      <span className='agendaIndex'>
                                         {index + 1}
                                       </span>
                                     </Col>
                                     <Col sm={11}>
-                                      <p className="updatemeetingofminutes-agendaTitle">
+                                      <p className='updatemeetingofminutes-agendaTitle'>
                                         {minutesOfMeetingLdata.Description}
                                       </p>
                                     </Col>
@@ -2964,13 +3221,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                             }
                           )
                         ) : (
-                          <Row className="updatemeeting-minutesofmeetings-none">
+                          <Row className='updatemeeting-minutesofmeetings-none'>
                             <Col
                               lg={12}
                               md={12}
                               xs={12}
-                              className="d-flex justify-content-center align-items-center"
-                            >
+                              className='d-flex justify-content-center align-items-center'>
                               <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
@@ -2981,9 +3237,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                 </>
               ) : isPublishMeeting ? (
                 <>
-                  <Row className="confirmationDialogue ">
+                  <Row className='confirmationDialogue '>
                     <Col lg={12} md={12} sm={12}>
-                      <p className="publishMessageModal">
+                      <p className='publishMessageModal'>
                         {t("Are-you-sure-you-want-to-update-meeting")}
                       </p>
                     </Col>
@@ -2991,9 +3247,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                 </>
               ) : isCancelMeetingModal ? (
                 <>
-                  <Row className="confirmationDialogue">
+                  <Row className='confirmationDialogue'>
                     <Col lg={12} md={12} sm={12}>
-                      <p className="publishMessageModal">
+                      <p className='publishMessageModal'>
                         {t("Are-you-sure-you-want-to-cancel-meeting")}
                       </p>
                     </Col>
@@ -3006,8 +3262,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="Confirmationmodal_body_text_meeting_update"
-                    >
+                      className='Confirmationmodal_body_text_meeting_update'>
                       {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
@@ -3024,8 +3279,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="d-flex justify-content-end"
-                    >
+                      className='d-flex justify-content-end'>
                       <Button
                         onClick={navigateToAgenda}
                         className={
@@ -3045,8 +3299,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className="d-flex justify-content-between"
-                    >
+                      className='d-flex justify-content-between'>
                       <Button
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
@@ -3073,8 +3326,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <Button
                           className={" btn btn-primary modal-update-meeting"}
                           text={t("Next")}
@@ -3088,8 +3340,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end gap-2"
-                      >
+                        className='d-flex justify-content-end gap-2'>
                         <Button
                           className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}
@@ -3118,8 +3369,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end"
-                      >
+                        className='d-flex justify-content-end'>
                         <Button
                           className={" btn btn-primary ismeeting-finish-btn"}
                           text={t("Publish")}
@@ -3133,8 +3383,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         lg={12}
                         md={12}
                         xs={12}
-                        className="d-flex justify-content-end gap-2 align-items-center"
-                      >
+                        className='d-flex justify-content-end gap-2 align-items-center'>
                         <Button
                           className={"UpdateMeeting_discardChangesBtn"}
                           text={t("Discard-changes")}
@@ -3157,15 +3406,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                 </>
               ) : isPublishMeeting ? (
                 <>
-                  <Row className="updatemeeting-publishMeeting-btn ">
-                    <Col lg={6} md={6} xs={12} className="text-end">
+                  <Row className='updatemeeting-publishMeeting-btn '>
+                    <Col lg={6} md={6} xs={12} className='text-end'>
                       <Button
                         className={"modalupdate_CancelBtn"}
                         text={t("Cancel")}
                         onClick={discardMeeting}
                       />
                     </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
+                    <Col lg={6} md={6} xs={12} className='text-start'>
                       <Button
                         className={"modalupdate_updatebtn"}
                         text={t("Update")}
@@ -3181,8 +3430,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                     md={12}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-center gap-3 mt-4"
-                  >
+                    className='d-flex justify-content-center gap-3 mt-4'>
                     <Button
                       className={"btn  cancelmeetingmodalgoBackbtn"}
                       text={t("Go-back")}
@@ -3202,8 +3450,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center gap-3"
-                    >
+                      className='d-flex justify-content-center gap-3'>
                       <Button
                         onClick={onHideCancelButton}
                         className={
@@ -3231,4 +3478,4 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   );
 };
 
-export default ModalUpdate;
+export default UpdateQuickMeeting;

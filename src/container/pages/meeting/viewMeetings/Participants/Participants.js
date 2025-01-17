@@ -341,7 +341,7 @@ const Participants = ({
           </Col>
         </Row>
 
-        <Row className="mt-5">
+        {/* <Row className="mt-5">
           <Col
             lg={12}
             md={12}
@@ -360,7 +360,7 @@ const Participants = ({
               onClick={handleNextBtn}
             />
           </Col>
-        </Row>
+        </Row> */}
         {cancelModalView && (
           <CancelButtonModal
             setCancelModalView={setCancelModalView}
