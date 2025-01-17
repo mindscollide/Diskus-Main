@@ -53,11 +53,13 @@ import { showMessage } from "../../../components/elements/snack_bar/utill";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
+  openDocumentViewer,
 } from "../../../commen/functions/utils";
 import {
   saveFilesQuickMeetingApi,
   uploadDocumentsQuickMeetingApi,
 } from "../../../store/actions/NewMeetingActions";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -737,11 +739,22 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             getSaveFilesRepsonse.isExecuted &&
             getSaveFilesRepsonse.responseCode === 1
           ) {
-            getSaveFilesRepsonse.newFolder.forEach((fileData, index) => {
-              fileforSend.push({
-                DisplayAttachmentName: fileData.displayFileName,
-                OriginalAttachmentName: String(fileData.pK_FileID),
-              });
+            getSaveFilesRepsonse.newFolder.forEach((fileData) => {
+              let isFileNameAlreadyExist = fileforSend.findIndex(
+                (isExist) =>
+                  isExist.DisplayAttachmentName === fileData.displayFileName
+              );
+              if (isFileNameAlreadyExist !== -1) {
+                // Update the OriginalAttachmentName for the existing entry
+                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName =
+                  String(fileData.pK_FileID);
+              } else {
+                // Add a new entry
+                fileforSend.push({
+                  DisplayAttachmentName: fileData.displayFileName,
+                  OriginalAttachmentName: String(fileData.pK_FileID),
+                });
+              }
             });
           }
           let newData = {
@@ -1840,6 +1853,35 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     }
   };
 
+  const handeClickView = (record) => {
+    let ext = record.DisplayAttachmentName.split(".").pop();
+
+    // Open on Apryse
+    const pdfData = {
+      taskId: record.FK_MAID,
+      commingFrom: 4,
+      fileName: record.DisplayAttachmentName,
+      attachmentID: Number(record.OriginalAttachmentName),
+    };
+    console.log(pdfData, ext, "pdfDatapdfData");
+    const pdfDataJson = JSON.stringify(pdfData);
+    openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+  };
+
+  const downloadClick = (record) => {
+    let dataRoomData = {
+      FileID: Number(record.OriginalAttachmentName),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        dataRoomData,
+        t,
+        record.DisplayAttachmentName
+      )
+    );
+  };
+
   console.log(createMeeting, attachments, "createMeetingcreateMeeting");
   return (
     <>
@@ -2294,10 +2336,22 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                                             return (
                                               <Col sm={4} lg={4} md={4}>
                                                 <AttachmentViewer
+                                                  id={Number(
+                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                  )}
+                                                  handleEyeIcon={() =>
+                                                    handeClickView(
+                                                      MeetingAgendaAttachmentsData
+                                                    )
+                                                  }
+                                                  handleClickDownload={() =>
+                                                    downloadClick(
+                                                      MeetingAgendaAttachmentsData
+                                                    )
+                                                  }
                                                   data={
                                                     MeetingAgendaAttachmentsData
                                                   }
-                                                  id={0}
                                                   name={
                                                     MeetingAgendaAttachmentsData.DisplayAttachmentName
                                                   }

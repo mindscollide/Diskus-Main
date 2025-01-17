@@ -2342,5 +2342,7 @@
   "Try-another-search": "Try another search, or click the search box to",
   "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more.",
   "Notes-attachment-deleted-successfully": "Notes attachment deleted successfully",
-  "No-attachment-deleted": "No attachment deleted"
+  "No-attachment-deleted": "No attachment deleted",
+  "FILE_SHARED": "[Place holder] file shared with you",
+  "FOLDER_SHARED": "[Place holder] folder shared with you"
 }

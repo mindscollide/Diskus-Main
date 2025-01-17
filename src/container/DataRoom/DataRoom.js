@@ -136,6 +136,7 @@ import AscendIcon from "../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../assets/images/sortingIcons/Arrow-up.png";
 import Tick from "../../assets/images/Tick-Icon.png";
+import MenuPopover from "../../components/elements/popover";
 
 const DataRoom = () => {
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -1109,28 +1110,27 @@ const DataRoom = () => {
           onClick={() => {
             console.log(filter, "filterfilterfilter");
             handleMenuClick(filter);
-          }}
-        >
-          <div className="d-flex justify-content-start gap-2">
+          }}>
+          <div className='d-flex justify-content-start gap-2'>
             <span>{filter.text}</span>
             {selectedValue.value !== 0 &&
               Number(selectedValue.value) === Number(filter.value) && (
-                <span className="checkmark">
-                  <img src={Tick} alt="" />
+                <span className='checkmark'>
+                  <img src={Tick} alt='' />
                 </span>
               )}
           </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between mx-2">
+      <div className='d-flex align-items-center justify-content-between mx-2'>
         <Button
           text={"Reset"}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text="Ok"
+          text='Ok'
           disableBtn={selectedValue === null ? true : false}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -1400,12 +1400,12 @@ const DataRoom = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2">
+          <span className='d-flex gap-2'>
             {t("Name")}{" "}
             {allDocumentsTitleSorter === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -1426,18 +1426,16 @@ const DataRoom = () => {
             return (
               <div
                 className={`${styles["dataFolderRow"]}`}
-                onClick={() => getFolderDocuments(data.id, data)}
-              >
-                <img src={folderColor} alt="" draggable="false" />
-                <abbr title={text} className="d-flex gap-1">
+                onClick={() => getFolderDocuments(data.id, data)}>
+                <img src={folderColor} alt='' draggable='false' />
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
-                  >
+                    } ${"cursor-pointer"}`}>
                     {text}
                   </span>
-                  <img src={sharedIcon} alt="" draggable="false" />
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </abbr>
               </div>
             );
@@ -1446,18 +1444,17 @@ const DataRoom = () => {
               <section className={styles["fileRow"]}>
                 <img
                   src={getIconSource(getFileExtension(data.name))}
-                  alt=""
+                  alt=''
                   width={"25px"}
                   height={"25px"}
                 />
-                <abbr title={text} className="d-flex gap-1">
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
-                    className={styles["dataroom_table_heading"]}
-                  >
+                    className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
-                  <img src={sharedIcon} alt="" draggable="false" />
+                  <img src={sharedIcon} alt='' draggable='false' />
                 </abbr>
               </section>
             );
@@ -1467,15 +1464,13 @@ const DataRoom = () => {
             return (
               <div
                 className={`${styles["dataFolderRow"]}`}
-                onClick={() => getFolderDocuments(data.id, data)}
-              >
-                <img src={folderColor} alt="" draggable="false" />
+                onClick={() => getFolderDocuments(data.id, data)}>
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
-                  >
+                    } ${"cursor-pointer"}`}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -1486,15 +1481,14 @@ const DataRoom = () => {
               <section className={styles["fileRow"]}>
                 <img
                   src={getIconSource(getFileExtension(data.name))}
-                  alt=""
+                  alt=''
                   width={"25px"}
                   height={"25px"}
                 />
                 <abbr title={text}>
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
-                    className={styles["dataroom_table_heading"]}
-                  >
+                    className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
                 </abbr>
@@ -1507,12 +1501,12 @@ const DataRoom = () => {
     {
       title: (
         <>
-          <span className="d-flex justify-content-center gap-2">
+          <span className='d-flex justify-content-center gap-2'>
             {t("Owner")}{" "}
             {allOwnerSorter === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -1532,14 +1526,14 @@ const DataRoom = () => {
     },
     {
       title: (
-        <span className="d-flex justify-content-center align-items-center gap-2">
+        <span className='d-flex justify-content-center align-items-center gap-2'>
           <span className={styles["datemodifiedfilter"]}>
             {selectedValue.label}
           </span>
           {allLastModifiedSorter === "descend" ? (
-            <img src={ArrowUpIcon} alt="" />
+            <img src={ArrowUpIcon} alt='' />
           ) : (
-            <img src={ArrowDownIcon} alt="" />
+            <img src={ArrowDownIcon} alt='' />
           )}
         </span>
       ),
@@ -1548,14 +1542,13 @@ const DataRoom = () => {
       width: "20%",
       align: "center",
       filterIcon: (filtered) => (
-        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
+        <ChevronDown className='ChevronPolls' onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -1621,34 +1614,35 @@ const DataRoom = () => {
           attachmentID: record.id,
           isPermission: record.permissionID,
         };
-        let fileExtension = getFileExtension(record.name);
-        const pdfDataJson = JSON.stringify(pdfData);
-        const pdfDataforSignature = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-          isNew: true,
-        };
-        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
 
-        if (record.isShared) {
-          return (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
+        let fileExtension = getFileExtension(record.name);
+
+        // Simplify MenuPopover props setup
+        const getMenuPopover = (listData) => (
+          <MenuPopover
+            imageImage={dot}
+            listData={listData}
+            record={record}
+            t={t}
+            listOnClickFunction={fileOptionsSelect}
+          />
+        );
+
+        return (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+              {record.isShared ? (
+                <>
+                  <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       //  Share Icon
 
-                      <Tooltip placement="topRight" title={t("Share")}>
+                      <Tooltip placement='topRight' title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
                             className={styles["share__Icon_img"]}
@@ -1659,195 +1653,62 @@ const DataRoom = () => {
                                 showShareFileModal(record.id, record.name);
                               }
                             }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16.022"
-                            height="11.71"
-                            viewBox="0 0 16.022 11.71"
-                          >
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='16.022'
+                            height='11.71'
+                            viewBox='0 0 16.022 11.71'>
                             <path
-                              id="Icon_material-group-add"
-                              data-name="Icon material-group-add"
-                              d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                              transform="translate(0.5 -7)"
-                              fill="none"
-                              stroke="#5a5a5a"
+                              id='Icon_material-group-add'
+                              data-name='Icon material-group-add'
+                              d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                              transform='translate(0.5 -7)'
+                              fill='none'
+                              stroke='#5a5a5a'
                             />
                           </svg>
                         </span>
                       </Tooltip>
                     )}
                     {/* Download Icon */}
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
                   </div>
-
-                  <Tooltip placement="topRight" title={t("More")}>
-                    <span className={styles["threeDot__Icon"]}>
-                      {record.isFolder ? (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle
-                            id="dropdown-autoclose-true"
-                            drop="down"
-                            data-bs-flip="false" // Prevents auto-flipping
-                            data-bs-boundary="viewport" // Keeps dropdown within viewport boundaries
-                            data-bs-display="static" // Disables dynamic positioning
-                          >
-                            <img
-                              src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {record.permissionID === 2
-                              ? optionsforFolderEditor(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(data, record)
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 1
-                              ? optionsforFolderViewer(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(data, record)
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 3
-                              ? optionsforFolderEditableNonShareable(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(data, record)
-                                        }
-                                      >
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      ) : (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
-                            <img
-                              src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {record.permissionID === 2
-                              ? optionsforFileEditor(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 1
-                              ? optionsforFileViewer(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 3
-                              ? optionsforFileEditableNonShareable(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(
-                                            data,
-                                            record,
-                                            pdfDataJson
-                                          )
-                                        }
-                                      >
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      )}
-                    </span>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </>
-          );
-        } else {
-          return (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
-                    <Tooltip placement="topRight" title={t("Share")}>
+                  <span className={styles["threeDot__Icon"]}>
+                    {" "}
+                    {record.isFolder
+                      ? // Folder Logic
+                        record.permissionID === 2
+                        ? getMenuPopover(optionsforFolderEditor)
+                        : record.permissionID === 1
+                        ? getMenuPopover(optionsforFolderViewer)
+                        : record.permissionID === 3
+                        ? getMenuPopover(optionsforFolderEditableNonShareable)
+                        : null
+                      : // File Logic
+                      record.permissionID === 2
+                      ? getMenuPopover(optionsforFileEditor)
+                      : record.permissionID === 1
+                      ? getMenuPopover(optionsforFileViewer)
+                      : record.permissionID === 3
+                      ? getMenuPopover(optionsforFileEditableNonShareable)
+                      : null}{" "}
+                  </span>{" "}
+                </>
+              ) : (
+                <>
+                  {/* Non-Shared Items */}
+                  <div className='tablerowFeatures'>
+                    <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
                         <svg
                           className={styles["share__Icon_img"]}
@@ -1858,42 +1719,41 @@ const DataRoom = () => {
                               showShareFileModal(record.id, record.name);
                             }
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='16.022'
+                          height='11.71'
+                          viewBox='0 0 16.022 11.71'>
                           <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
+                            id='Icon_material-group-add'
+                            data-name='Icon material-group-add'
+                            d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                            transform='translate(0.5 -7)'
+                            fill='none'
+                            stroke='#5a5a5a'
                           />
                         </svg>
                       </span>
                     </Tooltip>
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
 
-                    <Tooltip placement="topRight" title={t("Delete")}>
+                    <Tooltip placement='topRight' title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
                         <img
                           src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
+                          height='10.71px'
+                          alt=''
+                          width='15.02px'
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1907,9 +1767,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
+                          height='12.17px'
+                          alt=''
+                          width='9.47px'
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1924,99 +1784,18 @@ const DataRoom = () => {
                       </span>
                     </Tooltip>
                   </div>
-
-                  <Tooltip placement="topRight" title={t("More")}>
-                    <span className={styles["threeDot__Icon"]}>
-                      {record.isFolder ? (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
-                            <img
-                              src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {optionsforFolder(t).map((data, index) => {
-                              return (
-                                <BootstrapDropdown.Item
-                                  key={index}
-                                  onClick={() =>
-                                    fileOptionsSelect(data, record)
-                                  }
-                                >
-                                  {data.label}
-                                </BootstrapDropdown.Item>
-                              );
-                            })}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      ) : (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
-                            <img
-                              src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {fileFormatforSignatureFlow.includes(fileExtension)
-                              ? optionsforPDFandSignatureFlow(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(
-                                            data,
-                                            record,
-                                            pdfDataJsonSignature
-                                          )
-                                        }
-                                      >
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : optionsforFile(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })}
-                            {}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      )}
-                    </span>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </>
-          );
-        }
+                  <span className={styles["threeDot__Icon"]}>
+                    {record.isFolder
+                      ? getMenuPopover(optionsforFolder)
+                      : fileFormatforSignatureFlow.includes(fileExtension)
+                      ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
+                      : getMenuPopover(optionsforFile)}
+                  </span>
+                </>
+              )}
+            </Col>
+          </Row>
+        );
       },
     },
   ];
@@ -2058,15 +1837,14 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
-                <abbr title={text} className="d-flex gap-1">
+                <img src={folderColor} alt='' draggable='false' />
+                <abbr title={text} className='d-flex gap-1'>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id, data)}
-                  >
-                    {text} <img src={sharedIcon} alt="" draggable="false" />
+                    onClick={() => getFolderDocuments(data.id, data)}>
+                    {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
                 </abbr>
               </div>
@@ -2075,15 +1853,14 @@ const DataRoom = () => {
             <div className={styles["dataFolderRow"]}>
               <img
                 src={getIconSource(getFileExtension(data.name))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
               />
               <abbr title={text}>
                 <span
                   onClick={(e) => handleLinkClick(e, data)}
-                  className={styles["dataroom_table_heading"]}
-                >
+                  className={styles["dataroom_table_heading"]}>
                   {text}
                 </span>
               </abbr>
@@ -2093,14 +1870,13 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
+                <img src={folderColor} alt='' draggable='false' />
                 <abbr title={text}>
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id, data)}
-                  >
+                    onClick={() => getFolderDocuments(data.id, data)}>
                     {text}{" "}
                   </span>
                 </abbr>
@@ -2111,15 +1887,14 @@ const DataRoom = () => {
               <section className={styles["fileRow"]}>
                 <img
                   src={getIconSource(getFileExtension(data.name))}
-                  alt=""
+                  alt=''
                   width={"25px"}
                   height={"25px"}
                 />
                 <abbr title={text}>
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
-                    className={styles["dataroom_table_heading"]}
-                  >
+                    className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
                 </abbr>
@@ -2221,14 +1996,13 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
                       //  Share Icon
 
-                      <Tooltip placement="topRight" title={t("Share")}>
+                      <Tooltip placement='topRight' title={t("Share")}>
                         <span className={styles["share__Icon"]}>
                           <svg
                             className={styles["share__Icon_img"]}
@@ -2239,31 +2013,30 @@ const DataRoom = () => {
                                 showShareFileModal(record.id, record.name);
                               }
                             }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16.022"
-                            height="11.71"
-                            viewBox="0 0 16.022 11.71"
-                          >
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='16.022'
+                            height='11.71'
+                            viewBox='0 0 16.022 11.71'>
                             <path
-                              id="Icon_material-group-add"
-                              data-name="Icon material-group-add"
-                              d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                              transform="translate(0.5 -7)"
-                              fill="none"
-                              stroke="#5a5a5a"
+                              id='Icon_material-group-add'
+                              data-name='Icon material-group-add'
+                              d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                              transform='translate(0.5 -7)'
+                              fill='none'
+                              stroke='#5a5a5a'
                             />
                           </svg>
                         </span>
                       </Tooltip>
                     )}
                     {/* Download Icon */}
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
@@ -2271,20 +2044,19 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <BootstrapDropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </BootstrapDropdown.Toggle>
                           <BootstrapDropdown.Menu>
@@ -2295,8 +2067,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </BootstrapDropdown.Item>
                                   );
@@ -2308,8 +2079,7 @@ const DataRoom = () => {
                                       key={index}
                                       onClick={() =>
                                         fileOptionsSelect(data, record)
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </BootstrapDropdown.Item>
                                   );
@@ -2322,8 +2092,7 @@ const DataRoom = () => {
                                         key={index}
                                         onClick={() =>
                                           fileOptionsSelect(data, record)
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </BootstrapDropdown.Item>
                                     );
@@ -2336,14 +2105,13 @@ const DataRoom = () => {
                         <BootstrapDropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </BootstrapDropdown.Toggle>
                           <BootstrapDropdown.Menu>
@@ -2358,8 +2126,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </BootstrapDropdown.Item>
                                   );
@@ -2375,8 +2142,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </BootstrapDropdown.Item>
                                   );
@@ -2393,8 +2159,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJson
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </BootstrapDropdown.Item>
                                     );
@@ -2418,10 +2183,9 @@ const DataRoom = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2 position-relative otherstuff"
-                >
-                  <div className="tablerowFeatures">
-                    <Tooltip placement="topRight" title={t("Share")}>
+                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <div className='tablerowFeatures'>
+                    <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
                         <svg
                           className={styles["share__Icon_img"]}
@@ -2432,42 +2196,41 @@ const DataRoom = () => {
                               showShareFileModal(record.id, record.name);
                             }
                           }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='16.022'
+                          height='11.71'
+                          viewBox='0 0 16.022 11.71'>
                           <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
+                            id='Icon_material-group-add'
+                            data-name='Icon material-group-add'
+                            d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                            transform='translate(0.5 -7)'
+                            fill='none'
+                            stroke='#5a5a5a'
                           />
                         </svg>
                       </span>
                     </Tooltip>
-                    <Tooltip placement="topRight" title={t("Download")}>
+                    <Tooltip placement='topRight' title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
                           src={download}
-                          alt=""
-                          height="10.71px"
-                          width="15.02px"
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
                           className={styles["download__Icon_img"]}
                           onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
 
-                    <Tooltip placement="topRight" title={t("Delete")}>
+                    <Tooltip placement='topRight' title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
                         <img
                           src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
+                          height='10.71px'
+                          alt=''
+                          width='15.02px'
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -2481,9 +2244,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
+                          height='12.17px'
+                          alt=''
+                          width='9.47px'
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -2499,20 +2262,19 @@ const DataRoom = () => {
                     </Tooltip>
                   </div>
 
-                  <Tooltip placement="topRight" title={t("More")}>
+                  <Tooltip placement='topRight' title={t("More")}>
                     <span className={styles["threeDot__Icon"]}>
                       {record.isFolder ? (
                         <BootstrapDropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </BootstrapDropdown.Toggle>
                           <BootstrapDropdown.Menu>
@@ -2522,8 +2284,7 @@ const DataRoom = () => {
                                   key={index}
                                   onClick={() =>
                                     fileOptionsSelect(data, record)
-                                  }
-                                >
+                                  }>
                                   {data.label}
                                 </BootstrapDropdown.Item>
                               );
@@ -2534,14 +2295,13 @@ const DataRoom = () => {
                         <BootstrapDropdown
                           className={`${
                             styles["options_dropdown"]
-                          } ${"dataroom_options"}`}
-                        >
-                          <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
+                          } ${"dataroom_options"}`}>
+                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
                             <img
                               src={dot}
-                              alt=""
-                              width="15.02px"
-                              height="10.71px"
+                              alt=''
+                              width='15.02px'
+                              height='10.71px'
                             />
                           </BootstrapDropdown.Toggle>
                           <BootstrapDropdown.Menu>
@@ -2557,8 +2317,7 @@ const DataRoom = () => {
                                             record,
                                             pdfDataJsonSignature
                                           )
-                                        }
-                                      >
+                                        }>
                                         {data.label}
                                       </BootstrapDropdown.Item>
                                     );
@@ -2574,8 +2333,7 @@ const DataRoom = () => {
                                           record,
                                           pdfDataJson
                                         )
-                                      }
-                                    >
+                                      }>
                                       {data.label}
                                     </BootstrapDropdown.Item>
                                   );
@@ -2650,14 +2408,13 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={folderColor} alt="" draggable="false" />
+              <img src={folderColor} alt='' draggable='false' />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={() => getFolderDocuments(record.id, record)}
-              >
+                onClick={() => getFolderDocuments(record.id, record)}>
                 {text}
               </span>
-              <img src={sharedIcon} alt="" draggable="false" />
+              <img src={sharedIcon} alt='' draggable='false' />
             </div>
           );
         } else {
@@ -2665,17 +2422,16 @@ const DataRoom = () => {
             <div className={`${styles["dataFolderRow"]}`}>
               <img
                 src={getIconSource(getFileExtension(record.name))}
-                alt=""
+                alt=''
                 width={"25px"}
                 height={"25px"}
               />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, record)}
-              >
+                onClick={(e) => handleLinkClick(e, record)}>
                 {record.name}
               </span>
-              <img src={sharedIcon} alt="" draggable="false" />
+              <img src={sharedIcon} alt='' draggable='false' />
             </div>
           );
         }
@@ -2694,12 +2450,12 @@ const DataRoom = () => {
     {
       title: (
         <>
-          <span className="d-flex justify-content-center align-items-center gap-2">
+          <span className='d-flex justify-content-center align-items-center gap-2'>
             {t("Share-date")}
             {shareDateSorter === "descend" ? (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             ) : (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             )}
           </span>
         </>
@@ -2729,25 +2485,16 @@ const DataRoom = () => {
       width: "180px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        const pdfData = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-        };
-        let fileExtension = getFileExtension(record.name);
-        const pdfDataJson = JSON.stringify(pdfData);
-        const pdfDataforSignature = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-          isNew: true,
-        };
-        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
-
+        // Simplify MenuPopover props setup
+        const getMenuPopover = (listData) => (
+          <MenuPopover
+            imageImage={dot}
+            listData={listData}
+            record={record}
+            t={t}
+            listOnClickFunction={fileOptionsSelect}
+          />
+        );
         return (
           <>
             <Row>
@@ -2755,191 +2502,75 @@ const DataRoom = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2 position-relative otherstuff"
-              >
-                <div className="tablerowFeatures">
-                  {record.permissionID === 1 ||
-                  record.permissionID === 3 ? null : (
-                    //  Share Icon
+                className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                <>
+                  <div className='tablerowFeatures'>
+                    {record.permissionID === 1 ||
+                    record.permissionID === 3 ? null : (
+                      //  Share Icon
 
-                    <Tooltip placement="topRight" title={t("Share")}>
-                      <span className={styles["share__Icon"]}>
-                        <svg
-                          className={styles["share__Icon_img"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              showShareFolderModal(record.id, record.name);
-                            } else {
-                              showShareFileModal(record.id, record.name);
-                            }
-                          }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
-                          <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
-                          />
-                        </svg>
+                      <Tooltip placement='topRight' title={t("Share")}>
+                        <span className={styles["share__Icon"]}>
+                          <svg
+                            className={styles["share__Icon_img"]}
+                            onClick={() => {
+                              if (record.isFolder) {
+                                showShareFolderModal(record.id, record.name);
+                              } else {
+                                showShareFileModal(record.id, record.name);
+                              }
+                            }}
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='16.022'
+                            height='11.71'
+                            viewBox='0 0 16.022 11.71'>
+                            <path
+                              id='Icon_material-group-add'
+                              data-name='Icon material-group-add'
+                              d='M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z'
+                              transform='translate(0.5 -7)'
+                              fill='none'
+                              stroke='#5a5a5a'
+                            />
+                          </svg>
+                        </span>
+                      </Tooltip>
+                    )}
+                    {/* Download Icon */}
+                    <Tooltip placement='topRight' title={t("Download")}>
+                      <span className={styles["download__Icon"]}>
+                        <img
+                          src={download}
+                          alt=''
+                          height='10.71px'
+                          width='15.02px'
+                          className={styles["download__Icon_img"]}
+                          onClick={() => showRequestingAccessModal(record)}
+                        />
                       </span>
                     </Tooltip>
-                  )}
-                  {/* Download Icon */}
-                  <Tooltip placement="topRight" title={t("Download")}>
-                    <span className={styles["download__Icon"]}>
-                      <img
-                        src={download}
-                        alt=""
-                        height="10.71px"
-                        width="15.02px"
-                        className={styles["download__Icon_img"]}
-                        onClick={() => showRequestingAccessModal(record)}
-                      />
-                    </span>
-                  </Tooltip>
-                </div>
-
-                <Tooltip placement="topRight" title={t("More")}>
+                  </div>
                   <span className={styles["threeDot__Icon"]}>
-                    {record.isFolder ? (
-                      <BootstrapDropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </BootstrapDropdown.Toggle>
-                        <BootstrapDropdown.Menu>
-                          {record.permissionID === 2
-                            ? optionsforFolderEditor(t).map((data, index) => {
-                                return (
-                                  <BootstrapDropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </BootstrapDropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 1
-                            ? optionsforFolderViewer(t).map((data, index) => {
-                                return (
-                                  <BootstrapDropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(data, record)
-                                    }
-                                  >
-                                    {data.label}
-                                  </BootstrapDropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFolderEditableNonShareable(t).map(
-                                (data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(data, record)
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                }
-                              )
-                            : null}
-                        </BootstrapDropdown.Menu>
-                      </BootstrapDropdown>
-                    ) : (
-                      <BootstrapDropdown
-                        className={`${
-                          styles["options_dropdown"]
-                        } ${"dataroom_options"}`}
-                      >
-                        <BootstrapDropdown.Toggle id="dropdown-autoclose-true">
-                          <img
-                            src={dot}
-                            alt=""
-                            width="15.02px"
-                            height="10.71px"
-                          />
-                        </BootstrapDropdown.Toggle>
-                        <BootstrapDropdown.Menu>
-                          {record.permissionID === 2
-                            ? optionsforFileEditor(t).map((data, index) => {
-                                return (
-                                  <BootstrapDropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </BootstrapDropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 1
-                            ? optionsforFileViewer(t).map((data, index) => {
-                                return (
-                                  <BootstrapDropdown.Item
-                                    key={index}
-                                    onClick={() =>
-                                      fileOptionsSelect(
-                                        data,
-                                        record,
-                                        pdfDataJson
-                                      )
-                                    }
-                                  >
-                                    {data.label}
-                                  </BootstrapDropdown.Item>
-                                );
-                              })
-                            : record.permissionID === 3
-                            ? optionsforFileEditableNonShareable(t).map(
-                                (data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }
-                                    >
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                }
-                              )
-                            : null}
-                        </BootstrapDropdown.Menu>
-                      </BootstrapDropdown>
-                    )}
-                  </span>
-                </Tooltip>
+                    {" "}
+                    {record.isFolder
+                      ? // Folder Logic
+                        record.permissionID === 2
+                        ? getMenuPopover(optionsforFolderEditor)
+                        : record.permissionID === 1
+                        ? getMenuPopover(optionsforFolderViewer)
+                        : record.permissionID === 3
+                        ? getMenuPopover(optionsforFolderEditableNonShareable)
+                        : null
+                      : // File Logic
+                      record.permissionID === 2
+                      ? getMenuPopover(optionsforFileEditor)
+                      : record.permissionID === 1
+                      ? getMenuPopover(optionsforFileViewer)
+                      : record.permissionID === 3
+                      ? getMenuPopover(optionsforFileEditableNonShareable)
+                      : null}{" "}
+                  </span>{" "}
+                </>
               </Col>
             </Row>
           </>
@@ -3606,15 +3237,14 @@ const DataRoom = () => {
           />
         )}
         {actionundonenotification && <ActionUndoNotification />}
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col sm={12} md={12} lg={12}>
             <Row>
               <Col
                 lg={4}
                 md={4}
                 sm={12}
-                className="d-flex gap-3 align-items-center"
-              >
+                className='d-flex gap-3 align-items-center'>
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
@@ -3625,8 +3255,7 @@ const DataRoom = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Data_room_btn"]}
-                      >
+                        className={styles["Data_room_btn"]}>
                         <Plus width={20} height={20} fontWeight={800} />
                         <span className={styles["font_size"]}>{t("New")}</span>
                       </Col>
@@ -3634,24 +3263,21 @@ const DataRoom = () => {
                   </BootstrapDropdown.Toggle>
 
                   <BootstrapDropdown.Menu
-                    className={styles["dropdown_menu_dataroom"]}
-                  >
+                    className={styles["dropdown_menu_dataroom"]}>
                     <BootstrapDropdown.Item
                       className={styles["dataroom_dropdown_item"]}
-                      onClick={openFolderModal}
-                    >
+                      onClick={openFolderModal}>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-2 align-items-center"
-                        >
+                          className=' d-flex gap-2 align-items-center'>
                           <img
                             src={plus}
-                            height="10.8"
-                            alt=""
-                            width="12px"
+                            height='10.8'
+                            alt=''
+                            width='12px'
                             onClick={openFolderModal}
                           />
                           <span className={styles["New_folder"]}>
@@ -3661,20 +3287,18 @@ const DataRoom = () => {
                       </Row>
                     </BootstrapDropdown.Item>
                     <BootstrapDropdown.Item
-                      className={styles["dataroom_dropdown_item"]}
-                    >
+                      className={styles["dataroom_dropdown_item"]}>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-2 align-items-center"
-                        >
+                          className=' d-flex gap-2 align-items-center'>
                           <img
                             src={fileupload}
-                            alt=""
-                            height="10.8"
-                            width="12px"
+                            alt=''
+                            height='10.8'
+                            width='12px'
                           />
                           <UploadTextField
                             title={t("File-upload")}
@@ -3686,21 +3310,19 @@ const DataRoom = () => {
                       </Row>
                     </BootstrapDropdown.Item>
                     <BootstrapDropdown.Item
-                      className={styles["dataroom_dropdown_item"]}
-                    >
+                      className={styles["dataroom_dropdown_item"]}>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className=" d-flex gap-1 align-items-center"
-                        >
+                          className=' d-flex gap-1 align-items-center'>
                           <img
                             src={plus}
-                            height="10.8"
-                            alt=""
-                            width="12px"
-                            draggable="false"
+                            height='10.8'
+                            alt=''
+                            width='12px'
+                            draggable='false'
                           />
                           <UploadDataFolder
                             title={t("Folder-upload")}
@@ -3719,8 +3341,7 @@ const DataRoom = () => {
                 lg={6}
                 md={6}
                 sm={12}
-                className="d-flex position-relative Inputfield_for_data_room justify-content-end "
-              >
+                className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
                 <SearchBarComponent
                   setSearchDataFields={setSearchDataFields}
                   searchDataFields={searchDataFields}
@@ -3736,20 +3357,19 @@ const DataRoom = () => {
                 lg={1}
                 md={1}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 {currentView !== 5 && (
                   <span className={styles["lsit_grid_buttons"]}>
                     <Button
                       icon={
-                        <Tooltip placement="bottomLeft" title={t("Grid-view")}>
+                        <Tooltip placement='bottomLeft' title={t("Grid-view")}>
                           <img
                             src={
                               gridbtnactive ? Grid_Selected : Grid_Not_Selected
                             }
-                            height="25.27px"
-                            width="25.27px"
-                            alt=""
+                            height='25.27px'
+                            width='25.27px'
+                            alt=''
                             className={styles["grid_view_Icon"]}
                           />
                         </Tooltip>
@@ -3763,14 +3383,14 @@ const DataRoom = () => {
                     />
                     <Button
                       icon={
-                        <Tooltip placement="bottomLeft" title={t("List-view")}>
+                        <Tooltip placement='bottomLeft' title={t("List-view")}>
                           <img
                             src={
                               listviewactive ? List_Selected : List_Not_selected
                             }
-                            height="25.27px"
-                            width="25.27px"
-                            alt=""
+                            height='25.27px'
+                            width='25.27px'
+                            alt=''
                             className={styles["list_view_Icon"]}
                           />
                         </Tooltip>
@@ -3786,12 +3406,11 @@ const DataRoom = () => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={detailView ? 8 : 12}
                 md={detailView ? 8 : 12}
-                sm={detailView ? 8 : 12}
-              >
+                sm={detailView ? 8 : 12}>
                 <span className={styles["Data_room_paper"]}>
                   {searchTabOpen ? (
                     <SearchComponent
@@ -3822,7 +3441,7 @@ const DataRoom = () => {
                   ) : (
                     <>
                       <Row>
-                        <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                        <Col lg={12} md={12} sm={12} className='d-flex gap-3'>
                           <Button
                             text={t("All")}
                             className={
@@ -3880,19 +3499,17 @@ const DataRoom = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="mt-3 d-flex align-items-center gap-2"
-                            >
+                              className='mt-3 d-flex align-items-center gap-2'>
                               <Breadcrumb
-                                prefixCls="dataroombreadCrumbs"
-                                separator={<img src={RightArrowBreadCrumbs} />}
-                              >
+                                prefixCls='dataroombreadCrumbs'
+                                separator={<img src={RightArrowBreadCrumbs} />}>
                                 {/* Show three dots if more than 2 items */}
                                 {BreadCrumbsListArr.length > 2 && (
                                   <Breadcrumb.Item>
                                     <Popover
-                                      className="breadCrumbsItems"
-                                      openClassName="openPopOverClass"
-                                      overlayClassName="overClass"
+                                      className='breadCrumbsItems'
+                                      openClassName='openPopOverClass'
+                                      overlayClassName='overClass'
                                       content={
                                         <div>
                                           {BreadCrumbsListArr.slice(0, -2).map(
@@ -3910,17 +3527,15 @@ const DataRoom = () => {
                                                     item,
                                                     index
                                                   )
-                                                }
-                                              >
+                                                }>
                                                 <div
                                                   className={
                                                     styles[
                                                       "breadCrumbsThreeDotsDiv_Row"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   <img src={folderColor} />
-                                                  <p className="m-0">
+                                                  <p className='m-0'>
                                                     {item.name}
                                                   </p>
                                                 </div>
@@ -3929,17 +3544,16 @@ const DataRoom = () => {
                                           )}
                                         </div>
                                       }
-                                      trigger="click"
+                                      trigger='click'
                                       visible={isPopoverVisible}
                                       onVisibleChange={setIsPopoverVisible}
-                                      placement="bottomLeft"
+                                      placement='bottomLeft'
                                       defaultOpen={false}
-                                      showArrow={false}
-                                    >
+                                      showArrow={false}>
                                       <img
                                         src={ThreeDotsBreadCrumbs}
                                         style={{ cursor: "pointer" }}
-                                        alt="More Breadcrumbs"
+                                        alt='More Breadcrumbs'
                                         onClick={togglePopover}
                                       />
                                     </Popover>
@@ -3958,8 +3572,7 @@ const DataRoom = () => {
                                         item,
                                         index
                                       )
-                                    }
-                                  >
+                                    }>
                                     {item.name}
                                   </Breadcrumb.Item>
                                 ))}
@@ -3970,7 +3583,7 @@ const DataRoom = () => {
                       </Row>
                       {currentView === 2 ? (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
                               getAllData !== undefined &&
@@ -3989,7 +3602,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"58vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -3997,14 +3610,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center my-3"
-                                          >
+                                            className='d-flex justify-content-center my-3'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <GridViewDataRoom
                                       data={getAllData}
                                       sRowsData={sRowsData}
@@ -4035,7 +3646,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"58vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -4043,14 +3654,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center my-3"
-                                          >
+                                            className='d-flex justify-content-center my-3'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <TableToDo
                                       sortDirections={["descend", "ascend"]}
                                       column={shareWithmeColoumns}
@@ -4064,48 +3673,43 @@ const DataRoom = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <img
                                         src={EmptyStateSharewithme}
-                                        alt=""
-                                        draggable="false"
+                                        alt=''
+                                        draggable='false'
                                       />
                                     </Col>
                                   </Row>
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
                                         className={
                                           styles["Messege_nofiles_shared"]
-                                        }
-                                      >
+                                        }>
                                         {t("There-are-no-files-shared")}
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-0">
+                                  <Row className='mt-0'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
                                         className={
                                           styles["Messege_nofiles_shared"]
-                                        }
-                                      >
+                                        }>
                                         {t("With-you")}
                                       </span>
                                     </Col>
@@ -4117,7 +3721,7 @@ const DataRoom = () => {
                         </>
                       ) : currentView === 4 ? (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 ? (
                                 <>
@@ -4146,7 +3750,7 @@ const DataRoom = () => {
                                       pagination={false}
                                       locale={{
                                         emptyText: (
-                                          <span className="vh-100 text-center">
+                                          <span className='vh-100 text-center'>
                                             <p>No Recent Data Found</p>
                                           </span>
                                         ),
@@ -4155,18 +3759,16 @@ const DataRoom = () => {
                                     />
                                   ) : (
                                     <>
-                                      <Row className="mt-2">
+                                      <Row className='mt-2'>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className="d-flex justify-content-center h-100 align-items-center"
-                                        >
+                                          className='d-flex justify-content-center h-100 align-items-center'>
                                           <span
                                             className={
                                               styles["Messege_nofiles"]
-                                            }
-                                          >
+                                            }>
                                             {t("There-are-no-items-here")}
                                           </span>
                                         </Col>
@@ -4176,9 +3778,9 @@ const DataRoom = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Row className="text-center mt-4">
+                                  <Row className='text-center mt-4'>
                                     <Col lg={12} sm={12} md={12}>
-                                      <img src={Recentadded_emptyIcon} alt="" />
+                                      <img src={Recentadded_emptyIcon} alt='' />
                                     </Col>
                                     <Col lg={12} sm={12} md={12}>
                                       <p className={styles["Recently_Added"]}>
@@ -4187,8 +3789,7 @@ const DataRoom = () => {
                                       <span
                                         className={
                                           styles["Recently_Added_tagLine"]
-                                        }
-                                      >
+                                        }>
                                         {t(
                                           "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next"
                                         )}
@@ -4204,7 +3805,7 @@ const DataRoom = () => {
                         <ApprovalSend />
                       ) : (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
                               getAllData !== undefined &&
@@ -4223,7 +3824,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"55vh"}
-                                    endMessage=""
+                                    endMessage=''
                                     loader={
                                       getAllData.length <= totalRecords && (
                                         <Row>
@@ -4231,14 +3832,12 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
+                                            className='d-flex justify-content-center mt-2'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       )
-                                    }
-                                  >
+                                    }>
                                     <GridViewDataRoom
                                       data={getAllData}
                                       sRowsData={sRowsData}
@@ -4269,7 +3868,7 @@ const DataRoom = () => {
                                       : true
                                   }
                                   height={"57vh"}
-                                  endMessage=""
+                                  endMessage=''
                                   loader={
                                     getAllData.length <= totalRecords && (
                                       <>
@@ -4278,16 +3877,14 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
+                                            className='d-flex justify-content-center mt-2'>
                                             <Spin indicator={antIcon} />
                                           </Col>
                                         </Row>
                                       </>
                                     )
                                   }
-                                  scrollableTarget="scrollableDiv"
-                                >
+                                  scrollableTarget='scrollableDiv'>
                                   <TableToDo
                                     column={MyDocumentsColumns}
                                     className={"DataRoom_Table"}
@@ -4299,42 +3896,37 @@ const DataRoom = () => {
                                 </InfiniteScroll>
                               ) : (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
-                                        className={styles["Messege_nofiles"]}
-                                      >
+                                        className={styles["Messege_nofiles"]}>
                                         {t("There-are-no-items-here")}
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-3">
+                                  <Row className='mt-3'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <span
-                                        className={styles["Tag_line_nofiles"]}
-                                      >
+                                        className={styles["Tag_line_nofiles"]}>
                                         {t("Start-adding-your-documents")}
                                       </span>
                                     </Col>
                                   </Row>
                                   {/* Dragger Uploader */}
-                                  <Row className="mt-4">
+                                  <Row className='mt-4'>
                                     <Col
                                       lg={12}
                                       md={12}
                                       sm={12}
-                                      className="d-flex justify-content-center"
-                                    >
+                                      className='d-flex justify-content-center'>
                                       <Dragger
                                         setProgress={setProgress}
                                         className={
@@ -4346,9 +3938,9 @@ const DataRoom = () => {
                                         Icon={
                                           <img
                                             src={DrapDropIcon}
-                                            heigh="356.89"
-                                            width="356.89"
-                                            alt=""
+                                            heigh='356.89'
+                                            width='356.89'
+                                            alt=''
                                           />
                                         }
                                       />

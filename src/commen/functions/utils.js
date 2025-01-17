@@ -527,7 +527,7 @@ const NewfileFormatforSignatureFlow = [
   "ods",
   "odp",
   "wpf",
-
+  "txt",
   // Image Formats
   "bmp",
   "wmf",
