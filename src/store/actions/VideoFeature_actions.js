@@ -1225,13 +1225,29 @@ const clearMessegesVideoFeature = (response) => {
   };
 };
 
-// For Start and Stop Presenter View
-// const startOrStopPresenterGlobal = (response) => {
-//   return {
-//     type: actions.START_OR_STOP_PRESENTER_STATE,
-//     response: response,
-//   };
-// };
+// For Start Presenter View Global Func
+const startPresenterGlobal = (response) => {
+  return {
+    type: actions.START_PRESENTER_GLOBAL_STATE,
+    response: response,
+  };
+};
+
+// For Start Presenter View Global Func
+const stopPresenterGlobal = (response) => {
+  return {
+    type: actions.STOP_PRESENTER_GLOBAL_STATE,
+    response: response,
+  };
+};
+
+// For Minimize State Of Presenter View
+const minimizePresenterGlobalState = (response) => {
+  return {
+    type: actions.MINIMIZE_PRESENETER_STATE,
+    response: response,
+  };
+};
 
 export {
   participantAcceptandReject,
@@ -1311,5 +1327,7 @@ export {
   videoIconOrButtonState,
   participantVideoButtonState,
   clearMessegesVideoFeature,
-  // startOrStopPresenterGlobal,
+  startPresenterGlobal,
+  stopPresenterGlobal,
+  minimizePresenterGlobalState,
 };

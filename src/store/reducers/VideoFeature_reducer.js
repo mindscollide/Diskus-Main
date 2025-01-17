@@ -79,7 +79,9 @@ const initialState = {
   leaveMeetingVideoOnEndStatusMqttFlag: false,
   enableDisableVideoState: false,
   participantEnableVideoState: false,
-  // startOrStopPresenter: false,
+  startPresenterReducer: false,
+  stopPresenterReducer: false,
+  minimizePresenterReducer: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -956,12 +958,26 @@ const videoFeatureReducer = (state = initialState, action) => {
         leaveMeetingOnLogoutResponse: action.response,
       };
 
-    // Start and Stop Presenter View State
-    // case actions.START_OR_STOP_PRESENTER_STATE:
-    //   return {
-    //     ...state,
-    //     startOrStopPresenter: action.response,
-    //   };
+    // Start Presenter View Reducer
+    case actions.START_PRESENTER_GLOBAL_STATE:
+      return {
+        ...state,
+        startPresenterReducer: action.response,
+      };
+
+    // Stop Presenter View Reducer
+    case actions.STOP_PRESENTER_GLOBAL_STATE:
+      return {
+        ...state,
+        stopPresenterReducer: action.response,
+      };
+
+    // Minimize Presenter View Reducer
+    case actions.MINIMIZE_PRESENETER_STATE:
+      return {
+        ...state,
+        minimizePresenterReducer: action.response,
+      };
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
       return {

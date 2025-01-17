@@ -1,0 +1,56 @@
+.Presenter-main-class {
+  position: fixed;
+  bottom: 0 !important;
+  left: 65px !important;
+  height: calc(100vh - 78px) !important;
+  width: 90%;
+  z-index: 9999;
+  border: 2px solid #4adede !important;
+  border-radius: 4px !important;
+  background-color: #fff;
+  padding: 2px 20px;
+}
+
+.presenter-minimize-class {
+  position: fixed;
+  bottom: 0 !important;
+  left: 65px !important;
+  height: 9vh !important;
+  width: 70%;
+  z-index: 9999;
+  border: 2px solid #4adede !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  padding: 2px 20px;
+}
+
+.Presenter-Title {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+}
+
+.Presenter-Title-Minimize {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.Presenter-Images {
+  display: flex;
+  justify-content: end !important;
+  align-items: center !important;
+  gap: 25px !important;
+}
+
+.iframe-class-presenter {
+  background-color: #5a5a5a;
+  border-radius: 8px !important;
+  height: 79vh;
+}
+
+.presenter-img-cursor {
+  cursor: pointer;
+}

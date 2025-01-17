@@ -184,6 +184,7 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import PresenterMeetingView from "../pages/meeting/PresenterMeetingView/PresenterMeetingView";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -269,6 +270,13 @@ const Dashboard = () => {
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
+
+  // start Presenter View Reducer to open Presenter Header component
+  const startPresenterReducer = useSelector(
+    (state) => state.videoFeatureReducer.startPresenterReducer
+  );
+
+  console.log(startPresenterReducer, "startPresenterReducer");
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
@@ -3124,6 +3132,8 @@ const Dashboard = () => {
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />
           )}
+
+          {startPresenterReducer && <PresenterMeetingView />}
         </Layout>
       </ConfigProvider>
     </>
