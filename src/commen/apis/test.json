@@ -1,39 +1,19 @@
 {
-  "MeetingID": 4905,
-  "MeetingTitle": "saif Deleting scenarios",
-  "MeetingDescription": "saif Deleting scenarios",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20250117",
-  "OrganizationId": 561,
-  "MeetingStartTime": "080000",
-  "MeetingEndTime": "080000",
-  "MeetingLocation": "saif Deleting scenarios update",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [1],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 5264,
-        "Title": "",
-        "PresenterName": "",
-        "URLs": "",
-        "FK_MDID": 4905
-      },
-      "MeetingAgendaAttachments": []
-    }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 1351 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 1353 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  "ListOfEmailAddresses": ["saifiiyousuf4002@gmail.com"],
+  "Messege": "test",
+  "isNotify": false,
+  "sendViaDataRoom": false,
+  "BoarddeckFileParams": {
+    "PK_MDID": 4912,
+    "fetchOrganizers": true,
+    "fetchAgendaContributors": false,
+    "fetchParticipants": true,
+    "fetchMinutes": true,
+    "fetchTasks": true,
+    "fetchPolls": false,
+    "fetchAttendance": true,
+    "fetchVideo": true,
+    "fetchAgendaWithAttachments": true,
+    "fetchAgendaWithoutAttachments": true
+  }
 }
