@@ -398,7 +398,7 @@ const AgendaContributers = ({
             </Row>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col
             lg={12}
             md={12}
@@ -416,7 +416,7 @@ const AgendaContributers = ({
               onClick={handleNextBtn}
             />
           </Col>
-        </Row>
+        </Row> */}
       </section>
       {cancelModalView && (
         <CancelButtonModal

@@ -517,7 +517,7 @@ const Organizers = ({
           </Col>
         </Row>
 
-        <Row>
+        {/* <Row>
           <Col lg={12} md={12} sm={12}>
             <section className={styles["Footer_button"]}>
               <Button
@@ -533,7 +533,7 @@ const Organizers = ({
               />
             </section>
           </Col>
-        </Row>
+        </Row> */}
       </section>
 
       <Notification open={open} setOpen={setOpen} />

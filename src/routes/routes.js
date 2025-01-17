@@ -84,50 +84,118 @@ export const router = createHashRouter(
     <>
       {/* Video Meeting Route */}
       <Route element={<PrivateVideoMeeting />}>
-        <Route path='/Diskus/video' element={<VideoMeetingBoardDeck />} />
+        <Route
+          path='/Diskus/video'
+          element={
+            <ErrorBoundary
+              FallbackComponent={ErrorFallback}
+              onError={logErrors}>
+              <VideoMeetingBoardDeck />
+            </ErrorBoundary>
+          }
+        />
       </Route>
-      <Route path='/GuestVideoCall' element={<GuestVideoCall />} />
+      <Route
+        path='/GuestVideoCall'
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <GuestVideoCall />
+          </ErrorBoundary>
+        }
+      />
       {/* for all login Routes  */}
-      <Route path='/' element={<UserManagementProcess />} />
+      <Route
+        path='/'
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <UserManagementProcess />
+          </ErrorBoundary>
+        }
+      />
       {/* For All Signup Route */}
-      <Route path='/Signup' element={<SignupProcessUserManagement />} />
+      <Route
+        path='/Signup'
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <SignupProcessUserManagement />{" "}
+          </ErrorBoundary>
+        }
+      />
       {/* ============================================================ */}
       <Route
         path='/PakageDetailsUserManagement'
-        element={<PakageDetailsUserManagement />}
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <PakageDetailsUserManagement />{" "}
+          </ErrorBoundary>
+        }
       />
       {/* <Route path="/signuporganization" element={<Signup />} /> */}
       <Route
         path='/forgotpasswordVerification'
-        element={<ForgotPasswordVerification />}
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <ForgotPasswordVerification />{" "}
+          </ErrorBoundary>
+        }
       />
-      <Route path='/updatepassword' element={<UpdatePasswordSuccessfully />} />
+      <Route
+        path='/updatepassword'
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <UpdatePasswordSuccessfully />{" "}
+          </ErrorBoundary>
+        }
+      />
       Ï
       <Route
         path='/PaymentFormUserManagement'
-        element={<BillingMethodUsermanagement />}
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <BillingMethodUsermanagement />
+          </ErrorBoundary>
+        }
       />
       <Route
         path='/updatePasswordSuccess'
-        element={<PasswordUpdateMessage />}
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <PasswordUpdateMessage />{" "}
+          </ErrorBoundary>
+        }
       />
       <Route path='/404' element={<NotFound />} />
       <Route path='*' element={<NotFound />} />
-      <Route path='/onboard' element={<OnBoard />} />
+      <Route
+        path='/onboard'
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <OnBoard />{" "}
+          </ErrorBoundary>
+        }
+      />
       {/* ============================================================ */}
       <Route element={<PrivateRoutes />}>
         <Route
           path='/Diskus/'
           element={
             <RouteWrapperUser name='Diskus'>
-              <Dashboard />
+              <ErrorBoundary
+                FallbackComponent={ErrorFallback}
+                onError={logErrors}>
+                <Dashboard />
+              </ErrorBoundary>
             </RouteWrapperUser>
           }>
           <Route
             path=''
             element={
               <RouteWrapperUser name=''>
-                <NewDashobard />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <NewDashobard />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -135,7 +203,11 @@ export const router = createHashRouter(
             path='Minutes'
             element={
               <RouteWrapperUser name='Minutes'>
-                <MinutesFlow />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <MinutesFlow />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -143,7 +215,11 @@ export const router = createHashRouter(
             path='home'
             element={
               <RouteWrapperUser name='home'>
-                <NewDashobard />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <NewDashobard />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -152,7 +228,11 @@ export const router = createHashRouter(
             path='todolist'
             element={
               <RouteWrapperUser name='todolist'>
-                <TodoList />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <TodoList />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -160,7 +240,11 @@ export const router = createHashRouter(
             path='documentViewer'
             element={
               <RouteWrapperUser name='documentViewer'>
-                <DocumentViewer />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <DocumentViewer />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -169,7 +253,11 @@ export const router = createHashRouter(
             path='signatureviewer'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <SignatureViewer />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <SignatureViewer />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -177,7 +265,11 @@ export const router = createHashRouter(
             path='signeddocument'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <PendingSignature />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PendingSignature />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -185,7 +277,11 @@ export const router = createHashRouter(
             path='viewSignDocument'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <ViewSignatureDocument />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <ViewSignatureDocument />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -194,7 +290,11 @@ export const router = createHashRouter(
             path='calendar'
             element={
               <RouteWrapperUser name='calendar'>
-                <CalendarPage />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CalendarPage />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -202,7 +302,11 @@ export const router = createHashRouter(
             path='Meeting'
             element={
               <RouteWrapperUser name='Meeting'>
-                <NewMeeting />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <NewMeeting />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -210,7 +314,11 @@ export const router = createHashRouter(
             path='Meeting/Useravailabilityformeeting'
             element={
               <RouteWrapperUser name='Meeting'>
-                <RSVP />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <RSVP />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -218,7 +326,11 @@ export const router = createHashRouter(
             path='setting'
             element={
               <RouteWrapperUser name='setting'>
-                <UserSettings />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <UserSettings />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -226,7 +338,11 @@ export const router = createHashRouter(
             path="faq's"
             element={
               <RouteWrapperUser name="faq's">
-                <CustomMiscellaneous />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CustomMiscellaneous />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -234,7 +350,11 @@ export const router = createHashRouter(
             path='groups'
             element={
               <RouteWrapperUser name='groups'>
-                <Groups />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Groups />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -242,7 +362,11 @@ export const router = createHashRouter(
             path='changePassword'
             element={
               <RouteWrapperUser name='changePassword'>
-                <ChangePassword />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <ChangePassword />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -250,7 +374,11 @@ export const router = createHashRouter(
             path='notes'
             element={
               <RouteWrapperUser name='notes'>
-                <Notes />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Notes />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -258,7 +386,11 @@ export const router = createHashRouter(
             path='committee'
             element={
               <RouteWrapperUser name='committee'>
-                <Committee />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Committee />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -266,7 +398,11 @@ export const router = createHashRouter(
             path='resolution'
             element={
               <RouteWrapperUser name='resolution'>
-                <Resolution />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Resolution />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -274,7 +410,9 @@ export const router = createHashRouter(
             path='dataroom'
             element={
               <RouteWrapperUser name='dataroom'>
-                <ErrorBoundary fallback={ErrorFallback} onError={logErrors}>
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
                   <DataRoom />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -284,7 +422,11 @@ export const router = createHashRouter(
             path='polling'
             element={
               <RouteWrapperUser name='polling'>
-                <Polling />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Polling />
+                </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
@@ -296,14 +438,22 @@ export const router = createHashRouter(
           path='/Admin/'
           element={
             <RouteWrapperAdmin name='Admin'>
-              <AdminHome />
+              <ErrorBoundary
+                FallbackComponent={ErrorFallback}
+                onError={logErrors}>
+                <AdminHome />
+              </ErrorBoundary>
             </RouteWrapperAdmin>
           }>
           <Route
             path=''
             element={
               <RouteWrapperAdmin name='Admin'>
-                {roleRoute ? <PayOutstanding /> : <ManageUsers />}
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  {roleRoute ? <PayOutstanding /> : <ManageUsers />}
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -311,7 +461,11 @@ export const router = createHashRouter(
             path='PaymentFormUserManagement'
             element={
               <RouteWrapperAdmin name='PaymentFormUserManagement'>
-                <BillingMethodUsermanagement />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <BillingMethodUsermanagement />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -321,7 +475,11 @@ export const router = createHashRouter(
             path='PakageDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='PakageDetailsUserManagement'>
-                <PakageDetailsUserManagement />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PakageDetailsUserManagement />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -329,7 +487,11 @@ export const router = createHashRouter(
             path='loginreport'
             element={
               <RouteWrapperAdmin name='loginreport'>
-                <Reports />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Reports />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -337,7 +499,11 @@ export const router = createHashRouter(
             path='PackageDetailUMupgrade'
             element={
               <RouteWrapperAdmin name='PackageDetailUMupgrade'>
-                <PakageDetailsUMUpgrade />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PakageDetailsUMUpgrade />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -346,7 +512,11 @@ export const router = createHashRouter(
             path='AddUsers'
             element={
               <RouteWrapperAdmin name='AddUsers'>
-                <AddUsers />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <AddUsers />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -354,7 +524,11 @@ export const router = createHashRouter(
             path='ManageUsers'
             element={
               <RouteWrapperAdmin name='ManageUsers'>
-                <ManageUsers />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <ManageUsers />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -362,7 +536,11 @@ export const router = createHashRouter(
             path='UserLevelConfigUM'
             element={
               <RouteWrapperAdmin name='UserLevelConfigUM'>
-                <UserLevelConfigUM />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <UserLevelConfigUM />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -370,7 +548,11 @@ export const router = createHashRouter(
             path='AddUsersUsermanagement'
             element={
               <RouteWrapperAdmin name='AddUsersUsermanagement'>
-                <AddUserMain />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <AddUserMain />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -378,7 +560,11 @@ export const router = createHashRouter(
             path='PayOutstanding'
             element={
               <RouteWrapperAdmin name='PayOutstanding'>
-                <PayOutstanding />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PayOutstanding />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -386,7 +572,11 @@ export const router = createHashRouter(
             path='PaymentHistory'
             element={
               <RouteWrapperAdmin name='PaymentHistory'>
-                <PaymentHistory />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PaymentHistory />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -394,7 +584,11 @@ export const router = createHashRouter(
             path='PaymentHistoryusermanagement'
             element={
               <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
-                <PaymentMethodBillInfo />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PaymentMethodBillInfo />
+                </ErrorBoundary>{" "}
               </RouteWrapperAdmin>
             }
           />
@@ -402,7 +596,11 @@ export const router = createHashRouter(
             path='Summary'
             element={
               <RouteWrapperAdmin name='Summary'>
-                <Summary />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <Summary />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -410,7 +608,11 @@ export const router = createHashRouter(
             path='OrganizationlevelConfigUM'
             element={
               <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
-                <OrganizationLevelConfigUM />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <OrganizationLevelConfigUM />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -418,7 +620,11 @@ export const router = createHashRouter(
             path='AllMeeting'
             element={
               <RouteWrapperAdmin name='AllMeeting'>
-                <AllMeetings />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <AllMeetings />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -426,7 +632,11 @@ export const router = createHashRouter(
             path='CancelSub'
             element={
               <RouteWrapperAdmin name='CancelSub'>
-                <CancelSubs />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CancelSubs />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -434,7 +644,11 @@ export const router = createHashRouter(
             path='CancelSubscriptionUserManagement'
             element={
               <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
-                <CancelSubscriptionAdmin />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CancelSubscriptionAdmin />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -442,7 +656,11 @@ export const router = createHashRouter(
             path='PackageDetail'
             element={
               <RouteWrapperAdmin name='PackageDetail'>
-                <PackageDetails />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PackageDetails />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -450,7 +668,11 @@ export const router = createHashRouter(
             path='PackageDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='PackageDetailsUserManagement'>
-                <PakageDetailsAdmin />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PakageDetailsAdmin />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -458,7 +680,11 @@ export const router = createHashRouter(
             path='subscriptionDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
-                <SubscriptionDetailsUserManagement />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <SubscriptionDetailsUserManagement />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -466,7 +692,11 @@ export const router = createHashRouter(
             path='downgradeSubscription'
             element={
               <RouteWrapperAdmin name='downgradeSubscription'>
-                <DowngradeSubscription />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <DowngradeSubscription />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -474,7 +704,11 @@ export const router = createHashRouter(
             path='updatedCancelSubscription'
             element={
               <RouteWrapperAdmin name='updatedCancelSubscription'>
-                <UpdatedCancelSubscription />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <UpdatedCancelSubscription />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -482,7 +716,11 @@ export const router = createHashRouter(
             path='EmptyState'
             element={
               <RouteWrapperAdmin name='EmptyState'>
-                <EmptyState />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <EmptyState />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -490,7 +728,11 @@ export const router = createHashRouter(
             path='UpgradePackage'
             element={
               <RouteWrapperAdmin name='UpgradePackage'>
-                <PackageUpgrade />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PackageUpgrade />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -498,7 +740,11 @@ export const router = createHashRouter(
             path='changePassword'
             element={
               <RouteWrapperAdmin name='changePassword'>
-                <ChangePassword />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <ChangePassword />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -506,7 +752,11 @@ export const router = createHashRouter(
             path="faq's"
             element={
               <RouteWrapperAdmin name="faq's">
-                <CustomMiscellaneous />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CustomMiscellaneous />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -514,7 +764,11 @@ export const router = createHashRouter(
             path='deleteorganization'
             element={
               <RouteWrapperAdmin name='deleteorganization'>
-                <DeleteOrganization />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <DeleteOrganization />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -522,7 +776,11 @@ export const router = createHashRouter(
             path='deleteorganizationUserMangement'
             element={
               <RouteWrapperAdmin name='deleteorganizationUserMangement'>
-                <DeleteOrganizationAdmin />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <DeleteOrganizationAdmin />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -530,7 +788,11 @@ export const router = createHashRouter(
             path='paymentForm'
             element={
               <RouteWrapperAdmin name='paymentForm'>
-                <PaymentForm2 />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PaymentForm2 />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -538,7 +800,11 @@ export const router = createHashRouter(
             path='UpgradePackageDetail'
             element={
               <RouteWrapperAdmin name='UpgradePackageDetail'>
-                <PackageUpgradeDetail />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PackageUpgradeDetail />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -546,7 +812,11 @@ export const router = createHashRouter(
             path='UpgradePackageSelect'
             element={
               <RouteWrapperAdmin name='UpgradePackageSelect'>
-                <PackageUpgradeSelect />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <PackageUpgradeSelect />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -554,7 +824,11 @@ export const router = createHashRouter(
             path='CustomerInformation'
             element={
               <RouteWrapperAdmin name='CustomerInformation'>
-                <CustomerInformation />
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}>
+                  <CustomerInformation />
+                </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />

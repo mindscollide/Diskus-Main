@@ -1003,7 +1003,7 @@ const ViewMeetingDetails = ({
             </Row>
           </Col>
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <Col
             lg={12}
             md={12}
@@ -1021,7 +1021,7 @@ const ViewMeetingDetails = ({
               onClick={handleUpdateNext}
             />
           </Col>
-        </Row>
+        </Row> */}
         {
           <EndMeetingConfirmationModal
             handleClickContinue={handleClickEndMeeting}
