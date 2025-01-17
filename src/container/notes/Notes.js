@@ -401,13 +401,84 @@ const Notes = () => {
   };
 
   const handleMainSearchModal = () => {
-    setSearchnotes(false);
-    setsearchBoxState({
-      ...searchBoxState,
-      searchByTitle: "",
-      Date: "",
-      DateView: "",
-    });
+    if (
+      searchBoxState.searchByTitle !== "" ||
+      searchBoxState.Date !== "" ||
+      searchBoxState.DateView !== ""
+    ) {
+      setSearchnotes(false);
+
+      setsearchBoxState({
+        ...searchBoxState,
+        searchByTitle: "",
+        Date: "",
+        DateView: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+      });
+
+      setSearchResultFields((prevState) => ({
+        ...prevState,
+        Type: null,
+      }));
+
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isImages: false,
+        isPDF: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        CreatedDate: "",
+        PageNumber: 1,
+        Length: 50,
+      };
+
+      dispatch(GetNotes(navigate, Data, t));
+    } else {
+      setSearchnotes(false);
+      setsearchBoxState({
+        ...searchBoxState,
+        searchByTitle: "",
+        Date: "",
+        DateView: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+      });
+
+      setsearchBoxState({
+        ...searchBoxState,
+        searchByTitle: "",
+        Date: "",
+        DateView: "",
+      });
+      setSearchResultFields((prevState) => ({
+        ...prevState,
+        Type: null,
+      }));
+    }
   };
 
   //Search Date Picker OnChange

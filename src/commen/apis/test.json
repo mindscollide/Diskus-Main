@@ -1,85 +1,38 @@
 {
-  "MeetingID": 4871,
-  "MeetingTitle": "Quick Meeting @ Jan 31, 2025 01-00-00",
-  "MeetingDescription": "",
+  "MeetingID": 4905,
+  "MeetingTitle": "saif Deleting scenarios",
+  "MeetingDescription": "saif Deleting scenarios",
   "MeetingTypeID": 0,
-  "MeetingDate": "20250131",
-  "OrganizationId": 589,
+  "MeetingDate": "20250117",
+  "OrganizationId": 561,
   "MeetingStartTime": "080000",
   "MeetingEndTime": "080000",
-  "MeetingLocation": "",
+  "MeetingLocation": "saif Deleting scenarios update",
   "IsVideoCall": false,
   "IsChat": false,
   "MeetingReminderID": [1],
   "MeetingAgendas": [
     {
       "ObjMeetingAgenda": {
-        "PK_MAID": 5199,
-        "Title": "Earum nihil dolore aliquam veritatis sit saepe consequatur magni consectetur",
-        "PresenterName": "Member III",
-        "URLs": "Rerum officia conseq",
-        "FK_MDID": 4871
-      },
-      "MeetingAgendaAttachments": [
-        {
-          "DisplayAttachmentName": "New-Translation-Arabic.txt",
-          "OriginalAttachmentName": "4548"
-        }
-      ]
-    },
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 5200,
-        "Title": "Quia eos cillum praesentium voluptas sed",
-        "PresenterName": "New Ali Organization Admin",
-        "URLs": "Nemo incididunt sint",
-        "FK_MDID": 4871
-      },
-      "MeetingAgendaAttachments": [
-        {
-          "DisplayAttachmentName": "ScriptsByMehdee_25-09-2024 (1).txt",
-          "OriginalAttachmentName": "4549"
-        }
-      ]
-    },
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": -789,
-        "Title": "new agenda 2",
-        "PresenterName": "Member II",
+        "PK_MAID": 5264,
+        "Title": "",
+        "PresenterName": "",
         "URLs": "",
-        "FK_MDID": 4871
+        "FK_MDID": 4905
       },
-      "MeetingAgendaAttachments": [
-        {
-          "DisplayAttachmentName": "BOP Input fields limit.docx",
-          "OriginalAttachmentName": "4550"
-        }
-      ]
+      "MeetingAgendaAttachments": []
     }
   ],
   "MeetingAttendees": [
     {
-      "User": {
-        "PK_UID": 1421
-      },
-      "MeetingAttendeeRole": {
-        "PK_MARID": 1
-      },
-      "AttendeeAvailability": {
-        "PK_AAID": 1
-      }
+      "User": { "PK_UID": 1351 },
+      "MeetingAttendeeRole": { "PK_MARID": 1 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
     },
     {
-      "User": {
-        "PK_UID": 1422
-      },
-      "MeetingAttendeeRole": {
-        "PK_MARID": 2
-      },
-      "AttendeeAvailability": {
-        "PK_AAID": 1
-      }
+      "User": { "PK_UID": 1353 },
+      "MeetingAttendeeRole": { "PK_MARID": 2 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
     }
   ],
   "ExternalMeetingAttendees": []
