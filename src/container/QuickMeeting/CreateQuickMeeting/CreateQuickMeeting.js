@@ -1838,6 +1838,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const handleCloseUpdateMeeting = () => {
     setShow(false);
   };
+
   const handleChangePresenter = (value) => {
     setPresenterValue(value);
     setObjMeetingAgenda({
@@ -1882,7 +1883,6 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     );
   };
 
-  console.log(createMeeting, attachments, "createMeetingcreateMeeting");
   return (
     <>
       <Modal
