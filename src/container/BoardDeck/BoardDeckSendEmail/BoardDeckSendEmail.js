@@ -144,9 +144,8 @@ const BoardDeckSendEmail = ({
             fetchPolls: boarddeckOptions.polls,
             fetchAttendance: boarddeckOptions.attendeceReport,
             fetchVideo: boarddeckOptions.video,
-            fetchAgenda: boarddeckOptions.Agenda,
             fetchAgendaWithAttachments: boarddeckOptions.Agenda,
-            fetchAdvanceMeetingDetails: true,
+            fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
         console.log(data, "datadatadatadatadata");
@@ -169,9 +168,8 @@ const BoardDeckSendEmail = ({
             fetchPolls: boarddeckOptions.polls,
             fetchAttendance: boarddeckOptions.attendeceReport,
             fetchVideo: boarddeckOptions.video,
-            fetchAgenda: boarddeckOptions.Agenda,
             fetchAgendaWithAttachments: boarddeckOptions.Agenda,
-            fetchAdvanceMeetingDetails: true,
+            fetchAgendaWithoutAttachments: boarddeckOptions.Agenda,
           },
         };
         console.log(data, "datadatadatadatadata");
@@ -217,15 +215,16 @@ const BoardDeckSendEmail = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
                         // src={}
-                        alt=''
+                        alt=""
                         className={styles["UserProfilepic"]}
-                        width='18px'
-                        height='18px'
-                        draggable='false'
+                        width="18px"
+                        height="18px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -260,14 +259,14 @@ const BoardDeckSendEmail = ({
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className='position-relative'>
+              <Col lg={12} md={12} sm={12} className="position-relative">
                 <p className={styles["FileModalTitle"]}>
                   {t("Board-deck")} - {boardDeckMeetingTitle}
                 </p>
                 <i
                   className={styles["image-close"]}
                   src={crossIcon}
-                  alt=''
+                  alt=""
                   onClick={handleBlackCrossIcon}
                 />
               </Col>
@@ -278,8 +277,8 @@ const BoardDeckSendEmail = ({
           <>
             {radioValue === 1 ? (
               <>
-                <Row className='m-0'>
-                  <Col className='p-0'>
+                <Row className="m-0">
+                  <Col className="p-0">
                     <p className={`${styles["organizationUsers"]} m-0`}>
                       {t("Select-organization-users")}
                     </p>
@@ -305,8 +304,8 @@ const BoardDeckSendEmail = ({
 
             {radioValue === 2 ? (
               <>
-                <Row className='m-0'>
-                  <Col className='p-0'>
+                <Row className="m-0">
+                  <Col className="p-0">
                     <p className={`${styles["NonOrganizationUsers"]} m-0`}>
                       {t("Select-non-organization-users")}
                     </p>
@@ -319,20 +318,22 @@ const BoardDeckSendEmail = ({
                         tags.length <= 4
                           ? styles["tags-input-container"]
                           : styles["tags-input-containerr"]
-                      }>
+                      }
+                    >
                       {tags.map((tag, index) => (
                         <div className={styles["tag-item"]} key={index}>
                           <span className={styles["text"]}>{tag}</span>
                           <span
                             className={styles["close"]}
-                            onClick={() => removeTag(index)}>
-                            <img src={CrossEmail} alt='' />
+                            onClick={() => removeTag(index)}
+                          >
+                            <img src={CrossEmail} alt="" />
                           </span>
                         </div>
                       ))}
                       <input
                         onChange={handleInputChange}
-                        type='text'
+                        type="text"
                         className={styles["tags-input"]}
                       />
                     </div>
@@ -341,8 +342,8 @@ const BoardDeckSendEmail = ({
               </>
             ) : null}
 
-            <Row className='m-0'>
-              <Col className='p-0'>
+            <Row className="m-0">
+              <Col className="p-0">
                 <p className={`${styles["NonOrganizationUsers"]} m-0`}>
                   {t("Message-optional")}
                 </p>
@@ -353,28 +354,30 @@ const BoardDeckSendEmail = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["text-area-organizer"]}>
+                className={styles["text-area-organizer"]}
+              >
                 <TextField
-                  applyClass='text-area-create-Notify-organizors'
-                  type='text'
+                  applyClass="text-area-create-Notify-organizors"
+                  type="text"
                   as={"textarea"}
-                  rows='4'
+                  rows="4"
                   placeholder={t("Message")}
                   change={HandleChange}
                   value={notificationMessage}
                   required={true}
-                  name='Message'
+                  name="Message"
                   maxLength={500}
                 />
               </Col>
             </Row>
             {radioValue === 1 ? (
               <>
-                <Row className='mt-3'>
+                <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <Checkbox
                       onChange={onChangenotifyPeople}
-                      checked={notifyPeople.notifyPeople}>
+                      checked={notifyPeople.notifyPeople}
+                    >
                       <span className={styles["Class_CheckBox_notify_people"]}>
                         {t("Notify-people")}
                       </span>
@@ -392,7 +395,8 @@ const BoardDeckSendEmail = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end'>
+                className="d-flex justify-content-end"
+              >
                 <Button
                   text={t("Send")}
                   className={styles["Send_Notify"]}

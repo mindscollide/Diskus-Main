@@ -1924,7 +1924,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle.slice(0, 30)
               ),
             });
           }
