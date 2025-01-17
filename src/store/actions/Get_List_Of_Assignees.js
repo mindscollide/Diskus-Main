@@ -24,6 +24,8 @@ import {
   getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
+import { CreateUpdateMeetingDataRoomMap } from "./MeetingAgenda_action";
+import { generateRandomPositiveId } from "../../commen/functions/utils";
 
 const meetingLoaderDashboard = (payload) => {
   return {
@@ -142,7 +144,7 @@ const allAssignessList = (navigate, t, loader) => {
 
 const SetLoaderFalse = () => {
   return {
-    type: actions.SET_LOADER_FALSE,
+    type: actions.SET_LOADER_FALSE_GETLISTOFASSIGNEES,
   };
 };
 
@@ -160,7 +162,7 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
+const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
 
@@ -181,7 +183,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
+          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, setShow));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -191,44 +193,64 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
-              await dispatch(SetLoaderFalse(false));
-              dispatch(meetingLoaderDashboard(false));
-              if (checkFlag === 2) {
-                await dispatch(getCalendarDataResponse(navigate, t, createrID));
-              } else if (checkFlag === 4) {
-                let meetingpageRow =
-                  localStorage.getItem("MeetingPageRows") || 30;
-                let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent") || 1;
-                let currentView = localStorage.getItem("MeetingCurrentView");
-
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
-                  PublishedMeetings:
-                    currentView && Number(currentView) === 1 ? true : false,
-                };
-                console.log("chek search meeting");
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              } else if (checkFlag === 6) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
-                let Data = {
+              dispatch(SetLoaderFalse());
+              try {
+                let MappedData = {
                   MeetingID: Number(response.data.responseResult.mdid),
-                  CommitteeID: Number(ViewCommitteeID),
+                  MeetingTitle: object.MeetingTitle,
+                  IsUpdateFlow: false,
                 };
-                dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
-              } else if (checkFlag === 7) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  MeetingID: Number(response.data.responseResult.mdid),
-                  GroupID: Number(ViewGroupID),
-                };
-                dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+                if (
+                  response.data.responseResult?.agendaMappings !== null &&
+                  response.data.responseResult?.agendaMappings?.length > 0
+                ) {
+                  let newAgendas = {
+                    MeetingID: response.data.responseResult.mdid, // Meeting ID remains the same for all agendas
+                    UpdateFileList: object.MeetingAgendas.map((doc) => {
+                      const mainMatch =
+                        response.data.responseResult.agendaMappings.find(
+                          (item) =>
+                            item.oldPK_MAID === doc.ObjMeetingAgenda.PK_MAID
+                        );
+                      // Only include agendas with attachments
+                      if (doc.MeetingAgendaAttachments.length > 0) {
+                        const AgendaID = String(mainMatch.newPK_MAID);
+                        const FileIds = doc.MeetingAgendaAttachments.map(
+                          (file) => ({
+                            PK_FileID: Number(file.OriginalAttachmentName),
+                          })
+                        );
+
+                        return { AgendaID, FileIds };
+                      }
+
+                      return null; // Return null for agendas without attachments
+                    }).filter((agenda) => agenda !== null), // Remove null entries
+                  };
+
+                  // Extract all OriginalAttachmentName values as numbers
+                  const attachmentIds = object.MeetingAgendas.flatMap(
+                    (agenda) =>
+                      agenda.MeetingAgendaAttachments.map((attachment) =>
+                        Number(attachment.OriginalAttachmentName)
+                      )
+                  );
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMap(
+                      navigate,
+                      t,
+                      MappedData,
+                      attachmentIds,
+                      newAgendas,
+                      checkFlag,
+                      setShow
+                    )
+                  );
+                }
+                // dispatch(meetingLoaderDashboard(false));
+              } catch (error) {
+                dispatch(meetingLoaderDashboard(false));
+                throw new Error(error);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -267,7 +289,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
+const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
@@ -286,7 +308,9 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
+          dispatch(
+            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -296,50 +320,124 @@ const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
-              if (checkFlag === 4) {
-                let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent") || 1;
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
-                  PublishedMeetings: true,
+              await dispatch(SetLoaderFalse());
+              try {
+                let MappedData = {
+                  MeetingID: Number(object.MeetingID),
+                  MeetingTitle: object.MeetingTitle,
+                  IsUpdateFlow: true,
                 };
-                console.log("chek search meeting");
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              } else if (checkFlag === 7) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  GroupID: Number(ViewGroupID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingbyGroupApi(navigate, t, Data));
-              } else if (checkFlag === 6) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                let Data = {
-                  CommitteeID: Number(ViewCommitteeID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+
+                if (
+                  response.data.responseResult?.agendaIdMappings !== null &&
+                  response.data.responseResult?.agendaIdMappings?.length > 0
+                ) {
+                  const newAgendas = {
+                    MeetingID: Number(object.MeetingID), // Meeting ID remains the same for all agendas
+                    UpdateFileList: object.MeetingAgendas.map((doc) => {
+                      const mainMatch =
+                        response.data.responseResult.agendaIdMappings.find(
+                          (item) => item.oldId === doc.ObjMeetingAgenda.PK_MAID
+                        );
+
+                      // Only include agendas with attachments
+                      if (doc.MeetingAgendaAttachments.length > 0) {
+                        const AgendaID = String(
+                          mainMatch
+                            ? mainMatch.newId
+                            : doc.ObjMeetingAgenda.PK_MAID
+                        );
+                        const FileIds = doc.MeetingAgendaAttachments.map(
+                          (file) => ({
+                            PK_FileID: Number(file.OriginalAttachmentName),
+                          })
+                        );
+
+                        return { AgendaID, FileIds };
+                      }
+
+                      return null; // Return null for agendas without attachments
+                    }).filter((agenda) => agenda !== null), // Remove null entries
+                  };
+
+                  // Extract all OriginalAttachmentName values as numbers
+                  const attachmentIds = object.MeetingAgendas.flatMap(
+                    (agenda) =>
+                      agenda.MeetingAgendaAttachments.map((attachment) =>
+                        Number(attachment.OriginalAttachmentName)
+                      )
+                  );
+
+                  // Dispatch the updated data
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMap(
+                      navigate,
+                      t,
+                      MappedData,
+                      attachmentIds,
+                      newAgendas,
+                      checkFlag,
+                      setEditFlag
+                    )
+                  );
+                }
+              } catch (error) {
+                console.log(error);
               }
+
+              // dispatch(
+              //   CreateUpdateMeetingDataRoomMap(
+              //     navigate,
+              //     t,
+              //     MappedData,
+              //     attachmentIds,
+              //     checkFlag
+              //   )
+              // );
+
+              // if (checkFlag === 4) {
+              //   let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              //   let meetingPageCurrent =
+              //     localStorage.getItem("MeetingPageCurrent") || 1;
+              //   let searchData = {
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: Number(meetingPageCurrent),
+              //     Length: Number(meetingpageRow) ? Number(meetingpageRow) : 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   console.log("chek search meeting");
+              //   await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // } else if (checkFlag === 7) {
+              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
+              //   let Data = {
+              //     GroupID: Number(ViewGroupID),
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: 1,
+              //     Length: 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   dispatch(getMeetingbyGroupApi(navigate, t, Data));
+              // } else if (checkFlag === 6) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              //   let Data = {
+              //     CommitteeID: Number(ViewCommitteeID),
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: 1,
+              //     Length: 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+              // }
               await dispatch(meetingLoaderDashboard(false));
-              await dispatch(SetLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -450,7 +548,7 @@ const ViewMeeting = (
               try {
                 if (Number(no) === 1) {
                   setViewFlag(true);
-                  localStorage.setItem("typeOfMeeting", "isQuickMeeting")
+                  localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (no === 2) {
                   dispatch(GetAllReminders(navigate, t));

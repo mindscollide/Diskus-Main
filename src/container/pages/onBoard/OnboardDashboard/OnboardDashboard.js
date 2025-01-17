@@ -20,7 +20,6 @@ import {
 } from "../../../../store/actions/GetDataForCalendar";
 import { useTranslation } from "react-i18next";
 import { Calendar, DateObject } from "react-multi-date-picker";
-import ModalMeeting from "../../../modalmeeting/ModalMeeting";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 
 import {
@@ -45,6 +44,7 @@ import {
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import CreateQuickMeeting from "../../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
@@ -758,11 +758,10 @@ const OnboardDashboard = () => {
         </Row>
       </Container>
 
-      <ModalMeeting
+      <CreateQuickMeeting
         show={show}
         setShow={setShow}
-        editFlag={editFlag}
-        setEditFlag={setEditFlag}
+    
         // this is check from where its called 5 is from OnboardDashboard
         checkFlag={5}
       />
