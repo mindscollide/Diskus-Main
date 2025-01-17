@@ -1924,7 +1924,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle.slice(0, 30)
               ),
             });
           }
@@ -2818,7 +2818,10 @@ const Dashboard = () => {
               setNotification({
                 notificationShow: true,
                 message: t(
-                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                  `${data?.payload?.data?.displayFolderName.slice(
+                    0,
+                    30
+                  )} folder shared with you`
                 ),
               });
             }
