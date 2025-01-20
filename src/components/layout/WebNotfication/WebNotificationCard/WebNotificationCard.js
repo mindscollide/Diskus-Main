@@ -44,7 +44,7 @@ import { useTranslation } from "react-i18next";
 const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,
-  maxCharacters = 105,
+  maxCharacters = 101,
   index,
   length,
   NotificaitonID,
@@ -246,7 +246,7 @@ const WebNotificationCard = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex align-items-center justify-content-center gap-2"
+          className="d-flex align-items-center justify-content-center gap-1"
         >
           {/* Icons According to Unique Notification ID  */}
           {NotificaitonID === 1 ? (
