@@ -1337,7 +1337,7 @@
   "Proposed-on": "Proposed On",
   "Send-response-by": "Send Response By",
   "NEW_MEETING_CREATION": "You have been added as a [Place holder] Role in a new Meeting. Refer to Meeting List for details",
-  "NEW_COMMENT_DELETION": "[User] has deleted its commented from Task [Task Title]. Refer to Task List for details",
+  "NEW_COMMENT_DELETION": "[User] User has deleted a comment from Task [Task Title]. Refer to Task List for details",
   "NEW_COMMENT_CREATION": "[User] has commented on Task [Task Title]. Refer to Task List for details",
   "NEW_TODO_CREATION": "New Task [Task Title] has been assigned to you. Refer to Task List for details",
   "TDOD_STATUS_EDITED": "Task [Task Title] has been updated. Refer to Task List for details",
@@ -2396,5 +2396,8 @@
   "Try-another-search": "Try another search, or click the search box to",
   "Find-a-file-by-type-owner-and-more.": "find a file by type, owner, and more.",
   "Notes-attachment-deleted-successfully": "Notes attachment deleted successfully",
-  "No-attachment-deleted": "No attachment deleted"
+  "No-attachment-deleted": "No attachment deleted",
+  "FILE_SHARED": "[Place holder] file shared with you",
+  "FOLDER_SHARED": "[Place holder] folder shared with you",
+  "No-attachement": "No Attachement"
 }

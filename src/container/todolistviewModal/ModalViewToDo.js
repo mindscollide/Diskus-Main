@@ -600,7 +600,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               {/* Attachment Heading */}
               <Col sm={12} md={12} lg={12} className='fw-600'>
                 {/* Attachments */}
-                {t("Attachement")}
+                {tasksAttachments.TasksAttachments.length > 0 ? t("Attachement") :  t("No-attachement") }
+                {}
               </Col>
               {/* Task Attachment List */}
               <Col sm={12} md={12} lg={12} className='todoModalViewFiles'>

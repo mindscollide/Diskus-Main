@@ -366,7 +366,7 @@ const getDataAnalyticsCountApi = (
                 "DataRoom_DataRoomManager_GetDataAnalyticsCount_02".toLowerCase()
               )
           ) {
-            dispatch(getDataAnalyticsCount_Fail(""));
+            dispatch(getDataAnalyticsCount_Fail(t("No-record-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

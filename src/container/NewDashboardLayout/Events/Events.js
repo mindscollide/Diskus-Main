@@ -39,7 +39,9 @@ const Events = () => {
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
-  const removeUpcomingEvents = useSelector((state) => state.NewMeetingreducer.removeUpcomingEventMeeting);
+  const removeUpcomingEvents = useSelector(
+    (state) => state.NewMeetingreducer.removeUpcomingEventMeeting
+  );
   const Spinner = useSelector((state) => state.meetingIdReducer.Spinner);
 
   const { t } = useTranslation();
@@ -238,11 +240,10 @@ const Events = () => {
         );
         console.log(isSame, "isSameisSame");
         if (isSame) {
-          if (indexforUndeline === null && flag === false) {
+       
             flag = true;
             indexforUndeline = index;
           }
-        }
       });
     } catch (error) {
       console.log(error);
@@ -283,114 +284,108 @@ const Events = () => {
       let { isSame } = isSameAsToday(
         `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
       );
-
+      console.log(isSame, "isSameisSame");
       return (
         <>
           {isSame ? (
-            <div
-              className={
-                checkisTodayorActive
-                  ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
-                  : styles["event-details"] || ""
-              }
-            >
+            <>
               <div
-                className={
-                  (upcomingEventsData.meetingDetails.statusID === 1 &&
-                    minutesDifference < remainingMinutesAgo) ||
-                  upcomingEventsData.meetingDetails.statusID === 10
-                    ? `${styles["event-details-block"]}`
-                    : `${styles["event-details-block"]}`
-                }
-              >
-                <p className={styles["events-description"]}>
-                  {upcomingEventsData.meetingDetails.title}
-                </p>
-                <p className={styles["events-dateTime"]}>
-                  {newTimeFormaterAsPerUTCFullDate(
-                    upcomingEventsData.meetingEvent.meetingDate +
-                      upcomingEventsData.meetingEvent.startTime,
-                    currentLanguage
-                  )}
-                </p>
-              </div>
-              {upcomingEventsData.meetingDetails.statusID === 1 &&
-              upcomingEventsData.participantRoleID === 1 ? (
-                upcomingEventsData.meetingDetails.isQuickMeeting === true &&
-                minutesDifference < remainingMinutesAgo ? (
-                  <Button
-                    text={t("Start-meeting")}
-                    className={styles["Start-Meeting-Upcoming"]}
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
-                    false &&
-                  upcomingEventsData.participantRoleID === 1 &&
+                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}>
+                <div
+                  className={
+                    (upcomingEventsData.meetingDetails.statusID === 1 &&
+                      minutesDifference < remainingMinutesAgo) ||
+                    upcomingEventsData.meetingDetails.statusID === 10
+                      ? `${styles["event-details-block"]}`
+                      : `${styles["event-details-block"]}`
+                  }>
+                  <p className={styles["events-description"]}>
+                    {upcomingEventsData.meetingDetails.title}
+                  </p>
+                  <p className={styles["events-dateTime"]}>
+                    {newTimeFormaterAsPerUTCFullDate(
+                      upcomingEventsData.meetingEvent.meetingDate +
+                        upcomingEventsData.meetingEvent.startTime,
+                      currentLanguage
+                    )}
+                  </p>
+                </div>
+                {upcomingEventsData.meetingDetails.statusID === 1 &&
+                upcomingEventsData.participantRoleID === 1 ? (
+                  upcomingEventsData.meetingDetails.isQuickMeeting === true &&
                   minutesDifference < remainingMinutesAgo ? (
-                  <Button
-                    text={t("Start-meeting")}
-                    className={styles["Start-Meeting-Upcoming"]}
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : null
-              ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
-                upcomingEventsData.participantRoleID === 2 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className={styles["joining-Meeting-Upcoming"]}
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.participantRoleID === 4 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className={styles["joining-Meeting-Upcoming"]}
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : upcomingEventsData.participantRoleID === 1 ? (
-                  <Button
-                    text={t("Join-meeting")}
-                    className={styles["joining-Meeting-Upcoming"]}
-                    onClick={() => {
-                      meetingDashboardCalendarEvent(upcomingEventsData);
-                      localStorage.setItem(
-                        "meetingTitle",
-                        upcomingEventsData.meetingDetails.title
-                      );
-                    }}
-                  />
-                ) : null
-              ) : null}
-            </div>
+                    <Button
+                      text={t("Start-meeting")}
+                      className={styles["Start-Meeting-Upcoming"]}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                    />
+                  ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                      false &&
+                    upcomingEventsData.participantRoleID === 1 &&
+                    minutesDifference < remainingMinutesAgo ? (
+                    <Button
+                      text={t("Start-meeting")}
+                      className={styles["Start-Meeting-Upcoming"]}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                    />
+                  ) : null
+                ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
+                  upcomingEventsData.participantRoleID === 2 ? (
+                    <Button
+                      text={t("Join-meeting")}
+                      className={styles["joining-Meeting-Upcoming"]}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                    />
+                  ) : upcomingEventsData.participantRoleID === 4 ? (
+                    <Button
+                      text={t("Join-meeting")}
+                      className={styles["joining-Meeting-Upcoming"]}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                    />
+                  ) : upcomingEventsData.participantRoleID === 1 ? (
+                    <Button
+                      text={t("Join-meeting")}
+                      className={styles["joining-Meeting-Upcoming"]}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                    />
+                  ) : null
+                ) : null}
+              </div>
+            </>
           ) : (
             <>
-              {flag && indexforUndeline !== null ? (
-                <span className={styles["bordertop"]} />
-              ) : null}
-
+            {flag &&           <span className={styles["bordertop"]} />}
+    
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -398,8 +393,7 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                     : ` ${styles["event-details"]}`
-                }
-              >
+                }>
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -407,8 +401,7 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }
-                >
+                  }>
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -520,19 +513,18 @@ const Events = () => {
   }, [MeetingStatusEnded]);
   useEffect(() => {
     try {
-        if(removeUpcomingEvents !== null) {
-          setUpComingEvents((upcomingeventData) => {
-            return upcomingeventData.filter((meetingData) => {
-              return (
-                Number(meetingData.meetingDetails.pK_MDID) !== Number(removeUpcomingEvents)
-              );
-            });
+      if (removeUpcomingEvents !== null) {
+        setUpComingEvents((upcomingeventData) => {
+          return upcomingeventData.filter((meetingData) => {
+            return (
+              Number(meetingData.meetingDetails.pK_MDID) !==
+              Number(removeUpcomingEvents)
+            );
           });
-        }
-    } catch (error) {
-      
-    }
-  }, [removeUpcomingEvents])
+        });
+      }
+    } catch (error) {}
+  }, [removeUpcomingEvents]);
   return (
     <>
       {Spinner === true ? (
@@ -541,7 +533,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt="" width={300} draggable="false" />
+              <img src={noTask} alt='' width={300} draggable='false' />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>
