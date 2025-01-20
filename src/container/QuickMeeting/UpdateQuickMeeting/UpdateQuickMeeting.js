@@ -54,11 +54,13 @@ import { showMessage } from "../../../components/elements/snack_bar/utill";
 import {
   generateRandomNegativeAuto,
   maxFileSize,
+  openDocumentViewer,
 } from "../../../commen/functions/utils";
 import {
   saveFilesQuickMeetingApi,
   uploadDocumentsQuickMeetingApi,
 } from "../../../store/actions/NewMeetingActions";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 
 const UpdateQuickMeeting = ({
   editFlag,
@@ -971,16 +973,30 @@ const UpdateQuickMeeting = ({
             getSaveFilesRepsonse.isExecuted &&
             getSaveFilesRepsonse.responseCode === 1
           ) {
-            getSaveFilesRepsonse.newFolder.forEach((fileData, index) => {
-              fileforSend.push({
-                DisplayAttachmentName: fileData.displayFileName,
-                OriginalAttachmentName: String(fileData.pK_FileID),
-              });
+            getSaveFilesRepsonse.newFolder.forEach((fileData) => {
+              let isFileNameAlreadyExist = fileforSend.findIndex(
+                (isExist) =>
+                  isExist.DisplayAttachmentName === fileData.displayFileName
+              );
+              if (isFileNameAlreadyExist !== -1) {
+                // Update the OriginalAttachmentName for the existing entry
+                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName = String(
+                  fileData.pK_FileID
+                );
+              } else {
+                // Add a new entry
+                fileforSend.push({
+                  DisplayAttachmentName: fileData.displayFileName,
+                  OriginalAttachmentName: String(fileData.pK_FileID),
+                });
+              }
             });
           }
+          
+          // let NewFiles = attachments.filter((data, index) => data.OriginalAttachmentName !== "")
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments: fileforSend,
+            MeetingAgendaAttachments: attachments,
           };
           previousAdendas[editRecordIndex] = newData;
           setCreateMeeting({
@@ -1047,6 +1063,7 @@ const UpdateQuickMeeting = ({
               });
             });
           }
+
 
           let previousAdendas = [...createMeeting.MeetingAgendas];
           let newData = {
@@ -1505,7 +1522,7 @@ const UpdateQuickMeeting = ({
               FK_MDID: atchmenData.objMeetingAgenda.fK_MDID,
             };
             let file = [];
-            if (atchmenData.meetingAgendaAttachments !== null) {
+            if (atchmenData.meetingAgendaAttachments !== null && atchmenData.meetingAgendaAttachments.length > 0) {
               atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
@@ -2038,57 +2055,7 @@ const UpdateQuickMeeting = ({
       await dispatch(
         UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
       );
-      await setObjMeetingAgenda({
-        PK_MAID: 0,
-        Title: "",
-        PresenterName: "",
-        URLs: "",
-        FK_MDID: 0,
-      });
-      await setMeetingAgendaAttachments({
-        MeetingAgendaAttachments: [],
-      });
-      setParticipantRoleValue({
-        label: t("Participant"),
-        value: 2,
-      });
-      await setCreateMeeting({
-        MeetingTitle: "",
-        MeetingDescription: "",
-        MeetingTypeID: 0,
-        MeetingDate: "",
-        MeetingStartTime: "",
-        MeetingEndTime: "",
-        MeetingLocation: "",
-        IsVideoCall: false,
-        IsChat: false,
-        MeetingReminderID: [],
-        MeetingAgendas: [],
-        MeetingAttendees: [],
-        ExternalMeetingAttendees: [],
-      });
-      await setMeetingAttendees({
-        User: {
-          PK_UID: 0,
-        },
-        MeetingAttendeeRole: {
-          PK_MARID: 2,
-        },
-        AttendeeAvailability: {
-          PK_AAID: 1,
-        },
-      });
-      await setRecordMinutesOfTheMeeting({
-        PK_MOMID: 0,
-        Description: "",
-        CreationDate: "",
-        CreationTime: "",
-        FK_MDID: 0,
-      });
 
-      setReminder("");
-      setReminderValue("");
-      setTaskAssignedToInput("");
     } else {
       showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
     }
@@ -2531,6 +2498,36 @@ const UpdateQuickMeeting = ({
     setTaskAssignedTo(attendeeData.value);
   };
 
+  const downloadClick = (record) => {
+    console.log(record, "recordrecord")
+    let dataRoomData = {
+      FileID: Number(record.OriginalAttachmentName),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        dataRoomData,
+        t,
+        record.DisplayAttachmentName
+      )
+    );
+  };
+
+  const handeClickView = (record) => {
+    let ext = record.DisplayAttachmentName.split(".").pop();
+
+    // Open on Apryse
+    const pdfData = {
+      taskId: record.FK_MAID,
+      commingFrom: 4,
+      fileName: record.DisplayAttachmentName,
+      attachmentID: Number(record.OriginalAttachmentName),
+    };
+    console.log(pdfData, ext, "pdfDatapdfData");
+    const pdfDataJson = JSON.stringify(pdfData);
+    openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+  };
+
   console.log({ attachments, createMeeting }, "createMeetingcreateMeeting");
   return (
     <>
@@ -2883,6 +2880,15 @@ const UpdateQuickMeeting = ({
                                       return (
                                         <Col sm={4} md={4} lg={4}>
                                           <AttachmentViewer
+                                            id={Number(
+                                              data.OriginalAttachmentName
+                                            )}
+                                            handleEyeIcon={() =>
+                                              handeClickView(data)
+                                            }
+                                            handleClickDownload={() =>
+                                              downloadClick(data)
+                                            }
                                             data={data}
                                             handleClickRemove={() => {
                                               deleteAttachmentfromAgenda(
@@ -2892,7 +2898,6 @@ const UpdateQuickMeeting = ({
                                             }}
                                             name={data.DisplayAttachmentName}
                                             fk_UID={createrID}
-                                            id={0}
                                           />
                                         </Col>
                                       );
@@ -3010,7 +3015,15 @@ const UpdateQuickMeeting = ({
                                                     name={
                                                       MeetingAgendaAttachmentsData.DisplayAttachmentName
                                                     }
-                                                    id={0}
+                                                    id={Number(
+                                                      MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                    )}
+                                                    handleEyeIcon={() =>
+                                                      handeClickView(MeetingAgendaAttachmentsData)
+                                                    }
+                                                    handleClickDownload={() =>
+                                                      downloadClick(MeetingAgendaAttachmentsData)
+                                                    }
                                                   />
                                                 </Col>
                                               );

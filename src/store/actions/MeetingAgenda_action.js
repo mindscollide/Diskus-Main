@@ -876,7 +876,7 @@ const CreateUpdateMeetingDataRoomMap = (
                 );
               } else {
                 let createrID = localStorage.getItem("userID");
-
+                setShow(false)
                 if (checkFlag === 4) {
                   dispatch(meetingLoaderDashboard(false));
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");

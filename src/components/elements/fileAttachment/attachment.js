@@ -23,6 +23,7 @@ const AttachmentViewer = ({
   let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
     getFileExtension(name)
   );
+  let getfileExtensionName = getFileExtension(name);
   let currentUser = Number(localStorage.getItem("userID"));
 
   return (
@@ -63,20 +64,21 @@ const AttachmentViewer = ({
         </Col>
         {id !== 0 && (
           <Col
-            lg={2}
-            md={2}
-            sm={12}
-            className={`${styles["borderFileName"]} p-0`}>
-            <img
-              draggable={false}
-              src={DownloadImg}
-              alt=''
-              onClick={handleClickDownload}
-            />
+            lg={getfileExtensionName === "txt" ? 4 : 2}
+            md={getfileExtensionName === "txt" ? 4 : 2}
+            sm={getfileExtensionName === "txt" ? 4 : 2}>
+            <span className={`${styles["borderFileName"]} p-0`}>
+              <img
+                draggable={false}
+                src={DownloadImg}
+                alt=''
+                onClick={handleClickDownload}
+              />
+            </span>
           </Col>
         )}
-        {id !== 0 && (
-          <Col lg={2} md={2} sm={12} className='p-0'>
+        {id !== 0 && getfileExtensionName !== "txt" ? (
+          <Col lg={2} md={2} sm={2} className='p-0'>
             <img
               draggable={false}
               src={EyeIcon}
@@ -85,12 +87,12 @@ const AttachmentViewer = ({
               onClick={handleEyeIcon}
             />
           </Col>
-        )}
+        ) : null}
       </Row>
       {currentUser === Number(fk_UID) && (
         <img
           src={CrossIcon}
-          alt=""
+          alt=''
           className={styles["Cross_Icon"]}
           onClick={handleClickRemove}
         />
