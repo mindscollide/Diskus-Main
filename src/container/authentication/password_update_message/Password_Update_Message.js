@@ -6,11 +6,18 @@ import "./Password_Update_Message.css";
 import "./../../../i18n.js";
 import logo from "./../../../assets/images/diskuslogo-forsigncard.svg";
 import { useTranslation } from "react-i18next";
+import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions.js";
+import { useDispatch } from "react-redux";
 
 const PasswordUpdateMessage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const handleGoLogin = () => {
     navigate("/");
+    dispatch(LoginFlowRoutes(1));
+    localStorage.setItem("LoginFlowPageRoute", 1);
+
+
   };
 
   //For Localization

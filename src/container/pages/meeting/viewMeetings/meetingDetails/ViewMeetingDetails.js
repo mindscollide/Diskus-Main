@@ -448,7 +448,7 @@ const ViewMeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        console.log("meetingStatus", getmeetingStatus);
+        // console.log("meetingStatus", getmeetingStatus);
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         setMeetingDetailsData({
