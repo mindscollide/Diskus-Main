@@ -170,15 +170,17 @@ const Actions = ({
       todoStatus.Response?.length > 0
     ) {
       todoStatus.Response.forEach((data, index) => {
-        optionsArr.push({
-          id: data.pK_TSID,
-          status: data.status,
-        });
-        newArrStatus.push(data.status);
-        newOptionsFilter.push({
-          key: data.pK_TSID,
-          label: data.status,
-        });
+        if (data.pK_TSID !== 3 && data.pK_TSID !== 6) {
+          optionsArr.push({
+            id: data.pK_TSID,
+            status: data.status,
+          });
+          newArrStatus.push(data.status);
+          newOptionsFilter.push({
+            key: data.pK_TSID,
+            label: data.status,
+          });
+        }
       });
     }
     setStatusValues(newArrStatus);
@@ -242,10 +244,7 @@ const Actions = ({
       value: "2",
       text: t("Pending"),
     },
-    {
-      value: "3",
-      text: t("Upcoming"),
-    },
+
     {
       value: "4",
       text: t("Cancelled"),
@@ -274,7 +273,7 @@ const Actions = ({
   };
 
   const resetFilter = () => {
-    setSelectedValues(["1", "2", "3", "4", "5", "6"]);
+    setSelectedValues(["1", "2", "4", "5", "6"]);
     setActionsRows(originalData);
     setVisible(false);
   };
