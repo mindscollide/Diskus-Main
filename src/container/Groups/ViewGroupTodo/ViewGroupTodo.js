@@ -218,16 +218,18 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         todoStatusResponse.length > 0
       ) {
         todoStatusResponse.forEach((data, index) => {
-          optionsArr.push({
-            id: data.pK_TSID,
-            status: data.status,
-          });
-          newArrStatus.push(data.status);
+          if (data.pK_TSID !== 3 && data.pK_TSID !== 6) {
+            optionsArr.push({
+              id: data.pK_TSID,
+              status: data.status,
+            });
+            newArrStatus.push(data.status);
 
-          newOptionsFilter.push({
-            key: data.pK_TSID,
-            label: data.status,
-          });
+            newOptionsFilter.push({
+              key: data.pK_TSID,
+              label: data.status,
+            });
+          }
         });
       }
       setStatusValues(newArrStatus);
@@ -278,10 +280,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       value: "2",
       text: t("Pending"),
     },
-    {
-      value: "3",
-      text: t("Upcoming"),
-    },
+
     {
       value: "4",
       text: t("Cancelled"),
@@ -290,7 +289,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       value: "5",
       text: t("Completed"),
     },
-
   ];
 
   // Menu click handler for selecting filters
@@ -324,24 +322,23 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center justify-content-center">
+      <div className='d-flex gap-3 align-items-center justify-content-center'>
         <Button
           text={"Reset"}
-          className="FilterResetBtn"
+          className='FilterResetBtn'
           onClick={resetFilter}
         />
         <Button
           text={"Ok"}
           disableBtn={selectedValues.length === 0}
-          className="ResetOkBtn"
+          className='ResetOkBtn'
           onClick={handleApplyFilter}
         />
       </div>
@@ -352,12 +349,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -380,10 +377,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
+          className='todolist-title-col'
           title={text}
-          onClick={(e) => viewModalHandler(record.pK_TID)}
-        >
+          onClick={(e) => viewModalHandler(record.pK_TID)}>
           {text}
         </p>
       ),
@@ -391,12 +387,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -425,13 +421,13 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       },
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=""
+              alt=''
             />
             {record?.name}
           </p>
@@ -441,12 +437,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -473,15 +469,15 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
+              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
 
                     {text[0].name}
@@ -489,10 +485,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
                     {text[0].name}
                   </>
@@ -506,12 +502,12 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center justify-content-center">
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             ) : (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             )}
           </span>
         </>
@@ -538,7 +534,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
       render: (text, record) => {
         return (
-          <span className="text-nowrap text-center">
+          <span className='text-nowrap text-center'>
             {newTimeFormaterAsPerUTCFullDate(
               record.deadlineDateTime,
               currentLanguage
@@ -556,7 +552,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -564,8 +560,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -576,7 +571,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName="Status-Todo"
+                dropdownClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -590,8 +585,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue, index) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -617,8 +611,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
@@ -636,11 +629,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
+              className='meeting-editbutton cursor-pointer'
               title={t("Delete")}
-              onClick={(e) => deleteTodolist(record)}
-            >
-              <img draggable="false" src={del} alt="" />
+              onClick={(e) => deleteTodolist(record)}>
+              <img draggable='false' src={del} alt='' />
             </i>
           );
         } else {
@@ -781,10 +773,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           sm={12}
           md={12}
           lg={12}
-          className="d-flex flex-column align-items-center"
-        >
-          <img src={TodoMessageIcon1} alt="" />
-          <span className="mt-4"> {t("No-Task")}</span>
+          className='d-flex flex-column align-items-center'>
+          <img src={TodoMessageIcon1} alt='' />
+          <span className='mt-4'> {t("No-Task")}</span>
         </Col>
       </Row>
     );
@@ -792,9 +783,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
   return (
     <>
-      <div className="todolistContainer_Committee">
-        <Row className="my-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
+      <div className='todolistContainer_Committee'>
+        <Row className='my-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end '>
             {groupStatus === 3 && (
               <Button
                 text={t("Create-a-Task")}
@@ -807,8 +798,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         </Row>
         <Row>
           <Col>
-            <Row className="row-scroll-todolist">
-              <Col className="">
+            <Row className='row-scroll-todolist'>
+              <Col className=''>
                 <TableToDo
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
@@ -819,9 +810,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
                   locale={{
                     emptyText: (
                       <>
-                        <section className="d-flex flex-column align-items-center justify-content-center">
-                          <img src={TodoMessageIcon1} width={"250px"} alt="" />
-                          <span className="NotaskTodolist">{t("No-Task")}</span>
+                        <section className='d-flex flex-column align-items-center justify-content-center'>
+                          <img src={TodoMessageIcon1} width={"250px"} alt='' />
+                          <span className='NotaskTodolist'>{t("No-Task")}</span>
                         </section>
                       </>
                     ),
@@ -838,7 +829,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setShow={setShow}
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
-          className="toDoViewModal"
+          className='toDoViewModal'
         />
       ) : viewFlagToDo ? (
         <ModalViewToDo

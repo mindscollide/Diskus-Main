@@ -58,6 +58,9 @@ import NormalParticipantVideoComponent from "../pages/meeting/meetingVideoCall/n
 import MaxParticipantVideoDeniedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
+import { openDocumentViewer } from "../../commen/functions/utils";
+import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
+import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -1001,11 +1004,32 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   };
 
   const downloadClick = (record) => {
-    let data = {
-      OriginalFileName: record.OriginalAttachmentName,
-      DisplayFileName: record.DisplayAttachmentName,
+    let dataRoomData = {
+      FileID: Number(record.OriginalAttachmentName),
     };
-    dispatch(DownloadFile(navigate, data, t));
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        dataRoomData,
+        t,
+        record.DisplayAttachmentName
+      )
+    );
+  };
+
+  const handeClickView = (record) => {
+    let ext = record.DisplayAttachmentName.split(".").pop();
+
+    // Open on Apryse
+    const pdfData = {
+      taskId: record.FK_MAID,
+      commingFrom: 4,
+      fileName: record.DisplayAttachmentName,
+      attachmentID: Number(record.OriginalAttachmentName),
+    };
+    console.log(pdfData, ext, "pdfDatapdfData");
+    const pdfDataJson = JSON.stringify(pdfData);
+    openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
   };
 
   const copyToClipboardd = () => {
@@ -1360,10 +1384,21 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                             MeetingAgendaAttachmentsData,
                                             index
                                           ) => {
+                                            console.log(
+                                              MeetingAgendaAttachmentsData,
+                                              "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData"
+                                            );
                                             return (
                                               <Col sm={4} md={4} lg={4}>
                                                 <AttachmentViewer
-                                                  id={1}
+                                                  id={Number(
+                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                  )}
+                                                  handleEyeIcon={() =>
+                                                    handeClickView(
+                                                      MeetingAgendaAttachmentsData
+                                                    )
+                                                  }
                                                   handleClickDownload={() =>
                                                     downloadClick(
                                                       MeetingAgendaAttachmentsData
@@ -1521,11 +1556,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Row className='mt-2'>
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
+                        console.log(data, "attachmentsListattachmentsListattachmentsList")
                           return (
                             <Col sm={4} lg={4} md={4}>
                               <AttachmentViewer
-                                id={1}
-                                handleClickDownload={() => downloadClick(data)}
+                                id={Number(
+                                  data.OriginalAttachmentName
+                                )}
+                                handleEyeIcon={() =>
+                                  handeClickView(data)
+                                }
+                                handleClickDownload={() =>
+                                  downloadClick(data)
+                                }
                                 data={data}
                                 name={data.DisplayAttachmentName}
                               />
