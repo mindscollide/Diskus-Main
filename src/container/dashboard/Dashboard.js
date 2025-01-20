@@ -52,6 +52,9 @@ import {
   leaveMeetingOnlogout,
   participantVideoButtonState,
   videoIconOrButtonState,
+  startPresenterGlobal,
+  presenterModalLeave,
+  minimizePresenterGlobalState,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -184,7 +187,8 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import PresenterMeetingView from "../pages/meeting/PresenterMeetingView/PresenterMeetingView";
+import PresenterMeetingView from "../pages/meeting/presenterMeeting/PresenterMeetingView/PresenterMeetingView";
+import crossIcon from "../../assets/images/WhiteCrossIcon.svg";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -280,6 +284,10 @@ const Dashboard = () => {
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
+  // offline message for presenter View
+  const [offlinePresenter, setOfflinePresenter] = useState("");
+  const [offlineState, setOfflineState] = useState(false);
+
   // for real time Notification
   const [notification, setNotification] = useState({
     notificationShow: false,
@@ -351,7 +359,18 @@ const Dashboard = () => {
     if (checkInternet.onLine) {
       dispatch(InsternetDisconnectModal(false));
     } else {
-      dispatch(InsternetDisconnectModal(true));
+      let getCheck = JSON.parse(localStorage.getItem("CheckNet"));
+      if (getCheck) {
+        dispatch(minimizePresenterGlobalState(false));
+        dispatch(startPresenterGlobal(false));
+        dispatch(presenterModalLeave(false));
+        setOfflineState(true);
+        setOfflinePresenter(
+          "Shawn Alex has lost the connection and presentation has been stopped"
+        );
+      } else {
+        dispatch(InsternetDisconnectModal(true));
+      }
     }
   }, [checkInternet.onLine]);
 
@@ -2828,7 +2847,7 @@ const Dashboard = () => {
               setNotification({
                 notificationShow: true,
                 message: changeMQTTJSONOne(
-                 t("FOLDER_SHARED"),
+                  t("FOLDER_SHARED"),
                   "[Place holder]",
                   data?.payload?.data?.displayFolderName
                 ),
@@ -3004,32 +3023,39 @@ const Dashboard = () => {
     }
   }, [MeetingStatusEnded]);
 
+  // onClick cross to close presenter Offline Text
+  const offlineCrossPresenterMessage = () => {
+    setOfflineState(false);
+    localStorage.setItem("CheckNet", false);
+  };
+
   return (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className='sidebar_layout' width={"4%"}>
+            <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3046,8 +3072,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3078,25 +3104,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3112,12 +3138,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
@@ -3137,6 +3164,25 @@ const Dashboard = () => {
 
           {startPresenterReducer && <PresenterMeetingView />}
         </Layout>
+        {offlinePresenter && offlineState && (
+          <div className="offlinePresenter-class">
+            <>
+              <span className="Offline-presenter-text">{offlinePresenter}</span>
+              <span
+                onClick={offlineCrossPresenterMessage}
+                className="Cross-preseter"
+              >
+                <img
+                  src={crossIcon}
+                  width="18px"
+                  height="18px"
+                  alt="Cross"
+                  className="cursor-pointer"
+                />
+              </span>
+            </>
+          </div>
+        )}
       </ConfigProvider>
     </>
   );

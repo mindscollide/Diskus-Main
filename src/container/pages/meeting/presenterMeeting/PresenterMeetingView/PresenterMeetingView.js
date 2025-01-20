@@ -2,24 +2,24 @@ import React from "react";
 import styles from "./PresenterMeetingView.module.css";
 import { Col, Row, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import VideoOn from "../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
-import MicOff from "../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
-import NonActiveScreenShare from "./../../../../components/layout/talk/talk-Video/video-images/Screen Share Purple.svg";
-import TileView from "./../../../../components/layout/talk/talk-Video/video-images/Tile View 1 Purple.svg";
-import CopyLink from "./../../../../components/layout/talk/talk-Video/video-images/Copy Link Purple.svg";
-import ParticipantsIcon from "./../../../../components/layout/talk/talk-Video/video-images/Users Purple.svg";
-import CallEndRedIcon from "./../../../../components/layout/talk/talk-Video/video-images/Call End Red.svg";
-import ExpandIcon from "./../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
-import MinimizeIcon from "./../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
-import PauseWhite from "../../../../assets/images/Recent Activity Icons/Video/PauseWhite.png";
-import WhiteParticipant from "../../../../assets/images/Recent Activity Icons/Video/WhiteParticipant.png";
-import ScreenShareWhite from "../../../../assets/images/Recent Activity Icons/Video/ScreenShareWhite.png";
-import ExpandIconWhite from "../../../../assets/images/Recent Activity Icons/Video/ExpandIconWhite.png";
-import NormalizeIcon from "./../../../../components/layout/talk/talk-Video/video-images/Collapse.svg";
+import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/VideoOn2.png";
+import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
+import NonActiveScreenShare from "./../../../../../components/layout/talk/talk-Video/video-images/Screen Share Purple.svg";
+import TileView from "./../../../../../components/layout/talk/talk-Video/video-images/Tile View 1 Purple.svg";
+import CopyLink from "./../../../../../components/layout/talk/talk-Video/video-images/Copy Link Purple.svg";
+import ParticipantsIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Users Purple.svg";
+import CallEndRedIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Call End Red.svg";
+import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
+import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
+import PauseWhite from "../../../../../assets/images/Recent Activity Icons/Video/PauseWhite.png";
+import WhiteParticipant from "../../../../../assets/images/Recent Activity Icons/Video/WhiteParticipant.png";
+import ScreenShareWhite from "../../../../../assets/images/Recent Activity Icons/Video/ScreenShareWhite.png";
+import ExpandIconWhite from "../../../../../assets/images/Recent Activity Icons/Video/ExpandIconWhite.png";
+import NormalizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Collapse.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
-import { minimizePresenterGlobalState } from "../../../../store/actions/VideoFeature_actions";
+import { minimizePresenterGlobalState } from "../../../../../store/actions/VideoFeature_actions";
 
 const PresenterMeetingView = () => {
   const { t } = useTranslation();
@@ -132,6 +132,7 @@ const PresenterMeetingView = () => {
                             : NormalizeIcon
                         }
                         alt="Expand"
+                        className={styles["presenter-img-cursor"]}
                         onClick={onClickMaximize}
                       />
                     </Tooltip>

@@ -3552,3 +3552,6 @@ export const SET_LOADER_FALSE_GETLISTOFASSIGNEES =
 
 // Global State of Presenter Minimize State
 export const MINIMIZE_PRESENETER_STATE = "MINIMIZE_PRESENETER_STATE";
+
+//Presenter Leave Modal
+export const PRESENTER_LEAVE_MODAL = "PRESENTER_LEAVE_MODAL";

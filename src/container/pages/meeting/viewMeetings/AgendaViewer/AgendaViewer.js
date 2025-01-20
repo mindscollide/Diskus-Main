@@ -47,6 +47,7 @@ import {
   startOrStopPresenterGlobal,
   startPresenterGlobal,
   stopPresenterGlobal,
+  presenterModalLeave,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -97,6 +98,7 @@ import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParti
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
+import PresenterLeaveModal from "../../presenterMeeting/PresenterModals/PresenterLeaveModal";
 
 const AgendaViewer = ({
   setViewAdvanceMeetingModal,
@@ -177,6 +179,11 @@ const AgendaViewer = ({
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
+  );
+
+  //For Presenter Leave Modal
+  const leavePresenterModal = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterModal
   );
 
   const enableDisableVideoState = useSelector(
@@ -713,12 +720,14 @@ const AgendaViewer = ({
   const startPresenterCheck = () => {
     dispatch(startPresenterGlobal(true));
     dispatch(stopPresenterGlobal(false));
+    localStorage.setItem("CheckNet", true);
   };
 
   // For Stop Presenter
   const stopPresenterCheck = () => {
-    dispatch(startPresenterGlobal(false));
-    dispatch(stopPresenterGlobal(true));
+    // dispatch(startPresenterGlobal(false));
+    // dispatch(stopPresenterGlobal(true));
+    dispatch(presenterModalLeave(true));
   };
 
   return (
@@ -1172,6 +1181,9 @@ const AgendaViewer = ({
         <MaxParticipantVideoRemovedComponent />
       )}
       {nonMeetingVideo && <NonMeetingVideoModal />}
+
+      {/* For Leave Presenter Modal */}
+      {leavePresenterModal && <PresenterLeaveModal />}
     </>
   );
 };

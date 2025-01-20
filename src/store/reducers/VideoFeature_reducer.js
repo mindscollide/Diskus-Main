@@ -82,6 +82,7 @@ const initialState = {
   startPresenterReducer: false,
   stopPresenterReducer: false,
   minimizePresenterReducer: false,
+  leavePresenterModal: false,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -977,6 +978,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         minimizePresenterReducer: action.response,
+      };
+
+    //  Presenter Leave Modal Reducer
+    case actions.PRESENTER_LEAVE_MODAL:
+      return {
+        ...state,
+        leavePresenterModal: action.response,
       };
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:

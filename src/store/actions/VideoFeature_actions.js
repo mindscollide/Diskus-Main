@@ -1249,6 +1249,14 @@ const minimizePresenterGlobalState = (response) => {
   };
 };
 
+//For Presenter Leave Modal State
+const presenterModalLeave = (response) => {
+  return {
+    type: actions.PRESENTER_LEAVE_MODAL,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1330,4 +1338,5 @@ export {
   startPresenterGlobal,
   stopPresenterGlobal,
   minimizePresenterGlobalState,
+  presenterModalLeave,
 };

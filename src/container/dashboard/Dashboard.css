@@ -57,3 +57,28 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 .sidebar_layout {
   background: none !important;
 }
+
+.offlinePresenter-class {
+  position: fixed !important;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  left: 23%;
+  width: 50% !important;
+  height: 9vh !important;
+  top: 55px !important;
+  z-index: 99999 !important;
+  padding: 17px 5px;
+  background-color: #6172d6;
+  border-radius: 4px !important;
+}
+
+.Cross-preseter {
+  position: relative;
+  left: 70px;
+}
+
+.Offline-presenter-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}

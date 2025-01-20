@@ -2347,5 +2347,6 @@
   "No-attachment-deleted": "No attachment deleted",
   "FILE_SHARED": "[Place holder] file shared with you",
   "FOLDER_SHARED": "[Place holder] folder shared with you",
-  "No-attachement": "No Attachement"
+  "No-attachement": "No Attachement",
+  "Do-you-want-to-leave-presentation": "Do you want to leave the presentation?"
 }
