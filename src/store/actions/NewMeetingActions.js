@@ -9491,7 +9491,9 @@ const GetMeetingStatusDataAPI = (
                     )
                   );
                 } else if (Check === 2) {
-                  if (response.data.responseResult.meetingStatusID !== 1) {
+                  if (
+                    Number(response.data.responseResult.meetingStatusID) !== 1
+                  ) {
                     dispatch(showSceduleProposedMeeting(true));
                   }
                 }
