@@ -1,19 +1,17 @@
 {
-  "ListOfEmailAddresses": ["saifiiyousuf4002@gmail.com"],
-  "Messege": "test",
-  "isNotify": false,
-  "sendViaDataRoom": false,
-  "BoarddeckFileParams": {
-    "PK_MDID": 4912,
-    "fetchOrganizers": true,
-    "fetchAgendaContributors": false,
-    "fetchParticipants": true,
-    "fetchMinutes": true,
-    "fetchTasks": true,
-    "fetchPolls": false,
-    "fetchAttendance": true,
-    "fetchVideo": true,
-    "fetchAgendaWithAttachments": true,
-    "fetchAgendaWithoutAttachments": true
-  }
+  "CommitteeDetails": {
+    "CreatorID": 1351,
+    "PK_CMID": 536,
+    "CommitteesTitle": "vvvvvvv Roles Notification updatedasdasdsad",
+    "FK_CMSID": 3,
+    "FK_CMTID": 3,
+    "CommitteesDescription": "vvvvvvv Roles Notification updatedasdasdsdsa",
+    "ISTalkChatGroup": true,
+    "OrganizationID": 561
+  },
+  "CommitteeMembers": [
+    { "FK_UID": 1352, "FK_CMMRID": 1, "FK_CMID": 536 },
+    { "FK_UID": 1353, "FK_CMMRID": 2, "FK_CMID": 536 },
+    { "FK_UID": 1381, "FK_CMMRID": 2, "FK_CMID": 0 }
+  ]
 }
