@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
   getUserWiseProposedDatesMainApi,
+  getUserProposedWiseApi,
 } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
@@ -36,9 +37,15 @@ const SceduleProposedmeeting = ({
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
 
-  const getUserProposedOrganizerData = useSelector(
-    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+  // const getUserProposedOrganizerData = useSelector(
+  //   (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+  // );
+
+  const userWiseMeetingProposed = useSelector(
+    (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
+
+  console.log("Check213123", userWiseMeetingProposed);
 
   const [formattedDates, setFormattedDates] = useState([]);
   const [updateTableRows, setUpdateTableRows] = useState([]);
@@ -59,16 +66,25 @@ const SceduleProposedmeeting = ({
       let NotificationClickProposeMeetingID = localStorage.getItem(
         "ProposedMeetingOrganizerMeetingID"
       );
+      // let Data = {
+      //   MeetingID: Number(NotificationClickProposeMeetingID),
+      // };
+      // dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
       let Data = {
         MeetingID: Number(NotificationClickProposeMeetingID),
       };
-      dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+      dispatch(getUserProposedWiseApi(navigate, t, Data, false));
     } else {
+      // let Data = {
+      //   MeetingID: Number(viewProposeDatePollMeetingID),
+      // };
+      // dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
       let Data = {
         MeetingID: Number(viewProposeDatePollMeetingID),
       };
-      dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
+      dispatch(getUserProposedWiseApi(navigate, t, Data, false));
     }
+
     return () => {
       localStorage.removeItem("ProposedMeetingOrganizer");
       localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
@@ -79,24 +95,24 @@ const SceduleProposedmeeting = ({
   // for rendering data in table
   useEffect(() => {
     if (
-      getUserProposedOrganizerData !== null &&
-      getUserProposedOrganizerData !== undefined &&
-      getUserProposedOrganizerData.length > 0
+      userWiseMeetingProposed !== null &&
+      userWiseMeetingProposed !== undefined &&
+      userWiseMeetingProposed.length > 0
     ) {
       let ProposeDates;
 
-      getUserProposedOrganizerData.forEach((datesData, index) => {
+      userWiseMeetingProposed.forEach((datesData, index) => {
         const uniqueData = new Set(
           datesData.selectedProposedDates.map(JSON.stringify)
         );
         ProposeDates = Array.from(uniqueData).map(JSON.parse);
       });
       setProposedDates(ProposeDates);
-      setInitialOrganizerRows(getUserProposedOrganizerData);
+      setInitialOrganizerRows(userWiseMeetingProposed);
     } else {
       setInitialOrganizerRows([]);
     }
-  }, [getUserProposedOrganizerData]);
+  }, [userWiseMeetingProposed]);
 
   useEffect(() => {
     const newOrganizerRows = [...initialOrganizerRows];
@@ -133,16 +149,18 @@ const SceduleProposedmeeting = ({
       setUpdateTableRows(updatedOrganizerRows);
       let newDataProposedState = [...proposedDates];
       setProposedDatesData(newDataProposedState);
-      const formattedDates = newDataProposedState.map((date) => {
-        try {
-          let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
-          const formatetDateTime = utcConvertintoGMT(datetimeVal);
+      const formattedDates = newDataProposedState
+        .filter((dates, index) => dates.proposedDate !== "10000101")
+        .map((date) => {
+          try {
+            let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
+            const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
-          return formatetDateTime;
-        } catch (error) {
-          console.log(error);
-        }
-      });
+            return formatetDateTime;
+          } catch (error) {
+            console.log(error);
+          }
+        });
 
       if (formattedDates) {
         setFormattedDates(formattedDates);
@@ -329,10 +347,14 @@ const SceduleProposedmeeting = ({
         }
 
         // ye all proposedDates ma isSelected ko check krega ka wo is equal to false
-        const allDatedIsUnSelected = record?.selectedProposedDates?.every(
-          (date) => date.isSelected === false
+        const allDatedIsUnSelected = record?.selectedProposedDates?.some(
+          (date) => date.proposedDate === "10000101" && date.isSelected === true
         );
-        console.log(allDatedIsUnSelected, "allDatedIsUnSelected");
+        console.log(
+          allDatedIsUnSelected,
+          record?.selectedProposedDates,
+          "allDatedIsUnSelected"
+        );
         return allDatedIsUnSelected ? (
           <img
             src={BlueTick}

@@ -18,6 +18,7 @@ import "./GuestVideoHeader.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "antd";
 import {
   getVideoCallParticipantsGuestMainApi,
   guestLeaveMeetingVideoApi,
@@ -378,75 +379,106 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         <Col lg={7} md={7} sm={12} className="d-flex justify-content-end gap-2">
           <div className="Guest-Icons-state">
             {micOn ? (
-              <img
-                src={MicOff}
-                onClick={() => openMicStatus(false)}
-                className="cursor-pointer"
-                alt="MicOff"
-              />
+              <Tooltip placement="topRight" title={t("Enable-mic")}>
+                <img
+                  src={MicOff}
+                  onClick={() => openMicStatus(false)}
+                  className="cursor-pointer"
+                  alt="MicOff"
+                />
+              </Tooltip>
             ) : (
-              <img
-                src={MicOn2}
-                onClick={() => openMicStatus(true)}
-                className="cursor-pointer"
-                alt="MicOn2"
-              />
+              <Tooltip placement="topRight" title={t("Disable-mic")}>
+                <img
+                  src={MicOn2}
+                  onClick={() => openMicStatus(true)}
+                  className="cursor-pointer"
+                  alt="MicOn2"
+                />
+              </Tooltip>
             )}
           </div>
           <div className="Guest-Icons-state">
             {isVideoOn ? (
-              <img
-                src={VideoOff}
-                onClick={() => openVideoStatus(false)}
-                alt="VideoOff"
-              />
+              <Tooltip placement="topRight" title={t("Enable-video")}>
+                <img
+                  src={VideoOff}
+                  onClick={() => openVideoStatus(false)}
+                  alt="VideoOff"
+                />
+              </Tooltip>
             ) : (
-              <img
-                src={VideoOn2}
-                onClick={() => openVideoStatus(true)}
-                alt="VideoOn2"
-              />
+              <Tooltip placement="topRight" title={t("Disable-video")}>
+                <img
+                  src={VideoOn2}
+                  onClick={() => openVideoStatus(true)}
+                  alt="VideoOn2"
+                />
+              </Tooltip>
             )}
           </div>
           <div className="Guest-Icons-state">
             {/* <img src={ScreenShareEnabled} onClick={openScreenShare} /> */}
-            <img
-              src={Screenshare}
-              onClick={openScreenShare}
-              alt="Screenshare"
-            />
+            <Tooltip
+              placement="topRight"
+              title={isScreenShare ? t("Stop-sharing") : t("Screen-share")}
+            >
+              <img
+                src={Screenshare}
+                onClick={openScreenShare}
+                alt="Screenshare"
+              />
+            </Tooltip>
           </div>
           <div className="Guest-Icons-state">
             {isRaiseHand ? (
-              <img
-                src={Raisehandselected}
-                onClick={() => openRaiseHand(false)}
-                alt="Raisehandselected"
-              />
+              <Tooltip placement="topRight" title={t("Lower-hand")}>
+                <img
+                  src={Raisehandselected}
+                  onClick={() => openRaiseHand(false)}
+                  alt="Raisehandselected"
+                />
+              </Tooltip>
             ) : (
-              <img
-                src={RaiseHand}
-                onClick={() => openRaiseHand(true)}
-                alt="RaiseHand"
-              />
+              <Tooltip placement="topRight" title={t("Raise-hand")}>
+                <img
+                  src={RaiseHand}
+                  onClick={() => openRaiseHand(true)}
+                  alt="RaiseHand"
+                />
+              </Tooltip>
             )}
           </div>
 
           <div className="Guest-Icons-state">
             {isSpeakerView ? (
-              <img src={SpeakerView} onClick={openSpeaker} alt="SpeakerView" />
+              <>
+                <Tooltip placement="topRight" title={t("Layout")}>
+                  <img
+                    src={SpeakerView}
+                    onClick={openSpeaker}
+                    alt="SpeakerView"
+                  />
+                </Tooltip>
+              </>
             ) : (
-              <img src={TileView} onClick={openSpeaker} alt="TileView" />
+              <>
+                <Tooltip placement="topRight" title={t("Layout")}>
+                  <img src={TileView} onClick={openSpeaker} alt="TileView" />
+                </Tooltip>
+              </>
             )}
           </div>
           <div className="Guest-Icons-state-Participant">
             {isParticipant ? (
               <>
-                <img
-                  src={ParticipantSelected}
-                  onClick={openParticipant}
-                  alt="ParticipantSelected"
-                />
+                <Tooltip placement="topRight" title={t("Participants")}>
+                  <img
+                    src={ParticipantSelected}
+                    onClick={openParticipant}
+                    alt="ParticipantSelected"
+                  />
+                </Tooltip>
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
@@ -521,15 +553,19 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 </div>
               </>
             ) : (
-              <img
-                src={Participant}
-                onClick={openParticipant}
-                alt="Participant"
-              />
+              <Tooltip placement="topRight" title={t("Participants")}>
+                <img
+                  src={Participant}
+                  onClick={openParticipant}
+                  alt="Participant"
+                />
+              </Tooltip>
             )}
           </div>
           <div className="Guest-Icons-state">
-            <img src={EndCall} onClick={onClickEndGuestVideo} alt="EndCall" />
+            <Tooltip placement="topRight" title={t("End-call")}>
+              <img src={EndCall} onClick={onClickEndGuestVideo} alt="EndCall" />
+            </Tooltip>
           </div>
         </Col>
       </Row>
