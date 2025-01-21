@@ -153,6 +153,8 @@ const NewMeeting = () => {
     setViewProposeDatePoll,
     viewFlag,
     setViewFlag,
+    setAdvanceMeetingModalID,
+    advanceMeetingModalID
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -333,7 +335,6 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
-  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
@@ -979,6 +980,7 @@ const NewMeeting = () => {
       validateStringEmailApi(MeetingStr, navigate, t, 3, dispatch)
         .then(async (result) => {
           // Handle the result here
+          
           let Data = {
             VideoCallURL: result.videoCallURL,
             FK_MDID: Number(result.meetingID),
@@ -1015,6 +1017,7 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
+          localStorage.removeItem("MeetingStr")
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -3318,7 +3321,7 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 4
@@ -3340,7 +3343,7 @@ const NewMeeting = () => {
                 role: "Agenda Contributor",
                 isPrimaryOrganizer: false,
               });
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 1
@@ -3356,7 +3359,7 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
               handleViewMeeting(
                 dashboardEventData.videoCallURL,
                 meeting.pK_MDID,
@@ -3404,7 +3407,7 @@ const NewMeeting = () => {
                   dashboardEventData.pK_MDID
                 );
                 setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
-                dispatch(viewMeetingFlag(true));
+                // dispatch(viewMeetingFlag(true));
                 setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 dispatch(scheduleMeetingPageFlag(false));

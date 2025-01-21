@@ -299,6 +299,11 @@ const PrivateRoutes = () => {
         let getValue = getActionValue(currentUrl, "viewMeeting_action=");
         localStorage.setItem("viewMeetingLink", getValue);
       }
+      if(currentUrl.toLowerCase().includes("/Diskus/Minutes/?MRAP=".toLowerCase())) {
+        let getValue = getActionValue(currentUrl, "MRAP=");
+        
+        localStorage.setItem("reviewMinutesLink", getValue);
+      }
       // if (
       //   currentUrl
       //     .toLowerCase()
