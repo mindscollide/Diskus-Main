@@ -83,6 +83,7 @@ const initialState = {
   stopPresenterReducer: false,
   minimizePresenterReducer: false,
   leavePresenterModal: false,
+  slowPresenterInternet: "",
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -985,6 +986,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         leavePresenterModal: action.response,
+      };
+
+    // For Slow Internet Presenter Connectivity
+    case actions.PRESENTER_SLOW_INTERNET_CONNECTIVITY:
+      return {
+        ...state,
+        slowPresenterInternet: action.response,
       };
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:

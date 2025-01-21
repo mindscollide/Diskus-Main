@@ -55,6 +55,7 @@ import {
   startPresenterGlobal,
   presenterModalLeave,
   minimizePresenterGlobalState,
+  presenterSlowInternetConnection,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -280,13 +281,22 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.startPresenterReducer
   );
 
-  console.log(startPresenterReducer, "startPresenterReducer");
+  // slow Presenter internet connection Reducer
+  const slowPresenterInternet = useSelector(
+    (state) => state.videoFeatureReducer.slowPresenterInternet
+  );
+
+  console.log("slowPresenterInternet", slowPresenterInternet);
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // offline message for presenter View
   const [offlinePresenter, setOfflinePresenter] = useState("");
-  const [offlineState, setOfflineState] = useState(false);
+  console.log("CheckpresenterStatus", offlinePresenter);
+
+  // Slow internet connection for presenter View
+  const [slowConnectionPresenter, setSlowConnectionPresenter] = useState("");
+  console.log("CheckOnlineStatus", slowConnectionPresenter);
 
   // for real time Notification
   const [notification, setNotification] = useState({
@@ -364,7 +374,6 @@ const Dashboard = () => {
         dispatch(minimizePresenterGlobalState(false));
         dispatch(startPresenterGlobal(false));
         dispatch(presenterModalLeave(false));
-        setOfflineState(true);
         setOfflinePresenter(
           "Shawn Alex has lost the connection and presentation has been stopped"
         );
@@ -2962,13 +2971,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     const handleOnline = () => {
+      console.log("Handle Online");
       setIsOnline(true);
+      setOfflinePresenter("");
     };
 
     const handleOffline = () => {
+      console.log("Handle Online");
       setIsOnline(false);
     };
 
+    console.log("Handle Online");
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
@@ -3025,8 +3038,49 @@ const Dashboard = () => {
 
   // onClick cross to close presenter Offline Text
   const offlineCrossPresenterMessage = () => {
-    setOfflineState(false);
+    setOfflinePresenter("");
     localStorage.setItem("CheckNet", false);
+  };
+
+  const checkInternetSpeed = () => {
+    if (navigator.connection) {
+      console.log(navigator.connection, "navigatorconnection");
+      const { effectiveType } = navigator.connection;
+      let getCheckNet = JSON.parse(localStorage.getItem("CheckNet"));
+
+      // Check if the connection is slow
+      if (getCheckNet) {
+        if (effectiveType === "2g" || effectiveType === "slow-2g") {
+          // alert("Slow-Internet-connection");
+          dispatch(
+            presenterSlowInternetConnection(
+              "Slow internet connection on Presenter side"
+            )
+          );
+        }
+      } else {
+        console.log("Connection Lost");
+      }
+    } else {
+      console.log("Network Information API is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    // Check speed when the component is mounted
+    checkInternetSpeed();
+
+    // Optionally, add an event listener to detect changes in connection
+    if (navigator.connection) {
+      navigator.connection.addEventListener("change", checkInternetSpeed);
+      return () => {
+        navigator.connection.removeEventListener("change", checkInternetSpeed);
+      };
+    }
+  }, []);
+
+  const slowConnectionInternetClose = () => {
+    dispatch(presenterSlowInternetConnection(""));
   };
 
   return (
@@ -3164,12 +3218,35 @@ const Dashboard = () => {
 
           {startPresenterReducer && <PresenterMeetingView />}
         </Layout>
-        {offlinePresenter && offlineState && (
+
+        {offlinePresenter && (
           <div className="offlinePresenter-class">
             <>
               <span className="Offline-presenter-text">{offlinePresenter}</span>
               <span
                 onClick={offlineCrossPresenterMessage}
+                className="Cross-preseter"
+              >
+                <img
+                  src={crossIcon}
+                  width="18px"
+                  height="18px"
+                  alt="Cross"
+                  className="cursor-pointer"
+                />
+              </span>
+            </>
+          </div>
+        )}
+
+        {slowPresenterInternet && (
+          <div className="slow-Connection-Presenter-class">
+            <>
+              <span className="Offline-presenter-text">
+                {slowPresenterInternet}
+              </span>
+              <span
+                onClick={slowConnectionInternetClose}
                 className="Cross-preseter"
               >
                 <img

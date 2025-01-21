@@ -1257,6 +1257,14 @@ const presenterModalLeave = (response) => {
   };
 };
 
+//For Slow Internet Presenter Connectivity
+const presenterSlowInternetConnection = (response) => {
+  return {
+    type: actions.PRESENTER_SLOW_INTERNET_CONNECTIVITY,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1339,4 +1347,5 @@ export {
   stopPresenterGlobal,
   minimizePresenterGlobalState,
   presenterModalLeave,
+  presenterSlowInternetConnection,
 };
