@@ -233,7 +233,7 @@ const WebNotificationCard = ({
         } else if (NotificaitonID === 44) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-deleted-the-Resolution"
-          )} ${NotificationMessege.ResolutionTitle}`;
+          )} ${NotificationMessege.Title}`;
         } else if (NotificaitonID === 45) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-deleted-the-poll"
@@ -241,11 +241,11 @@ const WebNotificationCard = ({
         } else if (NotificaitonID === 46) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-given-his-vote-on-a-poll"
-          )} ${NotificationMessege.PollTitle}`;
+          )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 47) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-given-his-vote-on-a-poll-in-the-meeting"
-          )} ${NotificationMessege.PollTitle}`;
+          )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 48) {
           message = `${t("Send-response-date-for-the-proposed-meeting")} ${
             NotificationMessege.MeetingTitle

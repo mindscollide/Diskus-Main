@@ -1065,6 +1065,37 @@ const WebNotfication = ({
           // Notification For Deleted a file as viewer
           navigate("/Diskus/dataroom");
         }
+      } else if (NotificationData.notificationActionID === 41) {
+        if (currentURL.includes("/Diskus/Minutes")) {
+          localStorage.setItem("MinutesOperations", true);
+          localStorage.setItem(
+            "NotificationClickMinutesMeetingID",
+            PayLoadData.MeetingID
+          );
+          //Notification for being added as a minute reviewer
+          let Data = {
+            MeetingID: Number(PayLoadData.MeetingID),
+          };
+          dispatch(
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+          );
+        } else {
+          //Notification for being added as a minute reviewer
+          navigate("/Diskus/Minutes");
+
+          localStorage.setItem("MinutesOperations", true);
+          localStorage.setItem(
+            "NotificationClickMinutesMeetingID",
+            PayLoadData.MeetingID
+          );
+          //Notification for being added as a minute reviewer
+          let Data = {
+            MeetingID: Number(PayLoadData.MeetingID),
+          };
+          dispatch(
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+          );
+        }
       } else {
       }
     }
