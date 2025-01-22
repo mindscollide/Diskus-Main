@@ -1137,6 +1137,8 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 44) {
+        // if the resolution has been deleted
+        navigate("/Diskus/resolution");
       } else if (NotificationData.notificationActionID === 45) {
       } else if (NotificationData.notificationActionID === 46) {
       } else if (NotificationData.notificationActionID === 47) {
