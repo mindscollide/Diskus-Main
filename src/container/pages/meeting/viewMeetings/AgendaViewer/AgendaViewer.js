@@ -116,6 +116,7 @@ const AgendaViewer = ({
   console.log(videoTalk, "videoTalkvideoTalk");
   const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
   const { editorRole, setEditorRole } = useMeetingContext();
+  console.log(editorRole, "editorRole");
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -133,6 +134,9 @@ const AgendaViewer = ({
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
 
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
@@ -810,27 +814,68 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null} */}
 
-                      {startPresenterReducer ? (
-                        <Tooltip>
-                          <div
-                            className={styles["Stop-presenter-view-class"]}
-                            onClick={stopPresenterCheck}
-                          >
-                            <img src={StopImage} />
-                            <p>{t("Stop-presenting")}</p>
-                          </div>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip>
-                          <div
-                            className={styles["Start-presenter-view-class"]}
-                            onClick={startPresenterCheck}
-                          >
-                            <img src={PresenterView} />
-                            <p>{t("Start-presenting")}</p>
-                          </div>
-                        </Tooltip>
-                      )}
+                      {editorRole.status === 10 ||
+                      editorRole.status === "10" ? (
+                        <>
+                          {isMeetingVideoHostCheck ? (
+                            <>
+                              {startPresenterReducer ? (
+                                <Tooltip>
+                                  <div
+                                    className={
+                                      styles["Stop-presenter-view-class"]
+                                    }
+                                    onClick={stopPresenterCheck}
+                                  >
+                                    <img src={StopImage} />
+                                    <p>{t("Stop-presenting")}</p>
+                                  </div>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip>
+                                  <div
+                                    className={
+                                      styles["Start-presenter-view-class"]
+                                    }
+                                    onClick={startPresenterCheck}
+                                  >
+                                    <img src={PresenterView} />
+                                    <p>{t("Start-presenting")}</p>
+                                  </div>
+                                </Tooltip>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {startPresenterReducer ? (
+                                <Tooltip>
+                                  <div
+                                    className={
+                                      styles["Stop-presenter-view-class"]
+                                    }
+                                    onClick={stopPresenterCheck}
+                                  >
+                                    <img src={StopImage} />
+                                    <p>{t("Stop-presenting")}</p>
+                                  </div>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip>
+                                  <div
+                                    className={
+                                      styles["Start-presenter-view-class"]
+                                    }
+                                    onClick={startPresenterCheck}
+                                  >
+                                    <img src={PresenterView} />
+                                    <p>{t("Join-presenting")}</p>
+                                  </div>
+                                </Tooltip>
+                              )}
+                            </>
+                          )}
+                        </>
+                      ) : null}
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&

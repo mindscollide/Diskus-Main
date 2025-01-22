@@ -3057,6 +3057,8 @@ const Dashboard = () => {
               "Slow internet connection on Presenter side"
             )
           );
+        } else {
+          dispatch(presenterSlowInternetConnection(""));
         }
       } else {
         console.log("Connection Lost");

@@ -70,3 +70,29 @@
   width: 7rem !important;
   height: 7rem !important;
 }
+
+.participants-list-presenter {
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px 10px;
+  position: absolute;
+  width: 245px;
+  top: 20px;
+  height: 170px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  left: -105px;
+  overflow: hidden auto;
+}
+
+.participants-minimize-list {
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px 10px;
+  position: absolute;
+  width: 245px;
+  bottom: 35px;
+  height: 170px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  left: -105px;
+  overflow: hidden auto;
+}
