@@ -223,6 +223,9 @@ const PrivateRoutes = () => {
           .includes("Diskus/committee?id_action".toLowerCase())
       ) {
         let getValue = getActionValue(currentUrl, "id_action=");
+        // let getValue = getActionValue(currentUrl, "id_action=");
+        console.log(getValue, "getValuegetValuegetValue")
+
         localStorage.setItem("committeeView_Id", getValue);
       }
       // Committee List View
@@ -299,19 +302,23 @@ const PrivateRoutes = () => {
         let getValue = getActionValue(currentUrl, "viewMeeting_action=");
         localStorage.setItem("viewMeetingLink", getValue);
       }
-      if(currentUrl.toLowerCase().includes("/Diskus/Minutes/?MRAP=".toLowerCase())) {
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Minutes/?MRAP=".toLowerCase())
+      ) {
         let getValue = getActionValue(currentUrl, "MRAP=");
-        
+
         localStorage.setItem("reviewMinutesLink", getValue);
       }
-      // if (
-      //   currentUrl
-      //     .toLowerCase()
-      //     .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
-      // ) {
-      //   let getValue = getActionValue(currentUrl, "viewMeetingMinutes_action=");
-      //   localStorage.setItem("viewPublishMinutesLink", getValue);
-      // }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "viewMeetingMinutes_action=");
+        localStorage.setItem("viewPublishMinutesLink", getValue);
+      }
     };
     callRoutingFunction();
     // Action: Meeting RSVP
@@ -332,34 +339,6 @@ const PrivateRoutes = () => {
     { currentUser, token },
     "PrivateRoutesPrivateRoutesPrivateRoutes"
   );
-  return currentUser && token ? (
-    <Outlet />
-  ) : (
-    <Navigate
-      to={
-        currentUrl !== "" &&
-        (currentUrl
-          .toLowerCase()
-          .includes(
-            "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
-          ) ||
-          currentUrl.toLowerCase().includes("Diskus/dataroom".toLowerCase()) ||
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/documentViewer?documentViewer_action".toLowerCase()
-            ) ||
-          currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/committee".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/resolution".toLowerCase()))
-          ? "/"
-          : currentUser === null && token === ""
-          ? "/"
-          : "*"
-      }
-    />
-  );
+  return currentUser && token ? <Outlet /> : <Navigate to='/' />;
 };
 export default PrivateRoutes;

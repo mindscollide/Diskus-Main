@@ -110,7 +110,6 @@ const Committee = () => {
   const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  let committeeView_Id = localStorage.getItem("committeeView_Id");
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
@@ -121,11 +120,11 @@ const Committee = () => {
 
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
-
+  const committeeList = localStorage.getItem("committeeList");
+  const committeeViewId = localStorage.getItem("committeeView_Id");
+  console.log(committeeViewId, committeeList, "committeeListcommitteeList");
   useEffect(() => {
     try {
-      const committeeList = localStorage.getItem("committeeList");
-      const committeeViewId = localStorage.getItem("committeeView_Id");
       // Handle the current page logic
       if (currentPage !== null) {
         // Dispatch an action to fetch committees by user ID for the current page
@@ -168,8 +167,11 @@ const Committee = () => {
               t
             )
           );
-          
-          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+
+          if (
+            getResponse.isExecuted === true &&
+            getResponse.responseCode === 1
+          ) {
             // Set necessary states and flags for viewing committee details
             setViewCommitteeViewTab(1); // Switch to the committee details tab
             localStorage.setItem(
@@ -195,7 +197,10 @@ const Committee = () => {
             )
           );
           console.log(getResponse, "getResponse");
-          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          if (
+            getResponse.isExecuted === true &&
+            getResponse.responseCode === 1
+          ) {
             localStorage.removeItem("CoArcurrentPage");
             localStorage.setItem("CocurrentPage", 1);
             dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
@@ -211,10 +216,63 @@ const Committee = () => {
 
     // Cleanup logic for unmount
     return () => {
+      localStorage.removeItem("committeeView_Id");
+      localStorage.removeItem("committeeList");
+
       localStorage.removeItem("NotificationClickCommitteeArchived"); // Remove notification flag
       setShowModal(false); // Reset modal visibility
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
+  useEffect(() => {
+    if (committeeViewId !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewCommitteeDetailLinkApi(
+            committeeViewId,
+            navigate,
+            t
+          )
+        );
+
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          // Set necessary states and flags for viewing committee details
+          setViewCommitteeViewTab(1); // Switch to the committee details tab
+          localStorage.setItem(
+            "ViewCommitteeID",
+            getResponse.response.committeeID
+          ); // Save the committee ID in localStorage
+          setViewGroupPage(true); // Navigate to group page
+          dispatch(viewCommitteePageFlag(true)); // Set the view committee page flag
+        }
+        localStorage.removeItem("committeeView_Id"); // Cleanup the localStorage key
+      };
+      callApi(); // Invoke the API call
+    }
+  }, [committeeViewId]);
+  useEffect(() => {
+    if (committeeList !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewCommitteeListLinkApi(
+            committeeList,
+            navigate,
+            t
+          )
+        );
+        console.log(getResponse, "getResponse");
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          localStorage.removeItem("CoArcurrentPage");
+          localStorage.setItem("CocurrentPage", 1);
+          dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+        }
+
+        localStorage.removeItem("committeeList"); // Cleanup the localStorage key
+      };
+      callApi(); // Invoke the API call
+    }
+  }, [committeeList]);
 
   useEffect(() => {
     try {
