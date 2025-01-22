@@ -1118,6 +1118,24 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 43) {
+        //if the user role has been changed in the committee
+        if (currentURL.includes("/Diskus/committee")) {
+          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem(
+            "NotifcationClickViewCommitteeID",
+            PayLoadData.CommitteeID
+          );
+          setViewGroupPage(true);
+          dispatch(viewCommitteePageFlag(true));
+        } else {
+          //Notification for being Added in the Committee
+          navigate("/Diskus/committee");
+          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem(
+            "NotifcationClickViewCommitteeID",
+            PayLoadData.CommitteeID
+          );
+        }
       } else if (NotificationData.notificationActionID === 44) {
       } else if (NotificationData.notificationActionID === 45) {
       } else if (NotificationData.notificationActionID === 46) {
