@@ -341,11 +341,13 @@ const VideoNewParticipantList = () => {
               </p>
             </Col>
             <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
-              <Button
-                text={isForAll ? t("Unmute-all") : t("Mute-all")}
-                className={styles["Waiting-New-Participant-muteAll"]}
-                onClick={() => muteUnmuteAllByHost(isForAll)}
-              />
+              {filteredParticipants.length > 1 && (
+                <Button
+                  text={isForAll ? t("Unmute-all") : t("Mute-all")}
+                  className={styles["Waiting-New-Participant-muteAll"]}
+                  onClick={() => muteUnmuteAllByHost(isForAll)}
+                />
+              )}
             </Col>
           </Row>
         </div>
