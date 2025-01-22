@@ -537,7 +537,16 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 11) {

@@ -9464,11 +9464,12 @@ const GetMeetingStatusDataAPI = (
                   dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 }
                 //Global Video Chat And Group ID Context State
-                setVideoTalk({
-                  isChat: response.data.responseResult.isChat,
-                  isVideoCall: response.data.responseResult.isVideoCall,
-                  talkGroupID: response.data.responseResult.talkGroupID,
-                });
+                isFunction(setVideoTalk) &&
+                  setVideoTalk({
+                    isChat: response.data.responseResult.isChat,
+                    isVideoCall: response.data.responseResult.isVideoCall,
+                    talkGroupID: response.data.responseResult.talkGroupID,
+                  });
                 console.log(Check, "errorerrorerror");
                 //Joining Meeting Scenario
                 if (Check === 1) {
