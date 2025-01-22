@@ -70,6 +70,8 @@ const ViewMeetingModal = ({
   const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+  const ViewAdvanceMeetingPolls =
+    JSON.parse(localStorage.getItem("viewadvanceMeetingPolls")) === true;
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -97,7 +99,9 @@ const ViewMeetingModal = ({
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
   const [meetingMaterial, setMeetingMaterial] = useState(
-    advanceMeetingOperations
+    ViewAdvanceMeetingPolls
+      ? false
+      : advanceMeetingOperations
       ? true
       : (editorRole.role === "Organizer" ||
           editorRole.role === "Participant" ||
@@ -110,7 +114,7 @@ const ViewMeetingModal = ({
 
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
-  const [polls, setPolls] = useState(false);
+  const [polls, setPolls] = useState(ViewAdvanceMeetingPolls ? true : false);
   const [attendance, setAttendance] = useState(false);
   const [attendees, setAttendees] = useState(false);
 
