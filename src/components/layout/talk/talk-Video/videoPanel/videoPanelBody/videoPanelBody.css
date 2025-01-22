@@ -166,3 +166,20 @@ p.disconnection-text {
   height: 39px;
   color: #5a5a5a !important;
 }
+.one-to-one-and-group-call-profile {
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* background: #49dbdb; */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.one-to-one-and-group-call-profile img {
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+
+}

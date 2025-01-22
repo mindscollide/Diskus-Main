@@ -658,7 +658,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               navigate("/Admin/ManageUsers");
             } else {
               if (response.data.responseResult.authToken.isFirstLogIn) {
-                if (RSVP !== undefined && RSVP !== null) {
+                if (RSVP !== null) {
                   navigate("/Diskus/Meeting/Useravailabilityformeeting");
                 } else if (
                   dataroomValue !== null ||
@@ -697,7 +697,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/onboard");
                 }
               } else {
-                if (RSVP !== undefined && RSVP !== null) {
+                if (RSVP !== null) {
                   navigate("/Diskus/Meeting/Useravailabilityformeeting");
                 } else if (
                   dataroomValue !== null ||
@@ -743,7 +743,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch
             );
             if (response.data.responseResult.authToken.isFirstLogIn) {
-              if (RSVP !== undefined && RSVP !== null) {
+              if (RSVP !== null) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else if (
                 dataroomValue !== null ||
@@ -769,10 +769,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 pollExpire !== null
               ) {
                 navigate("/Diskus/polling");
-              } else if (
-                committeeView_Id !== null ||
-                committeeList !== null
-              ) {
+              } else if (committeeView_Id !== null || committeeList !== null) {
                 navigate("/Diskus/committee");
               } else if (groupView_Id !== null || groupList !== null) {
                 navigate("/Diskus/groups");
@@ -782,7 +779,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/onboard");
               }
             } else {
-              if (RSVP !== undefined && RSVP !== null) {
+              if (RSVP !== null) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else if (
                 dataroomValue !== null ||
@@ -808,10 +805,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 pollExpire !== null
               ) {
                 navigate("/Diskus/polling");
-              } else if (
-                committeeView_Id !== null ||
-                committeeList !== null
-              ) {
+              } else if (committeeView_Id !== null || committeeList !== null) {
                 navigate("/Diskus/committee");
               } else if (groupView_Id !== null || groupList !== null) {
                 navigate("/Diskus/groups");
@@ -855,7 +849,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             );
 
             if (response.data.responseResult.authToken.isFirstLogIn) {
-              if (RSVP !== undefined && RSVP !== null) {
+              if (RSVP !== null) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else if (
                 dataroomValue !== null ||
@@ -881,20 +875,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 pollExpire !== null
               ) {
                 navigate("/Diskus/polling");
-              } else if (
-                committeeView_Id !== null ||
-                committeeList !== null
-              ) {
+              } else if (committeeView_Id !== null || committeeList !== null) {
                 navigate("/Diskus/committee");
               } else if (groupView_Id !== null || groupList !== null) {
                 navigate("/Diskus/groups");
               } else if (taskListView_Id !== null || taskListView !== null) {
                 navigate("/Diskus/todolist");
-              }  else {
+              } else {
                 navigate("/onboard");
               }
             } else {
-              if (RSVP !== undefined && RSVP !== null) {
+              if (RSVP !== null) {
                 navigate("/Diskus/Meeting/Useravailabilityformeeting");
               } else if (
                 dataroomValue !== null ||
@@ -920,10 +911,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 pollExpire
               ) {
                 navigate("/Diskus/polling");
-              }  else if (
-                committeeView_Id !== null ||
-                committeeList !== null
-              ) {
+              } else if (committeeView_Id !== null || committeeList !== null) {
                 navigate("/Diskus/committee");
               } else if (groupView_Id !== null || groupList !== null) {
                 navigate("/Diskus/groups");
