@@ -35,13 +35,17 @@ const RSVP = () => {
   const UserAvalibilityState = useSelector(
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
-
+  let getRSVP = localStorage.getItem("RSVP")
+  console.log(getRSVP, "RSVPRSVPRSVPRSVPRSVP")
   useEffect(() => {
     if (localStorage.getItem("RSVP") !== null) {
       let Data = { EncryptedString: localStorage.getItem("RSVP") };
       dispatch(
         validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
       );
+    }
+    return () => {
+      localStorage.removeItem("RSVP");
     }
   }, []);
 
@@ -60,7 +64,7 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
-        localStorage.removeItem("RSVP");
+
       } else {
         // Handle the case when UserAvailabilityState is undefined or null
       }

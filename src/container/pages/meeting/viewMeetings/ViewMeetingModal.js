@@ -83,34 +83,13 @@ const ViewMeetingModal = ({
   );
   console.log(typeof advanceMeetingOperations);
   const { editorRole, setEditorRole } = useMeetingContext();
-  const [meetingDetails, setmeetingDetails] = useState(
-    advanceMeetingOperations
-      ? false
-      : (editorRole.role === "Organizer" ||
-          editorRole.role === "Participant" ||
-          editorRole.role === "Agenda Contributor") &&
-        Number(editorRole.status) === 10
-      ? false
-      : true
-  );
+  const [meetingDetails, setmeetingDetails] = useState(true);
 
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(
-    ViewAdvanceMeetingPolls
-      ? false
-      : advanceMeetingOperations
-      ? true
-      : (editorRole.role === "Organizer" ||
-          editorRole.role === "Participant" ||
-          editorRole.role === "Agenda Contributor") &&
-        routeID !== 5 &&
-        Number(editorRole.status) === 10
-      ? true
-      : false
-  );
+  const [meetingMaterial, setMeetingMaterial] = useState(false);
 
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
@@ -151,37 +130,129 @@ const ViewMeetingModal = ({
   );
 
   console.log(
-    agendaContributors,
-    meetingDetails,
-    organizers,
-    agenda,
-    minutes,
+    {
+      agendaContributors,
+      meetingDetails,
+      organizers,
+      participants,
+      agenda,
+      minutes,
+      attendance,
+      polls,
+      actionsPage,
+      meetingDetails,
+      meetingMaterial,
+    },
     "routeIDrouteID"
   );
 
   useEffect(() => {
-    if (routeID !== null && routeID !== 0) {
-      if (Number(routeID) === 1) {
-        // Agenda Contributor Tab
-        setAgendaContributors(true);
-        setmeetingDetails(false);
-      } else if (Number(routeID) === 2) {
-        setorganizers(true);
-        setmeetingDetails(false);
-      } else if (Number(routeID) === 3) {
-        setAgenda(true);
-        setmeetingDetails(false);
-      } else if (Number(routeID) === 5) {
-        setmeetingDetails(false);
-        setAgenda(false);
+    if (Number(editorRole?.status) === 10 && editorRole.role !== "") {
+      if (routeID !== null && routeID !== 0) {
+        if (Number(routeID) === 1) {
+          setMeetingMaterial(false);
+          setAgendaContributors(true);
+          setorganizers(false);
+          setmeetingDetails(false);
+          setMinutes(false);
+          setAttendance(false);
+          setAgenda(false);
+          setParticipants(false);
+          setPolls(false);
+          setAttendees(false);
+          setactionsPage(false);
+        } else if (Number(routeID) === 2) {
+          setMeetingMaterial(false);
+          setAgendaContributors(false);
+          setorganizers(true);
+          setmeetingDetails(false);
+          setMinutes(false);
+          setAttendance(false);
+          setAgenda(false);
+          setParticipants(false);
+          setPolls(false);
+          setAttendees(false);
+          setactionsPage(false);
+        } else if (Number(routeID) === 3) {
+          setMeetingMaterial(true);
+          setAgendaContributors(false);
+          setorganizers(false);
+          setmeetingDetails(false);
+          setMinutes(false);
+          setAttendance(false);
+          setAgenda(false);
+          setParticipants(false);
+          setPolls(false);
+          setAttendees(false);
+          setactionsPage(false);
+        } else if (Number(routeID) === 5) {
+          setMeetingMaterial(true);
+          setAgendaContributors(false);
+          setorganizers(false);
+          setmeetingDetails(false);
+          setMinutes(true);
+          setAttendance(false);
+          setAgenda(false);
+          setParticipants(false);
+          setPolls(false);
+          setAttendees(false);
+          setactionsPage(false);
+        }
+      } else if (ViewAdvanceMeetingPolls) {
+        setMeetingMaterial(false);
         setAgendaContributors(false);
-        setMinutes(true);
+        setorganizers(false);
+        setmeetingDetails(true);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setPolls(false);
+        setAttendees(false);
+        setactionsPage(false);
+      } else {
+        if (advanceMeetingOperations) {
+          setMeetingMaterial(true);
+        } else {
+          if (Number(editorRole.role) === 10) {
+            if (
+              editorRole.role === "Organizer" ||
+              editorRole.role === "Agenda Contributor" ||
+              editorRole.role === "Participant"
+            ) {
+              setMeetingMaterial(true);
+              setAgendaContributors(false);
+              setorganizers(false);
+              setmeetingDetails(false);
+              setMinutes(false);
+              setAttendance(false);
+              setAgenda(false);
+              setParticipants(false);
+              setPolls(false);
+              setAttendees(false);
+              setactionsPage(false);
+            }
+          } else {
+            setMeetingMaterial(false);
+            setAgendaContributors(false);
+            setorganizers(false);
+            setmeetingDetails(true);
+            setMinutes(false);
+            setAttendance(false);
+            setAgenda(false);
+            setParticipants(false);
+            setPolls(false);
+            setAttendees(false);
+            setactionsPage(false);
+          }
+        }
       }
     }
+
     return () => {
       dispatch(emailRouteID(0));
     };
-  }, [routeID]);
+  }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
