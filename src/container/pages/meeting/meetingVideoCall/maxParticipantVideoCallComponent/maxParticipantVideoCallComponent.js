@@ -45,6 +45,7 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
+import { Tooltip } from "antd";
 
 const ParticipantVideoCallComponent = () => {
   const dispatch = useDispatch();
@@ -504,71 +505,85 @@ const ParticipantVideoCallComponent = () => {
           >
             <div className="max-videoParticipant-Icons-state">
               {isMicEnabled ? (
-                <img
-                  dragable="false"
-                  src={MicOff}
-                  className="cursor-pointer"
-                  onClick={() => toggleAudio(false)}
-                  alt=""
-                />
+                <Tooltip placement="topRight" title={t("Enable-mic")}>
+                  <img
+                    dragable="false"
+                    src={MicOff}
+                    className="cursor-pointer"
+                    onClick={() => toggleAudio(false)}
+                    alt=""
+                  />
+                </Tooltip>
               ) : (
-                <img
-                  dragable="false"
-                  src={minimizeState ? MicOn : MicOn2}
-                  onClick={() => toggleAudio(true)}
-                  className="cursor-pointer"
-                  alt=""
-                />
+                <Tooltip placement="topRight" title={t("Disable-mic")}>
+                  <img
+                    dragable="false"
+                    src={minimizeState ? MicOn : MicOn2}
+                    onClick={() => toggleAudio(true)}
+                    className="cursor-pointer"
+                    alt=""
+                  />
+                </Tooltip>
               )}
             </div>
             <div className="max-videoParticipant-Icons-state">
               {isWebCamEnabled ? (
-                <img
-                  dragable="false"
-                  src={VideoOff}
-                  onClick={() => toggleVideo(false)}
-                  alt=""
-                />
+                <Tooltip placement="topRight" title={t("Enable-video")}>
+                  <img
+                    dragable="false"
+                    src={VideoOff}
+                    onClick={() => toggleVideo(false)}
+                    alt=""
+                  />
+                </Tooltip>
               ) : (
-                <img
-                  dragable="false"
-                  src={minimizeState ? VideoOn : VideoOn2}
-                  onClick={() => toggleVideo(true)}
-                  alt=""
-                />
+                <Tooltip placement="topRight" title={t("Disable-video")}>
+                  <img
+                    dragable="false"
+                    src={minimizeState ? VideoOn : VideoOn2}
+                    onClick={() => toggleVideo(true)}
+                    alt=""
+                  />
+                </Tooltip>
               )}
             </div>
             <div
               className="max-videoParticipant-Icons-state"
               onClick={toggleMinimizeState}
             >
-              <img
-                dragable="false"
-                src={minimizeState ? MinimizeIcon2 : MinimizeIcon}
-                alt="MinimizeIcon"
-              />
+              <Tooltip placement="topRight" title={t("Minimize")}>
+                <img
+                  dragable="false"
+                  src={minimizeState ? MinimizeIcon2 : MinimizeIcon}
+                  alt="MinimizeIcon"
+                />
+              </Tooltip>
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img
-                dragable="false"
-                src={
-                  minimizeState
-                    ? MinToNormalIcon
-                    : NormalizeIcon && isNormalPanel
-                    ? ExpandIcon
-                    : NormalizeIcon
-                }
-                onClick={onClickToNormalParticipantPanel}
-                alt="ExpandIcon"
-              />
+              <Tooltip placement="topRight" title={t("Collapse")}>
+                <img
+                  dragable="false"
+                  src={
+                    minimizeState
+                      ? MinToNormalIcon
+                      : NormalizeIcon && isNormalPanel
+                      ? ExpandIcon
+                      : NormalizeIcon
+                  }
+                  onClick={onClickToNormalParticipantPanel}
+                  alt="ExpandIcon"
+                />
+              </Tooltip>
             </div>
             <div className="max-videoParticipant-Icons-state">
-              <img
-                dragable="false"
-                src={EndCall}
-                onClick={() => onClickEndVideoCall(false)}
-                alt="EndCall"
-              />
+              <Tooltip placement="topRight" title={t("Leave-call")}>
+                <img
+                  dragable="false"
+                  src={EndCall}
+                  onClick={() => onClickEndVideoCall(false)}
+                  alt="EndCall"
+                />
+              </Tooltip>
             </div>
           </Col>
         </Row>

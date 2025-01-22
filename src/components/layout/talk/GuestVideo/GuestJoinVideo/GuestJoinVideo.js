@@ -312,7 +312,7 @@ const GuestJoinVideo = ({
                             {isMicEnabled ? (
                               <Tooltip
                                 placement="topRight"
-                                title={t("Enable-mic")}
+                                title={t("Disable-mic")}
                               >
                                 <img
                                   src={MicOn}
@@ -323,7 +323,7 @@ const GuestJoinVideo = ({
                             ) : (
                               <Tooltip
                                 placement="topRight"
-                                title={t("Disable-mic")}
+                                title={t("Enable-mic")}
                               >
                                 <img
                                   src={MicOff}
@@ -336,7 +336,7 @@ const GuestJoinVideo = ({
                             {isWebCamEnabled ? (
                               <Tooltip
                                 placement="topRight"
-                                title={t("Enable-video")}
+                                title={t("Disable-video")}
                               >
                                 <img
                                   className="cursor-pointer"
@@ -347,7 +347,7 @@ const GuestJoinVideo = ({
                             ) : (
                               <Tooltip
                                 placement="topRight"
-                                title={t("Disable-video")}
+                                title={t("Enable-video")}
                               >
                                 <img
                                   className="cursor-pointer"
