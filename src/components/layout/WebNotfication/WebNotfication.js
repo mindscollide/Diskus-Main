@@ -1097,6 +1097,26 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 42) {
+        //if the Users role has been changed in the Groups
+        if (currentURL.includes("/Diskus/groups")) {
+          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem(
+            "NotifcationClickViewGroupID",
+            PayLoadData.GroupID
+          );
+          // For Notification Added in the Group
+          setViewGroupPage(true);
+          dispatch(viewGroupPageFlag(true));
+        } else {
+          //Notificaiton For Added in Group
+          navigate("/Diskus/groups");
+          //open ViewMode Modal Also in this
+          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem(
+            "NotifcationClickViewGroupID",
+            PayLoadData.GroupID
+          );
+        }
       } else if (NotificationData.notificationActionID === 43) {
       } else if (NotificationData.notificationActionID === 44) {
       } else if (NotificationData.notificationActionID === 45) {
