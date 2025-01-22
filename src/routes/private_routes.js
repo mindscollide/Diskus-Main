@@ -313,6 +313,23 @@ const PrivateRoutes = () => {
         localStorage.setItem("mobilePopUpAppRoute", getValue);
         console.log(getValue, "getValuegetValuegetValue");
       }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Minutes/?MRAP=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "MRAP=");
+
+        localStorage.setItem("reviewMinutesLink", getValue);
+      }
+      // if (
+      //   currentUrl
+      //     .toLowerCase()
+      //     .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
+      // ) {
+      //   let getValue = getActionValue(currentUrl, "viewMeetingMinutes_action=");
+      //   localStorage.setItem("viewPublishMinutesLink", getValue);
+      // }
     };
     callRoutingFunction();
     // Action: Meeting RSVP

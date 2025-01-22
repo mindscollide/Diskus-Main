@@ -30,6 +30,7 @@ export const MeetingProvider = ({ children }) => {
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0)
 
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
@@ -70,6 +71,8 @@ export const MeetingProvider = ({ children }) => {
         setViewProposeDatePoll,
         deleteMeetingConfirmationModal,
         setDeleteMeetingConfirmationModal,
+        setAdvanceMeetingModalID,
+        advanceMeetingModalID
       }}
     >
       {children}
