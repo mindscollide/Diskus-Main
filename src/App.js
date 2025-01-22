@@ -121,35 +121,6 @@ const App = () => {
   );
 
   // Detect mobile device function
-  // const isMobileDevice = () => {
-  //   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  //   const isAndroid = /android/i.test(userAgent);
-  //   const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
-
-  //   return isAndroid || isIOS;
-  // };
-
-  // const appLink = "thediskus://thediskus.com";
-  // const fallbackDelay = 2000; // Adjust as needed
-
-  // useEffect(() => {
-  //   if (isMobileDevice()) {
-  //     const start = Date.now();
-
-  //     // Attempt to open the app
-  //     window.location.href = appLink;
-
-  //     // Set a timeout to detect failure and show modal
-  //     setTimeout(() => {
-  //       const elapsed = Date.now() - start;
-
-  //       // If user stays on the browser page, show the modal
-  //       if (elapsed < fallbackDelay + 500) {
-  //         dispatch(mobileAppPopModal(true));
-  //       }
-  //     }, fallbackDelay);
-  //   }
-  // }, []);
 
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -159,20 +130,11 @@ const App = () => {
     return isAndroid || isIOS;
   };
 
-  const getQueryStringFromCurrentUrl = () => {
-    const currentUrl = window.location.href;
-    const hashIndex = currentUrl.indexOf("/#/"); // Find the position of '/#/'
-
-    if (hashIndex !== -1) {
-      return currentUrl.substring(hashIndex + 3); // Extract everything after '/#/'
-    }
-    return ""; // Default to an empty string if '/#/' is not present
-  };
-
   useEffect(() => {
     if (isMobileDevice()) {
-      const queryString = getQueryStringFromCurrentUrl(); // Extract the dynamic part
-      const appLink = `thediskus://thediskus.com?${queryString}`; // Append it to the appLink
+      let getString = localStorage.getItem("mobilePopUpAppRoute");
+      const appLink = `thediskus://thediskus.com?rsvp=${getString}`; // Append it to the appLink
+      console.log(appLink, "getValuegetValuegetValue");
       const fallbackDelay = 2000; // Adjust as needed
 
       const start = Date.now();
@@ -190,6 +152,10 @@ const App = () => {
         }
       }, fallbackDelay);
     }
+
+    return () => {
+      localStorage.removeItem("mobilePopUpAppRoute");
+    };
   }, []);
 
   useEffect(() => {

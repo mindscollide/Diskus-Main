@@ -670,8 +670,18 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-          dispatch(showSceduleProposedMeeting(true));
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              2,
+              setVideoTalk
+            )
+          );
         } else {
           //Call Status API to see what is the status of the meeting eighter proposed or published
           navigate("/Diskus/Meeting");
