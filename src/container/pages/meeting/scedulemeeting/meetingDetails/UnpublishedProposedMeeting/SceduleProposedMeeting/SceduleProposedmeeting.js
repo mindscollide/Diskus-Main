@@ -41,6 +41,8 @@ const SceduleProposedmeeting = ({
   //   (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   // );
 
+  // console.log(getUserProposedOrganizerData, "getUserProposedOrganizerData");
+
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
@@ -105,9 +107,12 @@ const SceduleProposedmeeting = ({
         const uniqueData = new Set(
           datesData.selectedProposedDates.map(JSON.stringify)
         );
+        console.log(uniqueData, "uniqueDatauniqueData");
         ProposeDates = Array.from(uniqueData).map(JSON.parse);
       });
       setProposedDates(ProposeDates);
+      console.log(ProposeDates, "uniqueDatauniqueData");
+
       setInitialOrganizerRows(userWiseMeetingProposed);
     } else {
       setInitialOrganizerRows([]);
@@ -127,6 +132,46 @@ const SceduleProposedmeeting = ({
 
     setOrganizerRows(newOrganizerRows);
   }, [initialOrganizerRows]);
+
+  // useEffect(() => {
+  //   if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
+  //     const yourNewObject = {
+  //       userID: 0,
+  //       userName: "Total",
+  //       designation: "",
+  //       userEmail: "",
+  //       title: "",
+  //       selectedProposedDates: Array(proposedDates?.length).fill({
+  //         proposedDateID: 0,
+  //         proposedDate: "",
+  //         startTime: "",
+  //         endTime: "",
+  //         isSelected: false,
+  //         isTotal: 0,
+  //       }),
+  //     };
+  //     const updatedOrganizerRows = [...organizerRows, yourNewObject];
+  //     setUpdateTableRows(updatedOrganizerRows);
+  //     let newDataProposedState = [...proposedDates];
+  //     setProposedDatesData(newDataProposedState);
+  //     const formattedDates = newDataProposedState
+  //       .filter((dates, index) => dates.proposedDate !== "10000101")
+  //       .map((date) => {
+  //         try {
+  //           let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
+  //           const formatetDateTime = utcConvertintoGMT(datetimeVal);
+
+  //           return formatetDateTime;
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       });
+
+  //     if (formattedDates) {
+  //       setFormattedDates(formattedDates);
+  //     }
+  //   }
+  // }, [organizerRows, proposedDates]);
 
   useEffect(() => {
     if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
@@ -152,6 +197,7 @@ const SceduleProposedmeeting = ({
       const formattedDates = newDataProposedState
         .filter((dates, index) => dates.proposedDate !== "10000101")
         .map((date) => {
+          console.log(date, "datedatedate");
           try {
             let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
             const formatetDateTime = utcConvertintoGMT(datetimeVal);
@@ -162,7 +208,7 @@ const SceduleProposedmeeting = ({
           }
         });
 
-      if (formattedDates) {
+      if (formattedDates.length > 0) {
         setFormattedDates(formattedDates);
       }
     }
@@ -185,7 +231,13 @@ const SceduleProposedmeeting = ({
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
+      console.log(organizerRows, columnIndex, "organizerRowsorganizerRows");
       const count = organizerRows.reduce((total, row) => {
+        console.log(
+          row.selectedProposedDates[columnIndex].isSelected,
+          "organizerRowsorganizerRows"
+        );
+
         if (
           row &&
           row.selectedProposedDates.length > 0 &&
@@ -268,12 +320,15 @@ const SceduleProposedmeeting = ({
     },
 
     ...formattedDates.map((formattedDate, index) => {
-      let record = proposedDatesData[index];
+      let record = proposedDatesData[index + 1];
+      console.log(record, "recordrecord");
+      console.log(formattedDate, "formattedDate");
 
       let isFind;
       if (record !== null && record !== undefined) {
         let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
         const formatetDateTime = utcConvertintoGMT(datetimeVal);
+        console.log(formatetDateTime, "formatetDateTime");
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = record;
         }
@@ -281,6 +336,8 @@ const SceduleProposedmeeting = ({
       let checkisPassed =
         new Date() >
         resolutionResultTable(record.proposedDate + record.startTime);
+      console.log(isFind, "isFindisFind");
+
       console.log(checkisPassed, "formatetDateTimeformatetDateTime");
       return {
         title: (
@@ -302,14 +359,16 @@ const SceduleProposedmeeting = ({
         dataIndex: `selectedProposedDates-${index}`,
         key: `selectedProposedDates-${index}`,
         render: (text, record) => {
+          console.log(record, "recordrecordrecord");
           if (record.userName === "Total") {
             const totalDate = record?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0
             );
+            console.log(totalDate, "totalDate");
             if (totalDate) {
               return (
                 <span className={styles["TotalCount"]}>
-                  {countSelectedProposedDatesForColumn(index)}
+                  {countSelectedProposedDatesForColumn(index + 1)}
                 </span>
               );
             }
@@ -337,7 +396,11 @@ const SceduleProposedmeeting = ({
     }),
 
     {
-      title: t("None-of-above"),
+      title: (
+        <span className={styles["Date-Object-Detail_disabled"]}>
+          {t("None-of-above")}
+        </span>
+      ),
       dataIndex: "NoneOfAbove",
       key: "NoneOfAbove",
       render: (text, record) => {

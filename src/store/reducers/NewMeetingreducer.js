@@ -162,7 +162,7 @@ const initialState = {
   viewMeetingLink: null,
   uploadQuickMeetingDocment: null,
   saveQuickMeetingDocuments: null,
-  moveFilesandFolders: null
+  moveFilesandFolders: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -170,24 +170,24 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.MOVEFILEANDFODLER_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.MOVEFILEANDFODLER_SUCCESS: {
       return {
         ...state,
         Loading: false,
         moveFilesandFolders: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.MOVEFILEANDFODLER_FAIL: {
       return {
         ...state,
         Loading: false,
         moveFilesandFolders: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.QUICKMEETING_DOCUMENTS_UPLOAD_INIT: {
       return {
@@ -1966,7 +1966,6 @@ const NewMeetingreducer = (state = initialState, action) => {
         generalminutesDocumentForMeeting: [],
         addMinuteID: 0,
         agendaWiseMinutesReducer: [],
-        userWiseMeetingProposed: [],
         agendaWiseMinuteID: 0,
         RetriveAgendaWiseDocuments: [],
         setMeetingbyCommitteeID: null,
