@@ -43,6 +43,7 @@ import {
   resolutionResultTable,
   _justShowDateformat,
   createConvert,
+  forRecentActivity,
 } from "../../commen/functions/date_formater";
 import EditResolutionIcon from "../../assets/images/Edit_Resolution_Icon.svg";
 import ResultResolutionIcon from "../../assets/images/Result_Resolution_Icon.svg";
@@ -886,6 +887,7 @@ const Resolution = () => {
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         console.log(data.votingDeadline, "renderrender");
+        let getVotignDeadline = forRecentActivity(data.votingDeadline);
         // Get the current date in "YYYYMMDDHHmmss" format
         const now = new Date();
         const currentDateString =
@@ -897,37 +899,48 @@ const Resolution = () => {
           String(now.getSeconds()).padStart(2, "0");
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
-            if (data.fK_VotingStatus_ID === 1) {
+            if (now <= getVotignDeadline) {
               return (
-                <span className="d-flex justify-content-center">
-                  <img draggable="false" src={thumbsup} alt="" />
-                </span>
-              );
-            } else if (data.fK_VotingStatus_ID === 2) {
-              return (
-                <span className="d-flex justify-content-center">
-                  <img draggable="false" src={thumbsdown} alt="" />
-                </span>
-              );
-            } else if (data.fK_VotingStatus_ID === 3) {
-              if (currentDateString <= data.votingDeadline) {
-                return (
-                  <Button
-                    text={t("Vote")}
-                    className={styles["Resolution-vote-btn"]}
-                    onClick={() =>
-                      getVoteDetailHandler(data.resolutionID, data)
-                    }
-                  />
-                );
-              }
-            } else if (data.fK_VotingStatus_ID === 4) {
-              return (
-                <span className="d-flex justify-content-center">
-                  <img draggable="false" src={AbstainvoterIcon} alt="" />
-                </span>
+                <Button
+                  text={t("Vote")}
+                  className={styles["Resolution-vote-btn"]}
+                  onClick={() =>
+                    getVoteDetailHandler(data.resolutionID, data)
+                  }
+                />
               );
             }
+            // if (data.fK_VotingStatus_ID === 1) {
+            //   return (
+            //     <span className="d-flex justify-content-center">
+            //       <img draggable="false" src={thumbsup} alt="" />
+            //     </span>
+            //   );
+            // } else if (data.fK_VotingStatus_ID === 2) {
+            //   return (
+            //     <span className="d-flex justify-content-center">
+            //       <img draggable="false" src={thumbsdown} alt="" />
+            //     </span>
+            //   );
+            // } else if (data.fK_VotingStatus_ID === 3) {
+            //   if (currentDateString <= data.votingDeadline) {
+            //     return (
+            //       <Button
+            //         text={t("Vote")}
+            //         className={styles["Resolution-vote-btn"]}
+            //         onClick={() =>
+            //           getVoteDetailHandler(data.resolutionID, data)
+            //         }
+            //       />
+            //     );
+            //   }
+            // } else if (data.fK_VotingStatus_ID === 4) {
+            //   return (
+            //     <span className="d-flex justify-content-center">
+            //       <img draggable="false" src={AbstainvoterIcon} alt="" />
+            //     </span>
+            //   );
+            // }
           } else {
             return <p className="text-center"></p>;
           }
