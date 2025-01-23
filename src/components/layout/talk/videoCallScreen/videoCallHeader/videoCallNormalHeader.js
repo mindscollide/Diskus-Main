@@ -1186,7 +1186,7 @@ const VideoCallNormalHeader = ({
                   ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
                     callerID === 0 ? (
-                    <Tooltip placement="topRight" title={t("End-call")}>
+                    <Tooltip placement="topRight" title={t("Leave-call")}>
                       <div className="inactive-state">
                         <img
                           className="cursor-pointer"
@@ -1523,7 +1523,7 @@ const VideoCallNormalHeader = ({
                   ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
                     callerID === 0 ? (
-                    <Tooltip placement="topRight" title={t("End-call")}>
+                    <Tooltip placement="topRight" title={t("Leave-call")}>
                       <div className="inactive-state">
                         <img
                           className="cursor-pointer"

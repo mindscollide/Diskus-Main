@@ -448,7 +448,7 @@ const ViewMeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        console.log("meetingStatus", getmeetingStatus);
+        // console.log("meetingStatus", getmeetingStatus);
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         setMeetingDetailsData({
@@ -1003,7 +1003,7 @@ const ViewMeetingDetails = ({
             </Row>
           </Col>
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <Col
             lg={12}
             md={12}
@@ -1021,7 +1021,7 @@ const ViewMeetingDetails = ({
               onClick={handleUpdateNext}
             />
           </Col>
-        </Row>
+        </Row> */}
         {
           <EndMeetingConfirmationModal
             handleClickContinue={handleClickEndMeeting}

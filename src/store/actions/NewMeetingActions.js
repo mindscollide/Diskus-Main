@@ -71,6 +71,7 @@ import {
   ValidateEncryptedStringUserMeetingProposeDatesPollRM,
   GetMeetingStatus,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
+  MoveFilesToFoldersRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -96,7 +97,10 @@ import { ViewMeeting } from "./Get_List_Of_Assignees";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
-import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
+import {
+  GetAdvanceMeetingAgendabyMeetingID,
+  SaveMeetingDocuments,
+} from "./MeetingAgenda_action";
 import { ResendUpdatedMinuteForReview } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
@@ -6593,13 +6597,7 @@ const scheduleMeetingMainApi = (
   MeetingID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log(
-    scheduleMeeting,
-    setDataroomMapFolderId,
-    setCurrentMeetingID,
-    setSceduleMeeting,
-    "scheduleMeetingMainApischeduleMeetingMainApi"
-  );
+  console.log(MeetingID, "MeetingIDMeetingIDMeetingID");
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6643,9 +6641,11 @@ const scheduleMeetingMainApi = (
                 )
               );
               dispatch(showSceduleProposedMeeting(false));
+
               let MeetingData = {
                 MeetingID: Number(MeetingID),
               };
+              console.log(MeetingData, "MeetingIDMeetingIDMeetingID");
               await dispatch(
                 GetAllMeetingDetailsApiFunc(
                   navigate,
@@ -8214,8 +8214,10 @@ const JoinCurrentMeeting = (
                   )
                 );
               } else {
-                setAdvanceMeetingModalID(Number(Data.FK_MDID));
-                setViewAdvanceMeetingModal(true);
+                isFunction(setAdvanceMeetingModalID) &&
+                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
+                isFunction(setViewAdvanceMeetingModal) &&
+                  setViewAdvanceMeetingModal(true);
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
               }
@@ -9379,9 +9381,12 @@ const GetMeetingStatusDataAPI = (
   Data,
   setEditorRole,
   FlagOnRouteClickAdvanceMeet,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  Check,
+  setVideoTalk
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
     let form = new FormData();
@@ -9404,7 +9409,9 @@ const GetMeetingStatusDataAPI = (
               Data,
               setEditorRole,
               FlagOnRouteClickAdvanceMeet,
-              setViewAdvanceMeetingModal
+              setViewAdvanceMeetingModal,
+              Check,
+              setVideoTalk
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -9422,29 +9429,69 @@ const GetMeetingStatusDataAPI = (
                   t("Successful")
                 )
               );
-              localStorage.setItem(
-                "NotificationClickSendResponseByDate",
-                response.data.responseResult.sendResponseByDeadline
-              );
-              localStorage.setItem(
-                "MeetingStatusID",
-                response.data.responseResult.meetingStatusID
-              );
-              setEditorRole({
-                status: Number(response.data.responseResult.meetingStatusID),
-                role:
-                  Number(response.data.responseResult.attendeeRoleID) === 2
-                    ? "Participant"
-                    : Number(response.data.responseResult.attendeeRoleID) === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
-                isPrimaryOrganizer: false,
-              });
-              if (FlagOnRouteClickAdvanceMeet) {
-                dispatch(scheduleMeetingPageFlag(false));
-                isFunction(setViewAdvanceMeetingModal) &&
-                  setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              try {
+                //Send Response By Date for Proposed Meeting
+                localStorage.setItem(
+                  "NotificationClickSendResponseByDate",
+                  response.data.responseResult.sendResponseByDeadline
+                );
+
+                // Meeting Status ID
+                localStorage.setItem(
+                  "MeetingStatusID",
+                  response.data.responseResult.meetingStatusID
+                );
+
+                //Global Edit States Context State
+                setEditorRole({
+                  status: Number(response.data.responseResult.meetingStatusID),
+                  role:
+                    Number(response.data.responseResult.attendeeRoleID) === 2
+                      ? "Participant"
+                      : Number(response.data.responseResult.attendeeRoleID) ===
+                        4
+                      ? "Agenda Contributor"
+                      : "Organizer",
+                  isPrimaryOrganizer: false,
+                });
+
+                // For Notification ID === 9
+                if (FlagOnRouteClickAdvanceMeet === true) {
+                  dispatch(scheduleMeetingPageFlag(false));
+                  isFunction(setViewAdvanceMeetingModal) &&
+                    setViewAdvanceMeetingModal(true);
+                  dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                }
+
+                //Global Video Chat And Group ID Context State
+                setVideoTalk({
+                  isChat: response.data.responseResult.isChat,
+                  isVideoCall: response.data.responseResult.isVideoCall,
+                  talkGroupID: response.data.responseResult.talkGroupID,
+                });
+
+                if (Check === 1) {
+                  let joinMeetingData = {
+                    VideoCallURL: response.data.responseResult.videoCallUrl,
+                    FK_MDID: Number(
+                      localStorage.getItem("NotificationAdvanceMeetingID")
+                    ),
+                    DateTime: getCurrentDateTimeUTC(),
+                  };
+
+                  dispatch(
+                    JoinCurrentMeeting(
+                      JSON.parse(
+                        localStorage.getItem("QuickMeetingCheckNotification")
+                      ),
+                      navigate,
+                      t,
+                      joinMeetingData
+                    )
+                  );
+                }
+              } catch (error) {
+                console.log(error, "errorerrorerror");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -9640,7 +9687,354 @@ const validateEncryptedStringViewMeetingLinkApi = (
   };
 };
 
+// Upload Documents Init
+
+// Upload Documents Success
+const uploadDocument_success_quickMeeting = (response, message) => {
+  return {
+    type: actions.QUICKMEETING_DOCUMENTS_UPLOAD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail_quickMeeting = (message) => {
+  return {
+    type: actions.QUICKMEETING_DOCUMENTS_UPLOAD_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for Quick Meeting
+const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  return async (dispatch) => {
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(uploadDocumentsQuickMeetingApi(navigate, t, data, newfile));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              newfile.push({
+                DisplayFileName: response.data.responseResult.displayFileName,
+                DiskusFileNameString:
+                  response.data.responseResult.diskusFileName,
+                ShareAbleLink: response.data.responseResult.shareAbleLink,
+                FK_UserID: JSON.parse(creatorID),
+                FK_OrganizationID: JSON.parse(organizationID),
+                FileSize: Number(response.data.responseResult.fileSizeOnDisk),
+                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+              });
+              await dispatch(
+                uploadDocument_success_quickMeeting(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_quickMeeting(t("Failed-to-update-document"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_quickMeeting(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              uploadDocument_fail_quickMeeting(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(uploadDocument_fail_quickMeeting(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail_quickMeeting(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Actions
+const saveFilesQuickMeeting_Init = () => ({
+  type: actions.QUICKMEETING_SAVE_DOCUMENTS_INIT,
+});
+
+const saveFilesQuickMeeting_Success = (response, message) => ({
+  type: actions.QUICKMEETING_SAVE_DOCUMENTS_SUCCESS,
+  response,
+  message,
+});
+
+const saveFilesQuickMeeting_Fail = (message) => ({
+  type: actions.QUICKMEETING_SAVE_DOCUMENTS_FAIL,
+  message,
+});
+
+// Save Files API for Quick Meeting
+const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
+  return async (dispatch) => {
+    try {
+      let token = JSON.parse(localStorage.getItem("token"));
+      let creatorID = JSON.parse(localStorage.getItem("userID"));
+      let requestData = {
+        FolderID:
+          folderID !== null && folderID !== undefined ? Number(folderID) : 0,
+        Files: data,
+        UserID: creatorID,
+        Type: 0,
+      };
+
+      dispatch(saveFilesQuickMeeting_Init());
+
+      let form = new FormData();
+      form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+      form.append("RequestData", JSON.stringify(requestData));
+
+      let response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(
+          saveFilesQuickMeetingApi(navigate, t, data, folderID, newFolder)
+        );
+      }
+
+      if (response.data.responseCode === 200) {
+        const responseResult = response.data.responseResult;
+
+        if (responseResult.isExecuted) {
+          const message = responseResult.responseMessage.toLowerCase();
+
+          if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+            )
+          ) {
+            try {
+              responseResult.fileID.forEach((newFileID) => {
+                newFolder.push({
+                  pK_FileID: newFileID.pK_FileID,
+                  displayFileName: newFileID.displayFileName,
+                });
+              });
+            } catch (error) {
+              console.error("Error processing file IDs:", error);
+            }
+
+            dispatch(
+              saveFilesQuickMeeting_Success(
+                responseResult,
+                t("Files-saved-successfully")
+              )
+            );
+
+            return {
+              isExecuted: true,
+              responseCode: 1,
+              newFolder,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+            )
+          ) {
+            dispatch(saveFilesQuickMeeting_Fail(t("Failed-to-save-any-file")));
+            return {
+              isExecuted: false,
+              responseCode: 2,
+            };
+          } else if (
+            message.includes(
+              "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+            )
+          ) {
+            dispatch(saveFilesQuickMeeting_Fail(t("Something-went-wrong")));
+            return {
+              isExecuted: false,
+              responseCode: 3,
+            };
+          } else {
+            dispatch(saveFilesQuickMeeting_Fail(t("Something-went-wrong")));
+            return {
+              isExecuted: false,
+              responseCode: 4,
+            };
+          }
+        } else {
+          dispatch(saveFilesQuickMeeting_Fail(t("Something-went-wrong")));
+          return {
+            isExecuted: false,
+            responseCode: 5,
+          };
+        }
+      } else {
+        dispatch(saveFilesQuickMeeting_Fail(t("Something-went-wrong")));
+        return {
+          isExecuted: false,
+          responseCode: 5,
+        };
+      }
+    } catch (error) {
+      dispatch(saveFilesQuickMeeting_Fail(t("Something-went-wrong")));
+      return {
+        isExecuted: false,
+        responseCode: 0,
+      };
+    }
+  };
+};
+
+const moveFilesAndFolder_init = () => {
+  return {
+    type: actions.MOVEFILEANDFODLER_INIT,
+  };
+};
+const moveFilesAndFolder_success = (response, message) => {
+  return {
+    type: actions.MOVEFILEANDFODLER_SUCCESS,
+    response: response,
+    message: message
+  };
+};
+const moveFilesAndFolder_fail = (message) => {
+  return {
+    type: actions.MOVEFILEANDFODLER_FAIL,
+    message: message
+  };
+};
+
+const moveFilesAndFoldersApi = (
+  navigate,
+  t,
+  Data,
+  newAgendas,
+  checkFlag,
+  setShow
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(moveFilesAndFolder_init());
+    let form = new FormData();
+    form.append("RequestMethod", MoveFilesToFoldersRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(
+            moveFilesAndFoldersApi(
+              navigate,
+              t,
+              Data,
+              newAgendas,
+              checkFlag,
+              setShow
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_MoveFilesToFolders_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                moveFilesAndFolder_success(
+                  response.data.responseResult,
+                  t("Files-moved-successfully")
+                )
+              );
+              await dispatch(
+                SaveMeetingDocuments(
+                  newAgendas,
+                  navigate,
+                  t,
+                  checkFlag,
+                  setShow
+                )
+              );
+              console.log(checkFlag, "checkFlagcheckFlag");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_MoveFilesToFolders_02".toLowerCase()
+                )
+            ) {
+              dispatch(moveFilesAndFolder_fail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_MoveFilesToFolders_03".toLowerCase()
+                )
+            ) {
+              dispatch(moveFilesAndFolder_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(moveFilesAndFolder_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(moveFilesAndFolder_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(moveFilesAndFolder_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(moveFilesAndFolder_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  moveFilesAndFoldersApi,
+  uploadDocumentsQuickMeetingApi,
+  saveFilesQuickMeetingApi,
   validateEncryptedStringViewMeetingLinkApi,
   newMeetingGlobalLoader,
   meetingReminderNotifcation,

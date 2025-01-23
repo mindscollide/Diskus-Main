@@ -1118,3 +1118,43 @@ body[dir="rtl"] .disabled-box-agenda-camera {
   vertical-align: middle;
   cursor: pointer;
 }
+
+.Start-presenter-view-class {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6172d6;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1 !important;
+  padding: 5px 30px;
+  text-align: center;
+  line-height: 1;
+}
+
+.Start-presenter-view-class p {
+  margin: 0;
+  display: inline-block;
+}
+
+/* .Stop-presenter-view-class {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #f16b6b;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1 !important;
+  padding: 5px 30px;
+  text-align: center;
+  line-height: 1;
+}
+
+.Stop-presenter-view-class p {
+  margin: 0;
+  display: inline-block;
+} */

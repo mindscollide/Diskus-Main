@@ -1924,7 +1924,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle.slice(0, 30)
               ),
             });
           }
@@ -2802,8 +2802,10 @@ const Dashboard = () => {
             if (data.viewable) {
               setNotification({
                 notificationShow: true,
-                message: t(
-                  `${data?.payload?.data?.displayFileName} document shared with you`
+                message: changeMQTTJSONOne(
+                  t("FILE_SHARED"),
+                  "[Place holder]",
+                  data?.payload?.data?.displayFileName
                 ),
               });
             }
@@ -2817,8 +2819,10 @@ const Dashboard = () => {
             if (data.viewable) {
               setNotification({
                 notificationShow: true,
-                message: t(
-                  `${data?.payload?.data?.displayFolderName} folder shared with you`
+                message: changeMQTTJSONOne(
+                 t("FOLDER_SHARED"),
+                  "[Place holder]",
+                  data?.payload?.data?.displayFolderName
                 ),
               });
             }

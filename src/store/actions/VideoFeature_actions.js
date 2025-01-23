@@ -1225,6 +1225,14 @@ const clearMessegesVideoFeature = (response) => {
   };
 };
 
+// For Start and Stop Presenter View
+// const startOrStopPresenterGlobal = (response) => {
+//   return {
+//     type: actions.START_OR_STOP_PRESENTER_STATE,
+//     response: response,
+//   };
+// };
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -1303,4 +1311,5 @@ export {
   videoIconOrButtonState,
   participantVideoButtonState,
   clearMessegesVideoFeature,
+  // startOrStopPresenterGlobal,
 };

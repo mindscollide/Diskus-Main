@@ -527,7 +527,7 @@ const NewfileFormatforSignatureFlow = [
   "ods",
   "odp",
   "wpf",
-
+  "txt",
   // Image Formats
   "bmp",
   "wmf",
@@ -708,6 +708,7 @@ export const WebNotificationExportRoutFunc = (
           "NotificationAdvanceMeetingID",
           PayLoadData.MeetingID
         );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
         dispatch(
           GetMeetingStatusDataAPI(
@@ -716,7 +717,8 @@ export const WebNotificationExportRoutFunc = (
             Data,
             setEditorRole,
             true,
-            setViewAdvanceMeetingModal
+            setViewAdvanceMeetingModal,
+            1
           )
         );
       }
@@ -737,8 +739,23 @@ export const WebNotificationExportRoutFunc = (
           "NotificationAdvanceMeetingID",
           PayLoadData.MeetingID
         );
+        localStorage.setItem(
+          "QuickMeetingCheckNotification",
+          PayLoadData.IsQuickMeeting
+        );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
         let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-        dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+        dispatch(
+          GetMeetingStatusDataAPI(
+            navigate,
+            t,
+            Data,
+            setEditorRole,
+            false,
+            false,
+            1
+          )
+        );
       }
     }
   } else if (NotificationData.notificationActionID === 4) {
@@ -1393,4 +1410,22 @@ export const WebNotificationExportRoutFunc = (
     }
   } else {
   }
+};
+
+export const generateRandomNegativeAuto = () => {
+  // Define default range for negative numbers
+  const min = -1000; // More negative
+  const max = -10; // Closer to zero
+
+  // Generate a random negative integer in the range [min, max]
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+export const generateRandomPositiveId = () => {
+  // Define the range for positive IDs
+  const min = 1; // Smallest positive ID
+  const max = 1000; // Largest positive ID
+
+  // Generate a random positive integer in the range [min, max]
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };

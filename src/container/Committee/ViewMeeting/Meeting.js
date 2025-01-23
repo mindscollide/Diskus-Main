@@ -12,9 +12,7 @@ import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
 import member from "../../../assets/images/member.svg";
 import addmore from "../../../assets/images/addmore.png";
-import CreateModal from "../../modalmeeting/ModalMeeting";
 import ViewModal from "../../modalView/ModalView";
-import EditModal from "../../modalUpdate/ModalUpdate";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -42,6 +40,8 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
+import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -1032,11 +1032,11 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   return (
     <>
       {createMeetingModal && (
-        <CreateModal
+        <CreateQuickMeeting
           show={createMeetingModal}
           setShow={setCreateMeetingModal}
           // this is check from where its called 6 is from committee create
-          checkFlag={6}
+          checkFlag={5}
         />
       )}
       {viewMeetingModal && (
@@ -1046,7 +1046,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         />
       )}
       {editMeetingModal && (
-        <EditModal
+        <UpdateQuickMeeting
           editFlag={editMeetingModal}
           setEditFlag={setEditMeetingModal}
           // this is check from where its called 6 is from committee create

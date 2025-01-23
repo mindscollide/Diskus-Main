@@ -10,6 +10,7 @@ import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicO
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "antd";
 import {
   guestVideoNavigationScreen,
   joinGuestVideoMainApi,
@@ -309,31 +310,51 @@ const GuestJoinVideo = ({
 
                           <div className="mic-vid-buttons">
                             {isMicEnabled ? (
-                              <img
-                                src={MicOn}
-                                className="cursor-pointer"
-                                onClick={() => toggleAudio(false, 2)}
-                              />
+                              <Tooltip
+                                placement="topRight"
+                                title={t("Disable-mic")}
+                              >
+                                <img
+                                  src={MicOn}
+                                  className="cursor-pointer"
+                                  onClick={() => toggleAudio(false, 2)}
+                                />
+                              </Tooltip>
                             ) : (
-                              <img
-                                src={MicOff}
-                                className="cursor-pointer"
-                                onClick={() => toggleAudio(true, 1)}
-                              />
+                              <Tooltip
+                                placement="topRight"
+                                title={t("Enable-mic")}
+                              >
+                                <img
+                                  src={MicOff}
+                                  className="cursor-pointer"
+                                  onClick={() => toggleAudio(true, 1)}
+                                />
+                              </Tooltip>
                             )}
 
                             {isWebCamEnabled ? (
-                              <img
-                                className="cursor-pointer"
-                                onClick={() => toggleVideo(false)}
-                                src={VideoOn}
-                              />
+                              <Tooltip
+                                placement="topRight"
+                                title={t("Disable-video")}
+                              >
+                                <img
+                                  className="cursor-pointer"
+                                  onClick={() => toggleVideo(false)}
+                                  src={VideoOn}
+                                />
+                              </Tooltip>
                             ) : (
-                              <img
-                                className="cursor-pointer"
-                                onClick={() => toggleVideo(true)}
-                                src={VideoOff}
-                              />
+                              <Tooltip
+                                placement="topRight"
+                                title={t("Enable-video")}
+                              >
+                                <img
+                                  className="cursor-pointer"
+                                  onClick={() => toggleVideo(true)}
+                                  src={VideoOff}
+                                />
+                              </Tooltip>
                             )}
                           </div>
                         </div>

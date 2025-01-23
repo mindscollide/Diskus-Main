@@ -30,6 +30,7 @@ export const MeetingProvider = ({ children }) => {
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
   useEffect(() => {
@@ -69,7 +70,8 @@ export const MeetingProvider = ({ children }) => {
         setViewProposeDatePoll,
         deleteMeetingConfirmationModal,
         setDeleteMeetingConfirmationModal,
-      }}>
+      }}
+    >
       {children}
     </MeetingContext.Provider>
   );

@@ -1931,7 +1931,17 @@ const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
+const MoveFilesToFoldersRM = {
+  RequestMethod: "ServiceManager.MoveFilesToFolders",
+};
+
+// Delete Notes Document
+const DeleteNotesDocuments = {
+  RequestMethod: "ServiceManager.DeleteNotesDocuments",
+};
+
 export {
+  MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,
   ValidateEncryptedStringViewFolderLinkRM,
@@ -2438,4 +2448,5 @@ export {
   CreateUpdateNotesDataRoomMap,
   SaveNotesDocument,
   RetrieveNotesDocument,
+  DeleteNotesDocuments,
 };

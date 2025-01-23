@@ -22,7 +22,6 @@ import {
 import { useLocation } from "react-router-dom";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
-import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 import { Button, Modal, UploadTextField, Notification } from "../../elements";
 import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
 import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
@@ -47,6 +46,7 @@ import {
 } from "../../../store/actions/VideoFeature_actions.js";
 import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { useNotesContext } from "../../../context/NotesContext.js";
+import CreateQuickMeeting from "../../../container/QuickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -1487,7 +1487,7 @@ const Header2 = ({ isVideo }) => {
         />
       ) : null}
       {createMeetingModal && (
-        <ModalMeeting
+        <CreateQuickMeeting
           show={createMeetingModal}
           setShow={setCreateMeetingModal}
           // this is check from where its called 1 is from header

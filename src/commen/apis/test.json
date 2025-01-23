@@ -1,9 +1,19 @@
 {
-  "notificationID": 302,
-  "notificationActionID": 13,
-  "notificationActionName": "Propose_Meeting_Request",
-  "description": "Provide your preferred slot for the upcoming meeting: new",
-  "payloadData": "{\"MeetingID\":4465,\"MeetingTitle\":\"new\",\"NotifierName\":\"Mehdi Admin\",\"IsQuickMeeting\":false,\"DeadlineDate\":\"20241212\"}",
-  "isRead": true,
-  "sentDateTime": "20241212125525"
+  "ListOfEmailAddresses": ["saifiiyousuf4002@gmail.com"],
+  "Messege": "test",
+  "isNotify": false,
+  "sendViaDataRoom": false,
+  "BoarddeckFileParams": {
+    "PK_MDID": 4912,
+    "fetchOrganizers": true,
+    "fetchAgendaContributors": false,
+    "fetchParticipants": true,
+    "fetchMinutes": true,
+    "fetchTasks": true,
+    "fetchPolls": false,
+    "fetchAttendance": true,
+    "fetchVideo": true,
+    "fetchAgendaWithAttachments": true,
+    "fetchAgendaWithoutAttachments": true
+  }
 }

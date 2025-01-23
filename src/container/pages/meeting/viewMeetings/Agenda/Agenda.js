@@ -434,7 +434,7 @@ const Agenda = ({
                 </Row>
               </DragDropContext>
             )}
-            <Row className="mt-4">
+            {/* <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
@@ -453,7 +453,7 @@ const Agenda = ({
                   onClick={handleNextBtn}
                 />
               </Col>
-            </Row>
+            </Row> */}
           </section>
         </>
       )}

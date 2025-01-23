@@ -44,7 +44,7 @@ import { useTranslation } from "react-i18next";
 const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,
-  maxCharacters = 105,
+  maxCharacters = 101,
   index,
   length,
   NotificaitonID,
@@ -111,7 +111,7 @@ const WebNotificationCard = ({
             "Has-created-a-poll-in-the-meeting"
           )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 13) {
-          message = `${NotificationMessege.NotifierName} ${t(
+          message = `${t(
             "Provide-your-preferred-slot-for-the-upcoming-meeting"
           )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 14) {
@@ -246,7 +246,7 @@ const WebNotificationCard = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex align-items-center justify-content-center gap-2"
+          className="d-flex align-items-center justify-content-center gap-1"
         >
           {/* Icons According to Unique Notification ID  */}
           {NotificaitonID === 1 ? (
