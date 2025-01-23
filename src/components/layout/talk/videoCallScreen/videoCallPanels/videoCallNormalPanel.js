@@ -185,7 +185,7 @@ const VideoPanelNormal = () => {
   const [isMeetingHost, setIsMeetingHost] = useState(
     meetingHost?.isHost ? true : false
   );
-
+  const iframe = iframeRef.current;
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
 
@@ -212,7 +212,10 @@ const VideoPanelNormal = () => {
 
       // Look for 'RoomID' or 'roomid' (case-insensitive)
       let roomID = params.get("RoomID") || params.get("roomid");
-
+      const sessionKey = params.get("sessionKey");
+      if (sessionKey) {
+        return true;
+      }
       // Ensure RoomID is treated as a string
       roomID = String(roomID).trim();
 
@@ -258,7 +261,6 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
-    const iframe = iframeRef.current;
     if (isMeetingHost) {
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlHost === true) {
@@ -271,15 +273,29 @@ const VideoPanelNormal = () => {
   }, [audioControlHost]);
 
   useEffect(() => {
+    // Define the leave function to clean up the session
+    const handleBeforeUnload = async (event) => {
+      try {
+        if (iframe && iframe.contentWindow !== null) {
+          console.log("busyCall");
+
+          iframe.contentWindow.postMessage("leaveSession", "*");
+          await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        }
+      } catch (error) {}
+    };
+
+    // Attach the event listener for beforeunload
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [iframe]);
+
+  useEffect(() => {
     // Determine the control source based on the user role
-    // Reference the iframe and perform postMessage based on the control source
-    const iframe = iframeRef.current;
-    console.log("videoHideUnHideForHost", audioControlForParticipant);
-    console.log("videoHideUnHideForHost", isMeetingHost);
     if (isMeetingHost === false) {
-      console.log("videoHideUnHideForHost", audioControlForParticipant);
       if (iframe && iframe.contentWindow !== null) {
-        console.log("videoHideUnHideForHost", audioControlForParticipant);
         if (audioControlForParticipant === true) {
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
@@ -290,7 +306,6 @@ const VideoPanelNormal = () => {
   }, [audioControlForParticipant]);
 
   useEffect(() => {
-    const iframe = iframeRef.current;
     if (isMeetingHost === false) {
       if (iframe && iframe.contentWindow !== null) {
         if (videoControlForParticipant === true) {
@@ -303,11 +318,8 @@ const VideoPanelNormal = () => {
   }, [videoControlForParticipant]);
 
   useEffect(() => {
-    const iframe = iframeRef.current;
-    console.log("videoHideUnHideForHost", videoControlHost);
     if (isMeetingHost) {
       if (iframe && iframe.contentWindow !== null) {
-        console.log("videoHideUnHideForHost", videoControlHost);
         if (videoControlHost === true) {
           iframe.contentWindow.postMessage("VidOn", "*");
         } else {
@@ -597,8 +609,6 @@ const VideoPanelNormal = () => {
 
   const handleScreenShareButton = async () => {
     if (!LeaveCallModalFlag) {
-      const iframe = iframeRef.current; // Reference to your iframe
-
       if (iframe && iframe.contentWindow) {
         // Post message to iframe
         iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
@@ -611,16 +621,19 @@ const VideoPanelNormal = () => {
   // Add event listener for messages
   useEffect(() => {
     const messageHandler = (event) => {
-      console.log("share screen Message received:", event);
+      console.log("handlePostMessage share screen Message received:", event);
 
       // Check the origin for security
-      if (event.origin === "https://portal.letsdiskus.com:9414") {
+      // if (event.origin === "https://portal.letsdiskus.com:9414") {
+      if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
+            console.log("handlePostMessage", event.data);
             setIsScreenActive(true); // Show a modal or perform an action
             break;
           case "ScreenSharedStopMsgFromIframe":
+            console.log("handlePostMessage", event.data);
             setIsScreenActive(false);
             break;
           default:
@@ -646,8 +659,6 @@ const VideoPanelNormal = () => {
   const layoutCurrentChange = () => {
     let videoView = localStorage.getItem("VideoView");
     if (LeaveCallModalFlag === false) {
-      const iframe = iframeRef.current;
-
       if (iframe && videoView === "Sidebar") {
         iframe.contentWindow.postMessage("TileView", "*");
         localStorage.setItem("VideoView", "TileView");
@@ -661,14 +672,12 @@ const VideoPanelNormal = () => {
   };
 
   const disableMicFunction = () => {
-    const iframe = iframeRef.current;
     iframe.contentWindow.postMessage("MicOff", "*");
     setIsMicActive(!isMicActive);
     localStorage.setItem("MicOff", !isMicActive);
   };
 
   const disableVideoFunction = () => {
-    const iframe = iframeRef.current;
     iframe.contentWindow.postMessage("VidOff", "*");
     setIsVideoActive(!isVideoActive);
     localStorage.setItem("VidOff", !isVideoActive);
@@ -742,6 +751,7 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
+  console.log("MediaStream callerURL", callerURL);
 
   return (
     <>
@@ -804,6 +814,7 @@ const VideoPanelNormal = () => {
                     isVideoActive={isVideoActive}
                     isMicActive={isMicActive}
                     showTile={showTile}
+                    iframeCurrent={iframe}
                   />
                   {VideoOutgoingCallFlag === true ? <VideoOutgoing /> : null}
                   <Row>

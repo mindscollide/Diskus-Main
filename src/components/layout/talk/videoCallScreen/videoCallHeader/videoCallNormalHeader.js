@@ -80,6 +80,7 @@ const VideoCallNormalHeader = ({
   isMicActive,
   isVideoActive,
   showTile,
+  iframeCurrent,
 }) => {
   const dispatch = useDispatch();
 
@@ -331,8 +332,16 @@ const VideoCallNormalHeader = ({
     dispatch(toggleParticipantsVisibility(false));
   };
 
-  const endCallParticipant = () => {
+  const endCallParticipant = async () => {
     console.log("busyCall");
+    try {
+      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
+
+        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      }
+    } catch (error) {}
 
     if (getDashboardVideo.isDashboardVideo === false) {
       let Data = {
@@ -364,6 +373,7 @@ const VideoCallNormalHeader = ({
           IsHost: meetHostFlag?.isHost ? true : false,
           MeetingID: Number(currentMeetingID),
         };
+
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       } else {
         dispatch(toggleParticipantsVisibility(false));
@@ -376,6 +386,7 @@ const VideoCallNormalHeader = ({
           MeetingID: Number(currentMeetingID),
         };
         dispatch(setRaisedUnRaisedParticiant(false));
+
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       }
       dispatch(normalizeVideoPanelFlag(false));
@@ -506,6 +517,14 @@ const VideoCallNormalHeader = ({
   // for Host leave Call
   const leaveCall = async (flag, flag2, flag3) => {
     console.log("busyCall");
+    try {
+      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
+
+        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      }
+    } catch (error) {}
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
@@ -520,6 +539,7 @@ const VideoCallNormalHeader = ({
             IsHost: parsedHostFlag?.isHost ? true : false,
             MeetingID: Number(currentMeetingID),
           };
+
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         } else {
           let Data = {
@@ -529,6 +549,7 @@ const VideoCallNormalHeader = ({
             IsHost: parsedHostFlag?.isHost ? true : false,
             MeetingID: Number(currentMeetingID),
           };
+
           dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
         }
@@ -564,6 +585,7 @@ const VideoCallNormalHeader = ({
 
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
+
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
@@ -606,8 +628,17 @@ const VideoCallNormalHeader = ({
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
   // For Participant Leave Call
-  const participantLeaveCall = () => {
+  const participantLeaveCall = async () => {
     console.log("busyCall");
+    try {
+      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
+
+        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      }
+    } catch (error) {}
+
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("currentHostUserID");
     localStorage.removeItem("isHost");
@@ -625,6 +656,7 @@ const VideoCallNormalHeader = ({
           IsHost: meetHostFlag?.isHost ? true : false,
           MeetingID: Number(currentMeetingID),
         };
+
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       } else {
         console.log("busyCall");
@@ -635,6 +667,7 @@ const VideoCallNormalHeader = ({
           IsHost: meetHostFlag?.isHost ? true : false,
           MeetingID: Number(currentMeetingID),
         };
+
         dispatch(setRaisedUnRaisedParticiant(false));
         dispatch(LeaveMeetingVideo(Data, navigate, t));
       }

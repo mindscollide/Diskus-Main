@@ -143,6 +143,7 @@ const MaxHostVideoCallComponent = ({ handleExpandToNormal }) => {
     console.log("toggleAudio", enable);
     dispatch(setVideoState(enable));
     localStorage.setItem("isWebCamEnabled", enable);
+    console.log("videoHideUnHideForHost");
     dispatch(setVideoControlHost(enable));
 
     if (!enable) {

@@ -9091,6 +9091,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
               await dispatch(setAudioControlForParticipant(false));
+    console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlForParticipant(false));
 
@@ -9128,7 +9129,8 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
               await dispatch(setAudioControlForParticipant(false));
-              await dispatch(setVideoControlHost(false));
+    console.log("videoHideUnHideForHost");
+    await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlForParticipant(false));
               let getMeetingHostData = Data.IsHost;
               console.log(getMeetingHostData, "asdadadadadaddda");

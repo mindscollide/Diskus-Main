@@ -169,7 +169,8 @@ const VideoMaxIncoming = () => {
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         await dispatch(setAudioControlHost(false));
         await dispatch(setAudioControlForParticipant(false));
-        await dispatch(setVideoControlHost(false));
+    console.log("videoHideUnHideForHost");
+    await dispatch(setVideoControlHost(false));
         await dispatch(setVideoControlForParticipant(false));
         localStorage.setItem("isMicEnabled", false);
         localStorage.setItem("isWebCamEnabled", false);
