@@ -129,19 +129,18 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-
+  let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
   useEffect(() => {
     if (isMobileDevice()) {
-      let getString = localStorage.getItem("mobilePopUpAppRoute");
-      const appLink = `thediskus://thediskus.com?rsvp=${getString}`; // Append it to the appLink
-      console.log(appLink, "getValuegetValuegetValue");
       const fallbackDelay = 2000; // Adjust as needed
 
       const start = Date.now();
+      if (RSVPRouteforApp !== null) {
+        const appLink = `thediskus://thediskus.com?rsvp=${RSVPRouteforApp}`; // Append it to the appLink
 
-      // Attempt to open the app
-      window.location.href = appLink;
-
+        // Attempt to open the app
+        window.location.href = appLink;
+      }
       // Set a timeout to detect failure and show modal
       setTimeout(() => {
         const elapsed = Date.now() - start;
@@ -156,7 +155,7 @@ const App = () => {
     return () => {
       localStorage.removeItem("mobilePopUpAppRoute");
     };
-  }, []);
+  }, [RSVPRouteforApp]);
 
   useEffect(() => {
     // Function to fetch the current version from version.json

@@ -14,7 +14,7 @@ import { userLoginHistory_Api } from "../../../store/actions/UserReport_actions"
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Spin } from "antd";
-import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
+import XLSIcon from "../../../assets/images/AttachmentIcons/xls-file.png";
 import searchicon from "../../../assets/images/searchicon.svg";
 import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 import CrossIcon from "../../../assets/images/Cross-Chat-Icon.png";

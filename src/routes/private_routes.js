@@ -22,15 +22,12 @@ const PrivateRoutes = () => {
           )
       ) {
         // Extract action parameter from URL
-        const parts = currentUrl.split("?action=".toLowerCase());
-        if (parts.length === 2) {
-          const remainingString = parts[1];
-          // Save RSVP data to local storage
-          localStorage.setItem("RSVP", remainingString);
-        } else {
-          // Clear RSVP data from local storage if condition not met
-          localStorage.removeItem("RSVP");
-        }
+        let getValue = getActionValue(
+          currentUrl,
+          "Useravailabilityformeeting?action="
+        );
+        localStorage.setItem("mobilePopUpAppRoute", getValue);
+        localStorage.setItem("RSVP", getValue);
       }
 
       // Action: Data Room
@@ -224,7 +221,7 @@ const PrivateRoutes = () => {
       ) {
         let getValue = getActionValue(currentUrl, "id_action=");
         // let getValue = getActionValue(currentUrl, "id_action=");
-        console.log(getValue, "getValuegetValuegetValue")
+        console.log(getValue, "getValuegetValuegetValue");
 
         localStorage.setItem("committeeView_Id", getValue);
       }
