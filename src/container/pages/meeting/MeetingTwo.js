@@ -153,6 +153,8 @@ const NewMeeting = () => {
     setViewProposeDatePoll,
     viewFlag,
     setViewFlag,
+    setAdvanceMeetingModalID,
+    advanceMeetingModalID,
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -333,7 +335,6 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
-  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [responseByDate, setResponseByDate] = useState("");
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
@@ -430,6 +431,7 @@ const NewMeeting = () => {
   //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
+      console.log(localStorage.getItem("viewMeetingLink"), "callApicallApi");
       if (
         JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
@@ -509,6 +511,7 @@ const NewMeeting = () => {
         setentereventIcon(false);
       } else if (localStorage.getItem("viewMeetingLink") !== null) {
         let getURL = localStorage.getItem("viewMeetingLink");
+        console.log(getURL, "viewMeetingLinkviewMeetingLinkviewMeetingLink");
         const getResponse = await dispatch(
           validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
         );
@@ -633,53 +636,51 @@ const NewMeeting = () => {
           }
         }
         localStorage.removeItem("viewMeetingLink");
-      }
-      //  else if (localStorage.getItem("viewPublishMinutesLink") !== null) {
-      //   let getURL = localStorage.getItem("viewPublishMinutesLink");
-      //   const getResponse = await dispatch(
-      //     validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
-      //   );
-      //   console.log(getResponse, "viewFol_action");
-      //   if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
-      //     const {
-      //       attendeeId,
-      //       isQuickMeeting,
-      //       meetingID,
-      //       meetingStatusId,
-      //       organizationID,
-      //       userID,
-      //       isChat,
-      //       talkGroupId,
-      //       isVideo,
-      //       videoCallUrl,
-      //       isMinutePublished,
-      //     } = getResponse.response;
-      //     setEditorRole({
-      //       status: String(meetingStatusId),
-      //       role:
-      //         attendeeId === 2
-      //           ? "Participant"
-      //           : attendeeId === 4
-      //           ? "Agenda Contributor"
-      //           : "Organizer",
-      //       isPrimaryOrganizer: false,
-      //     });
-      //     setVideoTalk({
-      //       isChat: isChat,
-      //       isVideoCall: isVideo,
-      //       talkGroupID: talkGroupId,
-      //     });
-      //     dispatch(emailRouteID(5));
-      //     setAdvanceMeetingModalID(meetingID);
-      //     setViewAdvanceMeetingModal(true);
-      //     dispatch(viewAdvanceMeetingPublishPageFlag(true));
-      //     dispatch(scheduleMeetingPageFlag(false));
-      //     localStorage.setItem("currentMeetingID", meetingID);
-      //     localStorage.setItem("isMinutePublished", isMinutePublished);
-      //   }
-      //   localStorage.removeItem("viewPublishMinutesLink");
-      // }
-      else {
+      } else if (localStorage.getItem("viewPublishMinutesLink") !== null) {
+        let getURL = localStorage.getItem("viewPublishMinutesLink");
+        const getResponse = await dispatch(
+          validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
+        );
+        console.log(getResponse, "viewFol_action");
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          const {
+            attendeeId,
+            isQuickMeeting,
+            meetingID,
+            meetingStatusId,
+            organizationID,
+            userID,
+            isChat,
+            talkGroupId,
+            isVideo,
+            videoCallUrl,
+            isMinutePublished,
+          } = getResponse.response;
+          setEditorRole({
+            status: String(meetingStatusId),
+            role:
+              attendeeId === 2
+                ? "Participant"
+                : attendeeId === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: false,
+          });
+          setVideoTalk({
+            isChat: isChat,
+            isVideoCall: isVideo,
+            talkGroupID: talkGroupId,
+          });
+          dispatch(emailRouteID(5));
+          setAdvanceMeetingModalID(meetingID);
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+          localStorage.setItem("currentMeetingID", meetingID);
+          localStorage.setItem("isMinutePublished", isMinutePublished);
+        }
+        localStorage.removeItem("viewPublishMinutesLink");
+      } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
           console.log(meetingpageRow, "QuicMeetingOperations");
           let searchData = {
@@ -979,6 +980,7 @@ const NewMeeting = () => {
       validateStringEmailApi(MeetingStr, navigate, t, 3, dispatch)
         .then(async (result) => {
           // Handle the result here
+
           let Data = {
             VideoCallURL: result.videoCallURL,
             FK_MDID: Number(result.meetingID),
@@ -1015,6 +1017,7 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
+          localStorage.removeItem("MeetingStr");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -1097,7 +1100,6 @@ const NewMeeting = () => {
               status: Number(result.meetingStatusId),
             });
           }
-          localStorage.removeItem("meetingUpd");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -1141,13 +1143,23 @@ const NewMeeting = () => {
 
   //  Call all search meetings api
   useEffect(() => {
-    if (
-      CalendarDashboardEventData === null ||
-      CalendarDashboardEventData === undefined
-    ) {
-      callApi();
-    }
+    // if (
+    //   CalendarDashboardEventData === null ||
+    //   CalendarDashboardEventData === undefined
+    // ) {
+    callApi();
+    // }
     return () => {
+      localStorage.removeItem("meetingMin");
+      localStorage.removeItem("meetingUpd");
+      localStorage.removeItem("meetingCanc");
+      localStorage.removeItem("MeetingStr");
+      localStorage.removeItem("AdOrg");
+      localStorage.removeItem("AgCont");
+      localStorage.removeItem("mtAgUpdate");
+      localStorage.removeItem("viewMeetingLink");
+      localStorage.removeItem("viewPublishMinutesLink");
+
       setResponseByDate("");
       setDashboardEventData(null);
       setEditFlag(false);
@@ -1170,7 +1182,7 @@ const NewMeeting = () => {
       setentereventIcon(false);
       dispatch(clearMeetingState());
     };
-  }, [CalendarDashboardEventData]);
+  }, []);
 
   useEffect(() => {
     try {
@@ -3318,7 +3330,7 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 4
@@ -3340,7 +3352,7 @@ const NewMeeting = () => {
                 role: "Agenda Contributor",
                 isPrimaryOrganizer: false,
               });
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
             } else if (
               (meeting.status === "10" || meeting.status === 10) &&
               dashboardEventData.participantRoleID === 1
@@ -3356,7 +3368,7 @@ const NewMeeting = () => {
                 talkGroupID: meeting.talkGroupID,
               });
               localStorage.setItem("videoCallURL", meeting.videoCallURL);
-              dispatch(viewMeetingFlag(true));
+              // dispatch(viewMeetingFlag(true));
               handleViewMeeting(
                 dashboardEventData.videoCallURL,
                 meeting.pK_MDID,
@@ -3404,7 +3416,7 @@ const NewMeeting = () => {
                   dashboardEventData.pK_MDID
                 );
                 setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
-                dispatch(viewMeetingFlag(true));
+                // dispatch(viewMeetingFlag(true));
                 setViewAdvanceMeetingModal(true);
                 dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 dispatch(scheduleMeetingPageFlag(false));

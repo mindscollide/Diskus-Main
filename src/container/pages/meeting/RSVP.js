@@ -16,7 +16,6 @@ import {
   newTimeFormaterAsPerUTCTalkDateTime,
 } from "../../../commen/functions/date_formater";
 const RSVP = () => {
-  const currentUrl = window.location.href;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,40 +34,18 @@ const RSVP = () => {
   const UserAvalibilityState = useSelector(
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
-
+  let getRSVP = localStorage.getItem("RSVP");
   useEffect(() => {
-    if (
-      currentUrl.includes("Diskus/Meeting/Useravailabilityformeeting?action=")
-    ) {
-      const remainingString = currentUrl.split("?action=")[1];
-      if (remainingString) {
-        // APi call
-        let Data = { EncryptedString: remainingString };
-        dispatch(
-          validateEncryptedStringUserAvailibilityForMeetingApi(
-            navigate,
-            Data,
-            t
-          )
-        );
-      }
-      // Save something in local storage if the condition is true
-    } else {
-      let RSVP = localStorage.getItem("RSVP");
-      if (RSVP !== undefined && RSVP !== null) {
-        let Data = { EncryptedString: RSVP };
-        dispatch(
-          validateEncryptedStringUserAvailibilityForMeetingApi(
-            navigate,
-            Data,
-            t
-          )
-        );
-      } else {
-        navigate("/Diskus/Meeting");
-      }
+    if (getRSVP !== null) {
+      let Data = { EncryptedString: localStorage.getItem("RSVP") };
+      dispatch(
+        validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
+      );
     }
-  }, []);
+    return () => {
+      localStorage.removeItem("RSVP");
+    };
+  }, [getRSVP]);
 
   useEffect(() => {
     try {
@@ -85,7 +62,6 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
-        localStorage.removeItem("RSVP");
       } else {
         // Handle the case when UserAvailabilityState is undefined or null
       }
@@ -101,13 +77,12 @@ const RSVP = () => {
         {rsvpData && (
           <>
             <Col lg={6} md={6} sm={6}>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex flex-column flex-wrap align-items-center"
-                >
+                  className='d-flex flex-column flex-wrap align-items-center'>
                   {rsvpData && (
                     <>
                       {rsvpData.userResponseStatus === 2 ? (
@@ -115,9 +90,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={ThumbsUp}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["ThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -131,9 +106,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={RedChair}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["RedThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -150,9 +125,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={Clock}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["OrangeThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -188,9 +163,9 @@ const RSVP = () => {
                   />
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-date-and-time")}
@@ -210,7 +185,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Date-of-submitting-response")}
@@ -231,7 +206,7 @@ const RSVP = () => {
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-location")}
@@ -248,7 +223,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("You-have-confirmed-your-attendance")}
