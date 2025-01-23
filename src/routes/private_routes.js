@@ -305,6 +305,20 @@ const PrivateRoutes = () => {
       if (
         currentUrl
           .toLowerCase()
+          .includes(
+            "/DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
+          )
+      ) {
+        let getValue = getActionValue(
+          currentUrl,
+          "Useravailabilityformeeting?action="
+        );
+        localStorage.setItem("mobilePopUpAppRoute", getValue);
+        console.log(getValue, "getValuegetValuegetValue");
+      }
+      if (
+        currentUrl
+          .toLowerCase()
           .includes("/Diskus/Minutes/?MRAP=".toLowerCase())
       ) {
         let getValue = getActionValue(currentUrl, "MRAP=");

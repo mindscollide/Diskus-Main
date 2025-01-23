@@ -121,6 +121,7 @@ const App = () => {
   );
 
   // Detect mobile device function
+
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     const isAndroid = /android/i.test(userAgent);
@@ -128,12 +129,33 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-  // Show modal if accessed on a mobile browser
+
   useEffect(() => {
     if (isMobileDevice()) {
-      dispatch(mobileAppPopModal(true));
-    } else {
+      let getString = localStorage.getItem("mobilePopUpAppRoute");
+      const appLink = `thediskus://thediskus.com?rsvp=${getString}`; // Append it to the appLink
+      console.log(appLink, "getValuegetValuegetValue");
+      const fallbackDelay = 2000; // Adjust as needed
+
+      const start = Date.now();
+
+      // Attempt to open the app
+      window.location.href = appLink;
+
+      // Set a timeout to detect failure and show modal
+      setTimeout(() => {
+        const elapsed = Date.now() - start;
+
+        // If user stays on the browser page, show the modal
+        if (elapsed < fallbackDelay + 500) {
+          dispatch(mobileAppPopModal(true));
+        }
+      }, fallbackDelay);
     }
+
+    return () => {
+      localStorage.removeItem("mobilePopUpAppRoute");
+    };
   }, []);
 
   useEffect(() => {

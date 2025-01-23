@@ -70,6 +70,8 @@ const ViewMeetingModal = ({
   const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
+  const ViewAdvanceMeetingPolls =
+    JSON.parse(localStorage.getItem("viewadvanceMeetingPolls")) === true;
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -91,7 +93,7 @@ const ViewMeetingModal = ({
 
   const [minutes, setMinutes] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
-  const [polls, setPolls] = useState(false);
+  const [polls, setPolls] = useState(ViewAdvanceMeetingPolls ? true : false);
   const [attendance, setAttendance] = useState(false);
   const [attendees, setAttendees] = useState(false);
 
@@ -196,6 +198,18 @@ const ViewMeetingModal = ({
           setAttendees(false);
           setactionsPage(false);
         }
+      } else if (ViewAdvanceMeetingPolls) {
+        setMeetingMaterial(false);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(true);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setPolls(false);
+        setAttendees(false);
+        setactionsPage(false);
       } else {
         if (advanceMeetingOperations) {
           setMeetingMaterial(true);
@@ -238,7 +252,7 @@ const ViewMeetingModal = ({
     return () => {
       dispatch(emailRouteID(0));
     };
-  }, [routeID, editorRole, advanceMeetingOperations]);
+  }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -741,13 +755,14 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -763,10 +778,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
