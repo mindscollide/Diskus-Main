@@ -216,7 +216,7 @@ const Minutes = ({
       setPreviousFileIDs([]);
       dispatch(cleareAllState());
     };
-  }, []);
+  }, [isMinutePublished]);
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
@@ -1067,7 +1067,9 @@ const Minutes = ({
   useEffect(() => {
     if (
       MinutesReducer.GetPublishedMinutes !== null &&
-      MinutesReducer.GetPublishedMinutes !== undefined
+      MinutesReducer.GetPublishedMinutes !== undefined &&
+      NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes &&
+      generalminutesDocumentForMeeting
     ) {
       let dataToTransform =
         MinutesReducer?.GetPublishedMinutes?.generalPublishedMinutes;
@@ -1075,7 +1077,7 @@ const Minutes = ({
         MinutesReducer?.GetPublishedMinutes?.agendaWisePublishedMinutes;
       let documentDataAgenda =
         NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes?.data;
-      let documentsData = generalminutesDocumentForMeeting.data;
+      let documentsData = generalminutesDocumentForMeeting?.data;
       const resultedData = transformDataPublishGeneral(
         documentsData,
         dataToTransform
@@ -1084,6 +1086,17 @@ const Minutes = ({
         documentDataAgenda,
         dataToTransformAgenda
       );
+      console.log(
+        {
+          resultedData,
+          documentDataAgenda,
+          dataToTransformAgenda,
+          dataToTransform,
+          resultedDataAgenda,
+        },
+        "resultedDataresultedData"
+      );
+
       setPublishMinutesDataGeneral(resultedData);
       setPublishMinutesDataAgenda(resultedDataAgenda);
     }
@@ -1092,13 +1105,10 @@ const Minutes = ({
     generalminutesDocumentForMeeting,
     NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes,
   ]);
+  console.log({ publishMinutesDataGeneral }, "resultedDataresultedData");
+  console.log({ publishMinutesDataAgenda }, "resultedDataresultedData");
+ 
 
-  console.log(
-    "publishMinutesDataAgendapublishMinutesDataAgenda",
-    publishMinutesDataAgenda
-  );
-
-  console.log("MinutesReducerMinutesReducer", MinutesReducer);
 
   return JSON.parse(isMinutePublished) ? (
     <>
