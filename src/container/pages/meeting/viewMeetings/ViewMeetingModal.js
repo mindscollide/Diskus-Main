@@ -426,6 +426,17 @@ const ViewMeetingModal = ({
       localStorage.removeItem("NotificationAdvanceMeetingID");
       localStorage.removeItem("QuickMeetingCheckNotification");
       localStorage.setItem("isMeeting", false);
+      setMeetingMaterial(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(false);
+      setMinutes(false);
+      setAttendance(false);
+      setAgenda(false);
+      setParticipants(false);
+      setPolls(false);
+      setAttendees(false);
+      setactionsPage(false);
     };
   }, []);
 
