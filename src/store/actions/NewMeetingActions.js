@@ -8345,6 +8345,7 @@ const LeaveCurrentMeeting = (
             ) {
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
+              dispatch(showEndMeetingModal(false));
               try {
                 dispatch(currentMeetingStatus(0));
 

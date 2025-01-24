@@ -130,14 +130,16 @@ const App = () => {
     return isAndroid || isIOS;
   };
   let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
+
+  console.log(RSVPRouteforApp, "RSVPRouteforAppRSVPRouteforApp");
   useEffect(() => {
     if (isMobileDevice()) {
       const fallbackDelay = 2000; // Adjust as needed
 
       const start = Date.now();
       if (RSVPRouteforApp !== null) {
-        const appLink = `thediskus://thediskus.com?rsvp=${RSVPRouteforApp}`; // Append it to the appLink
-
+        const appLink = `thediskus://thediskus.com?${RSVPRouteforApp}`; // Append it to the appLink
+        console.log(appLink, "appLinkappLinkappLinkappLink");
         // Attempt to open the app
         window.location.href = appLink;
       }

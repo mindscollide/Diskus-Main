@@ -34,7 +34,7 @@ export const MeetingProvider = ({ children }) => {
 
   // View Meeting Tabs States
 
-  const [meetingDetails, setmeetingDetails] = useState(true);
+  const [meetingDetails, setmeetingDetails] = useState(false);
 
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -47,6 +47,10 @@ export const MeetingProvider = ({ children }) => {
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
   const [attendees, setAttendees] = useState(false);
+
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [endMeetingModal , setEndMeetingModal] = useState(false); 
+  const [leaveMeetingModal, setLeaveMeetingModal] = useState(false);
 
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
@@ -109,6 +113,8 @@ export const MeetingProvider = ({ children }) => {
     setAttendance,
     attendees,
     setAttendees,
+    setConfirmationModal,
+    confirmationModal
   };
   return (
     <MeetingContext.Provider value={statesData}>
