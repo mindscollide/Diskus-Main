@@ -47,6 +47,11 @@ export const MeetingProvider = ({ children }) => {
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
   const [attendees, setAttendees] = useState(false);
+  //For Polls View Mode
+  const [editPolls, setEditPolls] = useState(false);
+  const [votePolls, setvotePolls] = useState(false);
+  const [unPublished, setUnPublished] = useState(false);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
 
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
@@ -109,6 +114,14 @@ export const MeetingProvider = ({ children }) => {
     setAttendance,
     attendees,
     setAttendees,
+    editPolls,
+    setEditPolls,
+    votePolls,
+    setvotePolls,
+    unPublished,
+    setUnPublished,
+    viewPublishedPoll,
+    setViewPublishedPoll,
   };
   return (
     <MeetingContext.Provider value={statesData}>

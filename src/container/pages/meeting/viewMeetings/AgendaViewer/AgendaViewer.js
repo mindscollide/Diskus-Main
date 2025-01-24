@@ -258,7 +258,7 @@ const AgendaViewer = ({
           advanceMeetingModalID === 0 ||
           advanceMeetingModalID === null ||
           advanceMeetingModalID === undefined
-            ? currentMeeting
+            ? Number(currentMeeting)
             : Number(advanceMeetingModalID),
       };
       dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));
@@ -656,7 +656,7 @@ const AgendaViewer = ({
         let Data = {
           MeetingID:
             advanceMeetingModalID === "0" || advanceMeetingModalID === 0
-              ? currentMeeting
+              ? Number(currentMeeting)
               : Number(advanceMeetingModalID),
         };
         dispatch(GetAdvanceMeetingAgendabyMeetingIDForView(Data, navigate, t));

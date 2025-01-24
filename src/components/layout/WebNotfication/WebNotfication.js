@@ -34,7 +34,10 @@ import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
 } from "../../../store/actions/DataRoom_actions.js";
-import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
+import {
+  getPollByPollIdforMeeting,
+  getPollsByPollIdApi,
+} from "../../../store/actions/Polls_actions.js";
 import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 
@@ -55,6 +58,11 @@ const WebNotfication = ({
     setViewAdvanceMeetingModal,
     setViewProposeDatePoll,
     setVideoTalk,
+    setEditPolls,
+    setvotePolls,
+    setUnPublished,
+    setViewPublishedPoll,
+    setPolls,
   } = useMeetingContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -173,11 +181,31 @@ const WebNotfication = ({
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     if (isMeeting) {
-      await dispatch(
-        webNotificationDataLeaveVideoIntiminationModal(NotificationData)
-      );
-      localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
-      await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
+      if (setPolls) {
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: Number(localStorage.getItem("userID")),
+        };
+        dispatch(
+          getPollByPollIdforMeeting(
+            navigate,
+            data,
+            2,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      } else {
+        await dispatch(
+          webNotificationDataLeaveVideoIntiminationModal(NotificationData)
+        );
+        localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
+        await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      }
     } else {
       if (NotificationData.notificationActionID === 1) {
         if (currentURL.includes("/Diskus/Meeting")) {
@@ -596,6 +624,57 @@ const WebNotfication = ({
           }
         }
       } else if (NotificationData.notificationActionID === 12) {
+        //Notification for POlls Created from the Meeting
+        if (currentURL.includes("/Diskus/Meeting")) {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal,
+              1,
+              setVideoTalk
+            )
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              1,
+              setVideoTalk
+            )
+          );
+        }
       } else if (NotificationData.notificationActionID === 13) {
         if (currentURL.includes("/Diskus/Meeting")) {
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
