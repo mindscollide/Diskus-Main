@@ -517,10 +517,14 @@ const Polling = () => {
   //Handle View Votes Buttton
 
   const handleViewVotesButton = (ID) => {
+    // let data = {
+    //   PollID: Number(ID),
+    // };
     let data = {
       PollID: Number(ID),
+      UserID: parseInt(userID),
     };
-    dispatch(viewVotesApi(navigate, data, t));
+    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
   };
 
   const PollTableColumns = [
