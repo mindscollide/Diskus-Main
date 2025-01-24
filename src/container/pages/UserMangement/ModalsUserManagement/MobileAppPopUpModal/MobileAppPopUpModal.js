@@ -13,8 +13,8 @@ const MobileAppPopUpModal = () => {
   const { UserManagementModals } = useSelector((state) => state);
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   const handleOk = () => {
-    const appLink = "thediskus://thediskus.com";
     // Determine the fallback URL based on the user's device
     const isAndroid = /Android/i.test(navigator.userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -25,11 +25,7 @@ const MobileAppPopUpModal = () => {
       ? "https://apps.apple.com/us/app/diskus/id6475817410" // iOS App Store link
       : "";
 
-    window.location.href = appLink;
-
-    setTimeout(() => {
-      window.location.href = fallbackLink;
-    }, 2500);
+    window.location.href = fallbackLink;
 
     dispatch(mobileAppPopModal(false));
   };

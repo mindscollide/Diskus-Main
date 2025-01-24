@@ -218,6 +218,38 @@ const WebNotificationCard = ({
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-deleted-a-file-shared-with-you-as-viewer"
           )} ${NotificationMessege.FolderName}`;
+        } else if (NotificaitonID === 41) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-again-added-you-as-a-minutes-reviewer-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 42) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-changed-your-Role-from-group-head-member-to-group-member-head-in-the-group"
+          )} ${NotificationMessege.GroupTitle}`;
+        } else if (NotificaitonID === 43) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-changed-your-Role-from-Previous-Role-name-to-New-Role-Name-in-the-committee"
+          )} ${NotificationMessege.CommitteeTitle}`;
+        } else if (NotificaitonID === 44) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-the-Resolution"
+          )} ${NotificationMessege.Title}`;
+        } else if (NotificaitonID === 45) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-the-poll"
+          )} ${NotificationMessege.PollTitle}`;
+        } else if (NotificaitonID === 46) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-given-his-vote-on-a-poll"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 47) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-given-his-vote-on-a-poll-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
+        } else if (NotificaitonID === 48) {
+          message = `${t("Send-response-date-for-the-proposed-meeting")} ${
+            NotificationMessege.MeetingTitle
+          }`;
         } else {
           message = "Default Notification Message";
         }
@@ -334,6 +366,22 @@ const WebNotificationCard = ({
           ) : NotificaitonID === 39 ? (
             <img src={Shared_Viewer_Folder_DeletedIcon} width={46} alt="" />
           ) : NotificaitonID === 40 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 41 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 42 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 43 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 44 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 45 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 46 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 47 ? (
+            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+          ) : NotificaitonID === 48 ? (
             <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
           ) : null}
 

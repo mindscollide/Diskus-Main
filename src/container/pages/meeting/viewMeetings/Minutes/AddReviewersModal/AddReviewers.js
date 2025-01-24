@@ -15,6 +15,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   formatDateToYYYYMMDD,
   multiDatePickerDateChangIntoUTC,
+  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
@@ -122,6 +123,9 @@ const AddReviewers = ({
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
     let minuteDateValueFormat = new Date(date);
     console.log(minuteDateValueFormat, "utcFormattedutcFormattedutcFormatted");
+    minuteDateValueFormat.setHours(23);
+    minuteDateValueFormat.setMinutes(59);
+    minuteDateValueFormat.setSeconds(59);
     setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
@@ -141,7 +145,7 @@ const AddReviewers = ({
         WorkFlowTitle: currentMeetingTitle,
         Description: "",
         isDeadline: true,
-        DeadlineDateTime: formatDateToYYYYMMDD(minuteDate) + "235959",
+        DeadlineDateTime: multiDatePickerDateChangIntoUTC(minuteDate),
         ListOfActionAbleBundle: resultedActionableBundle,
       };
 
@@ -215,15 +219,9 @@ const AddReviewers = ({
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
-          // let date = utcConvertintoGMT(
-          //   MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-          //     ?.workFlow?.deadlineDatetime,
-          //   1
-          // );
-
-          let date = utcConvertintoGMT(
+          let date = resolutionResultTable(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
-              ?.workFlow?.deadlineDatetime + "000000"
+              ?.workFlow?.deadlineDatetime
           );
           setMinuteDate(date);
 
@@ -614,7 +612,7 @@ const AddReviewers = ({
       ModalBody={
         minuteDataAgenda.length === 0 && minuteDataGeneral.length === 0 ? (
           <>
-            <img src={NoMinutes} alt="" />
+            <img src={NoMinutes} alt='' />
             <p className={styles["nominutes-text"]}>{t("No-minutes")}</p>
           </>
         ) : (
@@ -664,10 +662,9 @@ const AddReviewers = ({
                   lg={6}
                   md={6}
                   sm={12}
-                  className="d-grid justify-content-start"
-                >
+                  className='d-grid justify-content-start'>
                   <label className={styles["label-datePicker"]}>
-                    {t("Deadline")} <span className="text-danger">*</span>
+                    {t("Deadline")} <span className='text-danger'>*</span>
                   </label>
                   <DatePicker
                     onFocusedDateChange={minuteDateHandler}
@@ -676,16 +673,16 @@ const AddReviewers = ({
                     minDate={moment().toDate()}
                     placeholder={t("Select-date")}
                     editable={false}
-                    className="datePickerTodoCreate2"
+                    className='datePickerTodoCreate2'
                     onOpenPickNewDate={true}
-                    inputMode=""
+                    inputMode=''
                     calendar={calendarValue}
                     locale={localValue}
                     ref={calendRef}
                     render={
                       <InputIcon
                         placeholder={t("Select-date")}
-                        className="datepicker_input_minute"
+                        className='datepicker_input_minute'
                       />
                     }
                   />
@@ -707,8 +704,7 @@ const AddReviewers = ({
                     : 12
                 }
                 sm={12}
-                className="d-flex gap-3 justify-content-end"
-              >
+                className='d-flex gap-3 justify-content-end'>
                 <Button
                   onClick={() => setAddReviewers(false)}
                   className={styles["Cancel-Button"]}
@@ -738,8 +734,7 @@ const AddReviewers = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex gap-3 justify-content-end"
-              >
+                className='d-flex gap-3 justify-content-end'>
                 <Button
                   onClick={backFunctionMinutes}
                   className={styles["Cancel-Button"]}
