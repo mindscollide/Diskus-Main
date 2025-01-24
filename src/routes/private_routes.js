@@ -372,7 +372,8 @@ const PrivateRoutes = () => {
           currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
           currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
           currentUrl.toLowerCase().includes("Diskus/committee".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/resolution".toLowerCase()))
+          currentUrl.toLowerCase().includes("Diskus/resolution".toLowerCase())) || 
+          currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase()) 
           ? "/"
           : currentUser === null && token === ""
           ? "/"
