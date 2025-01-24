@@ -20,6 +20,7 @@ import {
   deleteGroupPollsRM,
   deleteCommitteePollRM,
   ValidateEmailRelatedStringPolls,
+  updateCastVotePolls,
 } from "../../commen/apis/Api_config";
 import {
   emailRouteID,
@@ -2673,6 +2674,96 @@ const setCastVoteID = (response) => {
     response: response,
   };
 };
+
+//Updated Cast Vote
+
+const UpdatedCastVoteInit = () => {
+  return {
+    type: actions.UPDATED_CASTVOTE_INIT,
+  };
+};
+
+const UpdatedCastVoteSucess = (response, message) => {
+  return {
+    type: actions.UPDATED_CASTVOTE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const UpdatedCastVoteFail = (message) => {
+  return {
+    type: actions.UPDATED_CASTVOTE_FAIL,
+    message: message,
+  };
+};
+
+const UpdatedCastVoteAPI = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(UpdatedCastVoteInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", updateCastVotePolls.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdatedCastVoteAPI(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdatedCastVoteSucess(
+                  response.data.responseResult,
+                  t("Vote-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase()
+                )
+            ) {
+              dispatch(UpdatedCastVoteFail(t("No-vote-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase()
+                )
+            ) {
+              dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+            } else {
+              dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   setCastVoteID,
   castYourVotePollModal,
@@ -2713,4 +2804,5 @@ export {
   clearPollsMesseges,
   getPollByPollIdforGroups,
   getPollByPollIdforMeeting,
+  UpdatedCastVoteAPI,
 };
