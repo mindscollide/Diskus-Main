@@ -307,20 +307,7 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "viewMeeting_action=");
           localStorage.setItem("viewMeetingLink", getValue);
         }
-        // if (
-        //   currentUrl
-        //     .toLowerCase()
-        //     .includes(
-        //       "/DisKus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
-        //     )
-        // ) {
-        //   let getValue = getActionValue(
-        //     currentUrl,
-        //     "Useravailabilityformeeting?action="
-        //   );
-        //   localStorage.setItem("mobilePopUpAppRoute", getValue);
-        //   console.log(getValue, "getValuegetValuegetValue");
-        // }
+  
         if (
           currentUrl
             .toLowerCase()
