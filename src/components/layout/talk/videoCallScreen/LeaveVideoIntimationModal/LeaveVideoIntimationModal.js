@@ -705,14 +705,14 @@ const LeaveVideoIntimationModal = () => {
                 className="d-flex justify-content-center gap-2"
               >
                 <Button
-                  text={"Yes"}
+                  text={t("Yes")}
                   className={
                     styles["YesButtonLeaveIntimationMessegeMeetingModal"]
                   }
                   onClick={handleYesButtonLeaveVideoMeeting}
                 />
                 <Button
-                  text={"No"}
+                  text={t("No")}
                   className={
                     styles["NoButtonLeaveIntimationMessegeMeetingModal"]
                   }

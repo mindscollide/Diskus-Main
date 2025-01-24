@@ -3707,7 +3707,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     t("No-data-available")
                   )
                 );
-                reject("No data available");
+                // reject("No data available");
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -3720,7 +3720,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     t("Something-went-wrong")
                   )
                 );
-                reject("Something went wrong");
+                // reject("Something went wrong");
               }
             } else {
               dispatch(
@@ -3728,7 +3728,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                   t("Something-went-wrong")
                 )
               );
-              reject("Something went wrong");
+              // reject("Something went wrong");
             }
           } else {
             dispatch(
@@ -3736,7 +3736,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                 t("Something-went-wrong")
               )
             );
-            reject("Something went wrong");
+            // reject("Something went wrong");
           }
         })
         .catch((error) => {
@@ -3745,7 +3745,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               t("Something-went-wrong")
             )
           );
-          reject("Something went wrong");
+          // reject("Something went wrong");
         });
     });
   };
