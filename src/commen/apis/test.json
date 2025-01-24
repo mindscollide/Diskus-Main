@@ -1,0 +1,13 @@
+{
+  "PollDetails": {
+    "PollTitle": "if false",
+    "DueDate": "20250123185900",
+    "AllowMultipleAnswers": true,
+    "CreatorID": 1351,
+    "PollStatusID": 2,
+    "OrganizationID": 561
+  },
+  "ParticipantIDs": [1353],
+  "PollAnswers": ["test", "one", "two"],
+  "IsCreatedfromMainPoll": false
+}
