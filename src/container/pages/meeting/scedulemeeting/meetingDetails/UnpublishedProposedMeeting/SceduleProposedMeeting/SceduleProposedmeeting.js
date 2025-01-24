@@ -93,7 +93,6 @@ const SceduleProposedmeeting = ({
       localStorage.removeItem("MeetingStatusID");
     };
   }, []);
-
   // for rendering data in table
   useEffect(() => {
     if (
@@ -101,17 +100,34 @@ const SceduleProposedmeeting = ({
       userWiseMeetingProposed !== undefined &&
       userWiseMeetingProposed.length > 0
     ) {
-      let ProposeDates;
+      const ProposeDates = Array.from(
+        userWiseMeetingProposed
+          .flatMap((datesData) => datesData.selectedProposedDates)
+          .reduce((map, proposedDate) => {
+            // Check if the date already exists in the Map
+            if (map.has(proposedDate.proposedDate)) {
+              const existing = map.get(proposedDate.proposedDate);
 
-      userWiseMeetingProposed.forEach((datesData, index) => {
-        const uniqueData = new Set(
-          datesData.selectedProposedDates.map(JSON.stringify)
-        );
-        console.log(uniqueData, "uniqueDatauniqueData");
-        ProposeDates = Array.from(uniqueData).map(JSON.parse);
-      });
+              // Prioritize `isSelected: true`
+              if (proposedDate.isSelected) {
+                map.set(proposedDate.proposedDate, proposedDate); // Replace if current is true
+              } else if (!existing.isSelected) {
+                map.set(proposedDate.proposedDate, proposedDate); // Keep one if none are true
+              }
+            } else {
+              // Add the proposed date to the Map
+              map.set(proposedDate.proposedDate, proposedDate);
+            }
+            return map;
+          }, new Map())
+          .values() // Extract unique values from the Map
+      );
+
+      console.log(ProposeDates, "Filtered Unique ProposeDates");
+
+      console.log(ProposeDates, "Filtered ProposeDates");
+
       setProposedDates(ProposeDates);
-      console.log(ProposeDates, "uniqueDatauniqueData");
 
       setInitialOrganizerRows(userWiseMeetingProposed);
     } else {
@@ -327,8 +343,14 @@ const SceduleProposedmeeting = ({
       let isFind;
       if (record !== null && record !== undefined) {
         let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
-        const formatetDateTime = utcConvertintoGMT(datetimeVal);
-        console.log(formatetDateTime, "formatetDateTime");
+        const formatetDateTime = resolutionResultTable(datetimeVal);
+        console.log(
+          formatetDateTime,
+          String(formatetDateTime) === String(formattedDate),
+          String(formatetDateTime),
+          String(formattedDate),
+          "formatetDateTime"
+        );
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = record;
         }
@@ -396,11 +418,7 @@ const SceduleProposedmeeting = ({
     }),
 
     {
-      title: (
-        <span className={styles["Date-Object-Detail_disabled"]}>
-          {t("None-of-above")}
-        </span>
-      ),
+      title: t("None-of-above"),
       dataIndex: "NoneOfAbove",
       key: "NoneOfAbove",
       render: (text, record) => {

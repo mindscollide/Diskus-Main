@@ -6642,8 +6642,9 @@ const scheduleMeetingMainApi = (
               );
               dispatch(showSceduleProposedMeeting(false));
 
+              let getMeetingID = localStorage.getItem("currentMeetingLS");
               let MeetingData = {
-                MeetingID: Number(MeetingID),
+                MeetingID: Number(getMeetingID),
               };
               console.log(MeetingData, "MeetingIDMeetingIDMeetingID");
               await dispatch(
@@ -9927,13 +9928,13 @@ const moveFilesAndFolder_success = (response, message) => {
   return {
     type: actions.MOVEFILEANDFODLER_SUCCESS,
     response: response,
-    message: message
+    message: message,
   };
 };
 const moveFilesAndFolder_fail = (message) => {
   return {
     type: actions.MOVEFILEANDFODLER_FAIL,
-    message: message
+    message: message,
   };
 };
 
