@@ -38,6 +38,14 @@ import Shared_Editor_Folder_DeletedIcon from "../../../../assets/NotificationIco
 import Shared_Editor_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Editor_File_Deleted.png";
 import Shared_Viewer_Folder_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_Folder_Deleted.png";
 import Shared_Viewer_File_DeletedIcon from "../../../../assets/NotificationIcon/Shared_Viewer_File_Deleted.png";
+import ChangeRoleGroup from "../../../../assets/NotificationIcon/Change the Role in the Group.png";
+import ChangeRoleCommittee from "../../../../assets/NotificationIcon/Change the Role in the Committee.png";
+import DeletedResolution from "../../../../assets/NotificationIcon/Resolution deleted.png";
+import PollDelted from "../../../../assets/NotificationIcon/Poll deleted.png";
+import AgainAddedAsReviewr from "../../../../assets/NotificationIcon/Add as a reviewer in the same meeting again.png";
+import HasGivenVoteOnHisPollMeetingPoll from "../../../../assets/NotificationIcon/Participant has given his vote in Meeting Poll.png";
+import HasGivenVoteOnHisPoll from "../../../../assets/NotificationIcon/Voter has voted his Vote.png";
+import SendResponseByDatePassed from "../../../../assets/NotificationIcon/In the proposed meeting Send response date has passed..png";
 import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 
@@ -368,21 +376,21 @@ const WebNotificationCard = ({
           ) : NotificaitonID === 40 ? (
             <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
           ) : NotificaitonID === 41 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={AgainAddedAsReviewr} width={46} alt="" />
           ) : NotificaitonID === 42 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={ChangeRoleGroup} width={46} alt="" />
           ) : NotificaitonID === 43 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={ChangeRoleCommittee} width={46} alt="" />
           ) : NotificaitonID === 44 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={DeletedResolution} width={46} alt="" />
           ) : NotificaitonID === 45 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={PollDelted} width={46} alt="" />
           ) : NotificaitonID === 46 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={HasGivenVoteOnHisPoll} width={46} alt="" />
           ) : NotificaitonID === 47 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={HasGivenVoteOnHisPollMeetingPoll} width={46} alt="" />
           ) : NotificaitonID === 48 ? (
-            <img src={Shared_Viewer_File_DeletedIcon} width={46} alt="" />
+            <img src={SendResponseByDatePassed} width={46} alt="" />
           ) : null}
 
           <span className={styles["NotificationMessegeUnmarked"]}>
