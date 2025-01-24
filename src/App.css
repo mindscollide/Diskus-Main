@@ -8086,3 +8086,9 @@ td.ant-table-column-sort {
 .select_dormant-days__control {
   min-width: 80px !important;
 }
+.ant-tooltip-inner {
+  border-radius: 4px !important;
+}
+.ant-tooltip {
+  max-width: 100% !important;
+}

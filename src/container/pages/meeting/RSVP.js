@@ -16,7 +16,6 @@ import {
   newTimeFormaterAsPerUTCTalkDateTime,
 } from "../../../commen/functions/date_formater";
 const RSVP = () => {
-  const currentUrl = window.location.href;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,10 +34,9 @@ const RSVP = () => {
   const UserAvalibilityState = useSelector(
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
-  let getRSVP = localStorage.getItem("RSVP")
-  console.log(getRSVP, "RSVPRSVPRSVPRSVPRSVP")
+  let getRSVP = localStorage.getItem("RSVP");
   useEffect(() => {
-    if (localStorage.getItem("RSVP") !== null) {
+    if (getRSVP !== null) {
       let Data = { EncryptedString: localStorage.getItem("RSVP") };
       dispatch(
         validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
@@ -46,8 +44,8 @@ const RSVP = () => {
     }
     return () => {
       localStorage.removeItem("RSVP");
-    }
-  }, []);
+    };
+  }, [getRSVP]);
 
   useEffect(() => {
     try {
@@ -64,7 +62,6 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
-
       } else {
         // Handle the case when UserAvailabilityState is undefined or null
       }

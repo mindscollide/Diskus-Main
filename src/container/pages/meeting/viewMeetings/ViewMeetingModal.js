@@ -82,20 +82,32 @@ const ViewMeetingModal = ({
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
   console.log(typeof advanceMeetingOperations);
-  const { editorRole, setEditorRole } = useMeetingContext();
-  const [meetingDetails, setmeetingDetails] = useState(true);
-
-  const [organizers, setorganizers] = useState(false);
-  const [agendaContributors, setAgendaContributors] = useState(false);
-  const [participants, setParticipants] = useState(false);
-  const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(false);
-
-  const [minutes, setMinutes] = useState(false);
-  const [actionsPage, setactionsPage] = useState(false);
-  const [polls, setPolls] = useState(ViewAdvanceMeetingPolls ? true : false);
-  const [attendance, setAttendance] = useState(false);
-  const [attendees, setAttendees] = useState(false);
+  const {
+    editorRole,
+    setEditorRole,
+    meetingDetails,
+    setmeetingDetails,
+    organizers,
+    setorganizers,
+    agendaContributors,
+    setAgendaContributors,
+    participants,
+    setParticipants,
+    agenda,
+    setAgenda,
+    meetingMaterial,
+    setMeetingMaterial,
+    minutes,
+    setMinutes,
+    actionsPage,
+    setactionsPage,
+    polls,
+    setPolls,
+    attendance,
+    setAttendance,
+    attendees,
+    setAttendees,
+  } = useMeetingContext();
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -202,7 +214,19 @@ const ViewMeetingModal = ({
         setMeetingMaterial(false);
         setAgendaContributors(false);
         setorganizers(false);
-        setmeetingDetails(true);
+        setmeetingDetails(false);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setPolls(true);
+        setAttendees(false);
+        setactionsPage(false);
+      } else if (advanceMeetingOperations) {
+        setMeetingMaterial(true);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(false);
         setMinutes(false);
         setAttendance(false);
         setAgenda(false);
@@ -211,32 +235,16 @@ const ViewMeetingModal = ({
         setAttendees(false);
         setactionsPage(false);
       } else {
-        if (advanceMeetingOperations) {
-          setMeetingMaterial(true);
-        } else {
-          if (Number(editorRole.role) === 10) {
-            if (
-              editorRole.role === "Organizer" ||
-              editorRole.role === "Agenda Contributor" ||
-              editorRole.role === "Participant"
-            ) {
-              setMeetingMaterial(true);
-              setAgendaContributors(false);
-              setorganizers(false);
-              setmeetingDetails(false);
-              setMinutes(false);
-              setAttendance(false);
-              setAgenda(false);
-              setParticipants(false);
-              setPolls(false);
-              setAttendees(false);
-              setactionsPage(false);
-            }
-          } else {
-            setMeetingMaterial(false);
+        if (Number(editorRole.status) === 10) {
+          if (
+            editorRole.role === "Organizer" ||
+            editorRole.role === "Agenda Contributor" ||
+            editorRole.role === "Participant"
+          ) {
+            setMeetingMaterial(true);
             setAgendaContributors(false);
             setorganizers(false);
-            setmeetingDetails(true);
+            setmeetingDetails(false);
             setMinutes(false);
             setAttendance(false);
             setAgenda(false);
@@ -245,8 +253,32 @@ const ViewMeetingModal = ({
             setAttendees(false);
             setactionsPage(false);
           }
+        } else {
+          setMeetingMaterial(false);
+          setAgendaContributors(false);
+          setorganizers(false);
+          setmeetingDetails(true);
+          setMinutes(false);
+          setAttendance(false);
+          setAgenda(false);
+          setParticipants(false);
+          setPolls(false);
+          setAttendees(false);
+          setactionsPage(false);
         }
       }
+    } else {
+      setMeetingMaterial(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(true);
+      setMinutes(false);
+      setAttendance(false);
+      setAgenda(false);
+      setParticipants(false);
+      setPolls(false);
+      setAttendees(false);
+      setactionsPage(false);
     }
 
     return () => {
@@ -755,14 +787,13 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -778,10 +809,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={

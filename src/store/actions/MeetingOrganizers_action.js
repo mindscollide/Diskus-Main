@@ -390,20 +390,21 @@ const UpdateOrganizersMeeting = (
                 } else if (route === 4) {
                   console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 9) {
+                    setEndMeetingConfirmationModal(false)
                     console.log("end meeting chaek", leaveMeetingData);
-                    dispatch(
-                      LeaveCurrentMeeting(
-                        navigate,
-                        t,
-                        leaveMeetingData,
-                        false,
-                        setViewFlag,
-                        setEditorRole,
-                        setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal,
-                        setEndMeetingConfirmationModal
-                      )
-                    );
+                    // dispatch(
+                    //   LeaveCurrentMeeting(
+                    //     navigate,
+                    //     t,
+                    //     leaveMeetingData,
+                    //     false,
+                    //     setViewFlag,
+                    //     setEditorRole,
+                    //     setAdvanceMeetingModalID,
+                    //     setViewAdvanceMeetingModal,
+                    //     setEndMeetingConfirmationModal
+                    //   )
+                    // );
                   } else {
                     if (isQuickMeeting) {
                       console.log("end meeting chaek", leaveMeetingData);
