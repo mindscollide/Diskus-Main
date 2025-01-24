@@ -182,30 +182,30 @@ const WebNotfication = ({
 
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
-      if (setPolls) {
-        let data = {
-          PollID: Number(PayLoadData.PollID),
-          UserID: Number(localStorage.getItem("userID")),
-        };
-        dispatch(
-          getPollByPollIdforMeeting(
-            navigate,
-            data,
-            2,
-            t,
-            setEditPolls,
-            setvotePolls,
-            setUnPublished,
-            setViewPublishedPoll
-          )
-        );
-      } else {
-        await dispatch(
-          webNotificationDataLeaveVideoIntiminationModal(NotificationData)
-        );
-        localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
-        await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      }
+      // if (setPolls) {
+      //   let data = {
+      //     PollID: Number(PayLoadData.PollID),
+      //     UserID: Number(localStorage.getItem("userID")),
+      //   };
+      //   dispatch(
+      //     getPollByPollIdforMeeting(
+      //       navigate,
+      //       data,
+      //       2,
+      //       t,
+      //       setEditPolls,
+      //       setvotePolls,
+      //       setUnPublished,
+      //       setViewPublishedPoll
+      //     )
+      //   );
+      // } else {
+      await dispatch(
+        webNotificationDataLeaveVideoIntiminationModal(NotificationData)
+      );
+      localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
+      await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      // }
     } else {
       if (NotificationData.notificationActionID === 1) {
         if (currentURL.includes("/Diskus/Meeting")) {
