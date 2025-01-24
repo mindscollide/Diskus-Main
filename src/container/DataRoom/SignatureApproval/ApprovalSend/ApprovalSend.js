@@ -259,7 +259,7 @@ const ApprovalSend = () => {
         />
       ),
       filterDropdown: () => (
-        <Dropdown overlay={menu}  open={visible} trigger={["click"]}>
+        <Dropdown overlay={menu} open={visible} trigger={["click"]}>
           <div />
         </Dropdown>
       ),
@@ -455,7 +455,7 @@ const ApprovalSend = () => {
       rowsDataLength,
       "handleScrollhandleScroll"
     );
-    if (rowsDataLength <= totalRecords) {
+    if (approvalsData.length > 0 && rowsDataLength <= totalRecords) {
       setIsScrolling(true);
       let Data = { sRow: Number(rowsDataLength), Length: 10 };
       await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
@@ -465,7 +465,7 @@ const ApprovalSend = () => {
     <>
       {" "}
       <Row className='mb-2'>
-        {approvalsData.length > 0 ? (
+     
           <Col sm={12} md={12} lg={12} className='mt-3'>
             <InfiniteScroll
               dataLength={approvalsData.length}
@@ -498,6 +498,32 @@ const ApprovalSend = () => {
                 className={"ApprovalsTable"}
                 // prefClassName="ApprovalSending"
                 rows={approvalsData}
+                locale={{
+                  emptyText: (
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className='d-flex justify-content-center align-items-center mt-2'>
+                      <section
+                        className={styles["ApprovalSend_emptyContainer"]}>
+                        <img
+                          className='d-flex justify-content-center'
+                          src={EmtpyImage}
+                        />
+                        <span className={styles["emptyState_title"]}>
+                          {t("Submit-document-for-approval")}
+                        </span>
+                        <span className={styles["emptyState_tagline"]}>
+                          {t(
+                            "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
+                          )}
+                          !
+                        </span>
+                      </section>
+                    </Col>
+                  ),
+                }}
                 pagination={false}
                 showHeader={true}
                 id={(record, index) =>
@@ -506,26 +532,7 @@ const ApprovalSend = () => {
               />
             </InfiniteScroll>
           </Col>
-        ) : (
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className='d-flex justify-content-center align-items-center mt-2'>
-            <section className={styles["ApprovalSend_emptyContainer"]}>
-              <img className='d-flex justify-content-center' src={EmtpyImage} />
-              <span className={styles["emptyState_title"]}>
-                {t("Submit-document-for-approval")}
-              </span>
-              <span className={styles["emptyState_tagline"]}>
-                {t(
-                  "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
-                )}
-                !
-              </span>
-            </section>
-          </Col>
-        )}
+       
       </Row>
       {signatoriesList && (
         <SignatoriesListModal

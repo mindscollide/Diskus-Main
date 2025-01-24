@@ -3707,7 +3707,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     t("No-data-available")
                   )
                 );
-                reject("No data available");
+                // reject("No data available");
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -3720,7 +3720,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     t("Something-went-wrong")
                   )
                 );
-                reject("Something went wrong");
+                // reject("Something went wrong");
               }
             } else {
               dispatch(
@@ -3728,7 +3728,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                   t("Something-went-wrong")
                 )
               );
-              reject("Something went wrong");
+              // reject("Something went wrong");
             }
           } else {
             dispatch(
@@ -3736,7 +3736,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                 t("Something-went-wrong")
               )
             );
-            reject("Something went wrong");
+            // reject("Something went wrong");
           }
         })
         .catch((error) => {
@@ -3745,7 +3745,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               t("Something-went-wrong")
             )
           );
-          reject("Something went wrong");
+          // reject("Something went wrong");
         });
     });
   };
@@ -9434,24 +9434,27 @@ const GetMeetingStatusDataAPI = (
                   response.data.responseResult.sendResponseByDeadline
                 );
 
-                // Meeting Status ID
+                //For Global Use Meeting Status ID
                 localStorage.setItem(
                   "MeetingStatusID",
                   response.data.responseResult.meetingStatusID
                 );
-
                 //Global Edit States Context State
-                setEditorRole({
-                  status: Number(response.data.responseResult.meetingStatusID),
-                  role:
-                    Number(response.data.responseResult.attendeeRoleID) === 2
-                      ? "Participant"
-                      : Number(response.data.responseResult.attendeeRoleID) ===
-                        4
-                      ? "Agenda Contributor"
-                      : "Organizer",
-                  isPrimaryOrganizer: false,
-                });
+                isFunction(setEditorRole) &&
+                  setEditorRole({
+                    status: Number(
+                      response.data.responseResult.meetingStatusID
+                    ),
+                    role:
+                      Number(response.data.responseResult.attendeeRoleID) === 2
+                        ? "Participant"
+                        : Number(
+                            response.data.responseResult.attendeeRoleID
+                          ) === 4
+                        ? "Agenda Contributor"
+                        : "Organizer",
+                    isPrimaryOrganizer: false,
+                  });
 
                 // For Notification ID === 9
                 if (FlagOnRouteClickAdvanceMeet === true) {
@@ -9460,14 +9463,15 @@ const GetMeetingStatusDataAPI = (
                     setViewAdvanceMeetingModal(true);
                   dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 }
-
                 //Global Video Chat And Group ID Context State
-                setVideoTalk({
-                  isChat: response.data.responseResult.isChat,
-                  isVideoCall: response.data.responseResult.isVideoCall,
-                  talkGroupID: response.data.responseResult.talkGroupID,
-                });
-
+                isFunction(setVideoTalk) &&
+                  setVideoTalk({
+                    isChat: response.data.responseResult.isChat,
+                    isVideoCall: response.data.responseResult.isVideoCall,
+                    talkGroupID: response.data.responseResult.talkGroupID,
+                  });
+                console.log(Check, "errorerrorerror");
+                //Joining Meeting Scenario
                 if (Check === 1) {
                   let joinMeetingData = {
                     VideoCallURL: response.data.responseResult.videoCallUrl,
@@ -9487,6 +9491,12 @@ const GetMeetingStatusDataAPI = (
                       joinMeetingData
                     )
                   );
+                } else if (Check === 2) {
+                  if (
+                    Number(response.data.responseResult.meetingStatusID) !== 1
+                  ) {
+                    dispatch(showSceduleProposedMeeting(true));
+                  }
                 }
               } catch (error) {
                 console.log(error, "errorerrorerror");
@@ -9927,13 +9937,13 @@ const moveFilesAndFolder_success = (response, message) => {
   return {
     type: actions.MOVEFILEANDFODLER_SUCCESS,
     response: response,
-    message: message
+    message: message,
   };
 };
 const moveFilesAndFolder_fail = (message) => {
   return {
     type: actions.MOVEFILEANDFODLER_FAIL,
-    message: message
+    message: message,
   };
 };
 
