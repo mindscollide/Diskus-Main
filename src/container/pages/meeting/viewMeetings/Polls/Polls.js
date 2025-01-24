@@ -61,7 +61,17 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole } = useMeetingContext();
+  const {
+    editorRole,
+    editPolls,
+    setEditPolls,
+    votePolls,
+    setvotePolls,
+    unPublished,
+    setUnPublished,
+    viewPublishedPoll,
+    setViewPublishedPoll,
+  } = useMeetingContext();
 
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID
@@ -94,9 +104,9 @@ const Polls = ({
   );
 
   const { setEditorRole } = useContext(MeetingContext);
-  const [votePolls, setvotePolls] = useState(false);
+
   const [createpoll, setCreatepoll] = useState(false);
-  const [editPolls, setEditPolls] = useState(false);
+
   const [pollsRows, setPollsRows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
@@ -111,11 +121,9 @@ const Polls = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [pollID, setPollID] = useState(0);
 
   // Unpublished Poll
-  const [unPublished, setUnPublished] = useState(false);
 
   const handleEditMeetingPoll = (record) => {
     let data = {
@@ -124,6 +132,7 @@ const Polls = ({
     };
     dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
   };
+
   const handleDeletePoll = (record) => {
     dispatch(deleteSavedPollsMeeting(true));
     setPollID(record.pollID);
@@ -265,8 +274,32 @@ const Polls = ({
       }
     }
   };
+
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
+      //For Polls Notification Click Handling
+      if (
+        JSON.parse(localStorage.getItem("viewadvanceMeetingPolls")) === true
+      ) {
+        let data = {
+          PollID: Number(localStorage.getItem("NotificationClickPollID")),
+          UserID: parseInt(userID),
+        };
+
+        console.log(data, "datagetPollByPollIdforMeetingdatadata");
+        dispatch(
+          getPollByPollIdforMeeting(
+            navigate,
+            data,
+            2,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      }
       let NotificationClickMeetingID = localStorage.getItem(
         "NotificationAdvanceMeetingID"
       );
@@ -281,7 +314,7 @@ const Polls = ({
       dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
     } else {
       let Data = {
-        MeetingID: currentMeeting,
+        MeetingID: Number(currentMeeting),
         OrganizationID: Number(OrganizationID),
         CreatorName: "",
         PollTitle: "",

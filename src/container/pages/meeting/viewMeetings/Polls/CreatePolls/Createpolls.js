@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import EnglishCalendar from "react-date-object/calendars/gregorian";
-import ArabicCalendar from 'react-date-object/calendars/arabic'
+import ArabicCalendar from "react-date-object/calendars/arabic";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
@@ -53,7 +53,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const unsavedPollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.unsavedPollsMeeting
   );
-  let currentLanguage = localStorage.getItem("i18nextLng")
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -92,7 +92,6 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   const [members, setMembers] = useState([]);
 
-  
   useEffect(() => {
     if (currentLanguage !== null) {
       if (currentLanguage === "en") {
@@ -177,7 +176,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   const changeDateStartHandler = (date) => {
-    console.log(date, "datedatedatedatedate")
+    console.log(date, "datedatedatedatedate");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     DateDate.setHours(23, 59, 0, 0);
@@ -308,8 +307,8 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           });
         }
       }
-      let sortAssginersArr = newmembersArray.sort(
-        (a, b) =>  a.name.localeCompare(b.name)
+      let sortAssginersArr = newmembersArray.sort((a, b) =>
+        a.name.localeCompare(b.name)
       );
       setmemberSelect(sortAssginersArr);
     } else {
@@ -459,6 +458,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
         },
         ParticipantIDs: users,
         PollAnswers: optionsListData,
+        IsCreatedfromMainPoll: false,
       };
 
       await dispatch(SavePollsApi(navigate, data, t, 2, currentMeeting));

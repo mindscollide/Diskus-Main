@@ -1940,6 +1940,11 @@ const DeleteNotesDocuments = {
   RequestMethod: "ServiceManager.DeleteNotesDocuments",
 };
 
+//update cast vote
+const updateCastVotePolls = {
+  RequestMethod: "ServiceManager.UpdateCastedVote",
+};
+
 export {
   MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
@@ -2449,4 +2454,5 @@ export {
   SaveNotesDocument,
   RetrieveNotesDocument,
   DeleteNotesDocuments,
+  updateCastVotePolls,
 };

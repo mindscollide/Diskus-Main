@@ -108,10 +108,14 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         }
       }
     } catch {}
+    return () => {
+      localStorage.removeItem("NotificationClickPollID");
+    };
   }, [Allpolls]);
 
   const handleCancelButton = () => {
     setvotePolls(false);
+    localStorage.removeItem("viewadvanceMeetingPolls");
   };
 
   return (

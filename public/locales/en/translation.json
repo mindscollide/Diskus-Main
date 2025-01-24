@@ -2407,5 +2407,7 @@
   "Has-deleted-the-Resolution": "has deleted the Resolution",
   "Has-given-his-vote-on-a-poll": "has given his vote on a poll",
   "Has-given-his-vote-on-a-poll-in-the-meeting": "has given his vote on a poll in the meeting",
-  "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting"
+  "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting",
+  "Vote-updated": "Vote Updated",
+  "No-vote-updated": "No Vote Updated"
 }
