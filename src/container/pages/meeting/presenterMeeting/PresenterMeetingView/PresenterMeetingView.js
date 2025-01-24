@@ -15,12 +15,14 @@ import CopyLink from "./../../../../../components/layout/talk/talk-Video/video-i
 import ParticipantsIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Users Purple.svg";
 import ExpandIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Purple.svg";
+import CallEndRedIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Call End Red.svg";
 import PauseWhite from "../../../../../assets/images/Recent Activity Icons/Video/PauseWhite.png";
 import WhiteParticipant from "../../../../../assets/images/Recent Activity Icons/Video/WhiteParticipant.png";
 import ScreenShareWhite from "../../../../../assets/images/Recent Activity Icons/Video/ScreenShareWhite.png";
 import NormalizeIcon from "./../../../../../components/layout/talk/talk-Video/video-images/Collapse.svg";
 import ExpandIconWhite from "../../../../../assets/images/Recent Activity Icons/Video/ExpandIconWhite.png";
 
+import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
 import GreyCollapse from "../../../../../assets/images/Recent Activity Icons/Video/GreyCollapse.png";
 import GreyCopylink from "../../../../../assets/images/Recent Activity Icons/Video/GreyCopylink.png";
 import GreyHandRaise from "../../../../../assets/images/Recent Activity Icons/Video/GreyHandRaise.png";
@@ -31,7 +33,11 @@ import GreyTile from "../../../../../assets/images/Recent Activity Icons/Video/G
 
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
-import { minimizePresenterGlobalState } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  minimizePresenterGlobalState,
+  presenterModalLeave,
+  startPresenterGlobal,
+} from "../../../../../store/actions/VideoFeature_actions";
 
 const PresenterMeetingView = () => {
   const { t } = useTranslation();
@@ -65,6 +71,12 @@ const PresenterMeetingView = () => {
 
   const onClickParticipantPresenter = () => {
     setParticipantListPresenter(!participantListPresenter);
+  };
+
+  const onClickLeavePresentation = () => {
+    dispatch(minimizePresenterGlobalState(false));
+    dispatch(startPresenterGlobal(false));
+    dispatch(presenterModalLeave(false));
   };
 
   return (
@@ -331,22 +343,37 @@ const PresenterMeetingView = () => {
                         </Tooltip>
                         <Tooltip placement="topRight" title={t("Participants")}>
                           <img
-                            src={GreyParticipants}
+                            src={
+                              minimizePresenterReducer
+                                ? WhiteParticipant
+                                : GreyParticipants
+                            }
                             alt="Participants"
                             className="cursor-pointer"
                           />
                         </Tooltip>
-                        <Tooltip placement="topRight" title={t("Layout")}>
-                          <img src={GreyTile} alt="Layout" />
-                        </Tooltip>
+                        {!minimizePresenterReducer && (
+                          <Tooltip placement="topRight" title={t("Layout")}>
+                            <img src={GreyTile} alt="Layout" />
+                          </Tooltip>
+                        )}
                         <Tooltip placement="topRight" title={t("Copy-link")}>
                           <img src={GreyCopylink} alt="CopyLink" />
                         </Tooltip>
-                        <Tooltip placement="topRight" title={t("Hand-raise")}>
-                          <img src={GreyHandRaise} alt="HandRaise" />
-                        </Tooltip>
+                        {!minimizePresenterReducer && (
+                          <Tooltip placement="topRight" title={t("Hand-raise")}>
+                            <img src={GreyHandRaise} alt="HandRaise" />
+                          </Tooltip>
+                        )}
                         <Tooltip placement="topRight" title={t("Screen-share")}>
-                          <img src={GreyScreenShare} alt="ScreenShare" />
+                          <img
+                            src={
+                              minimizePresenterReducer
+                                ? ScreenShareWhite
+                                : GreyScreenShare
+                            }
+                            alt="ScreenShare"
+                          />
                         </Tooltip>
                         {!minimizePresenterReducer && (
                           <Tooltip placement="topRight" title={t("Minimize")}>
@@ -361,11 +388,27 @@ const PresenterMeetingView = () => {
 
                         <Tooltip placement="topRight" title={t("Expand")}>
                           <img
-                            src={GreyCollapse}
+                            src={
+                              minimizePresenterReducer
+                                ? ExpandIconWhite
+                                : GreyCollapse
+                            }
                             alt="Expand"
                             className={styles["presenter-img-cursor"]}
+                            onClick={onClickMaximize}
                           />
                         </Tooltip>
+
+                        {!minimizePresenterReducer && (
+                          <Tooltip placement="topRight" title={t("End Call")}>
+                            <img
+                              src={CallEndRedIcon}
+                              alt="End Call"
+                              className={styles["presenter-img-cursor"]}
+                              onClick={onClickLeavePresentation}
+                            />
+                          </Tooltip>
+                        )}
                       </Col>
                     </>
                   )}

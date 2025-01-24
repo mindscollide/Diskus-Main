@@ -48,6 +48,7 @@ import {
   startPresenterGlobal,
   stopPresenterGlobal,
   presenterModalLeave,
+  minimizePresenterGlobalState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -724,6 +725,7 @@ const AgendaViewer = ({
   const startPresenterCheck = () => {
     dispatch(startPresenterGlobal(true));
     dispatch(stopPresenterGlobal(false));
+    dispatch(minimizePresenterGlobalState(false));
     localStorage.setItem("CheckNet", true);
   };
 
