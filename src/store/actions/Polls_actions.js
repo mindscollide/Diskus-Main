@@ -34,7 +34,7 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   SetMeetingPollsApiFunc,
 } from "./NewMeetingActions";
-
+import { isFunction } from "../../commen/functions/utils";
 const clearPollsMesseges = () => {
   return {
     type: actions.CLEAR_POLLS_MESSAGES,
@@ -820,7 +820,14 @@ const viewVoteFailed = (message) => {
   };
 };
 
-const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
+const viewVotesApi = (
+  navigate,
+  data,
+  t,
+  check,
+  setviewVotes,
+  setViewPublishedPoll
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(viewVotesInit());
@@ -847,7 +854,9 @@ const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
           ) {
             if (check) {
               if (Number(check) === 1) {
-                setviewVotes(true);
+                console.log(check, "NumberNumberNumberNumber");
+                isFunction(setviewVotes) && setviewVotes(true);
+                setViewPublishedPoll(false);
                 await dispatch(
                   viewVotesSuccess(response.data.responseResult.voteDetails, "")
                 );
@@ -2698,69 +2707,252 @@ const UpdatedCastVoteFail = (message) => {
   };
 };
 
-const UpdatedCastVoteAPI = (navigate, t, data) => {
+// const UpdatedCastVoteAPI = (navigate, t, data) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return (dispatch) => {
+//     dispatch(UpdatedCastVoteInit());
+//     let form = new FormData();
+//     form.append("RequestData", JSON.stringify(data));
+//     form.append("RequestMethod", updateCastVotePolls.RequestMethod);
+//     axios({
+//       method: "post",
+//       url: pollApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(UpdatedCastVoteAPI(navigate, t, data));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(
+//                 UpdatedCastVoteSucess(
+//                   response.data.responseResult,
+//                   t("Vote-updated")
+//                 )
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(UpdatedCastVoteFail(t("No-vote-updated")));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase()
+//                 )
+//             ) {
+//               dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+//             } else {
+//               dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+//       });
+//   };
+// };
+
+const UpdatedCastVoteAPI = (
+  navigate,
+  data,
+  t,
+  check,
+  setvotePolls,
+  currnetMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(UpdatedCastVoteInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", updateCastVotePolls.RequestMethod);
-    axios({
+    await axios({
       method: "post",
       url: pollApi,
       data: form,
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(UpdatedCastVoteAPI(navigate, t, data));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                UpdatedCastVoteSucess(
-                  response.data.responseResult,
-                  t("Vote-updated")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase()
-                )
-            ) {
-              dispatch(UpdatedCastVoteFail(t("No-vote-updated")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase()
-                )
-            ) {
-              dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(
+          UpdatedCastVoteAPI(
+            navigate,
+            data,
+            t,
+            check,
+            setvotePolls,
+            currnetMeeting
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_UpdateCastedVote_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              UpdatedCastVoteSucess(
+                response.data.responseResult,
+                t("Vote-updated")
+              )
+            );
+            if (check) {
+              if (check === 1) {
+                //  Polls from Committees
+                setvotePolls(false);
+                let organizationID = localStorage.getItem("organizationID");
+                let CommitteeID = localStorage.getItem("ViewCommitteeID");
+                let Data = {
+                  CommitteeID: Number(CommitteeID),
+                  OrganizationID: Number(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
+              } else if (check === 2) {
+                setvotePolls(false);
+                let organizationID = localStorage.getItem("organizationID");
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let Data = {
+                  GroupID: Number(ViewGroupID),
+                  OrganizationID: Number(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(getPollsByGroupMainApi(navigate, t, Data));
+              } else if (check === 3) {
+                setvotePolls(false);
+                let OrganizationID = localStorage.getItem("organizationID");
+
+                let Data = {
+                  MeetingID: Number(currnetMeeting),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+              }
             } else {
-              dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+              let organizationID = localStorage.getItem("organizationID");
+              let userID = localStorage.getItem("userID");
+              let data = {
+                UserID: parseInt(userID),
+                OrganizationID: parseInt(organizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(setEditpollModal(false));
+              dispatch(setCreatePollModal(false));
+              dispatch(setviewpollProgressModal(false));
+              dispatch(globalFlag(false));
+              dispatch(viewVotesDetailsModal(false));
+              dispatch(setviewpollModal(false));
+              dispatch(setVotePollModal(false));
+              dispatch(searchPollsApi(navigate, t, data));
             }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_UpdateCastedVote_02".toLowerCase()
+              )
+          ) {
+            dispatch(UpdatedCastVoteFail(t("No-vote-updated")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_UpdateCastedVote_03".toLowerCase()
+              )
+          ) {
+            dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_UpdateCastedVote_04".toLowerCase()
+              )
+          ) {
+            dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_05".toLowerCase())
+          ) {
+            dispatch(UpdatedCastVoteFail(t("Exception-Some-thing-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_06".toLowerCase())
+          ) {
+            dispatch(UpdatedCastVoteFail(t("The-poll-is-not-published")));
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_07".toLowerCase())
+          ) {
+            dispatch(
+              UpdatedCastVoteFail(t("The-poll-due-date-has-been-passed"))
+            );
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
           } else {
             dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
           }
         } else {
           dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(UpdatedCastVoteFail(t("Something-went-wrong")));
-      });
+      }
+    });
   };
 };
 

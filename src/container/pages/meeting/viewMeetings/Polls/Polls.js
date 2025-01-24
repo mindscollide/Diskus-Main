@@ -30,7 +30,10 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import CancelPolls from "./CancelPolls/CancelPolls";
-import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import {
   castYourVotePollModal,
   clearPollsMesseges,
@@ -39,6 +42,7 @@ import {
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
   setCastVoteID,
+  viewVotesApi,
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
@@ -49,6 +53,8 @@ import {
   MeetingContext,
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
+import { usePollsContext } from "../../../../../context/PollsContext";
+import ViewVotesScreen from "./ViewVotes/ViewVotesScreen";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -72,6 +78,8 @@ const Polls = ({
     viewPublishedPoll,
     setViewPublishedPoll,
   } = useMeetingContext();
+
+  const { viewVotes, setviewVotes } = usePollsContext();
 
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID
@@ -444,6 +452,16 @@ const Polls = ({
     );
   };
 
+  const ViewVoteButtonOnClick = (record) => {
+    console.log(record, "ViewVoteButtonOnClick");
+    let data = {
+      PollID: record.pollID,
+    };
+    dispatch(
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
+    );
+  };
+
   useEffect(() => {
     try {
       if (setPollIdForCastVote !== null) {
@@ -565,9 +583,18 @@ const Polls = ({
       render: (text, record) => {
         console.log("votevotevotevote", record);
         console.log("votevotevotevote", record.isVoter);
+        console.log(record.dueDate, "recordrecordrecord");
+
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        console.log(
+          currentDate,
+          convertIntoGmt,
+          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
+        );
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
-            if (record.voteStatus === "Not Voted") {
+            if (currentDate < convertIntoGmt) {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
@@ -576,13 +603,18 @@ const Polls = ({
                 />
               );
             } else if (record.voteStatus === "Voted") {
-              return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+              return (
+                // <span className={styles["votedBtn"]}></span>
+                <Button
+                  className={styles["ViewVotesButtonStyles"]}
+                  text={t("View-votes")}
+                  onClick={() => ViewVoteButtonOnClick(record)}
+                />
+              );
             }
           } else {
             return "";
           }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
         } else if (record.pollStatus.pollStatusId === 3) {
           if (record.isVoter) {
             if (record.wasPollPublished) {
@@ -591,7 +623,11 @@ const Polls = ({
                   <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
                 );
               } else {
-                return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+                <Button
+                  className={styles["ViewVotesButtonStyles"]}
+                  text={t("View-votes")}
+                  onClick={() => ViewVoteButtonOnClick(record)}
+                />;
               }
             } else {
               return "";
@@ -781,6 +817,8 @@ const Polls = ({
             setUnPublished={setUnPublished}
             currentMeeting={currentMeeting}
           />
+        ) : viewVotes ? (
+          <ViewVotesScreen />
         ) : (
           <>
             {Number(editorRole.status) === 10 &&
@@ -926,6 +964,7 @@ const Polls = ({
             pollID={pollID}
           />
         )}
+
         <Notification open={open} setOpen={setOpen} />
       </section>
     </>

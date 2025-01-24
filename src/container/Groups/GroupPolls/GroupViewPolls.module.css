@@ -204,7 +204,6 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
-
 }
 .Background-nonvoted-Button {
   max-width: 109px !important;
@@ -244,5 +243,25 @@ body[dir="rtl"] .PaginationStyle-Resolution {
   align-content: center;
   flex-wrap: wrap;
   height: 20px !important;
+  font-weight: 600 !important;
+}
+
+.ViewVotesButtonStyles {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 95px !important;
+  font-weight: 600 !important;
+}
+
+.ViewVotesButtonStyles:is(:hover, :focus, :focus-visible, :active) {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 95px !important;
   font-weight: 600 !important;
 }

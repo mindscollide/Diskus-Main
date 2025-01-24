@@ -11,16 +11,17 @@ import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { viewVotesApi } from "../../../../../../store/actions/Polls_actions";
+import { usePollsContext } from "../../../../../../context/PollsContext";
 
 const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { viewVotes, setviewVotes } = usePollsContext();
 
   const PollsReducerAllpolls = useSelector(
     (state) => state.PollsReducer.Allpolls
   );
-  const [viewVotes, setviewVotes] = useState(false);
 
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
