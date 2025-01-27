@@ -766,6 +766,8 @@ const Polls = ({
     setAdvanceMeetingModalID(null);
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
   };
 
   const navigatetoAttendance = () => {

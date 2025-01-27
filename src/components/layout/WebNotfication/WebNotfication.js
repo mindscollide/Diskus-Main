@@ -640,6 +640,7 @@ const WebNotfication = ({
           localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(
@@ -655,17 +656,16 @@ const WebNotfication = ({
           );
         } else {
           navigate("/Diskus/Meeting");
-          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
           localStorage.setItem("AdvanceMeetingOperations", true);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
-
           localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(
