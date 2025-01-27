@@ -72,6 +72,8 @@ const ViewMeetingModal = ({
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
   const ViewAdvanceMeetingPolls =
     JSON.parse(localStorage.getItem("viewadvanceMeetingPolls")) === true;
+  const ViewAdvanceMeetingTask =
+    JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true;
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
@@ -222,6 +224,18 @@ const ViewMeetingModal = ({
         setPolls(true);
         setAttendees(false);
         setactionsPage(false);
+      } else if (ViewAdvanceMeetingTask) {
+        setMeetingMaterial(false);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(false);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setPolls(false);
+        setAttendees(false);
+        setactionsPage(true);
       } else if (advanceMeetingOperations) {
         setMeetingMaterial(true);
         setAgendaContributors(false);
@@ -288,6 +302,8 @@ const ViewMeetingModal = ({
       localStorage.removeItem("NotificationClickPollID");
       localStorage.removeItem("AdvanceMeetingOperations");
       localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("NotificationClickTaskID");
+      localStorage.removeItem("viewadvanceMeetingTask");
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
   console.log(

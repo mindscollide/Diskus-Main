@@ -1334,6 +1334,56 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 48) {
       } else if (NotificationData.notificationActionID === 49) {
+        //Assigned You a Task in the Meeting
+        if (currentURL.includes("/Diskus/Meeting")) {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          localStorage.setItem("viewadvanceMeetingTask", true);
+          localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal,
+              1,
+              setVideoTalk
+            )
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem("viewadvanceMeetingTask", true);
+          localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //set Local storage flag for identification for polls
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              1,
+              setVideoTalk
+            )
+          );
+        }
       } else {
       }
     }
