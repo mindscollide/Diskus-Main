@@ -118,12 +118,18 @@ const Actions = ({
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       if (JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true) {
+        console.log("NotificationDataNotificationData");
         let Data = {
           ToDoListID: Number(localStorage.getItem("NotificationClickTaskID")),
         };
         dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
       }
     }
+    return () => {
+      localStorage.removeItem("NotificationClickTaskID");
+      localStorage.removeItem("viewadvanceMeetingTask");
+      localStorage.removeItem("AdvanceMeetingOperations");
+    };
   }, []);
 
   // dispatch Api in useEffect

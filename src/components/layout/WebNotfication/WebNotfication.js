@@ -1341,8 +1341,8 @@ const WebNotfication = ({
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
-          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           localStorage.setItem("viewadvanceMeetingTask", true);
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
           setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -1361,14 +1361,13 @@ const WebNotfication = ({
         } else {
           navigate("/Diskus/Meeting");
           localStorage.setItem("AdvanceMeetingOperations", true);
-          localStorage.setItem("viewadvanceMeetingTask", true);
-          localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
           localStorage.setItem(
             "NotificationAdvanceMeetingID",
             PayLoadData.MeetingID
           );
+          localStorage.setItem("viewadvanceMeetingTask", true);
           localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-          //set Local storage flag for identification for polls
+          localStorage.setItem("NotificationClickTaskID", PayLoadData.TaskID);
           setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
