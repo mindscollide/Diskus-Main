@@ -55,6 +55,7 @@ import {
 } from "../../../../../context/MeetingContext";
 import { usePollsContext } from "../../../../../context/PollsContext";
 import ViewVotesScreen from "./ViewVotes/ViewVotesScreen";
+import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -110,6 +111,15 @@ const Polls = ({
   );
   const ResponseMessagePoll = useSelector(
     (state) => state.PollsReducer.ResponseMessage
+  );
+
+  const AccessDeniedGlobalState = useSelector(
+    (state) => state.PollsReducer.AccessDeniedPolls
+  );
+
+  console.log(
+    AccessDeniedGlobalState,
+    "AccessDeniedGlobalStateAccessDeniedGlobalStateAccessDeniedGlobalState"
   );
 
   const { setEditorRole } = useContext(MeetingContext);
@@ -970,6 +980,7 @@ const Polls = ({
         )}
 
         <Notification open={open} setOpen={setOpen} />
+        {AccessDeniedGlobalState && <AccessDeniedModal />}
       </section>
     </>
   );

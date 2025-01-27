@@ -2373,5 +2373,8 @@
   "Has-given-his-vote-on-a-poll-in-the-meeting": "has given his vote on a poll in the meeting",
   "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting",
   "Vote-updated": "Vote Updated",
-  "No-vote-updated": "No Vote Updated"
+  "No-vote-updated": "No Vote Updated",
+  "It-seems-you-don’t-have-permission-to": "It seems you don’t have permission to",
+  "Access-this": "access this",
+  "Access-denied": "Access Denied"
 }

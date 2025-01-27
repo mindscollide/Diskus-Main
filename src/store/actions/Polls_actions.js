@@ -676,6 +676,14 @@ const getAllPollsByPollsIDFailed = (message) => {
   };
 };
 
+//Access Denied Polls
+const AccessDeniedPolls = (response) => {
+  return {
+    type: actions.ACCESS_DENIED_NOTIFCATION,
+    response: response,
+  };
+};
+
 const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
   console.log("Checking");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -779,7 +787,12 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
+            console.log(
+              "AccessDeniedGlobalStateAccessDeniedGlobalStateAccessDeniedGlobalState"
+            );
+            dispatch(AccessDeniedPolls(true));
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
+            //trigger the global access modal
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2346,6 +2359,7 @@ const getPollsByPollIdforCommitteeApi = (
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
+            dispatch(AccessDeniedPolls(true));
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2442,6 +2456,7 @@ const getPollByPollIdforGroups = (
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
+            dispatch(AccessDeniedPolls(true));
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2538,6 +2553,7 @@ const getPollByPollIdforMeeting = (
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
+            dispatch(AccessDeniedPolls(true));
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2997,4 +3013,5 @@ export {
   getPollByPollIdforGroups,
   getPollByPollIdforMeeting,
   UpdatedCastVoteAPI,
+  AccessDeniedPolls,
 };
