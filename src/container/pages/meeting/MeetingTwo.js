@@ -2096,7 +2096,6 @@ const NewMeeting = () => {
                 </Tooltip>
               ) : null}
               {record.status === "9" &&
-              record.isQuickMeeting === false &&
               record.isRecordingAvailable &&
               record.isPrimaryOrganizer ? (
                 <Tooltip
@@ -3557,7 +3556,8 @@ const NewMeeting = () => {
             setViewAdvanceMeetingModal,
             setViewProposeDatePoll,
             setViewGroupPage,
-            setShowModal
+            setShowModal,
+            setVideoTalk
           );
           dispatch(webnotificationGlobalFlag(false));
         }

@@ -65,7 +65,6 @@ const Documents = ({
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}>
-                            <Col sm={4} md={4} lg={4}>
                               <AttachmentViewer
                                 name={filesData.displayAttachmentName}
                                 fk_UID={filesData.fK_UID}
@@ -82,7 +81,6 @@ const Documents = ({
                                 }
                                 data={filesData}
                               />
-                            </Col>
                           </div>
                         )}
                       </Draggable>

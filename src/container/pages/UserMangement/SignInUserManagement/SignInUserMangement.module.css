@@ -2,10 +2,10 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 380px !important;
+  max-width: 100% !important;
   height: auto;
   padding: 30px 41px !important;
-  margin: 0px 40px;
+  /* margin: 0px 40px; */
   border-radius: 8px !important;
   --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);

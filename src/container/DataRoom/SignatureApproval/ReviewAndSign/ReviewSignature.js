@@ -313,11 +313,11 @@ const ReviewSignature = () => {
         return (
           <p
             className={
-              actorStatusID === 2
+              status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
-                : actorStatusID === 3
+                : status?.toLowerCase()=== "Signed".toLowerCase()
                 ? styles["signedStatus"]
-                : actorStatusID === 4
+                : status?.toLowerCase() === "Declined".toLowerCase()
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }>
