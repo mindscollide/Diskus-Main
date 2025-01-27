@@ -284,6 +284,9 @@ const ViewMeetingModal = ({
     return () => {
       dispatch(emailRouteID(0));
       localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("viewadvanceMeetingPolls");
+      localStorage.removeItem("NotificationClickPollID");
+      localStorage.removeItem("AdvanceMeetingOperations");
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
   console.log(
