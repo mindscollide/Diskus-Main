@@ -77,6 +77,7 @@ const Polls = ({
     setUnPublished,
     viewPublishedPoll,
     setViewPublishedPoll,
+    advanceMeetingModalID,
   } = useMeetingContext();
 
   const { viewVotes, setviewVotes } = usePollsContext();
@@ -311,6 +312,7 @@ const Polls = ({
       let NotificationClickMeetingID = localStorage.getItem(
         "NotificationAdvanceMeetingID"
       );
+      console.log("Coming here");
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
         OrganizationID: Number(OrganizationID),
@@ -321,8 +323,10 @@ const Polls = ({
       };
       dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
     } else {
+      console.log("Coming here");
+      // After Consulting mamdani getting the current meet ID from LocalStorage
       let Data = {
-        MeetingID: Number(currentMeeting),
+        MeetingID: Number(advanceMeetingModalID),
         OrganizationID: Number(OrganizationID),
         CreatorName: "",
         PollTitle: "",

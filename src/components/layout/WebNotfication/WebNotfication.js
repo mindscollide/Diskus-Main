@@ -63,6 +63,7 @@ const WebNotfication = ({
     setUnPublished,
     setViewPublishedPoll,
     setPolls,
+    setAdvanceMeetingModalID,
   } = useMeetingContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -182,30 +183,34 @@ const WebNotfication = ({
 
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
-      // if (setPolls) {
-      //   let data = {
-      //     PollID: Number(PayLoadData.PollID),
-      //     UserID: Number(localStorage.getItem("userID")),
-      //   };
-      //   dispatch(
-      //     getPollByPollIdforMeeting(
-      //       navigate,
-      //       data,
-      //       2,
-      //       t,
-      //       setEditPolls,
-      //       setvotePolls,
-      //       setUnPublished,
-      //       setViewPublishedPoll
-      //     )
-      //   );
-      // } else {
-      await dispatch(
-        webNotificationDataLeaveVideoIntiminationModal(NotificationData)
-      );
-      localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
-      await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      // }
+      if (
+        setPolls &&
+        PayLoadData.MeetingID ===
+          Number(localStorage.getItem("currentMeetingID"))
+      ) {
+        let data = {
+          PollID: Number(PayLoadData.PollID),
+          UserID: Number(localStorage.getItem("userID")),
+        };
+        dispatch(
+          getPollByPollIdforMeeting(
+            navigate,
+            data,
+            2,
+            t,
+            setEditPolls,
+            setvotePolls,
+            setUnPublished,
+            setViewPublishedPoll
+          )
+        );
+      } else {
+        await dispatch(
+          webNotificationDataLeaveVideoIntiminationModal(NotificationData)
+        );
+        localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
+        await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      }
     } else {
       if (NotificationData.notificationActionID === 1) {
         if (currentURL.includes("/Diskus/Meeting")) {
@@ -1235,6 +1240,7 @@ const WebNotfication = ({
           localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(
@@ -1259,6 +1265,7 @@ const WebNotfication = ({
           localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(
@@ -1285,6 +1292,7 @@ const WebNotfication = ({
           localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(
@@ -1309,6 +1317,7 @@ const WebNotfication = ({
           localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
           //set Local storage flag for identification for polls
           localStorage.setItem("viewadvanceMeetingPolls", true);
+          setAdvanceMeetingModalID(PayLoadData.MeetingID);
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
             GetMeetingStatusDataAPI(

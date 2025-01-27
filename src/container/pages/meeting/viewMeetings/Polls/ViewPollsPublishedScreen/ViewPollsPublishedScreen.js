@@ -64,7 +64,6 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const handleCancelButton = () => {
     setViewPublishedPoll(false);
     localStorage.removeItem("viewadvanceMeetingPolls");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
     localStorage.removeItem("NotificationClickPollID");
     localStorage.removeItem("AdvanceMeetingOperations");
   };
