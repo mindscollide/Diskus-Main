@@ -6642,8 +6642,9 @@ const scheduleMeetingMainApi = (
               );
               dispatch(showSceduleProposedMeeting(false));
 
+              let getMeetingID = localStorage.getItem("currentMeetingLS");
               let MeetingData = {
-                MeetingID: Number(MeetingID),
+                MeetingID: Number(getMeetingID),
               };
               console.log(MeetingData, "MeetingIDMeetingIDMeetingID");
               await dispatch(
@@ -8345,6 +8346,7 @@ const LeaveCurrentMeeting = (
             ) {
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
+              dispatch(showEndMeetingModal(false));
               try {
                 dispatch(currentMeetingStatus(0));
 

@@ -40,6 +40,7 @@ const initialState = {
   validateEmailString: null,
   castPollVoteModal: false,
   setPollIdForCastVote: null,
+  UpdateCastVoteData: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -639,6 +640,32 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         setPollIdForCastVote: action.response,
+      };
+    }
+
+    // Updated Cast Vote
+    case actions.UPDATED_CASTVOTE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATED_CASTVOTE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        UpdateCastVoteData: action.response,
+        responseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATED_CASTVOTE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        UpdateCastVoteData: null,
+        responseMessage: action.message,
       };
     }
     default: {

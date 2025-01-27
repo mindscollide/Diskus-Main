@@ -2181,7 +2181,7 @@
   "Auto-close-resolution-days": "Auto Close Resolution (days)",
   "Seeking-opinions-on-something": "Seeking opinions on something?",
   "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next": "This space is ready to showcase yourlatest additions. What will you add next?",
-  "Leave-call": "Leave call",
+  "Leave-call": "Leave Call",
   "Upload-image": "Photos & videos",
   "Please-at-least-one-partcipant-required": "Please at least one partcipant required",
   "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]",
@@ -2371,5 +2371,7 @@
   "Has-deleted-the-Resolution": "has deleted the Resolution",
   "Has-given-his-vote-on-a-poll": "has given his vote on a poll",
   "Has-given-his-vote-on-a-poll-in-the-meeting": "has given his vote on a poll in the meeting",
-  "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting"
+  "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting",
+  "Vote-updated": "Vote Updated",
+  "No-vote-updated": "No Vote Updated"
 }

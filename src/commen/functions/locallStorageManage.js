@@ -66,7 +66,8 @@ export const localStorageManage = (
     taskListView: localStorage.getItem("taskListView"),
     documentViewer: localStorage.getItem("documentViewer"),
     viewFolderLink: localStorage.getItem("viewFolderLink"),
-    reviewMinutes: localStorage.getItem("reviewMinutesLink")
+    reviewMinutes: localStorage.getItem("reviewMinutesLink"),
+    mobilePopUpAppRoute: localStorage.getItem("mobilePopUpAppRoute"),
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

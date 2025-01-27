@@ -63,7 +63,7 @@ const SubDocumnets = ({
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
-        <div className="d-flex gap-2 flex-wrap  mt-2">
+        <div className='d-flex gap-2 flex-wrap  mt-2'>
           {subAgendaData?.subfiles?.length > 0
             ? subAgendaData?.subfiles?.map(
                 (subAgendaFiles, subAgendaFilesIndex) => {
@@ -81,42 +81,32 @@ const SubDocumnets = ({
                             editorRole.status === 9
                               ? true
                               : false
-                          }
-                        >
+                          }>
                           {(provided) => (
                             <div
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              ref={provided.innerRef}
-                            >
-                              <Col
-                                sm={4}
-                                md={4}
-                                lg={4}
-                                key={subAgendaFilesIndex}
-                              >
-                                <AttachmentViewer
-                                  name={subAgendaFiles.displayAttachmentName}
-                                  fk_UID={subAgendaFiles.fK_UID}
-                                  id={0}
-                                  handleClickRemove={
-                                    editorRole.role === "Participant" ||
-                                    editorRole.status === 9 ||
-                                    editorRole.status === "9" ||
-                                    (editorRole.role === "Agenda Contributor" &&
-                                      (subAgendaFiles.fK_UID !==
-                                        currentUserID ||
-                                        subAgendaData.canEdit === false))
-                                      ? null
-                                      : () =>
-                                          handlesubAgendaCrossFiles(
-                                            subAgendaFilesIndex,
-                                            subAgendaFiles
-                                          )
-                                  }
-                                  data={subAgendaFiles}
-                                />
-                              </Col>
+                              ref={provided.innerRef}>
+                              <AttachmentViewer
+                                name={subAgendaFiles.displayAttachmentName}
+                                fk_UID={subAgendaFiles.fK_UID}
+                                id={0}
+                                handleClickRemove={
+                                  editorRole.role === "Participant" ||
+                                  editorRole.status === 9 ||
+                                  editorRole.status === "9" ||
+                                  (editorRole.role === "Agenda Contributor" &&
+                                    (subAgendaFiles.fK_UID !== currentUserID ||
+                                      subAgendaData.canEdit === false))
+                                    ? null
+                                    : () =>
+                                        handlesubAgendaCrossFiles(
+                                          subAgendaFilesIndex,
+                                          subAgendaFiles
+                                        )
+                                }
+                                data={subAgendaFiles}
+                              />
                             </div>
                           )}
                         </Draggable>

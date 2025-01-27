@@ -19,6 +19,8 @@ import MeetingImage from "../../../assets/images/sidebar_icons/NewMeetingSVGSide
 import NewShowMoreIcon from "../../../assets/images/sidebar_icons/NewSideBarShowMoreIcon.png";
 import {
   LeaveMeetingSideBarModalAction,
+  searchNewUserMeeting,
+  showEndMeetingModal,
   viewMeetingFlag,
 } from "../../../store/actions/NewMeetingActions";
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
@@ -30,8 +32,15 @@ const Sidebar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole, minutes, actionsPage, setViewAdvanceMeetingModal } =
-    useMeetingContext();
+  const {
+    editorRole,
+    minutes,
+    polls,
+    actionsPage,
+    viewAdvanceMeetingModal,
+    setViewAdvanceMeetingModal,
+    setCancelConfirmationModal,
+  } = useMeetingContext();
 
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
@@ -85,6 +94,10 @@ const Sidebar = () => {
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
+  let userID = localStorage.getItem("userID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let MeetingPageLength = localStorage.getItem("MeetingPageRows");
+  let MeetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
   const sidebarshow = useRef();
 
@@ -134,44 +147,29 @@ const Sidebar = () => {
       dispatch(normalizeVideoPanelFlag(false));
     }
   };
-  console.log(viewMeetingsFlag, "viewMeetingsFlagviewMeetingsFlag");
-  const handleMeetingSidebarClickNoCall = () => {
-    console.log(
-      editorRole,
-      minutes,
-      actionsPage,
-      viewMeetingsFlag,
-      "handleMeetingSidebarClickNoCallhandleMeetingSidebarClickNoCall"
-    );
-
-    if (viewMeetingsFlag) {
-      // dispatch(LeaveMeetingSideBarModalAction(true));
-      if (Number(editorRole?.status) === 10 && (minutes || actionsPage)) {
-        dispatch(viewMeetingFlag(true));
-        console.log(
-          editorRole,
-          minutes,
-          actionsPage,
-          viewMeetingsFlag,
-          "handleMeetingSidebarClickNoCallhandleMeetingSidebarClickNoCall"
-        );
+  const handleMeetingSidebarClickNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true)
       } else {
-        console.log(
-          editorRole,
-          minutes,
-          actionsPage,
-          viewMeetingsFlag,
-          "handleMeetingSidebarClickNoCallhandleMeetingSidebarClickNoCall"
-        );
         setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
-      console.log(
-        editorRole,
-        minutes,
-        actionsPage,
-        viewMeetingsFlag,
-        "handleMeetingSidebarClickNoCallhandleMeetingSidebarClickNoCall"
-      );
     } else {
       navigate("/Diskus/Meeting");
     }

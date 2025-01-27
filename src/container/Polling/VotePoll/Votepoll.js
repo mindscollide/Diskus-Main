@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import {
   castVoteApi,
   setVotePollModal,
+  UpdatedCastVoteAPI,
 } from "../../../store/actions/Polls_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
@@ -116,7 +117,8 @@ const Votepoll = () => {
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
 
-      dispatch(castVoteApi(navigate, data, t));
+      // dispatch(castVoteApi(navigate, data, t));
+      dispatch(UpdatedCastVoteAPI(navigate, t, data));
     } else {
       // open sncak bar for atleast select one option
       showMessage(t("Required-atleast-one-vote"), "error", setOpen);
