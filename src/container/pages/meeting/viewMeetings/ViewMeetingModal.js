@@ -802,7 +802,8 @@ const ViewMeetingModal = ({
             setViewProposeDatePoll,
             setViewGroupPage,
             setShowModal,
-            setVideoTalk
+            setVideoTalk,
+            setAdvanceMeetingModalID
           );
           dispatch(webnotificationGlobalFlag(false));
         }

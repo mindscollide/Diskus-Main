@@ -61,6 +61,7 @@ const ParticipantVideoCallComponent = () => {
     setViewProposeDatePoll,
     editorRole,
     setVideoTalk,
+    setAdvanceMeetingModalID,
   } = useMeetingContext();
 
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -439,7 +440,8 @@ const ParticipantVideoCallComponent = () => {
           setViewProposeDatePoll,
           setViewGroupPage,
           setShowModal,
-          setVideoTalk
+          setVideoTalk,
+          setAdvanceMeetingModalID
         );
       }
     } catch (error) {
