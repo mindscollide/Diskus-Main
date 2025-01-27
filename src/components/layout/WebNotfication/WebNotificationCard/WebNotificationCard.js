@@ -46,6 +46,7 @@ import AgainAddedAsReviewr from "../../../../assets/NotificationIcon/Add as a re
 import HasGivenVoteOnHisPollMeetingPoll from "../../../../assets/NotificationIcon/Participant has given his vote in Meeting Poll.png";
 import HasGivenVoteOnHisPoll from "../../../../assets/NotificationIcon/Voter has voted his Vote.png";
 import SendResponseByDatePassed from "../../../../assets/NotificationIcon/In the proposed meeting Send response date has passed..png";
+import TaskAssignedInMeeting from "../../../../assets/NotificationIcon/When assigned a task in the meeting.png";
 import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 
@@ -258,6 +259,10 @@ const WebNotificationCard = ({
           message = `${t("Send-response-date-for-the-proposed-meeting")} ${
             NotificationMessege.MeetingTitle
           }`;
+        } else if (NotificaitonID === 49) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "has-assigned-a-task-to-you-in-the-meeting"
+          )} ${NotificationMessege.MeetingTitle}`;
         } else {
           message = "Default Notification Message";
         }
@@ -391,6 +396,8 @@ const WebNotificationCard = ({
             <img src={HasGivenVoteOnHisPollMeetingPoll} width={46} alt="" />
           ) : NotificaitonID === 48 ? (
             <img src={SendResponseByDatePassed} width={46} alt="" />
+          ) : NotificaitonID === 49 ? (
+            <img src={TaskAssignedInMeeting} width={46} alt="" />
           ) : null}
 
           <span className={styles["NotificationMessegeUnmarked"]}>

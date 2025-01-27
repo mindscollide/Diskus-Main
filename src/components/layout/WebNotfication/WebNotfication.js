@@ -1333,6 +1333,7 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 48) {
+      } else if (NotificationData.notificationActionID === 49) {
       } else {
       }
     }
