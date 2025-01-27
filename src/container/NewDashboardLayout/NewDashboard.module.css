@@ -1,6 +1,6 @@
 .newDashboard {
   max-height: calc(100vh - 89px);
-  margin: 15px 10px;
+  margin: 15px 15px;
 }
 .StatsBox {
   min-height: 20vh !important;

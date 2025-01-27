@@ -43,7 +43,7 @@ const RSVP = () => {
       );
     }
     return () => {
-      // localStorage.removeItem("RSVP");
+      localStorage.removeItem("RSVP");
     };
   }, [getRSVP]);
 
