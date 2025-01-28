@@ -38,8 +38,12 @@ import {
   getPollByPollIdforMeeting,
   getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions.js";
-import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
+import {
+  getResolutionbyResolutionID,
+  getResolutionResult,
+} from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
+import { useResolutionContext } from "../../../context/ResolutionContext.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -65,6 +69,8 @@ const WebNotfication = ({
     setPolls,
     setAdvanceMeetingModalID,
   } = useMeetingContext();
+  //Resolution Context
+  const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
   const location = useLocation();
@@ -180,7 +186,7 @@ const WebNotfication = ({
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-
+    console.log(PayLoadData, "NotificationDataNotificationData");
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
       if (
@@ -1417,6 +1423,28 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 50) {
+        // Voter Changes His Vote
+        if (currentURL.includes("/Diskus/resolution")) {
+          dispatch(
+            getResolutionResult(
+              navigate,
+              Number(PayLoadData.Resolution_ID),
+              t,
+              setResultresolution
+            )
+          );
+        } else {
+          //Notification for Added as Voter in the resolution
+          navigate("/Diskus/resolution");
+          dispatch(
+            getResolutionResult(
+              navigate,
+              Number(PayLoadData.Resolution_ID),
+              t,
+              setResultresolution
+            )
+          );
+        }
       } else {
       }
     }
