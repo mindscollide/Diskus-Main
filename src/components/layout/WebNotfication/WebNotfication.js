@@ -1333,6 +1333,39 @@ const WebNotfication = ({
           );
         }
       } else if (NotificationData.notificationActionID === 48) {
+        //Send Response Date Has been Passed
+
+        //Notification that Proposed Meeting Date Organizer work
+        if (currentURL.includes("/Diskus/Meeting")) {
+          localStorage.setItem("ProposedMeetingOrganizer", true);
+          localStorage.setItem(
+            "ProposedMeetingOrganizerMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              2,
+              setVideoTalk
+            )
+          );
+        } else {
+          //Call Status API to see what is the status of the meeting eighter proposed or published
+          navigate("/Diskus/Meeting");
+          localStorage.setItem("ProposedMeetingOrganizer", true);
+          localStorage.setItem(
+            "ProposedMeetingOrganizerMeetingID",
+            PayLoadData.MeetingID
+          );
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+        }
       } else if (NotificationData.notificationActionID === 49) {
         //Assigned You a Task in the Meeting
         if (currentURL.includes("/Diskus/Meeting")) {
