@@ -904,9 +904,7 @@ const Resolution = () => {
                 <Button
                   text={t("Vote")}
                   className={styles["Resolution-vote-btn"]}
-                  onClick={() =>
-                    getVoteDetailHandler(data.resolutionID, data)
-                  }
+                  onClick={() => getVoteDetailHandler(data.resolutionID, data)}
                 />
               );
             }
@@ -1155,19 +1153,19 @@ const Resolution = () => {
     }
   };
 
-  // Resolution reducer ResponseMessage
-  useEffect(() => {
-    if (
-      ResolutionReducerResponseMessage !== "" &&
-      ResolutionReducerResponseMessage !== t("No-data-available") &&
-      ResolutionReducerResponseMessage !== undefined &&
-      ResolutionReducerResponseMessage !==
-        t("Resolution-details-updated-successfully")
-    ) {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
+  // // Resolution reducer ResponseMessage
+  // useEffect(() => {
+  //   if (
+  //     ResolutionReducerResponseMessage !== "" &&
+  //     ResolutionReducerResponseMessage !== t("No-data-available") &&
+  //     ResolutionReducerResponseMessage !== undefined &&
+  //     ResolutionReducerResponseMessage !==
+  //       t("Resolution-details-updated-successfully")
+  //   ) {
+  //     showMessage(ResolutionReducerResponseMessage, "success", setOpen);
+  //     dispatch(clearResponseMessage());
+  //   }
+  // }, [ResolutionReducerResponseMessage]);
 
   // voter resolution state manage
   useEffect(() => {
