@@ -66,6 +66,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
     localStorage.removeItem("viewadvanceMeetingPolls");
     localStorage.removeItem("NotificationClickPollID");
     localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   const handleViewVotesScreen = () => {
