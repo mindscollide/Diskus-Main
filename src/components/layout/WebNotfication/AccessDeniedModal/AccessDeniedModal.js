@@ -17,6 +17,8 @@ const AccessDeniedModal = () => {
 
   const handleOnClickAccessDenied = () => {
     dispatch(AccessDeniedPolls(false));
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("viewadvanceMeetingPolls");
   };
 
   return (

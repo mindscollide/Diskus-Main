@@ -246,7 +246,7 @@ const WebNotificationCard = ({
         } else if (NotificaitonID === 45) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-deleted-the-poll"
-          )} ${NotificationMessege.PollTitle}`;
+          )} ${NotificationMessege.MeetingTitle}`;
         } else if (NotificaitonID === 46) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-given-his-vote-on-a-poll"
