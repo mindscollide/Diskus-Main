@@ -1416,6 +1416,7 @@ const WebNotfication = ({
             )
           );
         }
+      } else if (NotificationData.notificationActionID === 50) {
       } else {
       }
     }

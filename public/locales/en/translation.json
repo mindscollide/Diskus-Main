@@ -2413,5 +2413,6 @@
   "It-seems-you-don’t-have-permission-to": "It seems you don’t have permission to",
   "Access-this": "access this",
   "Access-denied": "Access Denied",
-  "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:"
+  "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:",
+  "Has-changed-his-vote-in": " has changed his Vote in:"
 }
