@@ -390,6 +390,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     setViewFlagToDo(false);
     localStorage.removeItem("viewadvanceMeetingTask");
     localStorage.removeItem("NotificationClickTaskID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   return (
