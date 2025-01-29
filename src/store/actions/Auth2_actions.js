@@ -397,77 +397,33 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Not-a-valid-user-please-login-with-valid-user")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_08".toLowerCase()
+                )
+            ) {
+              dispatch(validationEmailFail(t("Trail-request-pending")));
+              dispatch(LoginFlowRoutes(1));
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_09".toLowerCase()
+                )
+            ) {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              dispatch(
+                validationEmailFail(t("Trial-request-rejected-for-this-org"))
+              );
+              navigate("/");
+              dispatch(LoginFlowRoutes(1));
             }
           } else {
-            let MessageResponce = "";
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Device-does-not-exists");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Device-id-does-not-exists");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Users-password-is-created");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User's-password-is-created-but-somthing-went-wrong."
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User-password-is-not-created-please-create-your-password"
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User-email-is-not-verified-Please-verify-your-email"
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "Not-a-valid-user-Please-login-with-valid-user"
-              );
-            } else {
-              MessageResponce = t("Something-went-wrong");
-            }
-            dispatch(validationEmailFail(MessageResponce));
+            dispatch(validationEmailFail(t("Something-went-wrong")));
           }
         } else {
           dispatch(validationEmailFail(t("Something-went-wrong")));
@@ -1952,6 +1908,28 @@ const verificationEmailOTP = (
                   t("The-user-has-reached-the-maximum-faileda-attempts")
                 )
               );
+              localStorage.removeItem("LoginFlowPageRoute");
+              localStorage.removeItem("SignupFlowPageRoute");
+              navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_05".toLowerCase()
+                )
+            ) {
+              dispatch(verifyOTPFail(t("Trail-request-pending")));
+              localStorage.removeItem("LoginFlowPageRoute");
+              localStorage.removeItem("SignupFlowPageRoute");
+              navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_06".toLowerCase()
+                )
+            ) {
+              dispatch(verifyOTPFail(t("Trial-request-rejected-for-this=Org")));
               localStorage.removeItem("LoginFlowPageRoute");
               localStorage.removeItem("SignupFlowPageRoute");
               navigate("/");
