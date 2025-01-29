@@ -96,8 +96,6 @@ const Sidebar = () => {
   let Blur = localStorage.getItem("blur");
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let MeetingPageLength = localStorage.getItem("MeetingPageRows");
-  let MeetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
   const sidebarshow = useRef();
 
@@ -193,8 +191,39 @@ const Sidebar = () => {
     }
   };
 
-  const handleMeetingSidebarDataroomNoCall = () => {
-    navigate("/Diskus/dataroom");
+  const handleMeetingSidebarDataroomNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/dataroom");
+    }
   };
 
   //Resolutions Sidebar Click
@@ -208,9 +237,40 @@ const Sidebar = () => {
     }
   };
 
-  const handleMeetingSidebarResolutionsNoCall = () => {
-    localStorage.setItem("navigateLocation", "resolution");
-    navigate("/Diskus/resolution");
+  const handleMeetingSidebarResolutionsNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      localStorage.setItem("navigateLocation", "resolution");
+      navigate("/Diskus/resolution");
+    }
   };
 
   //Committees Sidebar Click
@@ -224,9 +284,40 @@ const Sidebar = () => {
     }
   };
 
-  const handleMeetingSidebarCommitteesNoCall = () => {
-    localStorage.setItem("navigateLocation", "committee");
-    navigate("/Diskus/committee");
+  const handleMeetingSidebarCommitteesNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      localStorage.setItem("navigateLocation", "committee");
+      navigate("/Diskus/committee");
+    }
   };
 
   console.log("activeCall", CurrentMeetingStatus);

@@ -18,12 +18,28 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../../store/actions/VideoFeature_actions";
+import { useMeetingContext } from "../../../../context/MeetingContext";
+import {
+  searchNewUserMeeting,
+  showEndMeetingModal,
+} from "../../../../store/actions/NewMeetingActions";
 
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  let userID = localStorage.getItem("userID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  const {
+    editorRole,
+    minutes,
+    polls,
+    actionsPage,
+    viewAdvanceMeetingModal,
+    setViewAdvanceMeetingModal,
+    setCancelConfirmationModal,
+  } = useMeetingContext();
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
@@ -82,8 +98,39 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarGroupsNoCall = () => {
-    navigate("/Diskus/groups");
+  const handleMeetingSidebarGroupsNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/groups");
+    }
   };
 
   //Polls Sidebar Click
@@ -97,8 +144,39 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarPollsNoCall = () => {
-    navigate("/Diskus/polling");
+  const handleMeetingSidebarPollsNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/polling");
+    }
   };
 
   //Calendar Sidebar Click
@@ -112,8 +190,39 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarCalendarNoCall = () => {
-    navigate("/Diskus/calendar");
+  const handleMeetingSidebarCalendarNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/calendar");
+    }
   };
 
   // Todo Sidebar Click
@@ -127,8 +236,39 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarTodoNoCall = () => {
-    navigate("/Diskus/todolist");
+  const handleMeetingSidebarTodoNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/todolist");
+    }
   };
 
   const handleMeetingSidebarNotes = () => {
@@ -141,8 +281,39 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarNotesNoCall = () => {
-    navigate("/Diskus/Notes");
+  const handleMeetingSidebarNotesNoCall = async () => {
+    if (viewAdvanceMeetingModal) {
+      if (Number(editorRole?.status) === 10) {
+        dispatch(showEndMeetingModal(true));
+      } else if (minutes || actionsPage || polls) {
+        setCancelConfirmationModal(true);
+      } else {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      }
+    } else {
+      navigate("/Diskus/Notes");
+    }
   };
 
   return (

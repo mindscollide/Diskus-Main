@@ -13,6 +13,7 @@ import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import InputIcon from "react-multi-date-picker/components/input_icon";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
 import { useState } from "react";
 import Select from "react-select";
@@ -524,73 +525,30 @@ const UpdatePolls = () => {
               {defineUnsaveModal ? null : (
                 <>
                   <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
-                        >
-                          <span className="cursor-pointer d-flex gap-2 align-items-center">
-                            <img
-                              src={AlarmClock}
-                              width="14.97px"
-                              height="14.66px"
-                              alt=""
-                              draggable="false"
-                              onClick={handleIconClick}
-                            />
-                            <span
-                              className={styles["Due_Date_heading"]}
-                              onClick={handleIconClick}
-                            >
-                              {t("Due-date-on")}
-                              {"* "}
-                              <span className={styles["Date_update_poll"]}>
-                                {changeDateStartHandler2(UpdatePolls.date)}
-                              </span>
-                            </span>
-                            <DatePicker
-                              highlightToday={true}
-                              onOpenPickNewDate={true}
-                              ref={datePickerRef}
-                              render={<CustomIcon />}
-                              onFocusedDateChange={(value) =>
-                                changeDateStartHandler(
-                                  value?.toDate?.().toString()
-                                )
-                              }
-                              format={dateFormat}
-                              value={UpdatePolls.date}
-                              calendarPosition="bottom-center"
-                              minDate={moment().toDate()}
-                              className="datePickerTodoCreate2"
-                              calendar={calendarValue}
-                              onClick={handleIconClick}
-                              locale={localValue}
-                            />
-                          </span>
-                        </Col>
-                      </Row>
+                    <Col lg={10} md={10} sm={10}>
+                      <span className={styles["Update_Poll_Heading"]}>
+                        {t("Update-poll")}
+                      </span>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={2}
+                      className="d-flex justify-content-end"
+                    >
+                      <img
+                        src={BlackCrossIcon}
                         className={
-                          error && UpdatePolls.date === ""
-                            ? ` ${styles["errorMessage-inLogin_1"]} `
-                            : `${styles["errorMessage-inLogin_1_hidden"]}`
+                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
-                      >
-                        {t("Please-select-due-date")}
-                      </p>
+                        width="16px"
+                        height="16px"
+                        alt=""
+                        onClick={() => {
+                          setDefineUnsaveModal(true);
+                        }}
+                        draggable="false"
+                      />
                     </Col>
                   </Row>
                 </>
@@ -620,149 +578,163 @@ const UpdatePolls = () => {
                 </>
               ) : (
                 <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <img
-                        src={BlackCrossIcon}
-                        className={
-                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
-                        }
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        onClick={() => {
-                          setDefineUnsaveModal(true);
-                        }}
-                        draggable="false"
-                      />
-                    </Col>
-                  </Row>
-                  <Row className={styles["Overall_padding"]}>
-                    <Col lg={12} md={12} sm={12}>
-                      <Row className="d-flex">
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Update_Poll_Heading"]}>
-                            {t("Update-poll")}
-                          </span>
-                        </Col>
-                      </Row>
-                      {PollsReducereditPollModalFlag ? (
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={`${styles["BOx_for_yes"]} d-flex`}
-                          >
-                            <Row className="mt-2">
-                              <Col lg={12} md={12} sm={12}>
-                                {UpdatePolls.TypingTitle.length > 100 ? (
-                                  // Add d-flex class and justify-content-center to center the text
-                                  <div
-                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                                  >
-                                    <p>{UpdatePolls.TypingTitle}</p>
-                                  </div>
-                                ) : (
-                                  <div
-                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                                  >
-                                    <p>{UpdatePolls.TypingTitle}</p>
-                                  </div>
-                                )}
+                  <div className={styles["Overall_padding"]}>
+                    <Row>
+                      <Col lg={6} md={6} sm={6}>
+                        {PollsReducereditPollModalFlag ? (
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={`${styles["BOx_for_yes"]} d-flex`}
+                            >
+                              <Row className="mt-2">
+                                <Col lg={12} md={12} sm={12}>
+                                  {UpdatePolls.TypingTitle.length > 100 ? (
+                                    // Add d-flex class and justify-content-center to center the text
+                                    <div
+                                      className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                                    >
+                                      <p>{UpdatePolls.TypingTitle}</p>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                    >
+                                      <p>{UpdatePolls.TypingTitle}</p>
+                                    </div>
+                                  )}
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        ) : (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex flex-column flex-wrap"
+                              >
+                                <span className={styles["MiniHeadings"]}>
+                                  {t("Poll-title")}{" "}
+                                  <span className={styles["redSteric"]}>*</span>
+                                </span>
+                                <TextField
+                                  placeholder={t("Title") + "*"}
+                                  applyClass={"PollingCreateModal"}
+                                  labelclass="d-none"
+                                  name={"TypingTitle"}
+                                  maxLength={140}
+                                  value={UpdatePolls.TypingTitle}
+                                  change={HandleChangeUpdatePolls}
+                                />
                               </Col>
                             </Row>
-                          </Col>
-                        </Row>
-                      ) : (
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12}>
-                            <TextField
-                              placeholder={t("Title") + "*"}
-                              applyClass={"PollingCreateModal"}
-                              labelclass="d-none"
-                              name={"TypingTitle"}
-                              maxLength={140}
-                              value={UpdatePolls.TypingTitle}
-                              change={HandleChangeUpdatePolls}
-                            />
-                          </Col>
-                        </Row>
-                      )}
+                          </>
+                        )}
 
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && UpdatePolls.TypingTitle === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-enter-title")}
-                          </p>
-                        </Col>
-                      </Row>
-
-                      {PollsReducereditPollModalFlag ? (
-                        <Row className="mt-2">
-                          <Col
-                            className={styles["scroll-height"]}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                          >
-                            {options.length > 0 &&
-                              options.map((list, index) => {
-                                return (
-                                  <>
-                                    {list.value !== "" ? (
-                                      <span
-                                        key={index}
-                                        className={`${styles["BOx_for_yes"]} d-flex`}
-                                      >
-                                        {list.value.length > 100 ? (
-                                          <div
-                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}
-                                          >
-                                            {list.value}
-                                          </div>
-                                        ) : (
-                                          <div
-                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                                          >
-                                            {list.value}
-                                          </div>
-                                        )}
-                                      </span>
-                                    ) : null}
-                                  </>
-                                );
-                              })}
-                          </Col>
-                        </Row>
-                      ) : (
                         <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Scroller_For_UpdatePollModal"]}
-                          >
-                            {options.length > 0
-                              ? options.map((data, index) => {
+                          <Col>
+                            <p
+                              className={
+                                error && UpdatePolls.TypingTitle === ""
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Please-enter-title")}
+                            </p>
+                          </Col>
+                        </Row>
+
+                        {PollsReducereditPollModalFlag ? (
+                          <Row className="mt-2">
+                            <Col
+                              className={styles["scroll-height"]}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                            >
+                              {options.length > 0 &&
+                                options.map((list, index) => {
                                   return (
                                     <>
-                                      {index <= 1 ? (
-                                        <>
-                                          <Row key={index} className="mt-2">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span className="position-relative">
+                                      {list.value !== "" ? (
+                                        <span
+                                          key={index}
+                                          className={`${styles["BOx_for_yes"]} d-flex`}
+                                        >
+                                          {list.value.length > 100 ? (
+                                            <div
+                                              className={`${styles["scrollable-title"]} d-flex justify-content-center `}
+                                            >
+                                              {list.value}
+                                            </div>
+                                          ) : (
+                                            <div
+                                              className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                            >
+                                              {list.value}
+                                            </div>
+                                          )}
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  );
+                                })}
+                            </Col>
+                          </Row>
+                        ) : (
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Scroller_For_UpdatePollModal"]}
+                            >
+                              {options.length > 0
+                                ? options.map((data, index) => {
+                                    return (
+                                      <>
+                                        {index <= 1 ? (
+                                          <>
+                                            <Row key={index} className="mt-2">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span className="position-relative">
+                                                  <TextField
+                                                    placeholder={
+                                                      "Option" +
+                                                      " " +
+                                                      parseInt(index + 1) +
+                                                      "*"
+                                                    }
+                                                    applyClass={
+                                                      "PollingCreateModal"
+                                                    }
+                                                    labelclass="d-none"
+                                                    maxLength={100}
+                                                    name={data.name}
+                                                    value={data.value}
+                                                    change={(e) =>
+                                                      HandleOptionChange(e)
+                                                    }
+                                                  />
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Row key={index} className="mt-2">
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="position-relative"
+                                              >
                                                 <TextField
                                                   placeholder={
                                                     "Option" +
@@ -780,268 +752,301 @@ const UpdatePolls = () => {
                                                   change={(e) =>
                                                     HandleOptionChange(e)
                                                   }
+                                                  inputicon={
+                                                    <img
+                                                      src={WhiteCrossIcon}
+                                                      width="31.76px"
+                                                      alt=""
+                                                      height="31.76px"
+                                                      onClick={() =>
+                                                        HandleCancelFunction(
+                                                          index
+                                                        )
+                                                      }
+                                                      className={
+                                                        styles[
+                                                          "Cross-icon-Create_poll"
+                                                        ]
+                                                      }
+                                                      draggable="false"
+                                                    />
+                                                  }
+                                                  iconclassname={
+                                                    styles[
+                                                      "polling_Options_backGround"
+                                                    ]
+                                                  }
                                                 />
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      ) : (
+                                              </Col>
+                                            </Row>
+                                          </>
+                                        )}
+                                      </>
+                                    );
+                                  })
+                                : null}
+                              {PollsReducereditPollModalFlag === false ? (
+                                <Row className="mt-2">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <Button
+                                      text={
                                         <>
-                                          <Row key={index} className="mt-2">
+                                          <Row className="mt-1">
                                             <Col
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="position-relative"
+                                              className="d-flex gap-2"
                                             >
-                                              <TextField
-                                                placeholder={
-                                                  "Option" +
-                                                  " " +
-                                                  parseInt(index + 1) +
-                                                  "*"
-                                                }
-                                                applyClass={
-                                                  "PollingCreateModal"
-                                                }
-                                                labelclass="d-none"
-                                                maxLength={100}
-                                                name={data.name}
-                                                value={data.value}
-                                                change={(e) =>
-                                                  HandleOptionChange(e)
-                                                }
-                                                inputicon={
-                                                  <img
-                                                    src={WhiteCrossIcon}
-                                                    width="31.76px"
-                                                    alt=""
-                                                    height="31.76px"
-                                                    onClick={() =>
-                                                      HandleCancelFunction(
-                                                        index
-                                                      )
-                                                    }
-                                                    className={
-                                                      styles[
-                                                        "Cross-icon-Create_poll"
-                                                      ]
-                                                    }
-                                                    draggable="false"
-                                                  />
-                                                }
-                                                iconclassname={
-                                                  styles[
-                                                    "polling_Options_backGround"
-                                                  ]
-                                                }
+                                              <img
+                                                draggable={false}
+                                                src={plusFaddes}
+                                                alt=""
+                                                width="15.87px"
+                                                height="15.87px"
                                               />
+                                              <span
+                                                className={
+                                                  styles["Add_Button_Heading"]
+                                                }
+                                              >
+                                                {t("Add-another-field")}
+                                              </span>
                                             </Col>
                                           </Row>
                                         </>
-                                      )}
-                                    </>
-                                  );
-                                })
-                              : null}
-                            {PollsReducereditPollModalFlag === false ? (
-                              <Row className="mt-2">
-                                <Col lg={12} md={12} sm={12}>
-                                  <Button
-                                    text={
-                                      <>
-                                        <Row className="mt-1">
-                                          <Col
-                                            lg={12}
-                                            md={12}
-                                            sm={12}
-                                            className="d-flex gap-2"
-                                          >
-                                            <img
-                                              draggable={false}
-                                              src={plusFaddes}
-                                              alt=""
-                                              width="15.87px"
-                                              height="15.87px"
-                                            />
-                                            <span
-                                              className={
-                                                styles["Add_Button_Heading"]
-                                              }
-                                            >
-                                              {t("Add-another-field")}
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                      </>
+                                      }
+                                      onClick={addNewRow}
+                                      className={styles["Add_another_options"]}
+                                    />
+                                  </Col>
+                                </Row>
+                              ) : (
+                                <></>
+                              )}
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      error && allValuesNotEmpty === false
+                                        ? ` ${styles["errorMessage-inLogin"]} `
+                                        : `${styles["errorMessage-inLogin_hidden"]}`
                                     }
-                                    onClick={addNewRow}
-                                    className={styles["Add_another_options"]}
-                                  />
+                                  >
+                                    {t("Options-must-be-more-than-2")}
+                                  </p>
                                 </Col>
                               </Row>
-                            ) : (
-                              <></>
-                            )}
+                            </Col>
+                          </Row>
+                        )}
+                        <Row className="mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex align-items-center gap-2"
+                          >
+                            <Checkbox
+                              checked={UpdatePolls.AllowMultipleUser}
+                              onChange={HandleCheckBox}
+                              disabled={
+                                PollsReducereditPollModalFlag ? true : false
+                              }
+                            />
+                            <p className={styles["CheckBoxTitle"]}>
+                              {t("Allow-multiple-answers")}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col lg={6} md={6} sm={6}>
+                        {/* yaha say */}
+
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex flex-column flex-wrap"
+                          >
+                            <span className={styles["MiniHeadings"]}>
+                              {t("Due-date")}{" "}
+                              <span className={styles["redSteric"]}>*</span>
+                            </span>
+                            <DatePicker
+                              highlightToday={true}
+                              onOpenPickNewDate={true}
+                              ref={datePickerRef}
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className="datepicker_input"
+                                />
+                              }
+                              onFocusedDateChange={(value) =>
+                                changeDateStartHandler(
+                                  value?.toDate?.().toString()
+                                )
+                              }
+                              format={dateFormat}
+                              value={UpdatePolls.date}
+                              calendarPosition="bottom-center"
+                              minDate={moment().toDate()}
+                              className="datePickerTodoCreate2"
+                              calendar={calendarValue}
+                              onClick={handleIconClick}
+                              locale={localValue}
+                            />
                             <Row>
                               <Col>
                                 <p
                                   className={
-                                    error && allValuesNotEmpty === false
-                                      ? ` ${styles["errorMessage-inLogin"]} `
-                                      : `${styles["errorMessage-inLogin_hidden"]}`
+                                    error && UpdatePolls.date === ""
+                                      ? ` ${styles["errorMessage-inLogin_1"]} `
+                                      : `${styles["errorMessage-inLogin_1_hidden"]}`
                                   }
                                 >
-                                  {t("Options-must-be-more-than-2")}
+                                  {t("Please-select-due-date")}
                                 </p>
                               </Col>
                             </Row>
                           </Col>
                         </Row>
-                      )}
-                      <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex align-items-center gap-2"
-                        >
-                          <Checkbox
-                            checked={UpdatePolls.AllowMultipleUser}
-                            onChange={HandleCheckBox}
-                            disabled={
-                              PollsReducereditPollModalFlag ? true : false
-                            }
-                          />
-                          <p className={styles["CheckBoxTitle"]}>
-                            {t("Allow-multiple-answers")}
-                          </p>
-                        </Col>
-                      </Row>
-
-                      {PollsReducereditPollModalFlag === false ? (
-                        <>
-                          <Row>
-                            {" "}
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="group-fields d-flex align-items-center gap-2 "
-                            >
-                              <Select
-                                onChange={handleSelectValue}
-                                value={selectedsearch}
-                                classNamePrefix={"selectMember"}
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                filterOption={customFilter}
-                                options={dropdowndata}
-                              />
-                              <Button
-                                text={t("ADD")}
-                                className={styles["ADD_Btn_CreatePool_Modal"]}
-                                onClick={handleAddUsers}
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <p
-                                className={
-                                  error && pollmembers.length === 0
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                }
+                        {PollsReducereditPollModalFlag === false ? (
+                          <>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["MiniHeadings"]}>
+                                  {t("Add-participants")}{" "}
+                                  <span className={styles["redSteric"]}>*</span>
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              {" "}
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="group-fields d-flex align-items-center gap-2 "
                               >
-                                {t("Select-atleast-one-participants")}
-                              </p>
-                            </Col>
-                          </Row>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className={styles["Participant_heading"]}
-                      >
-                        {t("Participants")}
-                      </Col>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={
-                            styles["Scroller_For_CreatePollModal2_Update_poll"]
-                          }
-                        >
-                          <Row>
-                            {pollmembers.map((data, index) => {
-                              return (
-                                <Col
-                                  key={index}
-                                  lg={6}
-                                  md={6}
-                                  sm={12}
-                                  className="mt-2"
+                                <Select
+                                  onChange={handleSelectValue}
+                                  value={selectedsearch}
+                                  classNamePrefix={"selectMember"}
+                                  closeMenuOnSelect={false}
+                                  components={animatedComponents}
+                                  isMulti
+                                  filterOption={customFilter}
+                                  options={dropdowndata}
+                                />
+                                <Button
+                                  text={t("ADD")}
+                                  className={styles["ADD_Btn_CreatePool_Modal"]}
+                                  onClick={handleAddUsers}
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                                <p
+                                  className={
+                                    error && pollmembers.length === 0
+                                      ? ` ${styles["errorMessage-inLogin"]} `
+                                      : `${styles["errorMessage-inLogin_hidden"]}`
+                                  }
                                 >
-                                  <Row>
-                                    <Col lg={11} md={11} sm={12}>
-                                      <Row className={styles["Card_border2"]}>
-                                        <Col
-                                          sm={12}
-                                          md={10}
-                                          lg={10}
-                                          className="d-flex align-items-center"
-                                        >
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                            width="33px"
-                                            height="33px"
-                                            className="rounded-circle"
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                          <span
-                                            className={styles["Name_cards"]}
-                                          >
-                                            {data.userName}
-                                          </span>
-                                        </Col>
-                                        {PollsReducereditPollModalFlag ===
-                                        false ? (
-                                          <Col sm={12} md={2} lg={2}>
-                                            <img
-                                              src={CrossIcon}
-                                              alt=""
-                                              width="14px"
-                                              height="14px"
-                                              onClick={() =>
-                                                cancellAnyUser(index)
-                                              }
-                                              draggable="false"
-                                              style={{ cursor: "pointer" }}
-                                            />
-                                          </Col>
-                                        ) : (
-                                          <></>
-                                        )}
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              );
-                            })}
-                          </Row>
+                                  {t("Select-atleast-one-participants")}
+                                </p>
+                              </Col>
+                            </Row>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className={styles["Participant_heading"]}
+                        >
+                          {t("Participants")}
                         </Col>
-                      </Row>
-                    </Col>
-                  </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={
+                              styles[
+                                "Scroller_For_CreatePollModal2_Update_poll"
+                              ]
+                            }
+                          >
+                            <Row>
+                              {pollmembers.map((data, index) => {
+                                return (
+                                  <Col
+                                    key={index}
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    className="mt-2"
+                                  >
+                                    <Row>
+                                      <Col lg={11} md={11} sm={12}>
+                                        <Row className={styles["Card_border2"]}>
+                                          <Col
+                                            sm={12}
+                                            md={10}
+                                            lg={10}
+                                            className="d-flex align-items-center"
+                                          >
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.displayPicture}`}
+                                              width="33px"
+                                              height="33px"
+                                              className="rounded-circle"
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                            <span
+                                              className={styles["Name_cards"]}
+                                            >
+                                              {data.userName}
+                                            </span>
+                                          </Col>
+                                          {PollsReducereditPollModalFlag ===
+                                          false ? (
+                                            <Col sm={12} md={2} lg={2}>
+                                              <img
+                                                src={CrossIcon}
+                                                alt=""
+                                                width="14px"
+                                                height="14px"
+                                                onClick={() =>
+                                                  cancellAnyUser(index)
+                                                }
+                                                draggable="false"
+                                                style={{ cursor: "pointer" }}
+                                              />
+                                            </Col>
+                                          ) : (
+                                            <></>
+                                          )}
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                );
+                              })}
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </div>
                 </>
               )}
             </>
@@ -1124,7 +1129,7 @@ const UpdatePolls = () => {
               )}
             </>
           }
-          size={defineUnsaveModal ? null : "md"}
+          size={defineUnsaveModal ? null : "xl"}
         />
       </Container>
       <Notification open={open} setOpen={setOpen} />

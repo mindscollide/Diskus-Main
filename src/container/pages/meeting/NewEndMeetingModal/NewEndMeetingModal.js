@@ -16,11 +16,11 @@ import { useMeetingContext } from "../../../../context/MeetingContext";
 const NewEndMeetingModal = () => {
   const dispatch = useDispatch();
   const {
-    cancelConfirmationModal,
     setCancelConfirmationModal,
     setEditorRole,
     setAdvanceMeetingModalID,
     setViewAdvanceMeetingModal,
+    advanceMeetingModalID,
   } = useMeetingContext();
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
@@ -30,9 +30,8 @@ const NewEndMeetingModal = () => {
 
   const handleClickContinue = async () => {
     // setCancelConfirmationModal(false);
-    let currentMeeting = localStorage.getItem("currentMeetingID");
     let leaveMeetingData = {
-      FK_MDID: Number(currentMeeting),
+      FK_MDID: Number(advanceMeetingModalID),
       DateTime: getCurrentDateTimeUTC(),
     };
     await dispatch(
