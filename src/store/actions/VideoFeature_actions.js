@@ -792,6 +792,21 @@ const maxParticipantVideoRemoved = (response) => {
   };
 };
 
+// For Removed Max Patrticipant Video Compnent
+const setParticipantRemovedFromVideobyHost = (response) => {
+  return {
+    type: actions.PARTICIPANT_REMOVED_FROM_VIDEO_BY_HOST,
+    response: response,
+  };
+};
+
+// For LeaveMeeting To join Different
+const setParticipantLeaveCallForJoinNonMeetingCall = (response) => {
+  return {
+    type: actions.PARTICIPANT_LEAVE_CALL_FOR_JOIN_NON_MEETING_CALL,
+    response: response,
+  };
+};
 const participantListAndWaitingListInit = () => {
   return {
     type: actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT,
@@ -1225,6 +1240,14 @@ const clearMessegesVideoFeature = (response) => {
   };
 };
 
+//For VideoIcon Enable and Disable button From Participant Side
+const disableZoomBeforeJoinSession = (response) => {
+  return {
+    type: actions.DISABLE_BUTTONS_ZOOM_BEFORE_JOIN_SESSION,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1312,4 +1335,7 @@ export {
   participantVideoButtonState,
   clearMessegesVideoFeature,
   // startOrStopPresenterGlobal,
+  disableZoomBeforeJoinSession,
+  setParticipantRemovedFromVideobyHost,
+  setParticipantLeaveCallForJoinNonMeetingCall,
 };

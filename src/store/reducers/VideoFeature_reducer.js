@@ -50,6 +50,8 @@ const initialState = {
   normalParticipantVideoFlag: false,
   maxParticipantVideoDeniedFlag: false,
   maxParticipantVideoRemovedFlag: false,
+  participantRemovedFromVideobyHost: false,
+  participantLeaveCallForJoinNonMeetingCall: false,
   getVideoParticpantListandWaitingList: [], // Active participants list
   waitingParticipantsList: [],
   participantVideoNavigationData: 1,
@@ -79,6 +81,7 @@ const initialState = {
   leaveMeetingVideoOnEndStatusMqttFlag: false,
   enableDisableVideoState: false,
   participantEnableVideoState: false,
+  disableBeforeJoinZoom: true,
   // startOrStopPresenter: false,
 };
 
@@ -747,12 +750,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
 
     case actions.MAX_PARTICIPANT_VIDEO_REMOVED:
-      console.log(action, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
       return {
         ...state,
         maxParticipantVideoRemovedFlag: action.response,
         MaximizeVideoFlag: false,
+      };
+
+    case actions.PARTICIPANT_REMOVED_FROM_VIDEO_BY_HOST:
+      return {
+        ...state,
+        participantRemovedFromVideobyHost: action.response,
+      };
+    case actions.PARTICIPANT_LEAVE_CALL_FOR_JOIN_NON_MEETING_CALL:
+      return {
+        ...state,
+        participantLeaveCallForJoinNonMeetingCall: action.response,
       };
 
     case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT: {
@@ -954,6 +966,12 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         leaveMeetingOnLogoutResponse: action.response,
+      };
+
+    case actions.DISABLE_BUTTONS_ZOOM_BEFORE_JOIN_SESSION:
+      return {
+        ...state,
+        disableBeforeJoinZoom: action.response,
       };
 
     // Start and Stop Presenter View State

@@ -21,10 +21,22 @@ import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticip
 import { transferMeetingHostSuccess } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import {
+  disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
+  incomingVideoCallFlag,
+  makeHostNow,
   makeParticipantHost,
+  maximizeVideoPanelFlag,
+  maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
   participantWaitingListBox,
+  setAudioControlForParticipant,
+  setAudioControlHost,
+  setParticipantLeaveCallForJoinNonMeetingCall,
+  setParticipantRemovedFromVideobyHost,
+  setRaisedUnRaisedParticiant,
+  setVideoControlForParticipant,
+  setVideoControlHost,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
@@ -34,6 +46,11 @@ import ParticipantVideoCallComponent from "../../../../../container/pages/meetin
 import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
+import {
+  initiateVideoCallFail,
+  VideoCallResponse,
+} from "../../../../../store/actions/VideoMain_actions";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
@@ -58,6 +75,8 @@ const VideoPanelNormal = () => {
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
   let participantRoomIds = localStorage.getItem("participantRoomId");
+
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   localStorage.setItem("VideoView", "Sidebar");
 
@@ -120,6 +139,13 @@ const VideoPanelNormal = () => {
   const maxParticipantVideoRemovedFlag = useSelector(
     (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
+  const participantRemovedFromVideobyHost = useSelector(
+    (state) => state.videoFeatureReducer.participantRemovedFromVideobyHost
+  );
+  const participantLeaveCallForJoinNonMeetingCall = useSelector(
+    (state) =>
+      state.videoFeatureReducer.participantLeaveCallForJoinNonMeetingCall
+  );
 
   const getAllParticipantGuest = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
@@ -164,8 +190,19 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.makeParticipantAsHostData
   );
 
+  const disableBeforeJoinZoom = useSelector(
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+  );
+
   const hostTransferFlag = useSelector(
     (state) => state.GuestVideoReducer.hostTransferFlag
+  );
+
+  const InitiateVideoCallData = useSelector(
+    (state) => state.VideoMainReducer.InitiateVideoCallData
+  );
+  const VideoCallResponseData = useSelector(
+    (state) => state.VideoMainReducer.VideoCallResponseData
   );
 
   const [allParticipant, setAllParticipant] = useState([]);
@@ -209,13 +246,15 @@ const VideoPanelNormal = () => {
 
       // Extract query parameters
       const params = new URLSearchParams(url.search);
-
-      // Look for 'RoomID' or 'roomid' (case-insensitive)
-      let roomID = params.get("RoomID") || params.get("roomid");
+      console.log("iframeiframe", params);
       const sessionKey = params.get("sessionKey");
+      console.log("iframeiframe", params);
       if (sessionKey) {
         return true;
       }
+      // Look for 'RoomID' or 'roomid' (case-insensitive)
+      let roomID = params.get("RoomID") || params.get("roomid");
+
       // Ensure RoomID is treated as a string
       roomID = String(roomID).trim();
 
@@ -258,6 +297,114 @@ const VideoPanelNormal = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleLeaveSession = async () => {
+      if (participantRemovedFromVideobyHost && iframe?.contentWindow) {
+        console.log("busyCall");
+
+        iframe.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        const meetingHost = {
+          isHost: false,
+          isHostId: 0,
+          isDashboardVideo: true,
+        };
+        dispatch(makeHostNow(meetingHost));
+        localStorage.setItem("isMeeting", true);
+        localStorage.setItem("isMeetingVideo", false);
+        localStorage.removeItem("refinedVideoUrl");
+        localStorage.setItem("refinedVideoGiven", false);
+        localStorage.setItem("isWebCamEnabled", false);
+        localStorage.setItem("isMicEnabled", false);
+        dispatch(setAudioControlForParticipant(false));
+        dispatch(setVideoControlForParticipant(false));
+
+        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(maxParticipantVideoRemoved(true));
+        // Participant room Id and usrrGuid
+        let participantRoomIds = localStorage.getItem("participantRoomId");
+        let participantUID = localStorage.getItem("participantUID");
+        let currentMeetingID = localStorage.getItem("currentMeetingID");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(participantRoomIds),
+          UserGUID: String(participantUID),
+          Name: String(newName),
+          IsHost: false,
+          MeetingID: Number(currentMeetingID),
+        };
+        dispatch(setRaisedUnRaisedParticiant(false));
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+        dispatch(setParticipantRemovedFromVideobyHost(false));
+      }
+    };
+
+    handleLeaveSession();
+  }, [participantRemovedFromVideobyHost, iframe]);
+
+  useEffect(() => {
+    const handleLeaveSession = async () => {
+      if (participantLeaveCallForJoinNonMeetingCall && iframe?.contentWindow) {
+        console.log("busyCall");
+        let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+        iframe.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        let currentMeetingID = JSON.parse(
+          localStorage.getItem("currentMeetingID")
+        );
+        let newRoomID = meetinHostInfo?.isHost
+          ? localStorage.getItem("newRoomId")
+          : localStorage.getItem("activeRoomID");
+        let newUserGUID = meetinHostInfo?.isHost
+          ? localStorage.getItem("isGuid")
+          : localStorage.getItem("participantUID");
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(newUserGUID),
+          Name: String(newName),
+          IsHost: meetinHostInfo?.isHost ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(setAudioControlHost(false));
+        await dispatch(setAudioControlForParticipant(false));
+        await dispatch(setVideoControlHost(false));
+        await dispatch(setVideoControlForParticipant(false));
+        localStorage.setItem("isMicEnabled", false);
+        localStorage.setItem("isWebCamEnabled", false);
+        localStorage.setItem("activeOtoChatID", 0);
+        localStorage.setItem("initiateVideoCall", false);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.setItem("meetingVideoID", 0);
+        localStorage.setItem("newCallerID", 0);
+        localStorage.setItem("callerStatusObject", JSON.stringify([]));
+        localStorage.removeItem("newRoomId");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("VideoView");
+        localStorage.removeItem("videoIframe");
+        localStorage.removeItem("CallType");
+        let currentUserId = Number(localStorage.getItem("userID"));
+        let callTypeID = Number(localStorage.getItem("callTypeID"));
+        let Data2 = {
+          ReciepentID: currentUserId,
+          RoomID: activeRoomID,
+          CallStatusID: 1,
+          CallTypeID: callTypeID,
+        };
+        dispatch(VideoCallResponse(Data2, navigate, t));
+        console.log("busyCall");
+        dispatch(incomingVideoCallFlag(false));
+        dispatch(setParticipantLeaveCallForJoinNonMeetingCall(false));
+      }
+    };
+
+    handleLeaveSession();
+  }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
   useEffect(() => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
@@ -366,16 +513,25 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
-      if (initiateCallRoomID !== null) {
+      if (Object.keys(InitiateVideoCallData).length > 0) {
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-        const endIndexBaseURLCaller = dynamicBaseURLCaller
-          ? endIndexUrl(dynamicBaseURLCaller)
-          : "";
-        const extractedBaseURLCaller = endIndexBaseURLCaller
-          ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
-          : "";
+        console.log("iframeiframe", dynamicBaseURLCaller);
+
+        let endIndexBaseURLCaller = "";
+        let extractedBaseURLCaller = "";
+        if (dynamicBaseURLCaller) {
+          endIndexBaseURLCaller = dynamicBaseURLCaller
+            ? endIndexUrl(dynamicBaseURLCaller)
+            : "";
+          extractedBaseURLCaller = endIndexBaseURLCaller
+            ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
+            : "";
+        }
         if (isMeeting) {
           if (isMeetingHost) {
+            console.log("iframeiframe");
+            console.log("iframeiframe", urlFormeetingapi);
+            console.log("iframeiframe", validateRoomID(urlFormeetingapi));
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
               if (urlFormeetingapi !== callerURL) {
@@ -402,21 +558,127 @@ const VideoPanelNormal = () => {
             }
           }
         } else {
-          let newurl = generateURLCaller(
+          console.log("iframeiframe", InitiateVideoCallData);
+          console.log("iframeiframe", extractedBaseURLCaller);
+          console.log("iframeiframe", initiateCallRoomID);
+          if (initiateCallRoomID) {
+            let newurl = generateURLCaller(
+              extractedBaseURLCaller,
+              currentUserName,
+              initiateCallRoomID,
+              InitiateVideoCallData?.guid
+            );
+            console.log("iframeiframe", newurl);
+            if (validateRoomID(newurl)) {
+              console.log("iframeiframe", newurl);
+              if (newurl !== callerURL) {
+                setCallerURL(newurl);
+                dispatch(initiateVideoCallFail(""));
+              }
+            }
+          }
+        }
+      }
+    } catch {}
+  }, [InitiateVideoCallData]);
+
+  useEffect(() => {
+    try {
+      let dynamicBaseURLCaller = localStorage.getItem(
+        "videoBaseURLParticipant"
+      );
+      let endIndexBaseURLCaller = "";
+      let extractedBaseURLCaller = "";
+      if (dynamicBaseURLCaller) {
+        endIndexBaseURLCaller = dynamicBaseURLCaller
+          ? endIndexUrl(dynamicBaseURLCaller)
+          : "";
+        extractedBaseURLCaller = endIndexBaseURLCaller
+          ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
+          : "";
+      }
+
+      // let randomGuestName = generateRandomGuest();
+      console.log("iframeiframe", endIndexBaseURLCaller);
+      console.log("iframeiframe", extractedBaseURLCaller);
+      console.log("iframeiframe", isMeeting);
+      console.log("iframeiframe", callAcceptedRoomID);
+      console.log("iframeiframe", VideoCallResponseData);
+
+      if (isMeeting === false) {
+        if (callAcceptedRoomID && Number(callAcceptedRoomID) !== 0) {
+          console.log("iframeiframe");
+          let newurl = generateURLParticipant(
             extractedBaseURLCaller,
             currentUserName,
-            initiateCallRoomID
+            callAcceptedRoomID,
+            VideoCallResponseData?.guid
           );
+          console.log("iframeiframe");
           if (validateRoomID(newurl)) {
-            console.log("iframeiframe", newurl);
+            console.log("iframeiframe", newurl !== callerURL);
             if (newurl !== callerURL) {
+              console.log("iframeiframe", newurl);
+              setCallerURL(newurl);
+            }
+          }
+        }
+      } else if (isMeeting === true) {
+        console.log("iframeiframe", isMeeting);
+        if (isMeetingVideo) {
+          console.log("iframeiframe", isMeetingHost);
+          if (isMeetingHost) {
+            console.log("iframeiframe", urlFormeetingapi);
+            if (validateRoomID(urlFormeetingapi)) {
+              console.log("iframeiframe", validateRoomID(urlFormeetingapi));
+              if (urlFormeetingapi !== callerURL) {
+                console.log("iframeiframe", urlFormeetingapi !== callerURL);
+                console.log("iframeiframe", urlFormeetingapi);
+                console.log("iframeiframe", callerURL);
+                setCallerURL(urlFormeetingapi);
+              }
+            }
+          } else {
+            if (
+              isMeeting &&
+              isMeetingHost === false &&
+              meetingHost?.isDashboardVideo === false
+            ) {
+              let newurl = generateURLParticipant(
+                extractedBaseURLCaller,
+                currentUserName,
+                callAcceptedRoomID
+              );
+              console.log("iframeiframe", newurl);
+              if (validateRoomID(newurl)) {
+                console.log("iframeiframe", validateRoomID(newurl));
+
+                if (newurl !== callerURL) {
+                  console.log("iframeiframe", newurl !== callerURL);
+                  setCallerURL(newurl);
+                }
+              }
+            }
+          }
+        } else {
+          let newurl = generateURLParticipant(
+            extractedBaseURLCaller,
+            currentUserName,
+            callAcceptedRoomID,
+            VideoCallResponseData?.guid
+          );
+          console.log("iframeiframe", newurl);
+          if (validateRoomID(newurl)) {
+            console.log("iframeiframe", validateRoomID(newurl));
+            if (newurl !== callerURL) {
+              console.log("iframeiframe", newurl !== callerURL);
               setCallerURL(newurl);
             }
           }
         }
       }
     } catch {}
-  }, [initiateCallRoomID]);
+  }, [VideoCallResponseData]);
 
   useEffect(() => {
     try {
@@ -476,89 +738,6 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [newRoomID]);
 
-  useEffect(() => {
-    try {
-      let dynamicBaseURLCaller = localStorage.getItem(
-        "videoBaseURLParticipant"
-      );
-
-      const endIndexBaseURLCaller = dynamicBaseURLCaller
-        ? endIndexUrl(dynamicBaseURLCaller)
-        : "";
-      const extractedBaseURLCaller = endIndexBaseURLCaller
-        ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
-        : "";
-      // let randomGuestName = generateRandomGuest();
-      console.log("iframeiframe", isMeeting);
-      if (isMeeting === false) {
-        let newurl = generateURLParticipant(
-          extractedBaseURLCaller,
-          currentUserName,
-          callAcceptedRoomID
-        );
-        if (validateRoomID(newurl)) {
-          console.log("iframeiframe", newurl !== callerURL);
-          if (newurl !== callerURL) {
-            console.log("iframeiframe", newurl);
-            setCallerURL(newurl);
-          }
-        }
-      } else if (isMeeting === true) {
-        console.log("iframeiframe", isMeeting);
-        if (isMeetingVideo) {
-          console.log("iframeiframe", isMeetingHost);
-          if (isMeetingHost) {
-            console.log("iframeiframe", urlFormeetingapi);
-            if (validateRoomID(urlFormeetingapi)) {
-              console.log("iframeiframe", validateRoomID(urlFormeetingapi));
-              if (urlFormeetingapi !== callerURL) {
-                console.log("iframeiframe", urlFormeetingapi !== callerURL);
-                console.log("iframeiframe", urlFormeetingapi);
-                console.log("iframeiframe", callerURL);
-                setCallerURL(urlFormeetingapi);
-              }
-            }
-          } else {
-            if (
-              isMeeting &&
-              isMeetingHost === false &&
-              meetingHost?.isDashboardVideo === false
-            ) {
-              let newurl = generateURLParticipant(
-                extractedBaseURLCaller,
-                currentUserName,
-                callAcceptedRoomID
-              );
-              console.log("iframeiframe", newurl);
-              if (validateRoomID(newurl)) {
-                console.log("iframeiframe", validateRoomID(newurl));
-
-                if (newurl !== callerURL) {
-                  console.log("iframeiframe", newurl !== callerURL);
-                  setCallerURL(newurl);
-                }
-              }
-            }
-          }
-        } else {
-          let newurl = generateURLParticipant(
-            extractedBaseURLCaller,
-            currentUserName,
-            callAcceptedRoomID
-          );
-          console.log("iframeiframe", newurl);
-          if (validateRoomID(newurl)) {
-            console.log("iframeiframe", validateRoomID(newurl));
-            if (newurl !== callerURL) {
-              console.log("iframeiframe", newurl !== callerURL);
-              setCallerURL(newurl);
-            }
-          }
-        }
-      }
-    } catch {}
-  }, [callAcceptedRoomID]);
-
   // Function to trigger the action in the iframe
   // const handleScreenShareButton = async () => {
   //   if (!LeaveCallModalFlag) {
@@ -608,21 +787,23 @@ const VideoPanelNormal = () => {
   // };
 
   const handleScreenShareButton = async () => {
-    if (!LeaveCallModalFlag) {
-      if (iframe && iframe.contentWindow) {
-        // Post message to iframe
-        iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
-      } else {
-        console.log("share screen Iframe contentWindow is not available.");
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      if (!LeaveCallModalFlag) {
+        if (iframe && iframe.contentWindow) {
+          // Post message to iframe
+          iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+        } else {
+          console.log("share screen Iframe contentWindow is not available.");
+        }
       }
+    } else {
+      console.log("Check");
     }
   };
 
   // Add event listener for messages
   useEffect(() => {
     const messageHandler = (event) => {
-      console.log("handlePostMessage share screen Message received:", event);
-
       // Check the origin for security
       // if (event.origin === "https://portal.letsdiskus.com:9414") {
       if (event.origin === "http://localhost:5500") {
@@ -636,14 +817,16 @@ const VideoPanelNormal = () => {
             console.log("handlePostMessage", event.data);
             setIsScreenActive(false);
             break;
+
+          case "stremmConnected":
+            dispatch(disableZoomBeforeJoinSession(false));
           default:
-            console.log("share screen Unknown message received:", event.data);
+            console.log(
+              "handlePostMessage share screen Unknown message received:",
+              event.data
+            );
         }
       } else {
-        console.log(
-          "share screen Message received from untrusted origin:",
-          event.origin
-        );
       }
     };
 
@@ -657,17 +840,21 @@ const VideoPanelNormal = () => {
   }, []);
 
   const layoutCurrentChange = () => {
-    let videoView = localStorage.getItem("VideoView");
-    if (LeaveCallModalFlag === false) {
-      if (iframe && videoView === "Sidebar") {
-        iframe.contentWindow.postMessage("TileView", "*");
-        localStorage.setItem("VideoView", "TileView");
-        setShowTile(true);
-      } else if (iframe && videoView === "TileView") {
-        iframe.contentWindow.postMessage("SidebarView", "*");
-        localStorage.setItem("VideoView", "Sidebar");
-        setShowTile(false);
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      let videoView = localStorage.getItem("VideoView");
+      if (LeaveCallModalFlag === false) {
+        if (iframe && videoView === "Sidebar") {
+          iframe.contentWindow.postMessage("TileView", "*");
+          localStorage.setItem("VideoView", "TileView");
+          setShowTile(true);
+        } else if (iframe && videoView === "TileView") {
+          iframe.contentWindow.postMessage("SidebarView", "*");
+          localStorage.setItem("VideoView", "Sidebar");
+          setShowTile(false);
+        }
       }
+    } else {
+      console.log("Check");
     }
   };
 
@@ -816,7 +1003,7 @@ const VideoPanelNormal = () => {
                     showTile={showTile}
                     iframeCurrent={iframe}
                   />
-                  {VideoOutgoingCallFlag === true ? <VideoOutgoing /> : null}
+                  {VideoOutgoingCallFlag && <VideoOutgoing />}
                   <Row>
                     <>
                       <Col

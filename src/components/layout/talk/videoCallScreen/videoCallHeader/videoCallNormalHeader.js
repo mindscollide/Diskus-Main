@@ -193,11 +193,17 @@ const VideoCallNormalHeader = ({
     (state) =>
       state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
   );
+
+  const disableBeforeJoinZoom = useSelector(
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+  );
+
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
   let callerName = localStorage.getItem("callerName");
@@ -244,8 +250,6 @@ const VideoCallNormalHeader = ({
   const [isMeetingHost, setIsMeetingHost] = useState(null);
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
-
-  console.log(isScreenActive, "isScreenActiveisScreenActive");
 
   // to show a host participants list counter
   const participantCounter = participantCounterList?.length;
@@ -771,69 +775,89 @@ const VideoCallNormalHeader = ({
   }, [callerObject]);
 
   const videoHideUnHideForParticipant = (flag) => {
-    // Prepare data for the API request
-    let data = {
-      RoomID: String(participantRoomIds),
-      HideVideo: flag, // Set HideVideo to true or false
-      UID: String(participantUID),
-    };
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      // Prepare data for the API request
+      let data = {
+        RoomID: String(participantRoomIds),
+        HideVideo: flag, // Set HideVideo to true or false
+        UID: String(participantUID),
+      };
 
-    // Dispatch the API request with the data
-    dispatch(hideUnhideSelfMainApi(navigate, t, data, 2));
+      // Dispatch the API request with the data
+      dispatch(hideUnhideSelfMainApi(navigate, t, data, 2));
+    } else {
+      console.log("Check");
+    }
   };
 
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
     // const flag = videoControlHost;
     console.log("videoHideUnHideForHost", flag);
-    // Prepare data for the API request
-    let data = {
-      RoomID: String(newRoomID),
-      HideVideo: flag, // Set HideVideo to true or false
-      UID: String(newUserGUID),
-    };
 
-    // Dispatch the API request with the data
-    dispatch(hideUnhideSelfMainApi(navigate, t, data, 1));
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      // Prepare data for the API request
+      let data = {
+        RoomID: String(newRoomID),
+        HideVideo: flag, // Set HideVideo to true or false
+        UID: String(newUserGUID),
+      };
+
+      // Dispatch the API request with the data
+      dispatch(hideUnhideSelfMainApi(navigate, t, data, 1));
+    } else {
+      console.log("Check");
+    }
   };
 
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
 
-    // Prepare data for the API request
-    let data = {
-      RoomID: String(newRoomID),
-      IsMuted: flag,
-      UID: String(newUserGUID),
-    };
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      // Prepare data for the API request
+      let data = {
+        RoomID: String(newRoomID),
+        IsMuted: flag,
+        UID: String(newUserGUID),
+      };
 
-    // Dispatch the API request with the data
-    dispatch(muteUnMuteSelfMainApi(navigate, t, data, 1));
+      // Dispatch the API request with the data
+      dispatch(muteUnMuteSelfMainApi(navigate, t, data, 1));
+    } else {
+      console.log("Check");
+    }
   };
 
   const muteUnMuteForParticipant = (flag) => {
     // const flag = audioControlForParticipant;
-
-    let data = {
-      RoomID: String(participantRoomIds),
-      IsMuted: flag,
-      UID: String(participantUID),
-    };
-    // Dispatch the API call with the structured request data
-    dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      let data = {
+        RoomID: String(participantRoomIds),
+        IsMuted: flag,
+        UID: String(participantUID),
+      };
+      // Dispatch the API call with the structured request data
+      dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
+    } else {
+      console.log("Check");
+    }
   };
 
   const raiseUnRaiseForParticipant = () => {
-    const flag = !raisedUnRaisedParticipant;
-    let data = {
-      RoomID: String(participantRoomIds),
-      UID: String(participantUID),
-      IsHandRaised: flag,
-    };
-    localStorage.setItem("handStatus", flag);
-    setHandStatus(flag);
-    dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+    if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      const flag = !raisedUnRaisedParticipant;
+      let data = {
+        RoomID: String(participantRoomIds),
+        UID: String(participantUID),
+        IsHandRaised: flag,
+      };
+      localStorage.setItem("handStatus", flag);
+      setHandStatus(flag);
+      dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+    } else {
+      console.log("Check");
+    }
   };
 
   const onClickCLoseParticipantPanel = () => {
@@ -913,7 +937,8 @@ const VideoCallNormalHeader = ({
                   <div
                     // onClick={disableMicHost}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !isMicActive
                         ? "cursor-pointer active-state"
@@ -938,7 +963,8 @@ const VideoCallNormalHeader = ({
                   <div
                     // onClick={disableVideoHost}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !isVideoActive
                         ? "cursor-pointer active-state"
@@ -967,7 +993,8 @@ const VideoCallNormalHeader = ({
                   {checkFeatureIDAvailability(5) ? (
                     <div
                       className={
-                        LeaveCallModalFlag === true
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
                           : "screenShare-Toggle inactive-state"
                       }
@@ -990,7 +1017,8 @@ const VideoCallNormalHeader = ({
                   <div
                     onClick={raiseHandFunction}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !handStatus
                         ? "inactive-state"
@@ -1027,7 +1055,8 @@ const VideoCallNormalHeader = ({
                   {MaximizeVideoFlag === true ? (
                     <div
                       className={
-                        LeaveCallModalFlag === true
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
                           : "screenShare-Toggle"
                       }
@@ -1185,7 +1214,7 @@ const VideoCallNormalHeader = ({
                     </div>
                   ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
-                    callerID === 0 ? (
+                      getMeetingHostInfo.isDashboardVideo ? (
                     <Tooltip placement="topRight" title={t("Leave-call")}>
                       <div className="inactive-state">
                         <img
@@ -1254,7 +1283,8 @@ const VideoCallNormalHeader = ({
                   <div
                     // onClick={disableAudioForParticipant}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !isMicActive
                         ? "cursor-pointer active-state"
@@ -1283,7 +1313,8 @@ const VideoCallNormalHeader = ({
                   <div
                     // onClick={disableVideoForParticipant}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !isVideoActive
                         ? "cursor-pointer active-state"
@@ -1312,7 +1343,8 @@ const VideoCallNormalHeader = ({
                   {checkFeatureIDAvailability(5) ? (
                     <div
                       className={
-                        LeaveCallModalFlag === true
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
                           : "screenShare-Toggle inactive-state"
                       }
@@ -1335,7 +1367,8 @@ const VideoCallNormalHeader = ({
                   <div
                     // onClick={disableRaisedHandForParticipant}
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : !handStatus
                         ? "inactive-state"
@@ -1361,7 +1394,8 @@ const VideoCallNormalHeader = ({
                   {MaximizeVideoFlag === true ? (
                     <div
                       className={
-                        LeaveCallModalFlag === true
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
                           : "screenShare-Toggle"
                       }
@@ -1522,7 +1556,7 @@ const VideoCallNormalHeader = ({
                     </div>
                   ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
-                    callerID === 0 ? (
+                      getMeetingHostInfo.isDashboardVideo ? (
                     <Tooltip placement="topRight" title={t("Leave-call")}>
                       <div className="inactive-state">
                         <img
@@ -1593,7 +1627,8 @@ const VideoCallNormalHeader = ({
                 <div
                   onClick={disableMic}
                   className={
-                    LeaveCallModalFlag === true
+                    LeaveCallModalFlag === true ||
+                    (isZoomEnabled && disableBeforeJoinZoom)
                       ? "grayScaleImage"
                       : !isMicActive
                       ? "cursor-pointer active-state"
@@ -1610,7 +1645,8 @@ const VideoCallNormalHeader = ({
                 <div
                   onClick={disableVideo}
                   className={
-                    LeaveCallModalFlag === true
+                    LeaveCallModalFlag === true ||
+                    (isZoomEnabled && disableBeforeJoinZoom)
                       ? "grayScaleImage"
                       : !isVideoActive
                       ? "cursor-pointer active-state"
@@ -1629,7 +1665,8 @@ const VideoCallNormalHeader = ({
                 {checkFeatureIDAvailability(5) ? (
                   <div
                     className={
-                      LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
                         ? "grayScaleImage"
                         : "screenShare-Toggle inactive-state"
                     }
@@ -1711,7 +1748,7 @@ const VideoCallNormalHeader = ({
                   </div>
                 ) : (LeaveCallModalFlag === false &&
                     callerID === currentUserID) ||
-                  callerID === 0 ? (
+                    getMeetingHostInfo.isDashboardVideo ? (
                   <Tooltip placement="topRight" title={t("End-call")}>
                     <div className="inactive-state">
                       <img

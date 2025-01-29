@@ -17,6 +17,7 @@ import {
   normalizeVideoPanelFlag,
   setAudioControlForParticipant,
   setAudioControlHost,
+  setParticipantLeaveCallForJoinNonMeetingCall,
   setVideoControlForParticipant,
   setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -28,6 +29,8 @@ import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_form
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+  let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
   const { t } = useTranslation();
 
@@ -147,56 +150,64 @@ const VideoMaxIncoming = () => {
     let isMeeting = localStorage.getItem("isMeeting");
     if (isMeeting) {
       if (isMeetingVideo) {
-        let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
-        let currentMeetingID = JSON.parse(
-          localStorage.getItem("currentMeetingID")
-        );
-        let newRoomID = meetinHostInfo?.isHost
-          ? localStorage.getItem("newRoomId")
-          : localStorage.getItem("activeRoomID");
-        let newUserGUID = meetinHostInfo?.isHost
-          ? localStorage.getItem("isGuid")
-          : localStorage.getItem("participantUID");
-        let newName = localStorage.getItem("name");
+        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+        if (isZoomEnabled) {
+          await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
+          setIsTimerRunning(false);
+        } else {
+          let meetinHostInfo = JSON.parse(
+            localStorage.getItem("meetinHostInfo")
+          );
+          let currentMeetingID = JSON.parse(
+            localStorage.getItem("currentMeetingID")
+          );
+          let newRoomID = meetinHostInfo?.isHost
+            ? localStorage.getItem("newRoomId")
+            : localStorage.getItem("activeRoomID");
+          let newUserGUID = meetinHostInfo?.isHost
+            ? localStorage.getItem("isGuid")
+            : localStorage.getItem("participantUID");
+          let newName = localStorage.getItem("name");
 
-        let Data = {
-          RoomID: String(newRoomID),
-          UserGUID: String(newUserGUID),
-          Name: String(newName),
-          IsHost: meetinHostInfo?.isHost ? true : false,
-          MeetingID: Number(currentMeetingID),
-        };
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
-        await dispatch(setAudioControlHost(false));
-        await dispatch(setAudioControlForParticipant(false));
-    console.log("videoHideUnHideForHost");
-    await dispatch(setVideoControlHost(false));
-        await dispatch(setVideoControlForParticipant(false));
-        localStorage.setItem("isMicEnabled", false);
-        localStorage.setItem("isWebCamEnabled", false);
-        localStorage.setItem("activeOtoChatID", 0);
-        localStorage.setItem("initiateVideoCall", false);
-        localStorage.setItem("activeRoomID", 0);
-        localStorage.setItem("meetingVideoID", 0);
-        localStorage.setItem("newCallerID", 0);
-        localStorage.setItem("callerStatusObject", JSON.stringify([]));
-        localStorage.removeItem("newRoomId");
-        localStorage.removeItem("isHost");
-        localStorage.removeItem("isGuid");
-        localStorage.removeItem("hostUrl");
-        localStorage.removeItem("VideoView");
-        localStorage.removeItem("videoIframe");
-        localStorage.removeItem("CallType");
+          let Data = {
+            RoomID: String(newRoomID),
+            UserGUID: String(newUserGUID),
+            Name: String(newName),
+            IsHost: meetinHostInfo?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+          await dispatch(setAudioControlHost(false));
+          await dispatch(setAudioControlForParticipant(false));
+          console.log("videoHideUnHideForHost");
+          await dispatch(setVideoControlHost(false));
+          await dispatch(setVideoControlForParticipant(false));
+          localStorage.setItem("isMicEnabled", false);
+          localStorage.setItem("isWebCamEnabled", false);
+          localStorage.setItem("activeOtoChatID", 0);
+          localStorage.setItem("initiateVideoCall", false);
+          localStorage.setItem("activeRoomID", 0);
+          localStorage.setItem("meetingVideoID", 0);
+          localStorage.setItem("newCallerID", 0);
+          localStorage.setItem("callerStatusObject", JSON.stringify([]));
+          localStorage.removeItem("newRoomId");
+          localStorage.removeItem("isHost");
+          localStorage.removeItem("isGuid");
+          localStorage.removeItem("hostUrl");
+          localStorage.removeItem("VideoView");
+          localStorage.removeItem("videoIframe");
+          localStorage.removeItem("CallType");
 
-        let Data2 = {
-          ReciepentID: currentUserId,
-          RoomID: activeRoomID,
-          CallStatusID: 1,
-          CallTypeID: callTypeID,
-        };
-        dispatch(VideoCallResponse(Data2, navigate, t));
-        dispatch(incomingVideoCallFlag(false));
-        setIsTimerRunning(false);
+          let Data2 = {
+            ReciepentID: currentUserId,
+            RoomID: activeRoomID,
+            CallStatusID: 1,
+            CallTypeID: callTypeID,
+          };
+          dispatch(VideoCallResponse(Data2, navigate, t));
+          dispatch(incomingVideoCallFlag(false));
+          setIsTimerRunning(false);
+        }
       } else {
         let Data = {
           OrganizationID: currentOrganization,
@@ -251,6 +262,8 @@ const VideoMaxIncoming = () => {
 
   const rejectCall = () => {
     console.log("busyCall");
+    console.log("busyCall", incomingRoomID);
+
     let Data = {
       ReciepentID: currentUserId,
       RoomID: incomingRoomID,
@@ -285,8 +298,6 @@ const VideoMaxIncoming = () => {
     }
   }, [videoFeatureReducer.IncomingVideoFlag]);
 
-  useEffect(() => {}, [activeCallState]);
-
   //For Ringer Incoming If page is Refereshed
   useEffect(() => {
     let RingerCallCheckFlag = JSON.parse(
@@ -304,13 +315,26 @@ const VideoMaxIncoming = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [dispatch]);
-
+  console.log(
+    "hhhhhhhhhhhhhh",
+    activeCallState === true ||
+      (isMeeting && typeOfMeeting === "isQuickMeeting")
+  );
+  console.log("hhhhhhhhhhhhhh", typeOfMeeting === "isQuickMeeting");
+  console.log("hhhhhhhhhhhhhh", typeOfMeeting);
+  console.log("hhhhhhhhhhhhhh", activeCallState === true);
+  console.log(
+    "hhhhhhhhhhhhhh",
+    isMeeting && typeOfMeeting === "isQuickMeeting"
+  );
+  console.log("hhhhhhhhhhhhhh", isMeeting);
   return (
     <>
       {isVisible && (
         <div
           className={
-            activeCallState === true
+            activeCallState === true ||
+            (isMeeting && typeOfMeeting === "isQuickMeeting")
               ? "videoIncoming-active-call"
               : "videoIncoming-max-call"
           }
@@ -320,12 +344,14 @@ const VideoMaxIncoming = () => {
               <Col sm={12} md={12} lg={12}>
                 <div
                   className={
-                    activeCallState === true
+                    activeCallState === true ||
+                    (isMeeting && typeOfMeeting === "isQuickMeeting")
                       ? "avatar-column-active-call"
                       : "avatar-column-max-call"
                   }
                 >
-                  {activeCallState === false ? (
+                  {activeCallState === false ||
+                  (!isMeeting && typeOfMeeting !== "isQuickMeeting") ? (
                     // <img
                     //   src={`data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}`}
                     //   width={150}
@@ -347,7 +373,8 @@ const VideoMaxIncoming = () => {
                 <div className="someone-calling-title-max-call">
                   <p
                     className={
-                      activeCallState === true
+                      activeCallState === true ||
+                      (isMeeting && typeOfMeeting === "isQuickMeeting")
                         ? "outgoing-call-text-active-call"
                         : "outgoing-call-text-max-call"
                     }
@@ -376,17 +403,20 @@ const VideoMaxIncoming = () => {
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={
-                    activeCallState === true
+                    activeCallState === true ||
+                    (isMeeting && typeOfMeeting === "isQuickMeeting")
                       ? "d-flex justify-content-center"
                       : "d-flex justify-content-end"
                   }
                 >
-                  {activeCallState === true ? (
+                  {activeCallState === true ||
+                  (isMeeting && typeOfMeeting === "isQuickMeeting") ? (
                     <>
                       <div className="incoming-action">
                         <Button
                           className={
-                            activeCallState === true
+                            activeCallState === true ||
+                            (isMeeting && typeOfMeeting === "isQuickMeeting")
                               ? "button-active-img"
                               : "button-img"
                           }
@@ -396,7 +426,8 @@ const VideoMaxIncoming = () => {
                         />
                         <span
                           className={
-                            activeCallState === true
+                            activeCallState === true ||
+                            (isMeeting && typeOfMeeting === "isQuickMeeting")
                               ? "incoming-active-text"
                               : "incoming-text"
                           }
@@ -423,22 +454,26 @@ const VideoMaxIncoming = () => {
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={
-                    activeCallState === true
+                    activeCallState === true ||
+                    (isMeeting && typeOfMeeting === "isQuickMeeting")
                       ? "d-flex justify-content-center"
                       : "d-flex justify-content-start"
                   }
                 >
-                  {activeCallState === true ? (
+                  {activeCallState === true ||
+                  (isMeeting && typeOfMeeting === "isQuickMeeting") ? (
                     <>
                       <div className="incoming-action">
                         <Button
                           style={
-                            activeCallState === true
+                            activeCallState === true ||
+                            (isMeeting && typeOfMeeting === "isQuickMeeting")
                               ? { paddingBottom: "0" }
                               : null
                           }
                           className={
-                            activeCallState === true
+                            activeCallState === true ||
+                            (isMeeting && typeOfMeeting === "isQuickMeeting")
                               ? "button-active-img"
                               : "button-img"
                           }
@@ -447,7 +482,8 @@ const VideoMaxIncoming = () => {
                         />
                         <span
                           className={
-                            activeCallState === true
+                            activeCallState === true ||
+                            (isMeeting && typeOfMeeting === "isQuickMeeting")
                               ? "incoming-active-text"
                               : "incoming-text"
                           }

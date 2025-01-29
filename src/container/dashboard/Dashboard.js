@@ -52,6 +52,7 @@ import {
   leaveMeetingOnlogout,
   participantVideoButtonState,
   videoIconOrButtonState,
+  setParticipantRemovedFromVideobyHost,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -377,7 +378,7 @@ const Dashboard = () => {
     }
   };
 
-  const onMessageArrived = (msg) => {
+  const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -741,7 +742,18 @@ const Dashboard = () => {
               if (data.payload.isGuest) {
                 dispatch(guestLeaveVideoMeeting(data.payload.uid));
               } else {
-                dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                const meetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
+                if (isGuid !== data.payload.uid) {
+                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                }
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -789,45 +801,53 @@ const Dashboard = () => {
               let isMeetingVideoCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideo")
               );
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
-                const meetingHost = {
-                  isHost: false,
-                  isHostId: 0,
-                  isDashboardVideo: true,
-                };
-                dispatch(makeHostNow(meetingHost));
-                localStorage.setItem("isMeeting", true);
-                localStorage.setItem("isMeetingVideo", false);
-                localStorage.removeItem("refinedVideoUrl");
-                localStorage.setItem("refinedVideoGiven", false);
-                localStorage.setItem("isWebCamEnabled", false);
-                localStorage.setItem("isMicEnabled", false);
-                dispatch(setAudioControlForParticipant(false));
-                dispatch(setVideoControlForParticipant(false));
+                if (isZoomEnabled) {
+                  await dispatch(setParticipantRemovedFromVideobyHost(true));
+                } else {
+                  const meetingHost = {
+                    isHost: false,
+                    isHostId: 0,
+                    isDashboardVideo: true,
+                  };
+                  dispatch(makeHostNow(meetingHost));
+                  localStorage.setItem("isMeeting", true);
+                  localStorage.setItem("isMeetingVideo", false);
+                  localStorage.removeItem("refinedVideoUrl");
+                  localStorage.setItem("refinedVideoGiven", false);
+                  localStorage.setItem("isWebCamEnabled", false);
+                  localStorage.setItem("isMicEnabled", false);
+                  dispatch(setAudioControlForParticipant(false));
+                  dispatch(setVideoControlForParticipant(false));
 
-                localStorage.setItem(
-                  "meetinHostInfo",
-                  JSON.stringify(meetingHost)
-                );
+                  localStorage.setItem(
+                    "meetinHostInfo",
+                    JSON.stringify(meetingHost)
+                  );
 
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(maxParticipantVideoRemoved(true));
-                // Participant room Id and usrrGuid
-                let participantRoomIds =
-                  localStorage.getItem("participantRoomId");
-                let participantUID = localStorage.getItem("participantUID");
-                let currentMeetingID = localStorage.getItem("currentMeetingID");
-                let newName = localStorage.getItem("name");
-                let Data = {
-                  RoomID: String(participantRoomIds),
-                  UserGUID: String(participantUID),
-                  Name: String(newName),
-                  IsHost: false,
-                  MeetingID: Number(currentMeetingID),
-                };
-                dispatch(setRaisedUnRaisedParticiant(false));
-                dispatch(LeaveMeetingVideo(Data, navigate, t));
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(maxParticipantVideoRemoved(true));
+                  // Participant room Id and usrrGuid
+                  let participantRoomIds =
+                    localStorage.getItem("participantRoomId");
+                  let participantUID = localStorage.getItem("participantUID");
+                  let currentMeetingID =
+                    localStorage.getItem("currentMeetingID");
+                  let newName = localStorage.getItem("name");
+                  let Data = {
+                    RoomID: String(participantRoomIds),
+                    UserGUID: String(participantUID),
+                    Name: String(newName),
+                    IsHost: false,
+                    MeetingID: Number(currentMeetingID),
+                  };
+                  dispatch(setRaisedUnRaisedParticiant(false));
+                  dispatch(LeaveMeetingVideo(Data, navigate, t));
+                }
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -916,14 +936,17 @@ const Dashboard = () => {
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
+              console.log("iframeiframe", data.payload.userID);
               localStorage.setItem("acceptedRecipientID", data.payload.userID);
               localStorage.setItem("isMeetingVideo", true);
               localStorage.setItem(
                 "currentMeetingVideoUrl",
                 data.payload.videoUrl
               );
+              console.log("iframeiframe", data.payload.userID);
               if (data?.payload?.videoUrl) {
                 // Fetch values from localStorage and Redux
+                console.log("iframeiframe", data.payload.userID);
                 console.log("isMeetingVideo", audioControlForParticipant);
                 console.log("isMeetingVideo", videoControlForParticipant);
                 let videoControlForParticipantLoacl = JSON.parse(
@@ -932,25 +955,35 @@ const Dashboard = () => {
                 let audioControlForParticipantLocal = JSON.parse(
                   localStorage.getItem("isMicEnabled")
                 );
+                console.log("iframeiframe", data.payload.userID);
                 dispatch(
                   setAudioControlForParticipant(audioControlForParticipantLocal)
                 );
+                console.log("iframeiframe", data.payload.userID);
                 dispatch(
                   setVideoControlForParticipant(videoControlForParticipantLoacl)
                 );
 
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
-                const refinedUrl = data.payload.videoUrl
-                  .replace("$ParticipantFullName$", currentParticipantUser)
-                  .replace(
-                    "$IsMute$",
-                    audioControlForParticipantLocal.toString()
-                  )
-                  .replace(
-                    "$IsHideCamera$",
-                    videoControlForParticipantLoacl.toString()
-                  );
+                let refinedUrl = "";
+                let isZoomEnabled = JSON.parse(
+                  localStorage.getItem("isZoomEnabled")
+                );
+                if (isZoomEnabled) {
+                  refinedUrl = data.payload.videoUrl;
+                } else {
+                  refinedUrl = data.payload.videoUrl
+                    .replace("$ParticipantFullName$", currentParticipantUser)
+                    .replace(
+                      "$IsMute$",
+                      audioControlForParticipantLocal.toString()
+                    )
+                    .replace(
+                      "$IsHideCamera$",
+                      videoControlForParticipantLoacl.toString()
+                    );
+                }
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);
@@ -959,8 +992,8 @@ const Dashboard = () => {
                 console.error("Invalid data or missing videoUrl in payload");
               }
 
+              console.log("iframeiframe", data.payload);
               dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
-              console.log(data.payload.videoUrl, "hahahahahahhassddsd");
               localStorage.setItem("participantRoomId", data.payload.roomID);
               localStorage.setItem("participantUID", data.payload.uid);
               localStorage.setItem("activeRoomID", data.payload.roomID);
@@ -974,30 +1007,38 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
-              const meetingHost = {
-                isHost: true,
-                isHostId: Number(localStorage.getItem("userID")),
-                isDashboardVideo: true,
-              };
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
-              let getMeetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
-              );
+              let userID = Number(localStorage.getItem("userID"));
+              console.log("hhhhhhhhhhhhhh", userID);
+              console.log("hhhhhhhhhhhhhh", data.receiverID[0]);
+              if (userID !== data.receiverID[0]) {
+                console.log("hhhhhhhhhhhhhh");
 
-              if (getMeetingHost.isHost) {
-                console.log("check 22");
-                dispatch(videoIconOrButtonState(true));
-                dispatch(participantVideoButtonState(false));
-                localStorage.setItem("isMeetingVideoHostCheck", true);
-              } else {
-                console.log("check 22");
-                dispatch(videoIconOrButtonState(false));
-                dispatch(participantVideoButtonState(true));
-                localStorage.setItem("isMeetingVideoHostCheck", false);
+                const meetingHost = {
+                  isHost: true,
+                  isHostId: Number(localStorage.getItem("userID")),
+                  isDashboardVideo: true,
+                };
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+                let getMeetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+
+                if (getMeetingHost.isHost) {
+                  console.log("check 22");
+                  dispatch(videoIconOrButtonState(true));
+                  dispatch(participantVideoButtonState(false));
+                  localStorage.setItem("isMeetingVideoHostCheck", true);
+                } else {
+                  console.log("check 22");
+                  dispatch(videoIconOrButtonState(false));
+                  dispatch(participantVideoButtonState(true));
+                  localStorage.setItem("isMeetingVideoHostCheck", false);
+                }
               }
+
               // console.log(getMeetingHost.isHost, "getMeetingHostisHost");
             } else if (
               data?.payload?.message?.toLowerCase() ===
@@ -2112,7 +2153,6 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           localStorage.setItem("RingerCallCheckFlag", true);
           localStorage.setItem("callType", data.payload.callType);
-          console.log("leavecallMeetingVideo");
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           localStorage.setItem("newCallerID", data.payload.callerID);
           let Dataa = {
@@ -2212,44 +2252,58 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_REJECTED".toLowerCase()
         ) {
+          console.log("mqtt");
           //To make false sessionStorage which is set on VideoCall
           sessionStorage.setItem("NonMeetingVideoCall", false);
+          console.log("mqtt");
           let callerID = Number(localStorage.getItem("callerID"));
+          console.log("mqtt");
+          let userID = Number(localStorage.getItem("userID"));
+
+          console.log("mqtt");
           let newCallerID = Number(localStorage.getItem("newCallerID"));
+          console.log("mqtt");
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
+          console.log("mqtt");
           let initiateRoomID = localStorage.getItem("initiateCallRoomID");
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+          console.log("mqtt");
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let callTypeID = Number(localStorage.getItem("CallType"));
-
-          // if (callerID === newCallerID) {
-          // }
+          console.log("mqtt");
+          let callTypeID = Number(localStorage.getItem("callTypeID"));
+          console.log("mqtt", callTypeID);
 
           if (callTypeID === 1) {
-            console.log("mqtt", isMeetingVideo);
-            let Data = {
-              OrganizationID: Number(currentOrganization),
-              RoomID: initiateRoomID,
-              IsCaller: true,
-              CallTypeID: callTypeID,
-            };
-            dispatch(LeaveCall(Data, navigate, t));
-            dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message)
-            );
-            localStorage.setItem("activeCall", false);
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            localStorage.setItem("NewRoomID", 0);
-            localStorage.setItem("activeRoomID", 0);
-            localStorage.setItem("initiateVideoCall", false);
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(videoChatMessagesFlag(false));
-            dispatch(videoOutgoingCallFlag(false));
+            console.log("mqtt");
+            if (userID !== data.recepientID) {
+              console.log("mqtt");
+              let Data = {
+                OrganizationID: Number(currentOrganization),
+                RoomID: initiateRoomID,
+                IsCaller: true,
+                CallTypeID: callTypeID,
+              };
+              console.log("mqtt");
+              dispatch(LeaveCall(Data, navigate, t));
+              console.log("mqtt");
+              dispatch(
+                callRequestReceivedMQTT(data.payload, data.payload.message)
+              );
+              console.log("mqtt");
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("newCallerID", callerID);
+              localStorage.setItem("initiateVideoCall", false);
+              localStorage.setItem("NewRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("initiateVideoCall", false);
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(videoChatMessagesFlag(false));
+              dispatch(videoOutgoingCallFlag(false));
+            }
           } else if (callTypeID === 2) {
             let newData = {
               RecipientName: data.payload.recepientName,
@@ -2820,7 +2874,7 @@ const Dashboard = () => {
               setNotification({
                 notificationShow: true,
                 message: changeMQTTJSONOne(
-                 t("FOLDER_SHARED"),
+                  t("FOLDER_SHARED"),
                   "[Place holder]",
                   data?.payload?.data?.displayFolderName
                 ),
@@ -3000,28 +3054,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className='sidebar_layout' width={"4%"}>
+            <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3038,8 +3093,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3070,25 +3125,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3104,12 +3159,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

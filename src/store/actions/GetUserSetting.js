@@ -70,6 +70,20 @@ const getUserSetting = (navigate, t, loader) => {
                 "calenderMonthsSpan",
                 response.data.responseResult.userSettings.calenderMonthsSpan
               );
+              function findConfigValue(data, key) {
+                const result = data.find((item) => item.configKey === key);
+                return result ? result.configValue : null; // Return configValue if found, else null
+              }
+
+              // Example usage
+              const data =
+                response.data.responseResult.userSettings.configurations;
+              const configKeyToFind = "IsZoomEnabled";
+              const configValue = findConfigValue(data, configKeyToFind);
+
+              console.log("configValue", configValue); // Outputs the configValue or null if not found
+
+              localStorage.setItem("isZoomEnabled", configValue);
               if (
                 response.data.responseResult.userSettings
                   .userAllowMicrosoftCalendarSynch != null &&
@@ -116,7 +130,18 @@ const getUserSetting = (navigate, t, loader) => {
                 "Video_Server_Base_URL_Caller"
               );
 
-              if (baseUrlCaller) {
+              if (configValue) {
+                baseUrlCaller = findAndSetConfigValue(
+                  dataToFind,
+                  "Zoom_Video_Server_Base_URL_Caller"
+                );
+                if (baseUrlCaller) {
+                  localStorage.setItem(
+                    "videoBaseURLCaller",
+                    baseUrlCaller.configValue
+                  );
+                }
+              } else if (baseUrlCaller) {
                 localStorage.setItem(
                   "videoBaseURLCaller",
                   baseUrlCaller.configValue
@@ -128,7 +153,19 @@ const getUserSetting = (navigate, t, loader) => {
                 "Video_Server_Base_URL_Participant"
               );
 
-              if (baseUrlParticipant) {
+              if (configValue) {
+                baseUrlParticipant = findAndSetConfigValue(
+                  dataToFind,
+                  "Zoom_Video_Server_Base_URL_Participant"
+                );
+
+                if (baseUrlParticipant) {
+                  localStorage.setItem(
+                    "videoBaseURLParticipant",
+                    baseUrlParticipant.configValue
+                  );
+                }
+              } else if (baseUrlParticipant) {
                 localStorage.setItem(
                   "videoBaseURLParticipant",
                   baseUrlParticipant.configValue
@@ -160,7 +197,7 @@ const getUserSetting = (navigate, t, loader) => {
                 );
               }
               await dispatch(
-                settingSuccess(response.data.responseResult.userSettings,"")
+                settingSuccess(response.data.responseResult.userSettings, "")
               );
               // navigate("/Admin/ManageUsers");
             } else if (

@@ -135,6 +135,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   };
 
   const openVideoPanel = () => {
+    console.log("busyCall");
     dispatch(leaveCallModal(true));
     // localStorage.setItem('activeCall', false)
   };

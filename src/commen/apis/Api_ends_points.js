@@ -11,6 +11,7 @@ const settingURL = ":11004/Settings";
 const settingDownloadURL = ":11004/Report";
 
 // Huzeifa work for Meetings
+// const meetingURL = ":11024/Meeting";
 const meetingURL = ":11002/Meeting";
 
 // huzeifa work
