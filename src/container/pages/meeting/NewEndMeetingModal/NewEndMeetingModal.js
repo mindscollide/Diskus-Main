@@ -60,6 +60,13 @@ const NewEndMeetingModal = () => {
     setAdvanceMeetingModalID(0);
     setViewAdvanceMeetingModal(false);
     dispatch(showEndMeetingModal(false));
+    localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("QuickMeetingCheckNotification");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationClickTaskID");
+    localStorage.removeItem("viewadvanceMeetingTask");
   };
   return (
     <section>

@@ -102,6 +102,7 @@ const ExpandedMenu = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "groups");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -148,6 +149,7 @@ const ExpandedMenu = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "polling");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -194,6 +196,7 @@ const ExpandedMenu = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "calendar");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -240,6 +243,7 @@ const ExpandedMenu = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "todolist");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -285,6 +289,7 @@ const ExpandedMenu = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "Notes");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
