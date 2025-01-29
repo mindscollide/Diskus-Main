@@ -79,8 +79,12 @@ const getUserSetting = (navigate, t, loader) => {
               const data =
                 response.data.responseResult.userSettings.configurations;
               const configKeyToFind = "IsZoomEnabled";
-              const configValue = findConfigValue(data, configKeyToFind);
+              const configValue =
+                findConfigValue(data, configKeyToFind) === "true"
+                  ? true
+                  : false;
 
+              console.log("configValue", Boolean(configValue)); // Outputs the configValue or null if not found
               console.log("configValue", configValue); // Outputs the configValue or null if not found
 
               localStorage.setItem("isZoomEnabled", configValue);
