@@ -1006,7 +1006,7 @@ const CreatePolling = () => {
               )}
             </>
           }
-          size={"md"}
+          size={"xl"}
         />
       </Container>
       <Notification open={open} setOpen={setOpen} />

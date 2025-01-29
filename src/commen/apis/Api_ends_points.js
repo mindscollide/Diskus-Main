@@ -81,8 +81,7 @@ const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
 
-// const getResolutionApi = baseURL + getResolutionURL;
-const getResolutionApi = "http://localhost:37813/Resolution";
+const getResolutionApi = baseURL + getResolutionURL;
 
 // get Talk Api
 const talkApi = baseURL + talkURL;
