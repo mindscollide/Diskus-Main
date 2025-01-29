@@ -2,10 +2,15 @@ import React, { createContext, useContext, useState } from "react";
 
 // Create the Context
 export const PollsContext = createContext();
-
 // Create a Provider component
 export const PollsProvider = ({ children }) => {
-  return <PollsContext.Provider value={{}}>{children}</PollsContext.Provider>;
+  const [viewVotes, setviewVotes] = useState(false);
+
+  return (
+    <PollsContext.Provider value={{ viewVotes, setviewVotes }}>
+      {children}
+    </PollsContext.Provider>
+  );
 };
 
 // Custom Hook to consume the context

@@ -1,0 +1,35 @@
+.CloseButtonStyles {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.CloseButtonStyles:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.AccessDeninedMainheading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+}
+
+.DeninedModalSubHeading {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  line-height: 28px !important;
+}

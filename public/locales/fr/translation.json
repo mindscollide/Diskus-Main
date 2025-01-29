@@ -2248,7 +2248,7 @@
   "Save-and-continue": "Save & Continue",
   "Are-you-sure-you-want-to-end-the-meeting-once-the-meeting-ends-all-the-participants-will-be-disconnected": "Are you sure you want to end the meeting? Once the meeting ends, all the participants will be disconnected.",
   "Not-allowed-more-than-5-files": "Not allowed more than 5 files",
-  "Successfully-updated-participants-list": "Successfully updated participants list",
+  "Successfully-updated-participants-list": "Updated Proposed Meetings Details",
   "Upcoming-tasks": "Upcoming Tasks",
   "Upcoming-meetings": "Upcoming Meetings",
   "GROUP_STATUS_EDITED_ACTIVE": "Group [Group Title] in which you are a member has been set as Active",
@@ -2367,11 +2367,16 @@
   "Has-again-added-you-as-a-minutes-reviewer-in-the-meeting": "has again added you as a minutes reviewer in the meeting",
   "Has-changed-your-Role-from-group-head-member-to-group-member-head-in-the-group": "has changed your Role from (Group Head/Member) to (Group Member/Head) in the group",
   "Has-changed-your-Role-from-Previous-Role-name-to-New-Role-Name-in-the-committee": "has changed your Role from Previous Role name to  New Role Name in the committee",
-  "Has-deleted-the-poll": "has deleted the poll",
+  "Has-deleted-the-poll": "has deleted the poll in the meeting",
   "Has-deleted-the-Resolution": "has deleted the Resolution",
   "Has-given-his-vote-on-a-poll": "has given his vote on a poll",
   "Has-given-his-vote-on-a-poll-in-the-meeting": "has given his vote on a poll in the meeting",
   "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting",
   "Vote-updated": "Vote Updated",
-  "No-vote-updated": "No Vote Updated"
+  "No-vote-updated": "No Vote Updated",
+  "It-seems-you-don’t-have-permission-to": "It seems you don’t have permission to",
+  "Access-this": "access this",
+  "Access-denied": "Access Denied",
+  "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:",
+  "Has-changed-his-vote-in": " has changed his Vote in:"
 }

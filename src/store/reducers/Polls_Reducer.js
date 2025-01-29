@@ -41,6 +41,7 @@ const initialState = {
   castPollVoteModal: false,
   setPollIdForCastVote: null,
   UpdateCastVoteData: null,
+  AccessDeniedPolls: false,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -666,6 +667,13 @@ const PollsReducer = (state = initialState, action) => {
         Loading: false,
         UpdateCastVoteData: null,
         responseMessage: action.message,
+      };
+    }
+
+    case actions.ACCESS_DENIED_NOTIFCATION: {
+      return {
+        ...state,
+        AccessDeniedPolls: action.response,
       };
     }
     default: {

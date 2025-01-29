@@ -4,8 +4,10 @@ import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { Button } from "../../../../../../components/elements";
+import { usePollsContext } from "../../../../../../context/PollsContext";
 
-const ViewVotesScreen = ({ setviewVotes }) => {
+const ViewVotesScreen = () => {
+  const { setviewVotes } = usePollsContext();
   const PollsReducerviewVotes = useSelector(
     (state) => state.PollsReducer.viewVotes
   );

@@ -117,8 +117,7 @@ const Votepoll = () => {
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
 
-      // dispatch(castVoteApi(navigate, data, t));
-      dispatch(UpdatedCastVoteAPI(navigate, t, data));
+      dispatch(UpdatedCastVoteAPI(navigate, data, t));
     } else {
       // open sncak bar for atleast select one option
       showMessage(t("Required-atleast-one-vote"), "error", setOpen);
