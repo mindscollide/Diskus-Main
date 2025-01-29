@@ -195,6 +195,7 @@ const Sidebar = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "dataroom");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -241,6 +242,7 @@ const Sidebar = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "resolution");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
@@ -288,6 +290,7 @@ const Sidebar = () => {
     if (viewAdvanceMeetingModal) {
       if (Number(editorRole?.status) === 10) {
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "committee");
       } else if (minutes || actionsPage || polls) {
         setCancelConfirmationModal(true);
       } else {
