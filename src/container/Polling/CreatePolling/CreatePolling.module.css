@@ -65,7 +65,7 @@ body[dir="rtl"] .Due_Date_heading {
 }
 
 .Scroller_For_CreatePollModal2 {
-  height: 10vh !important;
+  max-height: 25vh !important;
   overflow-x: hidden !important;
 }
 

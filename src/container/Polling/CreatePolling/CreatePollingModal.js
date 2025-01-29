@@ -759,7 +759,6 @@ const CreatePolling = () => {
                         </Row>
                       </Col>
                       <Col lg={6} md={6} sm={6}>
-                        {/* yaha say  */}
                         <Row>
                           <Col
                             lg={12}
