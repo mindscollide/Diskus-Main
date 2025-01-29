@@ -1427,8 +1427,14 @@ const DataRoom = () => {
               <div
                 className={`${styles["dataFolderRow"]}`}
                 onClick={() => getFolderDocuments(data.id, data)}>
-                <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text} className='d-flex gap-1'>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  <img src={folderColor} alt='' draggable='false' />
+                  {/* <abbr title={text} className='d-flex gap-1'> */}
+
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
@@ -1436,26 +1442,32 @@ const DataRoom = () => {
                     {text}
                   </span>
                   <img src={sharedIcon} alt='' draggable='false' />
-                </abbr>
+                </Tooltip>
+                {/* </abbr> */}
               </div>
             );
           } else {
             return (
               <section className={styles["fileRow"]}>
-                <img
-                  src={getIconSource(getFileExtension(data.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                />
-                <abbr title={text} className='d-flex gap-1'>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=''
+                    width={"25px"}
+                    height={"25px"}
+                  />
+
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
                   <img src={sharedIcon} alt='' draggable='false' />
-                </abbr>
+                </Tooltip>
               </section>
             );
           }
@@ -1465,15 +1477,20 @@ const DataRoom = () => {
               <div
                 className={`${styles["dataFolderRow"]}`}
                 onClick={() => getFolderDocuments(data.id, data)}>
-                <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text}>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  <img src={folderColor} alt='' draggable='false' />
+
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
                     } ${"cursor-pointer"}`}>
                     {text}{" "}
                   </span>
-                </abbr>
+                </Tooltip>
               </div>
             );
           } else {
@@ -1485,13 +1502,13 @@ const DataRoom = () => {
                   width={"25px"}
                   height={"25px"}
                 />
-                <abbr title={text}>
+                <Tooltip title={text} showArrow={false} placement='top'>
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
-                </abbr>
+                </Tooltip>
               </section>
             );
           }
@@ -1838,7 +1855,12 @@ const DataRoom = () => {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
                 <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text} className='d-flex gap-1'>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  {" "}
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
@@ -1846,32 +1868,41 @@ const DataRoom = () => {
                     onClick={() => getFolderDocuments(data.id, data)}>
                     {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
-                </abbr>
+                </Tooltip>
               </div>
             );
           } else {
             <div className={styles["dataFolderRow"]}>
-              <img
-                src={getIconSource(getFileExtension(data.name))}
-                alt=''
-                width={"25px"}
-                height={"25px"}
-              />
-              <abbr title={text}>
+              <Tooltip
+                title={text}
+                showArrow={false}
+                placement='top'
+                className='d-flex gap-1'>
+                <img
+                  src={getIconSource(getFileExtension(data.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                />
+
                 <span
                   onClick={(e) => handleLinkClick(e, data)}
                   className={styles["dataroom_table_heading"]}>
                   {text}
                 </span>
-              </abbr>
+              </Tooltip>
             </div>;
           }
         } else {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt='' draggable='false' />
-                <abbr title={text}>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  <img src={folderColor} alt='' draggable='false' />
                   <span
                     className={`${
                       styles["dataroom_table_heading"]
@@ -1879,25 +1910,29 @@ const DataRoom = () => {
                     onClick={() => getFolderDocuments(data.id, data)}>
                     {text}{" "}
                   </span>
-                </abbr>
+                </Tooltip>
               </div>
             );
           } else {
             return (
               <section className={styles["fileRow"]}>
-                <img
-                  src={getIconSource(getFileExtension(data.name))}
-                  alt=''
-                  width={"25px"}
-                  height={"25px"}
-                />
-                <abbr title={text}>
+                <Tooltip
+                  title={text}
+                  showArrow={false}
+                  placement='top'
+                  className='d-flex gap-1'>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=''
+                    width={"25px"}
+                    height={"25px"}
+                  />
                   <span
                     onClick={(e) => handleLinkClick(e, data)}
                     className={styles["dataroom_table_heading"]}>
                     {text}
                   </span>
-                </abbr>
+                </Tooltip>
               </section>
             );
           }
@@ -2408,30 +2443,34 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={folderColor} alt='' draggable='false' />
-              <span
-                className={styles["dataroom_table_heading"]}
-                onClick={() => getFolderDocuments(record.id, record)}>
-                {text}
-              </span>
-              <img src={sharedIcon} alt='' draggable='false' />
+              <Tooltip className='d-flex gap-1 ' placement='top' title={text} showArrow={false}>
+                <img src={folderColor} alt='' draggable='false' />
+                <span
+                  className={styles["dataroom_table_heading"]}
+                  onClick={() => getFolderDocuments(record.id, record)}>
+                  {text}
+                </span>
+                <img src={sharedIcon} alt='' draggable='false' />
+              </Tooltip>
             </div>
           );
         } else {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img
-                src={getIconSource(getFileExtension(record.name))}
-                alt=''
-                width={"25px"}
-                height={"25px"}
-              />
-              <span
-                className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, record)}>
-                {record.name}
-              </span>
-              <img src={sharedIcon} alt='' draggable='false' />
+              <Tooltip className='d-flex gap-1 ' placement='top' title={text} showArrow={false}>
+                <img
+                  src={getIconSource(getFileExtension(record.name))}
+                  alt=''
+                  width={"25px"}
+                  height={"25px"}
+                />
+                <span
+                  className={styles["dataroom_table_heading"]}
+                  onClick={(e) => handleLinkClick(e, record)}>
+                  {record.name}
+                </span>
+                <img src={sharedIcon} alt='' draggable='false' />
+              </Tooltip>
             </div>
           );
         }
