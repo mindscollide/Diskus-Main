@@ -508,7 +508,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -537,7 +538,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -563,7 +565,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -592,7 +595,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -610,6 +614,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            setAdvanceMeetingModalID(PayLoadData.MeetingID);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -618,7 +623,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -639,6 +645,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            setAdvanceMeetingModalID(PayLoadData.MeetingID);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -647,7 +654,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
