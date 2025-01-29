@@ -530,7 +530,16 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 10) {
@@ -631,7 +640,16 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 12) {
