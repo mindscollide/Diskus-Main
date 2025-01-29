@@ -15,6 +15,7 @@ import { GroupsProvider } from "./context/GroupsContext";
 import { CommitteeProvider } from "./context/CommitteeContext";
 import { PollsProvider } from "./context/PollsContext";
 import { NotesProvider } from "./context/NotesContext";
+import { ResolutionProvider } from "./context/ResolutionContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -47,7 +48,9 @@ root.render(
             <DataroomProvider>
               <PollsProvider>
                 <NotesProvider>
-                  <App />
+                  <ResolutionProvider>
+                    <App />
+                  </ResolutionProvider>
                 </NotesProvider>
               </PollsProvider>
             </DataroomProvider>

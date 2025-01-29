@@ -701,7 +701,7 @@ const Polling = () => {
       width: "69px",
       align: "center",
       render: (text, record) => {
-        console.log(record.dueDate, "recordrecordrecord");
+        console.log(record, "recordrecordrecord");
 
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);

@@ -14,7 +14,10 @@ import {
 import { Progress, Radio } from "antd";
 import { EditmeetingDateFormat } from "../../../../../commen/functions/date_formater";
 import moment from "moment";
-import { castVoteApi } from "../../../../../store/actions/Polls_actions";
+import {
+  castVoteApi,
+  UpdatedCastVoteAPI,
+} from "../../../../../store/actions/Polls_actions";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -48,7 +51,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
       console.log(data, "submitvotesubmitvotesubmitvote");
-      dispatch(castVoteApi(navigate, data, t, 1, setvotePolls));
+      dispatch(UpdatedCastVoteAPI(navigate, data, t, 1, setvotePolls));
     } else {
       // open sncak bar for atleast select one option
       showMessage(t("Required-atleast-one-vote"), "error", setOpen);

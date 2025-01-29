@@ -11,8 +11,10 @@ import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
 import { viewVotesApi } from "../../../../store/actions/Polls_actions";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../commen/functions/date_formater";
+import { useMeetingContext } from "../../../../context/MeetingContext";
 
-const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
+const ViewPollsPublishedScreen = () => {
+  const { setViewPublishedPoll } = useMeetingContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

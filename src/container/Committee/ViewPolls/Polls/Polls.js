@@ -20,22 +20,31 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import CancelPolls from "./CancelPolls/CancelPolls";
-import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  resolutionResultTable,
+} from "../../../../commen/functions/date_formater";
 import {
   GetPollsByCommitteeIDapi,
   createPollCommitteesMQTT,
   deleteCommitteePollApi,
   deletePollsMQTT,
   getPollsByPollIdforCommitteeApi,
+  viewVotesApi,
 } from "../../../../store/actions/Polls_actions";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import { truncateString } from "../../../../commen/functions/regex";
+import { usePollsContext } from "../../../../context/PollsContext";
+import { useMeetingContext } from "../../../../context/MeetingContext";
+import ViewVotesScreen from "./ViewVotes/ViewVotesScreen";
 const Polls = ({ committeeStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { viewVotes, setviewVotes } = usePollsContext();
+  const { viewPublishedPoll, setViewPublishedPoll } = useMeetingContext();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const cancelPolls = useSelector(
     (state) => state.NewMeetingreducer.cancelPolls
@@ -63,7 +72,6 @@ const Polls = ({ committeeStatus }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -86,6 +94,15 @@ const Polls = ({ committeeStatus }) => {
         setUnPublished,
         setViewPublishedPoll
       )
+    );
+  };
+
+  const ViewVoteButtonOnClick = (record) => {
+    let data = {
+      PollID: record.pollID,
+    };
+    dispatch(
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
     );
   };
 
@@ -459,9 +476,20 @@ const Polls = ({ committeeStatus }) => {
       dataIndex: "Vote",
       width: "70px",
       render: (text, record) => {
+        console.log("votevotevotevote", record);
+        console.log("votevotevotevote", record.isVoter);
+        console.log(record.dueDate, "recordrecordrecord");
+
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        console.log(
+          currentDate,
+          convertIntoGmt,
+          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
+        );
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
-            if (record.voteStatus === "Not Voted" && committeeStatus === 3) {
+            if (currentDate < convertIntoGmt && committeeStatus === 3) {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
@@ -469,14 +497,18 @@ const Polls = ({ committeeStatus }) => {
                   onClick={() => handleCastVotePollMeeting(record)}
                 />
               );
-            } else if (record.voteStatus === "Voted") {
-              return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+            } else {
+              return (
+                <Button
+                  className={styles["ViewVotesButtonStyles"]}
+                  text={t("View-votes")}
+                  onClick={() => ViewVoteButtonOnClick(record)}
+                />
+              );
             }
           } else {
             return "";
           }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
         } else if (record.pollStatus.pollStatusId === 3) {
           if (record.isVoter) {
             if (record.wasPollPublished) {
@@ -485,7 +517,13 @@ const Polls = ({ committeeStatus }) => {
                   <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
                 );
               } else {
-                return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+                return (
+                  <Button
+                    className={styles["ViewVotesButtonStyles"]}
+                    text={t("View-votes")}
+                    onClick={() => ViewVoteButtonOnClick(record)}
+                  />
+                );
               }
             } else {
               return "";
@@ -618,6 +656,8 @@ const Polls = ({ committeeStatus }) => {
           <ViewPollsPublishedScreen
             setSavePollsPublished={setViewPublishedPoll}
           />
+        ) : viewVotes ? (
+          <ViewVotesScreen />
         ) : (
           <>
             <Row className="mt-4">

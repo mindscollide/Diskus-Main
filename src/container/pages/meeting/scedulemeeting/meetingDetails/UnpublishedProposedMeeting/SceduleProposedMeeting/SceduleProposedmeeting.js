@@ -418,24 +418,47 @@ const SceduleProposedmeeting = ({
     }),
 
     {
-      title: t("None-of-above"),
+      title: () => {
+        // Check if `proposedDate: "10000101"` is `isSelected: true` in the reducer
+        const isActiveDateSelected = userWiseMeetingProposed?.some((user) =>
+          user.selectedProposedDates?.some(
+            (date) =>
+              date.proposedDate === "10000101" && date.isSelected === true
+          )
+        );
+        console.log(isActiveDateSelected, "isActiveDateSelected");
+
+        return (
+          <span
+            className={
+              isActiveDateSelected
+                ? styles["Date-Object-Detail_active"]
+                : styles["Date-Object-Detail_disabled"]
+            }
+          >
+            {t("None-of-above")}
+          </span>
+        );
+      },
       dataIndex: "NoneOfAbove",
       key: "NoneOfAbove",
       render: (text, record) => {
-        // ye by default blue tick show nahi krega is column ka Total ki row ma
+        const counter = record.selectedProposedDates.filter(
+          (date) => date.proposedDate === "10000101" && date.isSelected
+        );
+
+        const formattedCounter = String(counter).padStart(2, "0");
         if (record?.userName === "Total") {
-          return null;
+          return (
+            <span className={styles["TotalCount"]}>{formattedCounter}</span>
+          );
         }
 
-        // ye all proposedDates ma isSelected ko check krega ka wo is equal to false
+        // Check if `proposedDate: "10000101"` is `isSelected: true`
         const allDatedIsUnSelected = record?.selectedProposedDates?.some(
           (date) => date.proposedDate === "10000101" && date.isSelected === true
         );
-        console.log(
-          allDatedIsUnSelected,
-          record?.selectedProposedDates,
-          "allDatedIsUnSelected"
-        );
+
         return allDatedIsUnSelected ? (
           <img
             src={BlueTick}
