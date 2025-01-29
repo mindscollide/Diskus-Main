@@ -125,11 +125,7 @@ const Actions = ({
         dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
       }
     }
-    return () => {
-      localStorage.removeItem("NotificationClickTaskID");
-      localStorage.removeItem("viewadvanceMeetingTask");
-      localStorage.removeItem("AdvanceMeetingOperations");
-    };
+    return () => {};
   }, []);
 
   // dispatch Api in useEffect
