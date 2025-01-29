@@ -1,16 +1,16 @@
 // options.js
-import audioIcon from "../../../assets/images/audioICon.svg";
-import ShareIcon from "../../../assets/images/ShareIcon.svg";
-import sitesIcon from "../../../assets/images/sitesIcon.svg";
-import documentIcon from "../../../assets/images/color document.svg";
-import pdf from "../../../assets/images/color pdf.svg";
-import video from "../../../assets/images/color video.svg";
-import spreadsheet from "../../../assets/images/color spreadsheet.svg";
-import forms from "../../../assets/images/color forms.svg";
+import audioIcon from "../../../assets/images/AttachmentIcons/Audio.png";
+import ShareIcon from "../../../assets/images/AttachmentIcons/ShortCuts.png";
+import sitesIcon from "../../../assets/images/AttachmentIcons/Sites.png";
+import documentIcon from "../../../assets/images/AttachmentIcons/doc.png";
+import pdf from "../../../assets/images/AttachmentIcons/PDF.png";
+import video from "../../../assets/images/AttachmentIcons/Video.png";
+import spreadsheet from "../../../assets/images/AttachmentIcons/xls-file.png";
+import forms from "../../../assets/images/AttachmentIcons/Forms.png"
 import folderColor from "../../../assets/images/folder_color.svg";
-import images from "../../../assets/images/Imagesandphotos.svg";
-import PDFICON from "../../../assets/images/pdf_icon.svg";
-import PowerPointIcon from "../../../assets/images/AttachmentIcons/ppt.svg";
+import images from "../../../assets/images/AttachmentIcons/Photos.png";
+import PDFICON from "../../../assets/images/AttachmentIcons/PDF.png";
+import PowerPointIcon from "../../../assets/images/AttachmentIcons/PPT.png";
 import { Row } from "react-bootstrap";
 import { Col } from "rsuite";
 import styles from "../DataRoom.module.css";

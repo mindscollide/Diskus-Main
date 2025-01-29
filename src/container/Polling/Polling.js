@@ -49,6 +49,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   _justShowDateformatBilling,
+  resolutionResultTable,
   utcConvertintoGMT,
 } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
@@ -516,10 +517,14 @@ const Polling = () => {
   //Handle View Votes Buttton
 
   const handleViewVotesButton = (ID) => {
+    // let data = {
+    //   PollID: Number(ID),
+    // };
     let data = {
       PollID: Number(ID),
+      UserID: parseInt(userID),
     };
-    dispatch(viewVotesApi(navigate, data, t));
+    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
   };
 
   const PollTableColumns = [
@@ -696,10 +701,19 @@ const Polling = () => {
       width: "69px",
       align: "center",
       render: (text, record) => {
-        console.log(record.pollID, "recordrecordrecord");
+        console.log(record.dueDate, "recordrecordrecord");
+
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        console.log(
+          currentDate,
+          convertIntoGmt,
+          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
+        );
+
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
-            if (record.voteStatus === "Not Voted") {
+            if (currentDate < convertIntoGmt) {
               return (
                 <Button
                   className={styles["voteBtn"]}
@@ -709,7 +723,7 @@ const Polling = () => {
                   }}
                 />
               );
-            } else if (record.voteStatus === "Voted") {
+            } else
               return (
                 <Col
                   lg={12}
@@ -717,7 +731,6 @@ const Polling = () => {
                   sm={12}
                   className="d-flex justify-content-start"
                 >
-                  {/* <span className={styles["votedBtn"]}>{t("Voted")}</span> */}
                   <Button
                     text={t("View-votes")}
                     className={styles["ViewVotesButtonStyles"]}
@@ -725,12 +738,9 @@ const Polling = () => {
                   />
                 </Col>
               );
-            }
           } else {
             return "";
           }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
         } else if (record.pollStatus.pollStatusId === 3) {
           if (record.isVoter) {
             if (record.wasPollPublished) {
@@ -744,9 +754,11 @@ const Polling = () => {
                 );
               } else {
                 return (
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["votedBtn"]}>{t("Voted")}</span>
-                  </Col>
+                  <Button
+                    text={t("View-votes")}
+                    className={styles["ViewVotesButtonStyles"]}
+                    onClick={() => handleViewVotesButton(record.pollID)}
+                  />
                 );
               }
             } else {

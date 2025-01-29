@@ -30,6 +30,32 @@ export const MeetingProvider = ({ children }) => {
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
+
+  // View Meeting Tabs States
+
+  const [meetingDetails, setmeetingDetails] = useState(false);
+
+  const [organizers, setorganizers] = useState(false);
+  const [agendaContributors, setAgendaContributors] = useState(false);
+  const [participants, setParticipants] = useState(false);
+  const [agenda, setAgenda] = useState(false);
+  const [meetingMaterial, setMeetingMaterial] = useState(false);
+
+  const [minutes, setMinutes] = useState(false);
+  const [actionsPage, setactionsPage] = useState(false);
+  const [polls, setPolls] = useState(false);
+  const [attendance, setAttendance] = useState(false);
+  const [attendees, setAttendees] = useState(false);
+  //For Polls View Mode
+  const [editPolls, setEditPolls] = useState(false);
+  const [votePolls, setvotePolls] = useState(false);
+  const [unPublished, setUnPublished] = useState(false);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [endMeetingModal , setEndMeetingModal] = useState(false); 
+  const [leaveMeetingModal, setLeaveMeetingModal] = useState(false);
 
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
@@ -46,32 +72,65 @@ export const MeetingProvider = ({ children }) => {
       setIsAgendaUpdateWhenMeetingActive(true);
     }
   }, [UserProfileData]);
+  let statesData = {
+    setGoBackCancelModal,
+    goBackCancelModal,
+    editorRole,
+    setEditorRole,
+    isAgendaUpdateWhenMeetingActive,
+    cancelConfirmationModal,
+    setCancelConfirmationModal,
+    endMeetingConfirmationModal,
+    setEndMeetingConfirmationModal,
+    setCurrentMeetingStatus,
+    currentMeetingStatus,
+    setVideoTalk,
+    videoTalk,
+    viewFlag,
+    setViewFlag,
+    viewAdvanceMeetingModal,
+    setViewAdvanceMeetingModal,
+    viewProposeDatePoll,
+    setViewProposeDatePoll,
+    deleteMeetingConfirmationModal,
+    setDeleteMeetingConfirmationModal,
+    setAdvanceMeetingModalID,
+    advanceMeetingModalID,
+    meetingDetails,
+    setmeetingDetails,
+    organizers,
+    setorganizers,
+    agendaContributors,
+    setAgendaContributors,
+    participants,
+    setParticipants,
+    agenda,
+    setAgenda,
+    meetingMaterial,
+    setMeetingMaterial,
+    minutes,
+    setMinutes,
+    actionsPage,
+    setactionsPage,
+    polls,
+    setPolls,
+    attendance,
+    setAttendance,
+    attendees,
+    setAttendees,
+    setConfirmationModal,
+    confirmationModal,
+    editPolls,
+    setEditPolls,
+    votePolls,
+    setvotePolls,
+    unPublished,
+    setUnPublished,
+    viewPublishedPoll,
+    setViewPublishedPoll,
+  };
   return (
-    <MeetingContext.Provider
-      value={{
-        setGoBackCancelModal,
-        goBackCancelModal,
-        editorRole,
-        setEditorRole,
-        isAgendaUpdateWhenMeetingActive,
-        cancelConfirmationModal,
-        setCancelConfirmationModal,
-        endMeetingConfirmationModal,
-        setEndMeetingConfirmationModal,
-        setCurrentMeetingStatus,
-        currentMeetingStatus,
-        setVideoTalk,
-        videoTalk,
-        viewFlag,
-        setViewFlag,
-        viewAdvanceMeetingModal,
-        setViewAdvanceMeetingModal,
-        viewProposeDatePoll,
-        setViewProposeDatePoll,
-        deleteMeetingConfirmationModal,
-        setDeleteMeetingConfirmationModal,
-      }}
-    >
+    <MeetingContext.Provider value={statesData}>
       {children}
     </MeetingContext.Provider>
   );

@@ -10,11 +10,11 @@ import DiskusIcon from "../../../../../assets/images/Diskus Icon.svg";
 const MobileAppPopUpModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { UserManagementModals } = useSelector((state) => state);
+  const mobileAppPopUp = useSelector((state) => state.UserManagementModals);
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   const handleOk = () => {
-    const appLink = "thediskus://thediskus.com";
     // Determine the fallback URL based on the user's device
     const isAndroid = /Android/i.test(navigator.userAgent);
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -25,11 +25,7 @@ const MobileAppPopUpModal = () => {
       ? "https://apps.apple.com/us/app/diskus/id6475817410" // iOS App Store link
       : "";
 
-    window.location.href = appLink;
-
-    setTimeout(() => {
-      window.location.href = fallbackLink;
-    }, 2500);
+    window.location.href = fallbackLink;
 
     dispatch(mobileAppPopModal(false));
   };
@@ -41,7 +37,7 @@ const MobileAppPopUpModal = () => {
   return (
     <section>
       <Modal
-        show={UserManagementModals.mobileAppPopUp}
+        show={mobileAppPopUp}
         setShow={(show) => dispatch(mobileAppPopModal(show))}
         modalFooterClassName={"d-block"}
         className="MobilePopUpModal"

@@ -185,6 +185,8 @@ import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
+import { useMeetingContext } from "../../context/MeetingContext";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -196,6 +198,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+  const { cancelConfirmationModal } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -3178,6 +3181,7 @@ const Dashboard = () => {
               }
             />
           )}
+          {cancelConfirmationModal && <CancelConfirmationModal />}
           {mobileAppPopUp && <MobileAppPopUpModal />}
           {showInitimationMessegeModalLeaveVideoMeeting && (
             <LeaveVideoIntimationModal />

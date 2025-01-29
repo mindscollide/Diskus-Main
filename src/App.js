@@ -121,6 +121,7 @@ const App = () => {
   );
 
   // Detect mobile device function
+
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     const isAndroid = /android/i.test(userAgent);
@@ -128,13 +129,35 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-  // Show modal if accessed on a mobile browser
+  let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
+
+  console.log(RSVPRouteforApp, "RSVPRouteforAppRSVPRouteforApp");
   useEffect(() => {
     if (isMobileDevice()) {
-      dispatch(mobileAppPopModal(true));
-    } else {
+      const fallbackDelay = 2000; // Adjust as needed
+
+      const start = Date.now();
+      if (RSVPRouteforApp !== null) {
+        const appLink = `thediskus://thediskus.com?${RSVPRouteforApp}`; // Append it to the appLink
+        console.log(appLink, "appLinkappLinkappLinkappLink");
+        // Attempt to open the app
+        window.location.href = appLink;
+      }
+      // Set a timeout to detect failure and show modal
+      setTimeout(() => {
+        const elapsed = Date.now() - start;
+
+        // If user stays on the browser page, show the modal
+        if (elapsed < fallbackDelay + 500) {
+          dispatch(mobileAppPopModal(true));
+        }
+      }, fallbackDelay);
     }
-  }, []);
+
+    return () => {
+      localStorage.removeItem("mobilePopUpAppRoute");
+    };
+  }, [RSVPRouteforApp]);
 
   useEffect(() => {
     // Function to fetch the current version from version.json

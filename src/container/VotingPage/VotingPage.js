@@ -133,7 +133,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           setCurrentUserVoterID(
             findVoters !== undefined ? findVoters.pK_RV_ID : 0
           );
-          setDecisionId(getVoteresult.decisionID);
+          if (findVoters?.isAlreadyVoted) {
+            setVoteId(findVoters?.fK_VotingStatus_ID);
+          }
+          setDecisionId(getVoteresult?.decisionID);
         } catch (error) {
           console.log(error);
         }
@@ -145,13 +148,13 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   return (
     <>
       <section>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Vote_Heading"]}>{t("Vote")}</span>
           </Col>
         </Row>
 
-        <Row className="mt-4">
+        <Row className='mt-4'>
           <Col lg={12} md={12} sm={12}>
             <span className={styles["VotingPage_paper"]}>
               <Row>
@@ -161,8 +164,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-3 align-items-center"
-                    >
+                      className='d-flex gap-3 align-items-center'>
                       <span className={styles["Sub_heading_VoteResolution"]}>
                         {isResolutionTitle || ""}
                       </span>
@@ -170,60 +172,56 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         {isVotingMethodId === 2 ? (
                           <img
                             src={SeceretBallotingIcon}
-                            height="23.19px"
-                            width="23.19px"
-                            alt=""
+                            height='23.19px'
+                            width='23.19px'
+                            alt=''
                           />
                         ) : (
                           <img
                             src={result}
-                            height="23.19px"
-                            width="23.19px"
-                            draggable="false"
-                            alt=""
+                            height='23.19px'
+                            width='23.19px'
+                            draggable='false'
+                            alt=''
                           />
                         )}
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-5">
+                  <Row className='mt-5'>
                     <Col lg={7} md={7} sm={12}>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Gray_Border_box"]}
-                        >
-                          <Row className="mt-4">
+                          className={styles["Gray_Border_box"]}>
+                          <Row className='mt-4'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center"
-                            >
+                              className='d-flex justify-content-center'>
                               <span
-                                className={styles["Your_vote_voteresolution"]}
-                              >
+                                className={styles["Your_vote_voteresolution"]}>
                                 {t("Your-vote")}
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-4 FontArabicRegular">
+                          <Row className='mt-4 FontArabicRegular'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-3 justify-content-center "
-                            >
+                              className='d-flex gap-3 justify-content-center '>
                               <Button
                                 text={t("Abstain")}
                                 icon={
                                   <img
                                     src={Abstain}
-                                    width="20px"
-                                    height="20px"
-                                    alt=""
+                                    width='20px'
+                                    height='20px'
+                                    alt=''
                                   />
                                 }
                                 className={
@@ -241,16 +239,16 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   voteId === 2 ? (
                                     <img
                                       src={thumbsDownwhite}
-                                      width="20px"
-                                      height="20px"
-                                      alt=""
+                                      width='20px'
+                                      height='20px'
+                                      alt=''
                                     />
                                   ) : (
                                     <img
                                       src={thumbsdown}
-                                      width="20px"
-                                      height="20px"
-                                      alt=""
+                                      width='20px'
+                                      height='20px'
+                                      alt=''
                                     />
                                   )
                                 }
@@ -269,16 +267,16 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   voteId === 1 ? (
                                     <img
                                       src={thumbsUpWhiteicon}
-                                      width="20px"
-                                      height="20px"
-                                      alt=""
+                                      width='20px'
+                                      height='20px'
+                                      alt=''
                                     />
                                   ) : (
                                     <img
                                       src={thumbsup}
-                                      width="20px"
-                                      height="20px"
-                                      alt=""
+                                      width='20px'
+                                      height='20px'
+                                      alt=''
                                     />
                                   )
                                 }
@@ -295,7 +293,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="mt-4">
+                      <Row className='mt-4'>
                         <Col lg={6} md={6} sm={12}>
                           <span className={styles["Voters_voteResolution"]}>
                             {t("Voters")}
@@ -305,8 +303,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           sm={12}
                           md={6}
                           lg={6}
-                          className="d-flex align-items-center justify-content-end"
-                        >
+                          className='d-flex align-items-center justify-content-end'>
                           <span className={styles["voting_method_heading"]}>
                             {t("Voting-method") + " : "}{" "}
                           </span>{" "}
@@ -325,22 +322,19 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["VotingMethods_box"]}
-                            >
+                              className={styles["VotingMethods_box"]}>
                               <img
                                 src={VoterSecretBalloting}
-                                alt=""
-                                draggable="false"
+                                alt=''
+                                draggable='false'
                               />
-                              <div className="d-flex">
+                              <div className='d-flex'>
                                 <span
-                                  className={styles["voting_method_heading"]}
-                                >
+                                  className={styles["voting_method_heading"]}>
                                   {t("Voting-method") + " : "}{" "}
                                 </span>{" "}
                                 <span
-                                  className={styles["voting_methong_value"]}
-                                >
+                                  className={styles["voting_methong_value"]}>
                                   {t("Secret-balloting")}
                                 </span>
                               </div>
@@ -349,13 +343,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </>
                       ) : isVotingMethodId === 1 ? (
                         <>
-                          <Row className="mt-3">
+                          <Row className='mt-3'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Scroller_voteresolution"]}
-                            >
+                              className={styles["Scroller_voteresolution"]}>
                               <Row>
                                 {voter.length > 0
                                   ? voter.map((data, index) => {
@@ -366,8 +359,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                             md={6}
                                             sm={6}
                                             key={data.pK_RV_ID}
-                                            className="mt-1"
-                                          >
+                                            className='mt-1'>
                                             <EmployeeinfoCard
                                               Employeename={data.username}
                                               Employeeemail={data.email}
@@ -389,9 +381,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                                       ? Abstain
                                                       : null
                                                   }
-                                                  alt=""
-                                                  width="20px"
-                                                  height="20px"
+                                                  alt=''
+                                                  width='20px'
+                                                  height='20px'
                                                 />
                                               }
                                             />
@@ -412,8 +404,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                       lg={1}
                       md={1}
                       sm={false}
-                      className="d-flex justify-content-center"
-                    >
+                      className='d-flex justify-content-center'>
                       <span className={styles["line_voteResolution"]}></span>
                     </Col>
                     <Col lg={4} md={4} sm={12}>
@@ -422,9 +413,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <Row className="mt-2">
+                          className='d-flex justify-content-center'>
+                          <Row className='mt-2'>
                             <Col
                               lg={12}
                               md={12}
@@ -443,15 +433,13 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   ? // Tie State
                                     styles["Tie_state"]
                                   : null
-                              }
-                            >
-                              <Row className="mt-4">
+                              }>
+                              <Row className='mt-4'>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span>
                                     <img
                                       src={
@@ -465,9 +453,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                           ? Tie
                                           : null
                                       }
-                                      alt=""
-                                      height="37px"
-                                      width="36.98px"
+                                      alt=''
+                                      height='37px'
+                                      width='36.98px'
                                     />
                                   </span>
                                 </Col>
@@ -477,11 +465,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span
-                                    className={styles["Status_voteResolutioin"]}
-                                  >
+                                    className={
+                                      styles["Status_voteResolutioin"]
+                                    }>
                                     {Number(decisionId) === 1
                                       ? t("Pending")
                                       : Number(decisionId) === 2
@@ -503,12 +491,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <Chart
-                            chartType="ColumnChart"
-                            width="500px"
-                            height="250px"
+                            chartType='ColumnChart'
+                            width='500px'
+                            height='250px'
                             radius={10}
                             data={data}
                             options={options}
@@ -516,20 +503,17 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-5">
+                      <Row className='mt-5'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span
-                            className={styles["Total_voters_voteResolution"]}
-                          >
+                            className={styles["Total_voters_voteResolution"]}>
                             {t("Total-voters")}
                             <span
-                              className={styles["No_of_Votes_voteResolution"]}
-                            >
+                              className={styles["No_of_Votes_voteResolution"]}>
                               {convertToArabicNumerals(
                                 totalVoters,
                                 CurrentLanguage
@@ -538,13 +522,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-5">
+                      <Row className='mt-5'>
                         <Col
                           lg={11}
                           md={11}
                           sm={11}
-                          className="d-flex gap-3 justify-content-end"
-                        >
+                          className='d-flex gap-3 justify-content-end'>
                           <Button
                             text={t("Close")}
                             className={styles["close_btn_VoteResolution"]}

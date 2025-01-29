@@ -34,7 +34,10 @@ import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
 } from "../../../store/actions/DataRoom_actions.js";
-import { getPollsByPollIdApi } from "../../../store/actions/Polls_actions.js";
+import {
+  getPollByPollIdforMeeting,
+  getPollsByPollIdApi,
+} from "../../../store/actions/Polls_actions.js";
 import { getResolutionbyResolutionID } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 
@@ -55,6 +58,11 @@ const WebNotfication = ({
     setViewAdvanceMeetingModal,
     setViewProposeDatePoll,
     setVideoTalk,
+    setEditPolls,
+    setvotePolls,
+    setUnPublished,
+    setViewPublishedPoll,
+    setPolls,
   } = useMeetingContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -173,11 +181,31 @@ const WebNotfication = ({
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     if (isMeeting) {
+      //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
+      // if (setPolls) {
+      //   let data = {
+      //     PollID: Number(PayLoadData.PollID),
+      //     UserID: Number(localStorage.getItem("userID")),
+      //   };
+      //   dispatch(
+      //     getPollByPollIdforMeeting(
+      //       navigate,
+      //       data,
+      //       2,
+      //       t,
+      //       setEditPolls,
+      //       setvotePolls,
+      //       setUnPublished,
+      //       setViewPublishedPoll
+      //     )
+      //   );
+      // } else {
       await dispatch(
         webNotificationDataLeaveVideoIntiminationModal(NotificationData)
       );
       localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
       await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+      // }
     } else {
       if (NotificationData.notificationActionID === 1) {
         if (currentURL.includes("/Diskus/Meeting")) {
@@ -537,7 +565,16 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 11) {
@@ -587,6 +624,57 @@ const WebNotfication = ({
           }
         }
       } else if (NotificationData.notificationActionID === 12) {
+        //Notification for POlls Created from the Meeting
+        if (currentURL.includes("/Diskus/Meeting")) {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal,
+              1,
+              setVideoTalk
+            )
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              1,
+              setVideoTalk
+            )
+          );
+        }
       } else if (NotificationData.notificationActionID === 13) {
         if (currentURL.includes("/Diskus/Meeting")) {
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
@@ -670,8 +758,18 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-          dispatch(GetMeetingStatusDataAPI(navigate, t, Data));
-          dispatch(showSceduleProposedMeeting(true));
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              2,
+              setVideoTalk
+            )
+          );
         } else {
           //Call Status API to see what is the status of the meeting eighter proposed or published
           navigate("/Diskus/Meeting");
@@ -1046,6 +1144,135 @@ const WebNotfication = ({
           // Notification For Deleted a file as viewer
           navigate("/Diskus/dataroom");
         }
+      } else if (NotificationData.notificationActionID === 41) {
+        if (currentURL.includes("/Diskus/Minutes")) {
+          localStorage.setItem("MinutesOperations", true);
+          localStorage.setItem(
+            "NotificationClickMinutesMeetingID",
+            PayLoadData.MeetingID
+          );
+          //Notification for being added as a minute reviewer
+          let Data = {
+            MeetingID: Number(PayLoadData.MeetingID),
+          };
+          dispatch(
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+          );
+        } else {
+          //Notification for being added as a minute reviewer
+          navigate("/Diskus/Minutes");
+
+          localStorage.setItem("MinutesOperations", true);
+          localStorage.setItem(
+            "NotificationClickMinutesMeetingID",
+            PayLoadData.MeetingID
+          );
+          //Notification for being added as a minute reviewer
+          let Data = {
+            MeetingID: Number(PayLoadData.MeetingID),
+          };
+          dispatch(
+            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+          );
+        }
+      } else if (NotificationData.notificationActionID === 42) {
+        //if the Users role has been changed in the Groups
+        if (currentURL.includes("/Diskus/groups")) {
+          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem(
+            "NotifcationClickViewGroupID",
+            PayLoadData.GroupID
+          );
+          // For Notification Added in the Group
+          setViewGroupPage(true);
+          dispatch(viewGroupPageFlag(true));
+        } else {
+          //Notificaiton For Added in Group
+          navigate("/Diskus/groups");
+          //open ViewMode Modal Also in this
+          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem(
+            "NotifcationClickViewGroupID",
+            PayLoadData.GroupID
+          );
+        }
+      } else if (NotificationData.notificationActionID === 43) {
+        //if the user role has been changed in the committee
+        if (currentURL.includes("/Diskus/committee")) {
+          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem(
+            "NotifcationClickViewCommitteeID",
+            PayLoadData.CommitteeID
+          );
+          setViewGroupPage(true);
+          dispatch(viewCommitteePageFlag(true));
+        } else {
+          //Notification for being Added in the Committee
+          navigate("/Diskus/committee");
+          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem(
+            "NotifcationClickViewCommitteeID",
+            PayLoadData.CommitteeID
+          );
+        }
+      } else if (NotificationData.notificationActionID === 44) {
+        // if the resolution has been deleted
+        navigate("/Diskus/resolution");
+      } else if (NotificationData.notificationActionID === 45) {
+        // if the poll has been deleted
+        navigate("/Diskus/polling");
+      } else if (NotificationData.notificationActionID === 46) {
+      } else if (NotificationData.notificationActionID === 47) {
+        //For participant has Give Vote on a Poll inside advance meeting
+        if (currentURL.includes("/Diskus/Meeting")) {
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              true,
+              setViewAdvanceMeetingModal,
+              1,
+              setVideoTalk
+            )
+          );
+        } else {
+          navigate("/Diskus/Meeting");
+          console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+          localStorage.setItem("AdvanceMeetingOperations", true);
+          localStorage.setItem(
+            "NotificationAdvanceMeetingID",
+            PayLoadData.MeetingID
+          );
+
+          localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+          //set Local storage flag for identification for polls
+          localStorage.setItem("viewadvanceMeetingPolls", true);
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+          dispatch(
+            GetMeetingStatusDataAPI(
+              navigate,
+              t,
+              Data,
+              setEditorRole,
+              false,
+              false,
+              1,
+              setVideoTalk
+            )
+          );
+        }
+      } else if (NotificationData.notificationActionID === 48) {
       } else {
       }
     }
