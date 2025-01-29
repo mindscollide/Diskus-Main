@@ -734,6 +734,14 @@ const ViewMeetingDetails = ({
         setEndMeetingConfirmationModal
       )
     );
+
+    localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("QuickMeetingCheckNotification");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationClickTaskID");
+    localStorage.removeItem("viewadvanceMeetingTask");
   }, []);
 
   // to show message when join meeting Video Response comes 4

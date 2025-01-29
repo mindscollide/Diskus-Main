@@ -48,6 +48,13 @@ const NewEndMeetingModal = () => {
         setCancelConfirmationModal
       )
     );
+    localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("QuickMeetingCheckNotification");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationClickTaskID");
+    localStorage.removeItem("viewadvanceMeetingTask");
   };
   const handleClickDiscard = () => {
     setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
@@ -72,7 +79,8 @@ const NewEndMeetingModal = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span className={styles["EndMeetingTextStyles"]}>
                   {t("Are-you-sure-you-want-to-leave")}
                 </span>
@@ -83,7 +91,8 @@ const NewEndMeetingModal = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span className={styles["EndMeetingTextStyles"]}>
                   {t("The-meeting")}
                 </span>
@@ -98,7 +107,8 @@ const NewEndMeetingModal = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center gap-2'>
+                className="d-flex justify-content-center gap-2"
+              >
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

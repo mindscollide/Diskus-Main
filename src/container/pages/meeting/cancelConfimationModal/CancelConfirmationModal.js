@@ -5,7 +5,10 @@ import CustomModal from "../../../../components/elements/modal/Modal";
 import { MeetingContext } from "../../../../context/MeetingContext";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components/elements";
-import { LeaveCurrentMeeting, searchNewUserMeeting } from "../../../../store/actions/NewMeetingActions";
+import {
+  LeaveCurrentMeeting,
+  searchNewUserMeeting,
+} from "../../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -42,9 +45,15 @@ const CancelConfirmationModal = () => {
     setAdvanceMeetingModalID(0);
     setViewAdvanceMeetingModal(false);
     setCancelConfirmationModal(false);
+    localStorage.removeItem("NotificationAdvanceMeetingID");
+    localStorage.removeItem("QuickMeetingCheckNotification");
+    localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationClickTaskID");
+    localStorage.removeItem("viewadvanceMeetingTask");
   };
   const handleClickDiscard = () => {
-
     setCancelConfirmationModal(false);
   };
   return (
@@ -61,7 +70,7 @@ const CancelConfirmationModal = () => {
               </span>
             </Col>
           </Row>
-          <Row className='mt-2'>
+          <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
@@ -79,7 +88,8 @@ const CancelConfirmationModal = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-end gap-2'>
+              className="d-flex justify-content-end gap-2"
+            >
               <Button
                 text={t("Discard")}
                 className={styles["No_unsave_File_Upload"]}
