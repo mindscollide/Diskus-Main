@@ -43,7 +43,7 @@ body[dir="rtl"] .Create_Poll_Heading {
 
 .ModalRequestHeader_polling {
   margin: 0 !important;
-  padding: 5px 12px !important;
+  padding: 20px 20px !important;
   width: 100%;
 }
 
@@ -358,8 +358,7 @@ body[dir="rtl"] .Name_cards {
 }
 
 .OverAll_padding {
-  padding: 0px 45px !important;
-  margin-top: -25px !important;
+  padding: 0px 15px !important;
 }
 
 .date-picker-icon {
@@ -473,4 +472,14 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
     background: #f16b6b !important;
     position: relative !important; /* Change position for Firefox */
   }
+}
+
+.MiniHeadings {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.redSteric {
+  color: #f16b6b !important;
 }

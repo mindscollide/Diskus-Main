@@ -32,12 +32,13 @@ import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { validateInput } from "../../../commen/functions/regex";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
-
+import InputIcon from "react-multi-date-picker/components/input_icon";
 const CreatePolling = () => {
   const datePickerRef = useRef();
   const animatedComponents = makeAnimated();
   let dateFormat = "DD/MM/YYYY";
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const calendRef = useRef();
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   //For Custom language datepicker
@@ -510,84 +511,31 @@ const CreatePolling = () => {
           }}
           ModalTitle={
             <>
-              {defineUnsaveModal ? null : (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
-                        >
-                          <span className="cursor-pointer d-flex gap-2 align-items-center">
-                            <img
-                              src={AlarmClock}
-                              width="14.97px"
-                              height="14.66px"
-                              className={styles["classOFImage"]}
-                              onClick={handleIconClick}
-                              alt=""
-                              draggable="false"
-                            />
-                            <span
-                              className={styles["Due_Date_heading"]}
-                              onClick={handleIconClick}
-                            >
-                              {t("Due-date")}
-                              {"* "}
-                              {createPollData.date !== ""
-                                ? changeDateStartHandler2(createPollData.date)
-                                : ""}
-                            </span>
-
-                            <DatePicker
-                              selected={createPollData.date}
-                              format={dateFormat}
-                              minDate={moment().toDate()}
-                              placeholder="DD/MM/YYYY"
-                              render={<CustomIcon />}
-                              calendarPosition="bottom-right"
-                              editable={true}
-                              className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
-                              highlightToday={true}
-                              inputMode=""
-                              showOtherDays
-                              calendar={calendarValue}
-                              locale={localValue}
-                              ref={datePickerRef}
-                              onClick={handleIconClick}
-                              onFocusedDateChange={(value) =>
-                                changeDateStartHandler(value)
-                              }
-                            />
-                          </span>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDate === ""
-                            ? ` ${styles["errorMessage-inLogin_1"]} `
-                            : `${styles["errorMessage-inLogin_1_hidden"]}`
-                        }
-                      >
-                        {t("Please-select-due-date")}
-                      </p>
-                    </Col>
-                  </Row>
-                </>
-              )}
+              <Row>
+                <Col lg={10} md={10} sm={10}>
+                  <span className={styles["Create_Poll_Heading"]}>
+                    {t("Create-new-poll")}
+                  </span>
+                </Col>
+                <Col
+                  lg={2}
+                  md={2}
+                  sm={2}
+                  className="d-flex justify-content-end align-items-center "
+                >
+                  <img
+                    src={BlackCrossIcon}
+                    className={styles["Cross_Icon_Styling_Create_Poll_Modal"]}
+                    width="16px"
+                    height="16px"
+                    alt=""
+                    onClick={() => {
+                      setDefineUnsaveModal(true);
+                    }}
+                    draggable="false"
+                  />
+                </Col>
+              </Row>
             </>
           }
           ModalBody={
@@ -613,327 +561,358 @@ const CreatePolling = () => {
                 </>
               ) : (
                 <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end align-items-center "
-                    >
-                      <img
-                        src={BlackCrossIcon}
-                        className={
-                          styles["Cross_Icon_Styling_Create_Poll_Modal"]
-                        }
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        onClick={() => {
-                          setDefineUnsaveModal(true);
-                        }}
-                        draggable="false"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["OverAll_padding"]}
-                    >
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Create_Poll_Heading"]}>
-                            {t("Create-new-poll")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <TextField
-                            placeholder={t("Title") + "*"}
-                            applyClass={"PollingCreateModal"}
-                            labelclass="d-none"
-                            maxLength={140}
-                            name={"TypingTitle"}
-                            value={createPollData.TypingTitle}
-                            change={HandleChange}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && createPollData.TypingTitle === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
+                  <div className={styles["OverAll_padding"]}>
+                    <Row>
+                      <Col lg={6} md={6} sm={6}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex flex-column flex-wrap"
                           >
-                            {t("Please-enter-title")}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Scroller_For_CreatePollModal"]}
-                        >
-                          {options.length > 0
-                            ? options.map((data, index) => {
-                                return (
-                                  <>
-                                    {index <= 1 ? (
-                                      <Row key={index} className="mt-2">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span className="position-relative">
-                                            <TextField
-                                              placeholder={
-                                                "Option" +
-                                                " " +
-                                                parseInt(index + 1) +
-                                                "*"
-                                              }
-                                              applyClass={"PollingCreateModal"}
-                                              labelclass="d-none"
-                                              name={data.name}
-                                              maxLength={100}
-                                              value={data.value}
-                                              change={(e) =>
-                                                HandleOptionChange(e)
-                                              }
-                                            />
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    ) : (
-                                      <Row key={index} className="mt-2">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span className="position-relative">
-                                            <TextField
-                                              placeholder={
-                                                "Option" +
-                                                " " +
-                                                parseInt(index + 1) +
-                                                "*"
-                                              }
-                                              applyClass={"PollingCreateModal"}
-                                              labelclass="d-none"
-                                              name={data.name}
-                                              value={data.value}
-                                              maxLength={100}
-                                              change={(e) =>
-                                                HandleOptionChange(e)
-                                              }
-                                              inputicon={
-                                                <img
-                                                  src={WhiteCrossIcon}
-                                                  width="31.76px"
-                                                  alt=""
-                                                  height="31.76px"
-                                                  onClick={() =>
-                                                    HandleCancelFunction(index)
-                                                  }
-                                                  className={
-                                                    styles[
-                                                      "Cross-icon-Create_poll"
-                                                    ]
-                                                  }
-                                                  draggable="false"
-                                                />
-                                              }
-                                              iconclassname={
-                                                styles[
-                                                  "polling_Options_backGround"
-                                                ]
-                                              }
-                                            />
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    )}
-                                  </>
-                                );
-                              })
-                            : null}
-
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <Button
-                                text={
-                                  <>
-                                    <Row className="mt-1">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className="d-flex gap-2"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={plusFaddes}
-                                          alt=""
-                                          width="15.87px"
-                                          height="15.87px"
-                                        />
-                                        <span
-                                          className={
-                                            styles["Add_Button_Heading"]
-                                          }
-                                        >
-                                          {t("Add-another-field")}
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  </>
-                                }
-                                onClick={addNewRow}
-                                className={styles["Add_another_options"]}
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <p
-                                className={
-                                  error && allValuesNotEmpty === false
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                }
-                              >
-                                {t("Options-must-be-more-than-2")}
-                              </p>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-
-                      <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex align-items-center gap-2"
-                        >
-                          <Checkbox
-                            checked={createPollData.AllowMultipleAnswers}
-                            onChange={HandleCheck}
-                          />
-                          <p className={styles["CheckBoxTitle"]}>
-                            {t("Allow-multiple-answers")}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="group-fields d-flex align-items-center gap-2  "
-                        >
-                          <Select
-                            onChange={handleSelectValue}
-                            isDisabled={
-                              PollsReducergellAllCommittesandGroups === null
-                                ? true
-                                : false
-                            }
-                            value={selectedsearch}
-                            classNamePrefix={"selectMember"}
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            filterOption={customFilter}
-                            isMulti
-                            options={dropdowndata}
-                          />
-                          <Button
-                            text={t("ADD")}
-                            className={styles["ADD_Btn_CreatePool_Modal"]}
-                            onClick={handleAddUsers}
-                          />
-                        </Col>
+                            <span className={styles["MiniHeadings"]}>
+                              {t("Poll-title")}{" "}
+                              <span className={styles["redSteric"]}>*</span>
+                            </span>
+                            <TextField
+                              placeholder={t("Title") + "*"}
+                              applyClass={"PollingCreateModal"}
+                              labelclass="d-none"
+                              maxLength={140}
+                              name={"TypingTitle"}
+                              value={createPollData.TypingTitle}
+                              change={HandleChange}
+                            />
+                          </Col>
+                        </Row>
                         <Row>
                           <Col>
                             <p
                               className={
-                                error && members.length === 0
+                                error && createPollData.TypingTitle === ""
                                   ? ` ${styles["errorMessage-inLogin"]} `
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
                             >
-                              {t("Select-atleast-one-participants")}
+                              {t("Please-enter-title")}
                             </p>
                           </Col>
                         </Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className={styles["Participant_heading"]}
-                        >
-                          {t("Participants")}
-                        </Col>
-                      </Row>
-                      <Row className="mt-1">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Scroller_For_CreatePollModal2"]}
-                        >
-                          <Row>
-                            {members.map((data, index) => {
-                              return (
-                                <Col lg={6} md={6} sm={12} className="mt-2">
-                                  <Row>
-                                    <Col lg={11} md={11} sm={12}>
-                                      <Row className={styles["Card_border2"]}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Scroller_For_CreatePollModal"]}
+                          >
+                            {options.length > 0
+                              ? options.map((data, index) => {
+                                  return (
+                                    <>
+                                      {index <= 1 ? (
+                                        <Row key={index} className="mt-2">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span className="position-relative">
+                                              <TextField
+                                                placeholder={
+                                                  "Option" +
+                                                  " " +
+                                                  parseInt(index + 1) +
+                                                  "*"
+                                                }
+                                                applyClass={
+                                                  "PollingCreateModal"
+                                                }
+                                                labelclass="d-none"
+                                                name={data.name}
+                                                maxLength={100}
+                                                value={data.value}
+                                                change={(e) =>
+                                                  HandleOptionChange(e)
+                                                }
+                                              />
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                      ) : (
+                                        <Row key={index} className="mt-2">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span className="position-relative">
+                                              <TextField
+                                                placeholder={
+                                                  "Option" +
+                                                  " " +
+                                                  parseInt(index + 1) +
+                                                  "*"
+                                                }
+                                                applyClass={
+                                                  "PollingCreateModal"
+                                                }
+                                                labelclass="d-none"
+                                                name={data.name}
+                                                value={data.value}
+                                                maxLength={100}
+                                                change={(e) =>
+                                                  HandleOptionChange(e)
+                                                }
+                                                inputicon={
+                                                  <img
+                                                    src={WhiteCrossIcon}
+                                                    width="31.76px"
+                                                    alt=""
+                                                    height="31.76px"
+                                                    onClick={() =>
+                                                      HandleCancelFunction(
+                                                        index
+                                                      )
+                                                    }
+                                                    className={
+                                                      styles[
+                                                        "Cross-icon-Create_poll"
+                                                      ]
+                                                    }
+                                                    draggable="false"
+                                                  />
+                                                }
+                                                iconclassname={
+                                                  styles[
+                                                    "polling_Options_backGround"
+                                                  ]
+                                                }
+                                              />
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                      )}
+                                    </>
+                                  );
+                                })
+                              : null}
+
+                            <Row className="mt-2">
+                              <Col lg={12} md={12} sm={12}>
+                                <Button
+                                  text={
+                                    <>
+                                      <Row className="mt-1">
                                         <Col
+                                          lg={12}
+                                          md={12}
                                           sm={12}
-                                          md={10}
-                                          lg={10}
-                                          className="d-flex align-items-center"
+                                          className="d-flex gap-2"
                                         >
                                           <img
-                                            src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                            width="33px"
-                                            height="33px"
+                                            draggable={false}
+                                            src={plusFaddes}
                                             alt=""
-                                            draggable="false"
+                                            width="15.87px"
+                                            height="15.87px"
                                           />
                                           <span
-                                            className={styles["Name_cards"]}
+                                            className={
+                                              styles["Add_Button_Heading"]
+                                            }
                                           >
-                                            {data.userName}
+                                            {t("Add-another-field")}
                                           </span>
                                         </Col>
-                                        <Col sm={12} md={2} lg={2}>
-                                          <img
-                                            src={CrossIcon}
-                                            width="14px"
-                                            height="14px"
-                                            onClick={() =>
-                                              cancellAnyUser(index)
-                                            }
-                                            alt=""
-                                            draggable="false"
-                                            style={{ cursor: "pointer" }}
-                                          />
-                                        </Col>
                                       </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              );
-                            })}
+                                    </>
+                                  }
+                                  onClick={addNewRow}
+                                  className={styles["Add_another_options"]}
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                                <p
+                                  className={
+                                    error && allValuesNotEmpty === false
+                                      ? ` ${styles["errorMessage-inLogin"]} `
+                                      : `${styles["errorMessage-inLogin_hidden"]}`
+                                  }
+                                >
+                                  {t("Options-must-be-more-than-2")}
+                                </p>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+
+                        <Row className="mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex align-items-center gap-2"
+                          >
+                            <Checkbox
+                              checked={createPollData.AllowMultipleAnswers}
+                              onChange={HandleCheck}
+                            />
+                            <p className={styles["CheckBoxTitle"]}>
+                              {t("Allow-multiple-answers")}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col lg={6} md={6} sm={6}>
+                        {/* yaha say  */}
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex flex-column flex-wrap"
+                          >
+                            <span className={styles["MiniHeadings"]}>
+                              {t("Due-date")}{" "}
+                              <span className={styles["redSteric"]}>*</span>
+                            </span>
+                            <DatePicker
+                              selected={createPollData.date}
+                              format={dateFormat}
+                              minDate={moment().toDate()}
+                              placeholder="DD/MM/YYYY"
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className="datepicker_input"
+                                />
+                              }
+                              editable={true}
+                              className="datePickerTodoCreate2"
+                              highlightToday={true}
+                              inputMode=""
+                              onOpenPickNewDate={false}
+                              showOtherDays
+                              calendar={calendarValue}
+                              locale={localValue}
+                              ref={datePickerRef}
+                              onClick={handleIconClick}
+                              onFocusedDateChange={(value) =>
+                                changeDateStartHandler(value)
+                              }
+                            />
+                          </Col>
+                        </Row>
+                        <div className="d-flex flex-column flex-wrap mt-3 ">
+                          <span className={styles["MiniHeadings"]}>
+                            {t("Add-participants")}{" "}
+                            <span className={styles["redSteric"]}>*</span>
+                          </span>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="group-fields d-flex align-items-center gap-2  "
+                            >
+                              <Select
+                                onChange={handleSelectValue}
+                                isDisabled={
+                                  PollsReducergellAllCommittesandGroups === null
+                                    ? true
+                                    : false
+                                }
+                                value={selectedsearch}
+                                classNamePrefix={"selectMember"}
+                                closeMenuOnSelect={false}
+                                components={animatedComponents}
+                                filterOption={customFilter}
+                                isMulti
+                                options={dropdowndata}
+                              />
+                              <Button
+                                text={t("ADD")}
+                                className={styles["ADD_Btn_CreatePool_Modal"]}
+                                onClick={handleAddUsers}
+                              />
+                            </Col>
+                            <Row>
+                              <Col>
+                                <p
+                                  className={
+                                    error && members.length === 0
+                                      ? ` ${styles["errorMessage-inLogin"]} `
+                                      : `${styles["errorMessage-inLogin_hidden"]}`
+                                  }
+                                >
+                                  {t("Select-atleast-one-participants")}
+                                </p>
+                              </Col>
+                            </Row>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className={styles["Participant_heading"]}
+                            >
+                              {t("Participants")}
+                            </Col>
                           </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
+                        </div>
+
+                        <Row className="mt-1">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Scroller_For_CreatePollModal2"]}
+                          >
+                            <Row>
+                              {members.map((data, index) => {
+                                return (
+                                  <Col lg={6} md={6} sm={12} className="mt-2">
+                                    <Row>
+                                      <Col lg={11} md={11} sm={12}>
+                                        <Row className={styles["Card_border2"]}>
+                                          <Col
+                                            sm={12}
+                                            md={10}
+                                            lg={10}
+                                            className="d-flex align-items-center"
+                                          >
+                                            <img
+                                              src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                              width="33px"
+                                              height="33px"
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                            <span
+                                              className={styles["Name_cards"]}
+                                            >
+                                              {data.userName}
+                                            </span>
+                                          </Col>
+                                          <Col sm={12} md={2} lg={2}>
+                                            <img
+                                              src={CrossIcon}
+                                              width="14px"
+                                              height="14px"
+                                              onClick={() =>
+                                                cancellAnyUser(index)
+                                              }
+                                              alt=""
+                                              draggable="false"
+                                              style={{ cursor: "pointer" }}
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                );
+                              })}
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </div>
                 </>
               )}
             </>
