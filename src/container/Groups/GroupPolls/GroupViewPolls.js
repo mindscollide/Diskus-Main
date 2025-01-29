@@ -20,24 +20,33 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
-import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  resolutionResultTable,
+} from "../../../commen/functions/date_formater";
 import {
   createPollGroupsMQTT,
   deleteGroupPollApi,
   deletePollsMQTT,
   getPollByPollIdforGroups,
   getPollsByGroupMainApi,
+  viewVotesApi,
 } from "../../../store/actions/Polls_actions";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+import { usePollsContext } from "../../../context/PollsContext";
+import { useMeetingContext } from "../../../context/MeetingContext";
+import ViewVotesScreen from "./ViewVotes/ViewVotesScreen";
 const GroupViewPolls = ({ groupStatus }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { viewPublishedPoll, setViewPublishedPoll } = useMeetingContext();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
+  const { viewVotes, setviewVotes } = usePollsContext();
   const cancelPolls = useSelector(
     (state) => state.NewMeetingreducer.cancelPolls
   );
@@ -62,7 +71,6 @@ const GroupViewPolls = ({ groupStatus }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [viewUnnPublished, setViewUnPublished] = useState(false);
-  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [sortOrderCreatedBy, setSortOrderCreatedBy] = useState(null);
   const [sortOrderPollingTitle, setSortOrderPollingTitle] = useState(null);
@@ -293,6 +301,15 @@ const GroupViewPolls = ({ groupStatus }) => {
         setViewUnPublished,
         setViewPublishedPoll
       )
+    );
+  };
+
+  const handleViewVotes = (record) => {
+    let data = {
+      PollID: record.pollID,
+    };
+    dispatch(
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
     );
   };
 
@@ -537,9 +554,16 @@ const GroupViewPolls = ({ groupStatus }) => {
       width: "70px",
       align: "center",
       render: (text, record) => {
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        console.log(
+          currentDate,
+          convertIntoGmt,
+          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
+        );
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
-            if (record.voteStatus === "Not Voted" && groupStatus === 3) {
+            if (currentDate < convertIntoGmt && groupStatus === 3) {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
@@ -547,14 +571,18 @@ const GroupViewPolls = ({ groupStatus }) => {
                   onClick={() => handleClickVoteCast(record)}
                 />
               );
-            } else if (record.voteStatus === "Voted") {
-              return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+            } else {
+              return (
+                <Button
+                  className={styles["ViewVotesButtonStyles"]}
+                  buttonValue={t("View-vote")}
+                  onClick={() => handleViewVotes(record)}
+                />
+              );
             }
           } else {
             return "";
           }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
         } else if (record.pollStatus.pollStatusId === 3) {
           if (record.isVoter) {
             if (record.wasPollPublished) {
@@ -563,7 +591,11 @@ const GroupViewPolls = ({ groupStatus }) => {
                   <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
                 );
               } else {
-                return <span className={styles["votedBtn"]}>{t("Voted")}</span>;
+                <Button
+                  className={styles["ViewVotesButtonStyles"]}
+                  buttonValue={t("View-vote")}
+                  onClick={() => handleViewVotes(record)}
+                />;
               }
             } else {
               return "";
@@ -696,6 +728,8 @@ const GroupViewPolls = ({ groupStatus }) => {
           <ViewPollsPublishedScreen
             setViewPublishedPoll={setViewPublishedPoll}
           />
+        ) : viewVotes ? (
+          <ViewVotesScreen />
         ) : (
           <>
             <Row className="mt-4">

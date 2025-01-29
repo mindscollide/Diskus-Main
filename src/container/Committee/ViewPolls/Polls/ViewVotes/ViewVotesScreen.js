@@ -5,9 +5,11 @@ import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { Button } from "../../../../../components/elements";
 import { useEffect } from "react";
+import { usePollsContext } from "../../../../../context/PollsContext";
 
-const ViewVotesScreen = ({ setviewVotes }) => {
+const ViewVotesScreen = () => {
   const viewVotes = useSelector((state) => state.PollsReducer.viewVotes);
+  const { setviewVotes } = usePollsContext();
   const [pollId, setPollId] = useState(0);
   const [pollTitle, setPollTitle] = useState("");
   const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(

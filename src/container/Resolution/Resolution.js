@@ -66,14 +66,13 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useResolutionContext } from "../../context/ResolutionContext";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
-  const ResolutionReducerResponseMessage = useSelector(
-    (state) => state.ResolutionReducer.ResponseMessage
-  );
+  const { resultresolution, setResultresolution } = useResolutionContext();
   const ResolutionReducersearchVoterResolution = useSelector(
     (state) => state.ResolutionReducer.searchVoterResolution
   );
@@ -120,7 +119,6 @@ const Resolution = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
-  const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
   const [searchIcon, setSearchIcon] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -904,9 +902,7 @@ const Resolution = () => {
                 <Button
                   text={t("Vote")}
                   className={styles["Resolution-vote-btn"]}
-                  onClick={() =>
-                    getVoteDetailHandler(data.resolutionID, data)
-                  }
+                  onClick={() => getVoteDetailHandler(data.resolutionID, data)}
                 />
               );
             }
@@ -1154,20 +1150,6 @@ const Resolution = () => {
       dispatch(getVoterResolution(navigate, 2, t));
     }
   };
-
-  // Resolution reducer ResponseMessage
-  useEffect(() => {
-    if (
-      ResolutionReducerResponseMessage !== "" &&
-      ResolutionReducerResponseMessage !== t("No-data-available") &&
-      ResolutionReducerResponseMessage !== undefined &&
-      ResolutionReducerResponseMessage !==
-        t("Resolution-details-updated-successfully")
-    ) {
-      showMessage(ResolutionReducerResponseMessage, "success", setOpen);
-      dispatch(clearResponseMessage());
-    }
-  }, [ResolutionReducerResponseMessage]);
 
   // voter resolution state manage
   useEffect(() => {

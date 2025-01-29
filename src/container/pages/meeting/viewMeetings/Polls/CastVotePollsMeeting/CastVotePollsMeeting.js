@@ -12,7 +12,10 @@ import {
 } from "../../../../../../components/elements";
 import { Progress, Radio } from "antd";
 import { _justShowDateformatBilling } from "../../../../../../commen/functions/date_formater";
-import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
+import {
+  castVoteApi,
+  UpdatedCastVoteAPI,
+} from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
@@ -45,7 +48,10 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         PollOptionIDs: viewProgressPollsDetails.answer,
       };
       console.log(data, "submitvotesubmitvotesubmitvote");
-      dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
+      // dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
+      dispatch(
+        UpdatedCastVoteAPI(navigate, data, t, 3, setvotePolls, currentMeeting)
+      );
     } else {
       // open sncak bar for atleast select one option
       showMessage(t("Required-atleast-one-vote"), "error", setOpen);
@@ -116,6 +122,9 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const handleCancelButton = () => {
     setvotePolls(false);
     localStorage.removeItem("viewadvanceMeetingPolls");
+    localStorage.removeItem("NotificationClickPollID");
+    localStorage.removeItem("AdvanceMeetingOperations");
+    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   return (
