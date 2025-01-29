@@ -13,6 +13,7 @@ import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import InputIcon from "react-multi-date-picker/components/input_icon";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
 import { useState } from "react";
 import Select from "react-select";
@@ -524,73 +525,30 @@ const UpdatePolls = () => {
               {defineUnsaveModal ? null : (
                 <>
                   <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
-                        >
-                          <span className="cursor-pointer d-flex gap-2 align-items-center">
-                            <img
-                              src={AlarmClock}
-                              width="14.97px"
-                              height="14.66px"
-                              alt=""
-                              draggable="false"
-                              onClick={handleIconClick}
-                            />
-                            <span
-                              className={styles["Due_Date_heading"]}
-                              onClick={handleIconClick}
-                            >
-                              {t("Due-date-on")}
-                              {"* "}
-                              <span className={styles["Date_update_poll"]}>
-                                {changeDateStartHandler2(UpdatePolls.date)}
-                              </span>
-                            </span>
-                            <DatePicker
-                              highlightToday={true}
-                              onOpenPickNewDate={true}
-                              ref={datePickerRef}
-                              render={<CustomIcon />}
-                              onFocusedDateChange={(value) =>
-                                changeDateStartHandler(
-                                  value?.toDate?.().toString()
-                                )
-                              }
-                              format={dateFormat}
-                              value={UpdatePolls.date}
-                              calendarPosition="bottom-center"
-                              minDate={moment().toDate()}
-                              className="datePickerTodoCreate2"
-                              calendar={calendarValue}
-                              onClick={handleIconClick}
-                              locale={localValue}
-                            />
-                          </span>
-                        </Col>
-                      </Row>
+                    <Col lg={10} md={10} sm={10}>
+                      <span className={styles["Update_Poll_Heading"]}>
+                        {t("Update-poll")}
+                      </span>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={2}
+                      className="d-flex justify-content-end"
+                    >
+                      <img
+                        src={BlackCrossIcon}
                         className={
-                          error && UpdatePolls.date === ""
-                            ? ` ${styles["errorMessage-inLogin_1"]} `
-                            : `${styles["errorMessage-inLogin_1_hidden"]}`
+                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
-                      >
-                        {t("Please-select-due-date")}
-                      </p>
+                        width="16px"
+                        height="16px"
+                        alt=""
+                        onClick={() => {
+                          setDefineUnsaveModal(true);
+                        }}
+                        draggable="false"
+                      />
                     </Col>
                   </Row>
                 </>
@@ -620,37 +578,8 @@ const UpdatePolls = () => {
                 </>
               ) : (
                 <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <img
-                        src={BlackCrossIcon}
-                        className={
-                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
-                        }
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        onClick={() => {
-                          setDefineUnsaveModal(true);
-                        }}
-                        draggable="false"
-                      />
-                    </Col>
-                  </Row>
                   <Row className={styles["Overall_padding"]}>
-                    <Col lg={12} md={12} sm={12}>
-                      <Row className="d-flex">
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Update_Poll_Heading"]}>
-                            {t("Update-poll")}
-                          </span>
-                        </Col>
-                      </Row>
+                    <Col lg={6} md={6} sm={6}>
                       {PollsReducereditPollModalFlag ? (
                         <Row className="mt-2">
                           <Col
@@ -680,19 +609,29 @@ const UpdatePolls = () => {
                           </Col>
                         </Row>
                       ) : (
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12}>
-                            <TextField
-                              placeholder={t("Title") + "*"}
-                              applyClass={"PollingCreateModal"}
-                              labelclass="d-none"
-                              name={"TypingTitle"}
-                              maxLength={140}
-                              value={UpdatePolls.TypingTitle}
-                              change={HandleChangeUpdatePolls}
-                            />
-                          </Col>
-                        </Row>
+                        <>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["MiniHeadings"]}>
+                                {t("Poll-title")}{" "}
+                                <span className={styles["redSteric"]}>*</span>
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                placeholder={t("Title") + "*"}
+                                applyClass={"PollingCreateModal"}
+                                labelclass="d-none"
+                                name={"TypingTitle"}
+                                maxLength={140}
+                                value={UpdatePolls.TypingTitle}
+                                change={HandleChangeUpdatePolls}
+                              />
+                            </Col>
+                          </Row>
+                        </>
                       )}
 
                       <Row>
@@ -918,9 +857,70 @@ const UpdatePolls = () => {
                           </p>
                         </Col>
                       </Row>
+                    </Col>
+                    <Col lg={6} md={6} sm={6}>
+                      {/* yaha say */}
 
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex flex-column flex-wrap"
+                        >
+                          <span className={styles["MiniHeadings"]}>
+                            {t("Due-date")}{" "}
+                            <span className={styles["redSteric"]}>*</span>
+                          </span>
+                          <DatePicker
+                            highlightToday={true}
+                            onOpenPickNewDate={true}
+                            ref={datePickerRef}
+                            render={
+                              <InputIcon
+                                placeholder="DD/MM/YYYY"
+                                className="datepicker_input"
+                              />
+                            }
+                            onFocusedDateChange={(value) =>
+                              changeDateStartHandler(
+                                value?.toDate?.().toString()
+                              )
+                            }
+                            format={dateFormat}
+                            value={UpdatePolls.date}
+                            calendarPosition="bottom-center"
+                            minDate={moment().toDate()}
+                            className="datePickerTodoCreate2"
+                            calendar={calendarValue}
+                            onClick={handleIconClick}
+                            locale={localValue}
+                          />
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  error && UpdatePolls.date === ""
+                                    ? ` ${styles["errorMessage-inLogin_1"]} `
+                                    : `${styles["errorMessage-inLogin_1_hidden"]}`
+                                }
+                              >
+                                {t("Please-select-due-date")}
+                              </p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
                       {PollsReducereditPollModalFlag === false ? (
                         <>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["MiniHeadings"]}>
+                                {t("Add-participants")}{" "}
+                                <span className={styles["redSteric"]}>*</span>
+                              </span>
+                            </Col>
+                          </Row>
                           <Row>
                             {" "}
                             <Col
@@ -1124,7 +1124,7 @@ const UpdatePolls = () => {
               )}
             </>
           }
-          size={defineUnsaveModal ? null : "md"}
+          size={defineUnsaveModal ? null : "xl"}
         />
       </Container>
       <Notification open={open} setOpen={setOpen} />

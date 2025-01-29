@@ -511,31 +511,37 @@ const CreatePolling = () => {
           }}
           ModalTitle={
             <>
-              <Row>
-                <Col lg={10} md={10} sm={10}>
-                  <span className={styles["Create_Poll_Heading"]}>
-                    {t("Create-new-poll")}
-                  </span>
-                </Col>
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={2}
-                  className="d-flex justify-content-end align-items-center "
-                >
-                  <img
-                    src={BlackCrossIcon}
-                    className={styles["Cross_Icon_Styling_Create_Poll_Modal"]}
-                    width="16px"
-                    height="16px"
-                    alt=""
-                    onClick={() => {
-                      setDefineUnsaveModal(true);
-                    }}
-                    draggable="false"
-                  />
-                </Col>
-              </Row>
+              {defineUnsaveModal ? null : (
+                <>
+                  <Row>
+                    <Col lg={10} md={10} sm={10}>
+                      <span className={styles["Create_Poll_Heading"]}>
+                        {t("Create-new-poll")}
+                      </span>
+                    </Col>
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={2}
+                      className="d-flex justify-content-end align-items-center "
+                    >
+                      <img
+                        src={BlackCrossIcon}
+                        className={
+                          styles["Cross_Icon_Styling_Create_Poll_Modal"]
+                        }
+                        width="16px"
+                        height="16px"
+                        alt=""
+                        onClick={() => {
+                          setDefineUnsaveModal(true);
+                        }}
+                        draggable="false"
+                      />
+                    </Col>
+                  </Row>
+                </>
+              )}
             </>
           }
           ModalBody={
@@ -984,7 +990,7 @@ const CreatePolling = () => {
               )}
             </>
           }
-          size={"xl"}
+          size={defineUnsaveModal ? "md" : "xl"}
         />
       </Container>
       <Notification open={open} setOpen={setOpen} />

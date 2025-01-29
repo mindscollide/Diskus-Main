@@ -46,7 +46,7 @@ body[dir="rtl"] .Update_Poll_Heading {
 
 .ModalRequestHeader_polling_update_modal {
   margin: 0 !important;
-  padding: 5px 12px !important;
+  padding: 20px 20px !important;
   width: 100%;
 }
 
@@ -68,7 +68,7 @@ body[dir="rtl"] .Due_Date_heading {
 }
 
 .Scroller_For_CreatePollModal2_Update_poll {
-  height: 14vh !important;
+  height: 25vh !important;
   overflow-x: hidden !important;
 }
 
@@ -539,4 +539,14 @@ body[dir="rtl"] .scrollable-title2 {
     background: #f16b6b !important;
     position: relative !important; /* Change position for Firefox */
   }
+}
+
+.MiniHeadings {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #6172d6 !important;
+}
+
+.redSteric {
+  color: #f16b6b !important;
 }
