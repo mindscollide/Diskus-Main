@@ -88,19 +88,6 @@ const CreatePolling = () => {
     },
   ]);
 
-  const CustomIcon = () => (
-    <div className="custom-icon-wrapper">
-      <img
-        src={EditIcon}
-        alt="Edit Icon"
-        height="11.11px"
-        width="11.54px"
-        className="custom-icon cursor-pointer"
-        onClick={handleIconClick}
-        draggable="false"
-      />
-    </div>
-  );
   const handleIconClick = () => {
     if (datePickerRef.current) {
       datePickerRef.current.openCalendar();
