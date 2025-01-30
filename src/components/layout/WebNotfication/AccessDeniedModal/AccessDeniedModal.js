@@ -67,9 +67,17 @@ const AccessDeniedModal = () => {
                 </span>
                 <span className={styles["DeninedModalSubHeading"]}>
                   {t("Access-this")}&nbsp;
-                  <span className={styles["DeninedModalSubHeading"]}>
-                    {"Poll"}
-                  </span>
+                  {JSON.parse(
+                    localStorage.getItem("viewadvanceMeetingTask")
+                  ) === true ? (
+                    <span className={styles["DeninedModalSubHeading"]}>
+                      {"Task"}
+                    </span>
+                  ) : (
+                    <span className={styles["DeninedModalSubHeading"]}>
+                      {"Poll"}
+                    </span>
+                  )}
                 </span>
               </Col>
             </Row>

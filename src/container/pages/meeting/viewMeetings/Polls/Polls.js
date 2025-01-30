@@ -117,11 +117,6 @@ const Polls = ({
     (state) => state.PollsReducer.AccessDeniedPolls
   );
 
-  console.log(
-    AccessDeniedGlobalState,
-    "AccessDeniedGlobalStateAccessDeniedGlobalStateAccessDeniedGlobalState"
-  );
-
   const { setEditorRole } = useContext(MeetingContext);
 
   const [createpoll, setCreatepoll] = useState(false);

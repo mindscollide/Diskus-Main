@@ -45,6 +45,7 @@ import AscendIcon from "../../../../../assets/images/sortingIcons/SorterIconAsce
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 const Actions = ({
   setViewAdvanceMeetingModal,
   setactionsPage,
@@ -74,6 +75,10 @@ const Actions = ({
   );
   const createTaskMeeting = useSelector(
     (state) => state.toDoListReducer.createTaskMeeting
+  );
+
+  const AccessDeniedGlobalState = useSelector(
+    (state) => state.PollsReducer.AccessDeniedPolls
   );
 
   let userID = localStorage.getItem("userID");
@@ -899,6 +904,7 @@ const Actions = ({
       {cancelActions && (
         <CancelActions setSceduleMeeting={setViewAdvanceMeetingModal} />
       )}
+      {AccessDeniedGlobalState && <AccessDeniedModal />}
     </section>
   );
 };
