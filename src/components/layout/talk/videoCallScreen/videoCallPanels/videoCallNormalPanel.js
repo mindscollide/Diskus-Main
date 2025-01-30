@@ -299,6 +299,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     const handleLeaveSession = async () => {
+      const iframe = iframeRef.current;
       if (participantRemovedFromVideobyHost && iframe?.contentWindow) {
         console.log("busyCall");
 
@@ -346,6 +347,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     const handleLeaveSession = async () => {
+      const iframe = iframeRef.current;
       if (participantLeaveCallForJoinNonMeetingCall && iframe?.contentWindow) {
         console.log("busyCall");
         let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -409,6 +411,7 @@ const VideoPanelNormal = () => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
     if (isMeetingHost) {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlHost === true) {
           iframe.contentWindow.postMessage("MicOn", "*");
@@ -423,7 +426,8 @@ const VideoPanelNormal = () => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
-        if (iframe && iframe.contentWindow !== null) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow !== null) {
           console.log("busyCall");
 
           iframe.contentWindow.postMessage("leaveSession", "*");
@@ -442,6 +446,7 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     // Determine the control source based on the user role
     if (isMeetingHost === false) {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlForParticipant === true) {
           iframe.contentWindow.postMessage("MicOn", "*");
@@ -454,6 +459,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (isMeetingHost === false) {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (videoControlForParticipant === true) {
           iframe.contentWindow.postMessage("VidOn", "*");
@@ -466,6 +472,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (isMeetingHost) {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (videoControlHost === true) {
           iframe.contentWindow.postMessage("VidOn", "*");
@@ -790,7 +797,8 @@ const VideoPanelNormal = () => {
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
-        if (iframe && iframe.contentWindow) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow) {
           // Post message to iframe
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
@@ -844,7 +852,8 @@ const VideoPanelNormal = () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let videoView = localStorage.getItem("VideoView");
       if (LeaveCallModalFlag === false) {
-        if (iframe && videoView === "Sidebar") {
+      const iframe = iframeRef.current;
+      if (iframe && videoView === "Sidebar") {
           iframe.contentWindow.postMessage("TileView", "*");
           localStorage.setItem("VideoView", "TileView");
           setShowTile(true);
@@ -861,16 +870,21 @@ const VideoPanelNormal = () => {
 
   const disableMicFunction = () => {
     try {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow) {
+        console.log("disableMicFunction");
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);
         localStorage.setItem("MicOff", !isMicActive);
       }
-    } catch {}
+    } catch (error) {
+      console.log("disableMicFunction", error);
+    }
   };
 
   const disableVideoFunction = () => {
     try {
+      const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.postMessage("VidOff", "*");
         setIsVideoActive(!isVideoActive);
