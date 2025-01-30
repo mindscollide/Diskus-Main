@@ -121,10 +121,6 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
 
   const handleCancelButton = () => {
     setvotePolls(false);
-    localStorage.removeItem("viewadvanceMeetingPolls");
-    localStorage.removeItem("NotificationClickPollID");
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   return (
