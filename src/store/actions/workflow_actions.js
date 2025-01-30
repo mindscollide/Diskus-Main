@@ -19,6 +19,7 @@ import {
   getDashboardPendingApprovalStatsRM,
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
+  ValidateEncryptedStringMinuteReviewDataRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2406,6 +2407,109 @@ const addUpdateSignatureFileAnnotationApi = (
   };
 };
 
+const validateEncryptedMinutesReviewer_init = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_INIT,
+  };
+};
+const validateEncryptedMinutesReviewer_success = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateEncryptedMinutesReviewer_fail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_FAIL,
+    message: message,
+  };
+};
+
+const validateEncryptedMinutesReviewer_clear = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_CLEAR,
+  };
+};
+
+const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(validateEncryptedMinutesReviewer_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      ValidateEncryptedStringMinuteReviewDataRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(validateEncryptedMinutesReviewerApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringMinuteReviewData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateEncryptedMinutesReviewer_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringMinuteReviewData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateEncryptedMinutesReviewer_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringMinuteReviewData_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateEncryptedMinutesReviewer_fail("Something-went-wrong")
+              );
+            } else {
+              dispatch(
+                validateEncryptedMinutesReviewer_fail("Something-went-wrong")
+              );
+            }
+          } else {
+            dispatch(
+              validateEncryptedMinutesReviewer_fail("Something-went-wrong")
+            );
+          }
+        } else {
+          dispatch(
+            validateEncryptedMinutesReviewer_fail("Something-went-wrong")
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(validateEncryptedMinutesReviewer_fail("Something-went-wrong"));
+      });
+  };
+};
+
 const clearWorkFlowResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -2413,6 +2517,8 @@ const clearWorkFlowResponseMessage = () => {
 };
 
 export {
+  validateEncryptedMinutesReviewer_clear,
+  validateEncryptedMinutesReviewerApi,
   addUpdateSignatureFileAnnotationApi,
   getSignatureFileAnnotationApi,
   getDashbardPendingApprovalDataApi,

@@ -1945,7 +1945,11 @@ const updateCastVotePolls = {
   RequestMethod: "ServiceManager.UpdateCastedVote",
 };
 
+const ValidateEncryptedStringMinuteReviewDataRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringMinuteReviewData",
+};
 export {
+  ValidateEncryptedStringMinuteReviewDataRM,
   MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,

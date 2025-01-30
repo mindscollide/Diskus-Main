@@ -311,7 +311,7 @@ const PrivateRoutes = () => {
         if (
           currentUrl
             .toLowerCase()
-            .includes("/Diskus/Minutes/?MRAP=".toLowerCase())
+            .includes("/Diskus/Minutes?MRAP=".toLowerCase())
         ) {
           let getValue = getActionValue(currentUrl, "MRAP=");
 
