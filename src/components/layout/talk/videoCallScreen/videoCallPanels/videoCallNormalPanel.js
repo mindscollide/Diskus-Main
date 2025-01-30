@@ -655,6 +655,7 @@ const VideoPanelNormal = () => {
 
                 if (newurl !== callerURL) {
                   console.log("iframeiframe", newurl !== callerURL);
+                  console.log("iframeiframe", newurl);
                   setCallerURL(newurl);
                 }
               }
@@ -671,7 +672,7 @@ const VideoPanelNormal = () => {
           if (validateRoomID(newurl)) {
             console.log("iframeiframe", validateRoomID(newurl));
             if (newurl !== callerURL) {
-              console.log("iframeiframe", newurl !== callerURL);
+              console.log("iframeiframe", newurl);
               setCallerURL(newurl);
             }
           }
@@ -859,15 +860,23 @@ const VideoPanelNormal = () => {
   };
 
   const disableMicFunction = () => {
-    iframe.contentWindow.postMessage("MicOff", "*");
-    setIsMicActive(!isMicActive);
-    localStorage.setItem("MicOff", !isMicActive);
+    try {
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("MicOff", "*");
+        setIsMicActive(!isMicActive);
+        localStorage.setItem("MicOff", !isMicActive);
+      }
+    } catch {}
   };
 
   const disableVideoFunction = () => {
-    iframe.contentWindow.postMessage("VidOff", "*");
-    setIsVideoActive(!isVideoActive);
-    localStorage.setItem("VidOff", !isVideoActive);
+    try {
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("VidOff", "*");
+        setIsVideoActive(!isVideoActive);
+        localStorage.setItem("VidOff", !isVideoActive);
+      }
+    } catch {}
   };
 
   const closeParticipantsList = () => {
@@ -919,6 +928,7 @@ const VideoPanelNormal = () => {
           console.log("iframeiframe", refinedVideoUrl);
           if (refinedVideoUrl !== callerURL) {
             console.log("iframeiframe", refinedVideoUrl !== callerURL);
+            console.log("iframeiframe", refinedVideoUrl);
             setCallerURL(refinedVideoUrl);
           }
         }
@@ -938,7 +948,6 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
-  console.log("MediaStream callerURL", callerURL);
 
   return (
     <>
