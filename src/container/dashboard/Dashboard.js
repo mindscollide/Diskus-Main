@@ -225,6 +225,9 @@ const Dashboard = () => {
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
+
+  console.log(NormalizeVideoFlag, "NormalizeVideoFlag");
+
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag
   );
@@ -2548,110 +2551,134 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
         ) {
-          let callStatus = JSON.parse(localStorage.getItem("activeCall"));
-          let callerID = JSON.parse(localStorage.getItem("callerID"));
-          let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
-          if (IncomingVideoCallFlagReducer === true && callStatus === false) {
-            let callerID = Number(localStorage.getItem("callerID"));
-            let newCallerID = Number(localStorage.getItem("newCallerID"));
-            if (callerID === newCallerID) {
-              localStorage.setItem("activeCall", false);
-            }
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
-            let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-            dispatch(incomingVideoCallFlag(false));
-            if (activeRoomID !== acceptedRoomID) {
-              dispatch(incomingVideoCallFlag(false));
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            }
-            if (activeRoomID === acceptedRoomID) {
-              if (
-                NormalizeVideoFlag === true ||
-                IncomingVideoCallFlagReducer === true ||
-                MaximizeVideoFlag === true
-              ) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: `Call has been disconnected by ${data.payload.callerName}`,
-                });
-                setNotificationID(id);
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          if (activeRoomID === data.payload.roomID) {
+            let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+            let callerID = JSON.parse(localStorage.getItem("callerID"));
+            let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
+            if (IncomingVideoCallFlagReducer === true && callStatus === false) {
+              console.log("Check 123");
+              let callerID = Number(localStorage.getItem("callerID"));
+              let newCallerID = Number(localStorage.getItem("newCallerID"));
+              if (callerID === newCallerID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
               }
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-            }
-            dispatch(leaveCallModal(false));
-          } else if (
-            IncomingVideoCallFlagReducer === false &&
-            callStatus === true
-          ) {
-            let callerID = Number(localStorage.getItem("callerID"));
-            let newCallerID = Number(localStorage.getItem("newCallerID"));
-            if (callerID === newCallerID) {
-              localStorage.setItem("activeCall", false);
-            }
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
-            let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-            dispatch(incomingVideoCallFlag(false));
-            if (activeRoomID !== acceptedRoomID) {
-              dispatch(incomingVideoCallFlag(false));
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            }
-            if (activeRoomID === acceptedRoomID) {
-              if (
-                NormalizeVideoFlag === true ||
-                IncomingVideoCallFlagReducer === true ||
-                MaximizeVideoFlag === true
-              ) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: `Call has been disconnected by ${data.payload.callerName}`,
-                });
-                setNotificationID(id);
-              }
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-            }
-            dispatch(leaveCallModal(false));
-          } else if (
-            IncomingVideoCallFlagReducer === true &&
-            callStatus === true
-          ) {
-            if (
-              data.payload.callerID === callerID &&
-              data.payload.callerID === newCallerID
-            ) {
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              localStorage.setItem("activeCall", false);
-            } else if (data.payload.callerID === newCallerID) {
-              dispatch(incomingVideoCallFlag(false));
+              localStorage.setItem("newCallerID", callerID);
+              localStorage.setItem("initiateVideoCall", false);
               let acceptedRoomID = Number(
                 localStorage.getItem("acceptedRoomID")
               );
+              dispatch(incomingVideoCallFlag(false));
+              if (activeRoomID !== acceptedRoomID) {
+                console.log("Check 123");
+                dispatch(incomingVideoCallFlag(false));
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              }
+              if (activeRoomID === acceptedRoomID) {
+                console.log("Check 123");
+                if (
+                  NormalizeVideoFlag === true ||
+                  IncomingVideoCallFlagReducer === true ||
+                  MaximizeVideoFlag === true
+                ) {
+                  console.log("Check 123");
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: `Call has been disconnected by ${data.payload.callerName}`,
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+              console.log("Check 123");
+              dispatch(leaveCallModal(false));
+            } else if (
+              IncomingVideoCallFlagReducer === false &&
+              callStatus === true
+            ) {
+              console.log("Check 123");
+              let callerID = Number(localStorage.getItem("callerID"));
+              let newCallerID = Number(localStorage.getItem("newCallerID"));
+              if (callerID === newCallerID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
+              }
               localStorage.setItem("newCallerID", callerID);
-              localStorage.setItem("activeCall", true);
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            } else if (data.payload.callerID === callerID) {
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              localStorage.setItem("activeCall", false);
+              localStorage.setItem("initiateVideoCall", false);
+              let acceptedRoomID = Number(
+                localStorage.getItem("acceptedRoomID")
+              );
+              let activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              dispatch(incomingVideoCallFlag(false));
+              if (activeRoomID !== acceptedRoomID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
+                localStorage.removeItem("acceptedRoomID");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(incomingVideoCallFlag(false));
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              }
+              if (activeRoomID === acceptedRoomID) {
+                console.log("Check 123");
+                if (
+                  NormalizeVideoFlag === true ||
+                  IncomingVideoCallFlagReducer === true ||
+                  MaximizeVideoFlag === true
+                ) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: `Call has been disconnected by ${data.payload.callerName}`,
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+              dispatch(leaveCallModal(false));
+            } else if (
+              IncomingVideoCallFlagReducer === true &&
+              callStatus === true
+            ) {
+              console.log("Check 123");
+              if (
+                data.payload.callerID === callerID &&
+                data.payload.callerID === newCallerID
+              ) {
+                console.log("Check 123");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+              } else if (data.payload.callerID === newCallerID) {
+                console.log("Check 123");
+                dispatch(incomingVideoCallFlag(false));
+                let acceptedRoomID = Number(
+                  localStorage.getItem("acceptedRoomID")
+                );
+                localStorage.setItem("newCallerID", callerID);
+                localStorage.setItem("activeCall", true);
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              } else if (data.payload.callerID === callerID) {
+                console.log("Check 123");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+              }
             }
+            console.log("Check 123");
+            dispatch(leaveCallModal(false));
           }
-          dispatch(leaveCallModal(false));
         } else if (
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()

@@ -45,6 +45,7 @@ import {
   participantVideoButtonState,
   clearMessegesVideoFeature,
   startOrStopPresenterGlobal,
+  presenterViewGlobalState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -190,6 +191,11 @@ const AgendaViewer = ({
 
   console.log(participantEnableVideoState, "participantEnableVideoState");
 
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
   // start and stop Presenter View
   // const startOrStopPresenter = useSelector(
   //   (state) => state.videoFeatureReducer.startOrStopPresenter
@@ -700,6 +706,19 @@ const AgendaViewer = ({
     }
   };
 
+  const onClickStartPresenter = () => {
+    dispatch(presenterViewGlobalState(null, true));
+    dispatch(maximizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+  };
+
+  const onClickStopPresenter = () => {
+    dispatch(presenterViewGlobalState(null, false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+  };
+
   return (
     <>
       {emptyStateRows === true &&
@@ -780,6 +799,32 @@ const AgendaViewer = ({
                         </Tooltip>
                       ) : null} */}
 
+                      {editorRole.status === 10 ||
+                      editorRole.status === "10" ? (
+                        <>
+                          {presenterViewFlag ? (
+                            <Tooltip>
+                              <div
+                                className={styles["Stop-presenter-view-class"]}
+                                onClick={onClickStopPresenter}
+                              >
+                                <img src={StopImage} />
+                                <p>{t("Stop-presenting")}</p>
+                              </div>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip>
+                              <div
+                                className={styles["Start-presenter-view-class"]}
+                                onClick={onClickStartPresenter}
+                              >
+                                <img src={PresenterView} />
+                                <p>{t("Start-presenting")}</p>
+                              </div>
+                            </Tooltip>
+                          )}
+                        </>
+                      ) : null}
                       {/* {startOrStopPresenter ? (
                         <Tooltip>
                           <div

@@ -146,8 +146,9 @@ const VideoMaxIncoming = () => {
 
   const endAndAccept = async () => {
     console.log("busyCall");
-    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-    let isMeeting = localStorage.getItem("isMeeting");
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+
     if (isMeeting) {
       if (isMeetingVideo) {
         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -276,7 +277,6 @@ const VideoMaxIncoming = () => {
     localStorage.setItem("activeCall", false);
     setIsTimerRunning(false);
   };
-  console.log("busyCall");
 
   const busyCall = () => {
     console.log("busyCall");
@@ -320,13 +320,9 @@ const VideoMaxIncoming = () => {
     activeCallState === true ||
       (isMeeting && typeOfMeeting === "isQuickMeeting")
   );
-  console.log("hhhhhhhhhhhhhh", typeOfMeeting === "isQuickMeeting");
   console.log("hhhhhhhhhhhhhh", typeOfMeeting);
-  console.log("hhhhhhhhhhhhhh", activeCallState === true);
-  console.log(
-    "hhhhhhhhhhhhhh",
-    isMeeting && typeOfMeeting === "isQuickMeeting"
-  );
+  console.log("hhhhhhhhhhhhhh", activeCallState);
+
   console.log("hhhhhhhhhhhhhh", isMeeting);
   return (
     <>
@@ -350,8 +346,7 @@ const VideoMaxIncoming = () => {
                       : "avatar-column-max-call"
                   }
                 >
-                  {activeCallState === false ||
-                  (!isMeeting && typeOfMeeting !== "isQuickMeeting") ? (
+                  {activeCallState === false && !isMeeting ? (
                     // <img
                     //   src={`data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}`}
                     //   width={150}

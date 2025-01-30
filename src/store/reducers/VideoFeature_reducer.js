@@ -82,6 +82,9 @@ const initialState = {
   enableDisableVideoState: false,
   participantEnableVideoState: false,
   disableBeforeJoinZoom: true,
+  presenterMeetingId: null,
+  presenterViewFlag: false,
+
   // startOrStopPresenter: false,
 };
 
@@ -980,6 +983,21 @@ const videoFeatureReducer = (state = initialState, action) => {
     //     ...state,
     //     startOrStopPresenter: action.response,
     //   };
+
+    //For Presenter View Global State
+    case actions.SET_MQTT_PRESENTER_RESPONSE:
+      console.log(
+        "presenterMeetingIdpresenterMeetingId",
+        action.response,
+        action.presenterMeetingId,
+        action.presenterViewFlag
+      );
+
+      return {
+        ...state,
+        presenterMeetingId: action.payload.presenterMeetingId,
+        presenterViewFlag: action.payload.presenterViewFlag,
+      };
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
       return {

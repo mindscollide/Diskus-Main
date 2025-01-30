@@ -1248,6 +1248,23 @@ const disableZoomBeforeJoinSession = (response) => {
   };
 };
 
+//For Presenter View Global State
+const presenterViewGlobalState = (presenterMeetingId, presenterViewFlag) => {
+  console.log(
+    presenterMeetingId,
+    presenterViewFlag,
+    "responseresponseresponsedatat"
+  );
+
+  return {
+    type: actions.SET_MQTT_PRESENTER_RESPONSE,
+    payload: {
+      presenterMeetingId,
+      presenterViewFlag,
+    },
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1338,4 +1355,5 @@ export {
   disableZoomBeforeJoinSession,
   setParticipantRemovedFromVideobyHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
+  presenterViewGlobalState,
 };

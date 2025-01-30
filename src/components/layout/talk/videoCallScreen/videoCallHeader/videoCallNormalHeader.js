@@ -202,6 +202,12 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
   );
 
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  console.log(presenterViewFlag, "presenterViewFlag");
+
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
@@ -879,299 +885,171 @@ const VideoCallNormalHeader = ({
   }, [makeParticipantAsHost]);
   return (
     <>
-      <Row className="mb-4">
-        {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
-            <p className="title-heading">{t("Group-call")}</p>
-          </Col>
-        ) : (currentCallType === 2 || callTypeID === 2) &&
-          meetingTitle !== "" ? (
-          <Col lg={3} md={3} sm={12} className="mt-1">
-            <p className="title-heading">{meetingTitle}</p>
-          </Col>
-        ) : (
-          <Col lg={3} md={3} sm={12} className="mt-1">
-            <p className="title-heading">
-              {currentUserName !== VideoRecipentData.userName &&
-              Object.keys(VideoRecipentData).length > 0 &&
-              initiateVideoCallFlag === true
-                ? VideoRecipentData.userName ||
-                  VideoRecipentData.recipients[0].userName
-                : currentUserName !== VideoRecipentData.userName &&
-                  Object.keys(VideoRecipentData).length > 0 &&
-                  initiateVideoCallFlag === false
-                ? VideoRecipentData.userName ||
-                  VideoRecipentData.recipients[0].userName
-                : Object.keys(VideoRecipentData).length === 0
-                ? callerName
-                : null}
-            </p>
-          </Col>
-        )}
-
-        <Col
-          lg={3}
-          md={3}
-          sm={12}
-          className="d-flex justify-content-center align-items-center mt-1"
-        >
-          {MaximizeVideoFlag === true && showNotification === true ? (
-            <div className="Notification-maximize">
-              <p className="Notification-text">
-                {t("Minimize-call-to-see-the-screen")}
+      {!presenterViewFlag && (
+        <Row className="mb-4">
+          {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">{t("Group-call")}</p>
+            </Col>
+          ) : (currentCallType === 2 || callTypeID === 2) &&
+            meetingTitle !== "" ? (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">{meetingTitle}</p>
+            </Col>
+          ) : (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">
+                {currentUserName !== VideoRecipentData.userName &&
+                Object.keys(VideoRecipentData).length > 0 &&
+                initiateVideoCallFlag === true
+                  ? VideoRecipentData.userName ||
+                    VideoRecipentData.recipients[0].userName
+                  : currentUserName !== VideoRecipentData.userName &&
+                    Object.keys(VideoRecipentData).length > 0 &&
+                    initiateVideoCallFlag === false
+                  ? VideoRecipentData.userName ||
+                    VideoRecipentData.recipients[0].userName
+                  : Object.keys(VideoRecipentData).length === 0
+                  ? callerName
+                  : null}
               </p>
-              <img
-                className="cursor-pointer"
-                src={CloseNotification}
-                onClick={closeNotification}
-                alt="Close Notification"
-              />
-            </div>
-          ) : null}
-        </Col>
-        <>
-          {isMeetingVideo ? (
-            getMeetingHostInfo.isHost ? (
-              <>
-                <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-                  <div
-                    // onClick={disableMicHost}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !isMicActive
-                        ? "cursor-pointer active-state"
-                        : "inactive-state"
-                    }
+            </Col>
+          )}
+
+          <Col
+            lg={3}
+            md={3}
+            sm={12}
+            className="d-flex justify-content-center align-items-center mt-1"
+          >
+            {MaximizeVideoFlag === true && showNotification === true ? (
+              <div className="Notification-maximize">
+                <p className="Notification-text">
+                  {t("Minimize-call-to-see-the-screen")}
+                </p>
+                <img
+                  className="cursor-pointer"
+                  src={CloseNotification}
+                  onClick={closeNotification}
+                  alt="Close Notification"
+                />
+              </div>
+            ) : null}
+          </Col>
+          <>
+            {isMeetingVideo ? (
+              getMeetingHostInfo.isHost ? (
+                <>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className="normal-screen-top-icons"
                   >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        audioControlHost ? t("Enable-mic") : t("Disable-mic")
-                      }
-                    >
-                      <img
-                        src={audioControlHost ? MicOff : MicOn}
-                        onClick={() =>
-                          muteUnMuteForHost(audioControlHost ? false : true)
-                        }
-                        alt="Mic"
-                      />
-                    </Tooltip>
-                  </div>
-                  <div
-                    // onClick={disableVideoHost}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !isVideoActive
-                        ? "cursor-pointer active-state"
-                        : "inactive-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        videoControlHost
-                          ? t("Enable-video")
-                          : t("Disable-video")
-                      }
-                    >
-                      <img
-                        src={videoControlHost ? VideoOff : VideoOn}
-                        onClick={() =>
-                          videoHideUnHideForHost(
-                            videoControlHost ? false : true
-                          )
-                        }
-                        alt="Video"
-                      />
-                    </Tooltip>
-                  </div>
-                  {checkFeatureIDAvailability(5) ? (
                     <div
+                      // onClick={disableMicHost}
                       className={
                         LeaveCallModalFlag === true ||
                         (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
-                          : "screenShare-Toggle inactive-state"
+                          : !isMicActive
+                          ? "cursor-pointer active-state"
+                          : "inactive-state"
                       }
                     >
                       <Tooltip
                         placement="topRight"
                         title={
-                          isScreenActive ? t("Stop-sharing") : t("Screen-share")
+                          audioControlHost ? t("Enable-mic") : t("Disable-mic")
                         }
                       >
                         <img
-                          onClick={screenShareButton}
-                          src={NonActiveScreenShare}
-                          alt="Screen Share"
+                          src={audioControlHost ? MicOff : MicOn}
+                          onClick={() =>
+                            muteUnMuteForHost(audioControlHost ? false : true)
+                          }
+                          alt="Mic"
                         />
                       </Tooltip>
                     </div>
-                  ) : null}
-
-                  <div
-                    onClick={raiseHandFunction}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !handStatus
-                        ? "inactive-state"
-                        : "cursor-pointer active-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={handStatus ? t("Lower-hand") : t("Raise-hand")}
-                    >
-                      <img
-                        src={handStatus ? LowerHand : RaiseHand}
-                        alt="Raise Hand"
-                      />
-                    </Tooltip>
-                  </div>
-
-                  <div
-                    className={
-                      LeaveCallModalFlag === true
-                        ? "grayScaleImage"
-                        : "screenShare-Toggle inactive-state"
-                    }
-                  >
-                    <Tooltip placement="topRight" title={t("Copy-link")}>
-                      <img
-                        onClick={() => copyToClipboardd()}
-                        src={CopyLink}
-                        alt="Copy Link"
-                      />
-                    </Tooltip>
-                  </div>
-
-                  {MaximizeVideoFlag === true ? (
                     <div
+                      // onClick={disableVideoHost}
                       className={
                         LeaveCallModalFlag === true ||
                         (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
-                          : "screenShare-Toggle"
+                          : !isVideoActive
+                          ? "cursor-pointer active-state"
+                          : "inactive-state"
                       }
                     >
-                      <Tooltip placement="topRight" title={t("Layout")}>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          videoControlHost
+                            ? t("Enable-video")
+                            : t("Disable-video")
+                        }
+                      >
                         <img
-                          className={"cursor-pointer"}
-                          onClick={layoutCurrentChange}
-                          src={showTile ? TileView : SidebarView}
-                          alt="Layout Change"
+                          src={videoControlHost ? VideoOff : VideoOn}
+                          onClick={() =>
+                            videoHideUnHideForHost(
+                              videoControlHost ? false : true
+                            )
+                          }
+                          alt="Video"
                         />
                       </Tooltip>
                     </div>
-                  ) : null}
-
-                  {
-                    // callerID === currentUserID &&
-                    currentCallType === 2 || currentCallType === 3 ? (
-                      <div className={"position-relative"}>
-                        {ParticipantPopupFlag === true ? (
-                          <>
-                            <div className="cursor-pointer active-state">
-                              <img
-                                src={ActiveParticipantIcon}
-                                onClick={() => closeParticipantHandler(1, true)}
-                                alt="Active participants"
-                              />
-                            </div>
-                            <div className="participants-list">
-                              {currentParticipants !== undefined &&
-                              currentParticipants !== null &&
-                              currentParticipants.length > 0
-                                ? currentParticipants.map(
-                                    (participantData, index) => {
-                                      return (
-                                        <Row className="m-0" key={index}>
-                                          <Col
-                                            className="p-0"
-                                            lg={7}
-                                            md={7}
-                                            sm={12}
-                                          >
-                                            <p className="participant-name">
-                                              {participantData.userName}
-                                            </p>
-                                          </Col>
-                                          <Col
-                                            className="d-flex justify-content-end align-items-canter gap-3 p-0"
-                                            lg={5}
-                                            md={5}
-                                            sm={12}
-                                          >
-                                            <img src={MenuRaiseHand} alt="" />
-
-                                            <Dropdown>
-                                              <Dropdown.Toggle className="participant-toggle">
-                                                <img src={Menu} alt="" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Remove")}
-                                                </Dropdown.Item>
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Mute")}
-                                                </Dropdown.Item>
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Hide-video")}
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          </Col>
-                                        </Row>
-                                      );
-                                    }
-                                  )
-                                : null}
-                            </div>
-                          </>
-                        ) : (
-                          <Tooltip
-                            placement="topRight"
-                            title={t("Participants")}
-                          >
-                            <div
-                              className={
-                                LeaveCallModalFlag === true
-                                  ? "grayScaleImage"
-                                  : "inactive-state"
-                              }
-                            >
-                              <img
-                                src={ParticipantsIcon}
-                                onClick={() =>
-                                  closeParticipantHandler(1, false)
-                                }
-                                alt="Participants"
-                              />
-                            </div>
-                          </Tooltip>
-                        )}
-                        <span className="participants-counter-For-Host">
-                          {convertNumbersInString(participantCounter, lan)}
-                        </span>
-                        {participantWaitingListCounter > 0 && (
-                          <span className="participants-counter-For-Host-waiting-counter">
-                            {convertNumbersInString(
-                              participantWaitingListCounter,
-                              lan
-                            )}
-                          </span>
-                        )}
+                    {checkFeatureIDAvailability(5) ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true ||
+                          (isZoomEnabled && disableBeforeJoinZoom)
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle inactive-state"
+                        }
+                      >
+                        <Tooltip
+                          placement="topRight"
+                          title={
+                            isScreenActive
+                              ? t("Stop-sharing")
+                              : t("Screen-share")
+                          }
+                        >
+                          <img
+                            onClick={screenShareButton}
+                            src={NonActiveScreenShare}
+                            alt="Screen Share"
+                          />
+                        </Tooltip>
                       </div>
-                    ) : null
-                  }
-                  {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
+                    ) : null}
+
+                    <div
+                      onClick={raiseHandFunction}
+                      className={
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
+                          ? "grayScaleImage"
+                          : !handStatus
+                          ? "inactive-state"
+                          : "cursor-pointer active-state"
+                      }
+                    >
+                      <Tooltip
+                        placement="topRight"
+                        title={handStatus ? t("Lower-hand") : t("Raise-hand")}
+                      >
+                        <img
+                          src={handStatus ? LowerHand : RaiseHand}
+                          alt="Raise Hand"
+                        />
+                      </Tooltip>
+                    </div>
+
                     <div
                       className={
                         LeaveCallModalFlag === true
@@ -1179,68 +1057,224 @@ const VideoCallNormalHeader = ({
                           : "screenShare-Toggle inactive-state"
                       }
                     >
-                      <Tooltip placement="topRight" title={t("Chat")}>
+                      <Tooltip placement="topRight" title={t("Copy-link")}>
                         <img
-                          onClick={onClickCloseChatHandler}
-                          src={ChatIcon}
-                          alt="Chat"
+                          onClick={() => copyToClipboardd()}
+                          src={CopyLink}
+                          alt="Copy Link"
                         />
                       </Tooltip>
                     </div>
-                  ) : null}
 
-                  <Tooltip placement="topRight" title={t("Minimize")}>
-                    <div
-                      onClick={minimizeVideoPanel}
-                      className={
-                        LeaveCallModalFlag === true
-                          ? "grayScaleImage"
-                          : "inactive-state"
-                      }
-                    >
-                      <img src={MinimizeIcon} alt="Minimize" />
-                    </div>
-                  </Tooltip>
+                    {MaximizeVideoFlag === true ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true ||
+                          (isZoomEnabled && disableBeforeJoinZoom)
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle"
+                        }
+                      >
+                        <Tooltip placement="topRight" title={t("Layout")}>
+                          <img
+                            className={"cursor-pointer"}
+                            onClick={layoutCurrentChange}
+                            src={showTile ? TileView : SidebarView}
+                            alt="Layout Change"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : null}
 
-                  {LeaveCallModalFlag === true && callerID === currentUserID ? (
-                    <div className="active-state-end">
-                      <Tooltip placement="topRight" title={t("Cancel")}>
-                        <img
-                          onClick={cancelLeaveCallOption}
-                          src={videoEndIcon}
-                          alt="End Call"
-                        />
-                      </Tooltip>
-                    </div>
-                  ) : (LeaveCallModalFlag === false &&
-                      callerID === currentUserID) ||
-                      getMeetingHostInfo.isDashboardVideo ? (
-                    <Tooltip placement="topRight" title={t("Leave-call")}>
-                      <div className="inactive-state">
-                        <img
-                          className="cursor-pointer"
-                          src={CallEndRedIcon}
-                          onClick={openVideoPanel}
-                          alt="End Call"
-                        />
+                    {
+                      // callerID === currentUserID &&
+                      currentCallType === 2 || currentCallType === 3 ? (
+                        <div className={"position-relative"}>
+                          {ParticipantPopupFlag === true ? (
+                            <>
+                              <div className="cursor-pointer active-state">
+                                <img
+                                  src={ActiveParticipantIcon}
+                                  onClick={() =>
+                                    closeParticipantHandler(1, true)
+                                  }
+                                  alt="Active participants"
+                                />
+                              </div>
+                              <div className="participants-list">
+                                {currentParticipants !== undefined &&
+                                currentParticipants !== null &&
+                                currentParticipants.length > 0
+                                  ? currentParticipants.map(
+                                      (participantData, index) => {
+                                        return (
+                                          <Row className="m-0" key={index}>
+                                            <Col
+                                              className="p-0"
+                                              lg={7}
+                                              md={7}
+                                              sm={12}
+                                            >
+                                              <p className="participant-name">
+                                                {participantData.userName}
+                                              </p>
+                                            </Col>
+                                            <Col
+                                              className="d-flex justify-content-end align-items-canter gap-3 p-0"
+                                              lg={5}
+                                              md={5}
+                                              sm={12}
+                                            >
+                                              <img src={MenuRaiseHand} alt="" />
+
+                                              <Dropdown>
+                                                <Dropdown.Toggle className="participant-toggle">
+                                                  <img src={Menu} alt="" />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Remove")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Mute")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Hide-video")}
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            </Col>
+                                          </Row>
+                                        );
+                                      }
+                                    )
+                                  : null}
+                              </div>
+                            </>
+                          ) : (
+                            <Tooltip
+                              placement="topRight"
+                              title={t("Participants")}
+                            >
+                              <div
+                                className={
+                                  LeaveCallModalFlag === true
+                                    ? "grayScaleImage"
+                                    : "inactive-state"
+                                }
+                              >
+                                <img
+                                  src={ParticipantsIcon}
+                                  onClick={() =>
+                                    closeParticipantHandler(1, false)
+                                  }
+                                  alt="Participants"
+                                />
+                              </div>
+                            </Tooltip>
+                          )}
+                          <span className="participants-counter-For-Host">
+                            {convertNumbersInString(participantCounter, lan)}
+                          </span>
+                          {participantWaitingListCounter > 0 && (
+                            <span className="participants-counter-For-Host-waiting-counter">
+                              {convertNumbersInString(
+                                participantWaitingListCounter,
+                                lan
+                              )}
+                            </span>
+                          )}
+                        </div>
+                      ) : null
+                    }
+                    {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle inactive-state"
+                        }
+                      >
+                        <Tooltip placement="topRight" title={t("Chat")}>
+                          <img
+                            onClick={onClickCloseChatHandler}
+                            src={ChatIcon}
+                            alt="Chat"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : null}
+
+                    <Tooltip placement="topRight" title={t("Minimize")}>
+                      <div
+                        onClick={minimizeVideoPanel}
+                        className={
+                          LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "inactive-state"
+                        }
+                      >
+                        <img src={MinimizeIcon} alt="Minimize" />
                       </div>
                     </Tooltip>
-                  ) : LeaveCallModalFlag === false &&
-                    callerID !== currentUserID ? (
-                    <Tooltip placement="topRight" title={t("End-call")}>
-                      <img
-                        className="inactive-state"
-                        src={CallEndRedIcon}
-                        onClick={endCallParticipant}
-                        alt="End Call"
-                      />
-                    </Tooltip>
-                  ) : null}
 
-                  {NormalizeVideoFlag === true &&
-                  MinimizeVideoFlag === false &&
-                  MaximizeVideoFlag === false ? (
-                    <Tooltip placement="topRight" title={t("Expand")}>
+                    {LeaveCallModalFlag === true &&
+                    callerID === currentUserID ? (
+                      <div className="active-state-end">
+                        <Tooltip placement="topRight" title={t("Cancel")}>
+                          <img
+                            onClick={cancelLeaveCallOption}
+                            src={videoEndIcon}
+                            alt="End Call"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : (LeaveCallModalFlag === false &&
+                        callerID === currentUserID) ||
+                      getMeetingHostInfo.isDashboardVideo ? (
+                      <Tooltip placement="topRight" title={t("Leave-call")}>
+                        <div className="inactive-state">
+                          <img
+                            className="cursor-pointer"
+                            src={CallEndRedIcon}
+                            onClick={openVideoPanel}
+                            alt="End Call"
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : LeaveCallModalFlag === false &&
+                      callerID !== currentUserID ? (
+                      <Tooltip placement="topRight" title={t("End-call")}>
+                        <img
+                          className="inactive-state"
+                          src={CallEndRedIcon}
+                          onClick={endCallParticipant}
+                          alt="End Call"
+                        />
+                      </Tooltip>
+                    ) : null}
+
+                    {NormalizeVideoFlag === true &&
+                    MinimizeVideoFlag === false &&
+                    MaximizeVideoFlag === false ? (
+                      <Tooltip placement="topRight" title={t("Expand")}>
+                        <div
+                          className={
+                            LeaveCallModalFlag === true
+                              ? "grayScaleImage"
+                              : "inactive-state"
+                          }
+                        >
+                          <img
+                            src={ExpandIcon}
+                            onClick={otoMaximizeVideoPanel}
+                            alt="Expand"
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : NormalizeVideoFlag === false &&
+                      MinimizeVideoFlag === false &&
+                      MaximizeVideoFlag === true ? (
                       <div
                         className={
                           LeaveCallModalFlag === true
@@ -1248,270 +1282,458 @@ const VideoCallNormalHeader = ({
                             : "inactive-state"
                         }
                       >
-                        <img
-                          src={ExpandIcon}
-                          onClick={otoMaximizeVideoPanel}
-                          alt="Expand"
-                        />
+                        <Tooltip placement="topRight" title={t("Collapse")}>
+                          <img
+                            src={NormalizeIcon}
+                            alt="Maximize"
+                            onClick={normalizeScreen}
+                          />
+                        </Tooltip>
                       </div>
-                    </Tooltip>
-                  ) : NormalizeVideoFlag === false &&
-                    MinimizeVideoFlag === false &&
-                    MaximizeVideoFlag === true ? (
-                    <div
-                      className={
-                        LeaveCallModalFlag === true
-                          ? "grayScaleImage"
-                          : "inactive-state"
-                      }
-                    >
-                      <Tooltip placement="topRight" title={t("Collapse")}>
-                        <img
-                          src={NormalizeIcon}
-                          alt="Maximize"
-                          onClick={normalizeScreen}
-                        />
-                      </Tooltip>
-                    </div>
-                  ) : null}
-                </Col>
-              </>
-            ) : (
-              <>
-                {" "}
-                <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-                  <div
-                    // onClick={disableAudioForParticipant}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !isMicActive
-                        ? "cursor-pointer active-state"
-                        : "inactive-state"
-                    }
+                    ) : null}
+                  </Col>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    className="normal-screen-top-icons"
                   >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        audioControlForParticipant
-                          ? t("Enable-mic")
-                          : t("Disable-mic")
-                      }
-                    >
-                      <img
-                        src={audioControlForParticipant ? MicOff : MicOn}
-                        onClick={() =>
-                          muteUnMuteForParticipant(
-                            audioControlForParticipant ? false : true
-                          )
-                        }
-                        alt="Mic"
-                      />
-                    </Tooltip>
-                  </div>
-                  <div
-                    // onClick={disableVideoForParticipant}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !isVideoActive
-                        ? "cursor-pointer active-state"
-                        : "inactive-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        videoControlForParticipant
-                          ? t("Enable-video")
-                          : t("Disable-video")
-                      }
-                    >
-                      <img
-                        src={videoControlForParticipant ? VideoOff : VideoOn}
-                        onClick={() =>
-                          videoHideUnHideForParticipant(
-                            videoControlForParticipant ? false : true
-                          )
-                        }
-                        alt="Video"
-                      />
-                    </Tooltip>
-                  </div>
-                  {checkFeatureIDAvailability(5) ? (
                     <div
+                      // onClick={disableAudioForParticipant}
                       className={
                         LeaveCallModalFlag === true ||
                         (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
-                          : "screenShare-Toggle inactive-state"
+                          : !isMicActive
+                          ? "cursor-pointer active-state"
+                          : "inactive-state"
                       }
                     >
                       <Tooltip
                         placement="topRight"
                         title={
-                          isScreenActive ? t("Stop-sharing") : t("Screen-share")
+                          audioControlForParticipant
+                            ? t("Enable-mic")
+                            : t("Disable-mic")
                         }
                       >
                         <img
-                          onClick={screenShareButton}
-                          src={NonActiveScreenShare}
-                          alt="Screen Share"
+                          src={audioControlForParticipant ? MicOff : MicOn}
+                          onClick={() =>
+                            muteUnMuteForParticipant(
+                              audioControlForParticipant ? false : true
+                            )
+                          }
+                          alt="Mic"
                         />
                       </Tooltip>
                     </div>
-                  ) : null}
-
-                  <div
-                    // onClick={disableRaisedHandForParticipant}
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : !handStatus
-                        ? "inactive-state"
-                        : "cursor-pointer active-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={handStatus ? t("Lower-hand") : t("Raise-hand")}
-                    >
-                      <img
-                        src={
-                          raisedUnRaisedParticipant === true
-                            ? Raisehandselected
-                            : RaiseHand
-                        }
-                        onClick={raiseUnRaiseForParticipant}
-                        alt="Raise Hand"
-                      />
-                    </Tooltip>
-                  </div>
-
-                  {MaximizeVideoFlag === true ? (
                     <div
+                      // onClick={disableVideoForParticipant}
                       className={
                         LeaveCallModalFlag === true ||
                         (isZoomEnabled && disableBeforeJoinZoom)
                           ? "grayScaleImage"
-                          : "screenShare-Toggle"
+                          : !isVideoActive
+                          ? "cursor-pointer active-state"
+                          : "inactive-state"
                       }
                     >
-                      <Tooltip placement="topRight" title={t("Layout")}>
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          videoControlForParticipant
+                            ? t("Enable-video")
+                            : t("Disable-video")
+                        }
+                      >
                         <img
-                          className={"cursor-pointer"}
-                          onClick={layoutCurrentChange}
-                          src={showTile ? TileView : SidebarView}
-                          alt="Layout Change"
+                          src={videoControlForParticipant ? VideoOff : VideoOn}
+                          onClick={() =>
+                            videoHideUnHideForParticipant(
+                              videoControlForParticipant ? false : true
+                            )
+                          }
+                          alt="Video"
                         />
                       </Tooltip>
                     </div>
-                  ) : null}
+                    {checkFeatureIDAvailability(5) ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true ||
+                          (isZoomEnabled && disableBeforeJoinZoom)
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle inactive-state"
+                        }
+                      >
+                        <Tooltip
+                          placement="topRight"
+                          title={
+                            isScreenActive
+                              ? t("Stop-sharing")
+                              : t("Screen-share")
+                          }
+                        >
+                          <img
+                            onClick={screenShareButton}
+                            src={NonActiveScreenShare}
+                            alt="Screen Share"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : null}
 
-                  {
-                    // callerID === currentUserID &&
-                    currentCallType === 2 || currentCallType === 3 ? (
-                      <div className={"position-relative"}>
-                        {ParticipantPopupFlag === true ? (
-                          <>
-                            {console.log("check kerrai hy ")}
-                            <div className="cursor-pointer active-state">
-                              <img
-                                src={ActiveParticipantIcon}
-                                onClick={() => closeParticipantHandler(2, true)}
-                                alt="Active participants"
-                              />
-                            </div>
-                            <div className="participants-list">
-                              {currentParticipants !== undefined &&
-                              currentParticipants !== null &&
-                              currentParticipants.length > 0
-                                ? currentParticipants.map(
-                                    (participantData, index) => {
-                                      return (
-                                        <Row className="m-0" key={index}>
-                                          <Col
-                                            className="p-0"
-                                            lg={7}
-                                            md={7}
-                                            sm={12}
-                                          >
-                                            <p className="participant-name">
-                                              {participantData.userName}
-                                            </p>
-                                          </Col>
-                                          <Col
-                                            className="d-flex justify-content-end align-items-canter gap-3 p-0"
-                                            lg={5}
-                                            md={5}
-                                            sm={12}
-                                          >
-                                            <img src={MenuRaiseHand} alt="" />
+                    <div
+                      // onClick={disableRaisedHandForParticipant}
+                      className={
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
+                          ? "grayScaleImage"
+                          : !handStatus
+                          ? "inactive-state"
+                          : "cursor-pointer active-state"
+                      }
+                    >
+                      <Tooltip
+                        placement="topRight"
+                        title={handStatus ? t("Lower-hand") : t("Raise-hand")}
+                      >
+                        <img
+                          src={
+                            raisedUnRaisedParticipant === true
+                              ? Raisehandselected
+                              : RaiseHand
+                          }
+                          onClick={raiseUnRaiseForParticipant}
+                          alt="Raise Hand"
+                        />
+                      </Tooltip>
+                    </div>
 
-                                            <Dropdown>
-                                              <Dropdown.Toggle className="participant-toggle">
-                                                <img src={Menu} alt="" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                {/* <Dropdown.Item
+                    {MaximizeVideoFlag === true ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true ||
+                          (isZoomEnabled && disableBeforeJoinZoom)
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle"
+                        }
+                      >
+                        <Tooltip placement="topRight" title={t("Layout")}>
+                          <img
+                            className={"cursor-pointer"}
+                            onClick={layoutCurrentChange}
+                            src={showTile ? TileView : SidebarView}
+                            alt="Layout Change"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : null}
+
+                    {
+                      // callerID === currentUserID &&
+                      currentCallType === 2 || currentCallType === 3 ? (
+                        <div className={"position-relative"}>
+                          {ParticipantPopupFlag === true ? (
+                            <>
+                              {console.log("check kerrai hy ")}
+                              <div className="cursor-pointer active-state">
+                                <img
+                                  src={ActiveParticipantIcon}
+                                  onClick={() =>
+                                    closeParticipantHandler(2, true)
+                                  }
+                                  alt="Active participants"
+                                />
+                              </div>
+                              <div className="participants-list">
+                                {currentParticipants !== undefined &&
+                                currentParticipants !== null &&
+                                currentParticipants.length > 0
+                                  ? currentParticipants.map(
+                                      (participantData, index) => {
+                                        return (
+                                          <Row className="m-0" key={index}>
+                                            <Col
+                                              className="p-0"
+                                              lg={7}
+                                              md={7}
+                                              sm={12}
+                                            >
+                                              <p className="participant-name">
+                                                {participantData.userName}
+                                              </p>
+                                            </Col>
+                                            <Col
+                                              className="d-flex justify-content-end align-items-canter gap-3 p-0"
+                                              lg={5}
+                                              md={5}
+                                              sm={12}
+                                            >
+                                              <img src={MenuRaiseHand} alt="" />
+
+                                              <Dropdown>
+                                                <Dropdown.Toggle className="participant-toggle">
+                                                  <img src={Menu} alt="" />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  {/* <Dropdown.Item
                                                   className="participant-dropdown-item"
                                                   // onClick={() => makeLeaveOnClick()}
                                                 >
                                                   {t("Make-host")}
                                                 </Dropdown.Item> */}
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Remove")}
-                                                </Dropdown.Item>
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Mute")}
-                                                </Dropdown.Item>
-                                                <Dropdown.Item className="participant-dropdown-item">
-                                                  {t("Hide-video")}
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          </Col>
-                                        </Row>
-                                      );
-                                    }
-                                  )
-                                : null}
-                            </div>
-                          </>
-                        ) : (
-                          <Tooltip
-                            placement="topRight"
-                            title={t("Participants")}
-                          >
-                            <div
-                              className={
-                                LeaveCallModalFlag === true
-                                  ? "grayScaleImage"
-                                  : "inactive-state"
-                              }
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Remove")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Mute")}
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item className="participant-dropdown-item">
+                                                    {t("Hide-video")}
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            </Col>
+                                          </Row>
+                                        );
+                                      }
+                                    )
+                                  : null}
+                              </div>
+                            </>
+                          ) : (
+                            <Tooltip
+                              placement="topRight"
+                              title={t("Participants")}
                             >
-                              {console.log("check kerrai hy ")}
-
-                              <img
-                                src={ParticipantsIcon}
-                                onClick={() =>
-                                  closeParticipantHandler(2, false)
+                              <div
+                                className={
+                                  LeaveCallModalFlag === true
+                                    ? "grayScaleImage"
+                                    : "inactive-state"
                                 }
-                                alt="Participants"
-                              />
-                            </div>
-                          </Tooltip>
-                        )}
-                        <span className="participants-counter">
-                          {getAllParticipantMain.length > 0 &&
-                            getAllParticipantMain.length}
-                        </span>
+                              >
+                                {console.log("check kerrai hy ")}
+
+                                <img
+                                  src={ParticipantsIcon}
+                                  onClick={() =>
+                                    closeParticipantHandler(2, false)
+                                  }
+                                  alt="Participants"
+                                />
+                              </div>
+                            </Tooltip>
+                          )}
+                          <span className="participants-counter">
+                            {getAllParticipantMain.length > 0 &&
+                              getAllParticipantMain.length}
+                          </span>
+                        </div>
+                      ) : null
+                    }
+
+                    {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "screenShare-Toggle inactive-state"
+                        }
+                      >
+                        <Tooltip placement="topRight" title={t("Chat")}>
+                          <img
+                            onClick={onClickCloseChatHandler}
+                            src={ChatIcon}
+                            alt="Chat"
+                          />
+                        </Tooltip>
                       </div>
-                    ) : null
-                  }
+                    ) : null}
+
+                    <Tooltip placement="topRight" title={t("Minimize")}>
+                      <div
+                        onClick={minimizeVideoPanel}
+                        className={
+                          LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "inactive-state"
+                        }
+                      >
+                        <img src={MinimizeIcon} alt="Minimize" />
+                      </div>
+                    </Tooltip>
+
+                    {LeaveCallModalFlag === true &&
+                    callerID === currentUserID ? (
+                      <div className="active-state-end">
+                        <Tooltip placement="topRight" title={t("Cancel")}>
+                          <img
+                            onClick={cancelLeaveCallOption}
+                            src={videoEndIcon}
+                            alt="End Call"
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : (LeaveCallModalFlag === false &&
+                        callerID === currentUserID) ||
+                      getMeetingHostInfo.isDashboardVideo ? (
+                      <Tooltip placement="topRight" title={t("Leave-call")}>
+                        <div className="inactive-state">
+                          <img
+                            className="cursor-pointer"
+                            src={CallEndRedIcon}
+                            onClick={openVideoPanel}
+                            alt="End Call"
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : LeaveCallModalFlag === false &&
+                      callerID !== currentUserID ? (
+                      <Tooltip placement="topRight" title={t("End-call")}>
+                        <img
+                          className="inactive-state"
+                          src={CallEndRedIcon}
+                          onClick={endCallParticipant}
+                          alt="End Call"
+                        />
+                      </Tooltip>
+                    ) : null}
+
+                    {NormalizeVideoFlag === true &&
+                    MinimizeVideoFlag === false &&
+                    MaximizeVideoFlag === false ? (
+                      <Tooltip placement="topRight" title={t("Expand")}>
+                        <div
+                          className={
+                            LeaveCallModalFlag === true
+                              ? "grayScaleImage"
+                              : "inactive-state"
+                          }
+                        >
+                          <img
+                            src={ExpandIcon}
+                            onClick={otoMaximizeVideoPanel}
+                            alt="Expand"
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : NormalizeVideoFlag === false &&
+                      MinimizeVideoFlag === false &&
+                      MaximizeVideoFlag === true ? (
+                      <div
+                        className={
+                          LeaveCallModalFlag === true
+                            ? "grayScaleImage"
+                            : "inactive-state"
+                        }
+                      >
+                        <Tooltip placement="topRight" title={t("Collapse")}>
+                          <img
+                            src={NormalizeIcon}
+                            alt="Maximize"
+                            onClick={normalizeScreen}
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : null}
+                  </Col>
+                </>
+              )
+            ) : getMeetingHostInfo &&
+              !getMeetingHostInfo.isHost &&
+              getMeetingHostInfo.isDashboardVideo === false ? (
+              <>
+                <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+                  <div
+                    onClick={disableMic}
+                    className={
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
+                        ? "grayScaleImage"
+                        : !isMicActive
+                        ? "cursor-pointer active-state"
+                        : "inactive-state"
+                    }
+                  >
+                    <Tooltip
+                      placement="topRight"
+                      title={isMicActive ? t("Disable-mic") : t("Enable-mic")}
+                    >
+                      <img src={isMicActive ? MicOn : MicOff} alt="Mic" />
+                    </Tooltip>
+                  </div>
+                  <div
+                    onClick={disableVideo}
+                    className={
+                      LeaveCallModalFlag === true ||
+                      (isZoomEnabled && disableBeforeJoinZoom)
+                        ? "grayScaleImage"
+                        : !isVideoActive
+                        ? "cursor-pointer active-state"
+                        : "inactive-state"
+                    }
+                  >
+                    <Tooltip
+                      placement="topRight"
+                      title={
+                        isVideoActive ? t("Disable-video") : t("Enable-video")
+                      }
+                    >
+                      <img
+                        src={isVideoActive ? VideoOn : VideoOff}
+                        alt="Video"
+                      />
+                    </Tooltip>
+                  </div>
+                  {checkFeatureIDAvailability(5) ? (
+                    <div
+                      className={
+                        LeaveCallModalFlag === true ||
+                        (isZoomEnabled && disableBeforeJoinZoom)
+                          ? "grayScaleImage"
+                          : "screenShare-Toggle inactive-state"
+                      }
+                    >
+                      <Tooltip
+                        placement="topRight"
+                        title={
+                          isScreenActive ? t("Stop-sharing") : t("Screen-share")
+                        }
+                      >
+                        <img
+                          onClick={screenShareButton}
+                          src={NonActiveScreenShare}
+                          alt="Screen Share"
+                        />
+                      </Tooltip>
+                    </div>
+                  ) : null}
+
+                  {MaximizeVideoFlag === true ? (
+                    <div
+                      className={
+                        LeaveCallModalFlag === true
+                          ? "grayScaleImage"
+                          : "screenShare-Toggle"
+                      }
+                    >
+                      <Tooltip placement="topRight" title={t("Layout")}>
+                        <img
+                          className={"cursor-pointer"}
+                          onClick={layoutCurrentChange}
+                          src={showTile ? TileView : SidebarView}
+                          alt="Layout Change"
+                        />
+                      </Tooltip>
+                    </div>
+                  ) : null}
 
                   {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
                     <div
@@ -1556,8 +1778,8 @@ const VideoCallNormalHeader = ({
                     </div>
                   ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
-                      getMeetingHostInfo.isDashboardVideo ? (
-                    <Tooltip placement="topRight" title={t("Leave-call")}>
+                    getMeetingHostInfo.isDashboardVideo ? (
+                    <Tooltip placement="topRight" title={t("End-call")}>
                       <div className="inactive-state">
                         <img
                           className="cursor-pointer"
@@ -1618,180 +1840,147 @@ const VideoCallNormalHeader = ({
                   ) : null}
                 </Col>
               </>
-            )
-          ) : getMeetingHostInfo &&
-            !getMeetingHostInfo.isHost &&
-            getMeetingHostInfo.isDashboardVideo === false ? (
-            <>
-              <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-                <div
-                  onClick={disableMic}
-                  className={
-                    LeaveCallModalFlag === true ||
-                    (isZoomEnabled && disableBeforeJoinZoom)
-                      ? "grayScaleImage"
-                      : !isMicActive
-                      ? "cursor-pointer active-state"
-                      : "inactive-state"
+            ) : null}
+          </>
+        </Row>
+      )}
+
+      {presenterViewFlag && (
+        <>
+          <Row>
+            <Col lg={6} md={6} sm={12}>
+              <span>
+                <p>{t("Meeting-New-Title-Here")}</p>
+              </span>
+            </Col>
+            <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+              <div
+                className={
+                  LeaveCallModalFlag === true ||
+                  (isZoomEnabled && disableBeforeJoinZoom)
+                    ? "grayScaleImage"
+                    : !isMicActive
+                    ? "cursor-pointer active-state"
+                    : "inactive-state"
+                }
+              >
+                <Tooltip
+                  placement="topRight"
+                  title={
+                    audioControlForParticipant
+                      ? t("Enable-mic")
+                      : t("Disable-mic")
                   }
                 >
-                  <Tooltip
-                    placement="topRight"
-                    title={isMicActive ? t("Disable-mic") : t("Enable-mic")}
-                  >
-                    <img src={isMicActive ? MicOn : MicOff} alt="Mic" />
-                  </Tooltip>
-                </div>
+                  <img
+                    src={audioControlForParticipant ? MicOff : MicOn}
+                    alt="Mic"
+                  />
+                </Tooltip>
+              </div>
+              <div
+                // onClick={disableVideoForParticipant}
+                className={
+                  LeaveCallModalFlag === true ||
+                  (isZoomEnabled && disableBeforeJoinZoom)
+                    ? "grayScaleImage"
+                    : !isVideoActive
+                    ? "cursor-pointer active-state"
+                    : "inactive-state"
+                }
+              >
+                <Tooltip
+                  placement="topRight"
+                  title={
+                    videoControlForParticipant
+                      ? t("Enable-video")
+                      : t("Disable-video")
+                  }
+                >
+                  <img
+                    src={videoControlForParticipant ? VideoOff : VideoOn}
+                    alt="Video"
+                  />
+                </Tooltip>
+              </div>
+              {checkFeatureIDAvailability(5) ? (
                 <div
-                  onClick={disableVideo}
                   className={
-                    LeaveCallModalFlag === true ||
-                    (isZoomEnabled && disableBeforeJoinZoom)
+                    LeaveCallModalFlag === true
                       ? "grayScaleImage"
-                      : !isVideoActive
-                      ? "cursor-pointer active-state"
-                      : "inactive-state"
+                      : "screenShare-Toggle inactive-state"
                   }
                 >
                   <Tooltip
                     placement="topRight"
                     title={
-                      isVideoActive ? t("Disable-video") : t("Enable-video")
+                      isScreenActive ? t("Stop-sharing") : t("Screen-share")
                     }
                   >
-                    <img src={isVideoActive ? VideoOn : VideoOff} alt="Video" />
+                    <img src={NonActiveScreenShare} alt="Screen Share" />
                   </Tooltip>
                 </div>
-                {checkFeatureIDAvailability(5) ? (
-                  <div
-                    className={
-                      LeaveCallModalFlag === true ||
-                      (isZoomEnabled && disableBeforeJoinZoom)
-                        ? "grayScaleImage"
-                        : "screenShare-Toggle inactive-state"
-                    }
-                  >
-                    <Tooltip
-                      placement="topRight"
-                      title={
-                        isScreenActive ? t("Stop-sharing") : t("Screen-share")
-                      }
-                    >
-                      <img
-                        onClick={screenShareButton}
-                        src={NonActiveScreenShare}
-                        alt="Screen Share"
-                      />
-                    </Tooltip>
-                  </div>
-                ) : null}
+              ) : null}
 
-                {MaximizeVideoFlag === true ? (
-                  <div
-                    className={
-                      LeaveCallModalFlag === true
-                        ? "grayScaleImage"
-                        : "screenShare-Toggle"
+              <div
+                className={
+                  LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : !handStatus
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
+                }
+              >
+                <Tooltip
+                  placement="topRight"
+                  title={handStatus ? t("Lower-hand") : t("Raise-hand")}
+                >
+                  <img
+                    src={
+                      raisedUnRaisedParticipant === true
+                        ? Raisehandselected
+                        : RaiseHand
                     }
-                  >
-                    <Tooltip placement="topRight" title={t("Layout")}>
-                      <img
-                        className={"cursor-pointer"}
-                        onClick={layoutCurrentChange}
-                        src={showTile ? TileView : SidebarView}
-                        alt="Layout Change"
-                      />
-                    </Tooltip>
-                  </div>
-                ) : null}
-
-                {currentCallType === 1 && checkFeatureIDAvailability(3) ? (
-                  <div
-                    className={
-                      LeaveCallModalFlag === true
-                        ? "grayScaleImage"
-                        : "screenShare-Toggle inactive-state"
-                    }
-                  >
-                    <Tooltip placement="topRight" title={t("Chat")}>
-                      <img
-                        onClick={onClickCloseChatHandler}
-                        src={ChatIcon}
-                        alt="Chat"
-                      />
-                    </Tooltip>
-                  </div>
-                ) : null}
-
-                <Tooltip placement="topRight" title={t("Minimize")}>
-                  <div
-                    onClick={minimizeVideoPanel}
-                    className={
-                      LeaveCallModalFlag === true
-                        ? "grayScaleImage"
-                        : "inactive-state"
-                    }
-                  >
-                    <img src={MinimizeIcon} alt="Minimize" />
-                  </div>
+                    alt="Raise Hand"
+                  />
                 </Tooltip>
+              </div>
 
-                {LeaveCallModalFlag === true && callerID === currentUserID ? (
-                  <div className="active-state-end">
-                    <Tooltip placement="topRight" title={t("Cancel")}>
-                      <img
-                        onClick={cancelLeaveCallOption}
-                        src={videoEndIcon}
-                        alt="End Call"
-                      />
-                    </Tooltip>
-                  </div>
-                ) : (LeaveCallModalFlag === false &&
-                    callerID === currentUserID) ||
-                    getMeetingHostInfo.isDashboardVideo ? (
-                  <Tooltip placement="topRight" title={t("End-call")}>
-                    <div className="inactive-state">
-                      <img
-                        className="cursor-pointer"
-                        src={CallEndRedIcon}
-                        onClick={openVideoPanel}
-                        alt="End Call"
-                      />
-                    </div>
-                  </Tooltip>
-                ) : LeaveCallModalFlag === false &&
-                  callerID !== currentUserID ? (
-                  <Tooltip placement="topRight" title={t("End-call")}>
+              {MaximizeVideoFlag === true ? (
+                <div
+                  className={
+                    LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "screenShare-Toggle"
+                  }
+                >
+                  <Tooltip placement="topRight" title={t("Layout")}>
                     <img
-                      className="inactive-state"
-                      src={CallEndRedIcon}
-                      onClick={endCallParticipant}
-                      alt="End Call"
+                      className={"cursor-pointer"}
+                      src={showTile ? TileView : SidebarView}
+                      alt="Layout Change"
                     />
                   </Tooltip>
-                ) : null}
+                </div>
+              ) : null}
 
-                {NormalizeVideoFlag === true &&
-                MinimizeVideoFlag === false &&
-                MaximizeVideoFlag === false ? (
-                  <Tooltip placement="topRight" title={t("Expand")}>
-                    <div
-                      className={
-                        LeaveCallModalFlag === true
-                          ? "grayScaleImage"
-                          : "inactive-state"
-                      }
-                    >
-                      <img
-                        src={ExpandIcon}
-                        onClick={otoMaximizeVideoPanel}
-                        alt="Expand"
-                      />
-                    </div>
-                  </Tooltip>
-                ) : NormalizeVideoFlag === false &&
-                  MinimizeVideoFlag === false &&
-                  MaximizeVideoFlag === true ? (
+              <Tooltip placement="topRight" title={t("Minimize")}>
+                <div
+                  onClick={minimizeVideoPanel}
+                  className={
+                    LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "inactive-state"
+                  }
+                >
+                  <img src={MinimizeIcon} alt="Minimize" />
+                </div>
+              </Tooltip>
+
+              {NormalizeVideoFlag === true &&
+              MinimizeVideoFlag === false &&
+              MaximizeVideoFlag === false ? (
+                <Tooltip placement="topRight" title={t("Expand")}>
                   <div
                     className={
                       LeaveCallModalFlag === true
@@ -1799,21 +1988,32 @@ const VideoCallNormalHeader = ({
                         : "inactive-state"
                     }
                   >
-                    <Tooltip placement="topRight" title={t("Collapse")}>
-                      <img
-                        src={NormalizeIcon}
-                        alt="Maximize"
-                        onClick={normalizeScreen}
-                      />
-                    </Tooltip>
+                    <img src={ExpandIcon} alt="Expand" />
                   </div>
-                ) : null}
-              </Col>
-            </>
-          ) : null}
+                </Tooltip>
+              ) : NormalizeVideoFlag === false &&
+                MinimizeVideoFlag === false &&
+                MaximizeVideoFlag === true ? (
+                <div
+                  className={
+                    LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "inactive-state"
+                  }
+                >
+                  <Tooltip placement="topRight" title={t("Collapse")}>
+                    <img
+                      src={NormalizeIcon}
+                      alt="Maximize"
+                      onClick={normalizeScreen}
+                    />
+                  </Tooltip>
+                </div>
+              ) : null}
+            </Col>
+          </Row>
         </>
-      </Row>
-
+      )}
       <div ref={leaveModalPopupRef}>
         {LeaveCallModalFlag === true ? (
           <div className="leave-meeting-options leave-meeting-options-position">

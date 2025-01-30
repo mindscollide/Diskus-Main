@@ -124,7 +124,7 @@ img.normalize-Icon-Large {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor:not-allowed;
+  cursor: not-allowed;
   margin-right: 10px;
 }
 
