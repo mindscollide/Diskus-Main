@@ -200,7 +200,7 @@ const ViewMeetingModal = ({
           setAttendees(false);
           setactionsPage(false);
         } else if (Number(routeID) === 5) {
-          setMeetingMaterial(true);
+          setMeetingMaterial(false);
           setAgendaContributors(false);
           setorganizers(false);
           setmeetingDetails(false);

@@ -324,11 +324,6 @@ const PendingApproval = () => {
   ];
 
   useEffect(() => {
-    if (localStorage.getItem("reviewMinutesLink") !== null) {
-      let Data = { EncryptedString: localStorage.getItem("reviewMinutesLink") };
-      dispatch(validateEncryptedMinutesReviewerApi(Data, navigate, t));
-    }
-    console.log("reviewMinutesLink", localStorage.getItem("reviewMinutesLink"));
     let Data = { sRow: 0, Length: 10 };
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
     dispatch(GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t));
@@ -336,6 +331,10 @@ const PendingApproval = () => {
     if (JSON.parse(localStorage.getItem("MinutesOperations")) === true) {
       dispatch(reviewMinutesPage(true));
       dispatch(pendingApprovalPage(false));
+    }
+    if (localStorage.getItem("reviewMinutesLink") !== null) {
+      let Data = { EncryptedString: localStorage.getItem("reviewMinutesLink") };
+      dispatch(validateEncryptedMinutesReviewerApi(Data, navigate, t));
     }
   }, []);
 
@@ -357,7 +356,7 @@ const PendingApproval = () => {
           dispatch(pendingApprovalPage(false));
           dispatch(currentMeetingMinutesToReview(record));
         }
-
+        localStorage.removeItem("");
         dispatch(validateEncryptedMinutesReviewer_clear());
       }
     } catch (error) {}

@@ -2470,6 +2470,7 @@ const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
                   ""
                 )
               );
+              localStorage.removeItem("reviewMinutesLink");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
