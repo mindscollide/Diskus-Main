@@ -205,6 +205,12 @@ const VideoPanelNormal = () => {
     (state) => state.VideoMainReducer.VideoCallResponseData
   );
 
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  console.log(presenterViewFlag, "presenterViewFlag");
+
   const [allParticipant, setAllParticipant] = useState([]);
 
   const [participantsList, setParticipantsList] = useState([]);
@@ -977,9 +983,10 @@ const VideoPanelNormal = () => {
                   : NormalizeVideoFlag === false &&
                     MinimizeVideoFlag === false &&
                     MaximizeVideoFlag === true &&
-                    VideoChatPanel === false
-                  ? "max-video-panel more-zindex"
-                  : ""
+                    VideoChatPanel === false &&
+                    presenterViewFlag
+                  ? "Presenter-Max-VideoPanel"
+                  : "max-video-panel more-zindex"
               }
             >
               {FullLoader === true ? (
