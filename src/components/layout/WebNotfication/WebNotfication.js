@@ -967,6 +967,7 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 26) {
         if (currentURL.includes("/Diskus/resolution")) {
+          localStorage.setItem("ResolutionAccessDenied", true);
           dispatch(
             getResolutionbyResolutionID(
               navigate,
@@ -978,6 +979,7 @@ const WebNotfication = ({
         } else {
           //Notification for Added as Voter in the resolution
           navigate("/Diskus/resolution");
+          localStorage.setItem("ResolutionAccessDenied", true);
           dispatch(
             getResolutionbyResolutionID(
               navigate,
