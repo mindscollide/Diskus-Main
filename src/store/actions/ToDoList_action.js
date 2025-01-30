@@ -24,6 +24,7 @@ import {
   ValidateEncryptedStringViewTaskDetailsLinkRM,
 } from "../../commen/apis/Api_config";
 import {
+  AccessDeniedPolls,
   getTaskCommitteeIDApi,
   getTasksByGroupIDApi,
   setTasksByCommitteeApi,
@@ -488,6 +489,7 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
             ) {
               await dispatch(ViewToDoFail(t("No-records-found")));
               setViewFlagToDo(false);
+              dispatch(AccessDeniedPolls(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2006,9 +2008,7 @@ const validateEncryptedStringViewTaskListLinkApi = (
             };
           } else {
             dispatch(
-              validateEncryptedStringViewTaskListLink_Fail(
-                t("Unsuccessful")
-              )
+              validateEncryptedStringViewTaskListLink_Fail(t("Unsuccessful"))
             );
             return {
               isExecuted: false,
@@ -2039,9 +2039,7 @@ const validateEncryptedStringViewTaskListLinkApi = (
       }
     } catch (error) {
       dispatch(
-        validateEncryptedStringViewTaskListLink_Fail(
-          t("Something-went-wrong")
-        )
+        validateEncryptedStringViewTaskListLink_Fail(t("Something-went-wrong"))
       );
       return {
         isExecuted: false,

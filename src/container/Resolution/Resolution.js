@@ -67,6 +67,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useResolutionContext } from "../../context/ResolutionContext";
+import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -108,6 +109,9 @@ const Resolution = () => {
   );
   const ResolutionReducerLoading = useSelector(
     (state) => state.ResolutionReducer.Loading
+  );
+  const AccessDeniedGlobalState = useSelector(
+    (state) => state.PollsReducer.AccessDeniedPolls
   );
   const [totalResolution, setTotalResolution] = useState(0);
   const [totalVoterResolution, setTotalVoterResolution] = useState(0);
@@ -1848,6 +1852,7 @@ const Resolution = () => {
         Id={resolutionIDForCancel}
       />
       <Notification open={open} setOpen={setOpen} />
+      {AccessDeniedGlobalState && <AccessDeniedModal />}
     </>
   );
 };

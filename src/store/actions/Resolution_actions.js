@@ -26,6 +26,7 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import { AccessDeniedPolls } from "./Polls_actions";
 
 // Save Files Init
 const saveFiles_init = () => {
@@ -1157,6 +1158,7 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
               "Resolution_ResolutionServiceManager_GetResolutionByID_02".toLowerCase()
             ) {
               dispatch(getResolutionById_Fail(t("Unable-to-fetch-data")));
+              dispatch(AccessDeniedPolls(true));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResolutionByID_03".toLowerCase()
