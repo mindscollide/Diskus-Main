@@ -1352,6 +1352,7 @@ const NewMeeting = () => {
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
+    dispatch(viewMeetingFlag(true))
   };
 
   const openProposedNewMeetingPage = () => {
@@ -3692,7 +3693,8 @@ const NewMeeting = () => {
                   <Col lg={12} md={12} sm={12}>
                     <ReactBootstrapDropdown
                       className='SceduleMeetingButton'
-                      onClick={eventClickHandler}>
+                      // onClick={eventClickHandler}
+                      >
                       <ReactBootstrapDropdown.Toggle
                         title={t("Schedule-a-meeting")}>
                         <Row>
