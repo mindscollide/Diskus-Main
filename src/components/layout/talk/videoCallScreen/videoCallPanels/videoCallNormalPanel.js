@@ -432,8 +432,8 @@ const VideoPanelNormal = () => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow !== null) {
           console.log("busyCall");
 
           iframe.contentWindow.postMessage("leaveSession", "*");
@@ -803,8 +803,8 @@ const VideoPanelNormal = () => {
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
           // Post message to iframe
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
@@ -858,8 +858,8 @@ const VideoPanelNormal = () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let videoView = localStorage.getItem("VideoView");
       if (LeaveCallModalFlag === false) {
-      const iframe = iframeRef.current;
-      if (iframe && videoView === "Sidebar") {
+        const iframe = iframeRef.current;
+        if (iframe && videoView === "Sidebar") {
           iframe.contentWindow.postMessage("TileView", "*");
           localStorage.setItem("VideoView", "TileView");
           setShowTile(true);
@@ -877,7 +877,7 @@ const VideoPanelNormal = () => {
   const disableMicFunction = () => {
     try {
       const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
+      if (iframe && iframe.contentWindow && presenterViewFlag) {
         console.log("disableMicFunction");
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);

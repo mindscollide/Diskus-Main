@@ -2360,5 +2360,12 @@
   "Access-this": "access this",
   "Access-denied": "Access Denied",
   "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:",
-  "Has-changed-his-vote-in": " has changed his Vote in:"
+  "Has-changed-his-vote-in": " has changed his Vote in:",
+  "Start-presenting": "Start Presenting",
+  "Stop-presenting": "Stop Presenting",
+  "Presentation-is-already-underway": "Presentation is already underway",
+  "Error-while-starting-presentation": "Error while starting presentation",
+  "Error-while-stop-presentation": "Error while stop presentation",
+  "could-not-join-schedule-call": "could not join schedule call",
+  "Could-not-join-presentation": "Could not join presentation"
 }

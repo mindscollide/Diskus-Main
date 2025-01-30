@@ -84,6 +84,11 @@ const initialState = {
   disableBeforeJoinZoom: true,
   presenterMeetingId: null,
   presenterViewFlag: false,
+  presenterOpenView: null,
+  presenterViewStart: null,
+  presenterViewStop: null,
+  joinPresenterView: null,
+  leavePresenterView: null,
 
   // startOrStopPresenter: false,
 };
@@ -998,6 +1003,136 @@ const videoFeatureReducer = (state = initialState, action) => {
         presenterMeetingId: action.payload.presenterMeetingId,
         presenterViewFlag: action.payload.presenterViewFlag,
       };
+
+    // For Open Presenter View Api
+    case actions.OPEN_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.OPEN_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterOpenView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.OPEN_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterOpenView: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Start Presenter View Api
+    case actions.START_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.START_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStart: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.START_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStart: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Stop Presenter View Api
+    case actions.STOP_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.STOP_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStop: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.STOP_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStop: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Join Presenter View Api
+    case actions.JOIN_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresenterView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresenterView: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For leave Presenter View Api
+    case actions.LEAVE_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.LEAVE_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        leavePresenterView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leavePresenterView: null,
+        ResponseMessage: action.message,
+      };
+    }
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
       return {

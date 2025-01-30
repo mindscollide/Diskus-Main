@@ -4,7 +4,13 @@ import {
   getVideoCallParticipantsForGuest,
   hideUnHidePaticipantVideo,
   joinMeetingVideoRequest,
+  joinPresenterView,
+  leavePresenterView,
   muteUnMuteParticipant,
+  openPresenterView,
+  OpenPresenterView,
+  startPresenterView,
+  stopPresenterView,
 } from "../../commen/apis/Api_config";
 import { meetingApi, videoApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1265,6 +1271,485 @@ const presenterViewGlobalState = (presenterMeetingId, presenterViewFlag) => {
   };
 };
 
+// For Open Presenter View
+const openPresenterInit = () => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_INIT,
+  };
+};
+
+const openPresenterSuccess = (response, message) => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const openPresenterFail = (message) => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const openPresenterViewMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(openPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", openPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(openPresenterViewMainApi());
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                openPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(openPresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(openPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(openPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(openPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(openPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR START PRESENTER
+const startPresenterInit = () => {
+  return {
+    type: actions.START_PRESENTER_VIEW_INIT,
+  };
+};
+
+const startPresenterSuccess = (response, message) => {
+  return {
+    type: actions.START_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const startPresenterFail = (message) => {
+  return {
+    type: actions.START_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const startPresenterViewMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(startPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", startPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(startPresenterViewMainApi());
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                startPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                startPresenterFail(t("Presentation-is-already-underway"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                startPresenterFail(t("Error-while-starting-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(startPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(startPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(startPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(startPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR STop PRESENTER
+const stopPresenterInit = () => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_INIT,
+  };
+};
+
+const stopPresenterSuccess = (response, message) => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const stopPresenterFail = (message) => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const stopPresenterViewMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(stopPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", stopPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(stopPresenterViewMainApi());
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                stopPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(stopPresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                stopPresenterFail(t("Error-while-stop-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(stopPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(stopPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(stopPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(stopPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR JOIN PRESENTER
+const joinPresenterInit = () => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_INIT,
+  };
+};
+
+const joinPresenterSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinPresenterFail = (message) => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const joinPresenterViewMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(joinPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(joinPresenterViewMainApi());
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("could-not-join-schedule-call"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("invalid-video-call-url-provided"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("Could-not-join-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_05".toLowerCase()
+                )
+            ) {
+              await dispatch(joinPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(joinPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(joinPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(joinPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR LEAVE PRESENTER
+const leavePresenterInit = () => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_INIT,
+  };
+};
+
+const leavePresenterSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const leavePresenterFail = (message) => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const leavePresenterViewMainApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(leavePresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", leavePresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify());
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(leavePresenterViewMainApi());
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                leavePresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(leavePresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(leavePresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(leavePresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(leavePresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leavePresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1356,4 +1841,9 @@ export {
   setParticipantRemovedFromVideobyHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
   presenterViewGlobalState,
+  openPresenterViewMainApi,
+  startPresenterViewMainApi,
+  stopPresenterViewMainApi,
+  joinPresenterViewMainApi,
+  leavePresenterViewMainApi,
 };

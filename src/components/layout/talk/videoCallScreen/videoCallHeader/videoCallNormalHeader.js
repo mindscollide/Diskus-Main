@@ -944,7 +944,7 @@ const VideoCallNormalHeader = ({
                     : audioControlForParticipant
                     ? t("Enable-mic")
                     : t("Disable-mic")
-                  : isMicActive
+                  : isMicActive || presenterViewFlag
                   ? t("Disable-mic")
                   : t("Enable-mic")
               }
@@ -959,7 +959,7 @@ const VideoCallNormalHeader = ({
                       : audioControlForParticipant
                       ? MicOff
                       : MicOn
-                    : isMicActive
+                    : isMicActive || presenterViewFlag
                     ? MicOn
                     : MicOff
                 }
@@ -997,7 +997,7 @@ const VideoCallNormalHeader = ({
                     : videoControlForParticipant
                     ? t("Enable-video")
                     : t("Disable-video")
-                  : isVideoActive
+                  : isVideoActive || presenterViewFlag
                   ? t("Disable-video")
                   : t("Enable-video")
               }
@@ -1012,7 +1012,7 @@ const VideoCallNormalHeader = ({
                       : videoControlForParticipant
                       ? VideoOff
                       : VideoOn
-                    : isVideoActive
+                    : isVideoActive || presenterViewFlag
                     ? VideoOn
                     : VideoOff
                 }
@@ -1040,7 +1040,11 @@ const VideoCallNormalHeader = ({
             >
               <Tooltip
                 placement="topRight"
-                title={isScreenActive ? t("Stop-sharing") : t("Screen-share")}
+                title={
+                  isScreenActive || presenterViewFlag
+                    ? t("Stop-sharing")
+                    : t("Screen-share")
+                }
               >
                 <img
                   onClick={screenShareButton}
