@@ -8415,26 +8415,66 @@ const LeaveCurrentMeeting = (
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  let searchData = {
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(userID),
-                    PageNumber: Number(meetingPageCurrent),
-                    Length: Number(meetingpageRow),
-                    PublishedMeetings:
-                      currentView && Number(currentView) === 1 ? true : false,
-                  };
-                  console.log("chek search meeting");
-                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                  localStorage.removeItem("folderDataRoomMeeting");
-                  setEditorRole({ status: null, role: null });
-                  setAdvanceMeetingModalID(null);
-                  if (typeof setViewAdvanceMeetingModal === "function") {
-                    setViewAdvanceMeetingModal(false);
+                  if (
+                    localStorage.getItem("navigateLocation") === "resolution"
+                  ) {
+                    navigate("/Diskus/resolution");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "dataroom"
+                  ) {
+                    navigate("/Diskus/dataroom");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "committee"
+                  ) {
+                    navigate("/Diskus/committee");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "groups"
+                  ) {
+                    navigate("/Diskus/groups");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "calendar"
+                  ) {
+                    navigate("/Diskus/calendar");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "todolist"
+                  ) {
+                    navigate("/Diskus/todolist");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "Notes"
+                  ) {
+                    navigate("/Diskus/Notes");
+                  } else {
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
+                    };
+                    console.log("chek search meeting");
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
+                    localStorage.removeItem("folderDataRoomMeeting");
+                    setEditorRole({ status: null, role: null });
+                    setAdvanceMeetingModalID(null);
+                    if (typeof setViewAdvanceMeetingModal === "function") {
+                      setViewAdvanceMeetingModal(false);
+                    }
+                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                   }
-                  dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                  dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                 }
 
                 // let newName = localStorage.getItem("name");

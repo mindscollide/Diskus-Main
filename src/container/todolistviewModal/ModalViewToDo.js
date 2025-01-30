@@ -388,10 +388,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const handleClose = () => {
     dispatch(emptyCommentState());
     setViewFlagToDo(false);
-    localStorage.removeItem("viewadvanceMeetingTask");
-    localStorage.removeItem("NotificationClickTaskID");
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
   };
 
   return (
