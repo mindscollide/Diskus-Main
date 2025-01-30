@@ -1031,12 +1031,15 @@ const Dashboard = () => {
                 let getMeetingHost = JSON.parse(
                   localStorage.getItem("meetinHostInfo")
                 );
-
+                let isMicEnabled = JSON.parse(
+                  localStorage.getItem("isMicEnabled")
+                );
                 if (getMeetingHost.isHost) {
                   console.log("check 22");
                   dispatch(videoIconOrButtonState(true));
                   dispatch(participantVideoButtonState(false));
                   localStorage.setItem("isMeetingVideoHostCheck", true);
+                  
                 } else {
                   console.log("check 22");
                   dispatch(videoIconOrButtonState(false));
