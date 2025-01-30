@@ -2188,6 +2188,7 @@ const Dashboard = () => {
               };
               if (IncomingVideoCallFlagReducer === true) {
                 dispatch(VideoCallResponse(Data, navigate, t));
+                localStorage.setItem("NewRoomID", 0);
               }
             }, timeValue);
             localStorage.setItem("activeRoomID", data.payload.roomID);
@@ -2212,6 +2213,7 @@ const Dashboard = () => {
         ) {
           dispatch(videoOutgoingCallFlag(false));
           dispatch(videoCallAccepted(data.payload, data.payload.message));
+          localStorage.setItem("ringerRoomId", 0);
           localStorage.setItem("NewRoomID", 0);
           localStorage.setItem("callerID", data.receiverID[0]);
           localStorage.setItem("callerName", data.payload.callerName);
@@ -2260,6 +2262,7 @@ const Dashboard = () => {
         ) {
           console.log("mqtt");
           //To make false sessionStorage which is set on VideoCall
+          localStorage.setItem("ringerRoomId", 0);
           sessionStorage.setItem("NonMeetingVideoCall", false);
           console.log("mqtt");
           let callerID = Number(localStorage.getItem("callerID"));
@@ -2377,6 +2380,7 @@ const Dashboard = () => {
         ) {
           //To make false sessionStorage which is set on VideoCall
           sessionStorage.setItem("NonMeetingVideoCall", false);
+          localStorage.setItem("ringerRoomId", 0);
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
@@ -2569,6 +2573,7 @@ const Dashboard = () => {
               let acceptedRoomID = Number(
                 localStorage.getItem("acceptedRoomID")
               );
+
               dispatch(incomingVideoCallFlag(false));
               if (activeRoomID !== acceptedRoomID) {
                 console.log("Check 123");
@@ -2760,6 +2765,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
           if (data.payload.recepientID !== Number(createrID)) {
+            localStorage.setItem("ringerRoomId", 0);
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(videoChatMessagesFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
