@@ -461,6 +461,25 @@ const Polls = ({
     );
   };
 
+  const voteCastModalBeforeDueDateOnTitle = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollByPollIdforMeeting(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
+
   const ViewVoteButtonOnClick = (record) => {
     console.log(record, "ViewVoteButtonOnClick");
     let data = {
@@ -506,14 +525,27 @@ const Polls = ({
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        return (
-          <span
-            className={styles["DateClass"]}
-            onClick={() => handleClickTitle(record)}
-          >
-            {text}
-          </span>
-        );
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        if (currentDate < convertIntoGmt) {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() => voteCastModalBeforeDueDateOnTitle(record)}
+            >
+              {text}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() => handleClickTitle(record)}
+            >
+              {text}
+            </span>
+          );
+        }
       },
     },
 

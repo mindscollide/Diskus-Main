@@ -285,6 +285,25 @@ const GroupViewPolls = ({ groupStatus }) => {
     }
   };
 
+  const handleClickonTitleBeforeDueDate = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollByPollIdforGroups(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setViewUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
+
   const handleClickVoteCast = (record) => {
     let data = {
       PollID: record.pollID,
@@ -422,14 +441,28 @@ const GroupViewPolls = ({ groupStatus }) => {
         },
       }),
       render: (text, record) => {
-        return (
-          <span
-            className={styles["DateClass"]}
-            onClick={() => handleClickonTitle(record)}
-          >
-            {truncateString(text, 50)}
-          </span>
-        );
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+
+        if (currentDate < convertIntoGmt && groupStatus === 3) {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() => handleClickonTitleBeforeDueDate(record)}
+            >
+              {truncateString(text, 50)}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() => handleClickonTitle(record)}
+            >
+              {truncateString(text, 50)}
+            </span>
+          );
+        }
       },
     },
 
