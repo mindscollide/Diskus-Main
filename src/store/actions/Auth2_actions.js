@@ -30,6 +30,7 @@ import {
   clearLocalStorageAtloginresponce,
   getFormData,
   handleLoginResponse,
+  handleNavigation,
 } from "../../commen/functions/utils";
 import {
   USERPASSWORDVERIFICATION,
@@ -397,77 +398,33 @@ const validationEmailAction = (email, navigate, t) => {
                   t("Not-a-valid-user-please-login-with-valid-user")
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_08".toLowerCase()
+                )
+            ) {
+              dispatch(validationEmailFail(t("Trail-request-pending")));
+              dispatch(LoginFlowRoutes(1));
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithUserEmail_09".toLowerCase()
+                )
+            ) {
+              localStorage.setItem("LoginFlowPageRoute", 1);
+              dispatch(
+                validationEmailFail(t("Trial-request-rejected-for-this-org"))
+              );
+              navigate("/");
+              dispatch(LoginFlowRoutes(1));
             }
           } else {
-            let MessageResponce = "";
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_01".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Device-does-not-exists");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_02".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Device-id-does-not-exists");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_03".toLowerCase()
-                )
-            ) {
-              MessageResponce = t("Users-password-is-created");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_04".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User's-password-is-created-but-somthing-went-wrong."
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_05".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User-password-is-not-created-please-create-your-password"
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_06".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "User-email-is-not-verified-Please-verify-your-email"
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_AuthManager_LoginWithUserEmail_07".toLowerCase()
-                )
-            ) {
-              MessageResponce = t(
-                "Not-a-valid-user-Please-login-with-valid-user"
-              );
-            } else {
-              MessageResponce = t("Something-went-wrong");
-            }
-            dispatch(validationEmailFail(MessageResponce));
+            dispatch(validationEmailFail(t("Something-went-wrong")));
           }
         } else {
           dispatch(validationEmailFail(t("Something-went-wrong")));
@@ -509,28 +466,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
     DeviceID: "1",
     UserPassword: value,
   };
-  let RSVP = localStorage.getItem("RSVP");
-  let dataroomValue = localStorage.getItem("DataRoomEmail");
-  let AgCont = localStorage.getItem("AgCont");
-  let AdOrg = localStorage.getItem("AdOrg");
-  let MeetingStr = localStorage.getItem("meetingStr");
-  let MeetinUpd = localStorage.getItem("meetingUpd");
-  let MeetingMin = localStorage.getItem("meetingMin");
-  let Meetingprop = localStorage.getItem("meetingprop");
-  let meetingCanc = localStorage.getItem("meetingCanc");
-  let mtAgUpdate = localStorage.getItem("mtAgUpdate");
-  let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
-  let pollExpire = localStorage.getItem("pollExpire");
-  let PollUpd = localStorage.getItem("poUpda");
-  let PollPublish = localStorage.getItem("poPub");
-  let documentViewer = localStorage.getItem("documentViewer");
-  let viewFolderLink = localStorage.getItem("viewFolderLink");
-  let committeeView_Id = localStorage.getItem("committeeView_Id");
-  let committeeList = localStorage.getItem("committeeList");
-  let groupView_Id = localStorage.getItem("groupView_Id");
-  let groupList = localStorage.getItem("groupList");
-  let taskListView_Id = localStorage.getItem("taskListView_Id");
-  let taskListView = localStorage.getItem("taskListView");
+
   return async (dispatch) => {
     dispatch(enterPasswordInit());
     const formData = getFormData(data, userPasswordVerify);
@@ -642,184 +578,24 @@ const enterPasswordvalidation = (value, navigate, t) => {
           // clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
-          if (response.data.responseResult.hasAdminRights) {
-            mqttConnection(
-              response.data.responseResult.authToken.userID,
-              dispatch
-            );
+          dispatch(
+            enterPasswordSuccess(
+              response.data.responseResult,
+              t("Password-verified-admin-user")
+            )
+          );
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
+          handleNavigation(
+            navigate,
+            response.data.responseResult.authToken.isFirstLogIn,
+            response.data.responseResult.hasUserRights,
+            response.data.responseResult.hasAdminRights,
+            dispatch
+          );
 
-            dispatch(
-              enterPasswordSuccess(
-                response.data.responseResult,
-                t("Password-verified-admin-user")
-              )
-            );
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/Admin/ManageUsers");
-            } else {
-              if (response.data.responseResult.authToken.isFirstLogIn) {
-                if (RSVP !== null) {
-                  navigate("/Diskus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null ||
-                  documentViewer !== null ||
-                  viewFolderLink !== null
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else if (
-                  MeetingStr !== null ||
-                  MeetinUpd !== null ||
-                  MeetingMin !== null ||
-                  Meetingprop !== null ||
-                  AgCont !== null ||
-                  AdOrg !== null ||
-                  mtAgUpdate !== null ||
-                  UserMeetPropoDatPoll !== null ||
-                  meetingCanc !== null
-                ) {
-                  navigate("/Diskus/Meeting");
-                } else if (
-                  PollPublish !== null ||
-                  PollUpd !== null ||
-                  pollExpire !== null
-                ) {
-                  navigate("/Diskus/polling");
-                } else if (
-                  committeeView_Id !== null ||
-                  committeeList !== null
-                ) {
-                  navigate("/Diskus/committee");
-                } else if (groupView_Id !== null || groupList !== null) {
-                  navigate("/Diskus/groups");
-                } else if (taskListView_Id !== null || taskListView !== null) {
-                  navigate("/Diskus/todolist");
-                } else {
-                  navigate("/onboard");
-                }
-              } else {
-                if (RSVP !== null) {
-                  navigate("/Diskus/Meeting/Useravailabilityformeeting");
-                } else if (
-                  dataroomValue !== null ||
-                  documentViewer !== null ||
-                  viewFolderLink !== null
-                ) {
-                  navigate("/Diskus/dataroom");
-                } else if (
-                  MeetingStr !== null ||
-                  MeetinUpd !== null ||
-                  MeetingMin !== null ||
-                  Meetingprop !== null ||
-                  AgCont !== null ||
-                  AdOrg !== null ||
-                  meetingCanc !== null
-                ) {
-                  navigate("/Diskus/Meeting");
-                } else if (
-                  PollPublish !== null ||
-                  PollUpd !== null ||
-                  pollExpire !== null
-                ) {
-                  navigate("/Diskus/polling");
-                } else if (
-                  committeeView_Id !== null ||
-                  committeeList !== null
-                ) {
-                  navigate("/Diskus/committee");
-                } else if (groupView_Id !== null || groupList !== null) {
-                  navigate("/Diskus/groups");
-                } else if (taskListView_Id !== null || taskListView !== null) {
-                  navigate("/Diskus/todolist");
-                } else {
-                  navigate("/Diskus/");
-                }
-              }
-            }
-            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
-          } else if (response.data.responseResult.hasUserRights) {
-            dispatch(enterPasswordSuccess(response.data.responseResult, ""));
-            mqttConnection(
-              response.data.responseResult.authToken.userID,
-              dispatch
-            );
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              if (RSVP !== null) {
-                navigate("/Diskus/Meeting/Useravailabilityformeeting");
-              } else if (
-                dataroomValue !== null ||
-                documentViewer !== null ||
-                viewFolderLink !== null
-              ) {
-                navigate("/Diskus/dataroom");
-              } else if (
-                MeetingStr !== null ||
-                MeetinUpd !== null ||
-                MeetingMin !== null ||
-                Meetingprop !== null ||
-                AgCont !== null ||
-                AdOrg !== null ||
-                mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null ||
-                meetingCanc !== null
-              ) {
-                navigate("/Diskus/Meeting");
-              } else if (
-                PollPublish !== null ||
-                PollUpd !== null ||
-                pollExpire !== null
-              ) {
-                navigate("/Diskus/polling");
-              } else if (committeeView_Id !== null || committeeList !== null) {
-                navigate("/Diskus/committee");
-              } else if (groupView_Id !== null || groupList !== null) {
-                navigate("/Diskus/groups");
-              } else if (taskListView_Id !== null || taskListView !== null) {
-                navigate("/Diskus/todolist");
-              } else {
-                navigate("/onboard");
-              }
-            } else {
-              if (RSVP !== null) {
-                navigate("/Diskus/Meeting/Useravailabilityformeeting");
-              } else if (
-                dataroomValue !== null ||
-                documentViewer !== null ||
-                viewFolderLink !== null
-              ) {
-                navigate("/Diskus/dataroom");
-              } else if (
-                MeetingStr !== null ||
-                MeetinUpd !== null ||
-                MeetingMin !== null ||
-                Meetingprop !== null ||
-                AgCont !== null ||
-                AdOrg !== null ||
-                mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null ||
-                meetingCanc !== null
-              ) {
-                navigate("/Diskus/Meeting");
-              } else if (
-                PollPublish !== null ||
-                PollUpd !== null ||
-                pollExpire !== null
-              ) {
-                navigate("/Diskus/polling");
-              } else if (committeeView_Id !== null || committeeList !== null) {
-                navigate("/Diskus/committee");
-              } else if (groupView_Id !== null || groupList !== null) {
-                navigate("/Diskus/groups");
-              } else if (taskListView_Id !== null || taskListView !== null) {
-                navigate("/Diskus/todolist");
-              } else {
-                navigate("/Diskus/");
-              }
-            }
-          } else {
-            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-            dispatch(LoginFlowRoutes(1));
-          }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
@@ -842,98 +618,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
-          if (response.data.responseResult.hasUserRights) {
-            mqttConnection(
-              response.data.responseResult.authToken.userID,
-              dispatch
-            );
+          mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
+          handleNavigation(
+            navigate,
+            response.data.responseResult.authToken.isFirstLogIn,
+            response.data.responseResult.hasUserRights,
+            response.data.responseResult.hasAdminRights,
+            dispatch
+          );
 
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              if (RSVP !== null) {
-                navigate("/Diskus/Meeting/Useravailabilityformeeting");
-              } else if (
-                dataroomValue !== null ||
-                documentViewer !== null ||
-                viewFolderLink !== null
-              ) {
-                navigate("/Diskus/dataroom");
-              } else if (
-                MeetingStr !== null ||
-                MeetinUpd !== null ||
-                MeetingMin !== null ||
-                Meetingprop !== null ||
-                AgCont !== null ||
-                AdOrg !== null ||
-                mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null ||
-                meetingCanc !== null
-              ) {
-                navigate("/Diskus/Meeting");
-              } else if (
-                PollPublish !== null ||
-                PollUpd !== null ||
-                pollExpire !== null
-              ) {
-                navigate("/Diskus/polling");
-              } else if (committeeView_Id !== null || committeeList !== null) {
-                navigate("/Diskus/committee");
-              } else if (groupView_Id !== null || groupList !== null) {
-                navigate("/Diskus/groups");
-              } else if (taskListView_Id !== null || taskListView !== null) {
-                navigate("/Diskus/todolist");
-              } else {
-                navigate("/onboard");
-              }
-            } else {
-              if (RSVP !== null) {
-                navigate("/Diskus/Meeting/Useravailabilityformeeting");
-              } else if (
-                dataroomValue !== null ||
-                documentViewer !== null ||
-                viewFolderLink !== null
-              ) {
-                navigate("/Diskus/dataroom");
-              } else if (
-                MeetingStr !== null ||
-                MeetinUpd !== null ||
-                MeetingMin !== null ||
-                Meetingprop !== null ||
-                AgCont !== null ||
-                AdOrg !== null ||
-                mtAgUpdate !== null ||
-                UserMeetPropoDatPoll !== null ||
-                meetingCanc !== null
-              ) {
-                navigate("/Diskus/Meeting");
-              } else if (
-                PollPublish !== null ||
-                PollUpd !== null ||
-                pollExpire
-              ) {
-                navigate("/Diskus/polling");
-              } else if (committeeView_Id !== null || committeeList !== null) {
-                navigate("/Diskus/committee");
-              } else if (groupView_Id !== null || groupList !== null) {
-                navigate("/Diskus/groups");
-              } else if (taskListView_Id !== null || taskListView !== null) {
-                navigate("/Diskus/todolist");
-              } else {
-                navigate("/Diskus/");
-              }
-            }
-            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
-
-            dispatch(
-              enterPasswordSuccess(
-                response.data.responseResult,
-                t("Password-verified-user")
-              )
-            );
-          } else {
-            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-            dispatch(LoginFlowRoutes(1));
-            dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
-          }
           // route to onboard
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_17:
@@ -1955,6 +1651,28 @@ const verificationEmailOTP = (
               localStorage.removeItem("LoginFlowPageRoute");
               localStorage.removeItem("SignupFlowPageRoute");
               navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_05".toLowerCase()
+                )
+            ) {
+              dispatch(verifyOTPFail(t("Trail-request-pending")));
+              localStorage.removeItem("LoginFlowPageRoute");
+              localStorage.removeItem("SignupFlowPageRoute");
+              navigate("/");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_06".toLowerCase()
+                )
+            ) {
+              dispatch(verifyOTPFail(t("Trial-request-rejected-for-this=Org")));
+              localStorage.removeItem("LoginFlowPageRoute");
+              localStorage.removeItem("SignupFlowPageRoute");
+              navigate("/");
             }
           } else {
             dispatch(verifyOTPFail(t("Something-went-wrong")));
@@ -2142,22 +1860,27 @@ const createPasswordAction = (value, navigate, t) => {
           break;
         case USERSPASSWORDCREATION.CREATION_07:
           // Password Created and this is a user
-          if (response.data.responseResult.hasUserRights) {
-            if (response.data.responseResult.authToken.isFirstLogIn) {
-              navigate("/onboard");
-            } else {
-              navigate("/Diskus");
-            }
-            clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+          handleNavigation(
+            navigate,
+            response.data.responseResult.authToken.isFirstLogIn,
+            dispatch
+          );
+          // if (response.data.responseResult.hasUserRights) {
+          //   if (response.data.responseResult.authToken.isFirstLogIn) {
+          //     navigate("/onboard");
+          //   } else {
+          //     navigate("/Diskus");
+          //   }
+          //   clearLocalStorageAtloginresponce(dispatch, 1, navigate);
 
-            dispatch(createPasswordSuccess(response.data.responseResult, ""));
-          } else {
-            clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-            dispatch(LoginFlowRoutes(1));
-            dispatch(
-              createPasswordFail(t("User-not-authorised-contact-admin"))
-            );
-          }
+          //   dispatch(createPasswordSuccess(response.data.responseResult, ""));
+          // } else {
+          //   clearLocalStorageAtloginresponce(dispatch, 2, navigate);
+          //   dispatch(LoginFlowRoutes(1));
+          //   dispatch(
+          //     createPasswordFail(t("User-not-authorised-contact-admin"))
+          //   );
+          // }
           // no action
           break;
         case USERSPASSWORDCREATION.CREATION_08:

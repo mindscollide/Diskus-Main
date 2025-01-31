@@ -33,7 +33,7 @@ const PrivateRoutes = () => {
           );
 
           localStorage.setItem("RSVP", getValue);
-          localStorage.setItem("mobilePopUpAppRoute",parts)
+          localStorage.setItem("mobilePopUpAppRoute", parts);
         }
 
         // Action: Data Room
@@ -307,15 +307,24 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "viewMeeting_action=");
           localStorage.setItem("viewMeetingLink", getValue);
         }
-  
+
         if (
           currentUrl
             .toLowerCase()
-            .includes("/Diskus/Minutes/?MRAP=".toLowerCase())
+            .includes("/Diskus/Minutes?MRAP=".toLowerCase())
         ) {
           let getValue = getActionValue(currentUrl, "MRAP=");
 
           localStorage.setItem("reviewMinutesLink", getValue);
+        }
+
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("/DisKus/Meeting?MRSP=".toLowerCase())
+        ) {
+          let getValue = getActionValue(currentUrl, "MRSP=");
+          localStorage.setItem("reviewSubmittedMinutesLink", getValue);
         }
         if (
           currentUrl
@@ -356,24 +365,30 @@ const PrivateRoutes = () => {
   ) : (
     <Navigate
       to={
-        currentUrl !== "" &&
-        (currentUrl
-          .toLowerCase()
-          .includes(
-            "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
-          ) ||
-          currentUrl.toLowerCase().includes("Diskus/dataroom".toLowerCase()) ||
-          currentUrl
+        (currentUrl !== "" &&
+          (currentUrl
             .toLowerCase()
             .includes(
-              "Diskus/documentViewer?documentViewer_action".toLowerCase()
+              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase()
             ) ||
-          currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/committee".toLowerCase()) ||
-          currentUrl.toLowerCase().includes("Diskus/resolution".toLowerCase())) || 
-          currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase()) 
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/dataroom".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes(
+                "Diskus/documentViewer?documentViewer_action".toLowerCase()
+              ) ||
+            currentUrl.toLowerCase().includes("Diskus/Meeting".toLowerCase()) ||
+            currentUrl.toLowerCase().includes("Diskus/polling".toLowerCase()) ||
+            currentUrl.toLowerCase().includes("Diskus/groups".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/committee".toLowerCase()) ||
+            currentUrl
+              .toLowerCase()
+              .includes("Diskus/resolution".toLowerCase()))) ||
+        currentUrl.toLowerCase().includes("Diskus/Minutes".toLowerCase())
           ? "/"
           : currentUser === null && token === ""
           ? "/"

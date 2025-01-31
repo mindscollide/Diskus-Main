@@ -1722,3 +1722,100 @@ export const generateRandomPositiveId = () => {
   // Generate a random positive integer in the range [min, max]
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+export const handleNavigation = (
+  navigate,
+  isFirstLogin,
+  // userRights,
+  // adminRights,
+  dispatch
+) => {
+  const RSVP = localStorage.getItem("RSVP");
+  const dataroomValue = localStorage.getItem("DataRoomEmail");
+  const AgCont = localStorage.getItem("AgCont");
+  const AdOrg = localStorage.getItem("AdOrg");
+  const MeetingStr = localStorage.getItem("meetingStr");
+  const MeetinUpd = localStorage.getItem("meetingUpd");
+  const MeetingMin = localStorage.getItem("meetingMin");
+  const Meetingprop = localStorage.getItem("meetingprop");
+  const meetingCanc = localStorage.getItem("meetingCanc");
+  const mtAgUpdate = localStorage.getItem("mtAgUpdate");
+  const UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
+  const pollExpire = localStorage.getItem("pollExpire");
+  const PollUpd = localStorage.getItem("poUpda");
+  const PollPublish = localStorage.getItem("poPub");
+  const documentViewer = localStorage.getItem("documentViewer");
+  const viewFolderLink = localStorage.getItem("viewFolderLink");
+  const committeeView_Id = localStorage.getItem("committeeView_Id");
+  const committeeList = localStorage.getItem("committeeList");
+  const groupView_Id = localStorage.getItem("groupView_Id");
+  const groupList = localStorage.getItem("groupList");
+  const taskListView_Id = localStorage.getItem("taskListView_Id");
+  const taskListView = localStorage.getItem("taskListView");
+  const reviewSubmittedMinutesLink = localStorage.getItem(
+    "reviewSubmittedMinutesLink"
+  );
+  const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
+  const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
+
+  if (isFirstLogin) {
+    // if (adminRights) {
+    //   navigate("/Admin/ManageUsers");
+    // } else if (userRights) {
+    navigate("/onboard");
+    // }
+  } else if (!isFirstLogin) {
+    // if (adminRights) {
+    //   navigate("/Admin/ManageUsers");
+    // } else if (userRights) {
+    if (RSVP !== null) {
+      navigate("/Diskus/Meeting/Useravailabilityformeeting");
+    } else if (
+      dataroomValue !== null ||
+      documentViewer !== null ||
+      viewFolderLink !== null
+    ) {
+      navigate("/Diskus/dataroom");
+    } else if (
+      MeetingStr !== null ||
+      MeetinUpd !== null ||
+      MeetingMin !== null ||
+      Meetingprop !== null ||
+      AgCont !== null ||
+      AdOrg !== null ||
+      mtAgUpdate !== null ||
+      UserMeetPropoDatPoll !== null ||
+      meetingCanc !== null ||
+      reviewSubmittedMinutesLink !== null ||
+      viewPublishMinutesLink !== null
+    ) {
+      navigate("/Diskus/Meeting");
+    } else if (
+      PollPublish !== null ||
+      PollUpd !== null ||
+      pollExpire !== null
+    ) {
+      navigate("/Diskus/polling");
+    } else if (committeeView_Id !== null || committeeList !== null) {
+      navigate("/Diskus/committee");
+    } else if (groupView_Id !== null || groupList !== null) {
+      navigate("/Diskus/groups");
+    } else if (taskListView_Id !== null || taskListView !== null) {
+      navigate("/Diskus/todolist");
+    } else if (reviewMinutesLink !== null) {
+      navigate("/Diskus/Minutes");
+    } else {
+      navigate("/Diskus/");
+    }
+    // }
+  } else {
+    // dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
+    clearLocalStorageAtloginresponce(dispatch, 2, navigate);
+    dispatch(LoginFlowRoutes(1));
+  }
+};
+
+
+export const getFileName = (fileName) => {
+  return fileName.split(".")[0]
+}

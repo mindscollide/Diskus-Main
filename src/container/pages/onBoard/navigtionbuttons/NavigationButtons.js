@@ -14,6 +14,7 @@ import {
 } from "../../../../store/actions/OnBoardStates";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { handleNavigation } from "../../../../commen/functions/utils";
 
 const NavigationButtons = () => {
   const { t } = useTranslation();
@@ -87,35 +88,35 @@ const NavigationButtons = () => {
   return (
     <>
       {currentStep !== 5 ? (
-        <div className="containerforButtons-onboard_forscreen1">
-          <Row className="">
+        <div className='containerforButtons-onboard_forscreen1'>
+          <Row className=''>
             {currentStep !== 0 ? (
-              <Col className="">
+              <Col className=''>
                 <Button
                   text={t("Prev")}
                   icon={
                     <ChevronLeft
                       size={16}
                       width={22}
-                      className="for-icon-prev-btn"
+                      className='for-icon-prev-btn'
                     />
                   }
-                  className="skipButtons-onboard_forscreen1"
+                  className='skipButtons-onboard_forscreen1'
                   onClick={goPrevStep}
                 />
               </Col>
             ) : (
-              <Col className=""> </Col>
+              <Col className=''> </Col>
             )}
 
             <Col>
               {currentLanguage === "ar" ? (
                 <Button
                   text={t("Next")}
-                  className="skipButtons-onboard_forscreen2"
+                  className='skipButtons-onboard_forscreen2'
                   icon2={<ChevronRight size={16} width={22} />}
                   onClick={goNextStep}
-                  locale="ar"
+                  locale='ar'
                 />
               ) : (
                 <Button
@@ -124,21 +125,20 @@ const NavigationButtons = () => {
                     <ChevronRight
                       size={16}
                       width={22}
-                      className="for-icon-next-btn"
+                      className='for-icon-next-btn'
                     />
                   }
-                  className="skipButtons-onboard_forscreen2"
+                  className='skipButtons-onboard_forscreen2'
                   onClick={goNextStep}
-                  locale="en"
+                  locale='en'
                 />
               )}
             </Col>
           </Row>
           <Row>
             <Col
-              onClick={() => navigate("/Diskus")}
-              className="d-flex justify-content-center mt-2"
-            >
+              onClick={() => handleNavigation(navigate, false, dispatch)}
+              className='d-flex justify-content-center mt-2'>
               <h3 className={`tour-skip_demo ${currentLanguage}`}>
                 {t("Skip-demo")}
               </h3>

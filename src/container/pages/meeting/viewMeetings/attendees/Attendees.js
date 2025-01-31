@@ -17,12 +17,18 @@ import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
-const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
+const Attendees = () => {
   const dispatch = useDispatch();
   const [organizersData, setOrganizersData] = useState([]);
   const [participantsData, setParticipantsData] = useState([]);
   const [agendaContributorsData, setAgendaContributorsData] = useState([]);
-  const { editorRole, setEditorRole } = useMeetingContext();
+  const {
+    editorRole,
+    setEditorRole,
+    advanceMeetingModalID,
+    setViewAdvanceMeetingModal,
+    setAttendees,
+  } = useMeetingContext();
 
   const [Attending, setAttending] = useState(0);
   const [mayBe, setMayBe] = useState(0);
@@ -45,7 +51,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
       let MeetingData = { MeetingID: Number(NotificationClickMeetingID) };
       dispatch(getAllMeetingUsersRSVPApi(navigate, t, MeetingData));
     } else {
-      let MeetingData = { MeetingID: Number(MeetingID) };
+      let MeetingData = { MeetingID: Number(advanceMeetingModalID) };
       dispatch(getAllMeetingUsersRSVPApi(navigate, t, MeetingData));
     }
   }, []);
@@ -99,7 +105,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
     } else {
       if (editorRole.status === 10 || editorRole.status === "10") {
         let leaveMeetingData = {
-          FK_MDID: Number(MeetingID),
+          FK_MDID: Number(advanceMeetingModalID),
           DateTime: getCurrentDateTimeUTC(),
         };
         dispatch(
@@ -110,7 +116,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
             false,
             false,
             setEditorRole,
-            MeetingID,
+            advanceMeetingModalID,
             false
           )
         );
@@ -190,8 +196,7 @@ const Attendees = ({ MeetingID, setViewAdvanceMeetingModal, setAttendees }) => {
         sm={12}
         md={12}
         lg={12}
-        className={`${styles["Attendees_container"]}`}
-      >
+        className={`${styles["Attendees_container"]}`}>
         <section className={styles["Members_Area"]}>
           <p className={styles["AttendeesAreaHeading"]}>Organizers</p>
           <div className={styles["Cards"]}>

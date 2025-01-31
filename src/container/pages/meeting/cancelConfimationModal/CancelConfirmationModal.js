@@ -8,6 +8,8 @@ import { Button } from "../../../../components/elements";
 import {
   LeaveCurrentMeeting,
   searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
@@ -24,34 +26,59 @@ const CancelConfirmationModal = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
+  let userID = localStorage.getItem("userID");
 
   const handleClickContinue = async () => {
-    // setCancelConfirmationModal(false);
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(localStorage.getItem("userID")),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    localStorage.setItem("MeetingPageRows", 30);
-    localStorage.setItem("MeetingPageCurrent", 1);
-    console.log("chek search meeting");
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
-    setAdvanceMeetingModalID(0);
-    setViewAdvanceMeetingModal(false);
     setCancelConfirmationModal(false);
-    localStorage.removeItem("NotificationAdvanceMeetingID");
-    localStorage.removeItem("QuickMeetingCheckNotification");
-    localStorage.removeItem("viewadvanceMeetingPolls");
-    localStorage.removeItem("NotificationClickPollID");
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationClickTaskID");
-    localStorage.removeItem("viewadvanceMeetingTask");
+
+    if (localStorage.getItem("navigateLocation") === "resolution") {
+      navigate("/Diskus/resolution");
+    } else if (localStorage.getItem("navigateLocation") === "dataroom") {
+      navigate("/Diskus/dataroom");
+    } else if (localStorage.getItem("navigateLocation") === "committee") {
+      navigate("/Diskus/committee");
+    } else if (localStorage.getItem("navigateLocation") === "groups") {
+      navigate("/Diskus/groups");
+    } else if (localStorage.getItem("navigateLocation") === "polling") {
+      navigate("/Diskus/polling");
+    } else if (localStorage.getItem("navigateLocation") === "polling") {
+      navigate("/Diskus/polling");
+    } else if (localStorage.getItem("navigateLocation") === "calendar") {
+      navigate("/Diskus/calendar");
+    } else if (localStorage.getItem("navigateLocation") === "todolist") {
+      navigate("/Diskus/todolist");
+    } else if (localStorage.getItem("navigateLocation") === "Notes") {
+      navigate("/Diskus/Notes");
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: Number(meetingPageCurrent),
+        Length: Number(meetingpageRow),
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      console.log("chek search meeting");
+      await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+      setAdvanceMeetingModalID(null);
+      setAdvanceMeetingModalID(0);
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
+      localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("QuickMeetingCheckNotification");
+      localStorage.removeItem("viewadvanceMeetingPolls");
+      localStorage.removeItem("NotificationClickPollID");
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationClickTaskID");
+      localStorage.removeItem("viewadvanceMeetingTask");
+    }
   };
   const handleClickDiscard = () => {
     setCancelConfirmationModal(false);
@@ -70,7 +97,7 @@ const CancelConfirmationModal = () => {
               </span>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className='mt-2'>
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
@@ -88,8 +115,7 @@ const CancelConfirmationModal = () => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               <Button
                 text={t("Discard")}
                 className={styles["No_unsave_File_Upload"]}
