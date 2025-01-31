@@ -8347,6 +8347,9 @@ const LeaveCurrentMeeting = (
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(showEndMeetingModal(false));
+              if (typeof setViewAdvanceMeetingModal === "function") {
+                setViewAdvanceMeetingModal(false);
+              }
               try {
                 dispatch(currentMeetingStatus(0));
 
@@ -8469,9 +8472,7 @@ const LeaveCurrentMeeting = (
                     localStorage.removeItem("folderDataRoomMeeting");
                     setEditorRole({ status: null, role: null });
                     setAdvanceMeetingModalID(null);
-                    if (typeof setViewAdvanceMeetingModal === "function") {
-                      setViewAdvanceMeetingModal(false);
-                    }
+
                     dispatch(viewAdvanceMeetingPublishPageFlag(false));
                     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                   }

@@ -175,12 +175,12 @@ const LanguageSelector = () => {
     >
       <span
         className={
-          location.pathname.includes("/Diskus/") ||
-          location.pathname.includes("/Diskus") ||
-          location.pathname.includes("/Diskus/") ||
-          location.pathname.includes("/paymentForm") ||
-          location.pathname.includes("/signuporganization") ||
-          location.pathname.includes("/Admin")
+          location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+          location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+          location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
+          location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
+          location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+          location.pathname.toLowerCase().includes("/Admin".toLowerCase())
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
@@ -194,12 +194,12 @@ const LanguageSelector = () => {
         {languageDropdown ? (
           <img
             src={
-              location.pathname.includes("/Diskus/") ||
-              location.pathname.includes("/Diskus/") ||
-              location.pathname.includes("/Diskus") ||
-              location.pathname.includes("/paymentForm") ||
-              location.pathname.includes("/signuporganization") ||
-              location.pathname.includes("/Admin")
+              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Admin".toLowerCase())
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
@@ -210,12 +210,12 @@ const LanguageSelector = () => {
         ) : (
           <img
             src={
-              location.pathname.includes("/Diskus/") ||
-              location.pathname.includes("/Diskus/") ||
-              location.pathname.includes("/Diskus") ||
-              location.pathname.includes("/paymentForm") ||
-              location.pathname.includes("/signuporganization") ||
-              location.pathname.includes("/Admin")
+              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+              location.pathname.toLowerCase().includes("/Admin".toLowerCase())
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }

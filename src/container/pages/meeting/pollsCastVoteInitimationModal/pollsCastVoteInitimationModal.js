@@ -14,22 +14,24 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../../store/actions/VideoFeature_actions";
-const PollsCastVoteInitimationModal = ({
-  setAgenda,
-  setParticipants,
-  setAgendaContributors,
-  setorganizers,
-  setmeetingDetails,
-  setMinutes,
-  setactionsPage,
-  setAttendance,
-  setPolls,
-  setMeetingMaterial,
-  setAttendees,
-}) => {
+import { useMeetingContext } from "../../../../context/MeetingContext";
+const PollsCastVoteInitimationModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [pollDetails, setPollDetails] = useState(null);
+  const {
+    setAgenda,
+    setParticipants,
+    setAgendaContributors,
+    setorganizers,
+    setmeetingDetails,
+    setMinutes,
+    setactionsPage,
+    setAttendance,
+    setPolls,
+    setMeetingMaterial,
+    setAttendees,
+  } = useMeetingContext();
   const castYourVotePollModalState = useSelector(
     (state) => state.PollsReducer.castPollVoteModal
   );
@@ -118,7 +120,7 @@ const PollsCastVoteInitimationModal = ({
           <Row>
             <Col lg={8} md={8} sm={8} className='d-flex flex-column flex-wrap'>
               <span className={styles["VotingStartedModalheading"]}>
-              {pollDetails?.title}
+                {pollDetails?.title}
               </span>
               <span className={styles["MeetingTitleSubheading"]}>
                 {/* `${}: ` */}

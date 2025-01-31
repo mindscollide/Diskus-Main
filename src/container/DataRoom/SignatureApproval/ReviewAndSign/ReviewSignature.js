@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import DescendIcon from "../../../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../../../MinutesNewFlow/Images/SorterIconAscend.png";
+import ArrowDownIcon from "../../../MinutesNewFlow/Images/Arrow-down.png";
+import ArrowUpIcon from "../../../MinutesNewFlow/Images/Arrow-up.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import ReviewSignatureEmptyImage from "../../../../assets/images/Review&Sign_EmptyState.png";
 import {
@@ -257,9 +259,9 @@ const ReviewSignature = () => {
           <span className='d-flex justify-content-center gap-2 align-items-center'>
             {t("Date-and-time")}{" "}
             {sortOrderDateTime === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={ArrowUpIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={ArrowDownIcon} alt='' />
             )}
           </span>
         </>
@@ -270,7 +272,7 @@ const ReviewSignature = () => {
       width: "180px",
       ellipsis: true,
       sorter: (a, b) =>
-        utcConvertintoGMT(a.deadline) - utcConvertintoGMT(b.deadline),
+        utcConvertintoGMT(a.sentOn) - utcConvertintoGMT(b.sentOn),
       onHeaderCell: () => ({
         onClick: () => {
           setSortOrderDateTime((order) => {
@@ -413,7 +415,7 @@ const ReviewSignature = () => {
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
-
+  console.log(reviewSignature, "reviewSignaturereviewSignature")
   return (
     <>
       <Row>
@@ -512,6 +514,8 @@ const ReviewSignature = () => {
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}
               className={"PendingApprovalsTable"}
+              sticky={true}
+              showHeader={true}
               locale={{
                 emptyText: (
                   <>

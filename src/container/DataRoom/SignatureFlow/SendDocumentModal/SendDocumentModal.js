@@ -8,6 +8,8 @@ import DeleteButton from "../../../../assets/images/delete_dataroom.png";
 import FolderIcon from "../../../../assets/images/folder_icon_gridview.svg";
 import EditIcon from "../../../../assets/images/editicon.png";
 import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
+import { getFileName } from "../../../../commen/functions/utils";
+import { Tooltip } from "antd";
 
 const SendDocumentModal = ({
   sendDocumentModal,
@@ -71,7 +73,10 @@ const SendDocumentModal = ({
               md={12}
               lg={12}
               className={styles["sendDocument_Heading"]}>
-              {t("Send-data-storage-retention-policy")}
+                <Tooltip placement="top" title={getFileName(pdfResponceData?.title)} showArrow={false}>
+              {getFileName(pdfResponceData?.title)}
+              </Tooltip>
+              {/* {t("Send-data-storage-retention-policy")} */}
             </Col>
             <Col sm={12} md={12} lg={12} className={styles["Email_Heading"]}>
               {t("Email-to-signer")}

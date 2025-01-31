@@ -23,6 +23,7 @@ const initialState = {
   getDashboardPendingApprovalData: null,
   getSignatureFileAnnotationResponse: null,
   addUpdateSignatureFileAnnotationResponse: null,
+  validateEncryptedStringMinuteReviewData: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -478,6 +479,34 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringMinuteReviewData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringMinuteReviewData: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_MINUTES_ADD_REVIEWER_CLEAR: {
+      return {
+        ...state,
+        validateEncryptedStringMinuteReviewData: null,
       };
     }
 

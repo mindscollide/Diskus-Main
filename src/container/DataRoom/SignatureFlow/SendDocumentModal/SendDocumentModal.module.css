@@ -3,6 +3,10 @@
   font-weight: 600;
   color: #6172d6;
   margin-bottom: 1.5rem;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .Email_Heading {

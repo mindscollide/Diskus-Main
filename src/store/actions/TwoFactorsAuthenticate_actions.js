@@ -8,7 +8,10 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { LoginFlowRoutes } from "./UserManagementActions";
-import { clearLocalStorageAtloginresponce } from "../../commen/functions/utils";
+import {
+  clearLocalStorageAtloginresponce,
+  handleNavigation,
+} from "../../commen/functions/utils";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -649,30 +652,6 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
-              let RSVP = localStorage.getItem("RSVP");
-              let dataroomValue = localStorage.getItem("DataRoomEmail");
-              let AgCont = localStorage.getItem("AgCont");
-              let AdOrg = localStorage.getItem("AdOrg");
-              let MeetingStr = localStorage.getItem("meetingStr");
-              let MeetinUpd = localStorage.getItem("meetingUpd");
-              let MeetingMin = localStorage.getItem("meetingMin");
-              let Meetingprop = localStorage.getItem("meetingprop");
-              let meetingCanc = localStorage.getItem("meetingCanc");
-              let mtAgUpdate = localStorage.getItem("mtAgUpdate");
-              let UserMeetPropoDatPoll = localStorage.getItem(
-                "UserMeetPropoDatPoll"
-              );
-              let pollExpire = localStorage.getItem("pollExpire");
-              let PollUpd = localStorage.getItem("poUpda");
-              let PollPublish = localStorage.getItem("poPub");
-              let documentViewer = localStorage.getItem("documentViewer");
-              let viewFolderLink = localStorage.getItem("viewFolderLink");
-              let committeeView_Id = localStorage.getItem("committeeView_Id");
-              let committeeList = localStorage.getItem("committeeList");
-              let groupView_Id = localStorage.getItem("groupView_Id");
-              let groupList = localStorage.getItem("groupList");
-              let taskListView_Id = localStorage.getItem("taskListView_Id");
-              let taskListView = localStorage.getItem("taskListView");
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -680,64 +659,12 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 )
               );
               localStorage.setItem("TowApproval", true);
-              console.log("TowApproval");
-              let hasAdminRights = localStorage.getItem("hasAdminRights");
-              let hasUserRights = localStorage.getItem("hasUserRights");
-              let isFirstLogin = localStorage.getItem("isFirstLogin");
+              let isFirstLogin = JSON.parse(
+                localStorage.getItem("isFirstLogin")
+              );
+              handleNavigation(navigate, isFirstLogin, dispatch);
 
               clearLocalStorageAtloginresponce(dispatch, 1, navigate);
-              if (
-                String(isFirstLogin) === "true" &&
-                String(hasAdminRights) === "true"
-              ) {
-                navigate("/Admin/ManageUsers");
-              } else {
-                if (String(isFirstLogin) === "true") {
-                  navigate("/onboard");
-                } else {
-                  if (RSVP !== undefined && RSVP !== null) {
-                    navigate("/Diskus/Meeting/Useravailabilityformeeting");
-                  } else if (
-                    dataroomValue !== null ||
-                    documentViewer !== null ||
-                    viewFolderLink !== null
-                  ) {
-                    navigate("/Diskus/dataroom");
-                  } else if (
-                    MeetingStr !== null ||
-                    MeetinUpd !== null ||
-                    MeetingMin !== null ||
-                    Meetingprop !== null ||
-                    AgCont !== null ||
-                    AdOrg !== null ||
-                    meetingCanc !== null ||
-                    mtAgUpdate !== null ||
-                    UserMeetPropoDatPoll !== null
-                  ) {
-                    navigate("/Diskus/Meeting");
-                  } else if (
-                    PollPublish !== null ||
-                    PollUpd !== null ||
-                    pollExpire !== null
-                  ) {
-                    navigate("/Diskus/polling");
-                  } else if (
-                    committeeView_Id !== null ||
-                    committeeList !== null
-                  ) {
-                    navigate("/Diskus/committee");
-                  } else if (groupView_Id !== null || groupList !== null) {
-                    navigate("/Diskus/groups");
-                  } else if (
-                    taskListView_Id !== null ||
-                    taskListView !== null
-                  ) {
-                    navigate("/Diskus/todolist");
-                  } else {
-                    navigate("/Diskus/");
-                  }
-                }
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

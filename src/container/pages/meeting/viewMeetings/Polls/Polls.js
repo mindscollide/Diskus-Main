@@ -57,14 +57,7 @@ import { usePollsContext } from "../../../../../context/PollsContext";
 import ViewVotesScreen from "./ViewVotes/ViewVotesScreen";
 import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
-const Polls = ({
-  setViewAdvanceMeetingModal,
-  setPolls,
-  setAttendance,
-  currentMeeting,
-  setAdvanceMeetingModalID,
-  setactionsPage,
-}) => {
+const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,6 +72,12 @@ const Polls = ({
     viewPublishedPoll,
     setViewPublishedPoll,
     advanceMeetingModalID,
+    setViewAdvanceMeetingModal,
+    setPolls,
+    setAttendance,
+    currentMeeting,
+    setAdvanceMeetingModalID,
+    setactionsPage,
   } = useMeetingContext();
 
   const { viewVotes, setviewVotes } = usePollsContext();

@@ -70,18 +70,19 @@ import PublishAnywayModal from "./publishAnywayModal/PublishAnywayModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 
-const Minutes = ({
-  setMinutes,
-  advanceMeetingModalID,
-  setViewAdvanceMeetingModal,
-  setMeetingMaterial,
-  setactionsPage,
-}) => {
+const Minutes = () => {
   // Newly Implemented
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { editorRole } = useMeetingContext();
+  const {
+    editorRole,
+    setMinutes,
+    advanceMeetingModalID,
+    setViewAdvanceMeetingModal,
+    setMeetingMaterial,
+    setactionsPage,
+  } = useMeetingContext();
 
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
@@ -1107,8 +1108,6 @@ const Minutes = ({
   ]);
   console.log({ publishMinutesDataGeneral }, "resultedDataresultedData");
   console.log({ publishMinutesDataAgenda }, "resultedDataresultedData");
- 
-
 
   return JSON.parse(isMinutePublished) ? (
     <>
