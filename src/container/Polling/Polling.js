@@ -393,6 +393,16 @@ const Polling = () => {
     }
   };
 
+  const ViewTitleBeforeDueDatePassed = (record) => {
+    if (Object.keys(record).length > 0) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+    }
+  };
+
   const deletePollingModal = (record) => {
     setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
@@ -562,16 +572,31 @@ const Polling = () => {
         },
       }),
       render: (text, record) => {
-        return (
-          <span
-            className={styles["Ellipses_Class"]}
-            onClick={() => {
-              handleViewModal(record);
-            }}
-          >
-            {text}
-          </span>
-        );
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        if (currentDate < convertIntoGmt) {
+          return (
+            <span
+              className={styles["Ellipses_Class"]}
+              onClick={() => {
+                ViewTitleBeforeDueDatePassed(record);
+              }}
+            >
+              {text}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className={styles["Ellipses_Class"]}
+              onClick={() => {
+                handleViewModal(record);
+              }}
+            >
+              {text}
+            </span>
+          );
+        }
       },
     },
     {

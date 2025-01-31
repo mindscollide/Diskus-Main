@@ -1,1 +1,13 @@
-{ "PollID": 582, "UserID": 1353, "PollOptionIDs": [1913] }
+{
+  "PollDetails": {
+    "PollTitle": "Mc POLLS ",
+    "DueDate": "20250131185900",
+    "AllowMultipleAnswers": false,
+    "CreatorID": 1351,
+    "PollStatusID": 2,
+    "OrganizationID": 561,
+    "PollID": 610
+  },
+  "ParticipantIDs": [1353],
+  "PollAnswers": ["KARACHI ", "LAHORE", "ISLAMABAD "]
+}
