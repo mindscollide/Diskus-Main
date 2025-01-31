@@ -2362,5 +2362,6 @@
   "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:",
   "Has-changed-his-vote-in": " has changed his Vote in:",
   "Trail-request-pending": "Trail request pending",
-  "Trial-request-rejected-for-this-org": "Trial request rejected for this org"
+  "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
+  "Signature-flow-deleted-successfully": "Signature flow deleted successfully"
 }

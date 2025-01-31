@@ -155,6 +155,10 @@ const NewMeeting = () => {
     setViewFlag,
     setAdvanceMeetingModalID,
     advanceMeetingModalID,
+    setSceduleMeeting,
+    sceduleMeeting,
+    setDataroomMapFolderId,
+    dataroomMapFolderId
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -281,7 +285,6 @@ const NewMeeting = () => {
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
-  const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   //Edit proposed Meeting Flow
   const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
@@ -302,7 +305,6 @@ const NewMeeting = () => {
     video: false,
     Agenda: false,
   });
-  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
@@ -1188,6 +1190,7 @@ const NewMeeting = () => {
       setDashboardEventData(null);
       setEditFlag(false);
       setViewFlag(false);
+      setViewAdvanceMeetingModal(false)
       dispatch(scheduleMeetingPageFlag(false));
       dispatch(viewProposeDateMeetingPageFlag(false));
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -1352,7 +1355,7 @@ const NewMeeting = () => {
     dispatch(pollsGlobalFlag(false));
     dispatch(attendanceGlobalFlag(false));
     dispatch(uploadGlobalFlag(false));
-    dispatch(viewMeetingFlag(true))
+    dispatch(viewMeetingFlag(true));
   };
 
   const openProposedNewMeetingPage = () => {
@@ -3694,7 +3697,7 @@ const NewMeeting = () => {
                     <ReactBootstrapDropdown
                       className='SceduleMeetingButton'
                       // onClick={eventClickHandler}
-                      >
+                    >
                       <ReactBootstrapDropdown.Toggle
                         title={t("Schedule-a-meeting")}>
                         <Row>

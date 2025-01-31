@@ -103,7 +103,6 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     ".000Z";
 
   const date = new Date(fullDateyear);
-  console.log(date, "datedatedate");
   // Define month names in English and Arabic
   const monthNamesEn = [
     "January",
@@ -143,17 +142,14 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime, locale) => {
     minute: "2-digit",
     hour12: true,
   });
-  console.log(formattedTime, "datedatedate");
 
   // Format the date components
   const formattedDay = String(date.getDate()).padStart(2, "0");
   const formattedMonth = monthNames[date.getMonth()];
   const formattedYear = date.getFullYear();
-  console.log({ formattedDay, formattedMonth, formattedYear }, "datedatedate");
 
   // Format the full date as "h:mm A, Do MMM, YYYY"
   const formattedDate = `${formattedTime}, ${formattedDay} ${formattedMonth} ${formattedYear}`;
-  console.log(formattedDate, "datedatedate");
 
   return locale === "ar"
     ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
@@ -249,7 +245,6 @@ export const _justShowDateformat = (dateTime) => {
 };
 
 export const _justShowDateformatBilling = (dateTime, locale) => {
-  console.log(dateTime, "localelocalelocale");
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }
@@ -820,7 +815,6 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
 // this work is create by huzeifa please dont write any thing below thi line
 export const multiDatePickerDateChangIntoUTC = (date) => {
-  console.log(date, "utcFormattedutcFormattedutcFormatted");
 
   // Extract the year, month, and day components from the UTC time
   const year = date.getUTCFullYear();
@@ -830,7 +824,6 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   const seconds = String(date.getUTCSeconds()).padStart(2, "0");
   const utcFormatted = `${year}${month}${day}${hour}${minutes}${seconds}`;
-  console.log(utcFormatted, "utcFormattedutcFormattedutcFormatted");
   return utcFormatted;
 };
 
@@ -859,8 +852,6 @@ export function formatDateToYYYYMMDD(date) {
 // "15 September, 2023";
 // "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
 export function formatDateToUTC(inputDate, value) {
-  console.log(inputDate, "inputDateinputDate");
-  console.log(value, "inputDateinputDate");
   // Validate inputDate
   if (!inputDate || isNaN(new Date(inputDate).getTime())) {
     console.error("Invalid input date:", inputDate);
@@ -881,7 +872,6 @@ export function formatDateToUTC(inputDate, value) {
     dateWithTime = formattedDate; // Default to just the date
   }
 
-  console.log("Date with Time:", dateWithTime);
 
   // Extract parts of the date string (yyyyMMddHHmmss)
   const dateString = dateWithTime.toString();
@@ -894,7 +884,6 @@ export function formatDateToUTC(inputDate, value) {
 
   // Create a UTC Date object
   const utcDate = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
-  console.log("Formatted UTC Date:", utcDate);
 
   // Format the UTC Date to 'yyyyMMddHHmmss'
   const formattedYear = utcDate.getUTCFullYear(); // Extract the full year
@@ -908,7 +897,6 @@ export function formatDateToUTC(inputDate, value) {
 
   // Combine into 'yyyyMMddHHmmss'
   const finalDateTime = `${formattedYear}${formattedMonth}${formattedDay}${formattedHours}${formattedMinutes}${formattedSeconds}`;
-  console.log("Formatted UTC DateTime:", finalDateTime);
   return finalDateTime;
 }
 
@@ -1556,7 +1544,6 @@ export const DateFormatForPolls = (date) => {
 // };
 export const timePassed = (dateString, locale) => {
   const givenDate = new Date(dateString);
-  console.log("forRecentActivity", givenDate);
 
   // Choose the locale based on the input (`en` for English, `ar` for Arabic)
   const selectedLocale = locale === "ar" ? arSA : enUS;
@@ -1566,7 +1553,6 @@ export const timePassed = (dateString, locale) => {
     addSuffix: true,
     locale: selectedLocale,
   });
-  console.log("forRecentActivity", formattedTime);
 
   // If the locale is Arabic, replace Western digits with Arabic-Indic digits
   if (locale === "ar") {
@@ -1576,7 +1562,6 @@ export const timePassed = (dateString, locale) => {
     );
   }
 
-  console.log("forRecentActivity", formattedTime);
   return formattedTime;
 };
 
@@ -1667,7 +1652,6 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   } else {
     newDate.setHours(23, 58, 59, 0); // Set to 23:58:59 in local time
   }
-  console.log(newDate, no, "newDatenewDate");
 
   // Convert to UTC components
   const year = newDate.getUTCFullYear();
@@ -1680,7 +1664,6 @@ export const dateConverterIntoUTCForDataroom = (newDate, no) => {
   // Combine into the desired format
   const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
-  console.log(formattedDate, "UTC formatted date");
   return formattedDate;
 };
 
@@ -1694,7 +1677,6 @@ export const formatDateToUTCWithEndOfDay = (date) => {
 
   // Append "235959" to represent the end of the day
   const utcFormatted = `${year}${month}${day}235959`;
-  console.log(utcFormatted, "utcFormatted with end of day");
   return utcFormatted;
 };
 
@@ -1708,11 +1690,9 @@ export const formatToUTCDateString = (date) => {
 };
 
 export function ProposedMeetingDateViewFormat(inputDate, language) {
-  console.log(inputDate, "inputDateinputDateinputDateinputDate");
   // Trim and validate the input
   const sanitizedInput = inputDate?.trim() || "";
   if (!sanitizedInput || !/^\d{8}$/.test(sanitizedInput)) {
-    console.warn(`Invalid or missing date. Received: "${inputDate}"`);
     return language === "ar" ? "تاريخ غير صالح" : "Invalid Date";
   }
 

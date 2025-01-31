@@ -814,14 +814,13 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -837,10 +836,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -1014,128 +1013,19 @@ const ViewMeetingModal = ({
                   </>
                 </Col>
               </Row>
-              {meetingDetails && (
-                <ViewMeetingDetails
-                  setorganizers={setorganizers}
-                  setMeetingMaterial={setMeetingMaterial}
-                  setmeetingDetails={setmeetingDetails}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  setDataroomMapFolderId={setDataroomMapFolderId}
-                  setAgenda={setAgenda}
-                />
-              )}
-              {attendees && (
-                <Attendees
-                  MeetingID={advanceMeetingModalID}
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  setAttendees={setAttendees}
-                />
-              )}
-              {organizers && (
-                <Organizers
-                  setmeetingDetails={setmeetingDetails}
-                  setorganizers={setorganizers}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  setAgendaContributors={setAgendaContributors}
-                />
-              )}
-              {agendaContributors && (
-                <AgendaContributers
-                  setorganizers={setorganizers}
-                  setAgendaContributors={setAgendaContributors}
-                  setParticipants={setParticipants}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                />
-              )}
-              {participants && (
-                <Participants
-                  setParticipants={setParticipants}
-                  setAgenda={setAgenda}
-                  setAgendaContributors={setAgendaContributors}
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                />
-              )}
-              {agenda && (
-                <Agenda
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  setMeetingMaterial={setMeetingMaterial}
-                  setParticipants={setParticipants}
-                  setAgenda={setAgenda}
-                  setPolls={setPolls}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                />
-              )}
-              {meetingMaterial && (
-                <AgendaViewer
-                  setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                  advanceMeetingModalID={advanceMeetingModalID}
-                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  setMeetingMaterial={setMeetingMaterial}
-                  setAgenda={setAgenda}
-                  setMinutes={setMinutes}
-                  setactionsPage={setactionsPage}
-                  videoTalk={videoTalk}
-                  setVideoTalk={setVideoTalk}
-                />
-              )}
+              {meetingDetails && <ViewMeetingDetails />}
+              {attendees && <Attendees />}
+              {organizers && <Organizers />}
+              {agendaContributors && <AgendaContributers />}
+              {participants && <Participants />}
+              {agenda && <Agenda />}
+              {meetingMaterial && <AgendaViewer />}
               {unPublish ? null : (
                 <>
-                  {minutes && (
-                    <Minutes
-                      setMinutes={setMinutes}
-                      setPolls={setPolls}
-                      setAttendance={setAttendance}
-                      setAgenda={setAgenda}
-                      setactionsPage={setactionsPage}
-                      setMeetingMaterial={setMeetingMaterial}
-                      advanceMeetingModalID={advanceMeetingModalID}
-                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    />
-                  )}
-                  {actionsPage && (
-                    <Actions
-                      setPolls={setPolls}
-                      setMinutes={setMinutes}
-                      setactionsPage={setactionsPage}
-                      currentMeeting={advanceMeetingModalID}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                      dataroomMapFolderId={dataroomMapFolderId}
-                      setMeetingMaterial={setMeetingMaterial}
-                    />
-                  )}
-                  {polls && (
-                    <Polls
-                      setPolls={setPolls}
-                      setAgenda={setAgenda}
-                      setactionsPage={setactionsPage}
-                      setAttendance={setAttendance}
-                      currentMeeting={advanceMeetingModalID}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                    />
-                  )}
-                  {attendance && (
-                    <Attendence
-                      setMinutes={setMinutes}
-                      setPolls={setPolls}
-                      setAgenda={setAgenda}
-                      advanceMeetingModalID={advanceMeetingModalID}
-                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                      setAttendance={setAttendance}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    />
-                  )}
+                  {minutes && <Minutes />}
+                  {actionsPage && <Actions />}
+                  {polls && <Polls />}
+                  {attendance && <Attendence />}
                 </>
               )}
             </span>
@@ -1147,19 +1037,7 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
-      <PollsCastVoteInitimationModal
-        setAgenda={setAgenda}
-        setParticipants={setParticipants}
-        setAgendaContributors={setAgendaContributors}
-        setorganizers={setorganizers}
-        setmeetingDetails={setmeetingDetails}
-        setMinutes={setMinutes}
-        setactionsPage={setactionsPage}
-        setAttendance={setAttendance}
-        setPolls={setPolls}
-        setMeetingMaterial={setMeetingMaterial}
-        setAttendees={setAttendees}
-      />
+      <PollsCastVoteInitimationModal />
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}

@@ -1814,3 +1814,8 @@ export const handleNavigation = (
     dispatch(LoginFlowRoutes(1));
   }
 };
+
+
+export const getFileName = (fileName) => {
+  return fileName.split(".")[0]
+}
