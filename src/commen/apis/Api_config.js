@@ -1970,7 +1970,11 @@ const leavePresenterView = {
   RequestMethod: "ServiceManager.LeavePresenterView",
 };
 
+const ValidateEncryptedStringMinuteReviewDataRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringMinuteReviewData",
+};
 export {
+  ValidateEncryptedStringMinuteReviewDataRM,
   MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
   ValidateEncryptedStringViewFileLinkRM,

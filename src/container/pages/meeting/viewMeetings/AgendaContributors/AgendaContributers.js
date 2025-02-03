@@ -26,19 +26,23 @@ import redMailIcon from "../../../../../assets/images/redmail.svg";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { MeetingContext } from "../../../../../context/MeetingContext";
-const AgendaContributers = ({
-  setParticipants,
-  setAgendaContributors,
-  setViewAdvanceMeetingModal,
-  advanceMeetingModalID,
-  setAdvanceMeetingModalID,
-}) => {
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
+const AgendaContributers = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const { setEditorRole } = useContext(MeetingContext);
+  const {
+    setEditorRole,
+    setParticipants,
+    setAgendaContributors,
+    setViewAdvanceMeetingModal,
+    advanceMeetingModalID,
+    setAdvanceMeetingModalID,
+  } = useMeetingContext();
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);

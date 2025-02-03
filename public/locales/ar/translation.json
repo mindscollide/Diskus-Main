@@ -2369,5 +2369,8 @@
   "Error-while-starting-presentation": "Error while starting presentation",
   "Error-while-stop-presentation": "Error while stop presentation",
   "could-not-join-schedule-call": "could not join schedule call",
-  "Could-not-join-presentation": "Could not join presentation"
+  "Could-not-join-presentation": "Could not join presentation",
+  "Trail-request-pending": "Trail request pending",
+  "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
+  "Signature-flow-deleted-successfully": "Signature flow deleted successfully"
 }

@@ -33,16 +33,11 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { MeetingContext } from "../../../../../context/MeetingContext";
-const Attendence = ({
-  setPolls,
-  setMinutes,
-  setAgenda,
-  advanceMeetingModalID,
-  setAttendance,
-  setViewAdvanceMeetingModal,
-  setAdvanceMeetingModalID,
-}) => {
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
+const Attendence = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,7 +46,16 @@ const Attendence = ({
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const [useCase, setUseCase] = useState(0);
-  const { setEditorRole } = useContext(MeetingContext);
+  const {
+    setPolls,
+    setMinutes,
+    setAgenda,
+    advanceMeetingModalID,
+    setAttendance,
+    setViewAdvanceMeetingModal,
+    setAdvanceMeetingModalID,
+    setEditorRole,
+  } = useMeetingContext();
   //reducer call from Attendance_Reducers
   const attendanceConfirmationModal = useSelector(
     (state) => state.NewMeetingreducer.attendanceConfirmationModal
