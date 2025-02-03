@@ -57,6 +57,7 @@ import {
   joinPresenterViewMainApi,
   stopPresenterViewMainApi,
   presenterViewGlobalState,
+  leavePresenterViewMainApi,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -407,8 +408,19 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (Number(meetingVideoID) === Number(payload?.meetingID)) {
+    console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
+    console.log("mqtt mqmqmqmqmqmq", payload?.meetingID);
+    console.log(
+      "mqtt mqmqmqmqmqmq",
+      String(meetingVideoID) === String(payload?.meetingID)
+    );
+    if (String(meetingVideoID) === String(payload?.meetingID)) {
+      console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
+      console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
+
       if (!presenterViewFlag && !presenterViewJoinFlag) {
+        console.log("mqtt mqmqmqmqmqmq", payload?.meetingID);
+
         if (isMeeting) {
           let typeOfMeeting = localStorage.getItem("typeOfMeeting");
 
@@ -467,7 +479,6 @@ const Dashboard = () => {
   const stopPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
     console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
-    sessionStorage.setItem("StopPresenterViewAwait", true);
     console.log("mqtt mqmqmqmqmqmq", payload);
     let StopPresenterViewAwait = JSON.parse(
       sessionStorage.getItem("StopPresenterViewAwait")
@@ -477,25 +488,48 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (Number(meetingVideoID) === Number(payload?.meetingID)) {
+    if (String(meetingVideoID) === String(payload?.meetingID)) {
+      console.log("mqtt mqmqmqmqmqmq", isMeeting);
+
       if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
+
         let typeOfMeeting = localStorage.getItem("typeOfMeeting");
-        if (StopPresenterViewAwait == null) {
+        if (
+          StopPresenterViewAwait === null ||
+          StopPresenterViewAwait === undefined
+        ) {
+          console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
+
           if (presenterViewFlag) {
+            console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
+
             if (presenterViewJoinFlag) {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
-              // if (presenterMeetingId === currentMeeting) {
-              let data = {
-                MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
-              };
+              let presenterGuid = localStorage.getItem("PresenterGuid");
+              let meetingTitle = localStorage.getItem("meetingTitle");
 
-              dispatch(stopPresenterViewMainApi(navigate, t, data));
+              let data = {
+                RoomID: String(callAcceptedRoomID),
+                UserGUID: String(presenterGuid),
+                Name: String(meetingTitle),
+              };
+              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
             } else {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: false,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));

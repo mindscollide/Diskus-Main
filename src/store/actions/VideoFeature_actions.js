@@ -1774,7 +1774,7 @@ const leavePresenterFail = (message) => {
   };
 };
 
-const leavePresenterViewMainApi = (navigate, t, data) => {
+const leavePresenterViewMainApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(leavePresenterInit());
@@ -1793,7 +1793,7 @@ const leavePresenterViewMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(leavePresenterViewMainApi(navigate, t, data));
+          dispatch(leavePresenterViewMainApi(navigate, t, data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1813,10 +1813,18 @@ const leavePresenterViewMainApi = (navigate, t, data) => {
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
-              dispatch(presenterViewGlobalState(0, true, false, false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
+              if (flag === 1) {
+                dispatch(presenterViewGlobalState(0, true, false, false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              } else if (flag === 2) {
+                dispatch(presenterViewGlobalState(0, false, false, false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+
               await dispatch(
                 leavePresenterSuccess(
                   response.data.responseResult,

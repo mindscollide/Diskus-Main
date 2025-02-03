@@ -432,7 +432,7 @@ const VideoCallNormalHeader = ({
                 UserGUID: String(presenterGuid),
                 Name: String(meetingTitle),
               };
-              dispatch(leavePresenterViewMainApi(navigate, t, data));
+              dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
             }
           }
         }
@@ -757,7 +757,7 @@ const VideoCallNormalHeader = ({
                 UserGUID: String(presenterGuid),
                 Name: String(meetingTitle),
               };
-              dispatch(leavePresenterViewMainApi(navigate, t, data));
+              dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
             }
           }
         }
