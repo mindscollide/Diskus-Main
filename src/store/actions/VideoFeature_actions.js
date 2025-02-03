@@ -1551,6 +1551,16 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: false,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
               dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
@@ -1654,6 +1664,16 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
             ) {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
+              );
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: true,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
               );
               localStorage.setItem(
                 "acceptedRoomID",

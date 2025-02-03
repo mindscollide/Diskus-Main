@@ -723,7 +723,7 @@ const AgendaViewer = ({
     // ? t("Stop-presenting")
     // : presenterViewJoinFlag
     // ? t("Leave-presenting")
-    // : t("Join-presenting")
+    // : t("Join-presenting")}
     try {
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
