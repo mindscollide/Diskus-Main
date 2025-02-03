@@ -1861,6 +1861,15 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
   };
 };
 
+// Stop Meeting Video By presenter View when Some one Already Join the meeting Video
+const stopMeetingVideoByPresenter = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1957,4 +1966,5 @@ export {
   stopPresenterViewMainApi,
   joinPresenterViewMainApi,
   leavePresenterViewMainApi,
+  stopMeetingVideoByPresenter,
 };

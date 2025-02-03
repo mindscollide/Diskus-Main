@@ -91,6 +91,7 @@ const initialState = {
   presenterViewStop: null,
   joinPresenterView: null,
   leavePresenterView: null,
+  meetingStoppedByPresenter: false,
 
   // startOrStopPresenter: false,
 };
@@ -982,6 +983,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         disableBeforeJoinZoom: action.response,
+      };
+
+    // Stop Meeting Video By presenter View when Some one Already Join the meeting Video
+    case actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW:
+      console.log("CheckStopMeetingVideo", action.response);
+      return {
+        ...state,
+        meetingStoppedByPresenter: action.response,
       };
 
     // Start and Stop Presenter View State
