@@ -49,6 +49,7 @@ import {
   openPresenterViewMainApi,
   stopPresenterViewMainApi,
   joinPresenterViewMainApi,
+  leavePresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -246,7 +247,6 @@ const AgendaViewer = ({
   const [agendaName, setAgendaName] = useState("");
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
-
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
@@ -729,12 +729,13 @@ const AgendaViewer = ({
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
       // if (presenterMeetingId === currentMeeting) {
+      console.log("Check Stop");
       if (value === 1) {
         let data = {
           MeetingID: currentMeetingID,
           RoomID: callAcceptedRoomID,
         };
-
+        sessionStorage.setItem("StopPresenterViewAwait", true);
         dispatch(stopPresenterViewMainApi(navigate, t, data));
       } else if (value === 2) {
         console.log("onClickStopPresenter", value);
@@ -743,10 +744,13 @@ const AgendaViewer = ({
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       } else if (value === 3) {
-        dispatch(presenterViewGlobalState(0, true, false, false));
-        dispatch(maximizeVideoPanelFlag(false));
-        dispatch(normalizeVideoPanelFlag(false));
-        dispatch(minimizeVideoPanelFlag(false));
+        let presenterGuid = localStorage.getItem("PresenterGuid");
+        let data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(presenterGuid),
+          Name: String(meetingTitle),
+        };
+        dispatch(leavePresenterViewMainApi(navigate, t, data));
       }
       // }
     } catch (error) {}
@@ -893,7 +897,11 @@ const AgendaViewer = ({
                             <img
                               src={VideocameraIcon}
                               alt=""
-                              onClick={onClickVideoIconOpenVideo}
+                              onClick={
+                                presenterViewFlag === false
+                                  ? onClickVideoIconOpenVideo
+                                  : undefined
+                              }
                             />
                           </div>
                         </Tooltip>

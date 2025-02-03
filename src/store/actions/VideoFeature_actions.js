@@ -1363,6 +1363,9 @@ const openPresenterViewMainApi = (
                 );
                 await dispatch(maximizeVideoPanelFlag(true));
                 await dispatch(normalizeVideoPanelFlag(false));
+
+                // to stop hit for video Icon state
+                localStorage.setItem("AgendaVideoIconHit", true);
               }
 
               await dispatch(
@@ -1551,6 +1554,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
                 )
             ) {
+              await dispatch(presenterViewGlobalState(0, false, false, false));
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -1561,7 +1565,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
-              dispatch(presenterViewGlobalState(0, false, false, false));
+
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
@@ -1571,6 +1575,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
+              sessionStorage.removeItem("StopPresenterViewAwait");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1679,6 +1684,10 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                 "acceptedRoomID",
                 response.data.responseResult.roomID
               );
+              localStorage.setItem(
+                "PresenterGuid",
+                response.data.responseResult.guid
+              );
               await dispatch(
                 presenterViewGlobalState(currentMeetingID, true, false, true)
               );
@@ -1765,13 +1774,13 @@ const leavePresenterFail = (message) => {
   };
 };
 
-const leavePresenterViewMainApi = (navigate, t) => {
+const leavePresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(leavePresenterInit());
     let form = new FormData();
     form.append("RequestMethod", leavePresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -1784,7 +1793,7 @@ const leavePresenterViewMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(leavePresenterViewMainApi());
+          dispatch(leavePresenterViewMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1794,6 +1803,20 @@ const leavePresenterViewMainApi = (navigate, t) => {
                   "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase()
                 )
             ) {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: false,
+              };
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              dispatch(presenterViewGlobalState(0, true, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
               await dispatch(
                 leavePresenterSuccess(
                   response.data.responseResult,

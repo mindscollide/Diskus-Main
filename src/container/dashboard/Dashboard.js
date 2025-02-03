@@ -465,33 +465,42 @@ const Dashboard = () => {
     }
   };
   const stopPresenterView = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
+    console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
+    sessionStorage.setItem("StopPresenterViewAwait", true);
     console.log("mqtt mqmqmqmqmqmq", payload);
+    let StopPresenterViewAwait = JSON.parse(
+      sessionStorage.getItem("StopPresenterViewAwait")
+    );
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (Number(meetingVideoID) === Number(payload?.meetingID)) {
       if (isMeeting) {
         let typeOfMeeting = localStorage.getItem("typeOfMeeting");
-        if (presenterViewFlag) {
-          if (presenterViewJoinFlag) {
-            let currentMeetingID = Number(
-              localStorage.getItem("currentMeetingID")
-            );
-            let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+        if (StopPresenterViewAwait == null) {
+          if (presenterViewFlag) {
+            if (presenterViewJoinFlag) {
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
+              );
+              let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
-            // if (presenterMeetingId === currentMeeting) {
-            let data = {
-              MeetingID: currentMeetingID,
-              RoomID: callAcceptedRoomID,
-            };
+              // if (presenterMeetingId === currentMeeting) {
+              let data = {
+                MeetingID: currentMeetingID,
+                RoomID: callAcceptedRoomID,
+              };
 
-            dispatch(stopPresenterViewMainApi(navigate, t, data));
-          } else {
-            dispatch(presenterViewGlobalState(0, false, false, false));
-            dispatch(maximizeVideoPanelFlag(false));
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(minimizeVideoPanelFlag(false));
+              dispatch(stopPresenterViewMainApi(navigate, t, data));
+            } else {
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+            }
           }
         }
       }
