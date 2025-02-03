@@ -34,10 +34,10 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   ]);
   const [sidebarOptions, setsidebarOptions] = useState([]);
   const options = [
-    { value: "All", label: "All" },
-    { value: "organizer", label: "organizer" },
-    { value: "participant", label: "participant" },
-    { value: "Agenda Contributor", label: "Agenda Contributor" },
+    { value: "All", label: t("All") },
+    { value: "organizer", label: t("Organizer") },
+    { value: "participant", label: t("Participant") },
+    { value: "Agenda Contributor", label: t("Agenda-contributors") },
   ];
   const [members, setMembers] = useState([]);
 
@@ -46,7 +46,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
       setSelectedID(0);
       setExpandmenuIntroduction(false);
       setSidebarindex(0);
-      setSelectedRole("All");
+      setSelectedRole(t("All"));
       setsubAgendaExpand(false);
       setMemberData([
         {
@@ -557,7 +557,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                           <span
                             className={styles["All_Heading_Advance_permission"]}
                           >
-                            {"All"}
+                            {t("All")}
                           </span>
                         </Col>
                         <Col lg={3} md={3} sm={3}>
@@ -566,7 +566,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                               styles["All_Heading_Advance_permission_View"]
                             }
                           >
-                            {"View"}
+                            {t("View")}
                           </span>
                         </Col>
                         <Col lg={3} md={3} sm={3}>
@@ -575,7 +575,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                               styles["All_Heading_Advance_permission_View"]
                             }
                           >
-                            {"Modify"}
+                            {t("Modify")}
                           </span>
                         </Col>
                       </Row>

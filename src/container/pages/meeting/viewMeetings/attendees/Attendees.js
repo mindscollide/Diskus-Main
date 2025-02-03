@@ -198,7 +198,7 @@ const Attendees = () => {
         lg={12}
         className={`${styles["Attendees_container"]}`}>
         <section className={styles["Members_Area"]}>
-          <p className={styles["AttendeesAreaHeading"]}>Organizers</p>
+          <p className={styles["AttendeesAreaHeading"]}>{t("Organizers")}</p>
           <div className={styles["Cards"]}>
             {organizersData.length > 0 &&
               organizersData.map((data) => {
@@ -207,7 +207,7 @@ const Attendees = () => {
           </div>
         </section>
         <section className={styles["Members_Area"]}>
-          <p className={styles["AttendeesAreaHeading"]}>Agenda Contributors</p>
+          <p className={styles["AttendeesAreaHeading"]}>{t("Agenda-contributors")}</p>
           <div className={styles["Cards"]}>
             {agendaContributorsData.length > 0 &&
               agendaContributorsData.map((data) => {
@@ -216,7 +216,7 @@ const Attendees = () => {
           </div>
         </section>
         <section className={styles["Members_Area"]}>
-          <p className={styles["AttendeesAreaHeading"]}>Participants</p>
+          <p className={styles["AttendeesAreaHeading"]}>{t("Participants")}</p>
           <div className={styles["Cards"]}>
             {participantsData.length > 0 &&
               participantsData.map((data) => {

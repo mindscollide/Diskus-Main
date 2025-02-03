@@ -83,7 +83,7 @@ const Attendence = () => {
           ...row,
           meetingAttendancestatus: {
             ...row.meetingAttendancestatus,
-            attendanceStatus: "Present",
+            attendanceStatus: t("Present"),
             attendanceStatusID: status,
           },
         };
@@ -100,7 +100,7 @@ const Attendence = () => {
           ...row,
           meetingAttendancestatus: {
             ...row.meetingAttendancestatus,
-            attendanceStatus: "Absent",
+            attendanceStatus: t("Absent"),
             attendanceStatusID: status,
           },
         };
@@ -117,7 +117,7 @@ const Attendence = () => {
           ...row,
           meetingAttendancestatus: {
             ...row.meetingAttendancestatus,
-            attendanceStatus: "Remote",
+            attendanceStatus: t("Remote"),
             attendanceStatusID: status,
           },
         };
