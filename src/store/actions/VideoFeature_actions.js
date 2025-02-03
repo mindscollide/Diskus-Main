@@ -1255,7 +1255,12 @@ const disableZoomBeforeJoinSession = (response) => {
 };
 
 //For Presenter View Global State
-const presenterViewGlobalState = (presenterMeetingId, presenterViewFlag) => {
+const presenterViewGlobalState = (
+  presenterMeetingId,
+  presenterViewFlag,
+  presenterViewHostFlag,
+  presenterViewJoinFlag
+) => {
   console.log(
     presenterMeetingId,
     presenterViewFlag,
@@ -1267,6 +1272,8 @@ const presenterViewGlobalState = (presenterMeetingId, presenterViewFlag) => {
     payload: {
       presenterMeetingId,
       presenterViewFlag,
+      presenterViewHostFlag,
+      presenterViewJoinFlag,
     },
   };
 };
@@ -1293,13 +1300,19 @@ const openPresenterFail = (message) => {
   };
 };
 
-const openPresenterViewMainApi = (navigate, t) => {
+const openPresenterViewMainApi = (
+  t,
+  navigate,
+  data,
+  currentMeeting,
+  actiontype
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(openPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", openPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -1312,7 +1325,15 @@ const openPresenterViewMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(openPresenterViewMainApi());
+          dispatch(
+            openPresenterViewMainApi(
+              t,
+              navigate,
+              data,
+              currentMeeting,
+              actiontype
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1322,6 +1343,28 @@ const openPresenterViewMainApi = (navigate, t) => {
                   "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase()
                 )
             ) {
+              if (actiontype === 4) {
+                localStorage.setItem(
+                  "acceptedRoomID",
+                  response.data.responseResult.roomID
+                );
+                const meetingHost = {
+                  isHost: true,
+                  isHostId: 0,
+                  isDashboardVideo: true,
+                };
+                dispatch(makeHostNow(meetingHost));
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+                await dispatch(
+                  presenterViewGlobalState(currentMeeting, true, true, true)
+                );
+                await dispatch(maximizeVideoPanelFlag(true));
+                await dispatch(normalizeVideoPanelFlag(false));
+              }
+
               await dispatch(
                 openPresenterSuccess(
                   response.data.responseResult,
@@ -1380,13 +1423,13 @@ const startPresenterFail = (message) => {
   };
 };
 
-const startPresenterViewMainApi = (navigate, t) => {
+const startPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(startPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", startPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -1399,7 +1442,7 @@ const startPresenterViewMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(startPresenterViewMainApi());
+          dispatch(startPresenterViewMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1479,13 +1522,13 @@ const stopPresenterFail = (message) => {
   };
 };
 
-const stopPresenterViewMainApi = (navigate, t) => {
+const stopPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", stopPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -1498,7 +1541,7 @@ const stopPresenterViewMainApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(stopPresenterViewMainApi());
+          dispatch(stopPresenterViewMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1508,6 +1551,10 @@ const stopPresenterViewMainApi = (navigate, t) => {
                   "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
                 )
             ) {
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
               await dispatch(
                 stopPresenterSuccess(
                   response.data.responseResult,
@@ -1576,13 +1623,13 @@ const joinPresenterFail = (message) => {
   };
 };
 
-const joinPresenterViewMainApi = (navigate, t) => {
+const joinPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(joinPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", joinPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
 
     axios({
       method: "post",
@@ -1594,8 +1641,8 @@ const joinPresenterViewMainApi = (navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(joinPresenterViewMainApi());
+          await dispatch(RefreshToken(navigate, t, data));
+          dispatch(joinPresenterViewMainApi(data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1605,6 +1652,19 @@ const joinPresenterViewMainApi = (navigate, t) => {
                   "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase()
                 )
             ) {
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
+              );
+              localStorage.setItem(
+                "acceptedRoomID",
+                response.data.responseResult.roomID
+              );
+              await dispatch(
+                presenterViewGlobalState(currentMeetingID, true, false, true)
+              );
+              dispatch(maximizeVideoPanelFlag(true));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
               await dispatch(
                 joinPresenterSuccess(
                   response.data.responseResult,

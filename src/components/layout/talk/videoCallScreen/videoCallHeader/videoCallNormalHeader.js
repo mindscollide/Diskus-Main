@@ -206,6 +206,17 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId
+  );
   console.log(presenterViewFlag, "presenterViewFlag");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -375,7 +386,21 @@ const VideoCallNormalHeader = ({
       localStorage.removeItem("isNewHost");
     } else if (isMeeting === true) {
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
-      if (meetHostFlag?.isHost) {
+      if (presenterViewFlag) {
+        if (currentMeetingID === presenterMeetingId) {
+          if (presenterViewHostFlag) {
+            if (presenterViewJoinFlag) {
+              // stop presenter viewF
+            }
+          } else {
+            if (presenterViewJoinFlag) {
+              // leave presenter view
+            } else {
+              // join presenter view
+            }
+          }
+        }
+      } else if (meetHostFlag?.isHost) {
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(newUserGUID),

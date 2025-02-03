@@ -46,6 +46,9 @@ import {
   clearMessegesVideoFeature,
   startOrStopPresenterGlobal,
   presenterViewGlobalState,
+  openPresenterViewMainApi,
+  stopPresenterViewMainApi,
+  joinPresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -189,12 +192,21 @@ const AgendaViewer = ({
     (state) => state.videoFeatureReducer.participantEnableVideoState
   );
 
-  console.log(participantEnableVideoState, "participantEnableVideoState");
-
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId
+  );
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
   // start and stop Presenter View
   // const startOrStopPresenter = useSelector(
@@ -235,13 +247,7 @@ const AgendaViewer = ({
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
-  console.log(
-    currentMeeting,
-    advanceMeetingModalID,
-    typeof currentMeeting,
-    typeof advanceMeetingModalID,
-    "advanceMeetingModalIDadvanceMeetingModalID"
-  );
+
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       let NotificationClickMeetingID = localStorage.getItem(
@@ -707,16 +713,43 @@ const AgendaViewer = ({
   };
 
   const onClickStartPresenter = () => {
-    dispatch(presenterViewGlobalState(null, true));
-    dispatch(maximizeVideoPanelFlag(true));
-    dispatch(normalizeVideoPanelFlag(false));
+    let data = { VideoCallURL: String(currentMeetingVideoURL), Guid: "" };
+    dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
   };
 
-  const onClickStopPresenter = () => {
-    dispatch(presenterViewGlobalState(null, false));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(normalizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
+  const onClickStopPresenter = (value) => {
+    console.log("onClickStopPresenter", value);
+    // presenterViewHostFlag
+    // ? t("Stop-presenting")
+    // : presenterViewJoinFlag
+    // ? t("Leave-presenting")
+    // : t("Join-presenting")
+    try {
+      let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+      let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+
+      // if (presenterMeetingId === currentMeeting) {
+      if (value === 1) {
+        let data = {
+          MeetingID: currentMeetingID,
+          RoomID: callAcceptedRoomID,
+        };
+
+        dispatch(stopPresenterViewMainApi(navigate, t, data));
+      } else if (value === 2) {
+        console.log("onClickStopPresenter", value);
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let data = { VideoCallURL: String(currentMeetingVideoURL) };
+        console.log("onClickStopPresenter", data);
+        dispatch(joinPresenterViewMainApi(navigate, t, data));
+      } else if (value === 3) {
+        dispatch(presenterViewGlobalState(0, true, false, false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+      }
+      // }
+    } catch (error) {}
   };
 
   return (
@@ -806,10 +839,24 @@ const AgendaViewer = ({
                             <Tooltip>
                               <div
                                 className={styles["Stop-presenter-view-class"]}
-                                onClick={onClickStopPresenter}
+                                onClick={() =>
+                                  onClickStopPresenter(
+                                    presenterViewHostFlag
+                                      ? 1
+                                      : presenterViewJoinFlag
+                                      ? 3
+                                      : 2
+                                  )
+                                }
                               >
                                 <img src={StopImage} />
-                                <p>{t("Stop-presenting")}</p>
+                                <p>
+                                  {presenterViewHostFlag
+                                    ? t("Stop-presenting")
+                                    : presenterViewJoinFlag
+                                    ? t("Leave-presenting")
+                                    : t("Join-presenting")}
+                                </p>
                               </div>
                             </Tooltip>
                           ) : (
@@ -825,31 +872,6 @@ const AgendaViewer = ({
                           )}
                         </>
                       ) : null}
-                      {/* {startOrStopPresenter ? (
-                        <Tooltip>
-                          <div
-                            className={styles["Start-presenter-view-class"]}
-                            onClick={() =>
-                              dispatch(startOrStopPresenterGlobal(false))
-                            }
-                          >
-                            <img src={PresenterView} />
-                            <p>{t("Start-presenting")}</p>
-                          </div>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip>
-                          <div
-                            className={styles["Stop-presenter-view-class"]}
-                            onClick={dispatch(() =>
-                              startOrStopPresenterGlobal(true)
-                            )}
-                          >
-                            <img src={StopImage} />
-                            <p>{t("Stop-presenting")}</p>
-                          </div>
-                        </Tooltip>
-                      )} */}
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&
@@ -861,7 +883,8 @@ const AgendaViewer = ({
                           <div
                             className={
                               enableDisableVideoState ||
-                              participantEnableVideoState
+                              participantEnableVideoState ||
+                              presenterViewFlag
                                 ? styles["disabled-box-agenda-camera"]
                                 : styles["box-agendas-camera"]
                             }

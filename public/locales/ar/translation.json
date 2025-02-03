@@ -2363,6 +2363,8 @@
   "Has-changed-his-vote-in": " has changed his Vote in:",
   "Start-presenting": "Start Presenting",
   "Stop-presenting": "Stop Presenting",
+  "Leave-presenting": "Leave presenting view",
+  "Join-presenting": "Join presenting view",
   "Presentation-is-already-underway": "Presentation is already underway",
   "Error-while-starting-presentation": "Error while starting presentation",
   "Error-while-stop-presentation": "Error while stop presentation",

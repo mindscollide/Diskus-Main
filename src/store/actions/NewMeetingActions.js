@@ -80,6 +80,7 @@ import {
   LeaveInitmationMessegeVideoMeetAction,
 } from "./VideoMain_actions";
 import {
+  joinPresenterViewMainApi,
   makeHostNow,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -8223,7 +8224,12 @@ const JoinCurrentMeeting = (
                 await dispatch(scheduleMeetingPageFlag(false));
               }
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
-              dispatch(currentMeetingStatus(10));
+              await dispatch(currentMeetingStatus(10));
+              if (response.data.responseResult.isPresenterViewStarted) {
+                let data = { VideoCallURL: String(Data.VideoCallURL) };
+                console.log("onClickStopPresenter", data);
+                dispatch(joinPresenterViewMainApi(navigate, t, data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

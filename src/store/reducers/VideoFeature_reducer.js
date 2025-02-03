@@ -82,9 +82,11 @@ const initialState = {
   enableDisableVideoState: false,
   participantEnableVideoState: false,
   disableBeforeJoinZoom: true,
-  presenterMeetingId: null,
+  presenterMeetingId: 0,
   presenterViewFlag: false,
-  presenterOpenView: null,
+  presenterViewHostFlag: false,
+  presenterViewJoinFlag: false,
+  presenterOpenView: [],
   presenterViewStart: null,
   presenterViewStop: null,
   joinPresenterView: null,
@@ -1002,6 +1004,8 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         presenterMeetingId: action.payload.presenterMeetingId,
         presenterViewFlag: action.payload.presenterViewFlag,
+        presenterViewHostFlag: action.payload.presenterViewHostFlag,
+        presenterViewJoinFlag: action.payload.presenterViewJoinFlag,
       };
 
     // For Open Presenter View Api

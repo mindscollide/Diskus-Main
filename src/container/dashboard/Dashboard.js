@@ -53,6 +53,10 @@ import {
   participantVideoButtonState,
   videoIconOrButtonState,
   setParticipantRemovedFromVideobyHost,
+  openPresenterViewMainApi,
+  joinPresenterViewMainApi,
+  stopPresenterViewMainApi,
+  presenterViewGlobalState,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -276,7 +280,21 @@ const Dashboard = () => {
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId
+  );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -378,6 +396,102 @@ const Dashboard = () => {
           } else {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(leaveMeetingOnEndStatusMqtt(true));
+          }
+        }
+      }
+    }
+  };
+  const startPresenterView = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq", payload);
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (Number(meetingVideoID) === Number(payload?.meetingID)) {
+      if (!presenterViewFlag && !presenterViewJoinFlag) {
+        if (isMeeting) {
+          let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+
+          if (isMeetingVideo) {
+            localStorage.setItem("alreadyinMeetingVideo", true);
+            if (isZoomEnabled) {
+              await dispatch(setParticipantRemovedFromVideobyHost(true));
+            } else {
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: true,
+              };
+              await dispatch(makeHostNow(meetingHost));
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("isMeetingVideo", false);
+              localStorage.removeItem("refinedVideoUrl");
+              localStorage.setItem("refinedVideoGiven", false);
+              localStorage.setItem("isWebCamEnabled", false);
+              localStorage.setItem("isMicEnabled", false);
+              dispatch(setAudioControlForParticipant(false));
+              dispatch(setVideoControlForParticipant(false));
+
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(maxParticipantVideoRemoved(true));
+              // Participant room Id and usrrGuid
+              let participantRoomIds =
+                localStorage.getItem("participantRoomId");
+              let participantUID = localStorage.getItem("participantUID");
+              let currentMeetingID = localStorage.getItem("currentMeetingID");
+              let newName = localStorage.getItem("name");
+              let Data = {
+                RoomID: String(participantRoomIds),
+                UserGUID: String(participantUID),
+                Name: String(newName),
+                IsHost: false,
+                MeetingID: Number(currentMeetingID),
+              };
+              dispatch(setRaisedUnRaisedParticiant(false));
+              dispatch(LeaveMeetingVideo(Data, navigate, t));
+            }
+          }
+
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = { VideoCallURL: String(currentMeetingVideoURL) };
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        }
+      }
+    }
+  };
+  const stopPresenterView = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq", payload);
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    if (Number(meetingVideoID) === Number(payload?.meetingID)) {
+      if (isMeeting) {
+        let typeOfMeeting = localStorage.getItem("typeOfMeeting");
+        if (presenterViewFlag) {
+          if (presenterViewJoinFlag) {
+            let currentMeetingID = Number(
+              localStorage.getItem("currentMeetingID")
+            );
+            let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+
+            // if (presenterMeetingId === currentMeeting) {
+            let data = {
+              MeetingID: currentMeetingID,
+              RoomID: callAcceptedRoomID,
+            };
+
+            dispatch(stopPresenterViewMainApi(navigate, t, data));
+          } else {
+            dispatch(presenterViewGlobalState(0, false, false, false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
           }
         }
       }
@@ -1039,7 +1153,6 @@ const Dashboard = () => {
                   dispatch(videoIconOrButtonState(true));
                   dispatch(participantVideoButtonState(false));
                   localStorage.setItem("isMeetingVideoHostCheck", true);
-                  
                 } else {
                   console.log("check 22");
                   dispatch(videoIconOrButtonState(false));
@@ -1105,6 +1218,16 @@ const Dashboard = () => {
                   setNotificationID(id);
                 }
               }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_PRESENTATION_STARTED".toLowerCase()
+            ) {
+              startPresenterView(data.payload);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_PRESENTATION_STOPPED".toLowerCase()
+            ) {
+              stopPresenterView(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
               "UPCOMING_EVENTS_REMOVE".toLowerCase()

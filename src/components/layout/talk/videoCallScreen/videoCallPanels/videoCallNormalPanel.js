@@ -37,6 +37,7 @@ import {
   setRaisedUnRaisedParticiant,
   setVideoControlForParticipant,
   setVideoControlHost,
+  startPresenterViewMainApi,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
@@ -207,6 +208,18 @@ const VideoPanelNormal = () => {
 
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId
   );
 
   console.log(presenterViewFlag, "presenterViewFlag");
@@ -413,6 +426,7 @@ const VideoPanelNormal = () => {
 
     handleLeaveSession();
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
+
   useEffect(() => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
@@ -638,7 +652,23 @@ const VideoPanelNormal = () => {
         }
       } else if (isMeeting === true) {
         console.log("iframeiframe", isMeeting);
-        if (isMeetingVideo) {
+        if (presenterViewFlag) {
+          console.log("iframeiframe", isMeeting);
+          let newurl = generateURLParticipant(
+            extractedBaseURLCaller,
+            currentUserName,
+            callAcceptedRoomID
+          );
+          if (validateRoomID(newurl)) {
+            console.log("iframeiframe", validateRoomID(newurl));
+
+            if (newurl !== callerURL) {
+              console.log("iframeiframe", newurl !== callerURL);
+              console.log("iframeiframe", newurl);
+              setCallerURL(newurl);
+            }
+          }
+        } else if (isMeetingVideo) {
           console.log("iframeiframe", isMeetingHost);
           if (isMeetingHost) {
             console.log("iframeiframe", urlFormeetingapi);
@@ -815,26 +845,62 @@ const VideoPanelNormal = () => {
       console.log("Check");
     }
   };
+  const handlePresenterView = async () => {
+    const iframe = iframeRef.current;
+    console.log("handlePostMessage", iframe);
+    if (iframe && iframe.contentWindow) {
+      // Post message to iframe
+      iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+    } else {
+      console.log("share screen Iframe contentWindow is not available.");
+    }
+  };
+
+  const handlerForStaringPresenterView = async () => {
+    console.log("handlePostMessage", iframe);
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+
+    // Post message to iframe
+    let data = { MeetingID: currentMeetingID, RoomID: callAcceptedRoomID };
+
+    dispatch(startPresenterViewMainApi(navigate, t, data));
+  };
 
   // Add event listener for messages
   useEffect(() => {
     const messageHandler = (event) => {
       // Check the origin for security
-      // if (event.origin === "https://portal.letsdiskus.com:9414") {
-      if (event.origin === "http://localhost:5500") {
+      console.log("handlePostMessage", event);
+      console.log("handlePostMessage", event.data);
+      if (event.origin === "https://portal.letsdiskus.com:9414") {
+        // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
+        console.log("handlePostMessage", event.data);
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
             console.log("handlePostMessage", event.data);
             setIsScreenActive(true); // Show a modal or perform an action
+            if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("handlePostMessage", iframe);
+              handlerForStaringPresenterView();
+            }
+
             break;
           case "ScreenSharedStopMsgFromIframe":
             console.log("handlePostMessage", event.data);
             setIsScreenActive(false);
             break;
 
-          case "stremmConnected":
+          case "StreamConnected":
             dispatch(disableZoomBeforeJoinSession(false));
+            console.log("handlePostMessage", presenterViewFlag);
+            console.log("handlePostMessage", presenterViewHostFlag);
+            console.log("handlePostMessage", iframe?.contentWindow);
+            if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("handlePostMessage", iframe);
+              handlePresenterView();
+            }
+            break;
           default:
             console.log(
               "handlePostMessage share screen Unknown message received:",
