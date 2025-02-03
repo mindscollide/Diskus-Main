@@ -1348,8 +1348,11 @@ const openPresenterViewMainApi = (
                   "acceptedRoomID",
                   response.data.responseResult.roomID
                 );
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
                 const meetingHost = {
-                  isHost: true,
+                  isHost: isMeetingVideoHostCheck,
                   isHostId: 0,
                   isDashboardVideo: true,
                 };
@@ -1363,9 +1366,6 @@ const openPresenterViewMainApi = (
                 );
                 await dispatch(maximizeVideoPanelFlag(true));
                 await dispatch(normalizeVideoPanelFlag(false));
-
-                // to stop hit for video Icon state
-                localStorage.setItem("AgendaVideoIconHit", true);
               }
 
               await dispatch(
