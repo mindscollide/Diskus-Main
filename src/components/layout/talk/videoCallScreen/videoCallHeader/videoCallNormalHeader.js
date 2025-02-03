@@ -584,59 +584,7 @@ const VideoCallNormalHeader = ({
     dispatch(leaveCallModal(false));
     dispatch(toggleParticipantsVisibility(false));
   };
-
-  // for Host leave Call
-  const leaveCall = async (flag, flag2, flag3) => {
-    console.log("busyCall");
-    try {
-      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-        console.log("busyCall");
-
-        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
-      }
-    } catch (error) {}
-    if (isMeeting === true) {
-      const meetHostFlag = localStorage.getItem("meetinHostInfo");
-      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
-      if (meetHostFlag) {
-        const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
-        console.log(parsedHostFlag, "parsedHostFlag");
-        if (parsedHostFlag.isHost) {
-          let Data = {
-            RoomID: String(newRoomID),
-            UserGUID: String(newUserGUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
-        } else {
-          let Data = {
-            RoomID: String(participantRoomIds),
-            UserGUID: String(participantUID),
-            Name: String(newName),
-            IsHost: parsedHostFlag?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-
-          dispatch(setRaisedUnRaisedParticiant(false));
-          dispatch(LeaveMeetingVideo(Data, navigate, t));
-        }
-      }
-    } else if (getDashboardVideo.isDashboardVideo === false) {
-      console.log("leaveCallleaveCallleaveCallleaveCall");
-      let Data = {
-        OrganizationID: currentOrganization,
-        RoomID: initiateRoomID,
-        IsCaller: true,
-        CallTypeID: currentCallType,
-      };
-      dispatch(LeaveCall(Data, navigate, t));
-      console.log("Not End 1");
-    }
-    // dispatch(LeaveCall(Data, navigate, t));
+  function leaveSuccess() {
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
     const emptyArray = [];
@@ -653,6 +601,105 @@ const VideoCallNormalHeader = ({
     dispatch(participantPopup(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+  }
+
+  // for Host leave Call
+  const leaveCall = async (flag, flag2, flag3) => {
+    console.log("busyCall");
+    try {
+      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
+
+        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      }
+    } catch (error) {}
+    if (isMeeting === true) {
+      const meetHostFlag = localStorage.getItem("meetinHostInfo");
+      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
+      if (presenterViewFlag) {
+        console.log(presenterViewFlag, "presenterViewFlag");
+
+        console.log("busyCall");
+
+        if (Number(currentMeetingID) === Number(presenterMeetingId)) {
+          console.log("busyCall");
+
+          let currentMeetingID = Number(
+            localStorage.getItem("currentMeetingID")
+          );
+          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+          if (presenterViewHostFlag) {
+            console.log("busyCall");
+            console.log(presenterViewHostFlag, "presenterViewHostFlag");
+
+            if (presenterViewJoinFlag) {
+              console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
+              // stop presenter viewF
+              let data = {
+                MeetingID: currentMeetingID,
+                RoomID: callAcceptedRoomID,
+              };
+              sessionStorage.setItem("StopPresenterViewAwait", true);
+              dispatch(stopPresenterViewMainApi(navigate, t, data));
+            }
+          } else {
+            console.log("busyCall");
+
+            if (presenterViewJoinFlag) {
+              // leave presenter view
+              let presenterGuid = localStorage.getItem("PresenterGuid");
+              let data = {
+                RoomID: String(callAcceptedRoomID),
+                UserGUID: String(presenterGuid),
+                Name: String(meetingTitle),
+              };
+              dispatch(leavePresenterViewMainApi(navigate, t, data));
+            }
+          }
+        }
+        leaveSuccess();
+      } else if (meetHostFlag) {
+        const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
+        console.log(parsedHostFlag, "parsedHostFlag");
+        if (parsedHostFlag.isHost) {
+          let Data = {
+            RoomID: String(newRoomID),
+            UserGUID: String(newUserGUID),
+            Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+          leaveSuccess();
+        } else {
+          let Data = {
+            RoomID: String(participantRoomIds),
+            UserGUID: String(participantUID),
+            Name: String(newName),
+            IsHost: parsedHostFlag?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+
+          await dispatch(setRaisedUnRaisedParticiant(false));
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+          leaveSuccess();
+        }
+      }
+    } else if (getDashboardVideo.isDashboardVideo === false) {
+      console.log("leaveCallleaveCallleaveCallleaveCall");
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: initiateRoomID,
+        IsCaller: true,
+        CallTypeID: currentCallType,
+      };
+      await dispatch(LeaveCall(Data, navigate, t));
+      leaveSuccess();
+      console.log("Not End 1");
+    }
+    // dispatch(LeaveCall(Data, navigate, t));
 
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
@@ -700,6 +747,7 @@ const VideoCallNormalHeader = ({
 
   // For Participant Leave Call
   const participantLeaveCall = async () => {
+    dispatch(toggleParticipantsVisibility(false));
     console.log("busyCall");
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
@@ -1459,19 +1507,17 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <div onClick={onClickCLoseParticipantPanel}>
-                    <Button
-                      className="leave-meeting-options__btn leave-meeting-red-button"
-                      text={t("Leave-call")}
-                      onClick={participantLeaveCall}
-                    />
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    text={t("Leave-call")}
+                    onClick={participantLeaveCall}
+                  />
 
-                    <Button
-                      className="leave-meeting-options__btn leave-meeting-gray-button"
-                      text="Cancel"
-                      onClick={closeVideoPanel}
-                    />
-                  </div>
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    text="Cancel"
+                    onClick={closeVideoPanel}
+                  />
                 </>
               )}
             </div>
