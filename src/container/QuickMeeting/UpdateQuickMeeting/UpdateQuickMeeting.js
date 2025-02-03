@@ -869,14 +869,14 @@ const UpdateQuickMeeting = ({
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
     let fileSizeArr = fileSize;
-
+    let alreadyUploaded = [...attachments];
     // Start with the existing files in fileForSend
     let updatedFilesForSend = [...fileForSend];
 
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 10) {
+    if (alreadyUploaded.length + filesArray.length > 10) {
       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
@@ -980,9 +980,8 @@ const UpdateQuickMeeting = ({
               );
               if (isFileNameAlreadyExist !== -1) {
                 // Update the OriginalAttachmentName for the existing entry
-                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName = String(
-                  fileData.pK_FileID
-                );
+                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName =
+                  String(fileData.pK_FileID);
               } else {
                 // Add a new entry
                 fileforSend.push({
@@ -992,7 +991,7 @@ const UpdateQuickMeeting = ({
               }
             });
           }
-          
+
           // let NewFiles = attachments.filter((data, index) => data.OriginalAttachmentName !== "")
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
@@ -1063,7 +1062,6 @@ const UpdateQuickMeeting = ({
               });
             });
           }
-
 
           let previousAdendas = [...createMeeting.MeetingAgendas];
           let newData = {
@@ -1522,7 +1520,10 @@ const UpdateQuickMeeting = ({
               FK_MDID: atchmenData.objMeetingAgenda.fK_MDID,
             };
             let file = [];
-            if (atchmenData.meetingAgendaAttachments !== null && atchmenData.meetingAgendaAttachments.length > 0) {
+            if (
+              atchmenData.meetingAgendaAttachments !== null &&
+              atchmenData.meetingAgendaAttachments.length > 0
+            ) {
               atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
@@ -2055,7 +2056,6 @@ const UpdateQuickMeeting = ({
       await dispatch(
         UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
       );
-
     } else {
       showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
     }
@@ -2499,7 +2499,7 @@ const UpdateQuickMeeting = ({
   };
 
   const downloadClick = (record) => {
-    console.log(record, "recordrecord")
+    console.log(record, "recordrecord");
     let dataRoomData = {
       FileID: Number(record.OriginalAttachmentName),
     };
@@ -3019,10 +3019,14 @@ const UpdateQuickMeeting = ({
                                                       MeetingAgendaAttachmentsData.OriginalAttachmentName
                                                     )}
                                                     handleEyeIcon={() =>
-                                                      handeClickView(MeetingAgendaAttachmentsData)
+                                                      handeClickView(
+                                                        MeetingAgendaAttachmentsData
+                                                      )
                                                     }
                                                     handleClickDownload={() =>
-                                                      downloadClick(MeetingAgendaAttachmentsData)
+                                                      downloadClick(
+                                                        MeetingAgendaAttachmentsData
+                                                      )
                                                     }
                                                   />
                                                 </Col>

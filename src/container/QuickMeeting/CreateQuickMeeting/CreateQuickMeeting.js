@@ -577,6 +577,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
     let fileSizeArr = fileSize;
+    let alreadyAttachments = [...attachments];
 
     // Start with the existing files in fileForSend
     let updatedFilesForSend = [...fileForSend];
@@ -584,7 +585,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 10) {
+    if (alreadyAttachments.length + filesArray.length > 10) {
       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
