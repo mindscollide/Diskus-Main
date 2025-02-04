@@ -435,10 +435,12 @@ const Dashboard = () => {
       console.log("mqtt mqmqmqmqmqmq", isMeeting);
 
       if (isMeeting) {
+        console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
         if (
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {
+          console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef.current);
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
 
