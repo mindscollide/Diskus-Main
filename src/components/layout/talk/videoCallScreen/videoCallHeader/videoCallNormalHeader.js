@@ -1275,8 +1275,12 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
-          currentCallType === 2 ||
-          currentCallType === 3 ? (
+          (currentCallType === 2 &&
+            !presenterViewFlag &&
+            !presenterViewHostFlag) ||
+          (currentCallType === 3 &&
+            !presenterViewFlag &&
+            !presenterViewHostFlag) ? (
             <div className={"position-relative"}>
               {ParticipantPopupFlag === true ? (
                 <>
