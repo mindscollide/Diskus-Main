@@ -293,8 +293,9 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
+      
       let Data = {
-        RoomID: String(participantRoomIds),
+        RoomID: String(presenterViewFlag?callAcceptedRoomID:participantRoomIds),
       };
       dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
       setIsMeetinVideoCeckForParticipant(true);
