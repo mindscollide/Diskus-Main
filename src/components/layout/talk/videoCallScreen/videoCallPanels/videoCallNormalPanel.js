@@ -224,6 +224,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterMeetingId
   );
 
+  console.log(presenterViewHostFlag, "presenterViewHostFlag");
   console.log(presenterViewFlag, "presenterViewFlag");
 
   const [allParticipant, setAllParticipant] = useState([]);
@@ -1143,23 +1144,32 @@ const VideoPanelNormal = () => {
                     <>
                       <Col
                         lg={
-                          isMeetingHost &&
-                          meetingHost.isDashboardVideo &&
-                          participantWaitinglistBox
+                          (isMeetingHost &&
+                            meetingHost.isDashboardVideo &&
+                            participantWaitinglistBox) ||
+                          (presenterViewHostFlag &&
+                            presenterViewFlag &&
+                            participantWaitinglistBox)
                             ? 9
                             : 12
                         }
                         md={
-                          isMeetingHost &&
-                          meetingHost.isDashboardVideo &&
-                          participantWaitinglistBox
+                          (isMeetingHost &&
+                            meetingHost.isDashboardVideo &&
+                            participantWaitinglistBox) ||
+                          (presenterViewHostFlag &&
+                            presenterViewFlag &&
+                            participantWaitinglistBox)
                             ? 9
                             : 12
                         }
                         sm={
-                          isMeetingHost &&
-                          meetingHost.isDashboardVideo &&
-                          participantWaitinglistBox
+                          (isMeetingHost &&
+                            meetingHost.isDashboardVideo &&
+                            participantWaitinglistBox) ||
+                          (presenterViewHostFlag &&
+                            presenterViewFlag &&
+                            participantWaitinglistBox)
                             ? 9
                             : 12
                         }
