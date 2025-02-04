@@ -2418,5 +2418,6 @@
   "Trail-request-pending": "Trail request pending",
   "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
   "Signature-flow-deleted-successfully": "Signature flow deleted successfully",
-  "File-size-should-not-be-more-than-1-5GB": "File size should not be more than 1.5GB"
+  "File-size-should-not-be-more-than-1-5GB": "File size should not be more than 1.5GB",
+  "Approvals": "Approvals"
 }

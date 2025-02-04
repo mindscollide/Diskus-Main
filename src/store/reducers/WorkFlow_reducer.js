@@ -24,10 +24,46 @@ const initialState = {
   getSignatureFileAnnotationResponse: null,
   addUpdateSignatureFileAnnotationResponse: null,
   validateEncryptedStringMinuteReviewData: null,
+  workflowsignaturedocumentbyme: null,
+  workflowsignaturedocument: null,
+  workflowSignaturedocumentStatusChange: null,
+  workflowsignaturedocumentActionByMe: null,
+  signatureDocumentStatusChangeForSignees: null
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case actions.SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES: {
+      return {
+        ...state,
+        signatureDocumentStatusChangeForSignees: null
+      }
+    }
+    case actions.SIGNATURE_DOCUMENT_STATUS_CHANGE: {
+      return {
+        ...state,
+        workflowSignaturedocumentStatusChange: action.response,
+      };
+    }
+    case actions.SIGNATURE_DOCUMENT_ACTION_BY_ME: {
+      return {
+        ...state,
+        workflowsignaturedocumentActionByMe: action.response,
+      };
+    }
+    case actions.WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED_BY_ME: {
+      return {
+        ...state,
+        workflowsignaturedocumentbyme: action.response,
+      };
+    }
+    case actions.WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED: {
+      return {
+        ...state,
+        workflowsignaturedocument: action.response,
+      };
+    }
     case actions.CREATESIGNATUREFLOW_INIT: {
       return {
         ...state,

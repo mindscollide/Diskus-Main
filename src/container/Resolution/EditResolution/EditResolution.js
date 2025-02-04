@@ -2113,7 +2113,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                     <Row>
                                       <Col lg={5} md={5} sm={5}>
                                         <Select
-                                          placeholder={`${t("Add-attendees")}*`}
+                                          placeholder={`${t("Add-members")}*`}
                                           className='mt-3'
                                           isSearchable={false}
                                           value={
@@ -2239,7 +2239,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                     <Row>
                                       <Col lg={5} md={5} sm={5}>
                                         <Select
-                                          placeholder={`${t("Add-attendees")}*`}
+                                          placeholder={`${t("Add-members")}*`}
                                           className='mt-3'
                                           isSearchable={false}
                                           value={

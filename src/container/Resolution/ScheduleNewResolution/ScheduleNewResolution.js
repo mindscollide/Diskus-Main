@@ -1799,7 +1799,7 @@ const ScheduleNewResolution = () => {
                               <Row>
                                 <Col lg={5} md={5} sm={5}>
                                   <Select
-                                    placeholder={`${t("Add-attendees")}*`}
+                                    placeholder={`${t("Add-members")}*`}
                                     className='mt-3'
                                     isSearchable={false}
                                     value={
@@ -1904,7 +1904,7 @@ const ScheduleNewResolution = () => {
                               <Row>
                                 <Col lg={5} md={5} sm={5}>
                                   <Select
-                                    placeholder={`${t("Add-attendees")}*`}
+                                    placeholder={`${t("Add-members")}*`}
                                     className='mt-3'
                                     isSearchable={false}
                                     value={

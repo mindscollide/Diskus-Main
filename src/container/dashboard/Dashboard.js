@@ -186,6 +186,14 @@ import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/A
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
+import { DATAROOM_BREADCRUMBS } from "../../store/action_types";
+import {
+  SignatureDocumentActionByMe,
+  SignatureDocumentReceived,
+  SignatureDocumentReceivedMyMe,
+  SignatureDocumentStatusChange,
+  SignatureDocumentStatusChangeSignees,
+} from "../../store/actions/workflow_actions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -2885,6 +2893,44 @@ const Dashboard = () => {
           console.log(data.payload, "datapayload");
           dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
           setNotificationID(id);
+        }
+      }
+      if (data.action.toLowerCase() === "WorkFlow".toLowerCase()) {
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_SENT_BY_ME".toLowerCase())
+        ) {
+          dispatch(SignatureDocumentReceivedMyMe(data.payload));
+        }
+
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
+        ) {
+          dispatch(SignatureDocumentReceived(data.payload));
+        }
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
+        ) {
+          dispatch(SignatureDocumentStatusChange(data.payload));
+        }
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_ACTION_BY_ME".toLowerCase())
+        ) {
+          dispatch(SignatureDocumentActionByMe(data.payload));
+        }
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase())
+        ) {
+          dispatch(  SignatureDocumentStatusChangeSignees(data.payload));
         }
       }
     } catch (error) {}
