@@ -46,7 +46,10 @@ import {
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../../commen/functions/time_formatter";
-import { ConvertFileSizeInMB } from "../../../commen/functions/convertFileSizeInMB";
+import {
+  ConvertFileSizeInMB,
+  isFileSizeValid,
+} from "../../../commen/functions/convertFileSizeInMB";
 import Select from "react-select";
 import { Tooltip } from "antd";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
@@ -576,85 +579,51 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
-    let fileSizeArr = fileSize;
-    let alreadyAttachments = [...attachments];
-
-    // Start with the existing files in fileForSend
-    let updatedFilesForSend = [...fileForSend];
 
     let size = true;
     let sizezero = true;
 
-    if (alreadyAttachments.length + filesArray.length > 10) {
+    if (attachments.length + filesArray.length > 10) {
       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
 
     filesArray.forEach((uploadedFile) => {
       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
-      let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
+      let { isMorethan } = isFileSizeValid(uploadedFile.size);
 
-      if (mergeFileSizes + fileSizeinMB > maxFileSize) {
+      let fileExists = attachments.some(
+        (filename) => filename.DisplayAttachmentName === uploadedFile.name
+      );
+
+      if (!isMorethan) {
+        size = false;
+      } else if (fileSizeinMB === 0) {
+        sizezero = false;
+      }
+
+      if (fileExists) {
+        showMessage(t("This-file-already-exist"), "error", setOpen);
+      } else if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
+          t("File-size-should-not-be-more-than-1-5GB"),
           "error",
           setOpen
         );
-        return;
-      }
-
-      let ext = uploadedFile.name.split(".").pop().toLowerCase();
-
-      if (
-        [
-          "doc",
-          "docx",
-          "xls",
-          "xlsx",
-          "pdf",
-          "png",
-          "txt",
-          "jpg",
-          "jpeg",
-          "gif",
-          "csv",
-        ].includes(ext)
-      ) {
-        let fileExists = attachments.some(
-          (filename) => filename.DisplayAttachmentName === uploadedFile.name
-        );
-
-        if (fileSizeinMB > 10) {
-          size = false;
-        } else if (fileSizeinMB === 0) {
-          sizezero = false;
-        }
-
-        if (fileExists) {
-          showMessage(t("This-file-already-exist"), "error", setOpen);
-        } else if (!size) {
-          showMessage(
-            t("You-can-not-upload-more-then-10MB-file"),
-            "error",
-            setOpen
-          );
-        } else if (!sizezero) {
-          showMessage(t("File-size-is-0mb"), "error", setOpen);
-        } else {
-          let fileData = {
-            DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: "",
-          };
-          setAttachments((prev) => [...prev, fileData]);
-          fileSizeArr += uploadedFile.size;
-          updatedFilesForSend.push(uploadedFile); // Append new file to the existing ones
-        }
+      } else if (!sizezero) {
+        showMessage(t("File-size-is-0mb"), "error", setOpen);
+      } else {
+        let fileData = {
+          DisplayAttachmentName: uploadedFile.name,
+          OriginalAttachmentName: "",
+        };
+        setAttachments((prev) => [...prev, fileData]);
+        // fileSizeArr += uploadedFile.size;
+        setFileForSend([...fileForSend, uploadedFile]);
       }
     });
-
-    // Update the states with the accumulated values
-    setFileForSend(updatedFilesForSend);
-    setFileSize(fileSizeArr);
+    // // Update the states with the accumulated values
+    // setFileSize(fileSizeArr);
   };
 
   const editGrid = (datarecord, dataindex) => {

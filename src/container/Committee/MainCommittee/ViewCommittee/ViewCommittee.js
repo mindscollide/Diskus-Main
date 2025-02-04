@@ -209,7 +209,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );

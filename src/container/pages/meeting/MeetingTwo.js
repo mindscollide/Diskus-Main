@@ -158,7 +158,9 @@ const NewMeeting = () => {
     setSceduleMeeting,
     sceduleMeeting,
     setDataroomMapFolderId,
-    dataroomMapFolderId
+    dataroomMapFolderId,
+    isEditMeeting,
+    setEditMeeting
   } = useContext(MeetingContext);
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
@@ -311,7 +313,6 @@ const NewMeeting = () => {
   const [editFlag, setEditFlag] = useState(false);
 
   const [currentMeetingID, setCurrentMeetingID] = useState(0);
-  const [isEditMeeting, setEditMeeting] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -2550,7 +2551,7 @@ const NewMeeting = () => {
                               isPrimaryOrganizer: record.isPrimaryOrganizer,
                             });
                             setEditMeeting(true);
-                            dispatch(viewMeetingFlag(false));
+                            dispatch(viewMeetingFlag(true));
                           }}
                         />
                       </Tooltip>

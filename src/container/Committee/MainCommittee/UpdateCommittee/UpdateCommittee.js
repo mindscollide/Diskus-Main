@@ -27,6 +27,7 @@ import ConfirmationModal from "../../../../components/elements/confirmationModal
 import { Upload } from "antd";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../commen/functions/utils";
+import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -546,7 +547,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > maxFileSize) {
+        const { isMorethan } = isFileSizeValid(fileData.size);
+
+        if (!isMorethan) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -558,7 +561,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );
