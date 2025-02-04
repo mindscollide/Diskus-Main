@@ -417,14 +417,21 @@ const Dashboard = () => {
     console.log("mqtt mqmqmqmqmqmq", payload);
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (String(meetingVideoID) === String(payload?.meetingID)) {
-      if (!presenterViewFlagRef.current && !presenterViewJoinFlagRef.current) {
-        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL),
-          WasInVideo: isMeetingVideo ? true : false,
-        };
-        dispatch(joinPresenterViewMainApi(navigate, t, data));
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+
+    if (isMeeting) {
+      if (String(meetingVideoID) === String(payload?.meetingID)) {
+        if (
+          !presenterViewFlagRef.current &&
+          !presenterViewJoinFlagRef.current
+        ) {
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL),
+            WasInVideo: isMeetingVideo ? true : false,
+          };
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        }
       }
     }
   };
