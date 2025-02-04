@@ -92,6 +92,7 @@ const initialState = {
   joinPresenterView: null,
   leavePresenterView: null,
   meetingStoppedByPresenter: false,
+  presenterStartedFlag: false,
 
   // startOrStopPresenter: false,
 };
@@ -991,6 +992,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         meetingStoppedByPresenter: action.response,
+      };
+
+    // For Presenter Join Started Main State
+    case actions.PRESENTER_STARTED_MAIN_FLAG:
+      console.log("PRESENTER_STARTED_MAIN_FLAG", action.response);
+      return {
+        ...state,
+        presenterStartedFlag: action.response,
       };
 
     // Start and Stop Presenter View State

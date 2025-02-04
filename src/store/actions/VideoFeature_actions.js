@@ -1917,6 +1917,15 @@ const stopMeetingVideoByPresenter = (response) => {
   };
 };
 
+// For Presenter Join Started Main State
+const presenterStartedMainFlag = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.PRESENTER_STARTED_MAIN_FLAG,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -2014,4 +2023,5 @@ export {
   joinPresenterViewMainApi,
   leavePresenterViewMainApi,
   stopMeetingVideoByPresenter,
+  presenterStartedMainFlag,
 };
