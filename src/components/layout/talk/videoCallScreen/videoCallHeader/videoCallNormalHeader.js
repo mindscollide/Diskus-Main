@@ -4,10 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./videoCallHeader.css";
 import { Button, Notification } from "./../../../../elements";
-import {
-  checkFeatureIDAvailability,
-  WebNotificationExportRoutFunc,
-} from "../../../../../commen/functions/utils";
+import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";

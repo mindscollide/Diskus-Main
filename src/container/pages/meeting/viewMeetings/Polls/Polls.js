@@ -147,6 +147,7 @@ const Polls = () => {
   };
 
   const handleDeletePoll = (record) => {
+    console.log(record, "handleDeletePoll");
     dispatch(deleteSavedPollsMeeting(true));
     setPollID(record.pollID);
   };
@@ -835,10 +836,7 @@ const Polls = () => {
     <>
       <section>
         {createpoll ? (
-          <Createpolls
-            setCreatepoll={setCreatepoll}
-            currentMeeting={currentMeeting}
-          />
+          <Createpolls setCreatepoll={setCreatepoll} />
         ) : votePolls ? (
           <CastVotePollsMeeting
             setvotePolls={setvotePolls}
@@ -1000,12 +998,7 @@ const Polls = () => {
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           />
         )}
-        {deletPollsMeeting && (
-          <DeletePollConfirmModal
-            currentMeeting={currentMeeting}
-            pollID={pollID}
-          />
-        )}
+        {deletPollsMeeting && <DeletePollConfirmModal pollID={pollID} />}
 
         <Notification open={open} setOpen={setOpen} />
         {AccessDeniedGlobalState && <AccessDeniedModal />}
