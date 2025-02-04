@@ -674,7 +674,6 @@ const saveSignatureDocumentApi = (
                 );
               }
               console.log({ status }, "statusstatusValue");
-              window.close();
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2511,13 +2510,53 @@ const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
   };
 };
 
-const clearWorkFlowResponseMessage = () => {
+const SignatureDocumentReceivedMyMe = (response) => {
+  return {
+    type: actions.WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED_BY_ME,
+    response: response,
+  };
+};
+
+const SignatureDocumentReceived = (response) => {
+  return {
+    type: actions.WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED,
+    response: response,
+  };
+};
+
+const SignatureDocumentStatusChange = (response) =>  {
+  return {
+    type: actions.SIGNATURE_DOCUMENT_STATUS_CHANGE,
+    response: response
+  }
+}
+
+const SignatureDocumentActionByMe = (response) => {
+  return {
+    type: actions.SIGNATURE_DOCUMENT_ACTION_BY_ME,
+    response: response
+  }
+}
+const SignatureDocumentStatusChangeSignees = (response) => {
+  return {
+    type: actions.SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES,
+    response: response
+  }
+}
+  
+const clearWorkFlowResponseMessage = (response) => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
+    response: response,
   };
 };
 
 export {
+  SignatureDocumentStatusChangeSignees,
+  SignatureDocumentStatusChange,
+  SignatureDocumentActionByMe,
+  SignatureDocumentReceived,
+  SignatureDocumentReceivedMyMe,
   validateEncryptedMinutesReviewer_clear,
   validateEncryptedMinutesReviewerApi,
   addUpdateSignatureFileAnnotationApi,

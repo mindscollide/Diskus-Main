@@ -2120,7 +2120,7 @@
   "Please-add-deadline": "Please add deadline",
   "Any-unsaved-changes-will-be-lost-continue": "Any unsaved changes will be lost. Continue?",
   "Remaining-minutes-to-review": "Remaining minutes to review: ",
-  "Minutes-review-flow-inserted-successfully": "Minutes review flow inserted successfully",
+  "Minutes-circulated-for-review": "Minutes circulated for review",
   "Invalid-subscription-status-id-provided": "invalid subscription status id provided",
   "Subscription#": "Subscription #",
   "Pay": "Pay",
@@ -2243,7 +2243,7 @@
   "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
   "Please-add-atleast-one-participant": "Please add atleast one participant",
   "Would-you-like-to-proceed-with-accepting-all-minutes": "Would you like to proceed with Accepting All Minutes?",
-  "File-size-should-not-be-greater-then-1-5GB": "File size should not be greater then 1.5GB",
+  "File-size-should-not-be-greater-than-1-5GB": "File size should not be greater then 1.5GB",
   "Not-allowed-more-than-15-files": "Not allowed more than 15 files",
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving": "You have unsaved changes. If you leave this page, your changes will be lost. Do you want to continue without saving?",
   "Unsave-changes": "Unsave Changes",
@@ -2426,5 +2426,7 @@
   "Could-not-join-presentation": "Could not join presentation",
   "Trail-request-pending": "Trail request pending",
   "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
-  "Signature-flow-deleted-successfully": "Signature flow deleted successfully"
+  "Signature-flow-deleted-successfully": "Signature flow deleted successfully",
+  "File-size-should-not-be-more-than-1-5GB": "File size should not be more than 1.5GB",
+  "Approvals": "Approvals"
 }

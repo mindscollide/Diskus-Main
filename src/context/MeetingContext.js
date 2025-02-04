@@ -47,6 +47,8 @@ export const MeetingProvider = ({ children }) => {
 
   // State for managing the schedule advanced meeting modal
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
+  // State for managing the edit advanced meeting modal
+  const [isEditMeeting, setEditMeeting] = useState(false);
 
   // State for managing meeting tabs and their visibility
   const [meetingDetails, setmeetingDetails] = useState(false);
@@ -252,6 +254,8 @@ export const MeetingProvider = ({ children }) => {
     setCallType,
     typeOfMeeting,
     setTypeOfMeeting,
+    setEditMeeting,
+    isEditMeeting,
   };
 
   // Provide the state data to the context

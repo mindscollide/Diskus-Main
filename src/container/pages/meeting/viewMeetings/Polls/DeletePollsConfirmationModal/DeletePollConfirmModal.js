@@ -8,10 +8,12 @@ import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../components/elements";
 import { deleteSavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { deleteMeetingPollApi } from "../../../../../../store/actions/Polls_actions";
-const DeletePollConfirmModal = ({ currentMeeting, pollID }) => {
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
+const DeletePollConfirmModal = ({ pollID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { advanceMeetingModalID } = useMeetingContext();
   const deletPollsMeeting = useSelector(
     (state) => state.NewMeetingreducer.deletPollsMeeting
   );
@@ -20,11 +22,14 @@ const DeletePollConfirmModal = ({ currentMeeting, pollID }) => {
   };
 
   const handleYesFunctionality = () => {
+    console.log(pollID, "handleDeletePoll");
     let data = {
-      PollID: pollID,
-      MeetingID: parseInt(currentMeeting),
+      PollID: Number(pollID),
+      MeetingID: parseInt(advanceMeetingModalID),
     };
-    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+    dispatch(
+      deleteMeetingPollApi(navigate, t, data, Number(advanceMeetingModalID))
+    );
     dispatch(deleteSavedPollsMeeting(false));
   };
 

@@ -52,6 +52,7 @@ import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgend
 import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
 import { useGroupsContext } from "../../../../context/GroupsContext";
 import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
+import { useResolutionContext } from "../../../../context/ResolutionContext";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -75,6 +76,7 @@ const ViewMeetingModal = ({
   const ViewAdvanceMeetingTask =
     JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true;
   const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const { setResultresolution } = useResolutionContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
@@ -787,6 +789,7 @@ const ViewMeetingModal = ({
         if (webNotifactionDataRoutecheckFlag) {
           console.log("webNotifactionDataRoutecheckFlag");
           let currentURL = window.location.href;
+          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
           WebNotificationExportRoutFunc(
             currentURL,
             dispatch,
@@ -801,7 +804,10 @@ const ViewMeetingModal = ({
             setViewGroupPage,
             setShowModal,
             setVideoTalk,
-            setAdvanceMeetingModalID
+            setAdvanceMeetingModalID,
+            setResultresolution,
+            isMeeting,
+            setPolls
           );
           dispatch(webnotificationGlobalFlag(false));
         }
@@ -814,13 +820,14 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -836,10 +843,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={

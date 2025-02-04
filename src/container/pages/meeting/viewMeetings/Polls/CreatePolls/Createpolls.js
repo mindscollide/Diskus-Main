@@ -38,12 +38,14 @@ import {
   clearPollsMesseges,
 } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
-const Createpolls = ({ setCreatepoll, currentMeeting }) => {
+const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
+  const { advanceMeetingModalID } = useMeetingContext();
   const ResponseMessagePoll = useSelector(
     (state) => state.PollsReducer.ResponseMessage
   );
@@ -189,7 +191,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
@@ -461,7 +463,9 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
         IsCreatedfromMainPoll: false,
       };
 
-      await dispatch(SavePollsApi(navigate, data, t, 2, currentMeeting));
+      await dispatch(
+        SavePollsApi(navigate, data, t, 2, Number(advanceMeetingModalID))
+      );
       setCreatepoll(false);
     } else {
       if (pollsData.Title === "") {

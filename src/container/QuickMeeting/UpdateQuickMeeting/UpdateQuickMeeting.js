@@ -49,7 +49,10 @@ import {
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../../commen/functions/time_formatter";
-import { ConvertFileSizeInMB } from "../../../commen/functions/convertFileSizeInMB";
+import {
+  ConvertFileSizeInMB,
+  isFileSizeValid,
+} from "../../../commen/functions/convertFileSizeInMB";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import {
   generateRandomNegativeAuto,
@@ -663,7 +666,7 @@ const UpdateQuickMeeting = ({
   //           showMessage(t("File-already-exists"), "error", setOpen);
   //         } else if (fileSizeinMB > maxFileSize) {
   //           showMessage(
-  //             t("File-size-should-not-be-greater-then-1-5GB"),
+  //             t("File-size-should-not-be-greater-than-1-5GB"),
   //             "error",
   //             setOpen
   //           );
@@ -868,84 +871,49 @@ const UpdateQuickMeeting = ({
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     let filesArray = Object.values(data.target.files);
-    let fileSizeArr = fileSize;
-
-    // Start with the existing files in fileForSend
-    let updatedFilesForSend = [...fileForSend];
 
     let size = true;
     let sizezero = true;
 
-    if (updatedFilesForSend.length + filesArray.length > 10) {
+    if (attachments.length + filesArray.length > 10) {
       showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
 
     filesArray.forEach((uploadedFile) => {
       let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
-      let mergeFileSizes = ConvertFileSizeInMB(fileSizeArr);
+      let { isMorethan } = isFileSizeValid(uploadedFile.size);
 
-      if (mergeFileSizes + fileSizeinMB > maxFileSize) {
+      let fileExists = attachments.some(
+        (filename) => filename.DisplayAttachmentName === uploadedFile.name
+      );
+
+      if (!isMorethan) {
+        size = false;
+      } else if (fileSizeinMB === 0) {
+        sizezero = false;
+      }
+
+      if (fileExists) {
+        showMessage(t("This-file-already-exist"), "error", setOpen);
+      } else if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
+          t("File-size-should-not-be-more-than-1-5GB"),
           "error",
           setOpen
         );
-        return;
-      }
-
-      let ext = uploadedFile.name.split(".").pop().toLowerCase();
-
-      if (
-        [
-          "doc",
-          "docx",
-          "xls",
-          "xlsx",
-          "pdf",
-          "png",
-          "txt",
-          "jpg",
-          "jpeg",
-          "gif",
-          "csv",
-        ].includes(ext)
-      ) {
-        let fileExists = attachments.some(
-          (filename) => filename.DisplayAttachmentName === uploadedFile.name
-        );
-
-        if (fileSizeinMB > 10) {
-          size = false;
-        } else if (fileSizeinMB === 0) {
-          sizezero = false;
-        }
-
-        if (fileExists) {
-          showMessage(t("This-file-already-exist"), "error", setOpen);
-        } else if (!size) {
-          showMessage(
-            t("You-can-not-upload-more-then-10MB-file"),
-            "error",
-            setOpen
-          );
-        } else if (!sizezero) {
-          showMessage(t("File-size-is-0mb"), "error", setOpen);
-        } else {
-          let fileData = {
-            DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: "",
-          };
-          setAttachments((prev) => [...prev, fileData]);
-          fileSizeArr += uploadedFile.size;
-          updatedFilesForSend.push(uploadedFile); // Append new file to the existing ones
-        }
+      } else if (!sizezero) {
+        showMessage(t("File-size-is-0mb"), "error", setOpen);
+      } else {
+        let fileData = {
+          DisplayAttachmentName: uploadedFile.name,
+          OriginalAttachmentName: "",
+        };
+        setAttachments((prev) => [...prev, fileData]);
+        setFileForSend([...fileForSend, uploadedFile]);// Append new file to the existing ones
       }
     });
 
-    // Update the states with the accumulated values
-    setFileForSend(updatedFilesForSend);
-    setFileSize(fileSizeArr);
   };
   // for add another agenda main inputs handler
   const addAnOtherAgenda = async (e) => {
@@ -980,9 +948,8 @@ const UpdateQuickMeeting = ({
               );
               if (isFileNameAlreadyExist !== -1) {
                 // Update the OriginalAttachmentName for the existing entry
-                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName = String(
-                  fileData.pK_FileID
-                );
+                fileforSend[isFileNameAlreadyExist].OriginalAttachmentName =
+                  String(fileData.pK_FileID);
               } else {
                 // Add a new entry
                 fileforSend.push({
@@ -992,7 +959,7 @@ const UpdateQuickMeeting = ({
               }
             });
           }
-          
+
           // let NewFiles = attachments.filter((data, index) => data.OriginalAttachmentName !== "")
           let newData = {
             ObjMeetingAgenda: objMeetingAgenda,
@@ -1063,7 +1030,6 @@ const UpdateQuickMeeting = ({
               });
             });
           }
-
 
           let previousAdendas = [...createMeeting.MeetingAgendas];
           let newData = {
@@ -1522,7 +1488,10 @@ const UpdateQuickMeeting = ({
               FK_MDID: atchmenData.objMeetingAgenda.fK_MDID,
             };
             let file = [];
-            if (atchmenData.meetingAgendaAttachments !== null && atchmenData.meetingAgendaAttachments.length > 0) {
+            if (
+              atchmenData.meetingAgendaAttachments !== null &&
+              atchmenData.meetingAgendaAttachments.length > 0
+            ) {
               atchmenData.meetingAgendaAttachments.forEach(
                 (atchmenDataaa, index) => {
                   file.push({
@@ -2055,7 +2024,6 @@ const UpdateQuickMeeting = ({
       await dispatch(
         UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
       );
-
     } else {
       showMessage(t("Please-atleast-add-one-organizer"), "error", setOpen);
     }
@@ -2499,7 +2467,7 @@ const UpdateQuickMeeting = ({
   };
 
   const downloadClick = (record) => {
-    console.log(record, "recordrecord")
+    console.log(record, "recordrecord");
     let dataRoomData = {
       FileID: Number(record.OriginalAttachmentName),
     };
@@ -3019,10 +2987,14 @@ const UpdateQuickMeeting = ({
                                                       MeetingAgendaAttachmentsData.OriginalAttachmentName
                                                     )}
                                                     handleEyeIcon={() =>
-                                                      handeClickView(MeetingAgendaAttachmentsData)
+                                                      handeClickView(
+                                                        MeetingAgendaAttachmentsData
+                                                      )
                                                     }
                                                     handleClickDownload={() =>
-                                                      downloadClick(MeetingAgendaAttachmentsData)
+                                                      downloadClick(
+                                                        MeetingAgendaAttachmentsData
+                                                      )
                                                     }
                                                   />
                                                 </Col>

@@ -1193,7 +1193,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         : "isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
-                    text={t("Agendas")}
+                    text={t("Agenda")}
                     onClick={changeSelectAgenda}
                     datatut='show-agenda'
                   />

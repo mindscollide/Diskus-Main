@@ -725,6 +725,8 @@ const UnpublishedProposedMeeting = ({
                           isPrimaryOrganizer: record.isPrimaryOrganizer,
                         });
                         setEditMeeting(true);
+                        dispatch(viewMeetingFlag(true));
+
                         dispatch(meetingDetailsGlobalFlag(false));
                         dispatch(organizersGlobalFlag(false));
                         dispatch(agendaContributorsGlobalFlag(false));
@@ -771,6 +773,8 @@ const UnpublishedProposedMeeting = ({
                             isPrimaryOrganizer: record.isPrimaryOrganizer,
                           });
                           setEditMeeting(true);
+                          dispatch(viewMeetingFlag(true));
+
                           dispatch(meetingDetailsGlobalFlag(true));
                           dispatch(organizersGlobalFlag(false));
                           dispatch(agendaContributorsGlobalFlag(false));

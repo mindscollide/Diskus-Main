@@ -14,7 +14,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  castVoteApi,
   setVotePollModal,
   UpdatedCastVoteAPI,
 } from "../../../store/actions/Polls_actions";
@@ -51,7 +50,8 @@ const Votepoll = () => {
       let pollData = PollsReducerAllpolls.poll;
       let pollDetails = pollData.pollDetails;
       let pollOptions = pollData.pollOptions;
-
+      let selectedAnswers = pollData.selectedAnswers;
+      console.log(pollData, "pollDatapollDatapollDatapollData");
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }
@@ -63,6 +63,7 @@ const Votepoll = () => {
           Date: pollDetails.dueDate,
           AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
           PollID: pollDetails.pollID,
+          answer: selectedAnswers.map((answer) => answer.pollAnswerID),
         });
       }
     }

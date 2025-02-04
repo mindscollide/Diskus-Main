@@ -201,6 +201,25 @@ const Polls = ({ committeeStatus }) => {
     }
   };
 
+  const handleClickonTitleForVotingScreenBeforeDueDate = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollsByPollIdforCommitteeApi(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
+
   useEffect(() => {
     let Data = {
       CommitteeID: Number(ViewCommitteeID),
@@ -385,14 +404,29 @@ const Polls = ({ committeeStatus }) => {
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        return (
-          <span
-            className={styles["DateClass"]}
-            onClick={() => handleClickonTitle(record)}
-          >
-            {truncateString(text, 55)}
-          </span>
-        );
+        const currentDate = new Date();
+        const convertIntoGmt = resolutionResultTable(record.dueDate);
+        if (currentDate < convertIntoGmt && committeeStatus === 3) {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() =>
+                handleClickonTitleForVotingScreenBeforeDueDate(record)
+              }
+            >
+              {truncateString(text, 55)}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className={styles["DateClass"]}
+              onClick={() => handleClickonTitle(record)}
+            >
+              {truncateString(text, 55)}
+            </span>
+          );
+        }
       },
     },
 
@@ -476,17 +510,9 @@ const Polls = ({ committeeStatus }) => {
       dataIndex: "Vote",
       width: "70px",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
-        console.log(record.dueDate, "recordrecordrecord");
-
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        console.log(
-          currentDate,
-          convertIntoGmt,
-          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
-        );
+
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (currentDate < convertIntoGmt && committeeStatus === 3) {

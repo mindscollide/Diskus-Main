@@ -1014,7 +1014,7 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
               dispatch(
                 saveMinutesReviewFlow_Success(
                   response.data.responseResult,
-                  t("Minutes-review-flow-inserted-successfully")
+                  t("Minutes-circulated-for-review")
                 )
               );
               let Data2 = {
