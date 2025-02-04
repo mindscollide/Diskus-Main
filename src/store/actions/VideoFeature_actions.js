@@ -1348,8 +1348,11 @@ const openPresenterViewMainApi = (
                   "acceptedRoomID",
                   response.data.responseResult.roomID
                 );
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
                 const meetingHost = {
-                  isHost: true,
+                  isHost: isMeetingVideoHostCheck,
                   isHostId: 0,
                   isDashboardVideo: true,
                 };
@@ -1363,9 +1366,6 @@ const openPresenterViewMainApi = (
                 );
                 await dispatch(maximizeVideoPanelFlag(true));
                 await dispatch(normalizeVideoPanelFlag(false));
-
-                // to stop hit for video Icon state
-                localStorage.setItem("AgendaVideoIconHit", true);
               }
 
               await dispatch(
@@ -1861,6 +1861,15 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
   };
 };
 
+// Stop Meeting Video By presenter View when Some one Already Join the meeting Video
+const stopMeetingVideoByPresenter = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1957,4 +1966,5 @@ export {
   stopPresenterViewMainApi,
   joinPresenterViewMainApi,
   leavePresenterViewMainApi,
+  stopMeetingVideoByPresenter,
 };

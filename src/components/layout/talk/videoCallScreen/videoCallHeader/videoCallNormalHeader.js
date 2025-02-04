@@ -93,7 +93,9 @@ const VideoCallNormalHeader = ({
   const location = useLocation();
 
   const { editorRole } = useContext(MeetingContext);
+  // const { isMeeting } = useMeetingContext();
 
+  console.log(isMeeting, "useMeetingContextuseMeetingContext");
   const leaveModalPopupRef = useRef(null);
 
   const meetingUrlData = useSelector(
@@ -223,6 +225,10 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.presenterMeetingId
   );
   console.log(presenterMeetingId, "presenterMeetingId");
+
+  const meetingStoppedByPresenter = useSelector(
+    (state) => state.videoFeatureReducer.meetingStoppedByPresenter
+  );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -358,6 +364,74 @@ const VideoCallNormalHeader = ({
     dispatch(toggleParticipantsVisibility(false));
   };
 
+  function leaveSuccess() {
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("isMeetingVideo", false);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    setParticipantStatus([]);
+    localStorage.setItem("activeCall", false);
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("acceptedRoomID", 0);
+    localStorage.setItem("activeRoomID", 0);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    dispatch(participantPopup(false));
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
+  }
+
+  // after presenter view is true then this funct call
+  function handlePresenterViewFunc() {
+    console.log(presenterViewFlag, "presenterViewFlag");
+    console.log("busyCall");
+
+    if (Number(currentMeetingID) !== Number(presenterMeetingId)) {
+      leaveSuccess();
+      return;
+    }
+    console.log("busyCall");
+
+    var currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    var callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+
+    if (presenterViewHostFlag) {
+      console.log("busyCall");
+      console.log(presenterViewHostFlag, "presenterViewHostFlag");
+
+      if (presenterViewJoinFlag) {
+        console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
+
+        // Stop presenter view
+        var data = {
+          MeetingID: currentMeetingID,
+          RoomID: callAcceptedRoomID,
+        };
+
+        sessionStorage.setItem("StopPresenterViewAwait", true);
+        dispatch(stopPresenterViewMainApi(navigate, t, data));
+      }
+    } else {
+      console.log("busyCall");
+
+      if (presenterViewJoinFlag) {
+        // Leave presenter view
+        var presenterGuid = localStorage.getItem("PresenterGuid");
+        var data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(presenterGuid),
+          Name: String(meetingTitle),
+        };
+
+        dispatch(leavePresenterViewMainApi(navigate, t, data));
+      }
+    }
+
+    leaveSuccess();
+  }
+
   const endCallParticipant = async () => {
     console.log("busyCall");
     try {
@@ -396,46 +470,8 @@ const VideoCallNormalHeader = ({
 
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       if (presenterViewFlag) {
-        console.log(presenterViewFlag, "presenterViewFlag");
-
-        console.log("busyCall");
-
-        if (Number(currentMeetingID) === Number(presenterMeetingId)) {
-          console.log("busyCall");
-
-          let currentMeetingID = Number(
-            localStorage.getItem("currentMeetingID")
-          );
-          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-          if (presenterViewHostFlag) {
-            console.log("busyCall");
-            console.log(presenterViewHostFlag, "presenterViewHostFlag");
-
-            if (presenterViewJoinFlag) {
-              console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
-              // stop presenter viewF
-              let data = {
-                MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
-              };
-              sessionStorage.setItem("StopPresenterViewAwait", true);
-              dispatch(stopPresenterViewMainApi(navigate, t, data));
-            }
-          } else {
-            console.log("busyCall");
-
-            if (presenterViewJoinFlag) {
-              // leave presenter view
-              let presenterGuid = localStorage.getItem("PresenterGuid");
-              let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(presenterGuid),
-                Name: String(meetingTitle),
-              };
-              dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
-            }
-          }
-        }
+        console.log("Check Presenter");
+        handlePresenterViewFunc();
       } else if (meetHostFlag?.isHost) {
         let Data = {
           RoomID: String(newRoomID),
@@ -584,27 +620,9 @@ const VideoCallNormalHeader = ({
     dispatch(leaveCallModal(false));
     dispatch(toggleParticipantsVisibility(false));
   };
-  function leaveSuccess() {
-    localStorage.setItem("isCaller", false);
-    localStorage.setItem("isMeetingVideo", false);
-    const emptyArray = [];
-    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-    setParticipantStatus([]);
-    localStorage.setItem("activeCall", false);
-    localStorage.setItem("isCaller", false);
-    localStorage.setItem("acceptedRoomID", 0);
-    localStorage.setItem("activeRoomID", 0);
-    dispatch(normalizeVideoPanelFlag(false));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    dispatch(leaveCallModal(false));
-    dispatch(participantPopup(false));
-    localStorage.setItem("MicOff", true);
-    localStorage.setItem("VidOff", true);
-  }
 
   // for Host leave Call
-  const leaveCall = async (flag, flag2, flag3) => {
+  const leaveCall = async (flag, flag2, flag3, flag4) => {
     console.log("busyCall");
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
@@ -617,48 +635,9 @@ const VideoCallNormalHeader = ({
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
-      if (presenterViewFlag) {
-        console.log(presenterViewFlag, "presenterViewFlag");
-
-        console.log("busyCall");
-
-        if (Number(currentMeetingID) === Number(presenterMeetingId)) {
-          console.log("busyCall");
-
-          let currentMeetingID = Number(
-            localStorage.getItem("currentMeetingID")
-          );
-          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-          if (presenterViewHostFlag) {
-            console.log("busyCall");
-            console.log(presenterViewHostFlag, "presenterViewHostFlag");
-
-            if (presenterViewJoinFlag) {
-              console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
-              // stop presenter viewF
-              let data = {
-                MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
-              };
-              sessionStorage.setItem("StopPresenterViewAwait", true);
-              dispatch(stopPresenterViewMainApi(navigate, t, data));
-            }
-          } else {
-            console.log("busyCall");
-
-            if (presenterViewJoinFlag) {
-              // leave presenter view
-              let presenterGuid = localStorage.getItem("PresenterGuid");
-              let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(presenterGuid),
-                Name: String(meetingTitle),
-              };
-              dispatch(leavePresenterViewMainApi(navigate, t, data));
-            }
-          }
-        }
-        leaveSuccess();
+      if (presenterViewFlag && flag4 === false) {
+        console.log("Check Presenter");
+        handlePresenterViewFunc();
       } else if (meetHostFlag) {
         const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
         console.log(parsedHostFlag, "parsedHostFlag");
@@ -703,7 +682,6 @@ const VideoCallNormalHeader = ({
 
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
-
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
@@ -717,12 +695,22 @@ const VideoCallNormalHeader = ({
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
+    if (flag4) {
+      console.log("mqtt mqmqmqmqmqmq");
+      handlePresenterViewFunc();
+    }
   };
+
+  useEffect(() => {
+    if (meetingStoppedByPresenter) {
+      leaveCall(false, false, false, true);
+    }
+  }, [meetingStoppedByPresenter]);
 
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
-        leaveCall(true, false, false);
+        leaveCall(true, false, false, false);
       }
     } catch {}
   }, [leaveMeetingVideoOnLogoutResponse]);
@@ -731,7 +719,7 @@ const VideoCallNormalHeader = ({
     try {
       if (closeQuickMeetingVideoReducer) {
         console.log("mqtt mqmqmqmqmqmq");
-        leaveCall(false, true);
+        leaveCall(false, true, false, false);
       }
     } catch (error) {}
   }, [closeQuickMeetingVideoReducer]);
@@ -740,7 +728,7 @@ const VideoCallNormalHeader = ({
     try {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
         console.log("mqtt mqmqmqmqmqmq");
-        leaveCall(false, false, true);
+        leaveCall(false, false, true, false);
       }
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
@@ -769,46 +757,8 @@ const VideoCallNormalHeader = ({
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
       if (presenterViewFlag) {
-        console.log(presenterViewFlag, "presenterViewFlag");
-
-        console.log("busyCall");
-
-        if (Number(currentMeetingID) === Number(presenterMeetingId)) {
-          console.log("busyCall");
-
-          let currentMeetingID = Number(
-            localStorage.getItem("currentMeetingID")
-          );
-          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-          if (presenterViewHostFlag) {
-            console.log("busyCall");
-            console.log(presenterViewHostFlag, "presenterViewHostFlag");
-
-            if (presenterViewJoinFlag) {
-              console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
-              // stop presenter viewF
-              let data = {
-                MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
-              };
-              sessionStorage.setItem("StopPresenterViewAwait", true);
-              dispatch(stopPresenterViewMainApi(navigate, t, data));
-            }
-          } else {
-            console.log("busyCall");
-
-            if (presenterViewJoinFlag) {
-              // leave presenter view
-              let presenterGuid = localStorage.getItem("PresenterGuid");
-              let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(presenterGuid),
-                Name: String(meetingTitle),
-              };
-              dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
-            }
-          }
-        }
+        console.log("Check Presenter");
+        handlePresenterViewFunc();
       } else if (meetHostFlag?.isHost) {
         console.log("busyCall");
         let Data = {

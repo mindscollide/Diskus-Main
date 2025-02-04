@@ -58,6 +58,7 @@ import {
   stopPresenterViewMainApi,
   presenterViewGlobalState,
   leavePresenterViewMainApi,
+  stopMeetingVideoByPresenter,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -425,48 +426,11 @@ const Dashboard = () => {
           let typeOfMeeting = localStorage.getItem("typeOfMeeting");
 
           if (isMeetingVideo) {
+            dispatch(stopMeetingVideoByPresenter(true));
             localStorage.setItem("alreadyinMeetingVideo", true);
-            if (isZoomEnabled) {
-              await dispatch(setParticipantRemovedFromVideobyHost(true));
-            } else {
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: true,
-              };
-              await dispatch(makeHostNow(meetingHost));
-              localStorage.setItem("isMeeting", true);
-              localStorage.setItem("isMeetingVideo", false);
-              localStorage.removeItem("refinedVideoUrl");
-              localStorage.setItem("refinedVideoGiven", false);
-              localStorage.setItem("isWebCamEnabled", false);
-              localStorage.setItem("isMicEnabled", false);
-              dispatch(setAudioControlForParticipant(false));
-              dispatch(setVideoControlForParticipant(false));
-
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
-
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(maxParticipantVideoRemoved(false));
-              // Participant room Id and usrrGuid
-              let participantRoomIds =
-                localStorage.getItem("participantRoomId");
-              let participantUID = localStorage.getItem("participantUID");
-              let currentMeetingID = localStorage.getItem("currentMeetingID");
-              let newName = localStorage.getItem("name");
-              let Data = {
-                RoomID: String(participantRoomIds),
-                UserGUID: String(participantUID),
-                Name: String(newName),
-                IsHost: false,
-                MeetingID: Number(currentMeetingID),
-              };
-              dispatch(setRaisedUnRaisedParticiant(false));
-              dispatch(LeaveMeetingVideo(Data, navigate, t));
-            }
+            // if (isZoomEnabled) {
+            //   await dispatch(setParticipantRemovedFromVideobyHost(true));
+            // }
           }
 
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
@@ -477,14 +441,10 @@ const Dashboard = () => {
     }
   };
   const stopPresenterView = async (payload) => {
-    console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
-    console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
-    console.log("mqtt mqmqmqmqmqmq", payload);
     let StopPresenterViewAwait = JSON.parse(
       sessionStorage.getItem("StopPresenterViewAwait")
     );
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
