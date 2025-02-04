@@ -448,19 +448,23 @@ const Dashboard = () => {
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {
+          console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
           if (presenterViewFlagRef.current) {
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo")
                 ? sessionStorage.getItem("alreadyInMeetingVideo")
                 : false
             );
+            console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
             if (alreadyInMeetingVideo) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(minimizeVideoPanelFlag(false));
+              console.log("mqtt mqmqmqmqmqmq");
             } else {
+              console.log("mqtt mqmqmqmqmqmq");
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
               localStorage.removeItem("videoIframe");

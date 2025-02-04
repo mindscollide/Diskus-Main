@@ -428,19 +428,22 @@ const VideoCallNormalHeader = ({
             dispatch(normalizeVideoPanelFlag(true));
             dispatch(minimizeVideoPanelFlag(false));
           } else {
-          let meetingTitle = localStorage.getItem("meetingTitle");
-          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-          let isMeetingVideoHostCheck = JSON.parse(
-            localStorage.getItem("isMeetingVideoHostCheck")
-          );
-          let participantUID = localStorage.getItem("participantUID");
-          let isGuid = localStorage.getItem("isGuid");
-          let data = {
-            RoomID: String(callAcceptedRoomID),
-            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-            Name: String(meetingTitle),
-          };
-          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));}
+            let meetingTitle = localStorage.getItem("meetingTitle");
+            let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let participantUID = localStorage.getItem("participantUID");
+            let isGuid = localStorage.getItem("isGuid");
+            let data = {
+              RoomID: String(callAcceptedRoomID),
+              UserGUID: String(
+                isMeetingVideoHostCheck ? isGuid : participantUID
+              ),
+              Name: String(meetingTitle),
+            };
+            dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+          }
         }
       }
     } else {
@@ -1271,107 +1274,104 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {currentCallType === 2 ||
-            currentCallType === 3 ||
-            (presenterViewFlag && presenterViewHostFlag && (
-              <div className={"position-relative"}>
-                {ParticipantPopupFlag === true ? (
-                  <>
-                    <div className="cursor-pointer active-state">
-                      <img
-                        src={ActiveParticipantIcon}
-                        onClick={() => {
-                          const role = getMeetingHostInfo.isHost ? 1 : 2;
-                          closeParticipantHandler(role, true);
-                        }}
-                        alt="Active participants"
-                      />
-                    </div>
-                    <div className="participants-list">
-                      {currentParticipants !== undefined &&
-                      currentParticipants !== null &&
-                      currentParticipants.length > 0
-                        ? currentParticipants.map((participantData, index) => {
-                            return (
-                              <Row className="m-0" key={index}>
-                                <Col className="p-0" lg={7} md={7} sm={12}>
-                                  <p className="participant-name">
-                                    {participantData.userName}
-                                  </p>
-                                </Col>
-                                <Col
-                                  className="d-flex justify-content-end align-items-canter gap-3 p-0"
-                                  lg={5}
-                                  md={5}
-                                  sm={12}
-                                >
-                                  <img
-                                    src={MenuRaiseHand}
-                                    alt="MenuRaiseHand"
-                                  />
+          {(presenterViewFlag && presenterViewHostFlag) ||
+          currentCallType === 2 ||
+          currentCallType === 3 ? (
+            <div className={"position-relative"}>
+              {ParticipantPopupFlag === true ? (
+                <>
+                  <div className="cursor-pointer active-state">
+                    <img
+                      src={ActiveParticipantIcon}
+                      onClick={() => {
+                        const role = getMeetingHostInfo.isHost ? 1 : 2;
+                        closeParticipantHandler(role, true);
+                      }}
+                      alt="Active participants"
+                    />
+                  </div>
+                  <div className="participants-list">
+                    {currentParticipants !== undefined &&
+                    currentParticipants !== null &&
+                    currentParticipants.length > 0
+                      ? currentParticipants.map((participantData, index) => {
+                          return (
+                            <Row className="m-0" key={index}>
+                              <Col className="p-0" lg={7} md={7} sm={12}>
+                                <p className="participant-name">
+                                  {participantData.userName}
+                                </p>
+                              </Col>
+                              <Col
+                                className="d-flex justify-content-end align-items-canter gap-3 p-0"
+                                lg={5}
+                                md={5}
+                                sm={12}
+                              >
+                                <img src={MenuRaiseHand} alt="MenuRaiseHand" />
 
-                                  <Dropdown>
-                                    <Dropdown.Toggle className="participant-toggle">
-                                      <img src={Menu} alt="Menu" />
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                      <Dropdown.Item className="participant-dropdown-item">
-                                        {t("Remove")}
-                                      </Dropdown.Item>
-                                      <Dropdown.Item className="participant-dropdown-item">
-                                        {t("Mute")}
-                                      </Dropdown.Item>
-                                      <Dropdown.Item className="participant-dropdown-item">
-                                        {t("Hide-video")}
-                                      </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
-                                </Col>
-                              </Row>
-                            );
-                          })
-                        : null}
-                    </div>
-                  </>
-                ) : (
-                  <Tooltip placement="topRight" title={t("Participants")}>
-                    <div
-                      className={
-                        LeaveCallModalFlag === true
-                          ? "grayScaleImage"
-                          : "inactive-state"
-                      }
-                    >
-                      <img
-                        src={ParticipantsIcon}
-                        onClick={() => {
-                          const role = getMeetingHostInfo.isHost
-                            ? 1
-                            : presenterViewHostFlag
-                            ? 1
-                            : 2;
-                          const flag = getMeetingHostInfo.isHost
-                            ? false
-                            : presenterViewHostFlag
-                            ? false
-                            : true;
-                          closeParticipantHandler(role, flag);
-                        }}
-                        alt="Participants"
-                      />
-                    </div>
-                  </Tooltip>
-                )}
-                <span className="participants-counter-For-Host">
-                  {convertNumbersInString(participantCounter, lan)}
+                                <Dropdown>
+                                  <Dropdown.Toggle className="participant-toggle">
+                                    <img src={Menu} alt="Menu" />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    <Dropdown.Item className="participant-dropdown-item">
+                                      {t("Remove")}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className="participant-dropdown-item">
+                                      {t("Mute")}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className="participant-dropdown-item">
+                                      {t("Hide-video")}
+                                    </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </Col>
+                            </Row>
+                          );
+                        })
+                      : null}
+                  </div>
+                </>
+              ) : (
+                <Tooltip placement="topRight" title={t("Participants")}>
+                  <div
+                    className={
+                      LeaveCallModalFlag === true
+                        ? "grayScaleImage"
+                        : "inactive-state"
+                    }
+                  >
+                    <img
+                      src={ParticipantsIcon}
+                      onClick={() => {
+                        const role = getMeetingHostInfo.isHost
+                          ? 1
+                          : presenterViewHostFlag
+                          ? 1
+                          : 2;
+                        const flag = getMeetingHostInfo.isHost
+                          ? false
+                          : presenterViewHostFlag
+                          ? false
+                          : true;
+                        closeParticipantHandler(role, flag);
+                      }}
+                      alt="Participants"
+                    />
+                  </div>
+                </Tooltip>
+              )}
+              <span className="participants-counter-For-Host">
+                {convertNumbersInString(participantCounter, lan)}
+              </span>
+              {participantWaitingListCounter > 0 && (
+                <span className="participants-counter-For-Host-waiting-counter">
+                  {convertNumbersInString(participantWaitingListCounter, lan)}
                 </span>
-                {participantWaitingListCounter > 0 && (
-                  <span className="participants-counter-For-Host-waiting-counter">
-                    {convertNumbersInString(participantWaitingListCounter, lan)}
-                  </span>
-                )}
-              </div>
-            ))}
+              )}
+            </div>
+          ) : null}
 
           {currentCallType === 1 && checkFeatureIDAvailability(3) && (
             <div
