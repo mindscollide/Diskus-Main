@@ -443,7 +443,7 @@ const VideoCallNormalHeader = ({
           Name: String(meetingTitle),
         };
 
-        dispatch(leavePresenterViewMainApi(navigate, t, data));
+        dispatch(leavePresenterViewMainApi(navigate, t, data,1));
       }
     }
 
@@ -640,7 +640,7 @@ const VideoCallNormalHeader = ({
   };
 
   // for Host leave Call
-  const leaveCall = async (flag, flag2, flag3, flag4) => {
+  const leaveCall = async (flag, flag2, flag3) => {
     console.log("busyCall");
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
@@ -653,7 +653,7 @@ const VideoCallNormalHeader = ({
     if (isMeeting === true) {
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
-      if (presenterViewFlag && flag4 === false) {
+      if (presenterViewFlag) {
         console.log("Check Presenter");
         handlePresenterViewFunc();
       } else if (meetHostFlag) {
@@ -713,17 +713,13 @@ const VideoCallNormalHeader = ({
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
-    if (flag4) {
-      console.log("mqtt mqmqmqmqmqmq");
-      handlePresenterViewFunc();
-    }
   };
 
-  useEffect(() => {
-    if (meetingStoppedByPresenter) {
-      leaveCall(false, false, false, true);
-    }
-  }, [meetingStoppedByPresenter]);
+  // useEffect(() => {
+  //   if (meetingStoppedByPresenter) {
+  //     leaveCall(false, false, false, true);
+  //   }
+  // }, [meetingStoppedByPresenter]);
 
   useEffect(() => {
     try {
