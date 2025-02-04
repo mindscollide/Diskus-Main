@@ -739,6 +739,7 @@ const AgendaViewer = () => {
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
       );
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let participantUID = localStorage.getItem("participantUID");
       let isGuid = localStorage.getItem("isGuid");
       // if (presenterMeetingId === currentMeeting) {
@@ -770,7 +771,10 @@ const AgendaViewer = () => {
       } else if (value === 2) {
         console.log("onClickStopPresenter", value);
         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let data = { VideoCallURL: String(currentMeetingVideoURL) };
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL),
+          WasInVideo: isMeetingVideo ? true : false,
+        };
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       } else if (value === 3) {

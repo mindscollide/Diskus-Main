@@ -8226,7 +8226,10 @@ const JoinCurrentMeeting = (
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
               await dispatch(currentMeetingStatus(10));
               if (response.data.responseResult.isPresenterViewStarted) {
-                let data = { VideoCallURL: String(Data.VideoCallURL) };
+                let data = {
+                  VideoCallURL: String(Data.VideoCallURL),
+                  WasInVideo: false,
+                };
                 console.log("onClickStopPresenter", data);
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               }
