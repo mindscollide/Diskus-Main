@@ -20,6 +20,7 @@ import {
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   console.log(groupStatus, "groupStatus");
   const { Dragger } = Upload;
@@ -105,7 +106,9 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > maxFileSize) {
+        const { isMorethan } = isFileSizeValid(fileData.size);
+
+        if (!isMorethan) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -117,7 +120,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );

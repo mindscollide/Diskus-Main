@@ -28,6 +28,7 @@ import {
 } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
 import { useSelector } from "react-redux";
+import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";
 
 const ModalAddNote = ({ ModalTitle }) => {
   //Context State for the Modal Globally Defined
@@ -180,12 +181,14 @@ const ModalAddNote = ({ ModalTitle }) => {
     let sizezero = true;
     let size = true;
 
-    if (totalFiles > 5) {
-      showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+    if (totalFiles > 10) {
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > maxFileSize) {
+      const { isMorethan } = isFileSizeValid(fileData.size);
+
+      if (!isMorethan) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -197,7 +200,7 @@ const ModalAddNote = ({ ModalTitle }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
+          t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
           setOpen
         );

@@ -41,7 +41,10 @@ const SignatureViewer = () => {
     ResponseMessage,
     getSignatureFileAnnotationResponse,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
-  console.log(getSignatureFileAnnotationResponse, "getSignatureFileAnnotationResponsegetSignatureFileAnnotationResponse")
+  console.log(
+    getSignatureFileAnnotationResponse,
+    "getSignatureFileAnnotationResponsegetSignatureFileAnnotationResponse"
+  );
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const [Instance, setInstance] = useState(null);
@@ -135,6 +138,8 @@ const SignatureViewer = () => {
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
+
+  console.log(signerDataRef, "signerDataRefsignerDataRef");
 
   useEffect(() => {
     removeXmlAfterHideDAtaRef.current = removeXmlAfterHideDAta;
@@ -344,7 +349,10 @@ const SignatureViewer = () => {
 
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
-    if (getSignatureFileAnnotationResponse !== null && getSignatureFileAnnotationResponse !== undefined) {
+    if (
+      getSignatureFileAnnotationResponse !== null &&
+      getSignatureFileAnnotationResponse !== undefined
+    ) {
       try {
         let currentUserID =
           localStorage.getItem("userID") !== null
@@ -510,6 +518,10 @@ const SignatureViewer = () => {
             // alert("Decline Button Clicked");
           };
 
+          const handleClickCloseBtn = () => {
+            window.close();
+          };
+
           const handleClickSaveBtn = async () => {
             try {
               const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
@@ -619,7 +631,7 @@ const SignatureViewer = () => {
               let addAnnoatationofFilesAttachment = {
                 FileID: Number(docWorkflowID),
                 AnnotationString: afterAddRevertHideFreetextElements,
-                CreatorID: pdfResponceData.creatorID
+                CreatorID: pdfResponceData.creatorID,
               };
               let userID =
                 localStorage.getItem("userID") !== null
@@ -692,41 +704,64 @@ const SignatureViewer = () => {
             //   // Handle
             // }
           };
+          let ifUserExist = signerDataRef.current.find(
+            (user) =>
+              Number(user.userID) === Number(localStorage.getItem("userID"))
+          );
+          if (ifUserExist !== undefined) {
+            instance.UI.setHeaderItems((header) => {
+              header.push({
+                type: "customElement",
+                render: () => {
+                  const textBoxButton = document.createElement("button");
+                  textBoxButton.textContent = "Decline";
+                  textBoxButton.style.background = "#fff";
+                  textBoxButton.style.border = "1px solid #e1e1e1";
+                  textBoxButton.style.color = "#5a5a5a";
+                  textBoxButton.style.padding = "8px 30px";
+                  textBoxButton.style.cursor = "pointer";
+                  textBoxButton.style.borderRadius = "4px";
+                  textBoxButton.onclick = handleClickDeclineBtn;
+                  return textBoxButton;
+                },
+              });
 
-          instance.UI.setHeaderItems((header) => {
-            header.push({
-              type: "customElement",
-              render: () => {
-                const textBoxButton = document.createElement("button");
-                textBoxButton.textContent = "Decline";
-                textBoxButton.style.background = "#fff";
-                textBoxButton.style.border = "1px solid #e1e1e1";
-                textBoxButton.style.color = "#5a5a5a";
-                textBoxButton.style.padding = "8px 30px";
-                textBoxButton.style.cursor = "pointer";
-                textBoxButton.style.borderRadius = "4px";
-                textBoxButton.onclick = handleClickDeclineBtn;
-                return textBoxButton;
-              },
+              header.push({
+                type: "customElement",
+                render: () => {
+                  const SaveButton = document.createElement("button");
+                  SaveButton.textContent = "Save";
+                  SaveButton.style.background = "#6172d6";
+                  SaveButton.style.color = "#fff";
+                  SaveButton.style.borderRadius = "4px";
+                  SaveButton.style.cursor = "pointer";
+                  SaveButton.style.padding = "8px 30px";
+                  SaveButton.style.margin = "10px 0 10px 10px";
+                  SaveButton.style.border = "1px solid #6172d6";
+                  SaveButton.onclick = handleClickSaveBtn;
+                  return SaveButton;
+                },
+              });
             });
-
-            header.push({
-              type: "customElement",
-              render: () => {
-                const SaveButton = document.createElement("button");
-                SaveButton.textContent = "Save";
-                SaveButton.style.background = "#6172d6";
-                SaveButton.style.color = "#fff";
-                SaveButton.style.borderRadius = "4px";
-                SaveButton.style.cursor = "pointer";
-                SaveButton.style.padding = "8px 30px";
-                SaveButton.style.margin = "10px 0 10px 10px";
-                SaveButton.style.border = "1px solid #6172d6";
-                SaveButton.onclick = handleClickSaveBtn;
-                return SaveButton;
-              },
+          } else {
+            instance.UI.setHeaderItems((header) => {
+              header.push({
+                type: "customElement",
+                render: () => {
+                  const textBoxButton = document.createElement("button");
+                  textBoxButton.textContent = "Close";
+                  textBoxButton.style.background = "#fff";
+                  textBoxButton.style.border = "1px solid #e1e1e1";
+                  textBoxButton.style.color = "#5a5a5a";
+                  textBoxButton.style.padding = "8px 30px";
+                  textBoxButton.style.cursor = "pointer";
+                  textBoxButton.style.borderRadius = "4px";
+                  textBoxButton.onclick = handleClickCloseBtn;
+                  return textBoxButton;
+                },
+              });
             });
-          });
+          }
         });
       } catch (error) {}
     }
@@ -881,8 +916,8 @@ const SignatureViewer = () => {
   };
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
 
       {reasonModal && (

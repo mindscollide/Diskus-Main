@@ -28,6 +28,7 @@ import ConfirmationModal from "../../../../components/elements/confirmationModal
 import { Upload } from "antd";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
@@ -479,14 +480,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
       let sizezero = true;
       let size = true;
 
-      if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+      if (totalFiles > 10) {
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
       fileList.forEach((fileData, index) => {
-        console.log(fileData.size, maxFileSize, "fileListfileList");
+        const { isMorethan } = isFileSizeValid(fileData.size);
 
-        if (fileData.size > maxFileSize) {
+
+        if (!isMorethan) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -498,7 +500,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );
