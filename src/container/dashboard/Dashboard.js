@@ -450,7 +450,7 @@ const Dashboard = () => {
               );
 
               dispatch(maximizeVideoPanelFlag(false));
-              dispatch(maxParticipantVideoRemoved(true));
+              dispatch(maxParticipantVideoRemoved(false));
               // Participant room Id and usrrGuid
               let participantRoomIds =
                 localStorage.getItem("participantRoomId");
