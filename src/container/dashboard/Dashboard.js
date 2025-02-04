@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -323,7 +323,16 @@ const Dashboard = () => {
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
+  const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
+  const presenterViewFlagRef = useRef(presenterViewFlag);
 
+  // Update ref whenever presenterViewJoinFlag changes
+  useEffect(() => {
+    presenterViewJoinFlagRef.current = presenterViewJoinFlag;
+  }, [presenterViewJoinFlag]);
+  useEffect(() => {
+    presenterViewFlagRef.current = presenterViewFlag;
+  }, [presenterViewFlag]);
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
@@ -416,10 +425,10 @@ const Dashboard = () => {
       String(meetingVideoID) === String(payload?.meetingID)
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
-      console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
-      console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
+      console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef);
+      console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef);
 
-      if (!presenterViewFlag && !presenterViewJoinFlag) {
+      if (!presenterViewFlagRef.current && !presenterViewJoinFlagRef.current) {
         console.log("mqtt mqmqmqmqmqmq", payload?.meetingID);
 
         if (isMeeting) {
@@ -459,12 +468,12 @@ const Dashboard = () => {
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {
-          console.log("mqtt mqmqmqmqmqmq", presenterViewFlag);
+          console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef.current);
 
-          if (presenterViewFlag) {
-            console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlag);
+          if (presenterViewFlagRef.current) {
+            console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
 
-            if (presenterViewJoinFlag) {
+            if (presenterViewJoinFlagRef.current) {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
