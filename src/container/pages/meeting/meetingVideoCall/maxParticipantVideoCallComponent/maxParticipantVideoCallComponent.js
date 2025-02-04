@@ -46,6 +46,7 @@ import {
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { Tooltip } from "antd";
+import { useResolutionContext } from "../../../../../context/ResolutionContext";
 
 const ParticipantVideoCallComponent = () => {
   const dispatch = useDispatch();
@@ -62,8 +63,9 @@ const ParticipantVideoCallComponent = () => {
     editorRole,
     setVideoTalk,
     setAdvanceMeetingModalID,
+    setPolls,
   } = useMeetingContext();
-
+  const { setResultresolution } = useResolutionContext();
   const { setViewGroupPage, setShowModal } = useGroupsContext();
 
   const webNotificationData = useSelector(
@@ -426,7 +428,7 @@ const ParticipantVideoCallComponent = () => {
     try {
       if (webNotifactionDataRoutecheckFlag) {
         let currentURL = window.location.href;
-
+        let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
         WebNotificationExportRoutFunc(
           currentURL,
           dispatch,
@@ -441,7 +443,10 @@ const ParticipantVideoCallComponent = () => {
           setViewGroupPage,
           setShowModal,
           setVideoTalk,
-          setAdvanceMeetingModalID
+          setAdvanceMeetingModalID,
+          setResultresolution,
+          isMeeting,
+          setPolls
         );
       }
     } catch (error) {

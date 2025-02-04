@@ -232,6 +232,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -240,7 +241,8 @@ const WebNotfication = ({
                 Data,
                 setEditorRole,
                 true,
-                setViewAdvanceMeetingModal
+                setViewAdvanceMeetingModal,
+                1
               )
             );
           }
@@ -261,8 +263,19 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(GetMeetingStatusDataAPI(navigate, t, Data, setEditorRole));
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal,
+                1
+              )
+            );
           }
         }
       } else if (NotificationData.notificationActionID === 2) {
@@ -500,6 +513,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -530,6 +544,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -557,6 +572,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -587,6 +603,7 @@ const WebNotfication = ({
               "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
             );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -615,6 +632,7 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             setAdvanceMeetingModalID(PayLoadData.MeetingID);
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -646,6 +664,7 @@ const WebNotfication = ({
               PayLoadData.MeetingID
             );
             setAdvanceMeetingModalID(PayLoadData.MeetingID);
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
               GetMeetingStatusDataAPI(
@@ -1264,7 +1283,7 @@ const WebNotfication = ({
         navigate("/Diskus/polling");
       } else if (NotificationData.notificationActionID === 46) {
         //For Voter Voted on His POll
-        if (isMeeting) {
+        if (isMeeting && setPolls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
@@ -1320,7 +1339,7 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 47) {
         //For participant has Give Vote on a Poll inside advance meeting
-        if (isMeeting) {
+        if (isMeeting && setPolls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
