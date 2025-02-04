@@ -333,6 +333,7 @@ const Dashboard = () => {
   useEffect(() => {
     presenterViewFlagRef.current = presenterViewFlag;
   }, [presenterViewFlag]);
+
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
@@ -414,91 +415,50 @@ const Dashboard = () => {
   };
   const startPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq", payload);
-    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
     let meetingVideoID = localStorage.getItem("currentMeetingID");
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
-    console.log("mqtt mqmqmqmqmqmq", payload?.meetingID);
-    console.log(
-      "mqtt mqmqmqmqmqmq",
-      String(meetingVideoID) === String(payload?.meetingID)
-    );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
-      console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef);
-      console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef);
-
       if (!presenterViewFlagRef.current && !presenterViewJoinFlagRef.current) {
-        console.log("mqtt mqmqmqmqmqmq", payload?.meetingID);
-
-        if (isMeeting) {
-          let typeOfMeeting = localStorage.getItem("typeOfMeeting");
-
-          if (isMeetingVideo) {
-            dispatch(stopMeetingVideoByPresenter(true));
-            localStorage.setItem("alreadyinMeetingVideo", true);
-            // if (isZoomEnabled) {
-            //   await dispatch(setParticipantRemovedFromVideobyHost(true));
-            // }
-          }
-
-          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let data = { VideoCallURL: String(currentMeetingVideoURL) };
-          dispatch(joinPresenterViewMainApi(navigate, t, data));
-        }
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let data = { VideoCallURL: String(currentMeetingVideoURL) };
+        dispatch(joinPresenterViewMainApi(navigate, t, data));
       }
     }
   };
+
   const stopPresenterView = async (payload) => {
     let StopPresenterViewAwait = JSON.parse(
       sessionStorage.getItem("StopPresenterViewAwait")
     );
-    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", isMeeting);
 
       if (isMeeting) {
-        console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
-
-        let typeOfMeeting = localStorage.getItem("typeOfMeeting");
         if (
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {
-          console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef.current);
-
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
 
             if (presenterViewJoinFlagRef.current) {
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
-              );
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-
-              let presenterGuid = localStorage.getItem("PresenterGuid");
               let meetingTitle = localStorage.getItem("meetingTitle");
-
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
               let data = {
                 RoomID: String(callAcceptedRoomID),
-                UserGUID: String(presenterGuid),
+                UserGUID: String(
+                  isMeetingVideoHostCheck ? isGuid : participantUID
+                ),
                 Name: String(meetingTitle),
               };
               dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
             } else {
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: false,
-              };
-              dispatch(makeHostNow(meetingHost));
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
               dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));

@@ -1681,8 +1681,8 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t, data));
-          dispatch(joinPresenterViewMainApi(data));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1695,24 +1695,46 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: true,
-              };
-              dispatch(makeHostNow(meetingHost));
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
               );
-              localStorage.setItem(
-                "acceptedRoomID",
-                response.data.responseResult.roomID
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
               );
-              localStorage.setItem(
-                "PresenterGuid",
-                response.data.responseResult.guid
-              );
+              if (isMeetingVideo) {
+                sessionStorage.setItem("alreadyInMeetingVideo", true);
+              } else {
+                const meetingHost = {
+                  isHost: isMeetingVideoHostCheck,
+                  isHostId: 0,
+                  isDashboardVideo: true,
+                };
+                dispatch(makeHostNow(meetingHost));
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+                if (isMeetingVideoHostCheck) {
+                  localStorage.setItem(
+                    "isGuid",
+                    response.data.responseResult.guid
+                  );
+                } else {
+                  localStorage.setItem(
+                    "participantUID",
+                    response.data.responseResult.guid
+                  );
+                }
+                localStorage.setItem(
+                  "acceptedRoomID",
+                  response.data.responseResult.roomID
+                );
+                sessionStorage.removeItem("alreadyInMeetingVideo");
+                localStorage.setItem(
+                  "acceptedRoomID",
+                  response.data.responseResult.roomID
+                );
+              }
               await dispatch(
                 presenterViewGlobalState(currentMeetingID, true, false, true)
               );

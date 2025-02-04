@@ -731,7 +731,11 @@ const AgendaViewer = () => {
     try {
       let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      let participantUID = localStorage.getItem("participantUID");
+      let isGuid = localStorage.getItem("isGuid");
       // if (presenterMeetingId === currentMeeting) {
       console.log("Check Stop");
       if (value === 1) {
@@ -748,10 +752,9 @@ const AgendaViewer = () => {
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       } else if (value === 3) {
-        let presenterGuid = localStorage.getItem("PresenterGuid");
         let data = {
           RoomID: String(callAcceptedRoomID),
-          UserGUID: String(presenterGuid),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(meetingTitle),
         };
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
