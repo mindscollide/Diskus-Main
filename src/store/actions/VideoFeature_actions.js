@@ -1343,24 +1343,47 @@ const openPresenterViewMainApi = (
                   "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase()
                 )
             ) {
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
               if (actiontype === 4) {
-                localStorage.setItem(
-                  "acceptedRoomID",
-                  response.data.responseResult.roomID
+                let isMeetingVideo = JSON.parse(
+                  localStorage.getItem("isMeetingVideo")
                 );
-                let isMeetingVideoHostCheck = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck")
-                );
-                const meetingHost = {
-                  isHost: isMeetingVideoHostCheck,
-                  isHostId: 0,
-                  isDashboardVideo: true,
-                };
-                dispatch(makeHostNow(meetingHost));
-                localStorage.setItem(
-                  "meetinHostInfo",
-                  JSON.stringify(meetingHost)
-                );
+                if (isMeetingVideo) {
+                  sessionStorage.setItem("alreadyInMeetingVideo", true);
+                } else {
+                  const meetingHost = {
+                    isHost: isMeetingVideoHostCheck,
+                    isHostId: 0,
+                    isDashboardVideo: true,
+                  };
+                  dispatch(makeHostNow(meetingHost));
+                  localStorage.setItem(
+                    "meetinHostInfo",
+                    JSON.stringify(meetingHost)
+                  );
+                  if (isMeetingVideoHostCheck) {
+                    localStorage.setItem(
+                      "isGuid",
+                      response.data.responseResult.guid
+                    );
+                  } else {
+                    localStorage.setItem(
+                      "participantUID",
+                      response.data.responseResult.guid
+                    );
+                  }
+                  localStorage.setItem(
+                    "acceptedRoomID",
+                    response.data.responseResult.roomID
+                  );
+                  sessionStorage.removeItem("alreadyInMeetingVideo");
+                  localStorage.setItem(
+                    "acceptedRoomID",
+                    response.data.responseResult.roomID
+                  );
+                }
                 await dispatch(
                   presenterViewGlobalState(currentMeeting, true, true, true)
                 );
@@ -1527,6 +1550,8 @@ const stopPresenterFail = (message) => {
 
 const stopPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log(data, "presenterViewJoinFlag");
+
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();

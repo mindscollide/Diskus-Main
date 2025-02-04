@@ -713,12 +713,11 @@ const AgendaViewer = () => {
 
   const onClickStartPresenter = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (isMeetingVideo) {
-      sessionStorage.setItem("alreadyInMeetingVideo", true);
-    } else {
-      sessionStorage.removeItem("alreadyInMeetingVideo");
-    }
-    let data = { VideoCallURL: String(currentMeetingVideoURL), Guid: "" };
+    let data = {
+      VideoCallURL: String(currentMeetingVideoURL || ""),
+      Guid: "",
+      WasInVideo: Boolean(isMeetingVideo),
+    };
     dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
   };
 

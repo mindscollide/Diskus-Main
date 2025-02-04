@@ -95,7 +95,6 @@ const VideoCallNormalHeader = ({
   const { editorRole } = useContext(MeetingContext);
   // const { isMeeting } = useMeetingContext();
 
-  console.log(isMeeting, "useMeetingContextuseMeetingContext");
   const leaveModalPopupRef = useRef(null);
 
   const meetingUrlData = useSelector(
@@ -388,14 +387,20 @@ const VideoCallNormalHeader = ({
     console.log(presenterViewFlag, "presenterViewFlag");
     console.log("busyCall");
 
-    if (Number(currentMeetingID) !== Number(presenterMeetingId)) {
-      leaveSuccess();
-      return;
-    }
+    // if (Number(currentMeetingID) !== Number(presenterMeetingId)) {
+    //   leaveSuccess();
+    //   return;
+    // }
     console.log("busyCall");
 
-    var currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-    var callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let participantUID = localStorage.getItem("participantUID");
+    let isGuid = localStorage.getItem("isGuid");
 
     if (presenterViewHostFlag) {
       console.log("busyCall");
@@ -403,14 +408,13 @@ const VideoCallNormalHeader = ({
 
       if (presenterViewJoinFlag) {
         console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
-
         // Stop presenter view
-        var data = {
+        let data = {
           MeetingID: currentMeetingID,
           RoomID: callAcceptedRoomID,
         };
-
         sessionStorage.setItem("StopPresenterViewAwait", true);
+        console.log(data, "presenterViewJoinFlag");
         dispatch(stopPresenterViewMainApi(navigate, t, data));
       }
     } else {
@@ -418,10 +422,9 @@ const VideoCallNormalHeader = ({
 
       if (presenterViewJoinFlag) {
         // Leave presenter view
-        var presenterGuid = localStorage.getItem("PresenterGuid");
-        var data = {
+        let data = {
           RoomID: String(callAcceptedRoomID),
-          UserGUID: String(presenterGuid),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(meetingTitle),
         };
 
