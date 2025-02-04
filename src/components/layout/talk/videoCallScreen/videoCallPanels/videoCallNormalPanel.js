@@ -24,12 +24,14 @@ import {
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
   incomingVideoCallFlag,
+  leavePresenterViewMainApi,
   makeHostNow,
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
   participantWaitingListBox,
+  presenterStartedMainFlag,
   setAudioControlForParticipant,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
@@ -889,18 +891,53 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             console.log("handlePostMessage", event.data);
             setIsScreenActive(false);
+            if (presenterViewFlag && presenterViewHostFlag) {
+              let meetingTitle = localStorage.getItem("meetingTitle");
+              let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
+              let data = {
+                RoomID: String(callAcceptedRoomID),
+                UserGUID: String(
+                  isMeetingVideoHostCheck ? isGuid : participantUID
+                ),
+                Name: String(meetingTitle),
+              };
+              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+            }
+
             break;
 
           case "StreamConnected":
             dispatch(disableZoomBeforeJoinSession(false));
-            console.log("handlePostMessage", presenterViewFlag);
-            console.log("handlePostMessage", presenterViewHostFlag);
-            console.log("handlePostMessage", iframe?.contentWindow);
             if (presenterViewFlag && presenterViewHostFlag) {
-              console.log("handlePostMessage", iframe);
               handlePresenterView();
             }
             break;
+          case "ScreenSharedCancelMsg":
+            dispatch(disableZoomBeforeJoinSession(false));
+            if (presenterViewFlag && presenterViewHostFlag) {
+              let meetingTitle = localStorage.getItem("meetingTitle");
+              let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
+              let data = {
+                RoomID: String(callAcceptedRoomID),
+                UserGUID: String(
+                  isMeetingVideoHostCheck ? isGuid : participantUID
+                ),
+                Name: String(meetingTitle),
+              };
+              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+            }
+            break;
+
           default:
             console.log(
               "handlePostMessage share screen Unknown message received:",

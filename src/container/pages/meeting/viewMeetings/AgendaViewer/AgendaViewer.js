@@ -207,6 +207,11 @@ const AgendaViewer = () => {
   const presenterMeetingId = useSelector(
     (state) => state.videoFeatureReducer.presenterMeetingId
   );
+
+  const presenterStartedFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterStartedFlag
+  );
+
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
   // start and stop Presenter View
   // const startOrStopPresenter = useSelector(
@@ -739,12 +744,29 @@ const AgendaViewer = () => {
       // if (presenterMeetingId === currentMeeting) {
       console.log("Check Stop");
       if (value === 1) {
-        let data = {
-          MeetingID: currentMeetingID,
-          RoomID: callAcceptedRoomID,
-        };
-        sessionStorage.setItem("StopPresenterViewAwait", true);
-        dispatch(stopPresenterViewMainApi(navigate, t, data));
+        if (presenterStartedFlag) {
+          let data = {
+            MeetingID: currentMeetingID,
+            RoomID: callAcceptedRoomID,
+          };
+          sessionStorage.setItem("StopPresenterViewAwait", true);
+          console.log(data, "presenterViewJoinFlag");
+          dispatch(stopPresenterViewMainApi(navigate, t, data));
+        } else {
+          let meetingTitle = localStorage.getItem("meetingTitle");
+          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+          let isMeetingVideoHostCheck = JSON.parse(
+            localStorage.getItem("isMeetingVideoHostCheck")
+          );
+          let participantUID = localStorage.getItem("participantUID");
+          let isGuid = localStorage.getItem("isGuid");
+          let data = {
+            RoomID: String(callAcceptedRoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(meetingTitle),
+          };
+          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+        }
       } else if (value === 2) {
         console.log("onClickStopPresenter", value);
         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");

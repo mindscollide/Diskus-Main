@@ -1478,6 +1478,7 @@ const startPresenterViewMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase()
                 )
             ) {
+              dispatch(presenterStartedMainFlag(true));
               await dispatch(
                 startPresenterSuccess(
                   response.data.responseResult,
@@ -1850,16 +1851,7 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                   "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase()
                 )
             ) {
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: false,
-              };
-              dispatch(makeHostNow(meetingHost));
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
+              dispatch(presenterStartedMainFlag(false));
               if (flag === 1) {
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
