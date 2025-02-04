@@ -293,9 +293,10 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
-      
       let Data = {
-        RoomID: String(presenterViewFlag?callAcceptedRoomID:participantRoomIds),
+        RoomID: String(
+          presenterViewFlag ? callAcceptedRoomID : participantRoomIds
+        ),
       };
       dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
       setIsMeetinVideoCeckForParticipant(true);
@@ -1194,7 +1195,7 @@ const VideoPanelNormal = () => {
                         </div>
                       </Col>
 
-                      {isMeetingHost &&
+                      {(isMeetingHost || presenterViewHostFlag) &&
                       meetingHost.isDashboardVideo &&
                       participantWaitinglistBox ? (
                         <>
@@ -1212,9 +1213,10 @@ const VideoPanelNormal = () => {
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
-                              {isMeetingHost && participantWaitinglistBox && (
-                                <VideoNewParticipantList />
-                              )}
+                              {(isMeetingHost || presenterViewHostFlag) &&
+                                participantWaitinglistBox && (
+                                  <VideoNewParticipantList />
+                                )}
                             </Col>
                           ) : null}
                         </>

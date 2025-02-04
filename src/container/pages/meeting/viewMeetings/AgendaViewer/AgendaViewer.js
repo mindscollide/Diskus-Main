@@ -716,6 +716,12 @@ const AgendaViewer = () => {
     }
   };
 
+  let alreadyInMeetingVideo = JSON.parse(
+    sessionStorage.getItem("alreadyInMeetingVideo")
+      ? sessionStorage.getItem("alreadyInMeetingVideo")
+      : false
+  );
+
   const onClickStartPresenter = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let data = {
@@ -726,7 +732,7 @@ const AgendaViewer = () => {
     dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
   };
 
-  const onClickStopPresenter = (value) => {
+  const onClickStopPresenter = async(value) => {
     console.log("onClickStopPresenter", value);
     // presenterViewHostFlag
     // ? t("Stop-presenting")
@@ -746,13 +752,20 @@ const AgendaViewer = () => {
       console.log("Check Stop");
       if (value === 1) {
         if (presenterStartedFlag) {
+          if (alreadyInMeetingVideo) {
+            sessionStorage.removeItem("alreadyInMeetingVideo");
+            await dispatch(presenterViewGlobalState(0, false, false, false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(normalizeVideoPanelFlag(true));
+            dispatch(minimizeVideoPanelFlag(false));
+          } else {
           let data = {
             MeetingID: currentMeetingID,
             RoomID: callAcceptedRoomID,
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
-          dispatch(stopPresenterViewMainApi(navigate, t, data));
+          dispatch(stopPresenterViewMainApi(navigate, t, data));}
         } else {
           let meetingTitle = localStorage.getItem("meetingTitle");
           let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
@@ -778,12 +791,19 @@ const AgendaViewer = () => {
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       } else if (value === 3) {
+        if (alreadyInMeetingVideo) {
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          await dispatch(presenterViewGlobalState(0, false, false, false));
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(normalizeVideoPanelFlag(true));
+          dispatch(minimizeVideoPanelFlag(false));
+        } else {
         let data = {
           RoomID: String(callAcceptedRoomID),
           UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(meetingTitle),
         };
-        dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        dispatch(leavePresenterViewMainApi(navigate, t, data, 1));}
       }
       // }
     } catch (error) {}

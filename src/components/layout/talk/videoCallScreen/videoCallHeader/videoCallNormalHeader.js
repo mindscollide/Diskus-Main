@@ -53,6 +53,7 @@ import {
   leaveMeetingOnEndStatusMqtt,
   leavePresenterViewMainApi,
   stopPresenterViewMainApi,
+  presenterViewGlobalState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -380,9 +381,13 @@ const VideoCallNormalHeader = ({
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
   }
-
+  let alreadyInMeetingVideo = JSON.parse(
+    sessionStorage.getItem("alreadyInMeetingVideo")
+      ? sessionStorage.getItem("alreadyInMeetingVideo")
+      : false
+  );
   // after presenter view is true then this funct call
-  function handlePresenterViewFunc() {
+  async function handlePresenterViewFunc() {
     console.log(presenterViewFlag, "presenterViewFlag");
     console.log("busyCall");
 
@@ -394,7 +399,6 @@ const VideoCallNormalHeader = ({
 
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
@@ -417,6 +421,13 @@ const VideoCallNormalHeader = ({
           console.log(data, "presenterViewJoinFlag");
           dispatch(stopPresenterViewMainApi(navigate, t, data));
         } else {
+          if (alreadyInMeetingVideo) {
+            sessionStorage.removeItem("alreadyInMeetingVideo");
+            await dispatch(presenterViewGlobalState(0, false, false, false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(normalizeVideoPanelFlag(true));
+            dispatch(minimizeVideoPanelFlag(false));
+          } else {
           let meetingTitle = localStorage.getItem("meetingTitle");
           let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
           let isMeetingVideoHostCheck = JSON.parse(
@@ -429,7 +440,7 @@ const VideoCallNormalHeader = ({
             UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             Name: String(meetingTitle),
           };
-          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));}
         }
       }
     } else {
@@ -437,13 +448,21 @@ const VideoCallNormalHeader = ({
 
       if (presenterViewJoinFlag) {
         // Leave presenter view
-        let data = {
-          RoomID: String(callAcceptedRoomID),
-          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-          Name: String(meetingTitle),
-        };
+        if (alreadyInMeetingVideo) {
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          await dispatch(presenterViewGlobalState(0, false, false, false));
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(normalizeVideoPanelFlag(true));
+          dispatch(minimizeVideoPanelFlag(false));
+        } else {
+          let data = {
+            RoomID: String(callAcceptedRoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(meetingTitle),
+          };
 
-        dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+          dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        }
       }
     }
 

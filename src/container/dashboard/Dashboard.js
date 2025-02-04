@@ -443,22 +443,35 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     if (String(meetingVideoID) === String(payload?.meetingID)) {
-      console.log("mqtt mqmqmqmqmqmq", isMeeting);
-
       if (isMeeting) {
-        console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
         if (
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {
-          console.log("mqtt mqmqmqmqmqmq", presenterViewFlagRef.current);
           if (presenterViewFlagRef.current) {
-            console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
-
-            dispatch(presenterViewGlobalState(0, false, false, false));
-            dispatch(maximizeVideoPanelFlag(false));
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(minimizeVideoPanelFlag(false));
+            let alreadyInMeetingVideo = JSON.parse(
+              sessionStorage.getItem("alreadyInMeetingVideo")
+                ? sessionStorage.getItem("alreadyInMeetingVideo")
+                : false
+            );
+            if (alreadyInMeetingVideo) {
+              sessionStorage.removeItem("alreadyInMeetingVideo");
+              await dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(true));
+              dispatch(minimizeVideoPanelFlag(false));
+            } else {
+              localStorage.removeItem("participantUID");
+              localStorage.removeItem("isGuid");
+              localStorage.removeItem("videoIframe");
+              localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("newRoomId");
+              localStorage.removeItem("acceptedRoomID");
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+            }
           }
         }
       }

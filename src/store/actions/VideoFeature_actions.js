@@ -1596,6 +1596,11 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
               } else {
                 localStorage.removeItem("participantUID");
                 localStorage.removeItem("isGuid");
+                localStorage.removeItem("videoIframe");
+                localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("newRoomId");
+                localStorage.removeItem("acceptedRoomID");
+
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
                 );
@@ -1860,6 +1865,13 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 )
             ) {
               dispatch(presenterStartedMainFlag(false));
+
+              localStorage.removeItem("participantUID");
+              localStorage.removeItem("isGuid");
+              localStorage.removeItem("videoIframe");
+              localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("newRoomId");
+              localStorage.removeItem("acceptedRoomID");
               if (flag === 1) {
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
