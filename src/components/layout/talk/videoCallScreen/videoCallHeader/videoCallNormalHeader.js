@@ -1326,8 +1326,16 @@ const VideoCallNormalHeader = ({
                       <img
                         src={ParticipantsIcon}
                         onClick={() => {
-                          const role = getMeetingHostInfo.isHost ? 1 : 2;
-                          const flag = getMeetingHostInfo.isHost ? false : true;
+                          const role = getMeetingHostInfo.isHost
+                            ? 1
+                            : presenterViewHostFlag
+                            ? 1
+                            : 2;
+                          const flag = getMeetingHostInfo.isHost
+                            ? false
+                            : presenterViewHostFlag
+                            ? false
+                            : true;
                           closeParticipantHandler(role, flag);
                         }}
                         alt="Participants"
