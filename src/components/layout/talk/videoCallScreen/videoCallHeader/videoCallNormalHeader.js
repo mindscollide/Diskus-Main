@@ -93,7 +93,9 @@ const VideoCallNormalHeader = ({
   const location = useLocation();
 
   const { editorRole } = useContext(MeetingContext);
+  // const { isMeeting } = useMeetingContext();
 
+  console.log(isMeeting, "useMeetingContextuseMeetingContext");
   const leaveModalPopupRef = useRef(null);
 
   const meetingUrlData = useSelector(
