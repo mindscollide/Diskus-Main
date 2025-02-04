@@ -17,10 +17,12 @@ import {
   UpdatedCastVoteAPI,
 } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
-const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
+const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+  const { advanceMeetingModalID } = useMeetingContext();
   let userID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
     open: false,
@@ -50,7 +52,14 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
       console.log(data, "submitvotesubmitvotesubmitvote");
       // dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
       dispatch(
-        UpdatedCastVoteAPI(navigate, data, t, 3, setvotePolls, currentMeeting)
+        UpdatedCastVoteAPI(
+          navigate,
+          data,
+          t,
+          3,
+          setvotePolls,
+          Number(advanceMeetingModalID)
+        )
       );
     } else {
       // open sncak bar for atleast select one option
@@ -129,7 +138,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
-
+        let selectedAnswers = pollData.selectedAnswers;
         if (pollOptions.length > 0) {
           setPollsOption(pollOptions);
         }
@@ -143,6 +152,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
             Date: pollDetails.dueDate,
             AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
             PollID: pollDetails.pollID,
+            answer: selectedAnswers.map((answer) => answer.pollAnswerID),
           });
         }
       }
