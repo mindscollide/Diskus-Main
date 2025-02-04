@@ -93,7 +93,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         let pollDetails = pollData.pollDetails;
         let pollOptions = pollData.pollOptions;
         let pollParticipants = pollData.pollParticipants;
-
+        let selectedAnswers = pollData.selectedAnswers;
         if (pollOptions.length > 0) {
           setPollsOption(pollOptions);
         }
@@ -107,6 +107,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
             Date: pollDetails.dueDate,
             AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
             PollID: pollDetails.pollID,
+            answer: selectedAnswers.map((answer) => answer.pollAnswerID),
           });
         }
       }
