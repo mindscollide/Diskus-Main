@@ -12,10 +12,7 @@ import {
 } from "../../../../../../components/elements";
 import { Progress, Radio } from "antd";
 import { _justShowDateformatBilling } from "../../../../../../commen/functions/date_formater";
-import {
-  castVoteApi,
-  UpdatedCastVoteAPI,
-} from "../../../../../../store/actions/Polls_actions";
+import { UpdatedCastVoteAPI } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 

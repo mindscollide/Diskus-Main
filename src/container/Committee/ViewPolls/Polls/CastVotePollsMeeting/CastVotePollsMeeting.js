@@ -89,6 +89,39 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       }
     }
   };
+
+  const handleSectionClick = (pollAnswerID) => {
+    // Check if the answer is already selected
+    const isAlreadySelected =
+      viewProgressPollsDetails.answer.includes(pollAnswerID);
+
+    if (viewProgressPollsDetails.AllowMultipleAnswers) {
+      // Handle multiple answers
+      if (isAlreadySelected) {
+        // Remove the answer if it was already selected
+        const updatedAnswers = viewProgressPollsDetails.answer.filter(
+          (id) => id !== pollAnswerID
+        );
+        setViewProgressPollsDetails({
+          ...viewProgressPollsDetails,
+          answer: updatedAnswers,
+        });
+      } else {
+        // Add the answer
+        setViewProgressPollsDetails({
+          ...viewProgressPollsDetails,
+          answer: [...viewProgressPollsDetails.answer, pollAnswerID],
+        });
+      }
+    } else {
+      // Handle single answer (Radio Button)
+      setViewProgressPollsDetails({
+        ...viewProgressPollsDetails,
+        answer: [pollAnswerID],
+      });
+    }
+  };
+
   useEffect(() => {
     try {
       if (Allpolls !== null && Allpolls !== undefined) {
@@ -150,8 +183,11 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="mt-2"
+                              className="mt-2 cursor-pointer"
                               key={index}
+                              onClick={() =>
+                                handleSectionClick(data.pollAnswerID)
+                              }
                             >
                               <section>
                                 <Row>
@@ -203,6 +239,11 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                           className="Progress_bar_Polls"
                                           percent={data.votePercentage}
                                           status="active"
+                                          onClick={() =>
+                                            handleSectionClick(
+                                              data.pollAnswerID
+                                            )
+                                          }
                                         />
                                       </Col>
                                     </Row>
