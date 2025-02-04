@@ -420,7 +420,10 @@ const Dashboard = () => {
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       if (!presenterViewFlagRef.current && !presenterViewJoinFlagRef.current) {
         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let data = { VideoCallURL: String(currentMeetingVideoURL) ,WasInVideo: isMeetingVideo ? true : false,};
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL),
+          WasInVideo: isMeetingVideo ? true : false,
+        };
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       }
     }
@@ -445,29 +448,10 @@ const Dashboard = () => {
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
 
-            if (presenterViewJoinFlagRef.current) {
-              //   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-              //   let meetingTitle = localStorage.getItem("meetingTitle");
-              //   let isMeetingVideoHostCheck = JSON.parse(
-              //     localStorage.getItem("isMeetingVideoHostCheck")
-              //   );
-              //   let participantUID = localStorage.getItem("participantUID");
-              //   let isGuid = localStorage.getItem("isGuid");
-              //   let data = {
-              //     RoomID: String(callAcceptedRoomID),
-              //     UserGUID: String(
-              //       isMeetingVideoHostCheck ? isGuid : participantUID
-              //     ),
-              //     Name: String(meetingTitle),
-              //   };
-              //   dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
-              // } else {
-              dispatch(presenterViewGlobalState(0, false, false, false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              sessionStorage.removeItem("StopPresenterViewAwait");
-            }
+            dispatch(presenterViewGlobalState(0, false, false, false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
           }
         }
       }
