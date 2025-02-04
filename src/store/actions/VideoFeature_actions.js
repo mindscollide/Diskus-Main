@@ -1580,21 +1580,29 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
                 )
             ) {
-              await dispatch(presenterViewGlobalState(0, false, false, false));
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: false,
-              };
-              dispatch(makeHostNow(meetingHost));
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
+              let alreadyInMeetingVideo = JSON.parse(
+                sessionStorage.getItem("alreadyInMeetingVideo")
+                  ? sessionStorage.getItem("alreadyInMeetingVideo")
+                  : false
               );
-
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
+              if (alreadyInMeetingVideo) {
+                sessionStorage.removeItem("alreadyInMeetingVideo");
+                await dispatch(
+                  presenterViewGlobalState(0, false, false, false)
+                );
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(minimizeVideoPanelFlag(false));
+              } else {
+                localStorage.removeItem("participantUID");
+                localStorage.removeItem("isGuid");
+                await dispatch(
+                  presenterViewGlobalState(0, false, false, false)
+                );
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
               await dispatch(
                 stopPresenterSuccess(
                   response.data.responseResult,
