@@ -191,7 +191,17 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 }
 
 .Archived_modal_scrollbar {
-  max-height: 70vh !important;
+  min-height: 70vh !important;
+  height: auto !important;
+  overflow-x: hidden !important;
+  margin-top: -50px !important;
+}
+
+.Archived_modal_scrollbar_Spinner {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 70vh !important;
   height: auto !important;
   overflow-x: hidden !important;
   margin-top: -50px !important;

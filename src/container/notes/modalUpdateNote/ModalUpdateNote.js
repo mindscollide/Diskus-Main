@@ -32,11 +32,15 @@ import {
   removeHTMLTagsAndTruncate,
 } from "../../../commen/functions/utils";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { Spin } from "antd";
 import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
   const { NotesReducer } = useSelector((state) => state);
+  const retriveDocsSpinner = useSelector(
+    (state) => state.DataRoomReducer.Loading
+  );
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const editorRef = useRef(null);
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
@@ -397,7 +401,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       return;
     }
     filesArray.forEach((fileData, index) => {
-
       const { isMorethan } = isFileSizeValid(fileData.size);
 
       if (!isMorethan) {
@@ -726,23 +729,33 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           md={12}
                           className={styles["notes-updates-attachment"]}
                         >
-                          {attachments.length > 0
-                            ? attachments.map((data, index) => {
-                                return (
-                                  <AttachmentViewer
-                                    handleClickRemove={() =>
-                                      deleteFilefromAttachments(data, index)
-                                    }
-                                    data={data}
-                                    name={data.DisplayAttachmentName}
-                                    id={0}
-                                    fk_UID={Number(
-                                      localStorage.getItem("userID")
-                                    )}
-                                  />
-                                );
-                              })
-                            : null}
+                          {retriveDocsSpinner ? (
+                            <>
+                              <section className="d-flex justify-content-center align-items-center p-3">
+                                <Spin />
+                              </section>
+                            </>
+                          ) : (
+                            <>
+                              {attachments.length > 0
+                                ? attachments.map((data, index) => {
+                                    return (
+                                      <AttachmentViewer
+                                        handleClickRemove={() =>
+                                          deleteFilefromAttachments(data, index)
+                                        }
+                                        data={data}
+                                        name={data.DisplayAttachmentName}
+                                        id={0}
+                                        fk_UID={Number(
+                                          localStorage.getItem("userID")
+                                        )}
+                                      />
+                                    );
+                                  })
+                                : null}
+                            </>
+                          )}
                         </Col>
                       </Row>
                     </Col>

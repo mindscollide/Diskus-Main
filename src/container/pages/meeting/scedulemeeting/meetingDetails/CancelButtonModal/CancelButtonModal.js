@@ -28,22 +28,85 @@ const CancelButtonModal = ({
   };
 
   const handleYesFunctionality = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setGoBackCancelModal(false);
-    setSceduleMeeting(false);
-    setMeetingDetails(true);
-    setRows([]);
+    if (localStorage.getItem("navigateLocation") === "dataroom") {
+      navigate("/Diskus/dataroom");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "resolution") {
+      navigate("/Diskus/resolution");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "committee") {
+      navigate("/Diskus/committee");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "groups") {
+      navigate("/Diskus/groups");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "polling") {
+      navigate("/Diskus/polling");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "calendar") {
+      navigate("/Diskus/calendar");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "todolist") {
+      navigate("/Diskus/todolist");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "Notes") {
+      navigate("/Diskus/Notes");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "Meeting") {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      setGoBackCancelModal(false);
+      setSceduleMeeting(false);
+      setMeetingDetails(true);
+      setRows([]);
+      setSceduleMeeting(false);
+      localStorage.removeItem("navigateLocation");
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      console.log("chek search meeting");
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      setGoBackCancelModal(false);
+      setSceduleMeeting(false);
+      setMeetingDetails(true);
+      setRows([]);
+    }
   };
 
   return (
