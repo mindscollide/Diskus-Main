@@ -255,6 +255,7 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
+  console.log(isVideoActive, "isVideoActive");
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
@@ -435,7 +436,7 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     // Determine the control source based on the user role
     // Reference the iframe and perform postMessage based on the control source
-    if (isMeetingHost) {
+    if (isMeetingHost || (presenterViewFlag && presenterViewHostFlag)) {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlHost === true) {
@@ -483,12 +484,19 @@ const VideoPanelNormal = () => {
   }, [audioControlForParticipant]);
 
   useEffect(() => {
-    if (isMeetingHost === false) {
+    if (
+      isMeetingHost === false ||
+      (presenterViewFlag && !presenterViewHostFlag)
+    ) {
+      console.log("videoHideUnHideForHost");
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
+        console.log("videoHideUnHideForHost");
         if (videoControlForParticipant === true) {
+          console.log("videoHideUnHideForHost");
           iframe.contentWindow.postMessage("VidOn", "*");
         } else {
+          console.log("videoHideUnHideForHost");
           iframe.contentWindow.postMessage("VidOff", "*");
         }
       }
@@ -496,12 +504,26 @@ const VideoPanelNormal = () => {
   }, [videoControlForParticipant]);
 
   useEffect(() => {
-    if (isMeetingHost) {
+    console.log("videoHideUnHideForHost", isMeetingHost);
+    console.log(
+      "videoHideUnHideForHost",
+      presenterViewFlag && presenterViewHostFlag
+    );
+    console.log(
+      "videoHideUnHideForHost",
+      presenterViewFlag,
+      presenterViewHostFlag
+    );
+    if (isMeetingHost || (presenterViewFlag && presenterViewHostFlag)) {
       const iframe = iframeRef.current;
+      console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow !== null) {
+        console.log("videoHideUnHideForHost");
         if (videoControlHost === true) {
+          console.log("videoHideUnHideForHost");
           iframe.contentWindow.postMessage("VidOn", "*");
         } else {
+          console.log("videoHideUnHideForHost");
           iframe.contentWindow.postMessage("VidOff", "*");
         }
       }
@@ -852,9 +874,11 @@ const VideoPanelNormal = () => {
   };
   const handlePresenterView = async () => {
     const iframe = iframeRef.current;
-    console.log("handlePostMessage", iframe);
+    console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
+      dispatch(setVideoControlHost(true));
+      console.log("videoHideUnHideForHost");
       iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
@@ -875,24 +899,19 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     const messageHandler = (event) => {
       // Check the origin for security
-      console.log("handlePostMessage", event);
-      console.log("handlePostMessage", event.data);
       if (event.origin === "https://portal.letsdiskus.com:9414") {
         // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
-            console.log("handlePostMessage", event.data);
             setIsScreenActive(true); // Show a modal or perform an action
             if (presenterViewFlag && presenterViewHostFlag) {
-              console.log("handlePostMessage", iframe);
               handlerForStaringPresenterView();
             }
 
             break;
           case "ScreenSharedStopMsgFromIframe":
-            console.log("handlePostMessage", event.data);
             setIsScreenActive(false);
             if (presenterViewFlag && presenterViewHostFlag) {
               let meetingTitle = localStorage.getItem("meetingTitle");
@@ -997,7 +1016,9 @@ const VideoPanelNormal = () => {
   const disableVideoFunction = () => {
     try {
       const iframe = iframeRef.current;
+      console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow) {
+        console.log("videoHideUnHideForHost");
         iframe.contentWindow.postMessage("VidOff", "*");
         setIsVideoActive(!isVideoActive);
         localStorage.setItem("VidOff", !isVideoActive);
@@ -1176,9 +1197,11 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            NormalizeVideoFlag === true &&
-                            MinimizeVideoFlag === false &&
-                            MaximizeVideoFlag === false
+                            presenterViewFlag
+                              ? "normal-Presenter-avatar-large"
+                              : NormalizeVideoFlag === true &&
+                                MinimizeVideoFlag === false &&
+                                MaximizeVideoFlag === false
                               ? "normal-avatar"
                               : NormalizeVideoFlag === false &&
                                 MinimizeVideoFlag === false &&

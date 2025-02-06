@@ -211,6 +211,11 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
 
+  console.log(
+    { presenterViewFlag, presenterViewHostFlag },
+    "presenterViewFlag && presenterViewHostFlag"
+  );
+
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
@@ -939,7 +944,7 @@ const VideoCallNormalHeader = ({
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
-        RoomID: String(newRoomID),
+        RoomID: String(presenterViewFlag ? roomID : newRoomID),
         HideVideo: flag, // Set HideVideo to true or false
         UID: String(newUserGUID),
       };
@@ -958,7 +963,7 @@ const VideoCallNormalHeader = ({
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
-        RoomID: String(newRoomID),
+        RoomID: String(presenterViewFlag ? roomID : newRoomID),
         IsMuted: flag,
         UID: String(newUserGUID),
       };
@@ -974,7 +979,7 @@ const VideoCallNormalHeader = ({
     // const flag = audioControlForParticipant;
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let data = {
-        RoomID: String(participantRoomIds),
+        RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
         IsMuted: flag,
         UID: String(participantUID),
       };
@@ -989,7 +994,7 @@ const VideoCallNormalHeader = ({
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       const flag = !raisedUnRaisedParticipant;
       let data = {
-        RoomID: String(participantRoomIds),
+        RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
         UID: String(participantUID),
         IsHandRaised: flag,
       };
@@ -1004,6 +1009,7 @@ const VideoCallNormalHeader = ({
   const onClickCLoseParticipantPanel = () => {
     dispatch(toggleParticipantsVisibility(false));
   };
+
   useEffect(() => {
     try {
       if (makeParticipantAsHost) {
@@ -1072,14 +1078,15 @@ const VideoCallNormalHeader = ({
               placement="topRight"
               title={
                 getMeetingHostInfo?.isDashboardVideo
-                  ? getMeetingHostInfo.isHost
+                  ? getMeetingHostInfo.isHost ||
+                    (presenterViewFlag && presenterViewHostFlag)
                     ? audioControlHost
                       ? t("Enable-mic")
                       : t("Disable-mic")
                     : audioControlForParticipant
                     ? t("Enable-mic")
                     : t("Disable-mic")
-                  : isMicActive || presenterViewFlag
+                  : isMicActive
                   ? t("Disable-mic")
                   : t("Enable-mic")
               }
@@ -1087,20 +1094,22 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost
+                    ? getMeetingHostInfo.isHost ||
+                      (presenterViewFlag && presenterViewHostFlag)
                       ? audioControlHost
                         ? MicOff
                         : MicOn
                       : audioControlForParticipant
                       ? MicOff
                       : MicOn
-                    : isMicActive || presenterViewFlag
+                    : isMicActive
                     ? MicOn
                     : MicOff
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost
+                    ? getMeetingHostInfo.isHost ||
+                      (presenterViewFlag && presenterViewHostFlag)
                       ? muteUnMuteForHost(audioControlHost ? false : true)
                       : muteUnMuteForParticipant(
                           audioControlForParticipant ? false : true
@@ -1125,14 +1134,15 @@ const VideoCallNormalHeader = ({
               placement="topRight"
               title={
                 getMeetingHostInfo?.isDashboardVideo
-                  ? getMeetingHostInfo.isHost
+                  ? getMeetingHostInfo.isHost ||
+                    (presenterViewFlag && presenterViewHostFlag)
                     ? videoControlHost
                       ? t("Enable-video")
                       : t("Disable-video")
                     : videoControlForParticipant
                     ? t("Enable-video")
                     : t("Disable-video")
-                  : isVideoActive || presenterViewFlag
+                  : isVideoActive
                   ? t("Disable-video")
                   : t("Enable-video")
               }
@@ -1140,20 +1150,22 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost
+                    ? getMeetingHostInfo.isHost ||
+                      (presenterViewFlag && presenterViewHostFlag)
                       ? videoControlHost
                         ? VideoOff
                         : VideoOn
                       : videoControlForParticipant
                       ? VideoOff
                       : VideoOn
-                    : isVideoActive || presenterViewFlag
+                    : isVideoActive
                     ? VideoOn
                     : VideoOff
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost
+                    ? getMeetingHostInfo.isHost ||
+                      (presenterViewFlag && presenterViewHostFlag)
                       ? videoHideUnHideForHost(videoControlHost ? false : true)
                       : videoHideUnHideForParticipant(
                           videoControlForParticipant ? false : true
@@ -1164,32 +1176,32 @@ const VideoCallNormalHeader = ({
               />
             </Tooltip>
           </div>
-          {checkFeatureIDAvailability(5) ||
-            !presenterViewFlag(
-              <div
-                className={
-                  LeaveCallModalFlag === true ||
-                  (isZoomEnabled && disableBeforeJoinZoom)
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle inactive-state"
+          {checkFeatureIDAvailability(5) && (
+            <div
+              className={
+                LeaveCallModalFlag === true ||
+                (isZoomEnabled && disableBeforeJoinZoom) ||
+                presenterViewFlag
+                  ? "grayScaleImage"
+                  : "screenShare-Toggle inactive-state"
+              }
+            >
+              <Tooltip
+                placement="topRight"
+                title={
+                  isScreenActive || presenterViewFlag
+                    ? t("Stop-sharing")
+                    : t("Screen-share")
                 }
               >
-                <Tooltip
-                  placement="topRight"
-                  title={
-                    isScreenActive || presenterViewFlag
-                      ? t("Stop-sharing")
-                      : t("Screen-share")
-                  }
-                >
-                  <img
-                    onClick={screenShareButton}
-                    src={NonActiveScreenShare}
-                    alt="Screen Share"
-                  />
-                </Tooltip>
-              </div>
-            )}
+                <img
+                  onClick={!presenterViewFlag ? screenShareButton : null}
+                  src={NonActiveScreenShare}
+                  alt="Screen Share"
+                />
+              </Tooltip>
+            </div>
+          )}
           {getMeetingHostInfo.isDashboardVideo && (
             <div
               className={
@@ -1255,7 +1267,8 @@ const VideoCallNormalHeader = ({
             <div
               className={
                 LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom)
+                (isZoomEnabled && disableBeforeJoinZoom) ||
+                (presenterViewFlag && !presenterViewHostFlag)
                   ? "grayScaleImage"
                   : "screenShare-Toggle"
               }
@@ -1263,7 +1276,11 @@ const VideoCallNormalHeader = ({
               <Tooltip placement="topRight" title={t("Layout")}>
                 <img
                   className={"cursor-pointer"}
-                  onClick={layoutCurrentChange}
+                  onClick={
+                    presenterViewFlag && !presenterViewHostFlag
+                      ? null
+                      : layoutCurrentChange
+                  }
                   src={showTile ? TileView : SidebarView}
                   alt="Layout Change"
                 />
@@ -1493,7 +1510,13 @@ const VideoCallNormalHeader = ({
                 <>
                   <Button
                     className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={t("Leave-call")}
+                    text={
+                      presenterViewFlag && presenterViewHostFlag
+                        ? t("Stop-presenting")
+                        : presenterViewFlag && !presenterViewHostFlag
+                        ? t("Leave-presenting")
+                        : t("Leave-call")
+                    }
                     onClick={() => leaveCall(false)}
                   />
                   <Button
@@ -1506,7 +1529,11 @@ const VideoCallNormalHeader = ({
                 <>
                   <Button
                     className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={t("Leave-call")}
+                    text={
+                      presenterViewFlag && !presenterViewHostFlag
+                        ? t("Leave-presenting")
+                        : t("Leave-call")
+                    }
                     onClick={participantLeaveCall}
                   />
 

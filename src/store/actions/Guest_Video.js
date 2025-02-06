@@ -1126,8 +1126,8 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
               if (check === 1) {
-    console.log("videoHideUnHideForHost",data.HideVideo);
-    await dispatch(setVideoControlHost(data.HideVideo));
+                console.log("videoHideUnHideForHost", data.HideVideo);
+                await dispatch(setVideoControlHost(data.HideVideo));
               } else if (check === 2) {
                 dispatch(setVideoControlForParticipant(data.HideVideo));
               }
