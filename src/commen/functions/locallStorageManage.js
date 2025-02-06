@@ -75,7 +75,8 @@ export const localStorageManage = (
     docSignAction: localStorage.getItem("docSignAction"),
     viewPublishMinutesLink: localStorage.getItem("viewPublishMinutesLink"),
     docSignedAction: localStorage.getItem("docSignedAction"),
-    docSignAction: localStorage.getItem("docSignAction")
+    docSignAction: localStorage.getItem("docSignAction"),
+    docSignedCrAction: localStorage.getItem("docSignedCrAction")
 
   };
 

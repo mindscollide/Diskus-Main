@@ -1879,6 +1879,7 @@ export const handleNavigation = (
   const viewMeetingLink = localStorage.getItem("viewMeetingLink");
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
 
   if (isFirstLogin) {
     // if (adminRights) {
@@ -1895,7 +1896,8 @@ export const handleNavigation = (
     } else if (
       dataroomValue !== null ||
       documentViewer !== null ||
-      viewFolderLink !== null
+      viewFolderLink !== null ||
+      docSignedCrAction !== null
     ) {
       navigate("/Diskus/dataroom");
     } else if (

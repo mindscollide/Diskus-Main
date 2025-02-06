@@ -2617,7 +2617,7 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
                   "_blank",
                   "noopener noreferrer"
                 );
-                localStorage.removeItem("docSignAction")
+                localStorage.removeItem("docSignAction");
               } else if (value === 2) {
                 window.open(
                   `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
@@ -2626,8 +2626,16 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
                   "_blank",
                   "noopener noreferrer"
                 );
-                localStorage.removeItem("docSignedAction")
+                localStorage.removeItem("docSignedAction");
               } else {
+                window.open(
+                  `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+                    JSON.stringify(response.data.responseResult.data.fileId)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+                localStorage.removeItem("docSignedCrAction");
               }
             } else if (
               response.data.responseResult.responseMessage
