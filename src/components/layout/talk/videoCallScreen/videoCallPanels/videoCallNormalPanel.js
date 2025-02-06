@@ -937,6 +937,9 @@ const VideoPanelNormal = () => {
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
+            } else if (presenterViewFlag && !presenterViewHostFlag) {
+              dispatch(setVideoControlForParticipant(true));
+              dispatch(setAudioControlForParticipant(true));
             }
             break;
           case "ScreenSharedCancelMsg":

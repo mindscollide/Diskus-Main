@@ -1593,6 +1593,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
+                localStorage.removeItem("presenterViewvideoURL");
               } else {
                 localStorage.removeItem("participantUID");
                 localStorage.removeItem("isGuid");
@@ -1600,6 +1601,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 localStorage.removeItem("acceptedRoomID");
                 localStorage.removeItem("newRoomId");
                 localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("presenterViewvideoURL");
 
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
@@ -1748,6 +1750,10 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                   "acceptedRoomID",
                   response.data.responseResult.roomID
                 );
+                localStorage.setItem(
+                  "presenterViewvideoURL",
+                  response.data.responseResult.videoURL
+                );
               }
               await dispatch(
                 presenterViewGlobalState(currentMeetingID, true, false, true)
@@ -1872,6 +1878,7 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
               localStorage.removeItem("acceptedRoomID");
               localStorage.removeItem("newRoomId");
               localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("presenterViewvideoURL");
               if (flag === 1) {
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
