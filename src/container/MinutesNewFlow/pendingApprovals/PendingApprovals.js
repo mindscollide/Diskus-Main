@@ -48,6 +48,14 @@ const PendingApproval = () => {
     (state) =>
       state.MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
   );
+  const PendingApprovalCountDataData = useSelector(
+    (state) => state.MinutesReducer.PendingApprovalCountData
+  );
+  console.log(
+    PendingApprovalCountDataData,
+    "PendingApprovalCountDataDataPendingApprovalCountDataData"
+  );
+  // PendingApprovalCountData
 
   const getMinutesReviewerData = useSelector(
     (state) =>
@@ -61,6 +69,15 @@ const PendingApproval = () => {
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
   const [progress, setProgress] = useState([]);
+  const [pendingApprovalsCount, setPendingApprovalCount] = useState({
+    pendingMinutes: 0,
+    pendingSignature: 0,
+  });
+
+  console.log(
+    pendingApprovalsCount,
+    "pendingApprovalsCountpendingApprovalsCount"
+  );
   const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
@@ -379,6 +396,19 @@ const PendingApproval = () => {
   }, [GetMinuteReviewPendingApprovalsByReviewerIdData]);
 
   useEffect(() => {
+    try {
+      if (PendingApprovalCountDataData !== null) {
+        const { pendingMinuteReviews, pendingSignatures } =
+          PendingApprovalCountDataData;
+        setPendingApprovalCount({
+          pendingMinutes: pendingMinuteReviews,
+          pendingSignature: pendingSignatures,
+        });
+      }
+    } catch (error) {}
+  }, [PendingApprovalCountDataData]);
+
+  useEffect(() => {
     if (
       GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== null &&
       GetMinuteReviewPendingApprovalsStatsByReviewerIdData !== undefined &&
@@ -419,6 +449,13 @@ const PendingApproval = () => {
               {/* Buttons for reviewing minutes */}
               <Button
                 text={t("Review-minutes")}
+                icon={pendingApprovalsCount.pendingMinutes}
+                iconClass={
+                  reviewMinutesActive === false &&
+                  pendingApprovalsCount.pendingMinutes !== 0
+                    ? styles["pendingCountValue"]
+                    : styles["pendingCountValue_hidden"]
+                }
                 className={
                   reviewMinutesActive
                     ? styles.activeMinutes
@@ -431,6 +468,14 @@ const PendingApproval = () => {
                 checkFeatureIDAvailability(21)) && (
                 <Button
                   text={t("Review-&-sign")}
+                  icon={pendingApprovalsCount.pendingSignature}
+                  // iconClass={styles["pendingSignatureValue"]}
+                  iconClass={
+                    pendingApprovalsCount.pendingSignature !== 0 &&
+                    !reviewAndSignActive
+                      ? styles["pendingSignatureValue"]
+                      : styles["pendingSignatureValue_hidden"]
+                  }
                   className={
                     reviewAndSignActive
                       ? styles.activeMinutes
