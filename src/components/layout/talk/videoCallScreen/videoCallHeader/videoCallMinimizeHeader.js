@@ -315,7 +315,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
     // Prepare data for the API request
     let data = {
-      RoomID: String(newRoomID),
+      RoomID: String(presenterViewFlag ? roomID : newRoomID),
       IsMuted: flag,
       UID: String(newUserGUID),
     };
@@ -343,7 +343,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     // const flag = audioControlForParticipant;
 
     let data = {
-      RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
+      RoomID: String(participantRoomIds),
       IsMuted: flag,
       UID: String(participantUID),
     };
@@ -525,7 +525,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   </div>
 
                   <div
-                    onClick={() => toggleVideo(!localVidStatus)}
+                    // onClick={() => toggleVideo(!localVidStatus)}
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
                         ? "minimize grayScaleImage"
@@ -582,16 +582,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     </Tooltip>
                   )}
 
-                  {presenterViewHostFlag && presenterViewHostFlag && (
-                    <Tooltip placement="topRight" title={t("Participants")}>
+                  {presenterViewFlag && presenterViewHostFlag && (
+                    <Tooltip placement="topRight" title={t("Screen-share")}>
                       <div
                         className={
-                          presenterViewHostFlag && presenterViewHostFlag
+                          presenterViewFlag && presenterViewHostFlag
                             ? "grayScaleImage"
                             : "inactive-state"
                         }
                       >
-                        <img src={NonActiveScreenShare} alt="Participants" />
+                        <img src={NonActiveScreenShare} alt="Screen share" />
                       </div>
                     </Tooltip>
                   )}
