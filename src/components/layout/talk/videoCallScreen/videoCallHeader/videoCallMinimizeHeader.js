@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,14 @@ import {
   leavePresenterViewMainApi,
   stopPresenterViewMainApi,
   presenterViewGlobalState,
+  participantPopup,
+  setRaisedUnRaisedParticiant,
+  leaveMeetingVideoOnlogout,
+  leaveMeetingOnlogout,
+  endMeetingStatusForQuickMeetingVideo,
+  endMeetingStatusForQuickMeetingModal,
+  leaveMeetingVideoOnEndStatusMqtt,
+  leaveMeetingOnEndStatusMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand White.svg";
@@ -46,6 +54,7 @@ import {
   hideUnhideSelfMainApi,
   muteUnMuteSelfMainApi,
 } from "../../../../../store/actions/Guest_Video";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const navigate = useNavigate();
@@ -56,7 +65,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const meetingUrlData = useSelector(
     (state) => state.NewMeetingreducer.getmeetingURL
   );
+  const { editorRole } = useContext(MeetingContext);
+  // const { isMeeting } = useMeetingContext();
 
+  const leaveModalPopupRef = useRef(null);
   // state for participants
   const [currentParticipants, setCurrentParticipants] = useState([]);
 
@@ -123,6 +135,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
+  const presenterStartedFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterStartedFlag
+  );
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -131,7 +146,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
-
+  const LeaveCallModalFlag = useSelector(
+    (state) => state.videoFeatureReducer.LeaveCallModalFlag
+  );
   console.log(
     { presenterViewFlag, presenterViewHostFlag },
     "presenterViewFlagpresenterViewHostFlag"
@@ -139,6 +156,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
   console.log(meetingHostData, "meetingHostDatameetingHostData");
+  console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
 
   const closeVideoPanel = () => {
     dispatch(leaveCallModal(false));
@@ -166,7 +184,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   // this handler is for close participant
 
   const closeParticipantHandler = () => {
-    if (videoFeatureReducer.LeaveCallModalFlag === false) {
+    if (LeaveCallModalFlag === false) {
       if (videoFeatureReducer.MinimizeParticipantPopupFlag === false) {
         dispatch(minimizeParticipantPopup(true));
       } else {
@@ -205,42 +223,220 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       setCurrentParticipants([]);
     }
   }, [VideoMainReducer.GroupCallRecipientsData]);
-
-  // this is for leave call group API
-
-  const minimizeEndCallParticipant = () => {
-    if (isMeeting === false) {
-      let Data = {
-        OrganizationID: currentOrganization,
-        RoomID: roomID,
-        IsCaller: false,
-        CallTypeID: callTypeID,
-      };
-      dispatch(LeaveCall(Data, navigate, t));
-      dispatch(normalizeVideoPanelFlag(false));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(false));
-      localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeetingVideo", false);
-    } else if (isMeeting === true) {
-      let newName = localStorage.getItem("name");
-      let Data = {
-        RoomID: roomID,
-        UserGUID: userGUID,
-        Name: String(newName),
-      };
-      dispatch(LeaveMeetingVideo(Data, navigate, t));
-      dispatch(normalizeVideoPanelFlag(false));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(false));
-      localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeeting", false);
-      localStorage.setItem("meetingTitle", "");
-      localStorage.setItem("acceptedRecipientID", 0);
-      localStorage.setItem("isMeetingVideo", false);
-    }
+  function leaveSuccess() {
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("isMeetingVideo", false);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    setParticipantStatus([]);
+    localStorage.setItem("activeCall", false);
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("acceptedRoomID", 0);
+    localStorage.setItem("activeRoomID", 0);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    dispatch(participantPopup(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+  }
+  // this is for leave call group API
+  async function handlePresenterViewFunc() {
+    console.log(presenterViewFlag, "presenterViewFlag");
+    console.log("busyCall");
+
+    // if (Number(currentMeetingID) !== Number(presenterMeetingId)) {
+    //   leaveSuccess();
+    //   return;
+    // }
+    console.log("busyCall");
+
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let participantUID = localStorage.getItem("participantUID");
+    let isGuid = localStorage.getItem("isGuid");
+
+    if (presenterViewHostFlag) {
+      console.log("busyCall");
+      console.log(presenterViewHostFlag, "presenterViewHostFlag");
+
+      if (presenterViewJoinFlag) {
+        console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
+        // Stop presenter view
+        if (presenterStartedFlag) {
+          let data = {
+            MeetingID: currentMeetingID,
+            RoomID: callAcceptedRoomID,
+          };
+          sessionStorage.setItem("StopPresenterViewAwait", true);
+          console.log(data, "presenterViewJoinFlag");
+          dispatch(stopPresenterViewMainApi(navigate, t, data));
+        } else {
+          if (alreadyInMeetingVideo) {
+            sessionStorage.removeItem("alreadyInMeetingVideo");
+            await dispatch(presenterViewGlobalState(0, false, false, false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(normalizeVideoPanelFlag(true));
+            dispatch(minimizeVideoPanelFlag(false));
+          } else {
+            let meetingTitle = localStorage.getItem("meetingTitle");
+            let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let participantUID = localStorage.getItem("participantUID");
+            let isGuid = localStorage.getItem("isGuid");
+            let data = {
+              RoomID: String(callAcceptedRoomID),
+              UserGUID: String(
+                isMeetingVideoHostCheck ? isGuid : participantUID
+              ),
+              Name: String(meetingTitle),
+            };
+            dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+          }
+        }
+      }
+    } else {
+      console.log("busyCall");
+
+      if (presenterViewJoinFlag) {
+        // Leave presenter view
+        if (alreadyInMeetingVideo) {
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          await dispatch(presenterViewGlobalState(0, false, false, false));
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(normalizeVideoPanelFlag(true));
+          dispatch(minimizeVideoPanelFlag(false));
+        } else {
+          let data = {
+            RoomID: String(callAcceptedRoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(meetingTitle),
+          };
+
+          dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        }
+      }
+    }
+
+    leaveSuccess();
+  }
+  let newName = localStorage.getItem("name");
+  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
+
+  const minimizeEndCallParticipant = async (flag, flag2, flag3) => {
+    console.log("LeaveCallModalFlag");
+    if (LeaveCallModalFlag === true && callerID !== currentUserID) {
+      // try {
+      //   if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+      //     console.log("busyCall");
+
+      //     iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+      //     await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      //   }
+      // } catch (error) {}
+      if (isMeeting === true) {
+        const meetHostFlag = localStorage.getItem("meetinHostInfo");
+        console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
+        if (presenterViewFlag) {
+          console.log("Check Presenter");
+          handlePresenterViewFunc();
+        } else if (meetHostFlag) {
+          const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
+          console.log(parsedHostFlag, "parsedHostFlag");
+          if (parsedHostFlag.isHost) {
+            let Data = {
+              RoomID: String(newRoomID),
+              UserGUID: String(newUserGUID),
+              Name: String(newName),
+              IsHost: parsedHostFlag?.isHost ? true : false,
+              MeetingID: Number(currentMeetingID),
+            };
+
+            await dispatch(LeaveMeetingVideo(Data, navigate, t));
+            leaveSuccess();
+          } else {
+            let Data = {
+              RoomID: String(participantRoomIds),
+              UserGUID: String(participantUID),
+              Name: String(newName),
+              IsHost: parsedHostFlag?.isHost ? true : false,
+              MeetingID: Number(currentMeetingID),
+            };
+
+            await dispatch(setRaisedUnRaisedParticiant(false));
+            await dispatch(LeaveMeetingVideo(Data, navigate, t));
+            leaveSuccess();
+          }
+        }
+      } else if (meetingHostData.isDashboardVideo === false) {
+        console.log("leaveCallleaveCallleaveCallleaveCall");
+        let Data = {
+          OrganizationID: currentOrganization,
+          RoomID: initiateRoomID,
+          IsCaller: true,
+          CallTypeID: currentCallType,
+        };
+        await dispatch(LeaveCall(Data, navigate, t));
+        leaveSuccess();
+        console.log("Not End 1");
+      }
+      // dispatch(LeaveCall(Data, navigate, t));
+
+      if (flag) {
+        console.log("mqtt mqmqmqmqmqmq");
+        await dispatch(leaveMeetingVideoOnlogout(false));
+        dispatch(leaveMeetingOnlogout(true));
+      }
+      if (flag2) {
+        console.log("mqtt mqmqmqmqmqmq");
+        dispatch(endMeetingStatusForQuickMeetingVideo(false));
+        dispatch(endMeetingStatusForQuickMeetingModal(true));
+      }
+      if (flag3) {
+        console.log("mqtt mqmqmqmqmqmq");
+        await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
+        dispatch(leaveMeetingOnEndStatusMqtt(true));
+      }
+    } else {
+      if (isMeeting === false) {
+        let Data = {
+          OrganizationID: currentOrganization,
+          RoomID: roomID,
+          IsCaller: false,
+          CallTypeID: callTypeID,
+        };
+        dispatch(LeaveCall(Data, navigate, t));
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+        localStorage.setItem("activeCall", false);
+        localStorage.setItem("isMeetingVideo", false);
+      } else if (isMeeting === true) {
+        let newName = localStorage.getItem("name");
+        let Data = {
+          RoomID: roomID,
+          UserGUID: userGUID,
+          Name: String(newName),
+        };
+        dispatch(LeaveMeetingVideo(Data, navigate, t));
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+        localStorage.setItem("activeCall", false);
+        localStorage.setItem("isMeeting", false);
+        localStorage.setItem("meetingTitle", "");
+        localStorage.setItem("acceptedRecipientID", 0);
+        localStorage.setItem("isMeetingVideo", false);
+      }
+      localStorage.setItem("MicOff", true);
+      localStorage.setItem("VidOff", true);
+    }
   };
 
   const cancelLeaveCallOption = () => {
@@ -282,8 +478,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     localStorage.setItem("VidOff", status);
     setLocalVidStatus(status);
   };
-
-  useEffect(() => {}, [localMicStatus, localVidStatus]);
 
   useEffect(() => {
     try {
@@ -489,7 +683,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               )}
               <div
                 className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
+                  LeaveCallModalFlag === true
                     ? "minimize grayScaleImage"
                     : !localMicStatus
                     ? "minimize for-host-active-state-minimize"
@@ -551,7 +745,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               </div>
               <div
                 className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
+                  LeaveCallModalFlag === true
                     ? "minimize grayScaleImage"
                     : !localVidStatus
                     ? "minimize for-host-active-state-minimize"
@@ -734,12 +928,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       )}
                     </div>
                   ) : null} */}
-
+              {console.log("LeaveCallModalFlag 1", callerID, currentUserID)}
               {!presenterViewFlag && (
                 <div className="position-relative">
-                  {videoFeatureReducer.LeaveCallModalFlag === true &&
-                  callerID === currentUserID ? (
+                  {LeaveCallModalFlag === true && callerID === currentUserID ? (
                     <>
+                      {console.log(
+                        "LeaveCallModalFlagv2",
+                        callerID,
+                        currentUserID
+                      )}
                       <div className="minimize active-state-end">
                         <Tooltip placement="bottomLeft" title={t("Cancel")}>
                           <img
@@ -750,7 +948,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                           />
                         </Tooltip>
                       </div>
-                      {videoFeatureReducer.LeaveCallModalFlag === true ? (
+                      {LeaveCallModalFlag === true ? (
                         <div className="minimize-leave-meeting-options leave-meeting-options-position">
                           <div className="leave-meeting-options__inner">
                             <Button
@@ -778,10 +976,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         </div>
                       ) : null}
                     </>
-                  ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
+                  ) : (LeaveCallModalFlag === false &&
                       callerID === currentUserID) ||
                     callerID === 0 ? (
                     <Tooltip placement="bottomLeft" title={t("End-call")}>
+                      {console.log(
+                        "LeaveCallModalFlag 3",
+                        callerID,
+                        currentUserID
+                      )}
                       <div className="minimize inactive-state">
                         <img
                           src={CallEndRedIcon}
@@ -791,9 +994,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         />
                       </div>
                     </Tooltip>
-                  ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+                  ) : LeaveCallModalFlag === false &&
                     callerID !== currentUserID ? (
                     <Tooltip placement="bottomLeft" title={t("End-call")}>
+                      {console.log(
+                        "LeaveCallModalFlag 4",
+                        callerID,
+                        currentUserID
+                      )}
                       <img
                         src={CallEndRedIcon}
                         onClick={minimizeEndCallParticipant}
@@ -801,7 +1009,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         className="cursor-pointer"
                       />
                     </Tooltip>
-                  ) : null}
+                  ) : (
+                    <>
+                      {" "}
+                      {console.log(
+                        "LeaveCallModalFlag 6",
+                        callerID,
+                        currentUserID
+                      )}
+                    </>
+                  )}
                 </div>
               )}
 
@@ -810,7 +1027,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   <Tooltip placement="bottomLeft" title={t("Normalize-screen")}>
                     <div
                       className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
+                        LeaveCallModalFlag === true
                           ? "minimize grayScaleImage"
                           : "minimize inactive-state"
                       }
@@ -830,7 +1047,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 <Tooltip placement="bottomLeft" title={t("Maximize-screen")}>
                   <div
                     className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
+                      LeaveCallModalFlag === true
                         ? "minimize grayScaleImage"
                         : "minimize inactive-state"
                     }
@@ -847,6 +1064,61 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             </div>
           </Col>
         </Row>
+      </div>
+      <div ref={leaveModalPopupRef}>
+        {LeaveCallModalFlag === true ? (
+          <div className="minimize-leave-meeting-options leave-meeting-options-position">
+            <div className="leave-meeting-options__inner">
+              {meetingHostData?.isDashboardVideo ? (
+                <>
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    text={
+                      presenterViewFlag && presenterViewHostFlag
+                        ? t("Stop-presenting")
+                        : presenterViewFlag && !presenterViewHostFlag
+                        ? t("Leave-presenting")
+                        : t("Leave-call")
+                    }
+                    onClick={() =>
+                      minimizeEndCallParticipant(false, false, false, false)
+                    }
+                  />
+
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    text="Cancel"
+                    onClick={closeVideoPanel}
+                  />
+                </>
+              ) : (
+                <>
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    text={t("Leave-call")}
+                    onClick={minimizeLeaveCall}
+                  />
+
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    text={
+                      currentCallType === 1
+                        ? t("End-call")
+                        : t("End-call-for-everyone")
+                    }
+                    onClick={minimizeLeaveCall}
+                  />
+
+                  <Button
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    text="Cancel"
+                    onClick={closeVideoPanel}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
     </>
   );
