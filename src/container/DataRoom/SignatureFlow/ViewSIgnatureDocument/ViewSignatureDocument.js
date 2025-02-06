@@ -27,12 +27,13 @@ const ViewSignatureDocument = () => {
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,
-    getDataroomAnnotation,
+    getSignatureFileAnnotationResponse,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
+
+
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
-  const [Instance, setInstance] = useState(null);
   const viewer = useRef(null);
   const [signerData, setSignerData] = useState([]);
   const [FieldsData, setFieldsData] = useState([]);
@@ -41,7 +42,6 @@ const ViewSignatureDocument = () => {
     useState(false);
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
@@ -62,18 +62,20 @@ const ViewSignatureDocument = () => {
     creatorID: "",
     isCreator: 0,
   });
+
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
 
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
-  const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
   const pdfResponceDataRef = useRef(pdfResponceData.xfdfData);
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
+
+  console.log(signerDataRef, "signerDataRefsignerDataRef")
 
   // ===== this use for current state update get =====//
 
@@ -245,7 +247,6 @@ const ViewSignatureDocument = () => {
             });
           });
           setSignerData(signersData);
-          setSelectedUser(listOfUsers[0].pk_UID);
           // this is using if we are getting null value for anotations
           if (
             getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
@@ -281,8 +282,8 @@ const ViewSignatureDocument = () => {
 
         setPdfResponceData((prevData) => ({
           ...prevData,
-          xfdfData: "",
-          attachmentBlob: webViewer.attachmentBlob,
+          // xfdfData: "",
+          // attachmentBlob: webViewer.attachmentBlob,
           removedAnnotations: "",
           workFlowID: getWorkfFlowByFileId?.workFlow?.workFlow.pK_WorkFlow_ID,
           documentID: Number(docWorkflowID),
@@ -303,53 +304,60 @@ const ViewSignatureDocument = () => {
 
   // === Get  the file details by Id from API and Set it === //
   useEffect(() => {
-    if (getDataroomAnnotation !== null && getDataroomAnnotation !== undefined) {
-      let currentUserID =
-        localStorage.getItem("userID") !== null
-          ? Number(localStorage.getItem("userID"))
-          : 0;
+    try {
+      if (
+        getSignatureFileAnnotationResponse !== null &&
+        getSignatureFileAnnotationResponse !== undefined
+      ) {
+        let currentUserID =
+          localStorage.getItem("userID") !== null
+            ? Number(localStorage.getItem("userID"))
+            : 0;
 
-      let HideArray = [];
-      let ReadArray = [];
+        let HideArray = [];
+        let ReadArray = [];
 
-      // Iterate over each object in the data array
-      userAnnotationsRef.current.forEach((obj) => {
-        // Check if userID does not match currentID
-        // Iterate over xml array in the current object
-        obj.xml.forEach((item) => {
-          // Extract all 'name' attributes from ffield excluding font tag
-          let ffield = item.ffield;
-          let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
-          if (matches) {
-            matches.forEach((match) => {
-              // Extract the name value and push into nameArray
-              let name = match.match(/name="([^"]+)"/)[1];
-              if (hiddenUsersRef.current.includes(obj.userID)) {
-                HideArray.push(name);
-              } else if (readOnlyUsersRef.current.includes(obj.userID)) {
-                ReadArray.push(name);
-              }
-            });
-          }
+        // Iterate over each object in the data array
+        userAnnotationsRef.current.forEach((obj) => {
+          // Check if userID does not match currentID
+          // Iterate over xml array in the current object
+          obj.xml.forEach((item) => {
+            // Extract all 'name' attributes from ffield excluding font tag
+            let ffield = item.ffield;
+            let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
+            if (matches) {
+              matches.forEach((match) => {
+                // Extract the name value and push into nameArray
+                let name = match.match(/name="([^"]+)"/)[1];
+                if (hiddenUsersRef.current.includes(obj.userID)) {
+                  HideArray.push(name);
+                } else if (readOnlyUsersRef.current.includes(obj.userID)) {
+                  ReadArray.push(name);
+                }
+              });
+            }
+          });
         });
-      });
-      let newProcessXmlForReadOnly = processXmlForReadOnly(
-        getDataroomAnnotation.annotationString,
-        ReadArray
-      );
+        let newProcessXmlForReadOnly = processXmlForReadOnly(
+          getSignatureFileAnnotationResponse.annotationString,
+          ReadArray
+        );
 
-      const readonlyFreetextXmlString = readOnlyFreetextElements(
-        newProcessXmlForReadOnly,
-        readOnlyUsersRef.current
-      );
+        const readonlyFreetextXmlString = readOnlyFreetextElements(
+          newProcessXmlForReadOnly,
+          readOnlyUsersRef.current
+        );
 
-      setPdfResponceData((prevData) => ({
-        ...prevData,
-        xfdfData: readonlyFreetextXmlString,
-        attachmentBlob: getDataroomAnnotation.attachmentBlob,
-      }));
+        setPdfResponceData((prevData) => ({
+          ...prevData,
+          xfdfData: readonlyFreetextXmlString,
+          attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
+        }));
+      }
+    } catch (error) {
+      console.log("error", error);
     }
-  }, [getDataroomAnnotation]);
+  }, [getSignatureFileAnnotationResponse]);
   // === End === //
 
   // === It's triggered when we update the blob file in our local state ===
@@ -365,7 +373,6 @@ const ViewSignatureDocument = () => {
         },
         viewer.current
       ).then(async (instance) => {
-        setInstance(instance);
         instance.UI.loadDocument(
           handleBlobFiles(pdfResponceData.attachmentBlob),
           {
@@ -491,8 +498,8 @@ const ViewSignatureDocument = () => {
   };
   return (
     <>
-      <div className="documnetviewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='documnetviewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
 
       {reasonModal && (

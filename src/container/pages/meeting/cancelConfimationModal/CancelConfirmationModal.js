@@ -35,22 +35,31 @@ const CancelConfirmationModal = () => {
 
     if (localStorage.getItem("navigateLocation") === "resolution") {
       navigate("/Diskus/resolution");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "dataroom") {
       navigate("/Diskus/dataroom");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "committee") {
       navigate("/Diskus/committee");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "groups") {
       navigate("/Diskus/groups");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "polling") {
       navigate("/Diskus/polling");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "polling") {
       navigate("/Diskus/polling");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "calendar") {
       navigate("/Diskus/calendar");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "todolist") {
       navigate("/Diskus/todolist");
+      localStorage.removeItem("navigateLocation")
     } else if (localStorage.getItem("navigateLocation") === "Notes") {
       navigate("/Diskus/Notes");
+      localStorage.removeItem("navigateLocation")
     } else {
       let searchData = {
         Date: "",

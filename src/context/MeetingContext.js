@@ -45,9 +45,10 @@ export const MeetingProvider = ({ children }) => {
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
 
-
   // State for managing the schedule advanced meeting modal
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
+  // State for managing the edit advanced meeting modal
+  const [isEditMeeting, setEditMeeting] = useState(false);
 
   // State for managing meeting tabs and their visibility
   const [meetingDetails, setmeetingDetails] = useState(false);
@@ -151,7 +152,9 @@ export const MeetingProvider = ({ children }) => {
     setSceduleMeeting,
     sceduleMeeting,
     setDataroomMapFolderId,
-    dataroomMapFolderId
+    dataroomMapFolderId,
+    setEditMeeting,
+    isEditMeeting,
   };
 
   // Provide the state data to the context

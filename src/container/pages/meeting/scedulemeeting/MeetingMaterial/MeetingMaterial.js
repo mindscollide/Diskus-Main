@@ -405,7 +405,7 @@ const MeetingMaterial = ({
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["No-meeting-material-title"]}>
-                    {t("No-Meeting-Material")}
+                    {t("No-meeting-material")}
                   </span>
                 </Col>
               </Row>

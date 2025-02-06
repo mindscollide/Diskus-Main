@@ -27,6 +27,7 @@ import { Upload } from "antd";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import ConfirmationModal from "../../../../components/elements/confirmationModal/ConfirmationModal";
+import { isFileSizeValid } from "../../../../commen/functions/convertFileSizeInMB";
 
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const { Dragger } = Upload;
@@ -509,13 +510,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       let size = true;
       let totalFiles = fileList.length + fileAttachments.length;
 
-      if (totalFiles > 15) {
-        showMessage(t("Not-allowed-more-than-15-files"), "error", setOpen);
+      if (totalFiles > 10) {
+        showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > maxFileSize) {
+        const { isMorethan } = isFileSizeValid(fileData.size);
+
+        if (!isMorethan) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -527,7 +530,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );

@@ -33,6 +33,7 @@ import {
 } from "../../../commen/functions/utils";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import { Spin } from "antd";
+import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
@@ -395,12 +396,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let sizezero = true;
     let size = true;
 
-    if (totalFiles > 5) {
-      showMessage(t("Not-allowed-more-than-5-files"), "error", setOpen);
+    if (totalFiles > 10) {
+      showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
       return;
     }
     filesArray.forEach((fileData, index) => {
-      if (fileData.size > maxFileSize) {
+      const { isMorethan } = isFileSizeValid(fileData.size);
+
+      if (!isMorethan) {
         size = false;
       } else if (fileData.size === 0) {
         sizezero = false;
@@ -412,7 +415,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
       if (!size) {
         showMessage(
-          t("File-size-should-not-be-greater-then-1-5GB"),
+          t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
           setOpen
         );

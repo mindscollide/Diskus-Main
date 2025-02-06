@@ -81,8 +81,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const [voteAnswerValue, setVoteAnswerValue] = useState("");
   const [saveOptions, setSaveOptions] = useState([
     { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
-    { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
-    { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
+    { votingAnswer: t("Yes"), votingAnswerID: 1, isHidden: false },
+    { votingAnswer: t("No"), votingAnswerID: 2, isHidden: false },
   ]);
 
   const plusButtonFunc = () => {
@@ -552,8 +552,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         setMeetingParticipants([]);
         setSaveOptions([
           { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
-          { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
-          { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
+          { votingAnswer: t("Yes"), votingAnswerID: 1, isHidden: false },
+          { votingAnswer: t("No"), votingAnswerID: 2, isHidden: false },
         ]);
         dispatch(GetCurrentAgendaDetails([]));
         dispatch(showVoteAgendaModal(false));
@@ -590,8 +590,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
     setSaveOptions([
       { votingAnswer: "Pending", votingAnswerID: 0, isHidden: true },
-      { votingAnswer: "Yes", votingAnswerID: 1, isHidden: false },
-      { votingAnswer: "No", votingAnswerID: 2, isHidden: false },
+      { votingAnswer: t("Yes"), votingAnswerID: 1, isHidden: false },
+      { votingAnswer: t("No"), votingAnswerID: 2, isHidden: false },
     ]);
     dispatch(getAgendaVotingDetails_success([], ""));
     dispatch(showAllMeetingParticipantsSuccess([], "", false));

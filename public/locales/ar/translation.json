@@ -2192,7 +2192,7 @@
   "At-least-one-date-time-slot-is-mandatory": "At least one Date & Time slot is mandatory",
   "Please-add-atleast-one-participant": "Please add atleast one participant",
   "Would-you-like-to-proceed-with-accepting-all-minutes": "Would you like to proceed with Accepting All Minutes?",
-  "File-size-should-not-be-greater-then-1-5GB": "File size should not be greater then 1.5GB",
+  "File-size-should-not-be-greater-than-1-5GB": "File size should not be greater then 1.5GB",
   "Not-allowed-more-than-15-files": "Not allowed more than 15 files",
   "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving": "You have unsaved changes. If you leave this page, your changes will be lost. Do you want to continue without saving?",
   "Unsave-changes": "Unsave Changes",
@@ -2363,5 +2363,8 @@
   "Has-changed-his-vote-in": " has changed his Vote in:",
   "Trail-request-pending": "Trail request pending",
   "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
-  "Signature-flow-deleted-successfully": "Signature flow deleted successfully"
+  "Signature-flow-deleted-successfully": "Signature flow deleted successfully",
+  "You-can-not-upload-more-than-1-5GB-file": "You can not upload more than 1.5GB",
+  "File-size-should-not-be-more-than-1-5GB": "File size should not be more than 1.5GB",
+  "Approvals": "Approvals"
 }

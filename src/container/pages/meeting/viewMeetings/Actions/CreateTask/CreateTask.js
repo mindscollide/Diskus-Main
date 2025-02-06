@@ -38,6 +38,7 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../../commen/functions/utils";
+import { isFileSizeValid } from "../../../../../../commen/functions/convertFileSizeInMB";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
@@ -438,7 +439,8 @@ const CreateTask = ({
       }
 
       fileList.forEach((fileData, index) => {
-        if (fileData.size > maxFileSize) {
+        let { isMorethan } = isFileSizeValid(fileData.size);
+        if (!isMorethan) {
           size = false;
         } else if (fileData.size === 0) {
           sizezero = false;
@@ -450,7 +452,7 @@ const CreateTask = ({
 
         if (!size) {
           showMessage(
-            t("File-size-should-not-be-greater-then-1-5GB"),
+            t("File-size-should-not-be-greater-than-1-5GB"),
             "error",
             setOpen
           );

@@ -43,6 +43,21 @@ const ReviewSignature = () => {
     getAllPendingApprovalStatuses,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
+  const workflowsignaturedocument = useSelector(
+    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument
+  );
+
+  const workflowsignaturedocumentActionByMe = useSelector(
+    (state) =>
+      state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe
+  );
+  
+  const signatureDocumentStatusChangeForSignees = useSelector(
+    (state) =>
+      state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
+  );
+  console.log(signatureDocumentStatusChangeForSignees, "signatureDocumentStatusChangeForSigneessignatureDocumentStatusChangeForSignees")
+  // signatureDocumentStatusChangeForSignees
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
     declined: 0,
@@ -87,6 +102,8 @@ const ReviewSignature = () => {
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
+
+  console.log(reviewSignature, "approvalsDataapprovalsData");
 
   const handleClickOpenSigatureDoc = (record) => {
     console.log(record, "signeddocumentsigneddocument");
@@ -205,7 +222,11 @@ const ReviewSignature = () => {
         <p
           className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
           onClick={() => handleClickOpenSigatureDoc(record)}>
-          <img src={getIconSource(getFileExtension(text))} />
+          <img
+            width={"25px"}
+            height={"25px"}
+            src={getIconSource(getFileExtension(text))}
+          />
           <span>{text}</span>
         </p>
       ),
@@ -241,7 +262,9 @@ const ReviewSignature = () => {
       }),
       render: (text, record) => (
         <span
-          className={" d-flex align-items-center gap-2 justify-content-center "}>
+          className={
+            " d-flex align-items-center gap-2 justify-content-center "
+          }>
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
@@ -317,7 +340,7 @@ const ReviewSignature = () => {
             className={
               status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
-                : status?.toLowerCase()=== "Signed".toLowerCase()
+                : status?.toLowerCase() === "Signed".toLowerCase()
                 ? styles["signedStatus"]
                 : status?.toLowerCase() === "Declined".toLowerCase()
                 ? styles["declineStatus"]
@@ -406,6 +429,67 @@ const ReviewSignature = () => {
   }, [listOfPendingForApprovalSignatures]);
 
   useEffect(() => {
+    try {
+      if (workflowsignaturedocument !== null) {
+        const { data } = workflowsignaturedocument;
+        let findIfExist = reviewSignature.find(
+          (reviewSignatureData, index) =>
+            reviewSignatureData.workFlowID === data.workFlowID
+        );
+        console.log(findIfExist, "findIfExistfindIfExist");
+        if (findIfExist === undefined) {
+          setReviewSignature([data, ...reviewSignature]);
+          setOriginalData([data, originalData]);
+          // setTotalRecords(totalCount);
+          setTotalDataLength((prev) => prev + 1);
+        }
+      }
+    } catch (error) {}
+  }, [workflowsignaturedocument]);
+
+  useEffect(() => {
+    try {
+      if (workflowsignaturedocumentActionByMe !== null) {
+        const { data } = workflowsignaturedocumentActionByMe;
+        setReviewSignature((reviewSignatureCopy) =>
+          reviewSignatureCopy.map((data2) =>
+            data2.workFlowID === data.workFlowID
+              ? {
+                  ...data2,
+                  status: data.status,
+                  actorStatusID: data.actorStatusID,
+                }
+              : data2
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating review signature data:", error);
+    }
+  }, [workflowsignaturedocumentActionByMe]);
+  useEffect(() => {
+    try {
+      if (signatureDocumentStatusChangeForSignees !== null) {
+        const { data } = signatureDocumentStatusChangeForSignees;
+        setReviewSignature((reviewSignatureCopy) =>
+          reviewSignatureCopy.map((data2) =>
+            data2.workFlowID === data.workFlowID
+              ? {
+                  ...data2,
+                  status: data.status,
+                  workFlowStatusID: data.workFlowStatusID,
+                }
+              : data2
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating review signature data:", error);
+    }
+  }, [signatureDocumentStatusChangeForSignees]);
+  
+
+  useEffect(() => {
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== null &&
@@ -415,7 +499,7 @@ const ReviewSignature = () => {
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
-  console.log(reviewSignature, "reviewSignaturereviewSignature")
+  console.log(reviewSignature, "reviewSignaturereviewSignature");
   return (
     <>
       <Row>

@@ -454,7 +454,18 @@ const Agenda = ({
 
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex];
+      console.log(row, "rowrowrow");
 
+      if (row.files.length > 10) {
+        showMessage(
+          t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
+          "error",
+          setOpen
+        );
+
+        isValid = false;
+        return;
+      }
       // Check conditions for the parent objects
       if (row.title === "") {
         showMessage(
@@ -533,6 +544,18 @@ const Agenda = ({
       if (row.subAgenda && row.subAgenda.length > 0) {
         for (let subIndex = 0; subIndex < row.subAgenda.length; subIndex++) {
           const subAgendaItem = row.subAgenda[subIndex];
+
+          console.log(subAgendaItem, "rowrowrow");
+          if (subAgendaItem.subfiles.length > 10) {
+            showMessage(
+              t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
+              "error",
+              setOpen
+            );
+
+            isValid = false;
+            return;
+          }
 
           if (subAgendaItem.subTitle === "") {
             showMessage(
@@ -629,13 +652,14 @@ const Agenda = ({
         }
       }
     }
+    console.log(fileForSend, "rowrowrow");
 
-    if (shouldResetFileForSend) {
-      setFileForSend([]);
-    }
-    if (isValid) {
-      updateSave(flag);
-    }
+    // if (shouldResetFileForSend) {
+    //   setFileForSend([]);
+    // }
+    // if (isValid) {
+    //   updateSave(flag);
+    // }
   };
 
   useEffect(() => {
@@ -1115,7 +1139,8 @@ const Agenda = ({
             </Col>
           </Row> */}
           <section>
-            {editorRole.role === "Agenda Contributor" && rows.length > 0 &&
+            {editorRole.role === "Agenda Contributor" &&
+            rows.length > 0 &&
             rows[0]?.title === "" ? null : (
               <DragDropContext
                 onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
@@ -1224,7 +1249,8 @@ const Agenda = ({
               (editorRole.role === "Agenda Contributor" ||
                 editorRole.role === "Participant")) ||
             (editorRole.role === "Agenda Contributor" &&
-            rows.length > 0 && rows[0].title === "") ? (
+              rows.length > 0 &&
+              rows[0].title === "") ? (
               <>
                 <Row>
                   <Col

@@ -487,7 +487,7 @@ const Talk = () => {
                   </linearGradient>
                 </defs>
               </svg>
-              <span className="TalkIconPannelLabels">{t("Approval")}</span>
+              <span className="TalkIconPannelLabels">{t("Approvals")}</span>
             </div>
           </Tooltip>
           {/* ) : null} */}
