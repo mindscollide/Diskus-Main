@@ -654,12 +654,12 @@ const Agenda = ({
     }
     console.log(fileForSend, "rowrowrow");
 
-    // if (shouldResetFileForSend) {
-    //   setFileForSend([]);
-    // }
-    // if (isValid) {
-    //   updateSave(flag);
-    // }
+    if (shouldResetFileForSend) {
+      setFileForSend([]);
+    }
+    if (isValid) {
+      updateSave(flag);
+    }
   };
 
   useEffect(() => {

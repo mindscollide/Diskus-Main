@@ -62,8 +62,8 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
+        localStorage.removeItem("RSVP")
       } else {
-        // Handle the case when UserAvailabilityState is undefined or null
       }
     } catch (error) {
       console.log(error, "errorerrorerrorerror");

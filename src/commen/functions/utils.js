@@ -1876,6 +1876,7 @@ export const handleNavigation = (
   );
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
   const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
+  const viewMeetingLink = localStorage.getItem("viewMeetingLink");
 
   if (isFirstLogin) {
     // if (adminRights) {
@@ -1906,7 +1907,8 @@ export const handleNavigation = (
       UserMeetPropoDatPoll !== null ||
       meetingCanc !== null ||
       reviewSubmittedMinutesLink !== null ||
-      viewPublishMinutesLink !== null
+      viewPublishMinutesLink !== null ||
+      viewMeetingLink !== null
     ) {
       navigate("/Diskus/Meeting");
     } else if (
