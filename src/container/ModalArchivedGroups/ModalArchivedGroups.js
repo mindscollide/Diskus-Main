@@ -14,6 +14,7 @@ import {
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
+import { Spin } from "antd";
 
 const ModalArchivedCommittee = ({
   archivedCommittee,
@@ -34,6 +35,10 @@ const ModalArchivedCommittee = ({
 
   const GroupsReducerArcheivedGroups = useSelector(
     (state) => state.GroupsReducer.ArcheivedGroups
+  );
+
+  const GroupsReducerArcheivedGroupsSpinner = useSelector(
+    (state) => state.GroupsReducer.Loading
   );
 
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
@@ -199,51 +204,73 @@ const ModalArchivedCommittee = ({
             }
             ModalBody={
               <>
-                <Container className={styles["Archived_modal_scrollbar"]}>
-                  <Row className="text-center ">
-                    {groupsArheivedData.length > 0 &&
-                    Object.values(groupsArheivedData).length > 0 ? (
-                      groupsArheivedData.map((data, index) => {
-                        return (
-                          <Col sm={12} md={4} lg={4} className="mb-3">
-                            <Card
-                              setUniqCardID={setUniqCardID}
-                              uniqCardID={uniqCardID}
-                              CardHeading={data.groupTitle}
-                              IconOnClick={updateModal}
-                              CardID={data.groupID}
-                              onClickFunction={() =>
-                                ViewGroupmodal(data.groupID, data.groupStatusID)
-                              }
-                              titleOnCLick={() =>
-                                ViewGroupmodal(data.groupID, data.groupStatusID)
-                              }
-                              StatusID={data.groupStatusID}
-                              creatorId={data.creatorID}
-                              profile={data.groupMembers}
-                              Icon={
-                                <img
-                                  draggable="false"
-                                  src={GroupIcon}
-                                  alt=""
-                                  width="32.39px"
-                                  height="29.23px"
+                <Container
+                  className={
+                    GroupsReducerArcheivedGroupsSpinner
+                      ? styles["Archived_modal_scrollbar_Spinner"]
+                      : styles["Archived_modal_scrollbar"]
+                  }
+                >
+                  {GroupsReducerArcheivedGroupsSpinner ? (
+                    <section className="d-flex justify-content-center align-items-center mt-5">
+                      <Spin />
+                    </section>
+                  ) : (
+                    <>
+                      <Row className="text-center ">
+                        {groupsArheivedData.length > 0 &&
+                        Object.values(groupsArheivedData).length > 0 ? (
+                          groupsArheivedData.map((data, index) => {
+                            return (
+                              <Col sm={12} md={4} lg={4} className="mb-3">
+                                <Card
+                                  setUniqCardID={setUniqCardID}
+                                  uniqCardID={uniqCardID}
+                                  CardHeading={data.groupTitle}
+                                  IconOnClick={updateModal}
+                                  CardID={data.groupID}
+                                  onClickFunction={() =>
+                                    ViewGroupmodal(
+                                      data.groupID,
+                                      data.groupStatusID
+                                    )
+                                  }
+                                  titleOnCLick={() =>
+                                    ViewGroupmodal(
+                                      data.groupID,
+                                      data.groupStatusID
+                                    )
+                                  }
+                                  StatusID={data.groupStatusID}
+                                  creatorId={data.creatorID}
+                                  profile={data.groupMembers}
+                                  Icon={
+                                    <img
+                                      draggable="false"
+                                      src={GroupIcon}
+                                      alt=""
+                                      width="32.39px"
+                                      height="29.23px"
+                                    />
+                                  }
+                                  BtnText={
+                                    data.groupStatusID === 2
+                                      ? t("View-group")
+                                      : ""
+                                  }
+                                  changeHandleStatus={handleChangeStatus}
                                 />
-                              }
-                              BtnText={
-                                data.groupStatusID === 2 ? t("View-group") : ""
-                              }
-                              changeHandleStatus={handleChangeStatus}
-                            />
-                          </Col>
-                        );
-                      })
-                    ) : (
-                      <Row>
-                        <Col>{t("No-archived-record-founds")}</Col>
+                              </Col>
+                            );
+                          })
+                        ) : (
+                          <Row>
+                            <Col>{t("No-archived-record-founds")}</Col>
+                          </Row>
+                        )}
                       </Row>
-                    )}
-                  </Row>
+                    </>
+                  )}
                 </Container>
               </>
             }

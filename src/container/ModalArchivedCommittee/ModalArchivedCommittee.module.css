@@ -186,7 +186,7 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 }
 
 .Archived_modal_scrollbar {
-  max-height: 50vh !important;
+  min-height: 50vh !important;
   height: auto !important;
   overflow-x: hidden !important;
   margin-top: 0 !important;
@@ -202,6 +202,16 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px !important;
+}
+
+.Archived_modal_scrollbar_Spinner {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 50vh !important;
+  height: auto !important;
+  overflow-x: hidden !important;
+  margin-top: 0 !important;
 }
 
 .HeaderArchivedCommittee .btn-close {
