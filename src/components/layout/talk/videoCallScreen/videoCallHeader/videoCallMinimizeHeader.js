@@ -317,7 +317,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     let data = {
       RoomID: String(presenterViewFlag ? roomID : newRoomID),
       IsMuted: flag,
-      UID: String(newUserGUID),
+      UID: String(
+        presenterViewFlag
+          ? meetingHostData.isHost
+            ? newUserGUID
+            : participantUID
+          : meetingHostData.isHost
+          ? newUserGUID
+          : participantUID
+      ),
     };
 
     // Dispatch the API request with the data
@@ -332,7 +340,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     let data = {
       RoomID: String(presenterViewFlag ? roomID : newRoomID),
       HideVideo: flag, // Set HideVideo to true or false
-      UID: String(newUserGUID),
+      UID: String(
+        presenterViewFlag
+          ? meetingHostData.isHost
+            ? newUserGUID
+            : participantUID
+          : meetingHostData.isHost
+          ? newUserGUID
+          : participantUID
+      ),
     };
 
     // Dispatch the API request with the data
@@ -345,7 +361,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     let data = {
       RoomID: String(participantRoomIds),
       IsMuted: flag,
-      UID: String(participantUID),
+      UID: String(
+        presenterViewFlag
+          ? meetingHostData.isHost
+            ? newUserGUID
+            : participantUID
+          : meetingHostData.isHost
+          ? newUserGUID
+          : participantUID
+      ),
     };
     // Dispatch the API call with the structured request data
     dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
@@ -356,7 +380,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     let data = {
       RoomID: String(participantRoomIds),
       HideVideo: flag, // Set HideVideo to true or false
-      UID: String(participantUID),
+      UID: String(
+        presenterViewFlag
+          ? meetingHostData.isHost
+            ? newUserGUID
+            : participantUID
+          : meetingHostData.isHost
+          ? newUserGUID
+          : participantUID
+      ),
     };
 
     // Dispatch the API request with the data
