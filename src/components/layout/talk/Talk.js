@@ -331,7 +331,7 @@ const Talk = () => {
       PendingApprovalCountData !== null &&
       PendingApprovalCountData !== undefined
     ) {
-      setPendingApprovalCount(PendingApprovalCountData);
+      setPendingApprovalCount(PendingApprovalCountData.pendingApprovalsCount);
     } else {
       setPendingApprovalCount(0);
     }

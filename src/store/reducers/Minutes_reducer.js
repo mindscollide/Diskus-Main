@@ -12,7 +12,7 @@ const initialState = {
   acceptCommentModal: false,
   deleteMeetingCommentModal: false,
   ListOfDefaultRejectionCommentsData: null,
-  PendingApprovalCountData: 0,
+  PendingApprovalCountData: null,
   GetMinuteReviewStatsForOrganizerByMeetingIdData: null,
   GetAllOrganizationUsersForReviewData: null,
   GetMinutesForReviewerByMeetingIdData: null,
@@ -184,7 +184,7 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        PendingApprovalCountData: action.response.pendingApprovalsCount,
+        PendingApprovalCountData: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -192,7 +192,7 @@ const MinutesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        PendingApprovalCountData: 0,
+        PendingApprovalCountData: null,
         ResponseMessage: action.message,
       };
     }

@@ -64,6 +64,7 @@ section.emptyScreen-height {
   border-color: #6172d6 !important;
   border-radius: 3px;
   line-height: 15px;
+  position: relative;
 }
 
 .inActiveMinutes,
@@ -83,6 +84,7 @@ section.emptyScreen-height {
   border: 1px solid #d4d4d4 !important;
   color: #5a5a5a !important;
   border-radius: 3px;
+  position: relative;
 }
 
 .progressWrapper {
@@ -233,4 +235,38 @@ p.pendingStatus {
   color: #fff !important;
   font-size: 10px !important;
   border: none !important;
+}
+
+.pendingCountValue {
+  position: absolute;
+  right: -5px;
+  top: -8px;
+  background: #6172d6;
+  border-radius: 50%;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pendingCountValue_hidden {
+  display: none;
+}
+.pendingSignatureValue {
+  position: absolute;
+  right: -5px;
+  top: -8px;
+  background: #6172d6;
+  border-radius: 50%;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pendingSignatureValue_hidden {
+  display: none;
 }
