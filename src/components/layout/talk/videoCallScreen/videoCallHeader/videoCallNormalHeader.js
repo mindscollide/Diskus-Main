@@ -921,12 +921,30 @@ const VideoCallNormalHeader = ({
   }, [callerObject]);
 
   const videoHideUnHideForParticipant = (flag) => {
+    console.log(
+      "videoHideUnHideForHost",
+      presenterViewFlag,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID
+    );
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
         RoomID: String(participantRoomIds),
         HideVideo: flag, // Set HideVideo to true or false
-        UID: String(participantUID),
+        UID: String(
+          presenterViewFlag
+            ? getMeetingHostInfo.isHost
+              ? newUserGUID
+              : participantUID
+            : getMeetingHostInfo.isHost
+            ? newUserGUID
+            : participantUID
+        ),
       };
 
       // Dispatch the API request with the data
@@ -940,13 +958,31 @@ const VideoCallNormalHeader = ({
     // Set the HideVideo flag based on videoControlForParticipant
     // const flag = videoControlHost;
     console.log("videoHideUnHideForHost", flag);
+    console.log(
+      "videoHideUnHideForHost",
+      presenterViewFlag,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID
+    );
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
         RoomID: String(presenterViewFlag ? roomID : newRoomID),
         HideVideo: flag, // Set HideVideo to true or false
-        UID: String(newUserGUID),
+        UID: String(
+          presenterViewFlag
+            ? getMeetingHostInfo.isHost
+              ? newUserGUID
+              : participantUID
+            : getMeetingHostInfo.isHost
+            ? newUserGUID
+            : participantUID
+        ),
       };
 
       // Dispatch the API request with the data
@@ -959,13 +995,30 @@ const VideoCallNormalHeader = ({
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
-
+    console.log(
+      "videoHideUnHideForHost",
+      presenterViewFlag,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID
+    );
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
         RoomID: String(presenterViewFlag ? roomID : newRoomID),
         IsMuted: flag,
-        UID: String(newUserGUID),
+        UID: String(
+          presenterViewFlag
+            ? getMeetingHostInfo.isHost
+              ? newUserGUID
+              : participantUID
+            : getMeetingHostInfo.isHost
+            ? newUserGUID
+            : participantUID
+        ),
       };
 
       // Dispatch the API request with the data
@@ -976,12 +1029,29 @@ const VideoCallNormalHeader = ({
   };
 
   const muteUnMuteForParticipant = (flag) => {
+    console.log("muteUnMuteForParticipant", flag);
+    console.log(
+      "muteUnMuteForParticipant",
+      presenterViewFlag,
+      getMeetingHostInfo.isHost,
+      newUserGUID,
+      participantUID,
+      newUserGUID
+    );
     // const flag = audioControlForParticipant;
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let data = {
         RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
         IsMuted: flag,
-        UID: String(participantUID),
+        UID: String(
+          presenterViewFlag
+            ? getMeetingHostInfo.isHost
+              ? newUserGUID
+              : participantUID
+            : getMeetingHostInfo.isHost
+            ? newUserGUID
+            : participantUID
+        ),
       };
       // Dispatch the API call with the structured request data
       dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
@@ -995,7 +1065,15 @@ const VideoCallNormalHeader = ({
       const flag = !raisedUnRaisedParticipant;
       let data = {
         RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
-        UID: String(participantUID),
+        UID: String(
+          presenterViewFlag
+            ? getMeetingHostInfo.isHost
+              ? newUserGUID
+              : participantUID
+            : getMeetingHostInfo.isHost
+            ? newUserGUID
+            : participantUID
+        ),
         IsHandRaised: flag,
       };
       localStorage.setItem("handStatus", flag);
