@@ -330,7 +330,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     console.log("videoHideUnHideForHost", flag);
     // Prepare data for the API request
     let data = {
-      RoomID: String(newRoomID),
+      RoomID: String(presenterViewFlag ? roomID : newRoomID),
       HideVideo: flag, // Set HideVideo to true or false
       UID: String(newUserGUID),
     };
@@ -343,7 +343,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     // const flag = audioControlForParticipant;
 
     let data = {
-      RoomID: String(participantRoomIds),
+      RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
       IsMuted: flag,
       UID: String(participantUID),
     };
