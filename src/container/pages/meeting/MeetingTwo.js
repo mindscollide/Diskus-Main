@@ -396,6 +396,8 @@ const NewMeeting = () => {
     localStorage.getItem("webNotifactionDataRoutecheckFlag")
   );
 
+  const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
+
   const webNotificationData = useSelector(
     (state) => state.settingReducer.webNotificationDataVideoIntimination
   );
@@ -414,7 +416,68 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
   let viewMeetingRoute = localStorage.getItem("viewMeetingLink");
-  console.log(viewMeetingRoute, "callApicallApi");
+  const reviewSubmittedMinutesLink = localStorage.getItem(
+    "reviewSubmittedMinutesLink"
+  );
+
+  useEffect(() => {
+    try {
+      if (reviewSubmittedMinutesLink !== null) {
+        const action = async () => {
+          const getResponse = await dispatch(
+            validateEncryptedStringViewMeetingLinkApi(
+              reviewSubmittedMinutesLink,
+              navigate,
+              t
+            )
+          );
+          console.log(getResponse, "viewFol_action");
+          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+            const {
+              attendeeId,
+              isQuickMeeting,
+              meetingID,
+              meetingStatusId,
+              organizationID,
+              userID,
+              isChat,
+              talkGroupId,
+              isVideo,
+              videoCallUrl,
+              isMinutePublished,
+            } = getResponse.response;
+            setEditorRole({
+              status: String(meetingStatusId),
+              role:
+                attendeeId === 2
+                  ? "Participant"
+                  : attendeeId === 4
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              isPrimaryOrganizer: false,
+            });
+            setVideoTalk({
+              isChat: isChat,
+              isVideoCall: isVideo,
+              talkGroupID: talkGroupId,
+            });
+            dispatch(emailRouteID(5));
+            setAdvanceMeetingModalID(meetingID);
+            setViewAdvanceMeetingModal(true);
+            dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            dispatch(scheduleMeetingPageFlag(false));
+            localStorage.setItem("currentMeetingID", meetingID);
+            localStorage.setItem("isMinutePublished", isMinutePublished);
+          }
+          localStorage.removeItem("viewPublishMinutesLink");
+        };
+        action();
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  
+  }, [reviewSubmittedMinutesLink]);
 
   useEffect(() => {
     if (viewMeetingRoute !== null) {
@@ -634,50 +697,6 @@ const NewMeeting = () => {
         setSearchText("");
         setentereventIcon(false);
       } else if (localStorage.getItem("viewMeetingLink") !== null) {
-      } else if (localStorage.getItem("viewPublishMinutesLink") !== null) {
-        let getURL = localStorage.getItem("viewPublishMinutesLink");
-        const getResponse = await dispatch(
-          validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
-        );
-        console.log(getResponse, "viewFol_action");
-        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
-          const {
-            attendeeId,
-            isQuickMeeting,
-            meetingID,
-            meetingStatusId,
-            organizationID,
-            userID,
-            isChat,
-            talkGroupId,
-            isVideo,
-            videoCallUrl,
-            isMinutePublished,
-          } = getResponse.response;
-          setEditorRole({
-            status: String(meetingStatusId),
-            role:
-              attendeeId === 2
-                ? "Participant"
-                : attendeeId === 4
-                ? "Agenda Contributor"
-                : "Organizer",
-            isPrimaryOrganizer: false,
-          });
-          setVideoTalk({
-            isChat: isChat,
-            isVideoCall: isVideo,
-            talkGroupID: talkGroupId,
-          });
-          dispatch(emailRouteID(5));
-          setAdvanceMeetingModalID(meetingID);
-          setViewAdvanceMeetingModal(true);
-          dispatch(viewAdvanceMeetingPublishPageFlag(true));
-          dispatch(scheduleMeetingPageFlag(false));
-          localStorage.setItem("currentMeetingID", meetingID);
-          localStorage.setItem("isMinutePublished", isMinutePublished);
-        }
-        localStorage.removeItem("viewPublishMinutesLink");
       } else if (localStorage.getItem("reviewSubmittedMinutesLink") !== null) {
         let getURL = localStorage.getItem("reviewSubmittedMinutesLink");
         const getResponse = await dispatch(
@@ -833,6 +852,58 @@ const NewMeeting = () => {
 
   let calendarMainMeeting = location.state?.CalendaradvanceMeeting;
 
+  useEffect(() => {
+    if (viewPublishMinutesLink !== null) {
+      const actionFunc = async () => {
+        const getResponse = await dispatch(
+          validateEncryptedStringViewMeetingLinkApi(
+            viewPublishMinutesLink,
+            navigate,
+            t
+          )
+        );
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          const {
+            attendeeId,
+            isQuickMeeting,
+            meetingID,
+            meetingStatusId,
+            organizationID,
+            userID,
+            isChat,
+            talkGroupId,
+            isVideo,
+            videoCallUrl,
+            isMinutePublished,
+          } = getResponse.response;
+          setEditorRole({
+            status: String(meetingStatusId),
+            role:
+              attendeeId === 2
+                ? "Participant"
+                : attendeeId === 4
+                ? "Agenda Contributor"
+                : "Organizer",
+            isPrimaryOrganizer: false,
+          });
+          setVideoTalk({
+            isChat: isChat,
+            isVideoCall: isVideo,
+            talkGroupID: talkGroupId,
+          });
+          dispatch(emailRouteID(5));
+          setAdvanceMeetingModalID(meetingID);
+          setViewAdvanceMeetingModal(true);
+          dispatch(viewAdvanceMeetingPublishPageFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+          localStorage.setItem("currentMeetingID", meetingID);
+          localStorage.setItem("isMinutePublished", isMinutePublished);
+        }
+        localStorage.removeItem("viewPublishMinutesLink");
+      };
+      actionFunc();
+    }
+  }, [viewPublishMinutesLink]);
   useEffect(() => {
     if (
       location.state !== null &&

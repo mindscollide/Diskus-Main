@@ -1877,6 +1877,8 @@ export const handleNavigation = (
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
   const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
   const viewMeetingLink = localStorage.getItem("viewMeetingLink");
+  const docSignAction = localStorage.getItem("docSignAction");
+  const docSignedAction = localStorage.getItem("docSignedAction");
 
   if (isFirstLogin) {
     // if (adminRights) {
@@ -1923,7 +1925,11 @@ export const handleNavigation = (
       navigate("/Diskus/groups");
     } else if (taskListView_Id !== null || taskListView !== null) {
       navigate("/Diskus/todolist");
-    } else if (reviewMinutesLink !== null) {
+    } else if (
+      reviewMinutesLink !== null ||
+      docSignAction !== null ||
+      docSignedAction !== null
+    ) {
       navigate("/Diskus/Minutes");
     } else {
       navigate("/Diskus/");

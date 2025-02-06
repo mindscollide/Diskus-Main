@@ -337,8 +337,33 @@ const PrivateRoutes = () => {
           );
           localStorage.setItem("viewPublishMinutesLink", getValue);
         }
+
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("/Diskus/Minutes?sign_action".toLowerCase())
+        ) {
+          let getValue = getActionValue(currentUrl, "sign_action=");
+          localStorage.setItem("docSignAction", getValue);
+        }
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes("/Diskus/Minutes?signed_action".toLowerCase())
+        ) {
+          let getValue = getActionValue(currentUrl, "signed_action=");
+          localStorage.setItem("docSignedAction", getValue);
+        }
       } catch (error) {
         console.log(error, "errorerrorerrorerror");
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Dataroom?signed_cr_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "signed_cr_action=");
+        localStorage.setItem("docSignedCrAction", getValue);
       }
     };
     callRoutingFunction();
