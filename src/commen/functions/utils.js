@@ -11,6 +11,8 @@ import { MinutesWorkFlowActorStatusNotificationAPI } from "../../store/actions/M
 import {
   GetMeetingStatusDataAPI,
   proposedMeetingDatesGlobalFlag,
+  searchNewUserMeeting,
+  showEndMeetingModal,
   showSceduleProposedMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
@@ -1934,4 +1936,71 @@ export const handleNavigation = (
 
 export const getFileName = (fileName) => {
   return fileName.split(".")[0];
+};
+
+//Side Bar Functions Clicks Global Function
+export const SideBarGlobalNavigationFunction = async (
+  viewAdvanceMeetingModal,
+  editorRole,
+  minutes,
+  actionsPage,
+  polls,
+  navigate,
+  dispatch,
+  setCancelConfirmationModal,
+  setViewAdvanceMeetingModal,
+  navigateValue,
+  t,
+  sceduleMeeting,
+  setSceduleMeeting,
+  setGoBackCancelModal
+) => {
+  let userID = localStorage.getItem("userID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  console.log(
+    { viewAdvanceMeetingModal, sceduleMeeting, editorRole },
+    "Checking"
+  );
+  if (viewAdvanceMeetingModal) {
+    console.log("Checking");
+
+    if (Number(editorRole?.status) === 10) {
+      console.log("Checking");
+
+      dispatch(showEndMeetingModal(true));
+    } else if (minutes || actionsPage || polls) {
+      console.log("Checking");
+
+      setCancelConfirmationModal(true);
+    } else {
+      console.log("Checking");
+      setViewAdvanceMeetingModal(false);
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber: 1,
+        Length: 30,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+      console.log("chek search meeting");
+      await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("QuickMeetingCheckNotification");
+      localStorage.removeItem("viewadvanceMeetingPolls");
+      localStorage.removeItem("NotificationClickPollID");
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationClickTaskID");
+      localStorage.removeItem("viewadvanceMeetingTask");
+    }
+  } else if (sceduleMeeting) {
+    setGoBackCancelModal(true);
+  } else {
+    console.log("Checking");
+    navigate(navigateValue);
+  }
 };
