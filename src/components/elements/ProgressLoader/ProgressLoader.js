@@ -2,8 +2,8 @@ import React, { useLayoutEffect, useState } from "react";
 import { Progress } from "antd";
 import "./ProgressLoader.css";
 
-const ProgressLoader = ({progress}) => {
- const currentUrl = window.location.href;
+const ProgressLoader = ({ progress }) => {
+  const currentUrl = window.location.href;
   const [twoColors, setTwoColors] = useState({
     "0%": "#6172d6",
     "100%": "#49dbdb",
@@ -20,11 +20,12 @@ const ProgressLoader = ({progress}) => {
 
   return (
     <section>
-      <Progress
+      {/* Commenting the Progress bar due to 0011401: Diskus Loader (CR Priority 128) */}
+      {/* <Progress
         percent={progress}
         strokeColor={twoColors}
         className={currentUrl.toLowerCase().includes("/Diskus".toLowerCase()) || currentUrl.toLowerCase().includes("/Admin".toLowerCase()) ?  "Progress_bar_Loader" : "Progress_bar_Loader_auth"}
-      />
+      /> */}
     </section>
   );
 };

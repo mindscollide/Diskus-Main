@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Spin } from "antd";
 import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
@@ -123,156 +124,169 @@ const ModalArchivedCommittee = ({
 
   return (
     <>
-      <Container>
-        <Modal
-          show={archivedCommittee}
-          onHide={() => {
-            setArchivedCommittee(false);
-            localStorage.removeItem("CoArcurrentPage");
-          }}
-          setShow={setArchivedCommittee}
-          closeButton={false}
-          modalFooterClassName="d-block"
-          modalHeaderClassName="d-block"
-          centered
-          size={archivedCommittee === true ? "xl" : "xl"}
-          ModalTitle={
+      <Modal
+        show={archivedCommittee}
+        onHide={() => {
+          setArchivedCommittee(false);
+          localStorage.removeItem("CoArcurrentPage");
+        }}
+        setShow={setArchivedCommittee}
+        closeButton={false}
+        modalFooterClassName="d-block"
+        modalHeaderClassName="d-block"
+        centered
+        size={archivedCommittee === true ? "xl" : "xl"}
+        ModalTitle={
+          <>
+            <Row>
+              <Col lg={11} md={11} sm={11} className="justify-content-start">
+                <p className={styles["Archived-heading"]}>
+                  {t("Archived-committees")}
+                </p>
+              </Col>
+              {CommitteeReducer.ArcheivedCommittees !== null &&
+              CommitteeReducer.ArcheivedCommittees !== undefined ? (
+                CommitteeReducer.ArcheivedCommittees.pageNumbers >=
+                currentArPage + 1 ? (
+                  <Col lg={1} md={1} sm={1} className="justify-content-end">
+                    <Button
+                      icon={
+                        <img
+                          draggable="false"
+                          src={right}
+                          alt=""
+                          width="16.5px"
+                          height="33px"
+                          className={
+                            styles["ArrowIcon_modal_archived_comiitee"]
+                          }
+                        />
+                      }
+                      onClick={handleArrow}
+                      className={styles["ArrowBtn"]}
+                    />
+                  </Col>
+                ) : null
+              ) : null}
+            </Row>
+          </>
+        }
+        ModalBody={
+          <>
             <>
-              <Row>
-                <Col lg={11} md={11} sm={11} className="justify-content-start">
-                  <p className={styles["Archived-heading"]}>
-                    {t("Archived-committees")}
-                  </p>
-                </Col>
-                {CommitteeReducer.ArcheivedCommittees !== null &&
-                CommitteeReducer.ArcheivedCommittees !== undefined ? (
-                  CommitteeReducer.ArcheivedCommittees.pageNumbers >=
-                  currentArPage + 1 ? (
-                    <Col lg={1} md={1} sm={1} className="justify-content-end">
-                      <Button
-                        icon={
-                          <img
-                            draggable="false"
-                            src={right}
-                            alt=""
-                            width="16.5px"
-                            height="33px"
-                            className={
-                              styles["ArrowIcon_modal_archived_comiitee"]
-                            }
-                          />
-                        }
-                        onClick={handleArrow}
-                        className={styles["ArrowBtn"]}
-                      />
-                    </Col>
-                  ) : null
-                ) : null}
-              </Row>
-            </>
-          }
-          ModalBody={
-            <>
-              {/* {CarouselStructure()} */}
-              <Container className={styles["Archived_modal_scrollbar"]}>
-                <Row className="text-center mt-4">
-                  {getcommitteedata.length > 0 &&
-                  Object.values(getcommitteedata).length > 0 ? (
-                    getcommitteedata.map((data) => {
-                      return (
-                        <Col lg={4} md={4} sm={12} className="mb-3">
-                          <Card
-                            setUniqCardID={setUniqCardID}
-                            uniqCardID={uniqCardID}
-                            CardID={data.committeeID}
-                            CardHeading={data.committeesTitle}
-                            creatorId={data.creatorID}
-                            onClickFunction={() =>
-                              viewCommitteeModal(
-                                data.committeeID,
-                                data.committeeStatusID
-                              )
-                            }
-                            titleOnCLick={() =>
-                              viewCommitteeModal(
-                                data.committeeID,
-                                data.committeeStatusID
-                              )
-                            }
-                            changeHandleStatus={handleChangeCommitteeStatus}
-                            StatusID={data.committeeStatusID}
-                            profile={data.committeeMembers}
-                            Icon={
-                              <img
-                                draggable="false"
-                                src={CommitteeICon}
-                                width={30}
-                                alt=""
-                              />
-                            }
-                            BtnText={
-                              data.committeeStatusID === 2 &&
-                              t("View-committee")
-                            }
-                            flag={true}
-                          />
-                        </Col>
-                      );
-                    })
-                  ) : (
-                    <Row>
-                      <Col>{t("No-archived-record-founds")}</Col>
-                    </Row>
-                  )}
-                </Row>
+              <Container
+                className={
+                  CommitteeReducer.Loading
+                    ? styles["Archived_modal_scrollbar_Spinner"]
+                    : styles["Archived_modal_scrollbar"]
+                }
+              >
+                {CommitteeReducer.Loading ? (
+                  <>
+                    <section className="d-flex justify-content-center align-items-center mt-5">
+                      <Spin />
+                    </section>
+                  </>
+                ) : (
+                  <Row className="text-center mt-4">
+                    {getcommitteedata.length > 0 &&
+                    Object.values(getcommitteedata).length > 0 ? (
+                      getcommitteedata.map((data) => {
+                        return (
+                          <Col lg={4} md={4} sm={12} className="mb-3">
+                            <Card
+                              setUniqCardID={setUniqCardID}
+                              uniqCardID={uniqCardID}
+                              CardID={data.committeeID}
+                              CardHeading={data.committeesTitle}
+                              creatorId={data.creatorID}
+                              onClickFunction={() =>
+                                viewCommitteeModal(
+                                  data.committeeID,
+                                  data.committeeStatusID
+                                )
+                              }
+                              titleOnCLick={() =>
+                                viewCommitteeModal(
+                                  data.committeeID,
+                                  data.committeeStatusID
+                                )
+                              }
+                              changeHandleStatus={handleChangeCommitteeStatus}
+                              StatusID={data.committeeStatusID}
+                              profile={data.committeeMembers}
+                              Icon={
+                                <img
+                                  draggable="false"
+                                  src={CommitteeICon}
+                                  width={30}
+                                  alt=""
+                                />
+                              }
+                              BtnText={
+                                data.committeeStatusID === 2 &&
+                                t("View-committee")
+                              }
+                              flag={true}
+                            />
+                          </Col>
+                        );
+                      })
+                    ) : (
+                      <Row>
+                        <Col>{t("No-archived-record-founds")}</Col>
+                      </Row>
+                    )}
+                  </Row>
+                )}
               </Container>
             </>
-          }
-          ModalFooter={
-            <>
-              {getcommitteedata.length > 0 &&
-              Object.values(getcommitteedata).length > 0 ? (
-                <>
-                  <Row className="d-flex">
-                    <Col lg={4} md={4} sm={4}></Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center  "
+          </>
+        }
+        ModalFooter={
+          <>
+            {getcommitteedata.length > 0 &&
+            Object.values(getcommitteedata).length > 0 ? (
+              <>
+                <Row className="d-flex">
+                  <Col lg={4} md={4} sm={4}></Col>
+                  <Col lg={4} md={4} sm={4}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center  "
+                    >
+                      <Container
+                        className={
+                          styles["PaginationStyle-Committee-Archived_modal"]
+                        }
                       >
-                        <Container
-                          className={
-                            styles["PaginationStyle-Committee-Archived_modal"]
-                          }
-                        >
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className={"pagination-groups-table"}
-                            >
-                              <CustomPagination
-                                total={totalLength}
-                                current={currentArPage}
-                                pageSize={8}
-                                onChange={handlechange}
-                              />
-                            </Col>
-                          </Row>
-                        </Container>
-                      </Col>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={"pagination-groups-table"}
+                          >
+                            <CustomPagination
+                              total={totalLength}
+                              current={currentArPage}
+                              pageSize={8}
+                              onChange={handlechange}
+                            />
+                          </Col>
+                        </Row>
+                      </Container>
                     </Col>
-                    <Col lg={4} md={4} sm={4}></Col>
-                  </Row>
-                </>
-              ) : null}
-            </>
-          }
-        />
-      </Container>
+                  </Col>
+                  <Col lg={4} md={4} sm={4}></Col>
+                </Row>
+              </>
+            ) : null}
+          </>
+        }
+      />
     </>
   );
 };
