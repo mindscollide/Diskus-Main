@@ -11,7 +11,10 @@ import CalenderImage from "../../../../assets/images/sidebar_icons/NewCalenderSi
 import NotesImage from "../../../../assets/images/sidebar_icons/NewNotesSideBar.png";
 import TaskImage from "../../../../assets/images/sidebar_icons/NewTaskSideBar.png";
 import styles from "./ExpandMenu.module.css";
-import { checkFeatureIDAvailability } from "../../../../commen/functions/utils";
+import {
+  checkFeatureIDAvailability,
+  SideBarGlobalNavigationFunction,
+} from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";
 import {
   maximizeVideoPanelFlag,
@@ -39,6 +42,9 @@ const ExpandedMenu = () => {
     viewAdvanceMeetingModal,
     setViewAdvanceMeetingModal,
     setCancelConfirmationModal,
+    sceduleMeeting,
+    setSceduleMeeting,
+    setGoBackCancelModal,
   } = useMeetingContext();
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
@@ -98,40 +104,24 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarGroupsNoCall = async () => {
-    if (viewAdvanceMeetingModal) {
-      if (Number(editorRole?.status) === 10) {
-        dispatch(showEndMeetingModal(true));
-        localStorage.setItem("navigateLocation", "groups");
-      } else if (minutes || actionsPage || polls) {
-        setCancelConfirmationModal(true);
-      } else {
-        setViewAdvanceMeetingModal(false);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      }
-    } else {
-      navigate("/Diskus/groups");
-    }
+  const handleMeetingSidebarGroupsNoCall = () => {
+    localStorage.setItem("navigateLocation", "groups");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/groups",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   //Polls Sidebar Click
@@ -145,40 +135,24 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarPollsNoCall = async () => {
-    if (viewAdvanceMeetingModal) {
-      if (Number(editorRole?.status) === 10) {
-        dispatch(showEndMeetingModal(true));
-        localStorage.setItem("navigateLocation", "polling");
-      } else if (minutes || actionsPage || polls) {
-        setCancelConfirmationModal(true);
-      } else {
-        setViewAdvanceMeetingModal(false);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      }
-    } else {
-      navigate("/Diskus/polling");
-    }
+  const handleMeetingSidebarPollsNoCall = () => {
+    localStorage.setItem("navigateLocation", "polling");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/polling",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   //Calendar Sidebar Click
@@ -192,40 +166,24 @@ const ExpandedMenu = () => {
     }
   };
 
-  const handleMeetingSidebarCalendarNoCall = async () => {
-    if (viewAdvanceMeetingModal) {
-      if (Number(editorRole?.status) === 10) {
-        dispatch(showEndMeetingModal(true));
-        localStorage.setItem("navigateLocation", "calendar");
-      } else if (minutes || actionsPage || polls) {
-        setCancelConfirmationModal(true);
-      } else {
-        setViewAdvanceMeetingModal(false);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      }
-    } else {
-      navigate("/Diskus/calendar");
-    }
+  const handleMeetingSidebarCalendarNoCall = () => {
+    localStorage.setItem("navigateLocation", "calendar");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/calendar",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   // Todo Sidebar Click
@@ -240,39 +198,23 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarTodoNoCall = async () => {
-    if (viewAdvanceMeetingModal) {
-      if (Number(editorRole?.status) === 10) {
-        dispatch(showEndMeetingModal(true));
-        localStorage.setItem("navigateLocation", "todolist");
-      } else if (minutes || actionsPage || polls) {
-        setCancelConfirmationModal(true);
-      } else {
-        setViewAdvanceMeetingModal(false);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      }
-    } else {
-      navigate("/Diskus/todolist");
-    }
+    localStorage.setItem("navigateLocation", "todolist");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/todolist",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   const handleMeetingSidebarNotes = () => {
@@ -286,39 +228,23 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarNotesNoCall = async () => {
-    if (viewAdvanceMeetingModal) {
-      if (Number(editorRole?.status) === 10) {
-        dispatch(showEndMeetingModal(true));
-        localStorage.setItem("navigateLocation", "Notes");
-      } else if (minutes || actionsPage || polls) {
-        setCancelConfirmationModal(true);
-      } else {
-        setViewAdvanceMeetingModal(false);
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      }
-    } else {
-      navigate("/Diskus/Notes");
-    }
+    localStorage.setItem("navigateLocation", "Notes");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/Notes",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   return (
