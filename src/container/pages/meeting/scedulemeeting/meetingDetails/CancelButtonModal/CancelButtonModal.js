@@ -32,34 +32,42 @@ const CancelButtonModal = ({
       navigate("/Diskus/dataroom");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "resolution") {
       navigate("/Diskus/resolution");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "committee") {
       navigate("/Diskus/committee");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "groups") {
       navigate("/Diskus/groups");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "polling") {
       navigate("/Diskus/polling");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "calendar") {
       navigate("/Diskus/calendar");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "todolist") {
       navigate("/Diskus/todolist");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Notes") {
       navigate("/Diskus/Notes");
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Meeting") {
       let searchData = {
         Date: "",
@@ -79,6 +87,7 @@ const CancelButtonModal = ({
       setMeetingDetails(true);
       setRows([]);
       setSceduleMeeting(false);
+      localStorage.removeItem("navigateLocation");
     } else {
       let searchData = {
         Date: "",
