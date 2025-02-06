@@ -12,6 +12,9 @@ import {
   minimizeVideoPanelFlag,
   leaveCallModal,
   minimizeParticipantPopup,
+  leavePresenterViewMainApi,
+  stopPresenterViewMainApi,
+  presenterViewGlobalState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand White.svg";
@@ -25,6 +28,9 @@ import VideoOn from "./../../talk-Video/video-images/Minimize Video Enabled.svg"
 import MicOff from "./../../talk-Video/video-images/Mic Disabled Purple.svg";
 import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOffHost from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
+import StopMinPresenter from "../../../../../assets/images/Recent Activity Icons/Video/StopMinPresenter.png";
+import CopyLinkWhite from "../../../../../assets/images/Recent Activity Icons/Video/CopyLinkWhite.png";
+import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
 
 import VideoOff from "./../../talk-Video/video-images/Video Disabled Purple.svg";
 import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
@@ -112,6 +118,23 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   // videoControlForParticipant for Participants
   const videoControlForParticipant = useSelector(
     (state) => state.videoFeatureReducer.videoControlForParticipant
+  );
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  console.log(
+    { presenterViewFlag, presenterViewHostFlag },
+    "presenterViewFlagpresenterViewHostFlag"
   );
 
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -254,6 +277,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   };
 
   const toggleVideo = (status) => {
+    console.log("Check Minimize");
     console.log(status ? "Enable Video" : "Disable Video");
     localStorage.setItem("VidOff", status);
     setLocalVidStatus(status);
@@ -306,7 +330,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     console.log("videoHideUnHideForHost", flag);
     // Prepare data for the API request
     let data = {
-      RoomID: String(newRoomID),
+      RoomID: String(presenterViewFlag ? roomID : newRoomID),
       HideVideo: flag, // Set HideVideo to true or false
       UID: String(newUserGUID),
     };
@@ -319,7 +343,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     // const flag = audioControlForParticipant;
 
     let data = {
-      RoomID: String(participantRoomIds),
+      RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
       IsMuted: flag,
       UID: String(participantUID),
     };
@@ -337,6 +361,50 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
     // Dispatch the API request with the data
     dispatch(hideUnhideSelfMainApi(navigate, t, data, 2));
+  };
+
+  let alreadyInMeetingVideo = JSON.parse(
+    sessionStorage.getItem("alreadyInMeetingVideo")
+      ? sessionStorage.getItem("alreadyInMeetingVideo")
+      : false
+  );
+
+  const minimizeStopPresenter = () => {
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+
+    if (presenterViewHostFlag) {
+      let data = {
+        MeetingID: currentMeetingID,
+        RoomID: callAcceptedRoomID,
+      };
+      sessionStorage.setItem("StopPresenterViewAwait", true);
+      console.log(data, "presenterViewJoinFlag");
+      dispatch(stopPresenterViewMainApi(navigate, t, data));
+      console.log("busyCall");
+      console.log(presenterViewHostFlag, "presenterViewHostFlag");
+    } else {
+      if (alreadyInMeetingVideo) {
+        dispatch(presenterViewGlobalState(0, true, false, false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+      } else {
+        let meetingTitle = localStorage.getItem("meetingTitle");
+        let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+        let isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck")
+        );
+        let participantUID = localStorage.getItem("participantUID");
+        let isGuid = localStorage.getItem("isGuid");
+        let data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          Name: String(meetingTitle),
+        };
+        dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+      }
+    }
   };
 
   return (
@@ -412,64 +480,122 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
               <Col lg={6} md={6} sm={12}>
                 <div className="d-flex gap-10 justify-content-end">
-                  <div>
-                    <div
-                      onClick={() => toggleVideo(!localVidStatus)}
-                      className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
-                          ? "minimize grayScaleImage"
-                          : !localVidStatus
-                          ? "minimize for-host-active-state-minimize"
-                          : "minimize inactive-state"
-                      }
-                    >
+                  {presenterViewFlag && (
+                    <div onClick={minimizeStopPresenter}>
                       <Tooltip
                         placement="topRight"
-                        title={
-                          videoControlHost
-                            ? t("Disable-video")
-                            : t("Enable-video")
-                        }
+                        title={t("Stop-presenting")}
                       >
                         <img
-                          src={videoControlHost ? VideoOffHost : VideoOn}
-                          onClick={() =>
-                            videoHideUnHideForHost(
-                              videoControlHost ? false : true
-                            )
-                          }
+                          src={StopMinPresenter}
+                          // onClick={() =>
+                          //   videoHideUnHideForHost(
+                          //     videoControlHost ? false : true
+                          //   )
+                          // }
                           alt="Video"
                         />
                       </Tooltip>
                     </div>
-                  </div>
-                  <div>
-                    <div
-                      onClick={() => toggleMic(!localMicStatus)}
-                      className={
-                        videoFeatureReducer.LeaveCallModalFlag === true
-                          ? "minimize grayScaleImage"
-                          : !localMicStatus
-                          ? "minimize for-host-active-state-minimize"
-                          : "minimize inactive-state"
+                  )}
+                  <div
+                    onClick={() => toggleMic(!localMicStatus)}
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "minimize grayScaleImage"
+                        : !localMicStatus
+                        ? "minimize for-host-active-state-minimize"
+                        : "minimize inactive-state"
+                    }
+                  >
+                    <Tooltip
+                      placement="topRight"
+                      title={
+                        audioControlHost ? t("Enable-mic") : t("Disable-mic")
                       }
                     >
-                      <Tooltip
-                        placement="topRight"
-                        title={
-                          audioControlHost ? t("Enable-mic") : t("Disable-mic")
+                      <img
+                        src={audioControlHost ? MicOffHost : MicOn}
+                        onClick={() =>
+                          muteUnMuteForHost(audioControlHost ? false : true)
+                        }
+                        alt="Mic"
+                      />
+                    </Tooltip>
+                  </div>
+
+                  <div
+                    onClick={() => toggleVideo(!localVidStatus)}
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? "minimize grayScaleImage"
+                        : !localVidStatus
+                        ? "minimize for-host-active-state-minimize"
+                        : "minimize inactive-state"
+                    }
+                  >
+                    <Tooltip
+                      placement="topRight"
+                      title={
+                        videoControlHost
+                          ? t("Disable-video")
+                          : t("Enable-video")
+                      }
+                    >
+                      <img
+                        src={videoControlHost ? VideoOffHost : VideoOn}
+                        onClick={() =>
+                          videoHideUnHideForHost(
+                            videoControlHost ? false : true
+                          )
+                        }
+                        alt="Video"
+                      />
+                    </Tooltip>
+                  </div>
+
+                  {presenterViewHostFlag && presenterViewHostFlag && (
+                    <Tooltip placement="topRight" title={t("Participants")}>
+                      <div
+                        className={
+                          presenterViewHostFlag && presenterViewHostFlag
+                            ? "grayScaleImage"
+                            : "inactive-state"
                         }
                       >
-                        <img
-                          src={audioControlHost ? MicOffHost : MicOn}
-                          onClick={() =>
-                            muteUnMuteForHost(audioControlHost ? false : true)
-                          }
-                          alt="Mic"
-                        />
-                      </Tooltip>
-                    </div>
-                  </div>
+                        <img src={ParticipantsIcon} alt="Participants" />
+                      </div>
+                    </Tooltip>
+                  )}
+
+                  {presenterViewHostFlag && presenterViewHostFlag && (
+                    <Tooltip placement="topRight" title={t("Participants")}>
+                      <div
+                        className={
+                          presenterViewHostFlag && presenterViewHostFlag
+                            ? "grayScaleImage"
+                            : "inactive-state"
+                        }
+                      >
+                        <img src={CopyLink} alt="Copy Link" />
+                      </div>
+                    </Tooltip>
+                  )}
+
+                  {presenterViewHostFlag && presenterViewHostFlag && (
+                    <Tooltip placement="topRight" title={t("Participants")}>
+                      <div
+                        className={
+                          presenterViewHostFlag && presenterViewHostFlag
+                            ? "grayScaleImage"
+                            : "inactive-state"
+                        }
+                      >
+                        <img src={NonActiveScreenShare} alt="Participants" />
+                      </div>
+                    </Tooltip>
+                  )}
+
                   {callerID === currentUserID &&
                   (callTypeID === 2 || currentCallType === 2) ? (
                     <div
@@ -575,94 +701,102 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       )}
                     </div>
                   ) : null}
-                  <div className="position-relative">
-                    {videoFeatureReducer.LeaveCallModalFlag === true &&
-                    callerID === currentUserID ? (
-                      <>
-                        <div className="minimize active-state-end">
-                          <Tooltip placement="bottomLeft" title={t("Cancel")}>
+
+                  {presenterViewFlag &&
+                  (presenterViewHostFlag || !presenterViewHostFlag) ? null : (
+                    <div className="position-relative">
+                      {videoFeatureReducer.LeaveCallModalFlag === true &&
+                      callerID === currentUserID ? (
+                        <>
+                          <div className="minimize active-state-end">
+                            <Tooltip placement="bottomLeft" title={t("Cancel")}>
+                              <img
+                                onClick={cancelLeaveCallOption}
+                                src={CallEndRedIcon}
+                                alt="End Call"
+                                className="cursor-pointer"
+                              />
+                            </Tooltip>
+                          </div>
+                          {videoFeatureReducer.LeaveCallModalFlag === true ? (
+                            <div className="minimize-leave-meeting-options leave-meeting-options-position">
+                              <div className="leave-meeting-options__inner">
+                                <Button
+                                  className="leave-meeting-options__btn leave-meeting-red-button"
+                                  text={t("Leave-call")}
+                                  onClick={minimizeLeaveCall}
+                                />
+
+                                <Button
+                                  className="leave-meeting-options__btn leave-meeting-gray-button"
+                                  text={
+                                    currentCallType === 1
+                                      ? t("End-call")
+                                      : t("End-call-for-everyone")
+                                  }
+                                  onClick={minimizeLeaveCall}
+                                />
+
+                                <Button
+                                  className="leave-meeting-options__btn leave-meeting-gray-button"
+                                  text="Cancel"
+                                  onClick={closeVideoPanel}
+                                />
+                              </div>
+                            </div>
+                          ) : null}
+                        </>
+                      ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
+                          callerID === currentUserID) ||
+                        callerID === 0 ? (
+                        <Tooltip placement="bottomLeft" title={t("End-call")}>
+                          <div className="minimize inactive-state">
                             <img
-                              onClick={cancelLeaveCallOption}
                               src={CallEndRedIcon}
+                              onClick={openVideoPanel}
                               alt="End Call"
                               className="cursor-pointer"
                             />
-                          </Tooltip>
-                        </div>
-                        {videoFeatureReducer.LeaveCallModalFlag === true ? (
-                          <div className="minimize-leave-meeting-options leave-meeting-options-position">
-                            <div className="leave-meeting-options__inner">
-                              <Button
-                                className="leave-meeting-options__btn leave-meeting-red-button"
-                                text={t("Leave-call")}
-                                onClick={minimizeLeaveCall}
-                              />
-
-                              <Button
-                                className="leave-meeting-options__btn leave-meeting-gray-button"
-                                text={
-                                  currentCallType === 1
-                                    ? t("End-call")
-                                    : t("End-call-for-everyone")
-                                }
-                                onClick={minimizeLeaveCall}
-                              />
-
-                              <Button
-                                className="leave-meeting-options__btn leave-meeting-gray-button"
-                                text="Cancel"
-                                onClick={closeVideoPanel}
-                              />
-                            </div>
                           </div>
-                        ) : null}
-                      </>
-                    ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
-                        callerID === currentUserID) ||
-                      callerID === 0 ? (
-                      <Tooltip placement="bottomLeft" title={t("End-call")}>
-                        <div className="minimize inactive-state">
+                        </Tooltip>
+                      ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+                        callerID !== currentUserID ? (
+                        <Tooltip placement="bottomLeft" title={t("End-call")}>
                           <img
                             src={CallEndRedIcon}
-                            onClick={openVideoPanel}
+                            onClick={minimizeEndCallParticipant}
                             alt="End Call"
                             className="cursor-pointer"
                           />
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                  )}
+
+                  {presenterViewFlag &&
+                  (presenterViewHostFlag || !presenterViewHostFlag) ? null : (
+                    <div>
+                      <Tooltip
+                        placement="bottomLeft"
+                        title={t("Normalize-screen")}
+                      >
+                        <div
+                          className={
+                            videoFeatureReducer.LeaveCallModalFlag === true
+                              ? "minimize grayScaleImage"
+                              : "minimize inactive-state"
+                          }
+                        >
+                          <img
+                            src={MinToNormalIcon}
+                            onClick={normalizePanel}
+                            className="min-to-normal-icon cursor-pointer"
+                            alt="Normalize Panel"
+                          />
                         </div>
                       </Tooltip>
-                    ) : videoFeatureReducer.LeaveCallModalFlag === false &&
-                      callerID !== currentUserID ? (
-                      <Tooltip placement="bottomLeft" title={t("End-call")}>
-                        <img
-                          src={CallEndRedIcon}
-                          onClick={minimizeEndCallParticipant}
-                          alt="End Call"
-                          className="cursor-pointer"
-                        />
-                      </Tooltip>
-                    ) : null}
-                  </div>
-                  <div>
-                    <Tooltip
-                      placement="bottomLeft"
-                      title={t("Normalize-screen")}
-                    >
-                      <div
-                        className={
-                          videoFeatureReducer.LeaveCallModalFlag === true
-                            ? "minimize grayScaleImage"
-                            : "minimize inactive-state"
-                        }
-                      >
-                        <img
-                          src={MinToNormalIcon}
-                          onClick={normalizePanel}
-                          className="min-to-normal-icon cursor-pointer"
-                          alt="Normalize Panel"
-                        />
-                      </div>
-                    </Tooltip>
-                  </div>
+                    </div>
+                  )}
                   <div>
                     <Tooltip
                       placement="bottomLeft"
