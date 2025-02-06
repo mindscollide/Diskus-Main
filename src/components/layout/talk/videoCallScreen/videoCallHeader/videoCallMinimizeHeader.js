@@ -582,7 +582,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               {presenterViewFlag && (
                 <Tooltip placement="topRight" title={t("Participants")}>
                   <div className={"grayScaleImage"}>
-                    <img alt="Participants" />
+                    <img src={ParticipantIcon} alt="Participants" />
                   </div>
                 </Tooltip>
               )}
@@ -590,7 +590,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               {(meetingHostData?.isHost ||
                 (presenterViewFlag && presenterViewHostFlag)) &&
                 meetingHostData?.isDashboardVideo && (
-                  <Tooltip placement="topRight" title={t("Participants")}>
+                  <Tooltip placement="topRight" title={t("Copy-link")}>
                     <div className={"grayScaleImage"}>
                       <img src={CopyLink} alt="Copy Link" />
                     </div>
