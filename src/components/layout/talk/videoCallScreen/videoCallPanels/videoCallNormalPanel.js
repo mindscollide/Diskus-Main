@@ -892,8 +892,8 @@ const VideoPanelNormal = () => {
     let isMeetingVideoHostCheck = Number(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
-    let isGuid = Number(localStorage.getItem("isGuid"));
-    let participantUID = Number(localStorage.getItem("participantUID"));
+    let isGuid =localStorage.getItem("isGuid");
+    let participantUID =localStorage.getItem("participantUID");
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
