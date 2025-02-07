@@ -475,6 +475,7 @@ const VideoPanelNormal = () => {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow !== null) {
         if (audioControlForParticipant === true) {
+          console.log("Check Connection");
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
           iframe.contentWindow.postMessage("MicOff", "*");
@@ -885,7 +886,27 @@ const VideoPanelNormal = () => {
       console.log("share screen Iframe contentWindow is not available.");
     }
   };
-
+  const handlePresenterViewForParticipent = async () => {
+    console.log("Check Connection");
+    const iframe = iframeRef.current;
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (iframe && iframe.contentWindow) {
+      console.log("Check Connection");
+      iframe.contentWindow.postMessage("VidOff", "*");
+      iframe.contentWindow.postMessage("MicOff", "*");
+      if (isMeetingVideoHostCheck) {
+        console.log("Check Connection");
+        dispatch(setAudioControlHost(true));
+        dispatch(setVideoControlHost(true));
+      } else {
+        console.log("Check Connection");
+        dispatch(setVideoControlForParticipant(true));
+        dispatch(setAudioControlForParticipant(true));
+      }
+    }
+  };
   const handlerForStaringPresenterView = async () => {
     const iframe = iframeRef.current;
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
@@ -949,12 +970,8 @@ const VideoPanelNormal = () => {
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
-            } else if (presenterViewFlag) {
-              const iframe = iframeRef.current;
-              iframe.contentWindow.postMessage("VidOff", "*");
-              iframe.contentWindow.postMessage("MicOff", "*");
-              dispatch(setVideoControlForParticipant(true));
-              dispatch(setAudioControlForParticipant(true));
+            } else if (presenterViewFlag && presenterViewJoinFlag) {
+              handlePresenterViewForParticipent();
             }
             break;
           case "ScreenSharedCancelMsg":
