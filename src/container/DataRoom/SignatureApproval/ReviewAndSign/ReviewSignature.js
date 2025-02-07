@@ -21,7 +21,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   clearWorkFlowResponseMessage,
+  getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
+  getAllPendingApprovalsStatsApi,
+  validateEncryptedStringSignatureDataApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
 import {
@@ -51,12 +54,15 @@ const ReviewSignature = () => {
     (state) =>
       state.SignatureWorkFlowReducer.workflowsignaturedocumentActionByMe
   );
-  
+
   const signatureDocumentStatusChangeForSignees = useSelector(
     (state) =>
       state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
   );
-  console.log(signatureDocumentStatusChangeForSignees, "signatureDocumentStatusChangeForSigneessignatureDocumentStatusChangeForSignees")
+  console.log(
+    signatureDocumentStatusChangeForSignees,
+    "signatureDocumentStatusChangeForSigneessignatureDocumentStatusChangeForSignees"
+  );
   // signatureDocumentStatusChangeForSignees
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
@@ -73,7 +79,9 @@ const ReviewSignature = () => {
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
-  console.log(currentLanguage, "currentLanguagecurrentLanguage");
+  const docSignAction = localStorage.getItem("docSignAction");
+  const docSignedAction = localStorage.getItem("docSignedAction");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -103,10 +111,35 @@ const ReviewSignature = () => {
     { text: t("Declined"), value: "Declined" },
   ];
 
-  console.log(reviewSignature, "approvalsDataapprovalsData");
+
+  useEffect(() => {
+    const callFunc = async () => {
+      await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+      let newData = { IsCreator: false };
+      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    };
+    callFunc();
+  }, []);
+
+  useEffect(() => {
+    if (docSignAction !== null) {
+      let Data = {
+        EncryptedString: docSignAction,
+      };
+      dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 1));
+    }
+  }, [docSignAction]);
+
+  useEffect(() => {
+    if (docSignedAction !== null) {
+      let Data = {
+        EncryptedString: docSignedAction,
+      };
+      dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 2));
+    }
+  }, [docSignedAction]);
 
   const handleClickOpenSigatureDoc = (record) => {
-    console.log(record, "signeddocumentsigneddocument");
     if (record.status === "Pending Signature") {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
@@ -487,7 +520,6 @@ const ReviewSignature = () => {
       console.error("Error updating review signature data:", error);
     }
   }, [signatureDocumentStatusChangeForSignees]);
-  
 
   useEffect(() => {
     if (

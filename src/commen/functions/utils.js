@@ -1876,6 +1876,10 @@ export const handleNavigation = (
   );
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
   const viewPublishMinutesLink = localStorage.getItem("viewPublishMinutesLink");
+  const viewMeetingLink = localStorage.getItem("viewMeetingLink");
+  const docSignAction = localStorage.getItem("docSignAction");
+  const docSignedAction = localStorage.getItem("docSignedAction");
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
 
   if (isFirstLogin) {
     // if (adminRights) {
@@ -1892,7 +1896,8 @@ export const handleNavigation = (
     } else if (
       dataroomValue !== null ||
       documentViewer !== null ||
-      viewFolderLink !== null
+      viewFolderLink !== null ||
+      docSignedCrAction !== null
     ) {
       navigate("/Diskus/dataroom");
     } else if (
@@ -1906,7 +1911,8 @@ export const handleNavigation = (
       UserMeetPropoDatPoll !== null ||
       meetingCanc !== null ||
       reviewSubmittedMinutesLink !== null ||
-      viewPublishMinutesLink !== null
+      viewPublishMinutesLink !== null ||
+      viewMeetingLink !== null
     ) {
       navigate("/Diskus/Meeting");
     } else if (
@@ -1921,7 +1927,11 @@ export const handleNavigation = (
       navigate("/Diskus/groups");
     } else if (taskListView_Id !== null || taskListView !== null) {
       navigate("/Diskus/todolist");
-    } else if (reviewMinutesLink !== null) {
+    } else if (
+      reviewMinutesLink !== null ||
+      docSignAction !== null ||
+      docSignedAction !== null
+    ) {
       navigate("/Diskus/Minutes");
     } else {
       navigate("/Diskus/");

@@ -2122,7 +2122,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        userAvailibilityData: action.response,
+        userAvailibilityData:null,
         ResponseMessage: action.message,
       };
     }

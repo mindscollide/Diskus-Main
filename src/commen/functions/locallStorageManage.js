@@ -71,6 +71,13 @@ export const localStorageManage = (
       "reviewSubmittedMinutesLink"
     ),
     reviewMinutesLink: localStorage.getItem("reviewMinutesLink"),
+    viewMeetingLink: localStorage.getItem("viewMeetingLink"),
+    docSignAction: localStorage.getItem("docSignAction"),
+    viewPublishMinutesLink: localStorage.getItem("viewPublishMinutesLink"),
+    docSignedAction: localStorage.getItem("docSignedAction"),
+    docSignAction: localStorage.getItem("docSignAction"),
+    docSignedCrAction: localStorage.getItem("docSignedCrAction")
+
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

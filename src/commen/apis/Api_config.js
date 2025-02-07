@@ -1948,7 +1948,12 @@ const updateCastVotePolls = {
 const ValidateEncryptedStringMinuteReviewDataRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringMinuteReviewData",
 };
+
+const ValidateEncryptedStringSignatureDataRM = {
+  RequestMethod: "ServiceManager.ValidateEncryptedStringSignatureData"
+}
 export {
+  ValidateEncryptedStringSignatureDataRM,
   ValidateEncryptedStringMinuteReviewDataRM,
   MoveFilesToFoldersRM,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
