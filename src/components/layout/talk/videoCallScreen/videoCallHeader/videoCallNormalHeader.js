@@ -665,32 +665,28 @@ const VideoCallNormalHeader = ({
         console.log("Check Presenter");
         handlePresenterViewFunc();
       } else if (isMeetingVideoHostCheck) {
-        // Parse the string into an object
-        console.log(isMeetingVideoHostCheck, "parsedHostFlag");
-        if (isMeetingVideoHostCheck) {
-          let Data = {
-            RoomID: String(newRoomID),
-            UserGUID: String(UID),
-            Name: String(newName),
-            IsHost: isMeetingVideoHostCheck ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(UID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
 
-          await dispatch(LeaveMeetingVideo(Data, navigate, t));
-          leaveSuccess();
-        } else {
-          let Data = {
-            RoomID: String(participantRoomId),
-            UserGUID: String(UID),
-            Name: String(newName),
-            IsHost: isMeetingVideoHostCheck ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        leaveSuccess();
+      } else {
+        let Data = {
+          RoomID: String(participantRoomId),
+          UserGUID: String(UID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
 
-          await dispatch(setRaisedUnRaisedParticiant(false));
-          await dispatch(LeaveMeetingVideo(Data, navigate, t));
-          leaveSuccess();
-        }
+        await dispatch(setRaisedUnRaisedParticiant(false));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        leaveSuccess();
       }
     } else if (getDashboardVideo.isDashboardVideo === false) {
       console.log("leaveCallleaveCallleaveCallleaveCall");
