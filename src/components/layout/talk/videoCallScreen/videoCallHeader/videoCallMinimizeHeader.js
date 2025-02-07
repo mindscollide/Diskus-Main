@@ -331,111 +331,68 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
   const minimizeEndCallParticipant = async (flag, flag2, flag3) => {
     console.log("LeaveCallModalFlag");
-    if (LeaveCallModalFlag === true && callerID !== currentUserID) {
-      // try {
-      //   if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-      //     console.log("busyCall");
+    // try {
+    //   if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+    //     console.log("busyCall");
 
-      //     iframeCurrent.contentWindow.postMessage("leaveSession", "*");
-      //     await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
-      //   }
-      // } catch (error) {}
-      if (isMeeting === true) {
-        const meetHostFlag = localStorage.getItem("meetinHostInfo");
-        console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
-        if (presenterViewFlag) {
-          console.log("Check Presenter");
-          handlePresenterViewFunc();
-        } else if (meetHostFlag) {
-          const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
-          console.log(parsedHostFlag, "parsedHostFlag");
-          if (parsedHostFlag.isHost) {
-            let Data = {
-              RoomID: String(newRoomID),
-              UserGUID: String(newUserGUID),
-              Name: String(newName),
-              IsHost: parsedHostFlag?.isHost ? true : false,
-              MeetingID: Number(currentMeetingID),
-            };
+    //     iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+    //     await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+    //   }
+    // } catch (error) {}
+    if (isMeeting === true) {
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
 
-            await dispatch(LeaveMeetingVideo(Data, navigate, t));
-            leaveSuccess();
-          } else {
-            let Data = {
-              RoomID: String(participantRoomIds),
-              UserGUID: String(participantUID),
-              Name: String(newName),
-              IsHost: parsedHostFlag?.isHost ? true : false,
-              MeetingID: Number(currentMeetingID),
-            };
-
-            await dispatch(setRaisedUnRaisedParticiant(false));
-            await dispatch(LeaveMeetingVideo(Data, navigate, t));
-            leaveSuccess();
-          }
-        }
-      } else if (meetingHostData.isDashboardVideo === false) {
-        console.log("leaveCallleaveCallleaveCallleaveCall");
+      const meetHostFlag = localStorage.getItem("meetinHostInfo");
+      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
+      if (presenterViewFlag) {
+        console.log("Check Presenter");
+        handlePresenterViewFunc();
+      } else if (meetingHostData.isDashboardVideo) {
         let Data = {
-          OrganizationID: currentOrganization,
-          RoomID: initiateRoomID,
-          IsCaller: true,
-          CallTypeID: currentCallType,
-        };
-        await dispatch(LeaveCall(Data, navigate, t));
-        leaveSuccess();
-        console.log("Not End 1");
-      }
-      // dispatch(LeaveCall(Data, navigate, t));
-
-      if (flag) {
-        console.log("mqtt mqmqmqmqmqmq");
-        await dispatch(leaveMeetingVideoOnlogout(false));
-        dispatch(leaveMeetingOnlogout(true));
-      }
-      if (flag2) {
-        console.log("mqtt mqmqmqmqmqmq");
-        dispatch(endMeetingStatusForQuickMeetingVideo(false));
-        dispatch(endMeetingStatusForQuickMeetingModal(true));
-      }
-      if (flag3) {
-        console.log("mqtt mqmqmqmqmqmq");
-        await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
-        dispatch(leaveMeetingOnEndStatusMqtt(true));
-      }
-    } else {
-      if (isMeeting === false) {
-        let Data = {
-          OrganizationID: currentOrganization,
-          RoomID: roomID,
-          IsCaller: false,
-          CallTypeID: callTypeID,
-        };
-        dispatch(LeaveCall(Data, navigate, t));
-        dispatch(normalizeVideoPanelFlag(false));
-        dispatch(maximizeVideoPanelFlag(false));
-        dispatch(minimizeVideoPanelFlag(false));
-        localStorage.setItem("activeCall", false);
-        localStorage.setItem("isMeetingVideo", false);
-      } else if (isMeeting === true) {
-        let newName = localStorage.getItem("name");
-        let Data = {
-          RoomID: roomID,
-          UserGUID: userGUID,
+          RoomID: String(
+            isMeetingVideoHostCheck ? newRoomID : participantRoomIds
+          ),
+          UserGUID: String(
+            isMeetingVideoHostCheck ? newUserGUID : participantUID
+          ),
           Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
         };
-        dispatch(LeaveMeetingVideo(Data, navigate, t));
-        dispatch(normalizeVideoPanelFlag(false));
-        dispatch(maximizeVideoPanelFlag(false));
-        dispatch(minimizeVideoPanelFlag(false));
-        localStorage.setItem("activeCall", false);
-        localStorage.setItem("isMeeting", false);
-        localStorage.setItem("meetingTitle", "");
-        localStorage.setItem("acceptedRecipientID", 0);
-        localStorage.setItem("isMeetingVideo", false);
+
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        leaveSuccess();
       }
-      localStorage.setItem("MicOff", true);
-      localStorage.setItem("VidOff", true);
+    } else if (meetingHostData.isDashboardVideo === false) {
+      console.log("leaveCallleaveCallleaveCallleaveCall");
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: initiateRoomID,
+        IsCaller: true,
+        CallTypeID: currentCallType,
+      };
+      await dispatch(LeaveCall(Data, navigate, t));
+      leaveSuccess();
+      console.log("Not End 1");
+    }
+    // dispatch(LeaveCall(Data, navigate, t));
+
+    if (flag) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnlogout(false));
+      dispatch(leaveMeetingOnlogout(true));
+    }
+    if (flag2) {
+      console.log("mqtt mqmqmqmqmqmq");
+      dispatch(endMeetingStatusForQuickMeetingVideo(false));
+      dispatch(endMeetingStatusForQuickMeetingModal(true));
+    }
+    if (flag3) {
+      console.log("mqtt mqmqmqmqmqmq");
+      await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
+      dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
   };
 
@@ -1004,7 +961,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       )}
                       <img
                         src={CallEndRedIcon}
-                        onClick={minimizeEndCallParticipant}
+                        onClick={() =>
+                          minimizeEndCallParticipant(false, false, false, false)
+                        }
                         alt="End Call"
                         className="cursor-pointer"
                       />
