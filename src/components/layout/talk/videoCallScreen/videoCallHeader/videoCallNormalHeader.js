@@ -1323,8 +1323,9 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {getMeetingHostInfo.isHost ||
-          (presenterViewHostFlag && presenterViewFlag) ? (
+          {(!presenterViewFlag && getMeetingHostInfo.isHost)(
+            presenterViewHostFlag && presenterViewFlag
+          ) ? (
             <div
               className={
                 LeaveCallModalFlag
