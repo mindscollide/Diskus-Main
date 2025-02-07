@@ -903,7 +903,7 @@ const VideoPanelNormal = () => {
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
 
-    iframe.contentWindow.postMessage("VidOff", "*"); // Replace with actual origin
+    iframe.contentWindow.postMessage("VidOff", "*");
     dispatch(startPresenterViewMainApi(navigate, t, data));
   };
 
@@ -949,7 +949,10 @@ const VideoPanelNormal = () => {
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
-            } else if (presenterViewFlag && !presenterViewHostFlag) {
+            } else if (presenterViewFlag) {
+              const iframe = iframeRef.current;
+              iframe.contentWindow.postMessage("VidOff", "*");
+              iframe.contentWindow.postMessage("MicOff", "*");
               dispatch(setVideoControlForParticipant(true));
               dispatch(setAudioControlForParticipant(true));
             }
@@ -1044,7 +1047,7 @@ const VideoPanelNormal = () => {
   const closeParticipantsList = () => {
     dispatch(toggleParticipantsVisibility(false));
   };
-  
+
   useEffect(() => {
     try {
       if (makeParticipantAsHost) {
