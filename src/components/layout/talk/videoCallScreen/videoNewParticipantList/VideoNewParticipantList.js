@@ -503,16 +503,17 @@ const VideoNewParticipantList = () => {
                             <img draggable="false" src={Menu} alt="" />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {usersData.isGuest === false && (
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() => makeHostOnClick(usersData)}
-                              >
-                                {t("Make-host")}
-                              </Dropdown.Item>
-                            )}
+                            {usersData.isGuest === false ||
+                              (!presenterViewFlag && !presenterViewHostFlag && (
+                                <Dropdown.Item
+                                  className="participant-dropdown-item"
+                                  onClick={() => makeHostOnClick(usersData)}
+                                >
+                                  {t("Make-host")}
+                                </Dropdown.Item>
+                              ))}
 
-                            {usersData.isHost === false ? (
+                            {usersData.isHost === false && (
                               <Dropdown.Item
                                 className="participant-dropdown-item"
                                 onClick={() =>
@@ -521,7 +522,7 @@ const VideoNewParticipantList = () => {
                               >
                                 {t("Remove")}
                               </Dropdown.Item>
-                            ) : null}
+                            )}
                             {usersData.mute === false ? (
                               <>
                                 <Dropdown.Item
