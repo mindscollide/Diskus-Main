@@ -9188,9 +9188,9 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               let getMeetingHostData = Data.IsHost;
               console.log(getMeetingHostData, "asdadadadadaddda");
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
-              if (getMeetingHostData) {
-                localStorage.setItem("isMeetingVideoHostCheck", false);
-              }
+              // if (getMeetingHostData) {
+              //   localStorage.setItem("isMeetingVideoHostCheck", false);
+              // }
             } else {
               dispatch(leaveMeetingVideoFail(t("On-host-transfer-flow")));
             }
