@@ -237,9 +237,9 @@ const VideoCallNormalHeader = ({
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let newRoomID = localStorage.getItem("newRoomId");
-  let newUserGUID = localStorage.getItem("isGuid");
+  let isGuid = localStorage.getItem("isGuid");
   let newName = localStorage.getItem("name");
-  let participantRoomIds = localStorage.getItem("participantRoomId");
+  let participantRoomId = localStorage.getItem("participantRoomId");
   let participantUID = localStorage.getItem("participantUID");
   let callTypeID = Number(localStorage.getItem("callTypeID"));
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
@@ -249,6 +249,15 @@ const VideoCallNormalHeader = ({
   let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
   let getMeetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
+  let RoomID = presenterViewFlag
+    ? roomID
+    : isMeetingVideoHostCheck
+    ? newRoomID
+    : participantRoomId;
+  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
   const getDashboardVideo = getMeetingHostInfo;
 
@@ -282,9 +291,7 @@ const VideoCallNormalHeader = ({
     flag: false,
     message: "",
   });
-  let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
-  );
+
   // for show Participant popUp only
   // Update filteredParticipants based on participantList
   useEffect(() => {
@@ -391,12 +398,7 @@ const VideoCallNormalHeader = ({
     // }
     console.log("busyCall");
 
-    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-
-    let participantUID = localStorage.getItem("participantUID");
-    let isGuid = localStorage.getItem("isGuid");
-
     if (presenterViewHostFlag) {
       console.log("busyCall");
       console.log(presenterViewHostFlag, "presenterViewHostFlag");
@@ -407,7 +409,7 @@ const VideoCallNormalHeader = ({
         if (presenterStartedFlag) {
           let data = {
             MeetingID: currentMeetingID,
-            RoomID: callAcceptedRoomID,
+            RoomID: RoomID,
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
@@ -420,12 +422,8 @@ const VideoCallNormalHeader = ({
             dispatch(normalizeVideoPanelFlag(true));
             dispatch(minimizeVideoPanelFlag(false));
           } else {
-            let meetingTitle = localStorage.getItem("meetingTitle");
-            let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-            let participantUID = localStorage.getItem("participantUID");
-            let isGuid = localStorage.getItem("isGuid");
             let data = {
-              RoomID: String(callAcceptedRoomID),
+              RoomID: String(RoomID),
               UserGUID: String(
                 isMeetingVideoHostCheck ? isGuid : participantUID
               ),
@@ -448,8 +446,8 @@ const VideoCallNormalHeader = ({
           dispatch(minimizeVideoPanelFlag(false));
         } else {
           let data = {
-            RoomID: String(callAcceptedRoomID),
-            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            RoomID: String(RoomID),
+            UserGUID: String(UID),
             Name: String(meetingTitle),
           };
 
@@ -504,7 +502,7 @@ const VideoCallNormalHeader = ({
       } else if (isMeetingVideoHostCheck) {
         let Data = {
           RoomID: String(newRoomID),
-          UserGUID: String(newUserGUID),
+          UserGUID: String(UID),
           Name: String(newName),
           IsHost: meetHostFlag?.isHost ? true : false,
           MeetingID: Number(currentMeetingID),
@@ -515,8 +513,8 @@ const VideoCallNormalHeader = ({
         dispatch(toggleParticipantsVisibility(false));
 
         let Data = {
-          RoomID: String(participantRoomIds),
-          UserGUID: String(participantUID),
+          RoomID: String(participantRoomId),
+          UserGUID: String(UID),
           Name: String(newName),
           IsHost: meetHostFlag?.isHost ? true : false,
           MeetingID: Number(currentMeetingID),
@@ -530,7 +528,6 @@ const VideoCallNormalHeader = ({
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeeting", false);
-      // localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -673,7 +670,7 @@ const VideoCallNormalHeader = ({
         if (isMeetingVideoHostCheck) {
           let Data = {
             RoomID: String(newRoomID),
-            UserGUID: String(newUserGUID),
+            UserGUID: String(UID),
             Name: String(newName),
             IsHost: isMeetingVideoHostCheck ? true : false,
             MeetingID: Number(currentMeetingID),
@@ -683,8 +680,8 @@ const VideoCallNormalHeader = ({
           leaveSuccess();
         } else {
           let Data = {
-            RoomID: String(participantRoomIds),
-            UserGUID: String(participantUID),
+            RoomID: String(participantRoomId),
+            UserGUID: String(UID),
             Name: String(newName),
             IsHost: isMeetingVideoHostCheck ? true : false,
             MeetingID: Number(currentMeetingID),
@@ -787,8 +784,8 @@ const VideoCallNormalHeader = ({
       } else if (isMeetingVideoHostCheck) {
         console.log("busyCall");
         let Data = {
-          RoomID: String(newRoomID),
-          UserGUID: String(newUserGUID),
+          RoomID: String(RoomID),
+          UserGUID: String(UID),
           Name: String(newName),
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
@@ -798,8 +795,8 @@ const VideoCallNormalHeader = ({
       } else {
         console.log("busyCall");
         let Data = {
-          RoomID: String(participantRoomIds),
-          UserGUID: String(participantUID),
+          RoomID: String(RoomID),
+          UserGUID: String(UID),
           Name: String(newName),
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
@@ -907,53 +904,16 @@ const VideoCallNormalHeader = ({
     } catch {}
   }, [callerObject]);
 
-  const videoHideUnHideForParticipant = (flag) => {
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID
-    );
-    if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      // Prepare data for the API request
-      let data = {
-        RoomID: String(participantRoomIds),
-        HideVideo: flag, // Set HideVideo to true or false
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
-      };
-
-      // Dispatch the API request with the data
-      dispatch(hideUnhideSelfMainApi(navigate, t, data, 2));
-    } else {
-      console.log("Check");
-    }
-  };
-
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
     // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID
-    );
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      // Prepare data for the API request
       let data = {
-        RoomID: String(presenterViewFlag ? roomID : newRoomID),
-        HideVideo: flag, // Set HideVideo to true or false
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
+        RoomID: String(RoomID),
+        HideVideo: !!flag, // Ensuring it's a boolean
+        UID: String(UID),
       };
 
       // Dispatch the API request with the data
@@ -970,9 +930,9 @@ const VideoCallNormalHeader = ({
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
-        RoomID: String(presenterViewFlag ? roomID : newRoomID),
-        IsMuted: flag,
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
+        RoomID: String(RoomID),
+        IsMuted: !!flag, // Ensuring it's a boolean
+        UID: String(UID),
       };
 
       // Dispatch the API request with the data
@@ -982,36 +942,13 @@ const VideoCallNormalHeader = ({
     }
   };
 
-  const muteUnMuteForParticipant = (flag) => {
-    console.log("muteUnMuteForParticipant", flag);
-    console.log(
-      "muteUnMuteForParticipant",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      newUserGUID
-    );
-    // const flag = audioControl;
-    if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      let data = {
-        RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
-        IsMuted: flag,
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
-      };
-      // Dispatch the API call with the structured request data
-      dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
-    } else {
-      console.log("Check");
-    }
-  };
-
   const raiseUnRaiseForParticipant = () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       const flag = !raisedUnRaisedParticipant;
+
       let data = {
-        RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
+        RoomID: String(RoomID),
+        UID: String(UID),
         IsHandRaised: flag,
       };
       localStorage.setItem("handStatus", flag);
@@ -1029,10 +966,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (makeParticipantAsHost) {
-        if (
-          localStorage.getItem("participantUID") ===
-          makeParticipantAsHost.newHost.guid
-        ) {
+        if (participantUID === makeParticipantAsHost.newHost.guid) {
           setIsMeetingHost(true);
           // hostTrasfer(makeParticipantAsHostData);
           dispatch(makeParticipantHost([], false));
