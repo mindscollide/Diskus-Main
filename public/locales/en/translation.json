@@ -2427,5 +2427,6 @@
   "Trial-request-rejected-for-this-org": "Trial request rejected for this org",
   "Signature-flow-deleted-successfully": "Signature flow deleted successfully",
   "File-size-should-not-be-more-than-1-5GB": "File size should not be more than 1.5GB",
-  "Approvals": "Approvals"
+  "Approvals": "Approvals",
+  "Has-deleted-the-poll-main": "has deleted the poll"
 }

@@ -61,9 +61,7 @@ const ParentAgenda = ({
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentUserID = localStorage.getItem("userID");
 
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
-  );
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const [open, setOpen] = useState({
     open: false,
@@ -194,17 +192,6 @@ const ParentAgenda = ({
     );
   };
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "success",
-        setOpen
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
   const pdfData = (record, ext) => {
     let Data = {
       taskId: Number(record.originalAttachmentName),
@@ -238,7 +225,7 @@ const ParentAgenda = ({
             <img
               draggable={false}
               src={CollapseIcon}
-              alt=''
+              alt=""
               className={
                 expandIndex === index && expand
                   ? styles["Arrow_Expanded"]
@@ -260,10 +247,11 @@ const ParentAgenda = ({
               }
               onClick={() => {
                 handleExpandedBtn(index, true);
-              }}>
+              }}
+            >
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <Row key={index + 2} className='mt-4'>
+                  <Row key={index + 2} className="mt-4">
                     <Col lg={8} md={8} sm={12}>
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
@@ -280,11 +268,12 @@ const ParentAgenda = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex align-items-center justify-content-end gap-3 p-0'>
+                          className="d-flex align-items-center justify-content-end gap-3 p-0"
+                        >
                           <img
                             src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                             className={styles["Image"]}
-                            alt=''
+                            alt=""
                             draggable={false}
                           />
                           <p className={styles["agendaCreater"]}>
@@ -292,7 +281,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className='m-0'>
+                      <Row className="m-0">
                         <Col
                           lg={12}
                           md={12}
@@ -301,7 +290,8 @@ const ParentAgenda = ({
                             currentLanguage === "ar"
                               ? "p-0 text-start"
                               : "p-0 text-end"
-                          }>
+                          }
+                        >
                           {/* <p
                             className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                           >
@@ -383,7 +373,7 @@ const ParentAgenda = ({
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={1} md={1} sm={12} className='p-0'></Col>
+                    <Col lg={1} md={1} sm={12} className="p-0"></Col>
                   </Row>
                   {expandIndex === index && expand ? (
                     <>

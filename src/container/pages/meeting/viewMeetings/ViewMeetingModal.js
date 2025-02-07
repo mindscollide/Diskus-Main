@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Button } from "../../../../components/elements";
+import { Button, Notification } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import {
@@ -56,6 +56,8 @@ import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/poll
 import { useGroupsContext } from "../../../../context/GroupsContext";
 import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserNotificationSetting";
 import { useResolutionContext } from "../../../../context/ResolutionContext";
+import { clearResponseMessage } from "../../../../store/actions/MeetingOrganizers_action";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -70,6 +72,11 @@ const ViewMeetingModal = ({
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
   const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
   const advanceMeetingOperations =
@@ -138,7 +145,8 @@ const ViewMeetingModal = ({
 
   const dispatch = useDispatch();
 
-  const { meetingIdReducer, NewMeetingreducer } = useSelector((state) => state);
+  const { meetingIdReducer, NewMeetingreducer, MeetingAgendaReducer } =
+    useSelector((state) => state);
 
   const leaveMeetingOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
@@ -846,6 +854,19 @@ const ViewMeetingModal = ({
     return () => {};
   }, [globalFunctionWebnotificationFlag]);
 
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.ResponseMessage === t("Vote-casted-successfully")
+    ) {
+      showMessage(
+        t("Thank-you-for-participanting-in-voting"),
+        "success",
+        setOpen
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
+
   return (
     <>
       <section className='position-relative'>
@@ -1086,6 +1107,7 @@ const ViewMeetingModal = ({
           AgendaVotingModalStartedData={AgendaVotingModalStartedData}
         />
       )}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

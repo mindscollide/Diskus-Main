@@ -787,10 +787,8 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
-            console.log(
-              "AccessDeniedGlobalStateAccessDeniedGlobalStateAccessDeniedGlobalState"
-            );
             dispatch(AccessDeniedPolls(true));
+            console.log("AccessDeniedGlobalState");
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
             //trigger the global access modal
           } else if (
@@ -2360,6 +2358,7 @@ const getPollsByPollIdforCommitteeApi = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
+            console.log("AccessDeniedGlobalState");
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2457,6 +2456,7 @@ const getPollByPollIdforGroups = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
+            console.log("AccessDeniedGlobalState");
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
@@ -2554,6 +2554,7 @@ const getPollByPollIdforMeeting = (
               )
           ) {
             dispatch(AccessDeniedPolls(true));
+            console.log("AccessDeniedGlobalState");
             dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage

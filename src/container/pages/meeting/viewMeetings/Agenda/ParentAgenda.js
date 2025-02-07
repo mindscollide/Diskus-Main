@@ -180,16 +180,16 @@ const ParentAgenda = ({
     }
   };
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
-      showMessage(
-        t("Thank-you-for-participanting-in-voting"),
-        "success",
-        setOpen
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
+  // useEffect(() => {
+  //   if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+  //     showMessage(
+  //       t("Thank-you-for-participanting-in-voting"),
+  //       "success",
+  //       setOpen
+  //     );
+  //     dispatch(clearResponseMessage(""));
+  //   }
+  // }, [MeetingAgendaReducer.ResponseMessage]);
 
   return (
     <>
