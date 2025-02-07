@@ -32,12 +32,10 @@ import {
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterStartedMainFlag,
-  setAudioControlForParticipant,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
   setParticipantRemovedFromVideobyHost,
   setRaisedUnRaisedParticiant,
-  setVideoControlForParticipant,
   setVideoControlHost,
   startPresenterViewMainApi,
   toggleParticipantsVisibility,
@@ -163,22 +161,12 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
   );
 
-  const audioControlHost = useSelector(
+  const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
 
-  const videoControlHost = useSelector(
+  const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
-  );
-
-  // audioControlForParticipant for Participants
-  const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
-  );
-
-  // videoControlForParticipant for Participants
-  const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
   );
 
   const participantsVisible = useSelector(
@@ -342,8 +330,8 @@ const VideoPanelNormal = () => {
         localStorage.setItem("refinedVideoGiven", false);
         localStorage.setItem("isWebCamEnabled", false);
         localStorage.setItem("isMicEnabled", false);
-        dispatch(setAudioControlForParticipant(false));
-        dispatch(setVideoControlForParticipant(false));
+        dispatch(setAudioControlHost(false));
+        dispatch(setVideoControlHost(false));
 
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
 
@@ -397,9 +385,7 @@ const VideoPanelNormal = () => {
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         await dispatch(setAudioControlHost(false));
-        await dispatch(setAudioControlForParticipant(false));
         await dispatch(setVideoControlHost(false));
-        await dispatch(setVideoControlForParticipant(false));
         localStorage.setItem("isMicEnabled", false);
         localStorage.setItem("isWebCamEnabled", false);
         localStorage.setItem("activeOtoChatID", 0);
@@ -434,19 +420,30 @@ const VideoPanelNormal = () => {
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
-    // Determine the control source based on the user role
-    // Reference the iframe and perform postMessage based on the control source
-    if (isMeetingHost || (presenterViewFlag && presenterViewHostFlag)) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
-        if (audioControlHost === true) {
-          iframe.contentWindow.postMessage("MicOn", "*");
-        } else {
-          iframe.contentWindow.postMessage("MicOff", "*");
-        }
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (audioControl === true) {
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
-  }, [audioControlHost]);
+  }, [audioControl]);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    console.log("videoHideUnHideForHost");
+    if (iframe && iframe.contentWindow !== null) {
+      console.log("videoHideUnHideForHost");
+      if (videoControl === true) {
+        console.log("videoHideUnHideForHost");
+        iframe.contentWindow.postMessage("VidOn", "*");
+      } else {
+        console.log("videoHideUnHideForHost");
+        iframe.contentWindow.postMessage("VidOff", "*");
+      }
+    }
+  }, [videoControl]);
 
   useEffect(() => {
     // Define the leave function to clean up the session
@@ -459,6 +456,13 @@ const VideoPanelNormal = () => {
           iframe.contentWindow.postMessage("leaveSession", "*");
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
+        localStorage.removeItem("presenterViewFlag");
+        localStorage.setItem("CallType", 0);
+        localStorage.setItem("activeRoomID", 0);
+        localStorage.removeItem("hostUrl");
+        localStorage.removeItem("isGuid");
+        localStorage.removeItem("participantUID");
+        localStorage.removeItem("newRoomId");
       } catch (error) {}
     };
 
@@ -469,67 +473,40 @@ const VideoPanelNormal = () => {
     };
   }, [iframe]);
 
-  useEffect(() => {
-    // Determine the control source based on the user role
-    if (isMeetingHost === false) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
-        if (audioControlForParticipant === true) {
-          console.log("Check Connection");
-          iframe.contentWindow.postMessage("MicOn", "*");
-        } else {
-          iframe.contentWindow.postMessage("MicOff", "*");
-        }
-      }
-    }
-  }, [audioControlForParticipant]);
+  // useEffect(() => {
+  //   // Determine the control source based on the user role
+  //   if (isMeetingHost === false) {
+  //     const iframe = iframeRef.current;
+  //     if (iframe && iframe.contentWindow !== null) {
+  //       if (audioControl === true) {
+  //         console.log("Check Connection");
+  //         iframe.contentWindow.postMessage("MicOn", "*");
+  //       } else {
+  //         iframe.contentWindow.postMessage("MicOff", "*");
+  //       }
+  //     }
+  //   }
+  // }, [audioControl]);
 
-  useEffect(() => {
-    if (
-      isMeetingHost === false ||
-      (presenterViewFlag && !presenterViewHostFlag)
-    ) {
-      console.log("videoHideUnHideForHost");
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
-        console.log("videoHideUnHideForHost");
-        if (videoControlForParticipant === true) {
-          console.log("videoHideUnHideForHost");
-          iframe.contentWindow.postMessage("VidOn", "*");
-        } else {
-          console.log("videoHideUnHideForHost");
-          iframe.contentWindow.postMessage("VidOff", "*");
-        }
-      }
-    }
-  }, [videoControlForParticipant]);
-
-  useEffect(() => {
-    console.log("videoHideUnHideForHost", isMeetingHost);
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag && presenterViewHostFlag
-    );
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      presenterViewHostFlag
-    );
-    if (isMeetingHost || (presenterViewFlag && presenterViewHostFlag)) {
-      const iframe = iframeRef.current;
-      console.log("videoHideUnHideForHost");
-      if (iframe && iframe.contentWindow !== null) {
-        console.log("videoHideUnHideForHost");
-        if (videoControlHost === true) {
-          console.log("videoHideUnHideForHost");
-          iframe.contentWindow.postMessage("VidOn", "*");
-        } else {
-          console.log("videoHideUnHideForHost");
-          iframe.contentWindow.postMessage("VidOff", "*");
-        }
-      }
-    }
-  }, [videoControlHost]);
+  // useEffect(() => {
+  //   if (
+  //     isMeetingHost === false ||
+  //     (presenterViewFlag && !presenterViewHostFlag)
+  //   ) {
+  //     console.log("videoHideUnHideForHost");
+  //     const iframe = iframeRef.current;
+  //     if (iframe && iframe.contentWindow !== null) {
+  //       console.log("videoHideUnHideForHost");
+  //       if (videoControl === true) {
+  //         console.log("videoHideUnHideForHost");
+  //         iframe.contentWindow.postMessage("VidOn", "*");
+  //       } else {
+  //         console.log("videoHideUnHideForHost");
+  //         iframe.contentWindow.postMessage("VidOff", "*");
+  //       }
+  //     }
+  //   }
+  // }, [videoControl]);
 
   useEffect(() => {
     if (getAllParticipantGuest?.length) {
@@ -570,8 +547,6 @@ const VideoPanelNormal = () => {
     try {
       if (Object.keys(InitiateVideoCallData).length > 0) {
         let dynamicBaseURLCaller = localStorage.getItem("videoBaseURLCaller");
-        console.log("iframeiframe", dynamicBaseURLCaller);
-
         let endIndexBaseURLCaller = "";
         let extractedBaseURLCaller = "";
         if (dynamicBaseURLCaller) {
@@ -889,24 +864,13 @@ const VideoPanelNormal = () => {
   const handlePresenterViewForParticipent = async () => {
     console.log("Check Connection");
     const iframe = iframeRef.current;
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
     if (iframe && iframe.contentWindow) {
       console.log("Check Connection");
-      iframe.contentWindow.postMessage("VidOff", "*");
-      iframe.contentWindow.postMessage("MicOff", "*");
-      if (isMeetingVideoHostCheck) {
-        console.log("Check Connection");
-        dispatch(setAudioControlHost(true));
-        dispatch(setVideoControlHost(true));
-      } else {
-        console.log("Check Connection");
-        dispatch(setVideoControlForParticipant(true));
-        dispatch(setAudioControlForParticipant(true));
-      }
+      dispatch(setAudioControlHost(true));
+      dispatch(setVideoControlHost(true));
     }
   };
+
   const handlerForStaringPresenterView = async () => {
     const iframe = iframeRef.current;
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
@@ -915,16 +879,13 @@ const VideoPanelNormal = () => {
     );
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
-    console.log("handlePostMessage", participantUID);
-    console.log("handlePostMessage", isGuid);
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
       RoomID: callAcceptedRoomID,
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
-
-    iframe.contentWindow.postMessage("VidOff", "*");
+    // iframe.contentWindow.postMessage("VidOff", "*");
     dispatch(startPresenterViewMainApi(navigate, t, data));
   };
 
@@ -1119,6 +1080,7 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }
+
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);

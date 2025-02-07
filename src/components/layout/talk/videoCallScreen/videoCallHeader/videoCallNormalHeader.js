@@ -129,23 +129,13 @@ const VideoCallNormalHeader = ({
   );
 
   //Audio Control For host
-  const audioControlHost = useSelector(
+  const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
 
   //Video Control For host
-  const videoControlHost = useSelector(
+  const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
-  );
-
-  // audioControlForParticipant for Participants
-  const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
-  );
-
-  // videoControlForParticipant for Participants
-  const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
   );
 
   // For Participant Raise Un Raised Hand
@@ -945,7 +935,7 @@ const VideoCallNormalHeader = ({
 
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
-    // const flag = videoControlHost;
+    // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
     console.log(
       "videoHideUnHideForHost",
@@ -976,16 +966,7 @@ const VideoCallNormalHeader = ({
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID
-    );
+   
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
@@ -1011,7 +992,7 @@ const VideoCallNormalHeader = ({
       participantUID,
       newUserGUID
     );
-    // const flag = audioControlForParticipant;
+    // const flag = audioControl;
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let data = {
         RoomID: String(presenterViewFlag ? roomID : participantRoomIds),
@@ -1115,10 +1096,10 @@ const VideoCallNormalHeader = ({
                 getMeetingHostInfo?.isDashboardVideo
                   ? getMeetingHostInfo.isHost ||
                     (presenterViewFlag && presenterViewHostFlag)
-                    ? audioControlHost
+                    ? audioControl
                       ? t("Enable-mic")
                       : t("Disable-mic")
-                    : audioControlForParticipant
+                    : audioControl
                     ? t("Enable-mic")
                     : t("Disable-mic")
                   : isMicActive
@@ -1131,10 +1112,10 @@ const VideoCallNormalHeader = ({
                   getMeetingHostInfo?.isDashboardVideo
                     ? getMeetingHostInfo.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)
-                      ? audioControlHost
+                      ? audioControl
                         ? MicOff
                         : MicOn
-                      : audioControlForParticipant
+                      : audioControl
                       ? MicOff
                       : MicOn
                     : isMicActive
@@ -1145,9 +1126,9 @@ const VideoCallNormalHeader = ({
                   getMeetingHostInfo?.isDashboardVideo
                     ? getMeetingHostInfo.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)
-                      ? muteUnMuteForHost(audioControlHost ? false : true)
+                      ? muteUnMuteForHost(audioControl ? false : true)
                       : muteUnMuteForParticipant(
-                          audioControlForParticipant ? false : true
+                          audioControl ? false : true
                         )
                     : disableMic()
                 }
@@ -1171,10 +1152,10 @@ const VideoCallNormalHeader = ({
                 getMeetingHostInfo?.isDashboardVideo
                   ? getMeetingHostInfo.isHost ||
                     (presenterViewFlag && presenterViewHostFlag)
-                    ? videoControlHost
+                    ? videoControl
                       ? t("Enable-video")
                       : t("Disable-video")
-                    : videoControlForParticipant
+                    : videoControl
                     ? t("Enable-video")
                     : t("Disable-video")
                   : isVideoActive
@@ -1187,10 +1168,10 @@ const VideoCallNormalHeader = ({
                   getMeetingHostInfo?.isDashboardVideo
                     ? getMeetingHostInfo.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)
-                      ? videoControlHost
+                      ? videoControl
                         ? VideoOff
                         : VideoOn
-                      : videoControlForParticipant
+                      : videoControl
                       ? VideoOff
                       : VideoOn
                     : isVideoActive
@@ -1201,9 +1182,9 @@ const VideoCallNormalHeader = ({
                   getMeetingHostInfo?.isDashboardVideo
                     ? getMeetingHostInfo.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)
-                      ? videoHideUnHideForHost(videoControlHost ? false : true)
+                      ? videoHideUnHideForHost(videoControl ? false : true)
                       : videoHideUnHideForParticipant(
-                          videoControlForParticipant ? false : true
+                          videoControl ? false : true
                         )
                     : disableVideo()
                 }

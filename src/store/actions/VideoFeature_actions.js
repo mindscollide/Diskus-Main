@@ -945,23 +945,7 @@ const getVideoUrlForParticipant = (response) => {
   };
 };
 
-// SET MQTTT FOR VOICE PARTICIPANT
-const setAudioControlForParticipant = (response) => {
-  console.log(response, "datadtadttadtadta");
-  return {
-    type: actions.SET_MQTT_VOICE_PARTICIPANT,
-    response: response,
-  };
-};
 
-// SET HOST VIDEO CAMERA
-const setVideoControlForParticipant = (response) => {
-  console.log(response, "datadtadttadtadta");
-  return {
-    type: actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT,
-    response: response,
-  };
-};
 
 // SET MQTTT FOR VOICE PARTICIPANT
 const setRaisedUnRaisedParticiant = (response) => {
@@ -2006,8 +1990,6 @@ export {
   setVideoControlHost,
   setAudioControlHost,
   getVideoUrlForParticipant,
-  setVideoControlForParticipant,
-  setAudioControlForParticipant,
   setRaisedUnRaisedParticiant,
   normalParticipantVideoCallPanel,
   checkHostNow,

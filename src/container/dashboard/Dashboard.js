@@ -34,8 +34,8 @@ import {
   participantHideUnhideVideo,
   getParticipantsNewJoin,
   getVideoUrlForParticipant,
-  setAudioControlForParticipant,
-  setVideoControlForParticipant,
+  setAudioControlHost,
+  setVideoControlHost,
   setRaisedUnRaisedParticiant,
   makeHostNow,
   maxParticipantVideoRemoved,
@@ -933,8 +933,8 @@ const Dashboard = () => {
                   localStorage.setItem("refinedVideoGiven", false);
                   localStorage.setItem("isWebCamEnabled", false);
                   localStorage.setItem("isMicEnabled", false);
-                  dispatch(setAudioControlForParticipant(false));
-                  dispatch(setVideoControlForParticipant(false));
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
 
                   localStorage.setItem(
                     "meetinHostInfo",
@@ -985,7 +985,7 @@ const Dashboard = () => {
                 }
 
                 if (data.payload.uid === isGuid) {
-                  dispatch(setAudioControlForParticipant(data.payload.isMuted));
+                  dispatch(setAudioControlHost(data.payload.isMuted));
                 }
               }
 
@@ -1008,7 +1008,7 @@ const Dashboard = () => {
 
               if (data.payload.uid === isGuid) {
                 dispatch(
-                  setVideoControlForParticipant(data.payload.isVideoHidden)
+                  setVideoControlHost(data.payload.isVideoHidden)
                 );
               }
 
@@ -1069,11 +1069,11 @@ const Dashboard = () => {
                 );
                 console.log("iframeiframe", data.payload.userID);
                 dispatch(
-                  setAudioControlForParticipant(audioControlForParticipantLocal)
+                  setAudioControlHost(audioControlForParticipantLocal)
                 );
                 console.log("iframeiframe", data.payload.userID);
                 dispatch(
-                  setVideoControlForParticipant(videoControlForParticipantLoacl)
+                  setVideoControlHost(videoControlForParticipantLoacl)
                 );
 
                 const currentParticipantUser = localStorage.getItem("name");

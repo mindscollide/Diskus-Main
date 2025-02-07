@@ -40,8 +40,8 @@ import {
   maxParticipantVideoCallPanel,
   maxParticipantVideoDenied,
   participantVideoButtonState,
-  setAudioControlForParticipant,
-  setVideoControlForParticipant,
+  setAudioControlHost,
+  setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
@@ -233,7 +233,7 @@ const ParticipantVideoCallComponent = () => {
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
-    dispatch(setAudioControlForParticipant(enable));
+    dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
     if (!enable) {
       navigator.mediaDevices
@@ -268,7 +268,7 @@ const ParticipantVideoCallComponent = () => {
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    dispatch(setVideoControlForParticipant(enable));
+    dispatch(setVideoControlHost(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     if (!enable) {
       navigator.mediaDevices

@@ -25,8 +25,8 @@ import {
   leaveCallModal,
   participantPopup,
   makeHostNow,
-  setAudioControlForParticipant,
-  setVideoControlForParticipant,
+  setAudioControlHost,
+  setVideoControlHost,
   maxParticipantVideoRemoved,
   setRaisedUnRaisedParticiant,
 } from "../../../../../../store/actions/VideoFeature_actions";
@@ -223,8 +223,8 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
-    await dispatch(setAudioControlForParticipant(false));
-    await dispatch(setVideoControlForParticipant(false));
+    await dispatch(setAudioControlHost(false));
+    await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
     await dispatch(setRaisedUnRaisedParticiant(false));
@@ -355,8 +355,8 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
-    await dispatch(setAudioControlForParticipant(false));
-    await dispatch(setVideoControlForParticipant(false));
+    await dispatch(setAudioControlHost(false));
+    await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
     await dispatch(setRaisedUnRaisedParticiant(false));

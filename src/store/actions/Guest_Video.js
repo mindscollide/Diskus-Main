@@ -26,9 +26,7 @@ import {
   participantAcceptandReject,
   participantVideoNavigationScreen,
   participantWaitingListBox,
-  setAudioControlForParticipant,
   setAudioControlHost,
-  setVideoControlForParticipant,
   setVideoControlHost,
   toggleParticipantsVisibility,
 } from "./VideoFeature_actions";
@@ -1025,11 +1023,8 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
                   "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
                 )
             ) {
-              if (check === 1) {
                 await dispatch(setAudioControlHost(data.IsMuted));
-              } else if (check === 2) {
-                dispatch(setAudioControlForParticipant(data.IsMuted));
-              }
+              
               localStorage.setItem("isMicEnabled", data.IsMuted);
               await dispatch(
                 muteUnmuteSelfSuccess(
@@ -1129,7 +1124,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                 console.log("videoHideUnHideForHost", data.HideVideo);
                 await dispatch(setVideoControlHost(data.HideVideo));
               } else if (check === 2) {
-                dispatch(setVideoControlForParticipant(data.HideVideo));
+                dispatch(setVideoControlHost(data.HideVideo));
               }
               await dispatch(
                 hideUnhideSelfSuccess(

@@ -113,23 +113,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   const dispatch = useDispatch();
 
   //Audio Control For host
-  const audioControlHost = useSelector(
+  const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
 
   //Video Control For host
-  const videoControlHost = useSelector(
+  const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
-  );
-
-  // audioControlForParticipant for Participants
-  const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
-  );
-
-  // videoControlForParticipant for Participants
-  const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
   );
 
   const presenterViewFlag = useSelector(
@@ -461,7 +451,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   }, [videoFeatureReducer.MinimizeVideoFlag]);
 
   const muteUnMuteForHost = (flag) => {
-    // const flag = audioControlHost;
+    // const flag = audioControl;
     console.log("videoHideUnHideForHost", flag);
 
     // Prepare data for the API request
@@ -484,8 +474,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   };
 
   const videoHideUnHideForHost = (flag) => {
-    // Set the HideVideo flag based on videoControlForParticipant
-    // const flag = videoControlHost;
+    // Set the HideVideo flag based on videoControl
+    // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
     // Prepare data for the API request
     let data = {
@@ -507,7 +497,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   };
 
   const muteUnMuteForParticipant = (flag) => {
-    // const flag = audioControlForParticipant;
+    // const flag = audioControl;
 
     let data = {
       RoomID: String(participantRoomIds),
@@ -653,11 +643,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     (meetingHostData?.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)) &&
                     meetingHostData?.isDashboardVideo
-                      ? audioControlHost
+                      ? audioControl
                         ? t("Enable-mic")
                         : t("Disable-mic")
                       : meetingHostData?.isDashboardVideo
-                      ? audioControlForParticipant
+                      ? audioControl
                         ? t("Enable-mic")
                         : t("Disable-mic")
                       : localMicStatus
@@ -670,11 +660,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       (meetingHostData?.isHost ||
                         (presenterViewFlag && presenterViewHostFlag)) &&
                       meetingHostData?.isDashboardVideo
-                        ? audioControlHost
+                        ? audioControl
                           ? MicOffHost
                           : MicOn
                         : meetingHostData?.isDashboardVideo
-                        ? audioControlForParticipant
+                        ? audioControl
                           ? MicOffHost
                           : MicOn
                         : localMicStatus
@@ -687,11 +677,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                           (presenterViewFlag && presenterViewHostFlag)) &&
                         meetingHostData?.isDashboardVideo
                       ) {
-                        muteUnMuteForHost(audioControlHost ? false : true);
+                        muteUnMuteForHost(audioControl ? false : true);
                       } else if (meetingHostData?.isDashboardVideo) {
-                        muteUnMuteForParticipant(
-                          audioControlForParticipant ? false : true
-                        );
+                        muteUnMuteForParticipant(audioControl ? false : true);
                       } else {
                         toggleMic(!localMicStatus);
                       }
@@ -715,11 +703,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     (meetingHostData?.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)) &&
                     meetingHostData?.isDashboardVideo
-                      ? videoControlHost
+                      ? videoControl
                         ? t("Disable-video")
                         : t("Enable-video")
                       : meetingHostData?.isDashboardVideo
-                      ? videoControlForParticipant
+                      ? videoControl
                         ? t("Disable-video")
                         : t("Enable-video")
                       : localVidStatus
@@ -732,11 +720,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       (meetingHostData?.isHost ||
                         (presenterViewFlag && presenterViewHostFlag)) &&
                       meetingHostData?.isDashboardVideo
-                        ? videoControlHost
+                        ? videoControl
                           ? VideoOffHost
                           : VideoOn
                         : meetingHostData?.isDashboardVideo
-                        ? videoControlForParticipant
+                        ? videoControl
                           ? VideoOffHost
                           : VideoOn
                         : localVidStatus
@@ -749,10 +737,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                           (presenterViewFlag && presenterViewHostFlag)) &&
                         meetingHostData?.isDashboardVideo
                       ) {
-                        videoHideUnHideForHost(videoControlHost ? false : true);
+                        videoHideUnHideForHost(videoControl ? false : true);
                       } else if (meetingHostData?.isDashboardVideo) {
                         videoHideUnHideForParticipant(
-                          videoControlForParticipant ? false : true
+                          videoControl ? false : true
                         );
                       } else {
                         toggleVideo(!localVidStatus);

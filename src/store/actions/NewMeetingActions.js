@@ -87,9 +87,7 @@ import {
   normalizeVideoPanelFlag,
   participantVideoButtonState,
   participantVideoNavigationScreen,
-  setAudioControlForParticipant,
   setAudioControlHost,
-  setVideoControlForParticipant,
   setVideoControlHost,
   videoChatPanel,
   videoIconOrButtonState,
@@ -9145,10 +9143,10 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
-              await dispatch(setVideoControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
@@ -9183,10 +9181,10 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
-              await dispatch(setVideoControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
               console.log(getMeetingHostData, "asdadadadadaddda");
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
