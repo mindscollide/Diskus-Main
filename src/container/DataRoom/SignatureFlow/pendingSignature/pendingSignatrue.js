@@ -845,10 +845,10 @@ const SignatureViewer = () => {
   }, [participants]);
   // ==== End ====//
 
-  // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
       const { annotationManager, Annotations } = Instance.Core;
+
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -857,7 +857,18 @@ const SignatureViewer = () => {
           }
 
           try {
-            // Export annotations to XFDF format using `exportAnnotations`
+            // Loop through annotations
+            annotations.forEach((annot) => {
+              if (
+                annot instanceof Annotations.FreeHandAnnotation
+              ) {
+                annot.Locked = true;
+                annot.NoMove = true; // Allow movement of the signature
+                annotationManager.redrawAnnotation(annot);
+              }
+            });
+
+            // Export annotations to XFDF format
             const xfdfString = await annotationManager.exportAnnotations();
 
             // Update the user's annotations based on the action
@@ -874,6 +885,36 @@ const SignatureViewer = () => {
       );
     }
   }, [Instance]);
+
+  // // === this is for update intance in ===//
+  // useEffect(() => {
+  //   if (Instance) {
+  //     const { annotationManager, Annotations } = Instance.Core;
+  //     annotationManager.addEventListener(
+  //       "annotationChanged",
+  //       async (annotations, action, { imported }) => {
+  //         if (imported) {
+  //           return;
+  //         }
+
+  //         try {
+  //           // Export annotations to XFDF format using `exportAnnotations`
+  //           const xfdfString = await annotationManager.exportAnnotations();
+
+  //           // Update the user's annotations based on the action
+  //           updateXFDF(
+  //             action,
+  //             xfdfString,
+  //             selectedUserRef.current,
+  //             userAnnotationsRef.current
+  //           );
+  //         } catch (error) {
+  //           console.error(error);
+  //         }
+  //       }
+  //     );
+  //   }
+  // }, [Instance]);
   // === End ===//
 
   // === this is for Response Message===//

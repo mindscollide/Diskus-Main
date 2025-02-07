@@ -9,7 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { TextField } from "../../../components/elements";
 import { useDispatch } from "react-redux";
-import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
+import { validateEmptyStringUserAvailibilityFailed, validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import {
   convertDateTimeRangeToGMT,
@@ -35,16 +35,15 @@ const RSVP = () => {
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
   let getRSVP = localStorage.getItem("RSVP");
+
+  console.log(getRSVP, "getRSVPgetRSVP");
   useEffect(() => {
     if (getRSVP !== null) {
-      let Data = { EncryptedString: localStorage.getItem("RSVP") };
+      let Data = { EncryptedString: getRSVP };
       dispatch(
         validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
       );
     }
-    return () => {
-      localStorage.removeItem("RSVP");
-    };
   }, [getRSVP]);
 
   useEffect(() => {
@@ -62,12 +61,13 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
-      } else {
-        // Handle the case when UserAvailabilityState is undefined or null
-      }
+      } 
     } catch (error) {
       console.log(error, "errorerrorerrorerror");
     }
+    return () => {
+      dispatch(validateEmptyStringUserAvailibilityFailed(""));
+    };
   }, [UserAvalibilityState]);
 
   return (

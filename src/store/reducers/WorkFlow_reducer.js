@@ -28,17 +28,17 @@ const initialState = {
   workflowsignaturedocument: null,
   workflowSignaturedocumentStatusChange: null,
   workflowsignaturedocumentActionByMe: null,
-  signatureDocumentStatusChangeForSignees: null
+  signatureDocumentStatusChangeForSignees: null,
+  validateEncryptedStringSignatureDataResponse: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
   switch (action.type) {
-
     case actions.SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES: {
       return {
         ...state,
-        signatureDocumentStatusChangeForSignees: null
-      }
+        signatureDocumentStatusChangeForSignees: null,
+      };
     }
     case actions.SIGNATURE_DOCUMENT_STATUS_CHANGE: {
       return {
@@ -543,6 +543,41 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       return {
         ...state,
         validateEncryptedStringMinuteReviewData: null,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS: {
+      console.log(
+        { action },
+        "VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS"
+      );
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringSignatureDataResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringSignatureDataResponse: null,
+
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_CLEAR: {
+      return {
+        ...state,
+        Loading: false,
+        validateEncryptedStringSignatureDataResponse: null,
+        ResponseMessage: "",
       };
     }
 

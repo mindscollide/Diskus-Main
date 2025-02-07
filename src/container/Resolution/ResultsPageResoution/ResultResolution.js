@@ -80,7 +80,7 @@ const ResultResolution = ({ setResultresolution }) => {
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      t("Non-approved"),
+      t("Not-approved"),
       nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
