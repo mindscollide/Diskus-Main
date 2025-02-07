@@ -14,6 +14,7 @@ import {
   leaveMeetingOnlogout,
   leaveMeetingOnEndStatusMqtt,
   setRaisedUnRaisedParticiant,
+  presenterViewGlobalState,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   AgendaPollVotingStartedAction,
@@ -435,6 +436,8 @@ const ViewMeetingModal = ({
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     const handleBeforeUnload = async (event) => {
       if (isMeeting) {
+        console.log("cacacacacacacacacc");
+        dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
@@ -447,6 +450,8 @@ const ViewMeetingModal = ({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      console.log("cacacacacacacacacc");
+      dispatch(presenterViewGlobalState(0, false, false, false));
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
