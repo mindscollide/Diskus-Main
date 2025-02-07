@@ -63,6 +63,20 @@ body[dir="rtl"] .videoCallScreen {
   left: 65px;
 }
 
+.Presenter-Max-VideoPanel {
+  position: fixed;
+  height: 100vh !important;
+  top: 0 !important;
+  background-color: #fff !important;
+  border: 1px solid #4adede !important;
+  border-radius: 4px !important;
+  z-index: 9999 !important;
+  padding: 0px 30px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
+  width: 100% !important;
+  left: 0 !important;
+}
+
 .max-video-panel.more-zindex {
   position: fixed;
   height: 89vh;

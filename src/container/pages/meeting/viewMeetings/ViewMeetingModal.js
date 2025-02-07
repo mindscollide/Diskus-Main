@@ -14,6 +14,7 @@ import {
   leaveMeetingOnlogout,
   leaveMeetingOnEndStatusMqtt,
   setRaisedUnRaisedParticiant,
+  presenterViewGlobalState,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   AgendaPollVotingStartedAction,
@@ -91,6 +92,18 @@ const ViewMeetingModal = ({
   //Agenda Voting Started PayLoad Data Fetching
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
+  );
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
   console.log(typeof advanceMeetingOperations);
   const {
@@ -434,6 +447,8 @@ const ViewMeetingModal = ({
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     const handleBeforeUnload = async (event) => {
       if (isMeeting) {
+        console.log("cacacacacacacacacc");
+        dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
@@ -446,6 +461,8 @@ const ViewMeetingModal = ({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      console.log("cacacacacacacacacc");
+      dispatch(presenterViewGlobalState(0, false, false, false));
       dispatch(cleareAllState());
       setEditorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
@@ -860,6 +877,15 @@ const ViewMeetingModal = ({
                   text={t("Leave-meeting")}
                   onClick={leaveMeeting}
                   className={styles["LeavemeetingBtn"]}
+                  disableBtn={
+                    presenterViewFlag
+                      ? presenterViewHostFlag
+                        ? true
+                        : presenterViewJoinFlag
+                        ? true
+                        : false
+                      : false
+                  }
                 />
               </span>
             )}

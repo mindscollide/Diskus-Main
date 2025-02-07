@@ -32,8 +32,8 @@ import {
   participantPopup,
   maxParticipantVideoRemoved,
   setRaisedUnRaisedParticiant,
-  setVideoControlForParticipant,
-  setAudioControlForParticipant,
+  setVideoControlHost,
+  setAudioControlHost,
   makeHostNow,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
@@ -334,8 +334,8 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
-    await dispatch(setAudioControlForParticipant(false));
-    await dispatch(setVideoControlForParticipant(false));
+    await dispatch(setAudioControlHost(false));
+    await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
     await dispatch(setRaisedUnRaisedParticiant(false));
@@ -439,8 +439,8 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
-    await dispatch(setAudioControlForParticipant(false));
-    await dispatch(setVideoControlForParticipant(false));
+    await dispatch(setAudioControlHost(false));
+    await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
     await dispatch(setRaisedUnRaisedParticiant(false));

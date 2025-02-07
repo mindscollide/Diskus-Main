@@ -80,15 +80,14 @@ import {
   LeaveInitmationMessegeVideoMeetAction,
 } from "./VideoMain_actions";
 import {
+  joinPresenterViewMainApi,
   makeHostNow,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   participantVideoButtonState,
   participantVideoNavigationScreen,
-  setAudioControlForParticipant,
   setAudioControlHost,
-  setVideoControlForParticipant,
   setVideoControlHost,
   videoChatPanel,
   videoIconOrButtonState,
@@ -8232,7 +8231,15 @@ const JoinCurrentMeeting = (
                 await dispatch(scheduleMeetingPageFlag(false));
               }
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
-              dispatch(currentMeetingStatus(10));
+              await dispatch(currentMeetingStatus(10));
+              if (response.data.responseResult.isPresenterViewStarted) {
+                let data = {
+                  VideoCallURL: String(Data.VideoCallURL),
+                  WasInVideo: false,
+                };
+                console.log("onClickStopPresenter", data);
+                dispatch(joinPresenterViewMainApi(navigate, t, data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9139,14 +9146,16 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               );
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
+              localStorage.removeItem("participantRoomId");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
-              await dispatch(setVideoControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
@@ -9181,9 +9190,10 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlForParticipant(false));
+              await dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
-              await dispatch(setVideoControlForParticipant(false));
+              await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
               console.log(getMeetingHostData, "asdadadadadaddda");
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false

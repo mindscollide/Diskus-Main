@@ -451,10 +451,8 @@ const Agenda = ({
   const saveAgendaData = async (flag) => {
     let isValid = true;
     let shouldResetFileForSend = true;
-
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      const row = rows[rowIndex];
-      console.log(row, "rowrowrow");
+      let row = rows[rowIndex];
 
       if (row.files.length > 10) {
         showMessage(
