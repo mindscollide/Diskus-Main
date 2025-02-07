@@ -724,12 +724,31 @@ const AgendaViewer = () => {
 
   const onClickStartPresenter = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    let data = {
-      VideoCallURL: String(currentMeetingVideoURL || ""),
-      Guid: "",
-      WasInVideo: Boolean(isMeetingVideo),
-    };
-    dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
+    let isMeetingVideoHostCheck = JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"));
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let newRoomID = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    if (isMeetingVideo) {
+      sessionStorage.setItem("alreadyInMeetingVideo", true);
+      let RoomID = presenterViewFlag
+        ? roomID
+        : isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId;
+      localStorage.setItem("acceptedRoomID", RoomID);
+      dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
+      dispatch(maximizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+    } else {
+      let data = {
+        VideoCallURL: String(currentMeetingVideoURL || ""),
+        Guid: "",
+        WasInVideo: Boolean(isMeetingVideo),
+      };
+
+      dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
+    }
   };
 
   const onClickStopPresenter = async (value) => {
