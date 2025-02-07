@@ -872,6 +872,7 @@ const VideoPanelNormal = () => {
       console.log("Check");
     }
   };
+
   const handlePresenterView = async () => {
     const iframe = iframeRef.current;
     console.log("videoHideUnHideForHost");
@@ -888,9 +889,17 @@ const VideoPanelNormal = () => {
   const handlerForStaringPresenterView = async () => {
     console.log("handlePostMessage", iframe);
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-
+    let isMeetingVideoHostCheck = Number(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let isGuid = Number(localStorage.getItem("isGuid"));
+    let participantUID = Number(localStorage.getItem("participantUID"));
     // Post message to iframe
-    let data = { MeetingID: currentMeetingID, RoomID: callAcceptedRoomID };
+    let data = {
+      MeetingID: currentMeetingID,
+      RoomID: callAcceptedRoomID,
+      Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
+    };
 
     dispatch(startPresenterViewMainApi(navigate, t, data));
   };
