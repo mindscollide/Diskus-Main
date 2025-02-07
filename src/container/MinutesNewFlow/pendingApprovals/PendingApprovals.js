@@ -84,6 +84,9 @@ const PendingApproval = () => {
   const [rowsPendingApproval, setRowsPendingApproval] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [visible, setVisible] = useState(false);
+
+  const docSignAction = localStorage.getItem("docSignAction");
+  const docSignedAction = localStorage.getItem("docSignedAction");
   const [selectedValues, setSelectedValues] = useState([
     "Reviewed",
     "Pending",
@@ -112,9 +115,6 @@ const PendingApproval = () => {
 
   // Click handler for Review & Sign button
   const handleReviewAndSignClick = async () => {
-    await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-    let newData = { IsCreator: false };
-    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
     // let Data = { sRow: 0, Length: 10 };
     // await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
 
@@ -340,6 +340,8 @@ const PendingApproval = () => {
     },
   ];
 
+  const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
+
   useEffect(() => {
     let Data = { sRow: 0, Length: 10 };
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
@@ -349,11 +351,21 @@ const PendingApproval = () => {
       dispatch(reviewMinutesPage(true));
       dispatch(pendingApprovalPage(false));
     }
-    if (localStorage.getItem("reviewMinutesLink") !== null) {
-      let Data = { EncryptedString: localStorage.getItem("reviewMinutesLink") };
+  }, []);
+  console.log(docSignAction, "docSignActiondocSignAction");
+
+  useEffect(() => {
+    if (reviewMinutesLink !== null) {
+      let Data = { EncryptedString: reviewMinutesLink };
       dispatch(validateEncryptedMinutesReviewerApi(Data, navigate, t));
     }
-  }, []);
+  }, [reviewMinutesLink]);
+  useEffect(() => {
+    if (docSignAction !== null || docSignedAction !== null) {
+      setReviewMinutesActive(false); // Set Review Minutes button to inactive
+      setReviewAndSignActive(true); // Set Review & Sign button to active
+    }
+  }, [docSignAction, docSignedAction]);
 
   useEffect(() => {
     try {

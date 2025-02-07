@@ -20,6 +20,7 @@ import {
   GetSignatureFileAnnotationRM,
   AddUpdateSignatureFileAnnotationRM,
   ValidateEncryptedStringMinuteReviewDataRM,
+  ValidateEncryptedStringSignatureDataRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2509,7 +2510,6 @@ const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
       });
   };
 };
-
 const SignatureDocumentReceivedMyMe = (response) => {
   return {
     type: actions.WORKFLOW_SIGNATURE_DOCUMENT_RECEIVED_BY_ME,
@@ -2524,26 +2524,167 @@ const SignatureDocumentReceived = (response) => {
   };
 };
 
-const SignatureDocumentStatusChange = (response) =>  {
+const SignatureDocumentStatusChange = (response) => {
   return {
     type: actions.SIGNATURE_DOCUMENT_STATUS_CHANGE,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 
 const SignatureDocumentActionByMe = (response) => {
   return {
     type: actions.SIGNATURE_DOCUMENT_ACTION_BY_ME,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 const SignatureDocumentStatusChangeSignees = (response) => {
   return {
     type: actions.SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES,
-    response: response
-  }
-}
-  
+    response: response,
+  };
+};
+
+const validateEncryptedStringSignatureData_init = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_INIT,
+  };
+};
+
+const validateEncryptedStringSignatureData_success = (response, message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateEncryptedStringSignatureData_fail = (message) => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_FAIL,
+    message: message,
+  };
+};
+
+const validateEncryptedStringSignatureData_clear = () => {
+  return {
+    type: actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_CLEAR,
+  };
+};
+
+const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(validateEncryptedStringSignatureData_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      ValidateEncryptedStringSignatureDataRM.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: workflowApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringSignatureData_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateEncryptedStringSignatureData_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+              if (value === 1) {
+                window.open(
+                  `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
+                    JSON.stringify(response.data.responseResult.data.fileId)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+                localStorage.removeItem("docSignAction");
+              } else if (value === 2) {
+                window.open(
+                  `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+                    JSON.stringify(response.data.responseResult.data.fileId)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+                localStorage.removeItem("docSignedAction");
+              } else {
+                window.open(
+                  `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+                    JSON.stringify(response.data.responseResult.data.fileId)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+                localStorage.removeItem("docSignedCrAction");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringSignatureData_02".toLowerCase()
+                )
+            ) {
+              dispatch(validateEncryptedStringSignatureData_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_ValidateEncryptedStringSignatureData_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validateEncryptedStringSignatureData_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                validateEncryptedStringSignatureData_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              validateEncryptedStringSignatureData_fail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            validateEncryptedStringSignatureData_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch(() => {
+        dispatch(
+          validateEncryptedStringSignatureData_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 const clearWorkFlowResponseMessage = (response) => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_WORKFLOWREDUCER,
@@ -2580,4 +2721,5 @@ export {
   getAnnoationSignatrueFlow,
   addAnnoationSignatrueFlow,
   declineReasonApi,
+  validateEncryptedStringSignatureDataApi,
 };

@@ -202,6 +202,7 @@ const DataRoom = () => {
   const [isAscending, setIsAscending] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID");
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
   // thi state contains current file name which is ude to creat new folder
   const [directoryNames, setDirectoryNames] = useState("");
   // this state contain UploadingFolders Data
@@ -350,8 +351,8 @@ const DataRoom = () => {
       };
       dispatch(getRecentDocumentsApi(navigate, t, Data));
     } else if (currentView === 5) {
-      let newData = { IsCreator: true };
-      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      // let newData = { IsCreator: true };
+      // await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
 
       setGetAllData([]);
       setSharedwithmebtn(true);
@@ -368,6 +369,12 @@ const DataRoom = () => {
     }
     dispatch(BreadCrumbsList([]));
   };
+
+  useEffect(() => {
+    if (docSignedCrAction !== null) {
+      localStorage.setItem("setTableView", 5);
+    }
+  }, [docSignedCrAction]);
 
   useEffect(() => {
     try {
@@ -394,16 +401,19 @@ const DataRoom = () => {
     } catch {}
     let viewFol_action = localStorage.getItem("viewFolderLink");
     let documentViewer = localStorage.getItem("documentViewer");
-    if (currentView !== null) {
-      if (localStorage.getItem("BoardDeckFolderID") === null) {
-        apiCalling();
+    if (docSignedCrAction === null) {
+      if (currentView !== null) {
+        if (localStorage.getItem("BoardDeckFolderID") === null) {
+          apiCalling();
+        }
+      } else {
+        localStorage.setItem("setTableView", 3);
+        dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+        localStorage.removeItem("folderID");
+        localStorage.removeItem("BoardDeckFolderID");
       }
-    } else {
-      localStorage.setItem("setTableView", 3);
-      dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
-      localStorage.removeItem("folderID");
-      localStorage.removeItem("BoardDeckFolderID");
     }
+
     if (viewFol_action !== null) {
       const callApi = async () => {
         // Validate the encrypted committee view ID
@@ -463,17 +473,17 @@ const DataRoom = () => {
 
           const pdfDataJson = JSON.stringify(pdfData);
           openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+          localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
         }
       };
       callApi();
-      localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
     }
     return () => {
       localStorage.removeItem("folderID");
       localStorage.removeItem("setTableView");
       localStorage.removeItem("BoardDeckFolderID");
     };
-  }, []);
+  }, [docSignedCrAction]);
 
   useEffect(() => {
     // Add an event listener to track changes in online status
@@ -868,10 +878,7 @@ const DataRoom = () => {
     dispatch(BreadCrumbsList([]));
 
     localStorage.setItem("setTableView", 5);
-    // getAllPendingApprovalStatusApi
-    let newData = { IsCreator: true };
-    await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-
+  
     //  localStorage.set
     setGetAllData([]);
     setSharedwithmebtn(true);
@@ -2443,7 +2450,11 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <Tooltip className='d-flex gap-1 ' placement='top' title={text} showArrow={false}>
+              <Tooltip
+                className='d-flex gap-1 '
+                placement='top'
+                title={text}
+                showArrow={false}>
                 <img src={folderColor} alt='' draggable='false' />
                 <span
                   className={styles["dataroom_table_heading"]}
@@ -2457,7 +2468,11 @@ const DataRoom = () => {
         } else {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <Tooltip className='d-flex gap-1 ' placement='top' title={text} showArrow={false}>
+              <Tooltip
+                className='d-flex gap-1 '
+                placement='top'
+                title={text}
+                showArrow={false}>
                 <img
                   src={getIconSource(getFileExtension(record.name))}
                   alt=''
