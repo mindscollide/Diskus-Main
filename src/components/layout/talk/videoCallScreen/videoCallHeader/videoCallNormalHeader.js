@@ -907,53 +907,27 @@ const VideoCallNormalHeader = ({
     } catch {}
   }, [callerObject]);
 
-  const videoHideUnHideForParticipant = (flag) => {
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID
-    );
-    if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      // Prepare data for the API request
-      let data = {
-        RoomID: String(participantRoomIds),
-        HideVideo: flag, // Set HideVideo to true or false
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
-      };
-
-      // Dispatch the API request with the data
-      dispatch(hideUnhideSelfMainApi(navigate, t, data, 2));
-    } else {
-      console.log("Check");
-    }
-  };
-
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
     // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
-    console.log(
-      "videoHideUnHideForHost",
-      presenterViewFlag,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID,
-      getMeetingHostInfo.isHost,
-      newUserGUID,
-      participantUID
-    );
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      let participantRoomId = localStorage.getItem("participantRoomId");
+
       // Prepare data for the API request
+      let RoomID = presenterViewFlag
+        ? roomID
+        : isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId;
+
+      let UID = isMeetingVideoHostCheck ? newUserGUID : participantUID;
+
       let data = {
-        RoomID: String(presenterViewFlag ? roomID : newRoomID),
-        HideVideo: flag, // Set HideVideo to true or false
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
+        RoomID: String(RoomID),
+        HideVideo: !!flag, // Ensuring it's a boolean
+        UID: String(UID),
       };
 
       // Dispatch the API request with the data
@@ -969,10 +943,21 @@ const VideoCallNormalHeader = ({
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
+      let participantRoomId = localStorage.getItem("participantRoomId");
+
+      // Prepare data for the API request
+      let RoomID = presenterViewFlag
+        ? roomID
+        : isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId;
+
+      let UID = isMeetingVideoHostCheck ? newUserGUID : participantUID;
+
       let data = {
-        RoomID: String(presenterViewFlag ? roomID : newRoomID),
-        IsMuted: flag,
-        UID: String(isMeetingVideoHostCheck ? newUserGUID : participantUID),
+        RoomID: String(RoomID),
+        IsMuted: !!flag, // Ensuring it's a boolean
+        UID: String(UID),
       };
 
       // Dispatch the API request with the data
