@@ -1596,7 +1596,7 @@ const VideoCallNormalHeader = ({
                         ? t("Leave-presenting")
                         : t("Leave-call")
                     }
-                    onClick={() => leaveCall(false)}
+                    onClick={() => leaveCall(false,false,false)}
                   />
                   <Button
                     className="leave-meeting-options__btn leave-meeting-gray-button"
@@ -1609,7 +1609,9 @@ const VideoCallNormalHeader = ({
                   <Button
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
-                      presenterViewFlag && !presenterViewHostFlag
+                      presenterViewFlag && presenterViewHostFlag
+                        ? t("Stop-presenting")
+                        : presenterViewFlag && !presenterViewHostFlag
                         ? t("Leave-presenting")
                         : t("Leave-call")
                     }

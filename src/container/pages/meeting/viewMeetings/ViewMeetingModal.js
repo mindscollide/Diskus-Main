@@ -85,6 +85,18 @@ const ViewMeetingModal = ({
   const AgendaVotingModalStartedData = useSelector(
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
   console.log(typeof advanceMeetingOperations);
   const {
     editorRole,
@@ -837,6 +849,15 @@ const ViewMeetingModal = ({
                   text={t("Leave-meeting")}
                   onClick={leaveMeeting}
                   className={styles["LeavemeetingBtn"]}
+                  disableBtn={
+                    presenterViewFlag
+                      ? presenterViewHostFlag
+                        ? true
+                        : presenterViewJoinFlag
+                        ? true
+                        : false
+                      : false
+                  }
                 />
               </span>
             )}
