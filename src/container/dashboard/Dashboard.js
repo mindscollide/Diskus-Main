@@ -851,6 +851,9 @@ const Dashboard = () => {
             ) {
               console.log(data.payload, "mqtt");
               console.log(waitingParticipantsList, "mqtt");
+
+              dispatch(setAudioControlHost(false));
+              dispatch(setVideoControlHost(false));
               if (data.payload.isGuest) {
                 dispatch(guestLeaveVideoMeeting(data.payload.uid));
               } else {
@@ -919,6 +922,8 @@ const Dashboard = () => {
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 if (isZoomEnabled) {
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
                   await dispatch(setParticipantRemovedFromVideobyHost(true));
                 } else {
                   const meetingHost = {
@@ -1007,9 +1012,7 @@ const Dashboard = () => {
               dispatch(participantHideUnhideVideo(data.payload));
 
               if (data.payload.uid === isGuid) {
-                dispatch(
-                  setVideoControlHost(data.payload.isVideoHidden)
-                );
+                dispatch(setVideoControlHost(data.payload.isVideoHidden));
               }
 
               console.log(data.payload, "guestDataGuestDataVideo");
@@ -1068,13 +1071,9 @@ const Dashboard = () => {
                   localStorage.getItem("isMicEnabled")
                 );
                 console.log("iframeiframe", data.payload.userID);
-                dispatch(
-                  setAudioControlHost(audioControlForParticipantLocal)
-                );
+                dispatch(setAudioControlHost(audioControlForParticipantLocal));
                 console.log("iframeiframe", data.payload.userID);
-                dispatch(
-                  setVideoControlHost(videoControlForParticipantLoacl)
-                );
+                dispatch(setVideoControlHost(videoControlForParticipantLoacl));
 
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
@@ -1219,6 +1218,8 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
+              dispatch(setAudioControlHost(false));
+              dispatch(setVideoControlHost(false));
               stopPresenterView(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
@@ -3125,9 +3126,11 @@ const Dashboard = () => {
         if (
           data.payload.message
             .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase())
+            .includes(
+              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase()
+            )
         ) {
-          dispatch(  SignatureDocumentStatusChangeSignees(data.payload));
+          dispatch(SignatureDocumentStatusChangeSignees(data.payload));
         }
       }
     } catch (error) {}

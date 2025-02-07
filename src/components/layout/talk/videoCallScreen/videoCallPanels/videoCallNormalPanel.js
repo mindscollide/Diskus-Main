@@ -456,13 +456,6 @@ const VideoPanelNormal = () => {
           iframe.contentWindow.postMessage("leaveSession", "*");
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
-        localStorage.removeItem("presenterViewFlag");
-        localStorage.setItem("CallType", 0);
-        localStorage.setItem("activeRoomID", 0);
-        localStorage.removeItem("hostUrl");
-        localStorage.removeItem("isGuid");
-        localStorage.removeItem("participantUID");
-        localStorage.removeItem("newRoomId");
       } catch (error) {}
     };
 
@@ -472,41 +465,6 @@ const VideoPanelNormal = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [iframe]);
-
-  // useEffect(() => {
-  //   // Determine the control source based on the user role
-  //   if (isMeetingHost === false) {
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow !== null) {
-  //       if (audioControl === true) {
-  //         console.log("Check Connection");
-  //         iframe.contentWindow.postMessage("MicOn", "*");
-  //       } else {
-  //         iframe.contentWindow.postMessage("MicOff", "*");
-  //       }
-  //     }
-  //   }
-  // }, [audioControl]);
-
-  // useEffect(() => {
-  //   if (
-  //     isMeetingHost === false ||
-  //     (presenterViewFlag && !presenterViewHostFlag)
-  //   ) {
-  //     console.log("videoHideUnHideForHost");
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow !== null) {
-  //       console.log("videoHideUnHideForHost");
-  //       if (videoControl === true) {
-  //         console.log("videoHideUnHideForHost");
-  //         iframe.contentWindow.postMessage("VidOn", "*");
-  //       } else {
-  //         console.log("videoHideUnHideForHost");
-  //         iframe.contentWindow.postMessage("VidOff", "*");
-  //       }
-  //     }
-  //   }
-  // }, [videoControl]);
 
   useEffect(() => {
     if (getAllParticipantGuest?.length) {
@@ -627,13 +585,6 @@ const VideoPanelNormal = () => {
           ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
           : "";
       }
-
-      // let randomGuestName = generateRandomGuest();
-      console.log("iframeiframe", endIndexBaseURLCaller);
-      console.log("iframeiframe", extractedBaseURLCaller);
-      console.log("iframeiframe", isMeeting);
-      console.log("iframeiframe", callAcceptedRoomID);
-      console.log("iframeiframe", VideoCallResponseData);
 
       if (isMeeting === false) {
         if (callAcceptedRoomID && Number(callAcceptedRoomID) !== 0) {
@@ -854,8 +805,9 @@ const VideoPanelNormal = () => {
     console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
-      dispatch(setVideoControlHost(true));
+      await dispatch(setVideoControlHost(true));
       console.log("videoHideUnHideForHost");
+
       iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
@@ -863,16 +815,11 @@ const VideoPanelNormal = () => {
   };
   const handlePresenterViewForParticipent = async () => {
     console.log("Check Connection");
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow) {
-      console.log("Check Connection");
-      dispatch(setAudioControlHost(true));
-      dispatch(setVideoControlHost(true));
-    }
+    dispatch(setAudioControlHost(true));
+    dispatch(setVideoControlHost(true));
   };
 
   const handlerForStaringPresenterView = async () => {
-    const iframe = iframeRef.current;
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
@@ -885,7 +832,6 @@ const VideoPanelNormal = () => {
       RoomID: callAcceptedRoomID,
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
-    // iframe.contentWindow.postMessage("VidOff", "*");
     dispatch(startPresenterViewMainApi(navigate, t, data));
   };
 
