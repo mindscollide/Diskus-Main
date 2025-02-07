@@ -889,7 +889,7 @@ const VideoPanelNormal = () => {
   const handlerForStaringPresenterView = async () => {
     const iframe = iframeRef.current;
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-    let isMeetingVideoHostCheck = Number(
+    let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
     let isGuid = localStorage.getItem("isGuid");
