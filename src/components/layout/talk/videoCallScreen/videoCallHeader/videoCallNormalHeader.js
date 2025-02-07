@@ -1324,23 +1324,23 @@ const VideoCallNormalHeader = ({
             </div>
           )}
           {getMeetingHostInfo.isHost ||
-            (presenterViewHostFlag && presenterViewFlag && (
-              <div
-                className={
-                  LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "screenShare-Toggle inactive-state"
-                }
-              >
-                <Tooltip placement="topRight" title={t("Copy-link")}>
-                  <img
-                    onClick={() => copyToClipboardd()}
-                    src={CopyLink}
-                    alt="Copy Link"
-                  />
-                </Tooltip>
-              </div>
-            ))}
+          (presenterViewHostFlag && presenterViewFlag) ? (
+            <div
+              className={
+                LeaveCallModalFlag
+                  ? "grayScaleImage"
+                  : "screenShare-Toggle inactive-state"
+              }
+            >
+              <Tooltip placement="topRight" title={t("Copy-link")}>
+                <img
+                  onClick={copyToClipboardd}
+                  src={CopyLink}
+                  alt="Copy Link"
+                />
+              </Tooltip>
+            </div>
+          ) : null}
 
           {MaximizeVideoFlag && (
             <div
@@ -1596,7 +1596,7 @@ const VideoCallNormalHeader = ({
                         ? t("Leave-presenting")
                         : t("Leave-call")
                     }
-                    onClick={() => leaveCall(false,false,false)}
+                    onClick={() => leaveCall(false, false, false)}
                   />
                   <Button
                     className="leave-meeting-options__btn leave-meeting-gray-button"
