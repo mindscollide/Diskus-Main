@@ -38,6 +38,7 @@ import {
   setRaisedUnRaisedParticiant,
   setVideoControlHost,
   startPresenterViewMainApi,
+  stopPresenterViewMainApi,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
@@ -854,21 +855,17 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
             if (presenterViewFlag && presenterViewHostFlag) {
-              let meetingTitle = localStorage.getItem("meetingTitle");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
               );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
               let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(
-                  isMeetingVideoHostCheck ? isGuid : participantUID
-                ),
-                Name: String(meetingTitle),
+                MeetingID: currentMeetingID,
+                RoomID: callAcceptedRoomID,
               };
-              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+              sessionStorage.setItem("StopPresenterViewAwait", true);
+              console.log(data, "presenterViewJoinFlag");
+              dispatch(stopPresenterViewMainApi(navigate, t, data));
             }
 
             break;
