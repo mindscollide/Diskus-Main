@@ -1323,23 +1323,24 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {getMeetingHostInfo.isHost && (
-            <div
-              className={
-                LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : "screenShare-Toggle inactive-state"
-              }
-            >
-              <Tooltip placement="topRight" title={t("Copy-link")}>
-                <img
-                  onClick={() => copyToClipboardd()}
-                  src={CopyLink}
-                  alt="Copy Link"
-                />
-              </Tooltip>
-            </div>
-          )}
+          {getMeetingHostInfo.isHost ||
+            (presenterViewHostFlag && presenterViewFlag && (
+              <div
+                className={
+                  LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "screenShare-Toggle inactive-state"
+                }
+              >
+                <Tooltip placement="topRight" title={t("Copy-link")}>
+                  <img
+                    onClick={() => copyToClipboardd()}
+                    src={CopyLink}
+                    alt="Copy Link"
+                  />
+                </Tooltip>
+              </div>
+            ))}
 
           {MaximizeVideoFlag && (
             <div
