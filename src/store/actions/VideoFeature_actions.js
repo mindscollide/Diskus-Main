@@ -945,8 +945,6 @@ const getVideoUrlForParticipant = (response) => {
   };
 };
 
-
-
 // SET MQTTT FOR VOICE PARTICIPANT
 const setRaisedUnRaisedParticiant = (response) => {
   console.log(response, "datadtadttadtadta");
@@ -1586,7 +1584,8 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 localStorage.removeItem("newRoomId");
                 localStorage.removeItem("acceptedRoomID");
                 localStorage.removeItem("presenterViewvideoURL");
-
+                dispatch(setAudioControlHost(false));
+                dispatch(setVideoControlHost(false));
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
                 );
@@ -1868,6 +1867,8 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
+                dispatch(setAudioControlHost(false));
+                dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 dispatch(maximizeVideoPanelFlag(false));

@@ -966,7 +966,7 @@ const VideoCallNormalHeader = ({
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
-   
+
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
       let data = {
@@ -1094,12 +1094,7 @@ const VideoCallNormalHeader = ({
               placement="topRight"
               title={
                 getMeetingHostInfo?.isDashboardVideo
-                  ? getMeetingHostInfo.isHost ||
-                    (presenterViewFlag && presenterViewHostFlag)
-                    ? audioControl
-                      ? t("Enable-mic")
-                      : t("Disable-mic")
-                    : audioControl
+                  ? audioControl
                     ? t("Enable-mic")
                     : t("Disable-mic")
                   : isMicActive
@@ -1110,12 +1105,7 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost ||
-                      (presenterViewFlag && presenterViewHostFlag)
-                      ? audioControl
-                        ? MicOff
-                        : MicOn
-                      : audioControl
+                    ? audioControl
                       ? MicOff
                       : MicOn
                     : isMicActive
@@ -1124,12 +1114,7 @@ const VideoCallNormalHeader = ({
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost ||
-                      (presenterViewFlag && presenterViewHostFlag)
-                      ? muteUnMuteForHost(audioControl ? false : true)
-                      : muteUnMuteForParticipant(
-                          audioControl ? false : true
-                        )
+                    ? muteUnMuteForHost(audioControl ? false : true)
                     : disableMic()
                 }
                 alt="Mic"
@@ -1150,12 +1135,7 @@ const VideoCallNormalHeader = ({
               placement="topRight"
               title={
                 getMeetingHostInfo?.isDashboardVideo
-                  ? getMeetingHostInfo.isHost ||
-                    (presenterViewFlag && presenterViewHostFlag)
-                    ? videoControl
-                      ? t("Enable-video")
-                      : t("Disable-video")
-                    : videoControl
+                  ? videoControl
                     ? t("Enable-video")
                     : t("Disable-video")
                   : isVideoActive
@@ -1166,12 +1146,7 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost ||
-                      (presenterViewFlag && presenterViewHostFlag)
-                      ? videoControl
-                        ? VideoOff
-                        : VideoOn
-                      : videoControl
+                    ? videoControl
                       ? VideoOff
                       : VideoOn
                     : isVideoActive
@@ -1180,12 +1155,7 @@ const VideoCallNormalHeader = ({
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
-                    ? getMeetingHostInfo.isHost ||
-                      (presenterViewFlag && presenterViewHostFlag)
-                      ? videoHideUnHideForHost(videoControl ? false : true)
-                      : videoHideUnHideForParticipant(
-                          videoControl ? false : true
-                        )
+                    ? videoHideUnHideForHost(videoControl ? false : true)
                     : disableVideo()
                 }
                 alt="Video"

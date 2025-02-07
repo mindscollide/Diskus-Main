@@ -48,7 +48,9 @@ import {
   normalizeVideoPanelFlag,
   participantVideoButtonState,
   presenterViewGlobalState,
+  setAudioControlHost,
   setRaisedUnRaisedParticiant,
+  setVideoControlHost,
   toggleParticipantsVisibility,
   videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
@@ -745,7 +747,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     const handleBeforeUnload = async (event) => {
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
-
+        console.log("cacacacacacacacacc");
+        dispatch(setAudioControlHost(false));
+        dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
         localStorage.setItem("isMeeting", false);
@@ -778,6 +782,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("cacacacacacacacacc");
+      dispatch(setAudioControlHost(false));
+      dispatch(setVideoControlHost(false));
+      localStorage.removeItem("presenterViewFlag");
+      localStorage.setItem("CallType", 0);
+      localStorage.setItem("activeRoomID", 0);
+      localStorage.removeItem("hostUrl");
+      localStorage.removeItem("isGuid");
+      localStorage.removeItem("participantUID");
+      localStorage.removeItem("newRoomId");
       dispatch(presenterViewGlobalState(0, false, false, false));
       localStorage.setItem("isMeeting", false);
       dispatch(removeCalenderDataFunc(null));
