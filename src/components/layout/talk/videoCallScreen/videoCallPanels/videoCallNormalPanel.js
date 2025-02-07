@@ -244,7 +244,7 @@ const VideoPanelNormal = () => {
   const [isMeetingHost, setIsMeetingHost] = useState(
     meetingHost?.isHost ? true : false
   );
-  const iframe = iframeRef.current;
+  let iframe = iframeRef.current;
   let micStatus = JSON.parse(localStorage.getItem("MicOff"));
   let vidStatus = JSON.parse(localStorage.getItem("VidOff"));
 
@@ -887,13 +887,15 @@ const VideoPanelNormal = () => {
   };
 
   const handlerForStaringPresenterView = async () => {
-    console.log("handlePostMessage", iframe);
+    const iframe = iframeRef.current;
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = Number(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
-    let isGuid =localStorage.getItem("isGuid");
-    let participantUID =localStorage.getItem("participantUID");
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    console.log("handlePostMessage", participantUID);
+    console.log("handlePostMessage", isGuid);
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
@@ -901,6 +903,7 @@ const VideoPanelNormal = () => {
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
 
+    iframe.contentWindow.postMessage("VidOff", "*"); // Replace with actual origin
     dispatch(startPresenterViewMainApi(navigate, t, data));
   };
 
@@ -1041,8 +1044,7 @@ const VideoPanelNormal = () => {
   const closeParticipantsList = () => {
     dispatch(toggleParticipantsVisibility(false));
   };
-
-  localStorage.setItem("videoIframe", iframeRef.current);
+  
   useEffect(() => {
     try {
       if (makeParticipantAsHost) {
