@@ -7553,6 +7553,7 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
                 t("Successfully-updated")
               )
             );
+            localStorage.removeItem("RSVP");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -7560,6 +7561,8 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
                 "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_02".toLowerCase()
               )
           ) {
+            localStorage.removeItem("RSVP");
+
             navigate("/Diskus/Meeting");
             dispatch(
               validateEmptyStringUserAvailibilityFailed(t("Validation-failed"))
@@ -7576,6 +7579,7 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
                 t("Something-went-wrong")
               )
             );
+            localStorage.removeItem("RSVP");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -7588,27 +7592,32 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
                 t("Failed-to-update-attendee-avaliability")
               )
             );
+            localStorage.removeItem("RSVP");
           } else {
             dispatch(
               validateEmptyStringUserAvailibilityFailed(
                 t("Something-went-wrong")
               )
             );
+            localStorage.removeItem("RSVP");
           }
         } else {
           dispatch(
             validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
           );
+          localStorage.removeItem("RSVP");
         }
       } else {
         dispatch(
           validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
         );
+        localStorage.removeItem("RSVP");
       }
     } catch (error) {
       dispatch(
         validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
       );
+      localStorage.removeItem("RSVP");
     }
   };
 };
@@ -10266,4 +10275,5 @@ export {
   GetMeetingStatusDataAPI,
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
+  validateEmptyStringUserAvailibilityFailed,
 };

@@ -23,6 +23,7 @@ import {
   getAllPendingApprovalStatusApi,
   getAllSignatoriesStatusWise_Api,
   getAllSignaturesDocumentsforCreatorApi,
+  validateEncryptedStringSignatureDataApi,
 } from "../../../../store/actions/workflow_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -60,13 +61,30 @@ const ApprovalSend = () => {
   const [signatoriesList, setSignatoriesList] = useState(false);
   const [originalData, setOriginalData] = useState([]);
   const [visible, setVisible] = useState(false);
-  console.log(approvalsData, "approvalsDataapprovalsData");
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
   const [fileNameSort, setFileNameSort] = useState(null);
   const [signatoriesSort, setSignatoriesSort] = useState(null);
 
+  useEffect(() => {
+    const apiFunc = async () => {
+      let newData = { IsCreator: true };
+      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    };
+    apiFunc();
+  }, []);
+
+  useEffect(() => {
+    if(docSignedCrAction !== null) {
+      let Data = {
+        EncryptedString: docSignedCrAction,
+      };
+      dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 3));
+    }
+  }, [docSignedCrAction])
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
   };
@@ -456,7 +474,30 @@ const ApprovalSend = () => {
           (reviewSignatureData, index) =>
             reviewSignatureData.workFlowID === data.workFlowID
         );
-        if (findIfExist === undefined) {
+        if (findIfExist !== undefined) {
+          setApprovalsData((approvalsDataCopy) =>
+            approvalsDataCopy.map((data2) =>
+              data2.workFlowID === data.workFlowID
+                ? {
+                    ...data2,
+                    status: data.status,
+                    workFlowStatusID: data.workFlowStatusID,
+                  }
+                : data2
+            )
+          );
+          setOriginalData((approvalsDataCopy) =>
+            approvalsDataCopy.map((data2) =>
+              data2.workFlowID === data.workFlowID
+                ? {
+                    ...data2,
+                    status: data.status,
+                    workFlowStatusID: data.workFlowStatusID,
+                  }
+                : data2
+            )
+          );
+        } else {
           setApprovalsData([data, ...approvalsData]);
           setOriginalData([data, ...originalData]);
           setTotalRecords(totalRecords + 1);
@@ -469,7 +510,7 @@ const ApprovalSend = () => {
     try {
       if (workflowSignaturedocumentStatusChange !== null) {
         const { data } = workflowSignaturedocumentStatusChange;
-        setApprovalsData((approvalsDataCopy) => 
+        setApprovalsData((approvalsDataCopy) =>
           approvalsDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
@@ -485,7 +526,6 @@ const ApprovalSend = () => {
       console.error("Error updating approvals data:", error);
     }
   }, [workflowSignaturedocumentStatusChange]);
-  
 
   const antIcon = (
     <LoadingOutlined
