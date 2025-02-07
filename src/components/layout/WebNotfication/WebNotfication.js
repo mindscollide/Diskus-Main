@@ -1282,60 +1282,23 @@ const WebNotfication = ({
         // if the poll has been deleted
         navigate("/Diskus/polling");
       } else if (NotificationData.notificationActionID === 46) {
-        //For Voter Voted on His POll
-        if (isMeeting && setPolls) {
-          return;
+        //For Voter Voted on His POll from main poll
+        if (currentURL.includes("/Diskus/polling")) {
+          let userID = localStorage.getItem("userID");
+          let data = {
+            PollID: Number(PayLoadData.PollID),
+            UserID: parseInt(userID),
+          };
+          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
         } else {
-          if (currentURL.includes("/Diskus/Meeting")) {
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-            //set Local storage flag for identification for polls
-            localStorage.setItem("viewadvanceMeetingPolls", true);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                true,
-                setViewAdvanceMeetingModal,
-                1,
-                setVideoTalk
-              )
-            );
-          } else {
-            navigate("/Diskus/Meeting");
-            localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-            localStorage.setItem("AdvanceMeetingOperations", true);
-            localStorage.setItem(
-              "NotificationAdvanceMeetingID",
-              PayLoadData.MeetingID
-            );
-            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-            //set Local storage flag for identification for polls
-            localStorage.setItem("viewadvanceMeetingPolls", true);
-            setAdvanceMeetingModalID(PayLoadData.MeetingID);
-            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
-            dispatch(
-              GetMeetingStatusDataAPI(
-                navigate,
-                t,
-                Data,
-                setEditorRole,
-                false,
-                false,
-                1,
-                setVideoTalk
-              )
-            );
-          }
+          //Notification for Poll has been Created submit your response
+          navigate("/Diskus/polling");
+          let userID = localStorage.getItem("userID");
+          let data = {
+            PollID: Number(PayLoadData.PollID),
+            UserID: parseInt(userID),
+          };
+          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
         }
       } else if (NotificationData.notificationActionID === 47) {
         //For participant has Give Vote on a Poll inside advance meeting
@@ -1500,6 +1463,9 @@ const WebNotfication = ({
             )
           );
         }
+      } else if (NotificationData.notificationActionID === 51) {
+        // Deleted Main POll
+        navigate("/Diskus/polling");
       } else {
       }
     }
