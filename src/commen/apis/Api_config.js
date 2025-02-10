@@ -1591,7 +1591,7 @@ const CancelTrailandUpdageOrganiztionRM = {
 };
 
 const GetAllSignatureFlowDocumentsForCreatorRM = {
-  RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreator",
+  RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreatorWithFilters",
 };
 
 const ListOfPendingForApprovalSignaturesRM = {

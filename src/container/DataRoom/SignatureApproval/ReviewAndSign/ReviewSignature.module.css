@@ -152,13 +152,21 @@ p.draftStatus {
 }
 
 .ReviewMinutes_emptyTitle_tag {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
-  color: #5A5A5A;
+  color: #5a5a5a;
   line-height: 15px;
 }
 
-
-
+.signatories_vale {
+  color: #6172d6;
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

@@ -24,6 +24,7 @@ import {
   getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
+  getAllSignatoriesStatusWise_Api,
   validateEncryptedStringSignatureDataApi,
 } from "../../../../store/actions/workflow_actions";
 import { useSelector } from "react-redux";
@@ -35,7 +36,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
-
+import SignatoriesListModal from '../ApprovalSend/SignatoriesList/SignatoriesListModal'
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const ReviewSignature = () => {
   console.log(approvalStats, "approvalStatsapprovalStats");
   const [reviewSignature, setReviewSignature] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  const [signatoriesList, setSignatoriesList] = useState(false);
 
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -110,7 +112,6 @@ const ReviewSignature = () => {
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
-
 
   useEffect(() => {
     const callFunc = async () => {
@@ -219,6 +220,16 @@ const ReviewSignature = () => {
     </Menu>
   );
 
+  const handleClickSignatoriesList = (record) => {
+    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    // setSignatureListVal(value);
+    // setSignatoriesList(true);
+    let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
+    dispatch(
+      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList)
+    );
+  };
+
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
@@ -263,6 +274,31 @@ const ReviewSignature = () => {
           <span>{text}</span>
         </p>
       ),
+    },
+    {
+      // Column for signatories
+      title: (
+        <>
+          <span className='d-flex gap-2 justify-content-center'>
+            {t("Signatories")}
+          </span>
+        </>
+      ),
+      dataIndex: "numberOfSignatories",
+      key: "numberOfSignatories",
+      ellipsis: true,
+      width: "20%",
+      align: "center",
+
+      render: (text, record) => {
+        return (
+          <span
+            onClick={() => handleClickSignatoriesList(record)}
+            className={
+              styles["signatories_vale"]
+            }>{` ${text} Signatories`}</span>
+        );
+      },
     },
     {
       title: (
@@ -313,7 +349,7 @@ const ReviewSignature = () => {
       title: (
         <>
           <span className='d-flex justify-content-center gap-2 align-items-center'>
-            {t("Date-and-time")}{" "}
+            {t("Sent-on")}{" "}
             {sortOrderDateTime === "descend" ? (
               <img src={ArrowUpIcon} alt='' />
             ) : (
@@ -379,7 +415,9 @@ const ReviewSignature = () => {
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
             }>
-            {status}
+            {status?.toLowerCase() === "Pending Signature".toLowerCase()
+              ? t("Signature-pending")
+              : status}
           </p>
         );
       },
@@ -608,7 +646,7 @@ const ReviewSignature = () => {
                       currentLanguage
                     )}
                   </span>
-                  <span className={styles["value"]}>{t("Decline")}</span>
+                  <span className={styles["value"]}>{t("Declined")}</span>
                 </div>
               </Col>
             </Row>
@@ -668,6 +706,12 @@ const ReviewSignature = () => {
         setOpen={(status) => setOpen({ ...open, open: status.open })}
         severity={open.severity}
       />
+      {signatoriesList && (
+        <SignatoriesListModal
+          signatories_List={signatoriesList}
+          setSignatoriesList={setSignatoriesList}
+        />
+      )}
     </>
   );
 };
