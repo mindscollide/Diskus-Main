@@ -245,6 +245,58 @@ const App = () => {
   ].some((loading) => loading);
 
   const [showLoader, setShowLoader] = useState(false);
+  console.log(
+    {
+      showLoader,
+      NewMeetingreducerLoading: NewMeetingreducer?.Loading,
+      authLoading: auth?.Loading,
+      assigneesLoading: assignees?.Loading,
+      MeetingOrganizersReducerLoadingMeetingOrganizer:
+        MeetingOrganizersReducer?.LoadingMeetingOrganizer,
+      MeetingOrganizersReducerLoading: MeetingOrganizersReducer?.Loading,
+      PollsReducerLoading: PollsReducer?.Loading,
+      CommitteeReducerLoading: CommitteeReducer?.Loading,
+      toDoListReducerLoading: toDoListReducer?.Loading,
+      todoStatusLoading: todoStatus?.Loading,
+      getTodosStatusLoading: getTodosStatus?.Loading,
+      MeetingAgendaReducerLoading: MeetingAgendaReducer?.Loading,
+      actionMeetingReducerLoading: actionMeetingReducer?.Loading,
+      AgendaWiseAgendaListReducerLoading: AgendaWiseAgendaListReducer?.loading,
+      downloadReducerLoading: downloadReducer?.Loading,
+      attendanceMeetingReducerLoading: attendanceMeetingReducer?.Loading,
+      webViewerLoading: webViewer?.Loading,
+      LanguageReducerLoading: LanguageReducer?.Loading,
+      uploadReducerLoading: uploadReducer?.Loading,
+      settingReducerLoading: settingReducer?.Loading,
+      fAQsReducerLoading: fAQsReducer?.Loading,
+      meetingIdReducerLoading: meetingIdReducer?.Loading,
+      calendarReducerLoading: calendarReducer?.Loading,
+      OnBoardModalLoading: OnBoardModal?.Loading,
+      postAssigneeCommentsLoading: postAssigneeComments?.Loading,
+      VideoChatReducerLoading: VideoChatReducer?.Loading,
+      minuteofMeetingReducerLoading: minuteofMeetingReducer?.Loading,
+      countryNamesReducerLoading: countryNamesReducer?.Loading,
+      GetSubscriptionPackageLoading: GetSubscriptionPackage?.Loading,
+      AuthreducerLoading: Authreducer?.Loading,
+      roleListReducerLoading: roleListReducer?.Loading,
+      NotesReducerLoading: NotesReducer?.Loading,
+      GroupsReducerLoading: GroupsReducer?.Loading,
+      GroupsReducerGetAllLoading: GroupsReducer?.getAllLoading,
+      ResolutionReducerLoading: ResolutionReducer?.Loading,
+      RealtimeNotificationLoading: RealtimeNotification?.Loading,
+      OrganizationBillingReducerLoading: OrganizationBillingReducer?.Loading,
+      DataRoomReducerLoading: DataRoomReducer?.Loading,
+      MinutesReducerLoading: MinutesReducer?.Loading,
+      UserManagementModalsLoading: UserManagementModals?.Loading,
+      DataRoomFileAndFoldersDetailsReducerLoading:
+        DataRoomFileAndFoldersDetailsReducer?.Loading,
+      SignatureWorkFlowReducerLoading: SignatureWorkFlowReducer?.Loading,
+      adminReducerLoading: adminReducer?.Loading,
+      UserReportReducerLoading: UserReportReducer?.Loading,
+      UserMangementReducerLoading: UserMangementReducer?.Loading,
+    },
+    "showLoadershowLoadershowLoader"
+  );
 
   // useEffect(() => {
   //   let timer;
