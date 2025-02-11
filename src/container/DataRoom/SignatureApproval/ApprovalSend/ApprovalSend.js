@@ -52,7 +52,6 @@ const ApprovalSend = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [signatureListVal, setSignatureListVal] = useState(0);
   const [approvalsData, setApprovalsData] = useState([]);
   const [rowsDataLength, setDataLength] = useState(0);
   const [pageNo, setPageNo] = useState(0);
@@ -62,7 +61,12 @@ const ApprovalSend = () => {
   const [originalData, setOriginalData] = useState([]);
   const [visible, setVisible] = useState(false);
   const docSignedCrAction = localStorage.getItem("docSignedCrAction");
-
+  const [sortingData, setSortingData] = useState({
+    sentOn: 0,
+    title: 0,
+    statusID: [],
+  });
+  console.log(sortingData, "sortingDatasortingData");
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -78,44 +82,51 @@ const ApprovalSend = () => {
   }, []);
 
   useEffect(() => {
-    if(docSignedCrAction !== null) {
+    if (docSignedCrAction !== null) {
       let Data = {
         EncryptedString: docSignedCrAction,
       };
       dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 3));
     }
-  }, [docSignedCrAction])
+  }, [docSignedCrAction]);
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
   };
-  const resetFilter = () => {
-    try {
-      const { statusList } =
-        SignatureWorkFlowReducer.getAllPendingApprovalStatuses;
-      let defaultStatus = [];
-      if (statusList.length > 0) {
-        statusList.forEach((statusData, index) => {
-          defaultStatus.push(Number(statusData.statusID));
-        });
-        setDefaultReviewAndSignatureStatus(defaultStatus);
-      }
-    } catch (error) {}
-    setApprovalsData(originalData);
+  const resetFilter = async () => {
+    setSortingData({
+      ...sortingData,
+      statusID: [],
+      sentOn: 0,
+      title: 0,
+    });
     setVisible(false);
+    let Data = {
+      sRow: 0,
+      Length: 10,
+      SentOnSort: 0,
+      StatusIDs: [],
+      TitleSort: 0,
+    };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
   };
 
   const handleMenuClick = (filterValue) => {
-    setDefaultReviewAndSignatureStatus((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => value !== filterValue)
-        : [...prevValues, filterValue]
-    );
+    setSortingData((prevState) => ({
+      ...prevState,
+      statusID: prevState.statusID.includes(filterValue)
+        ? prevState.statusID.filter((value) => value !== filterValue)
+        : [...prevState.statusID, filterValue],
+    }));
   };
-  const handleApplyFilter = () => {
-    const filteredData = originalData.filter((item) =>
-      defaultreviewAndSignatureStatus.includes(item.workFlowStatusID)
-    );
-    setApprovalsData(filteredData);
+  const handleApplyFilter = async () => {
+    let Data = {
+      sRow: 0,
+      Length: 10,
+      SentOnSort: sortingData.sentOn,
+      StatusIDs: sortingData.statusID,
+      TitleSort: sortingData.title,
+    };
+    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     setVisible(false);
   };
 
@@ -125,8 +136,7 @@ const ApprovalSend = () => {
         <Menu.Item
           key={filter.value}
           onClick={() => handleMenuClick(filter.value)}>
-          <Checkbox
-            checked={defaultreviewAndSignatureStatus.includes(filter.value)}>
+          <Checkbox checked={sortingData.statusID.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
@@ -140,7 +150,7 @@ const ApprovalSend = () => {
         />
         <Button
           text={"Ok"}
-          disableBtn={defaultreviewAndSignatureStatus.length === 0}
+          disableBtn={sortingData.statusID.length === 0 ? true : false}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
@@ -148,6 +158,35 @@ const ApprovalSend = () => {
     </Menu>
   );
 
+  const handleSortingFunc = async (sortTab) => {
+    if (sortTab === "title") {
+      setSortingData({
+        ...sortingData,
+        title: sortingData.title === 1 ? 2 : 1,
+      });
+      let Data = {
+        sRow: 0,
+        Length: 10,
+        SentOnSort: sortingData.sentOn,
+        StatusIDs: sortingData.statusID,
+        TitleSort: sortingData.title === 1 ? 2 : 1,
+      };
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    } else if (sortTab === "sentOn") {
+      setSortingData({
+        ...sortingData,
+        sentOn: sortingData.sentOn === 1 ? 2 : 1,
+      });
+      let Data = {
+        sRow: 0,
+        Length: 10,
+        SentOnSort: sortingData.sentOn === 1 ? 2 : 1,
+        StatusIDs: sortingData.statusID,
+        TitleSort: sortingData.title,
+      };
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    }
+  };
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
     {
@@ -156,7 +195,7 @@ const ApprovalSend = () => {
         <>
           <span className='d-flex gap-2'>
             {t("File-name")}
-            {fileNameSort === "descend" ? (
+            {sortingData.title === 2 ? (
               <img src={DescendIcon} alt='' />
             ) : (
               <img src={AscendIcon} alt='' />
@@ -169,16 +208,13 @@ const ApprovalSend = () => {
       className: "nameParticipant",
       align: "start",
       ellipsis: true,
+      tooltip: false,
       width: "30%",
       sortDirections: ["ascend", "descend"],
       sorter: (a, b) => a.fileName - b.fileName, // Custom sorter function for sorting by name
       onHeaderCell: () => ({
         onClick: () => {
-          setFileNameSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
+          handleSortingFunc("title");
         },
       }),
       render: (text, record) => {
@@ -199,38 +235,14 @@ const ApprovalSend = () => {
     },
     {
       // Column for signatories
-      title: (
-        <>
-          <span className='d-flex gap-2 justify-content-center'>
-            {t("Signatories")}
-            {signatoriesSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
-            ) : (
-              <img src={AscendIcon} alt='' />
-            )}
-          </span>
-        </>
-      ),
+      title: t("Signatories"),
       dataIndex: "numberOfSignatories",
       key: "numberOfSignatories",
       ellipsis: true,
       width: "20%",
       align: "center",
-      onHeaderCell: () => ({
-        onClick: () => {
-          setSignatoriesSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+
       render: (text, record) => {
-        console.log(
-          text,
-          record,
-          "numberOfSignatoriesnumberOfSignatoriesnumberOfSignatories"
-        );
         if (record?.workFlowStatusID === 4) {
           return (
             <span className={styles["status_draft_signatoriesList"]}></span>
@@ -248,13 +260,35 @@ const ApprovalSend = () => {
     },
     {
       // Column for sent-on date
-      title: t("Sent-on"),
+      title: (
+        <>
+          {" "}
+          <Row>
+            <Col className='d-flex align-items-center justify-content-center gap-2'>
+              {t("Sent-on")}
+              {sortingData.sentOn === 2 ? (
+                <img src={ArrowUpIcon} />
+              ) : (
+                <img src={ArrowDownIcon} />
+              )}
+            </Col>
+          </Row>
+        </>
+      ),
       dataIndex: "sentOn",
       key: "sentOn",
       className: "leaveTimeParticipant",
-
       width: "15%",
-
+      onHeaderCell: () => ({
+        onClick: () => {
+          handleSortingFunc("sentOn");
+          // setSignatoriesSort((order) => {
+          //   if (order === "descend") return "ascend";
+          //   if (order === "ascend") return null;
+          //   return "descend";
+          // });
+        },
+      }),
       ellipsis: true,
       render: (text, record) => {
         if (text === "-") {
@@ -436,6 +470,12 @@ const ApprovalSend = () => {
       }
     } else {
       setIsScrolling(false);
+      setApprovalsData([]);
+      setTotalRecords(0);
+      setPageNo(1);
+
+      setDataLength(0);
+      setIsScrolling(false);
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
@@ -550,7 +590,14 @@ const ApprovalSend = () => {
     );
     if (approvalsData.length > 0 && rowsDataLength <= totalRecords) {
       setIsScrolling(true);
-      let Data = { sRow: Number(rowsDataLength), Length: 10 };
+      let Data = {
+        sRow: Number(rowsDataLength),
+        Length: 10,
+        SentOnSort: sortingData.sentOn,
+        StatusIDs: sortingData.statusID,
+        TitleSort: sortingData.title,
+      };
+
       await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
   };
@@ -628,7 +675,6 @@ const ApprovalSend = () => {
         <SignatoriesListModal
           signatories_List={signatoriesList}
           setSignatoriesList={setSignatoriesList}
-          signatureListVal={signatureListVal}
         />
       )}
     </>

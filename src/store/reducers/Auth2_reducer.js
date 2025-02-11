@@ -177,12 +177,7 @@ const AuthReducer = (state = initialState, action) => {
     case actions.PASSWORDVALIDATION_FAIL: {
       return {
         ...state,
-        Loading:
-          action.response !== undefined &&
-          action.response !== null &&
-          action.response === true
-            ? true
-            : false,
+        Loading: false,
         EnterPasswordResponse: null,
         EnterPasswordResponseMessage: action.message,
       };
