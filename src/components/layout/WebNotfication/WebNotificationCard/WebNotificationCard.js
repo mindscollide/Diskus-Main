@@ -251,7 +251,7 @@ const WebNotificationCard = ({
         } else if (NotificaitonID === 46) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-given-his-vote-on-a-poll"
-          )} ${NotificationMessege.MeetingTitle}`;
+          )} ${NotificationMessege.PollTitle}`;
         } else if (NotificaitonID === 47) {
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-given-his-vote-on-a-poll-in-the-meeting"
@@ -268,6 +268,10 @@ const WebNotificationCard = ({
           message = `${NotificationMessege.NotifierName} ${t(
             "Has-changed-his-vote-in"
           )} ${NotificationMessege.ResolutionTitle}`;
+        } else if (NotificaitonID === 51) {
+          message = `${NotificationMessege.NotifierName} ${t(
+            "Has-deleted-the-poll-main"
+          )} ${NotificationMessege.PollTitle}`;
         } else {
           message = "Default Notification Message";
         }
@@ -405,6 +409,8 @@ const WebNotificationCard = ({
             <img src={TaskAssignedInMeeting} width={46} alt="" />
           ) : NotificaitonID === 50 ? (
             <img src={ChangeResolutionVoter} width={46} alt="" />
+          ) : NotificaitonID === 51 ? (
+            <img src={PollDelted} width={46} alt="" />
           ) : null}
 
           <span className={styles["NotificationMessegeUnmarked"]}>

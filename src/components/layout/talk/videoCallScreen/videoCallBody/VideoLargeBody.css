@@ -1,7 +1,15 @@
 .normal-avatar-large {
-    height: 75vh;
+  height: 75vh;
 }
 
 .normal-avatar-large img {
-    width: 100%;
+  width: 100%;
+}
+
+.normal-Presenter-avatar-large {
+  height: 85vh !important;
+}
+
+.normal-Presenter-avatar-large img {
+  width: 100%;
 }

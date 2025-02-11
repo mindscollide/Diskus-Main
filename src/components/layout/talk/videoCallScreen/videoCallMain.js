@@ -106,17 +106,19 @@ const VideoMain = () => {
       >
         <VideoPanelNormal />
       </div>
-      <div
-        className={
-          videoFeatureReducer.NormalizeVideoFlag === false &&
-          videoFeatureReducer.MinimizeVideoFlag === true &&
-          videoFeatureReducer.MaximizeVideoFlag === false
-            ? "d-block"
-            : "d-none"
-        }
-      >
-        <VideoCallMinimizeHeader />
-      </div>
+      {videoFeatureReducer.MinimizeVideoFlag && (
+        <div
+          className={
+            videoFeatureReducer.NormalizeVideoFlag === false &&
+            videoFeatureReducer.MinimizeVideoFlag === true &&
+            videoFeatureReducer.MaximizeVideoFlag === false
+              ? "d-block"
+              : "d-none"
+          }
+        >
+          <VideoCallMinimizeHeader />
+        </div>
+      )}
     </>
   );
 };

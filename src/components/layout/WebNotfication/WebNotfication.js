@@ -1279,10 +1279,7 @@ const WebNotfication = ({
         // if the resolution has been deleted
         navigate("/Diskus/resolution");
       } else if (NotificationData.notificationActionID === 45) {
-        // if the poll has been deleted
-        navigate("/Diskus/polling");
-      } else if (NotificationData.notificationActionID === 46) {
-        //For Voter Voted on His POll
+        // if the poll has been deleted in the meeting
         if (isMeeting && setPolls) {
           return;
         } else {
@@ -1336,6 +1333,25 @@ const WebNotfication = ({
               )
             );
           }
+        }
+      } else if (NotificationData.notificationActionID === 46) {
+        //For Voter Voted on His POll from main poll
+        if (currentURL.includes("/Diskus/polling")) {
+          let userID = localStorage.getItem("userID");
+          let data = {
+            PollID: Number(PayLoadData.PollID),
+            UserID: parseInt(userID),
+          };
+          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+        } else {
+          //Notification for Poll has been Created submit your response
+          navigate("/Diskus/polling");
+          let userID = localStorage.getItem("userID");
+          let data = {
+            PollID: Number(PayLoadData.PollID),
+            UserID: parseInt(userID),
+          };
+          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
         }
       } else if (NotificationData.notificationActionID === 47) {
         //For participant has Give Vote on a Poll inside advance meeting
@@ -1500,6 +1516,9 @@ const WebNotfication = ({
             )
           );
         }
+      } else if (NotificationData.notificationActionID === 51) {
+        // Deleted Main POll
+        navigate("/Diskus/polling");
       } else {
       }
     }
