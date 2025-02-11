@@ -415,22 +415,12 @@ const VideoCallNormalHeader = ({
           console.log(data, "presenterViewJoinFlag");
           dispatch(stopPresenterViewMainApi(navigate, t, data));
         } else {
-          if (alreadyInMeetingVideo) {
-            sessionStorage.removeItem("alreadyInMeetingVideo");
-            await dispatch(presenterViewGlobalState(0, false, false, false));
-            dispatch(maximizeVideoPanelFlag(false));
-            dispatch(normalizeVideoPanelFlag(true));
-            dispatch(minimizeVideoPanelFlag(false));
-          } else {
-            let data = {
-              RoomID: String(RoomID),
-              UserGUID: String(
-                isMeetingVideoHostCheck ? isGuid : participantUID
-              ),
-              Name: String(meetingTitle),
-            };
-            dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
-          }
+          let data = {
+            RoomID: String(RoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(meetingTitle),
+          };
+          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
         }
       }
     } else {
@@ -1385,7 +1375,7 @@ const VideoCallNormalHeader = ({
             >
               <div
                 className={
-                  LeaveCallModalFlag === true
+                  LeaveCallModalFlag === true || presenterViewFlag
                     ? "grayScaleImage"
                     : "inactive-state"
                 }
@@ -1394,13 +1384,15 @@ const VideoCallNormalHeader = ({
                   src={
                     NormalizeVideoFlag
                       ? ExpandIcon
-                      : MaximizeVideoFlag
+                      : MaximizeVideoFlag || !presenterViewFlag
                       ? NormalizeIcon
                       : null
                   }
                   onClick={
                     NormalizeVideoFlag
                       ? otoMaximizeVideoPanel
+                      : presenterViewFlag && MaximizeVideoFlag
+                      ? null
                       : MaximizeVideoFlag
                       ? normalizeScreen
                       : null

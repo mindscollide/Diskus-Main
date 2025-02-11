@@ -213,6 +213,11 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterMeetingId
   );
 
+  const presenterParticipantAlreadyInMeetingVideo = useSelector(
+    (state) =>
+      state.videoFeatureReducer.presenterParticipantAlreadyInMeetingVideo
+  );
+
   console.log(presenterViewHostFlag, "presenterViewHostFlag");
   console.log(presenterViewFlag, "presenterViewFlag");
 
@@ -737,6 +742,20 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [newRoomID]);
 
+  useEffect(() => {
+    try {
+      if (presenterParticipantAlreadyInMeetingVideo) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          // Post message to iframe
+          iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+        } else {
+          console.log("share screen Iframe contentWindow is not available.");
+        }
+      }
+    } catch {}
+  }, [presenterParticipantAlreadyInMeetingVideo]);
+
   // Function to trigger the action in the iframe
   // const handleScreenShareButton = async () => {
   //   if (!LeaveCallModalFlag) {
@@ -814,6 +833,7 @@ const VideoPanelNormal = () => {
       console.log("share screen Iframe contentWindow is not available.");
     }
   };
+
   const handlePresenterViewForParticipent = async () => {
     console.log("Check Connection");
     dispatch(setAudioControlHost(true));
@@ -833,12 +853,15 @@ const VideoPanelNormal = () => {
       RoomID: callAcceptedRoomID,
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
-    dispatch(startPresenterViewMainApi(navigate, t, data));
+    dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
   // Add event listener for messages
   useEffect(() => {
+    console.log("eventevent");
+
     const messageHandler = (event) => {
+      console.log(event.data, "eventevent");
       // Check the origin for security
       if (event.origin === "https://portal.letsdiskus.com:9414") {
         // if (event.origin === "http://localhost:5500") {
@@ -847,7 +870,11 @@ const VideoPanelNormal = () => {
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
             setIsScreenActive(true); // Show a modal or perform an action
-            if (presenterViewFlag && presenterViewHostFlag) {
+            if (presenterParticipantAlreadyInMeetingVideo) {
+              dispatch(setAudioControlHost(true));
+              dispatch(setVideoControlHost(true));
+              handlerForStaringPresenterView();
+            } else if (presenterViewFlag && presenterViewHostFlag) {
               handlerForStaringPresenterView();
             }
 
@@ -878,6 +905,7 @@ const VideoPanelNormal = () => {
               handlePresenterViewForParticipent();
             }
             break;
+
           case "ScreenSharedCancelMsg":
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
@@ -888,6 +916,7 @@ const VideoPanelNormal = () => {
               );
               let participantUID = localStorage.getItem("participantUID");
               let isGuid = localStorage.getItem("isGuid");
+              localStorage.setItem("VidOff", false);
               let data = {
                 RoomID: String(callAcceptedRoomID),
                 UserGUID: String(

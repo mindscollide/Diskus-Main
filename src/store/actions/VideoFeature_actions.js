@@ -1431,7 +1431,7 @@ const startPresenterFail = (message) => {
   };
 };
 
-const startPresenterViewMainApi = (navigate, t, data) => {
+const startPresenterViewMainApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(startPresenterInit());
@@ -1450,7 +1450,7 @@ const startPresenterViewMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(startPresenterViewMainApi(navigate, t, data));
+          dispatch(startPresenterViewMainApi(navigate, t, data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1460,6 +1460,19 @@ const startPresenterViewMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase()
                 )
             ) {
+              try {
+                if (flag === 1) {
+                  let currentMeeting = localStorage.getItem("currentMeetingID");
+
+                  dispatch(
+                    presenterViewGlobalState(currentMeeting, true, true, true)
+                  );
+                  dispatch(maximizeVideoPanelFlag(true));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                }
+              } catch (error) {}
+
               dispatch(presenterStartedMainFlag(true));
               await dispatch(
                 startPresenterSuccess(
@@ -1572,8 +1585,8 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
                 );
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(maximizeVideoPanelFlag(true));
+                dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.removeItem("presenterViewvideoURL");
               } else {
@@ -1862,6 +1875,9 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
               localStorage.removeItem("newRoomId");
               localStorage.removeItem("acceptedRoomID");
               localStorage.removeItem("presenterViewvideoURL");
+              let alreadyInMeetingVideo = JSON.parse(
+                sessionStorage.getItem("alreadyInMeetingVideo")
+              );
               if (flag === 1) {
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
@@ -1871,9 +1887,16 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
                 dispatch(presenterViewGlobalState(0, false, false, false));
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(minimizeVideoPanelFlag(false));
+                if (alreadyInMeetingVideo) {
+                  sessionStorage.removeItem("alreadyInMeetingVideo");
+                  dispatch(maximizeVideoPanelFlag(true));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                } else {
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                }
               }
 
               await dispatch(
@@ -1914,7 +1937,6 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
 
 // Stop Meeting Video By presenter View when Some one Already Join the meeting Video
 const stopMeetingVideoByPresenter = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW,
     response: response,
@@ -1923,9 +1945,17 @@ const stopMeetingVideoByPresenter = (response) => {
 
 // For Presenter Join Started Main State
 const presenterStartedMainFlag = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.PRESENTER_STARTED_MAIN_FLAG,
+    response: response,
+  };
+};
+
+//Global State for start presenter view flag for already In participant Meeting Video
+const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO,
     response: response,
   };
 };
@@ -2026,4 +2056,5 @@ export {
   leavePresenterViewMainApi,
   stopMeetingVideoByPresenter,
   presenterStartedMainFlag,
+  presenterFlagForAlreadyInParticipantMeetingVideo,
 };
