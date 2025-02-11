@@ -891,6 +891,7 @@ const VideoPanelNormal = () => {
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");
       // Check the origin for security
+      console.log("handlePostMessage", event.data);
       if (event.origin === "https://portal.letsdiskus.com:9414") {
         // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received

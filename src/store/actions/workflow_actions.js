@@ -1267,7 +1267,7 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_01".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreatorWithFilters_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1280,7 +1280,7 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_02".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreatorWithFilters_02".toLowerCase()
                 )
             ) {
               dispatch(getAllSignaturesDocumentsforCreator_fail(""));
@@ -1288,7 +1288,7 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreator_03".toLowerCase()
+                  "WorkFlow_WorkFlowServiceManager_GetAllSignatureFlowDocumentsForCreatorWithFilters_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1586,7 +1586,13 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                 "isCreatorisCreatorisCreatorisCreator"
               );
               if (Data.IsCreator) {
-                let Data = { sRow: 0, Length: 10 };
+                let Data = {
+                  sRow: 0,
+                  Length: 10,
+                  SentOnSort: 0,
+                  StatusIDs: [],
+                  TitleSort: 0,
+                };
                 await dispatch(
                   getAllSignaturesDocumentsforCreatorApi(navigate, t, Data)
                 );
