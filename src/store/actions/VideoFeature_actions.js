@@ -1581,6 +1581,9 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   : false
               );
               if (alreadyInMeetingVideo) {
+                dispatch(
+                  presenterFlagForAlreadyInParticipantMeetingVideo(false)
+                );
                 sessionStorage.removeItem("alreadyInMeetingVideo");
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
@@ -1888,6 +1891,9 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
               } else if (flag === 2) {
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 if (alreadyInMeetingVideo) {
+                  dispatch(
+                    presenterFlagForAlreadyInParticipantMeetingVideo(false)
+                  );
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
