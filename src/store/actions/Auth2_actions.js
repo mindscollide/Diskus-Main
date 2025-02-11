@@ -578,16 +578,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
           // clearLocalStorageAtloginresponce(dispatch, 3, navigate);
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
-          dispatch(
+          await dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
               t("Password-verified-admin-user")
             )
           );
-          mqttConnection(
-            response.data.responseResult.authToken.userID,
-            dispatch
-          );
+
           handleNavigation(
             navigate,
             response.data.responseResult.authToken.isFirstLogIn,
@@ -595,7 +592,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             response.data.responseResult.hasAdminRights,
             dispatch
           );
-
+          await mqttConnection(
+            response.data.responseResult.authToken.userID,
+            dispatch
+          );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_11:
           if (response.data.responseResult.hasAdminRights) {
@@ -618,6 +618,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
+          dispatch(
+            enterPasswordSuccess(
+              response.data.responseResult,
+              t("Password-verified-admin")
+            )
+          );
           mqttConnection(
             response.data.responseResult.authToken.userID,
             dispatch
@@ -3406,7 +3412,7 @@ const validateStringOTPEmail_fail = (message) => {
     message: message,
   };
 };
-const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
+const validateStringOTPEmail_Api = (Data, navigate, t) => {
   return (dispatch) => {
     dispatch(validateStringOTPEmail_init());
     let form = new FormData();
@@ -3450,7 +3456,6 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
                 response?.data?.responseResult?.data?.organizationID
               );
               localStorage.setItem("LoginFlowPageRoute", 3);
-              setStoredStep(3);
               dispatch(LoginFlowRoutes(3));
               const currentUrl = window.location.href;
               const baseUrl = currentUrl.split("?")[0];
@@ -3465,7 +3470,6 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
             ) {
               dispatch(validateStringOTPEmail_fail(t("Validation-Failed")));
               localStorage.setItem("LoginFlowPageRoute", 1);
-              setStoredStep(1);
               dispatch(LoginFlowRoutes(1));
             } else if (
               response.data.responseResult.responseMessage
@@ -3475,31 +3479,26 @@ const validateStringOTPEmail_Api = (Data, navigate, t, setStoredStep) => {
                 )
             ) {
               localStorage.setItem("LoginFlowPageRoute", 1);
-              setStoredStep(1);
               dispatch(LoginFlowRoutes(1));
               dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
             } else {
               localStorage.setItem("LoginFlowPageRoute", 1);
-              setStoredStep(1);
               dispatch(LoginFlowRoutes(1));
               dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
             }
           } else {
             localStorage.setItem("LoginFlowPageRoute", 1);
-            setStoredStep(1);
             dispatch(LoginFlowRoutes(1));
             dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
           }
         } else {
           localStorage.setItem("LoginFlowPageRoute", 1);
-          setStoredStep(1);
           dispatch(LoginFlowRoutes(1));
           dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         localStorage.setItem("LoginFlowPageRoute", 1);
-        setStoredStep(1);
         dispatch(LoginFlowRoutes(1));
         dispatch(validateStringOTPEmail_fail(t("Something-went-wrong")));
       });

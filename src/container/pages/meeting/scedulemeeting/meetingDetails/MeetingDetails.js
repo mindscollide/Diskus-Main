@@ -1571,7 +1571,8 @@ const MeetingDetails = ({
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
-                      editorRole.role === "Organizer" &&
+                      (editorRole.role === "Organizer" ||
+                        editorRole.role === "Agenda Contributor") &&
                       isEditMeeting === true
                         ? true
                         : false
