@@ -288,7 +288,9 @@ const VideoNewParticipantList = () => {
   return (
     <section
       className={
-        NormalizeVideoFlag
+        presenterViewFlag
+          ? styles["Waiting-New-Participant-List-For-Presenter"]
+          : NormalizeVideoFlag
           ? styles["WaitingParticipantBoxNorm"]
           : styles["Waiting-New-Participant-List"]
       }
@@ -504,16 +506,17 @@ const VideoNewParticipantList = () => {
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             {usersData.isGuest === false ||
-                              (!presenterViewFlag && !presenterViewHostFlag && (
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() => makeHostOnClick(usersData)}
-                                >
-                                  {t("Make-host")}
-                                </Dropdown.Item>
-                              ))}
+                            (!presenterViewFlag && !presenterViewHostFlag) ? (
+                              <Dropdown.Item
+                                className="participant-dropdown-item"
+                                onClick={() => makeHostOnClick(usersData)}
+                              >
+                                {t("Make-host")}
+                              </Dropdown.Item>
+                            ) : null}
 
-                            {usersData.isHost === false && (
+                            {usersData.isHost === false ||
+                            (!presenterViewFlag && !presenterViewHostFlag) ? (
                               <Dropdown.Item
                                 className="participant-dropdown-item"
                                 onClick={() =>
@@ -522,7 +525,7 @@ const VideoNewParticipantList = () => {
                               >
                                 {t("Remove")}
                               </Dropdown.Item>
-                            )}
+                            ) : null}
                             {usersData.mute === false ? (
                               <>
                                 <Dropdown.Item

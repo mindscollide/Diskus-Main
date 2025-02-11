@@ -93,7 +93,7 @@ const initialState = {
   leavePresenterView: null,
   meetingStoppedByPresenter: false,
   presenterStartedFlag: false,
-
+  presenterParticipantAlreadyInMeetingVideo: false,
   // startOrStopPresenter: false,
 };
 
@@ -1000,6 +1000,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         presenterStartedFlag: action.response,
+      };
+
+    //State for start presenter view flag for already In participant Meeting Video
+    case actions.START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO:
+      return {
+        ...state,
+        presenterParticipantAlreadyInMeetingVideo: action.response,
       };
 
     // Start and Stop Presenter View State
