@@ -719,6 +719,8 @@ const AgendaViewer = () => {
       sessionStorage.getItem("NonMeetingVideoCall")
     );
 
+    sessionStorage.setItem("alreadyInMeetingVideo", true);
+
     if (nonMeetingCheck) {
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
@@ -749,8 +751,12 @@ const AgendaViewer = () => {
   const onClickStartPresenter = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
+      console.log("presenterFlagForAlreadyInParticipantMeetingVideo");
+
       dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       sessionStorage.setItem("alreadyInMeetingVideo", true);
+      sessionStorage.setItem("alreadyInMeetingVideoStartPresenterCheck", true);
+
       localStorage.setItem("acceptedRoomID", RoomID);
       // dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
       // dispatch(maximizeVideoPanelFlag(true));

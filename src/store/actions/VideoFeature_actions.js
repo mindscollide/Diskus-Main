@@ -1463,8 +1463,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               try {
                 if (flag === 1) {
                   let currentMeeting = localStorage.getItem("currentMeetingID");
-
-                  dispatch(
+                  await dispatch(
                     presenterViewGlobalState(currentMeeting, true, true, true)
                   );
                   dispatch(maximizeVideoPanelFlag(true));
@@ -1870,7 +1869,6 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 )
             ) {
               dispatch(presenterStartedMainFlag(false));
-
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
               localStorage.removeItem("videoIframe");
@@ -1891,9 +1889,6 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
               } else if (flag === 2) {
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 if (alreadyInMeetingVideo) {
-                  dispatch(
-                    presenterFlagForAlreadyInParticipantMeetingVideo(false)
-                  );
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));

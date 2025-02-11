@@ -426,10 +426,15 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
+    );
 
     if (isMeeting) {
       if (String(meetingVideoID) === String(payload?.meetingID)) {
-        if (
+        if (alreadyInMeetingVideoStartPresenterCheck) {
+          sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
+        } else if (
           !presenterViewFlagRef.current &&
           !presenterViewJoinFlagRef.current
         ) {
