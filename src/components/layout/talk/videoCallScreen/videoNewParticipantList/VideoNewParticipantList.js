@@ -61,6 +61,12 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
+  const newJoinPresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+  );
+
+  console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
+
   console.log(
     { presenterViewHostFlag, presenterViewFlag },
     "presenterViewFlagpresenterViewFlag"
@@ -285,6 +291,11 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
+
+  const participantsToDisplay = presenterViewFlag
+    ? newJoinPresenterParticipant
+    : filteredParticipants;
+
   return (
     <section
       className={
@@ -371,8 +382,8 @@ const VideoNewParticipantList = () => {
       {/* Participants Name List */}
       <Col sm={12} md={12} lg={12}>
         <div className={styles["Waiting-New-ParticipantNameList"]}>
-          {filteredParticipants.length > 0 ? (
-            filteredParticipants.map((usersData, index) => {
+          {participantsToDisplay.length > 0 ? (
+            participantsToDisplay.map((usersData, index) => {
               console.log(usersData, "usersDatausersData");
               return (
                 <>

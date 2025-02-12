@@ -59,6 +59,7 @@ import {
   presenterViewGlobalState,
   leavePresenterViewMainApi,
   stopMeetingVideoByPresenter,
+  presenterNewParticipantJoin,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -1226,6 +1227,12 @@ const Dashboard = () => {
               dispatch(setAudioControlHost(false));
               dispatch(setVideoControlHost(false));
               stopPresenterView(data.payload);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
+            ) {
+              dispatch(presenterNewParticipantJoin(data.payload));
+              console.log(data.payload, "checkdatacheckdata");
             } else if (
               data.payload.message.toLowerCase() ===
               "UPCOMING_EVENTS_REMOVE".toLowerCase()

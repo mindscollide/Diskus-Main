@@ -94,6 +94,7 @@ const initialState = {
   meetingStoppedByPresenter: false,
   presenterStartedFlag: false,
   presenterParticipantAlreadyInMeetingVideo: false,
+  newJoinPresenterParticipant: [],
   // startOrStopPresenter: false,
 };
 
@@ -1007,6 +1008,17 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         presenterParticipantAlreadyInMeetingVideo: action.response,
+      };
+
+    // global state for Presenter Participants who joined Presenter Video
+    case actions.PRESENTER_JOIN_PARTICIPANT_VIDEO:
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO", action.response);
+      return {
+        ...state,
+        newJoinPresenterParticipant: [
+          ...state.newJoinPresenterParticipant, // Keep existing participants
+          action.response.newParticipant, // Add new participant
+        ],
       };
 
     // Start and Stop Presenter View State

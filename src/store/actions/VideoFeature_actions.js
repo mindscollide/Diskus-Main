@@ -1961,6 +1961,15 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
   };
 };
 
+// global state for Presenter Participants who joined Presenter Video
+const presenterNewParticipantJoin = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -2058,4 +2067,5 @@ export {
   stopMeetingVideoByPresenter,
   presenterStartedMainFlag,
   presenterFlagForAlreadyInParticipantMeetingVideo,
+  presenterNewParticipantJoin,
 };

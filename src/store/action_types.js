@@ -3628,3 +3628,7 @@ export const VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_CLEAR =
 //Global State for start presenter view flag for already In participant Meeting Video
 export const START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO =
   "START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO";
+
+// global state for Presenter Participants who joined Presenter Video
+export const PRESENTER_JOIN_PARTICIPANT_VIDEO =
+  "PRESENTER_JOIN_PARTICIPANT_VIDEO";
