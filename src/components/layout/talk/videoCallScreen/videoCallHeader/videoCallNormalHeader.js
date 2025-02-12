@@ -51,6 +51,8 @@ import {
   leavePresenterViewMainApi,
   stopPresenterViewMainApi,
   presenterViewGlobalState,
+  videoIconOrButtonState,
+  participantVideoButtonState,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -382,71 +384,59 @@ const VideoCallNormalHeader = ({
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
   }
-  let alreadyInMeetingVideo = JSON.parse(
-    sessionStorage.getItem("alreadyInMeetingVideo")
-      ? sessionStorage.getItem("alreadyInMeetingVideo")
-      : false
-  );
+
   // after presenter view is true then this funct call
   async function handlePresenterViewFunc() {
-    console.log(presenterViewFlag, "presenterViewFlag");
+    let alreadyInMeetingVideo = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideo")
+    );
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
     console.log("busyCall");
-
-    // if (Number(currentMeetingID) !== Number(presenterMeetingId)) {
-    //   leaveSuccess();
-    //   return;
-    // }
-    console.log("busyCall");
-
-    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
     if (presenterViewHostFlag) {
       console.log("busyCall");
-      console.log(presenterViewHostFlag, "presenterViewHostFlag");
+      if (!alreadyInMeetingVideo) {
+        await leaveSuccess();
+      }
+      // Stop presenter view
+      if (presenterStartedFlag) {
+        let data = {
+          MeetingID: currentMeetingID,
+          RoomID: RoomID,
+        };
+        sessionStorage.setItem("StopPresenterViewAwait", true);
+        console.log(data, "presenterViewJoinFlag");
 
-      if (presenterViewJoinFlag) {
-        console.log(presenterViewJoinFlag, "presenterViewJoinFlag");
-        // Stop presenter view
-        if (presenterStartedFlag) {
-          let data = {
-            MeetingID: currentMeetingID,
-            RoomID: RoomID,
-          };
-          sessionStorage.setItem("StopPresenterViewAwait", true);
-          console.log(data, "presenterViewJoinFlag");
-          dispatch(stopPresenterViewMainApi(navigate, t, data));
-        } else {
-          let data = {
-            RoomID: String(RoomID),
-            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-            Name: String(meetingTitle),
-          };
-          dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
-        }
+        await dispatch(stopPresenterViewMainApi(navigate, t, data));
+      } else {
+        let data = {
+          RoomID: String(RoomID),
+          UserGUID: String(UID),
+          Name: String(meetingTitle),
+        };
+        await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       }
     } else {
       console.log("busyCall");
-
       if (presenterViewJoinFlag) {
         // Leave presenter view
-        if (alreadyInMeetingVideo) {
-          sessionStorage.removeItem("alreadyInMeetingVideo");
-          await dispatch(presenterViewGlobalState(0, false, false, false));
-          dispatch(maximizeVideoPanelFlag(false));
-          dispatch(normalizeVideoPanelFlag(true));
-          dispatch(minimizeVideoPanelFlag(false));
+        // localStorage.setItem("isMeetingVideoHostCheck", true);
+        // sessionStorage.removeItem("alreadyInMeetingVideo");
+        if (isMeetingVideoHostCheck) {
+          dispatch(videoIconOrButtonState(false));
         } else {
-          let data = {
-            RoomID: String(RoomID),
-            UserGUID: String(UID),
-            Name: String(meetingTitle),
-          };
-
-          dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+          dispatch(participantVideoButtonState(false));
         }
+        let data = {
+          RoomID: String(RoomID),
+          UserGUID: String(UID),
+          Name: String(meetingTitle),
+        };
+        await dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        leaveSuccess();
       }
     }
-
-    leaveSuccess();
   }
 
   const endCallParticipant = async () => {

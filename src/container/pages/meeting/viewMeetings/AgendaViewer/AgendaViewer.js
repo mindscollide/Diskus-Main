@@ -810,20 +810,20 @@ const AgendaViewer = () => {
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
       } else if (value === 3) {
-        if (alreadyInMeetingVideo) {
-          sessionStorage.removeItem("alreadyInMeetingVideo");
-          await dispatch(presenterViewGlobalState(0, false, false, false));
-          dispatch(maximizeVideoPanelFlag(false));
-          dispatch(normalizeVideoPanelFlag(true));
-          dispatch(minimizeVideoPanelFlag(false));
-        } else {
-          let data = {
-            RoomID: String(callAcceptedRoomID),
-            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-            Name: String(meetingTitle),
-          };
-          dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
-        }
+        // if (alreadyInMeetingVideo) {
+        sessionStorage.removeItem("alreadyInMeetingVideo");
+        //   await dispatch(presenterViewGlobalState(0, false, false, false));
+        //   dispatch(maximizeVideoPanelFlag(false));
+        //   dispatch(normalizeVideoPanelFlag(true));
+        //   dispatch(minimizeVideoPanelFlag(false));
+        // } else {
+        let data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          Name: String(meetingTitle),
+        };
+        dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        // }
       }
       // }
     } catch (error) {}
