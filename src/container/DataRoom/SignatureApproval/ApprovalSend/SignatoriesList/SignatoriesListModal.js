@@ -20,6 +20,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
   const [combinedData, setCombinedData] = useState([]);
   const [alignedData, setAlignedData] = useState([]);
   const [maxRows, setMaxRows] = useState(0);
+  const [TotalCountOfSignatories, setTotalCountOfSignatories] = useState(0);
 
   useEffect(() => {
     if (SignatureWorkFlowReducer.getAllSignatoriesStatusWise) {
@@ -29,6 +30,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           declinedSignatories,
           pendingSignatories,
           declinedComments,
+          totalSignatoriesCount,
         } = SignatureWorkFlowReducer.getAllSignatoriesStatusWise;
 
         let newSignedSig = signedSignatories.map((signedData) => ({
@@ -49,7 +51,7 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
           isDecline: false,
           isPending: true,
         }));
-
+        setTotalCountOfSignatories(totalSignatoriesCount);
         setSignedSignatories(signedSignatories.length);
         setDeclineSignatories(declinedSignatories.length);
         setPendingSignatories(pendingSignatories.length);
@@ -184,7 +186,12 @@ const SignatoriesList = ({ setSignatoriesList, signatories_List }) => {
         <Row>
           <Col sm={12}>
             <h2 className={styles["Signatories_heading"]}>
-              {t("Signatories")}
+              {t("Signatories")}{" "}
+              {`(${
+                TotalCountOfSignatories < 9
+                  ? `0${TotalCountOfSignatories}`
+                  : TotalCountOfSignatories
+              })`}
             </h2>
           </Col>
           <Col sm={12} className={styles["signatoriesUsers"]}>

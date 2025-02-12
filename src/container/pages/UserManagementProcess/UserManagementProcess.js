@@ -34,7 +34,7 @@ const UserManagementProcess = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
-  let userManagementRoute = Number(localStorage.getItem("LoginFlowPageRoute"));
+  let userManagementRoute = localStorage.getItem("LoginFlowPageRoute");
 
   const UserMangementReducerdefaultRoutingValue = useSelector(
     (state) => state.UserMangementReducer.defaultRoutingValue
@@ -82,7 +82,7 @@ const UserManagementProcess = () => {
         let commingfromSignFlow = localStorage.getItem("commingfromSignFlow");
         if (commingfromSignFlow === null) {
           localStorage.setItem("LoginFlowPageRoute", 1);
-          setStoredStep(1);
+          // setStoredStep(1);
           dispatch(LoginFlowRoutes(1));
         } else {
           dispatch(LoginFlowRoutes(storedStep));
@@ -99,12 +99,8 @@ const UserManagementProcess = () => {
   }, [currentUrl]);
 
   useEffect(() => {
-    if (userManagementRoute !== null && userManagementRoute !== 0) {
+    if (userManagementRoute === null) {
       console.log("LoginFlowPageRoute", userManagementRoute);
-      setStoredStep(userManagementRoute);
-    } else {
-      console.log("LoginFlowPageRoute");
-      setStoredStep(1);
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
   }, [userManagementRoute]);
@@ -236,7 +232,7 @@ const UserManagementProcess = () => {
     "storedStepstoredStep"
   );
 
-  if (UserMangementReducerdefaultRoutingValue === 1 && storedStep === 1) {
+  if (UserMangementReducerdefaultRoutingValue === 1) {
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducerdefaultRoutingValue === 2) {
     componentToRender = <PasswordVerification />;
