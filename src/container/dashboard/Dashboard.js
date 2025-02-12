@@ -60,6 +60,9 @@ import {
   leavePresenterViewMainApi,
   stopMeetingVideoByPresenter,
   participantWaitingListBox,
+  toggleParticipantsVisibility,
+  getVideoCallParticipantsMainApi,
+  participantListWaitingListMainApi,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -188,7 +191,10 @@ import {
 } from "../../store/actions/DataRoom_actions";
 import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScreen/LeaveVideoIntimationModal/LeaveVideoIntimationModal";
-import { admitGuestUserRequest } from "../../store/actions/Guest_Video";
+import {
+  admitGuestUserRequest,
+  transferMeetingHostSuccess,
+} from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
 import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
@@ -443,8 +449,8 @@ const Dashboard = () => {
           await dispatch(
             presenterViewGlobalState(meetingVideoID, true, false, true)
           );
-           dispatch(setAudioControlHost(true));
-          dispatch(setVideoControlHost(true))
+          dispatch(setAudioControlHost(true));
+          dispatch(setVideoControlHost(true));
           dispatch(maximizeVideoPanelFlag(true));
           dispatch(normalizeVideoPanelFlag(false));
           dispatch(minimizeVideoPanelFlag(false));
@@ -469,8 +475,24 @@ const Dashboard = () => {
     let StopPresenterViewAwait = JSON.parse(
       sessionStorage.getItem("StopPresenterViewAwait")
     );
+    let userIDCurrent = Number(localStorage.getItem("userID"));
+
+    let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+    let hostUrl = localStorage.getItem("hostUrl");
+    let newRoomId = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let alreadyInMeetingVideo = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideo")
+        ? sessionStorage.getItem("alreadyInMeetingVideo")
+        : false
+    );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       if (isMeeting) {
         if (
@@ -479,11 +501,6 @@ const Dashboard = () => {
         ) {
           console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
           if (presenterViewFlagRef.current) {
-            let alreadyInMeetingVideo = JSON.parse(
-              sessionStorage.getItem("alreadyInMeetingVideo")
-                ? sessionStorage.getItem("alreadyInMeetingVideo")
-                : false
-            );
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
             if (alreadyInMeetingVideo) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -504,6 +521,68 @@ const Dashboard = () => {
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
+            }
+          }
+        }
+        if (alreadyInMeetingVideo) {
+          if (isMeetingVideoHostCheck) {
+            if (payload.hostID !== userIDCurrent) {
+              // remove me from host
+              const meetingHost = {
+                isHost: false,
+                isHostId: 0,
+                isDashboardVideo: true,
+              };
+              console.log("makeHostOnClick", meetingHost);
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              dispatch(makeHostNow(meetingHost));
+
+              localStorage.setItem("hostUrl", refinedVideoUrl);
+              localStorage.setItem("participantRoomId", newRoomId);
+              localStorage.setItem("participantUID", isGuid);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
+              localStorage.setItem("isHost", false);
+              // localStorage.removeItem("isGuid");
+              dispatch(participantWaitingListBox(false));
+              dispatch(toggleParticipantsVisibility(false));
+
+              let Data = {
+                RoomID: String(newRoomId),
+              };
+              await dispatch(
+                getVideoCallParticipantsMainApi(Data, navigate, t)
+              );
+
+              await dispatch(transferMeetingHostSuccess(true));
+            }
+          } else {
+            if (payload.hostID === userIDCurrent) {
+              const meetingHost = {
+                isHost: true,
+                isHostId: userIDCurrent,
+                isDashboardVideo: true,
+              };
+              localStorage.setItem(
+                "meetinHostInfo",
+                JSON.stringify(meetingHost)
+              );
+              dispatch(makeHostNow(meetingHost));
+              localStorage.setItem("refinedVideoUrl", hostUrl);
+              localStorage.setItem("newRoomId", participantRoomId);
+              localStorage.setItem("isGuid", participantUID);
+              localStorage.setItem("isMeetingVideoHostCheck", true);
+              localStorage.setItem("isHost", true);
+              console.log("check 22");
+              dispatch(videoIconOrButtonState(true));
+              dispatch(participantVideoButtonState(false));
+              let Data = {
+                RoomID: String(participantRoomId),
+              };
+              dispatch(participantListWaitingListMainApi(Data, navigate, t));
+              // make me host
             }
           }
         }
