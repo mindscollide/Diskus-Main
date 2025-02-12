@@ -83,11 +83,14 @@ import {
   joinPresenterViewMainApi,
   makeHostNow,
   maximizeVideoPanelFlag,
+  maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   openPresenterViewMainApi,
   participantVideoButtonState,
   participantVideoNavigationScreen,
+  participantWaitingListBox,
+  presenterViewGlobalState,
   setAudioControlHost,
   setVideoControlHost,
   videoChatPanel,
@@ -9157,10 +9160,18 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
+
               try {
                 // for closed waiting an start presenting
+                console.log("maximizeParticipantVideoFlag");
+                let currentMeeting = localStorage.getItem("currentMeetingID");
                 if (flag === 1) {
-                  let currentMeeting = localStorage.getItem("currentMeetingID");
+                  console.log("maximizeParticipantVideoFlag");
+                  console.log("maximizeParticipantVideoFlag");
+
+                  await dispatch(videoIconOrButtonState(false));
+                  await dispatch(participantVideoButtonState(false));
+                  await dispatch(maxParticipantVideoCallPanel(false));
                   dispatch(
                     openPresenterViewMainApi(
                       t,
@@ -9170,6 +9181,17 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                       4
                     )
                   );
+                } else if (flag === 2) {
+                  let currentMeetingVideoURL =
+                    localStorage.getItem("videoCallURL");
+                  await dispatch(videoIconOrButtonState(false));
+                  await dispatch(participantVideoButtonState(false));
+                  await dispatch(maxParticipantVideoCallPanel(false));
+                  let data = {
+                    VideoCallURL: String(currentMeetingVideoURL),
+                    WasInVideo: false,
+                  };
+                  dispatch(joinPresenterViewMainApi(navigate, t, data));
                 }
               } catch {}
 

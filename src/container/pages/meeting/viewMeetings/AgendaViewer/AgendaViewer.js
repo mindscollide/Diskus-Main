@@ -751,12 +751,46 @@ const AgendaViewer = () => {
 
   const onClickStartPresenter = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    if (isMeetingVideo) {
-      console.log("presenterFlagForAlreadyInParticipantMeetingVideo");
+    let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
+    let leaveRoomId = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.roomID
+      : 0;
 
-      dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
-      sessionStorage.setItem("alreadyInMeetingVideo", true);
-      sessionStorage.setItem("alreadyInMeetingVideoStartPresenterCheck", true);
+    let userGUID = getJoinMeetingParticipantorHostrequest
+      ? getJoinMeetingParticipantorHostrequest.guid
+      : 0;
+    let newName = localStorage.getItem("name");
+    let currentMeetingID = localStorage.getItem("currentMeetingID");
+    if (isMeetingVideo) {
+      if (isWaiting) {
+        sessionStorage.removeItem("isWaiting");
+        console.log("maximizeParticipantVideoFlag");
+        let Data = {
+          RoomID: leaveRoomId,
+          UserGUID: userGUID,
+          Name: String(newName),
+          IsHost: false,
+          MeetingID: Number(currentMeetingID),
+        };
+        console.log("maximizeParticipantVideoFlag");
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL || ""),
+          Guid: "",
+          WasInVideo: Boolean(isMeetingVideo),
+        };
+        console.log("maximizeParticipantVideoFlag");
+        dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
+      } else {
+        console.log("maximizeParticipantVideoFlag");
+        console.log("presenterFlagForAlreadyInParticipantMeetingVideo");
+
+        dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
+        sessionStorage.setItem("alreadyInMeetingVideo", true);
+        sessionStorage.setItem(
+          "alreadyInMeetingVideoStartPresenterCheck",
+          true
+        );
+      }
 
       localStorage.setItem("acceptedRoomID", RoomID);
       // dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
@@ -764,43 +798,24 @@ const AgendaViewer = () => {
       // dispatch(normalizeVideoPanelFlag(false));
       // dispatch(minimizeVideoPanelFlag(false));
     } else {
+      console.log("maximizeParticipantVideoFlag");
       if (maximizeParticipantVideoFlag) {
-        let isWaiting = sessionStorage.getItem("isWaiting");
-        let leaveRoomId = getJoinMeetingParticipantorHostrequest
-          ? getJoinMeetingParticipantorHostrequest.roomID
-          : 0;
+        console.log("maximizeParticipantVideoFlag");
 
-        let userGUID = getJoinMeetingParticipantorHostrequest
-          ? getJoinMeetingParticipantorHostrequest.guid
-          : 0;
-        let newName = localStorage.getItem("name");
-        let currentMeetingID = localStorage.getItem("currentMeetingID");
-        if (isWaiting) {
-          let Data = {
-            RoomID: leaveRoomId,
-            UserGUID: userGUID,
-            Name: String(newName),
-            IsHost: false,
-            MeetingID: Number(currentMeetingID),
-          };
-          let data = {
-            VideoCallURL: String(currentMeetingVideoURL || ""),
-            Guid: "",
-            WasInVideo: Boolean(isMeetingVideo),
-          };
-          dispatch(LeaveMeetingVideo(Data, navigate, t,1,data));
-        } else {
-          dispatch(maxParticipantVideoCallPanel(false));
-          let data = {
-            VideoCallURL: String(currentMeetingVideoURL || ""),
-            Guid: "",
-            WasInVideo: Boolean(isMeetingVideo),
-          };
+        console.log("maximizeParticipantVideoFlag");
 
-          dispatch(
-            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
-          );
-        }
+        dispatch(videoIconOrButtonState(false));
+        dispatch(participantVideoButtonState(false));
+        dispatch(maxParticipantVideoCallPanel(false));
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL || ""),
+          Guid: "",
+          WasInVideo: Boolean(isMeetingVideo),
+        };
+
+        dispatch(
+          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+        );
       } else {
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),

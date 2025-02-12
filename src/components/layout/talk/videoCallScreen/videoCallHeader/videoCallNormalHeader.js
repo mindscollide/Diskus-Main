@@ -410,6 +410,9 @@ const VideoCallNormalHeader = ({
 
         await dispatch(stopPresenterViewMainApi(navigate, t, data));
       } else {
+        if (iframeCurrent && iframeCurrent.contentWindow) {
+          iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
+        }
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -417,8 +420,6 @@ const VideoCallNormalHeader = ({
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       }
-      iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
-      
     } else {
       console.log("busyCall");
       if (presenterViewJoinFlag) {
