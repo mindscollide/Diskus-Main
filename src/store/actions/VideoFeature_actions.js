@@ -1743,7 +1743,6 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                   "acceptedRoomID",
                   response.data.responseResult.roomID
                 );
-                sessionStorage.removeItem("alreadyInMeetingVideo");
                 localStorage.setItem(
                   "acceptedRoomID",
                   response.data.responseResult.roomID

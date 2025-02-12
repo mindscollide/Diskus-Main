@@ -59,6 +59,7 @@ import {
   presenterViewGlobalState,
   leavePresenterViewMainApi,
   stopMeetingVideoByPresenter,
+  participantWaitingListBox,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -434,6 +435,19 @@ const Dashboard = () => {
       if (String(meetingVideoID) === String(payload?.meetingID)) {
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
+        } else if (isMeetingVideo) {
+          let newRoomID = localStorage.getItem("newRoomId");
+          localStorage.setItem("acceptedRoomID", newRoomID);
+          sessionStorage.setItem("alreadyInMeetingVideo", true);
+          dispatch(participantWaitingListBox(false));
+          await dispatch(
+            presenterViewGlobalState(meetingVideoID, true, false, true)
+          );
+           dispatch(setAudioControlHost(true));
+          dispatch(setVideoControlHost(true))
+          dispatch(maximizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
         } else if (
           !presenterViewFlagRef.current &&
           !presenterViewJoinFlagRef.current
@@ -443,6 +457,8 @@ const Dashboard = () => {
             VideoCallURL: String(currentMeetingVideoURL),
             WasInVideo: isMeetingVideo ? true : false,
           };
+          dispatch(participantWaitingListBox(false));
+
           dispatch(joinPresenterViewMainApi(navigate, t, data));
         }
       }
