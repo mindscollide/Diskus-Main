@@ -1298,22 +1298,26 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {currentCallType === 1 && checkFeatureIDAvailability(3) && (
-            <div
-              className={
-                LeaveCallModalFlag === true
-                  ? "grayScaleImage"
-                  : "screenShare-Toggle inactive-state"
-              }
-            >
-              <Tooltip placement="topRight" title={t("Chat")}>
-                <img
-                  onClick={onClickCloseChatHandler}
-                  src={ChatIcon}
-                  alt="Chat"
-                />
-              </Tooltip>
-            </div>
+          {!presenterViewHostFlag && !presenterViewFlag && (
+            <>
+              {currentCallType === 1 && checkFeatureIDAvailability(3) && (
+                <div
+                  className={
+                    LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "screenShare-Toggle inactive-state"
+                  }
+                >
+                  <Tooltip placement="topRight" title={t("Chat")}>
+                    <img
+                      onClick={onClickCloseChatHandler}
+                      src={ChatIcon}
+                      alt="Chat"
+                    />
+                  </Tooltip>
+                </div>
+              )}
+            </>
           )}
 
           <Tooltip placement="topRight" title={t("Minimize")}>
