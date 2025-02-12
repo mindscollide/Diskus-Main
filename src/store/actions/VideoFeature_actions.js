@@ -1546,11 +1546,11 @@ const stopPresenterFail = (message) => {
 const stopPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
-  let videoCallURL = localStorage.getItem("videoCallURL");
+  let videoCallURL = Number(localStorage.getItem("videoCallURL"));
   let newdata = {
-    MeetingID: data.MeetingID,
-    RoomID: data.RoomID,
-    VideoCallUrl: videoCallURL,
+    MeetingID: 5084,
+    RoomID: "21141",
+    VideoCallUrl: 193,
   };
   return (dispatch) => {
     dispatch(stopPresenterInit());
