@@ -1548,9 +1548,9 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
   console.log(data, "presenterViewJoinFlag");
   let videoCallURL = Number(localStorage.getItem("videoCallURL"));
   let newdata = {
-    MeetingID: 5084,
-    RoomID: "21141",
-    VideoCallUrl: 193,
+    MeetingID: data.MeetingID,
+    RoomID: data.RoomID,
+    VideoCallUrl: videoCallURL,
   };
   return (dispatch) => {
     dispatch(stopPresenterInit());
