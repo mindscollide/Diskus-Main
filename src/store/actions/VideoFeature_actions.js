@@ -1546,12 +1546,17 @@ const stopPresenterFail = (message) => {
 const stopPresenterViewMainApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
-
+  let videoCallURL = localStorage.getItem("videoCallURL");
+  let newdata = {
+    MeetingID: data.MeetingID,
+    RoomID: data.RoomID,
+    VideoCallUrl: videoCallURL,
+  };
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", stopPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestData", JSON.stringify(newdata));
 
     axios({
       method: "post",
