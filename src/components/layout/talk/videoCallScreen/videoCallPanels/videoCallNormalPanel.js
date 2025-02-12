@@ -887,6 +887,7 @@ const VideoPanelNormal = () => {
   // Add event listener for messages
   useEffect(() => {
     console.log("eventevent");
+    sessionStorage.removeItem("isWaiting")
 
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");

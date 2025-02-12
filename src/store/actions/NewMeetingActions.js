@@ -85,6 +85,7 @@ import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  openPresenterViewMainApi,
   participantVideoButtonState,
   participantVideoNavigationScreen,
   setAudioControlHost,
@@ -9156,6 +9157,21 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
+              try {
+                // for closed waiting an start presenting
+                if (flag === 1) {
+                  let currentMeeting = localStorage.getItem("currentMeetingID");
+                  dispatch(
+                    openPresenterViewMainApi(
+                      t,
+                      navigate,
+                      organizerData,
+                      currentMeeting,
+                      4
+                    )
+                  );
+                }
+              } catch {}
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (

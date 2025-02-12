@@ -610,6 +610,7 @@ const getParticipantMeetingJoinMainApi = (
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               try {
+                sessionStorage.setItem("isWaiting",true)
                 setIsWaiting(true);
                 setGetReady(false);
                 setJoinButton(false);

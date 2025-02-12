@@ -417,6 +417,8 @@ const VideoCallNormalHeader = ({
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       }
+      iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
+      
     } else {
       console.log("busyCall");
       if (presenterViewJoinFlag) {
@@ -950,6 +952,7 @@ const VideoCallNormalHeader = ({
       }
     } catch {}
   }, [makeParticipantAsHost]);
+
   return (
     <>
       <Row className="mb-4">
