@@ -633,6 +633,7 @@ const getParticipantMeetingJoinMainApi = (
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
+              sessionStorage.setItem("alreadyInMeetingVideo", true);
 
               let Data = { RoomID: response.data.responseResult.roomID };
               await dispatch(
