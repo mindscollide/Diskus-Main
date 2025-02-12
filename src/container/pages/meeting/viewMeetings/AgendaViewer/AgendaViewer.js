@@ -218,6 +218,8 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
+  console.log(maximizeParticipantVideoFlag, "maximizeParticipantVideoFlag");
+
   const normalParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.normalParticipantVideoFlag
   );
@@ -753,18 +755,15 @@ const AgendaViewer = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
       console.log("presenterFlagForAlreadyInParticipantMeetingVideo");
+      console.log("Check @ 2");
 
       dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       sessionStorage.setItem("alreadyInMeetingVideo", true);
       sessionStorage.setItem("alreadyInMeetingVideoStartPresenterCheck", true);
 
       localStorage.setItem("acceptedRoomID", RoomID);
-      // dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
-      // dispatch(maximizeVideoPanelFlag(true));
-      // dispatch(normalizeVideoPanelFlag(false));
-      // dispatch(minimizeVideoPanelFlag(false));
-    } else {
       if (maximizeParticipantVideoFlag) {
+        console.log("Check @ 2");
         let isWaiting = sessionStorage.getItem("isWaiting");
         let leaveRoomId = getJoinMeetingParticipantorHostrequest
           ? getJoinMeetingParticipantorHostrequest.roomID
@@ -776,6 +775,7 @@ const AgendaViewer = () => {
         let newName = localStorage.getItem("name");
         let currentMeetingID = localStorage.getItem("currentMeetingID");
         if (isWaiting) {
+          console.log("Check @ 2");
           let Data = {
             RoomID: leaveRoomId,
             UserGUID: userGUID,
@@ -788,8 +788,9 @@ const AgendaViewer = () => {
             Guid: "",
             WasInVideo: Boolean(isMeetingVideo),
           };
-          dispatch(LeaveMeetingVideo(Data, navigate, t,1,data));
+          dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
         } else {
+          console.log("Khalisaaasas");
           dispatch(maxParticipantVideoCallPanel(false));
           let data = {
             VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -801,7 +802,15 @@ const AgendaViewer = () => {
             openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
           );
         }
-      } else {
+      }
+      // dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
+      // dispatch(maximizeVideoPanelFlag(true));
+      // dispatch(normalizeVideoPanelFlag(false));
+      // dispatch(minimizeVideoPanelFlag(false));
+    } else {
+      if (maximizeParticipantVideoFlag) {
+        console.log("Check @ 2");
+        dispatch(maxParticipantVideoCallPanel(false));
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),
           Guid: "",
@@ -812,6 +821,15 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
         );
       }
+      console.log("Check @ 2");
+      dispatch(maxParticipantVideoCallPanel(false));
+      let data = {
+        VideoCallURL: String(currentMeetingVideoURL || ""),
+        Guid: "",
+        WasInVideo: Boolean(isMeetingVideo),
+      };
+
+      dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
     }
   };
 

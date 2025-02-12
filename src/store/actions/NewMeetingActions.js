@@ -83,6 +83,7 @@ import {
   joinPresenterViewMainApi,
   makeHostNow,
   maximizeVideoPanelFlag,
+  maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   openPresenterViewMainApi,
@@ -9171,6 +9172,8 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                     )
                   );
                 }
+                dispatch(maxParticipantVideoCallPanel(false));
+                sessionStorage.removeItem("isWaiting");
               } catch {}
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));

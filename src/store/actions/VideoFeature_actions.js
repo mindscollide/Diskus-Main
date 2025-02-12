@@ -607,10 +607,10 @@ const getParticipantMeetingJoinMainApi = (
                 "isHost",
                 response.data.responseResult.isHost
               );
+              sessionStorage.setItem("isWaiting", true);
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               try {
-                sessionStorage.setItem("isWaiting",true)
                 setIsWaiting(true);
                 setGetReady(false);
                 setJoinButton(false);
@@ -1886,6 +1886,7 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 sessionStorage.getItem("alreadyInMeetingVideo")
               );
               if (flag === 1) {
+                console.log("Check");
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
@@ -1893,8 +1894,11 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 dispatch(setAudioControlHost(false));
                 dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
+                dispatch(participantVideoButtonState(false));
+                console.log("Check");
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 if (alreadyInMeetingVideo) {
+                  console.log("Check");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
