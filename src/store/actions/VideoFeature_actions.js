@@ -1292,11 +1292,17 @@ const openPresenterViewMainApi = (
   actiontype
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let videoCallURL = String(localStorage.getItem("videoCallURL"));
+  let newData = {
+    VideoCallURL: videoCallURL,
+    Guid: "",
+    WasInVideo: data.WasInVideo,
+  };
   return (dispatch) => {
     dispatch(openPresenterInit());
     let form = new FormData();
     form.append("RequestMethod", openPresenterView.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestData", JSON.stringify(newData));
 
     axios({
       method: "post",
