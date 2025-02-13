@@ -53,6 +53,7 @@ import {
   leavePresenterViewMainApi,
   startPresenterViewMainApi,
   presenterFlagForAlreadyInParticipantMeetingVideo,
+  closeWaitingParticipantVideoStream,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -754,39 +755,13 @@ const AgendaViewer = () => {
   const onClickStartPresenter = async () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
-    let leaveRoomId = getJoinMeetingParticipantorHostrequest
-      ? getJoinMeetingParticipantorHostrequest.roomID
-      : 0;
-
-    let userGUID = getJoinMeetingParticipantorHostrequest
-      ? getJoinMeetingParticipantorHostrequest.guid
-      : 0;
-    let newName = localStorage.getItem("name");
-    let currentMeetingID = localStorage.getItem("currentMeetingID");
     if (isMeetingVideo) {
       if (isWaiting) {
-        sessionStorage.removeItem("isWaiting");
         console.log("maximizeParticipantVideoFlag");
-
-        let Data = {
-          RoomID: leaveRoomId,
-          UserGUID: userGUID,
-          Name: String(newName),
-          IsHost: false,
-          MeetingID: Number(currentMeetingID),
-        };
-        console.log("maximizeParticipantVideoFlag");
-
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL || ""),
-          Guid: "",
-          WasInVideo: Boolean(isMeetingVideo),
-        };
-        console.log("maximizeParticipantVideoFlag");
-        dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
+        dispatch(closeWaitingParticipantVideoStream(true));
       } else {
-        localStorage.setItem("acceptedRoomID", RoomID);
         console.log("maximizeParticipantVideoFlag");
+        localStorage.setItem("acceptedRoomID", RoomID);
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
           "alreadyInMeetingVideoStartPresenterCheck",
@@ -794,33 +769,11 @@ const AgendaViewer = () => {
         );
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
-
-      // dispatch(presenterViewGlobalState(currentMeeting, true, true, true));
-      // dispatch(maximizeVideoPanelFlag(true));
-      // dispatch(normalizeVideoPanelFlag(false));
-      // dispatch(minimizeVideoPanelFlag(false));
     } else {
       console.log("maximizeParticipantVideoFlag");
       if (isWaiting) {
-        sessionStorage.removeItem("isWaiting");
         console.log("maximizeParticipantVideoFlag");
-
-        let Data = {
-          RoomID: leaveRoomId,
-          UserGUID: userGUID,
-          Name: String(newName),
-          IsHost: false,
-          MeetingID: Number(currentMeetingID),
-        };
-        console.log("maximizeParticipantVideoFlag");
-
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL || ""),
-          Guid: "",
-          WasInVideo: Boolean(isMeetingVideo),
-        };
-        console.log("maximizeParticipantVideoFlag");
-        dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
+        dispatch(closeWaitingParticipantVideoStream(true));
       } else if (maximizeParticipantVideoFlag) {
         console.log("maximizeParticipantVideoFlag");
 
