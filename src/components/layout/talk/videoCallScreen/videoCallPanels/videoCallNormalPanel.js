@@ -826,6 +826,7 @@ const VideoPanelNormal = () => {
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
       await dispatch(setVideoControlHost(true));
+      dispatch(setAudioControlHost(false));
       console.log("videoHideUnHideForHost");
 
       iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
