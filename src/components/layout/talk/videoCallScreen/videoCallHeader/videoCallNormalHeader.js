@@ -420,6 +420,10 @@ const VideoCallNormalHeader = ({
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       }
+      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
+        iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
+      }
     } else {
       console.log("busyCall");
       if (presenterViewJoinFlag) {

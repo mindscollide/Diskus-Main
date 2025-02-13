@@ -9193,6 +9193,8 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                   };
                   dispatch(joinPresenterViewMainApi(navigate, t, data));
                 }
+                dispatch(maxParticipantVideoCallPanel(false));
+                sessionStorage.removeItem("isWaiting");
               } catch {}
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));

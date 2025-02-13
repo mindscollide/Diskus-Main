@@ -344,6 +344,7 @@ const Polls = () => {
     return () => {
       dispatch(cleareAllState());
       setPollsRows([]);
+      setvotePolls(false);
     };
   }, []);
 

@@ -218,6 +218,8 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
+  console.log(maximizeParticipantVideoFlag, "maximizeParticipantVideoFlag");
+
   const normalParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.normalParticipantVideoFlag
   );
@@ -827,6 +829,15 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
         );
       }
+      console.log("Check @ 2");
+      dispatch(maxParticipantVideoCallPanel(false));
+      let data = {
+        VideoCallURL: String(currentMeetingVideoURL || ""),
+        Guid: "",
+        WasInVideo: Boolean(isMeetingVideo),
+      };
+
+      dispatch(openPresenterViewMainApi(t, navigate, data, currentMeeting, 4));
     }
   };
 
