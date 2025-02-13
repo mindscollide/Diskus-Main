@@ -785,7 +785,7 @@ const AgendaViewer = () => {
         console.log("maximizeParticipantVideoFlag");
         dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
       } else {
-      localStorage.setItem("acceptedRoomID", RoomID);
+        localStorage.setItem("acceptedRoomID", RoomID);
         console.log("maximizeParticipantVideoFlag");
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
@@ -801,7 +801,27 @@ const AgendaViewer = () => {
       // dispatch(minimizeVideoPanelFlag(false));
     } else {
       console.log("maximizeParticipantVideoFlag");
-      if (maximizeParticipantVideoFlag) {
+      if (isWaiting) {
+        sessionStorage.removeItem("isWaiting");
+        console.log("maximizeParticipantVideoFlag");
+
+        let Data = {
+          RoomID: leaveRoomId,
+          UserGUID: userGUID,
+          Name: String(newName),
+          IsHost: false,
+          MeetingID: Number(currentMeetingID),
+        };
+        console.log("maximizeParticipantVideoFlag");
+
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL || ""),
+          Guid: "",
+          WasInVideo: Boolean(isMeetingVideo),
+        };
+        console.log("maximizeParticipantVideoFlag");
+        dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
+      } else if (maximizeParticipantVideoFlag) {
         console.log("maximizeParticipantVideoFlag");
 
         console.log("maximizeParticipantVideoFlag");
