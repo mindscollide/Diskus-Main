@@ -356,6 +356,7 @@ const VideoCallNormalHeader = ({
   };
 
   const closeVideoPanel = () => {
+    console.log("cancel");
     dispatch(leaveCallModal(false));
     localStorage.setItem("activeCall", false);
   };

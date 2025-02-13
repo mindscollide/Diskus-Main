@@ -144,6 +144,11 @@ const VideoNewParticipantList = () => {
       }
     }
   }, [filteredParticipants]);
+
+  useEffect(() => {
+    console.log("Updated Participants List:", newJoinPresenterParticipant);
+  }, [newJoinPresenterParticipant]);
+
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
@@ -292,9 +297,15 @@ const VideoNewParticipantList = () => {
     );
   };
 
-  const participantsToDisplay = presenterViewFlag
-    ? newJoinPresenterParticipant
-    : filteredParticipants;
+  const participantsToDisplay =
+    presenterViewFlag && presenterViewHostFlag
+      ? newJoinPresenterParticipant
+      : filteredParticipants;
+
+  console.log(
+    participantsToDisplay,
+    "participantsToDisplayparticipantsToDisplay"
+  );
 
   return (
     <section
@@ -516,27 +527,33 @@ const VideoNewParticipantList = () => {
                             <img draggable="false" src={Menu} alt="" />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {usersData.isGuest === false ||
-                            (!presenterViewFlag && !presenterViewHostFlag) ? (
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() => makeHostOnClick(usersData)}
-                              >
-                                {t("Make-host")}
-                              </Dropdown.Item>
-                            ) : null}
+                            {!presenterViewFlag && !presenterViewHostFlag && (
+                              <>
+                                {usersData.isGuest === false ? (
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => makeHostOnClick(usersData)}
+                                  >
+                                    {t("Make-host")}
+                                  </Dropdown.Item>
+                                ) : null}
+                              </>
+                            )}
 
-                            {usersData.isHost === false ||
-                            (!presenterViewFlag && !presenterViewHostFlag) ? (
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() =>
-                                  removeParticipantMeetingOnClick(usersData)
-                                }
-                              >
-                                {t("Remove")}
-                              </Dropdown.Item>
-                            ) : null}
+                            {!presenterViewFlag && !presenterViewHostFlag && (
+                              <>
+                                {usersData.isHost === false ? (
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() =>
+                                      removeParticipantMeetingOnClick(usersData)
+                                    }
+                                  >
+                                    {t("Remove")}
+                                  </Dropdown.Item>
+                                ) : null}
+                              </>
+                            )}
                             {usersData.mute === false ? (
                               <>
                                 <Dropdown.Item

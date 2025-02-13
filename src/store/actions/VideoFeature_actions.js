@@ -2009,9 +2009,26 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
+  console.log("responseParticicpant", response);
+
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
     response: response,
+  };
+};
+
+const presenterLeaveParticipant = (uid) => {
+  console.log("Removing participant with UID:", uid);
+
+  return {
+    type: actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO,
+    uid: uid, // Pass UID to reducer
+  };
+};
+
+const clearPresenterParticipants = () => {
+  return {
+    type: actions.CLEAR_PRESENTER_PARTICIPANTS,
   };
 };
 
@@ -2123,4 +2140,6 @@ export {
   presenterFlagForAlreadyInParticipantMeetingVideo,
   presenterNewParticipantJoin,
   closeWaitingParticipantVideoStream,
+  presenterLeaveParticipant,
+  clearPresenterParticipants,
 };

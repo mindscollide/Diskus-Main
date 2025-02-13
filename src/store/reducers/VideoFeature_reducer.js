@@ -1022,6 +1022,22 @@ const videoFeatureReducer = (state = initialState, action) => {
         ],
       };
 
+    case actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO:
+      console.log("PRESENTATION_PARTICIPANT_LEFT", action.uid);
+      return {
+        ...state,
+        newJoinPresenterParticipant: state.newJoinPresenterParticipant.filter(
+          (participant) => participant.guid !== action.uid //  Remove participant by UID
+        ),
+      };
+
+    case actions.CLEAR_PRESENTER_PARTICIPANTS:
+      console.log("MEETING_PRESENTATION_STOPPED - Clearing Participants");
+      return {
+        ...state,
+        newJoinPresenterParticipant: [], // Empty the list
+      };
+
     // Close max Participant Video Stream
     case actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM:
       console.log(

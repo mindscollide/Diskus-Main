@@ -65,6 +65,8 @@ import {
   getVideoCallParticipantsMainApi,
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
+  presenterLeaveParticipant,
+  clearPresenterParticipants,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -350,9 +352,13 @@ const Dashboard = () => {
   const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
-  const getJoinMeetingParticipantorHostrequestGuidRef = useRef(getJoinMeetingParticipantorHostrequest);
-  const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(getJoinMeetingParticipantorHostrequest);
-  
+  const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
+    getJoinMeetingParticipantorHostrequest
+  );
+  const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
+    getJoinMeetingParticipantorHostrequest
+  );
+
   // Update ref whenever presenterViewJoinFlag changes
   useEffect(() => {
     presenterViewJoinFlagRef.current = presenterViewJoinFlag;
@@ -366,13 +372,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (getJoinMeetingParticipantorHostrequest) {
-      getJoinMeetingParticipantorHostrequestGuidRef.current = getJoinMeetingParticipantorHostrequest
-      ? getJoinMeetingParticipantorHostrequest.roomID
-      : 0;
-      getJoinMeetingParticipantorHostrequestRoomIdRef.current = getJoinMeetingParticipantorHostrequest
-      ? getJoinMeetingParticipantorHostrequest.roomID
-      : 0;
-
+      getJoinMeetingParticipantorHostrequestGuidRef.current =
+        getJoinMeetingParticipantorHostrequest
+          ? getJoinMeetingParticipantorHostrequest.roomID
+          : 0;
+      getJoinMeetingParticipantorHostrequestRoomIdRef.current =
+        getJoinMeetingParticipantorHostrequest
+          ? getJoinMeetingParticipantorHostrequest.roomID
+          : 0;
     }
   }, [getJoinMeetingParticipantorHostrequest]);
   const leaveMeetingCall = async (data) => {
@@ -395,7 +402,7 @@ const Dashboard = () => {
       }
     }
   };
- 
+
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
@@ -470,10 +477,9 @@ const Dashboard = () => {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
         } else if (isMeetingVideo) {
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
-          let leaveRoomId = getJoinMeetingParticipantorHostrequestRoomIdRef.current ;
-          let userGUID =  getJoinMeetingParticipantorHostrequestGuidRef.current
-          ;
-
+          let leaveRoomId =
+            getJoinMeetingParticipantorHostrequestRoomIdRef.current;
+          let userGUID = getJoinMeetingParticipantorHostrequestGuidRef.current;
           let newName = localStorage.getItem("name");
           let currentMeetingID = localStorage.getItem("currentMeetingID");
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
@@ -1394,13 +1400,20 @@ const Dashboard = () => {
             ) {
               dispatch(setAudioControlHost(false));
               dispatch(setVideoControlHost(false));
+              dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
             ) {
               dispatch(presenterNewParticipantJoin(data.payload));
-              console.log(data.payload, "checkdatacheckdata");
+              console.log(data.payload.newParticipant, "checkdatacheckdata");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
+            ) {
+              dispatch(presenterLeaveParticipant(data.payload.uid));
+              console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
               "UPCOMING_EVENTS_REMOVE".toLowerCase()
