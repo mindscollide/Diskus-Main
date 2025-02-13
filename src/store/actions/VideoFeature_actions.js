@@ -2000,9 +2000,17 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
+    response: response,
+  };
+};
+
+// Close max Participant Video Stream
+const closeWaitingParticipantVideoStream = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM,
     response: response,
   };
 };
@@ -2105,4 +2113,5 @@ export {
   presenterStartedMainFlag,
   presenterFlagForAlreadyInParticipantMeetingVideo,
   presenterNewParticipantJoin,
+  closeWaitingParticipantVideoStream,
 };
