@@ -1330,12 +1330,43 @@ const openPresenterViewMainApi = (
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck")
               );
+              let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
+
               if (actiontype === 4) {
                 let isMeetingVideo = JSON.parse(
                   localStorage.getItem("isMeetingVideo")
                 );
                 if (isMeetingVideo) {
-                  sessionStorage.setItem("alreadyInMeetingVideo", true);
+                  if (isWaiting) {
+                    const meetingHost = {
+                      isHost: isMeetingVideoHostCheck,
+                      isHostId: 0,
+                      isDashboardVideo: true,
+                    };
+                    dispatch(makeHostNow(meetingHost));
+                    localStorage.setItem(
+                      "meetinHostInfo",
+                      JSON.stringify(meetingHost)
+                    );
+                    if (isMeetingVideoHostCheck) {
+                      localStorage.setItem(
+                        "isGuid",
+                        response.data.responseResult.guid
+                      );
+                    } else {
+                      localStorage.setItem(
+                        "participantUID",
+                        response.data.responseResult.guid
+                      );
+                    }
+                    localStorage.setItem(
+                      "acceptedRoomID",
+                      response.data.responseResult.roomID
+                    );
+                    sessionStorage.removeItem("alreadyInMeetingVideo");
+                  } else {
+                    sessionStorage.setItem("alreadyInMeetingVideo", true);
+                  }
                 } else {
                   const meetingHost = {
                     isHost: isMeetingVideoHostCheck,
@@ -1363,10 +1394,6 @@ const openPresenterViewMainApi = (
                     response.data.responseResult.roomID
                   );
                   sessionStorage.removeItem("alreadyInMeetingVideo");
-                  localStorage.setItem(
-                    "acceptedRoomID",
-                    response.data.responseResult.roomID
-                  );
                 }
                 await dispatch(
                   presenterViewGlobalState(currentMeeting, true, true, true)

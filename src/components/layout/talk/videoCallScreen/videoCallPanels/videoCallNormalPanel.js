@@ -848,6 +848,7 @@ const VideoPanelNormal = () => {
 
   const handlerForStaringPresenterView = async () => {
     console.log("Check");
+    console.log("maximizeParticipantVideoFlag");
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
@@ -861,6 +862,7 @@ const VideoPanelNormal = () => {
       RoomID: String(alreadyInMeetingVideo ? newRoomID : callAcceptedRoomID),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
+    console.log("maximizeParticipantVideoFlag");
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
@@ -887,7 +889,7 @@ const VideoPanelNormal = () => {
   // Add event listener for messages
   useEffect(() => {
     console.log("eventevent");
-    sessionStorage.removeItem("isWaiting")
+    sessionStorage.removeItem("isWaiting");
 
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");
@@ -897,11 +899,15 @@ const VideoPanelNormal = () => {
         // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
+        console.log("maximizeParticipantVideoFlag", alreadyInMeetingVideo);
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
+            let alreadyInMeetingVideo = JSON.parse(
+              sessionStorage.getItem("alreadyInMeetingVideo")
+            );
             setIsScreenActive(true); // Show a modal or perform an action
             if (alreadyInMeetingVideo) {
-              console.log("true check");
+              console.log("maximizeParticipantVideoFlag");
               dispatch(setAudioControlHost(true));
               dispatch(setVideoControlHost(true));
               handlerForStaringPresenterView();
