@@ -57,7 +57,7 @@ const RecentActivity = () => {
         {" "}
         {Spinner === true ? (
           <>
-            <section className="d-flex justify-content-center align-items-center">
+            <section className={styles["dashboard_recentActivity_empty"]}>
               <Spin />
             </section>
           </>
@@ -110,9 +110,7 @@ const RecentActivity = () => {
               </>
             );
           })
-        ) : (
-          <Spin />
-        )}
+        ) : null}
       </div>
     </>
   );
