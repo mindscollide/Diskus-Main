@@ -95,6 +95,7 @@ const initialState = {
   presenterStartedFlag: false,
   presenterParticipantAlreadyInMeetingVideo: false,
   newJoinPresenterParticipant: [],
+  closeVideoStreamForParticipant: false,
   // startOrStopPresenter: false,
 };
 
@@ -1021,12 +1022,16 @@ const videoFeatureReducer = (state = initialState, action) => {
         ],
       };
 
-    // Start and Stop Presenter View State
-    // case actions.START_OR_STOP_PRESENTER_STATE:
-    //   return {
-    //     ...state,
-    //     startOrStopPresenter: action.response,
-    //   };
+    // Close max Participant Video Stream
+    case actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM:
+      console.log(
+        "CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM",
+        action.response
+      );
+      return {
+        ...state,
+        closeVideoStreamForParticipant: action.response, // Add new participant
+      };
 
     //For Presenter View Global State
     case actions.SET_MQTT_PRESENTER_RESPONSE:
