@@ -1614,6 +1614,8 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   : false
               );
               if (alreadyInMeetingVideo) {
+                dispatch(leaveCallModal(false));
+                console.log("Check Presenter");
                 dispatch(
                   presenterFlagForAlreadyInParticipantMeetingVideo(false)
                 );
@@ -1626,6 +1628,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.removeItem("presenterViewvideoURL");
               } else {
+                console.log("Check Presenter");
                 localStorage.removeItem("participantUID");
                 localStorage.removeItem("isGuid");
                 localStorage.removeItem("videoIframe");
