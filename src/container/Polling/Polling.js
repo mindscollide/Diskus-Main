@@ -62,6 +62,7 @@ import DescendIcon from "../MinutesNewFlow/Images/SorterIconDescend.png";
 import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
 import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
 import ArrowUpIcon from "../MinutesNewFlow/Images/Arrow-up.png";
+import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -101,6 +102,10 @@ const Polling = () => {
   console.log(PollsReducerviewVotesDetails, "PollsReducerviewVotes");
   const PollsReducerdeletePollsModal = useSelector(
     (state) => state.PollsReducer.deletePollsModal
+  );
+
+  const AccessDeniedGlobalState = useSelector(
+    (state) => state.PollsReducer.AccessDeniedPolls
   );
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
@@ -1289,6 +1294,7 @@ const Polling = () => {
       {PollsReducerisVotePollModal && <Votepoll />}
       {PollsReducerviewVotesDetails && <PollDetails />}
       {PollsReducerdeletePollsModal && <DeletePoll id={idForDelete} />}
+      {AccessDeniedGlobalState && <AccessDeniedModal />}
 
       {updatePublished ? (
         <>

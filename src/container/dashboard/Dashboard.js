@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -34,8 +34,8 @@ import {
   participantHideUnhideVideo,
   getParticipantsNewJoin,
   getVideoUrlForParticipant,
-  setAudioControlForParticipant,
-  setVideoControlForParticipant,
+  setAudioControlHost,
+  setVideoControlHost,
   setRaisedUnRaisedParticiant,
   makeHostNow,
   maxParticipantVideoRemoved,
@@ -52,6 +52,13 @@ import {
   leaveMeetingOnlogout,
   participantVideoButtonState,
   videoIconOrButtonState,
+  setParticipantRemovedFromVideobyHost,
+  openPresenterViewMainApi,
+  joinPresenterViewMainApi,
+  stopPresenterViewMainApi,
+  presenterViewGlobalState,
+  leavePresenterViewMainApi,
+  stopMeetingVideoByPresenter,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -232,6 +239,9 @@ const Dashboard = () => {
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
+
+  console.log(NormalizeVideoFlag, "NormalizeVideoFlag");
+
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag
   );
@@ -280,7 +290,21 @@ const Dashboard = () => {
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId
+  );
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -307,6 +331,16 @@ const Dashboard = () => {
 
   let newClient = Helper.socket;
   // for close the realtime Notification bar
+  const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
+  const presenterViewFlagRef = useRef(presenterViewFlag);
+
+  // Update ref whenever presenterViewJoinFlag changes
+  useEffect(() => {
+    presenterViewJoinFlagRef.current = presenterViewJoinFlag;
+  }, [presenterViewJoinFlag]);
+  useEffect(() => {
+    presenterViewFlagRef.current = presenterViewFlag;
+  }, [presenterViewFlag]);
 
   const leaveMeetingCall = async (data) => {
     let getUserID =
@@ -387,8 +421,76 @@ const Dashboard = () => {
       }
     }
   };
+  const startPresenterView = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq", payload);
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
-  const onMessageArrived = (msg) => {
+    if (isMeeting) {
+      if (String(meetingVideoID) === String(payload?.meetingID)) {
+        if (
+          !presenterViewFlagRef.current &&
+          !presenterViewJoinFlagRef.current
+        ) {
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL),
+            WasInVideo: isMeetingVideo ? true : false,
+          };
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        }
+      }
+    }
+  };
+
+  const stopPresenterView = async (payload) => {
+    let StopPresenterViewAwait = JSON.parse(
+      sessionStorage.getItem("StopPresenterViewAwait")
+    );
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    if (String(meetingVideoID) === String(payload?.meetingID)) {
+      if (isMeeting) {
+        if (
+          StopPresenterViewAwait === null ||
+          StopPresenterViewAwait === undefined
+        ) {
+          console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
+          if (presenterViewFlagRef.current) {
+            let alreadyInMeetingVideo = JSON.parse(
+              sessionStorage.getItem("alreadyInMeetingVideo")
+                ? sessionStorage.getItem("alreadyInMeetingVideo")
+                : false
+            );
+            console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
+            if (alreadyInMeetingVideo) {
+              sessionStorage.removeItem("alreadyInMeetingVideo");
+              await dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(true));
+              dispatch(minimizeVideoPanelFlag(false));
+              console.log("mqtt mqmqmqmqmqmq");
+            } else {
+              console.log("mqtt mqmqmqmqmqmq");
+              localStorage.removeItem("participantUID");
+              localStorage.removeItem("isGuid");
+              localStorage.removeItem("videoIframe");
+              localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("newRoomId");
+              localStorage.removeItem("acceptedRoomID");
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+            }
+          }
+        }
+      }
+    }
+  };
+
+  const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -752,7 +854,18 @@ const Dashboard = () => {
               if (data.payload.isGuest) {
                 dispatch(guestLeaveVideoMeeting(data.payload.uid));
               } else {
-                dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                const meetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
+                if (isGuid !== data.payload.uid) {
+                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                }
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -800,45 +913,53 @@ const Dashboard = () => {
               let isMeetingVideoCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideo")
               );
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
-                const meetingHost = {
-                  isHost: false,
-                  isHostId: 0,
-                  isDashboardVideo: true,
-                };
-                dispatch(makeHostNow(meetingHost));
-                localStorage.setItem("isMeeting", true);
-                localStorage.setItem("isMeetingVideo", false);
-                localStorage.removeItem("refinedVideoUrl");
-                localStorage.setItem("refinedVideoGiven", false);
-                localStorage.setItem("isWebCamEnabled", false);
-                localStorage.setItem("isMicEnabled", false);
-                dispatch(setAudioControlForParticipant(false));
-                dispatch(setVideoControlForParticipant(false));
+                if (isZoomEnabled) {
+                  await dispatch(setParticipantRemovedFromVideobyHost(true));
+                } else {
+                  const meetingHost = {
+                    isHost: false,
+                    isHostId: 0,
+                    isDashboardVideo: true,
+                  };
+                  dispatch(makeHostNow(meetingHost));
+                  localStorage.setItem("isMeeting", true);
+                  localStorage.setItem("isMeetingVideo", false);
+                  localStorage.removeItem("refinedVideoUrl");
+                  localStorage.setItem("refinedVideoGiven", false);
+                  localStorage.setItem("isWebCamEnabled", false);
+                  localStorage.setItem("isMicEnabled", false);
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
 
-                localStorage.setItem(
-                  "meetinHostInfo",
-                  JSON.stringify(meetingHost)
-                );
+                  localStorage.setItem(
+                    "meetinHostInfo",
+                    JSON.stringify(meetingHost)
+                  );
 
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(maxParticipantVideoRemoved(true));
-                // Participant room Id and usrrGuid
-                let participantRoomIds =
-                  localStorage.getItem("participantRoomId");
-                let participantUID = localStorage.getItem("participantUID");
-                let currentMeetingID = localStorage.getItem("currentMeetingID");
-                let newName = localStorage.getItem("name");
-                let Data = {
-                  RoomID: String(participantRoomIds),
-                  UserGUID: String(participantUID),
-                  Name: String(newName),
-                  IsHost: false,
-                  MeetingID: Number(currentMeetingID),
-                };
-                dispatch(setRaisedUnRaisedParticiant(false));
-                dispatch(LeaveMeetingVideo(Data, navigate, t));
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(maxParticipantVideoRemoved(true));
+                  // Participant room Id and usrrGuid
+                  let participantRoomIds =
+                    localStorage.getItem("participantRoomId");
+                  let participantUID = localStorage.getItem("participantUID");
+                  let currentMeetingID =
+                    localStorage.getItem("currentMeetingID");
+                  let newName = localStorage.getItem("name");
+                  let Data = {
+                    RoomID: String(participantRoomIds),
+                    UserGUID: String(participantUID),
+                    Name: String(newName),
+                    IsHost: false,
+                    MeetingID: Number(currentMeetingID),
+                  };
+                  dispatch(setRaisedUnRaisedParticiant(false));
+                  dispatch(LeaveMeetingVideo(Data, navigate, t));
+                }
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -864,7 +985,7 @@ const Dashboard = () => {
                 }
 
                 if (data.payload.uid === isGuid) {
-                  dispatch(setAudioControlForParticipant(data.payload.isMuted));
+                  dispatch(setAudioControlHost(data.payload.isMuted));
                 }
               }
 
@@ -887,7 +1008,7 @@ const Dashboard = () => {
 
               if (data.payload.uid === isGuid) {
                 dispatch(
-                  setVideoControlForParticipant(data.payload.isVideoHidden)
+                  setVideoControlHost(data.payload.isVideoHidden)
                 );
               }
 
@@ -927,14 +1048,17 @@ const Dashboard = () => {
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
+              console.log("iframeiframe", data.payload.userID);
               localStorage.setItem("acceptedRecipientID", data.payload.userID);
               localStorage.setItem("isMeetingVideo", true);
               localStorage.setItem(
                 "currentMeetingVideoUrl",
                 data.payload.videoUrl
               );
+              console.log("iframeiframe", data.payload.userID);
               if (data?.payload?.videoUrl) {
                 // Fetch values from localStorage and Redux
+                console.log("iframeiframe", data.payload.userID);
                 console.log("isMeetingVideo", audioControlForParticipant);
                 console.log("isMeetingVideo", videoControlForParticipant);
                 let videoControlForParticipantLoacl = JSON.parse(
@@ -943,25 +1067,35 @@ const Dashboard = () => {
                 let audioControlForParticipantLocal = JSON.parse(
                   localStorage.getItem("isMicEnabled")
                 );
+                console.log("iframeiframe", data.payload.userID);
                 dispatch(
-                  setAudioControlForParticipant(audioControlForParticipantLocal)
+                  setAudioControlHost(audioControlForParticipantLocal)
                 );
+                console.log("iframeiframe", data.payload.userID);
                 dispatch(
-                  setVideoControlForParticipant(videoControlForParticipantLoacl)
+                  setVideoControlHost(videoControlForParticipantLoacl)
                 );
 
                 const currentParticipantUser = localStorage.getItem("name");
                 // Refine the URL by replacing placeholders
-                const refinedUrl = data.payload.videoUrl
-                  .replace("$ParticipantFullName$", currentParticipantUser)
-                  .replace(
-                    "$IsMute$",
-                    audioControlForParticipantLocal.toString()
-                  )
-                  .replace(
-                    "$IsHideCamera$",
-                    videoControlForParticipantLoacl.toString()
-                  );
+                let refinedUrl = "";
+                let isZoomEnabled = JSON.parse(
+                  localStorage.getItem("isZoomEnabled")
+                );
+                if (isZoomEnabled) {
+                  refinedUrl = data.payload.videoUrl;
+                } else {
+                  refinedUrl = data.payload.videoUrl
+                    .replace("$ParticipantFullName$", currentParticipantUser)
+                    .replace(
+                      "$IsMute$",
+                      audioControlForParticipantLocal.toString()
+                    )
+                    .replace(
+                      "$IsHideCamera$",
+                      videoControlForParticipantLoacl.toString()
+                    );
+                }
 
                 // Store the refined URL in localStorage
                 localStorage.setItem("refinedVideoUrl", refinedUrl);
@@ -970,8 +1104,8 @@ const Dashboard = () => {
                 console.error("Invalid data or missing videoUrl in payload");
               }
 
+              console.log("iframeiframe", data.payload);
               dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
-              console.log(data.payload.videoUrl, "hahahahahahhassddsd");
               localStorage.setItem("participantRoomId", data.payload.roomID);
               localStorage.setItem("participantUID", data.payload.uid);
               localStorage.setItem("activeRoomID", data.payload.roomID);
@@ -985,30 +1119,40 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
-              const meetingHost = {
-                isHost: true,
-                isHostId: Number(localStorage.getItem("userID")),
-                isDashboardVideo: true,
-              };
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
-              let getMeetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
-              );
+              let userID = Number(localStorage.getItem("userID"));
+              console.log("hhhhhhhhhhhhhh", userID);
+              console.log("hhhhhhhhhhhhhh", data.receiverID[0]);
+              if (userID !== data.receiverID[0]) {
+                console.log("hhhhhhhhhhhhhh");
 
-              if (getMeetingHost.isHost) {
-                console.log("check 22");
-                dispatch(videoIconOrButtonState(true));
-                dispatch(participantVideoButtonState(false));
-                localStorage.setItem("isMeetingVideoHostCheck", true);
-              } else {
-                console.log("check 22");
-                dispatch(videoIconOrButtonState(false));
-                dispatch(participantVideoButtonState(true));
-                localStorage.setItem("isMeetingVideoHostCheck", false);
+                const meetingHost = {
+                  isHost: true,
+                  isHostId: Number(localStorage.getItem("userID")),
+                  isDashboardVideo: true,
+                };
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+                let getMeetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+                let isMicEnabled = JSON.parse(
+                  localStorage.getItem("isMicEnabled")
+                );
+                if (getMeetingHost.isHost) {
+                  console.log("check 22");
+                  dispatch(videoIconOrButtonState(true));
+                  dispatch(participantVideoButtonState(false));
+                  localStorage.setItem("isMeetingVideoHostCheck", true);
+                } else {
+                  console.log("check 22");
+                  dispatch(videoIconOrButtonState(false));
+                  dispatch(participantVideoButtonState(true));
+                  localStorage.setItem("isMeetingVideoHostCheck", false);
+                }
               }
+
               // console.log(getMeetingHost.isHost, "getMeetingHostisHost");
             } else if (
               data?.payload?.message?.toLowerCase() ===
@@ -1066,6 +1210,16 @@ const Dashboard = () => {
                   setNotificationID(id);
                 }
               }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_PRESENTATION_STARTED".toLowerCase()
+            ) {
+              startPresenterView(data.payload);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_PRESENTATION_STOPPED".toLowerCase()
+            ) {
+              stopPresenterView(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
               "UPCOMING_EVENTS_REMOVE".toLowerCase()
@@ -2123,7 +2277,6 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           localStorage.setItem("RingerCallCheckFlag", true);
           localStorage.setItem("callType", data.payload.callType);
-          console.log("leavecallMeetingVideo");
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           localStorage.setItem("newCallerID", data.payload.callerID);
           let Dataa = {
@@ -2153,6 +2306,7 @@ const Dashboard = () => {
               };
               if (IncomingVideoCallFlagReducer === true) {
                 dispatch(VideoCallResponse(Data, navigate, t));
+                localStorage.setItem("NewRoomID", 0);
               }
             }, timeValue);
             localStorage.setItem("activeRoomID", data.payload.roomID);
@@ -2177,6 +2331,7 @@ const Dashboard = () => {
         ) {
           dispatch(videoOutgoingCallFlag(false));
           dispatch(videoCallAccepted(data.payload, data.payload.message));
+          localStorage.setItem("ringerRoomId", 0);
           localStorage.setItem("NewRoomID", 0);
           localStorage.setItem("callerID", data.receiverID[0]);
           localStorage.setItem("callerName", data.payload.callerName);
@@ -2223,44 +2378,59 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_REJECTED".toLowerCase()
         ) {
+          console.log("mqtt");
           //To make false sessionStorage which is set on VideoCall
+          localStorage.setItem("ringerRoomId", 0);
           sessionStorage.setItem("NonMeetingVideoCall", false);
+          console.log("mqtt");
           let callerID = Number(localStorage.getItem("callerID"));
+          console.log("mqtt");
+          let userID = Number(localStorage.getItem("userID"));
+
+          console.log("mqtt");
           let newCallerID = Number(localStorage.getItem("newCallerID"));
+          console.log("mqtt");
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
+          console.log("mqtt");
           let initiateRoomID = localStorage.getItem("initiateCallRoomID");
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+          console.log("mqtt");
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let callTypeID = Number(localStorage.getItem("CallType"));
-
-          // if (callerID === newCallerID) {
-          // }
+          console.log("mqtt");
+          let callTypeID = Number(localStorage.getItem("callTypeID"));
+          console.log("mqtt", callTypeID);
 
           if (callTypeID === 1) {
-            console.log("mqtt", isMeetingVideo);
-            let Data = {
-              OrganizationID: Number(currentOrganization),
-              RoomID: initiateRoomID,
-              IsCaller: true,
-              CallTypeID: callTypeID,
-            };
-            dispatch(LeaveCall(Data, navigate, t));
-            dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message)
-            );
-            localStorage.setItem("activeCall", false);
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            localStorage.setItem("NewRoomID", 0);
-            localStorage.setItem("activeRoomID", 0);
-            localStorage.setItem("initiateVideoCall", false);
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(videoChatMessagesFlag(false));
-            dispatch(videoOutgoingCallFlag(false));
+            console.log("mqtt");
+            if (userID !== data.recepientID) {
+              console.log("mqtt");
+              let Data = {
+                OrganizationID: Number(currentOrganization),
+                RoomID: initiateRoomID,
+                IsCaller: true,
+                CallTypeID: callTypeID,
+              };
+              console.log("mqtt");
+              dispatch(LeaveCall(Data, navigate, t));
+              console.log("mqtt");
+              dispatch(
+                callRequestReceivedMQTT(data.payload, data.payload.message)
+              );
+              console.log("mqtt");
+              localStorage.setItem("activeCall", false);
+              localStorage.setItem("newCallerID", callerID);
+              localStorage.setItem("initiateVideoCall", false);
+              localStorage.setItem("NewRoomID", 0);
+              localStorage.setItem("activeRoomID", 0);
+              localStorage.setItem("initiateVideoCall", false);
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(videoChatMessagesFlag(false));
+              dispatch(videoOutgoingCallFlag(false));
+            }
           } else if (callTypeID === 2) {
             let newData = {
               RecipientName: data.payload.recepientName,
@@ -2328,6 +2498,7 @@ const Dashboard = () => {
         ) {
           //To make false sessionStorage which is set on VideoCall
           sessionStorage.setItem("NonMeetingVideoCall", false);
+          localStorage.setItem("ringerRoomId", 0);
           let callTypeID = Number(localStorage.getItem("callTypeID"));
           let callerID = Number(localStorage.getItem("callerID"));
           let newCallerID = Number(localStorage.getItem("newCallerID"));
@@ -2502,110 +2673,135 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
         ) {
-          let callStatus = JSON.parse(localStorage.getItem("activeCall"));
-          let callerID = JSON.parse(localStorage.getItem("callerID"));
-          let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
-          if (IncomingVideoCallFlagReducer === true && callStatus === false) {
-            let callerID = Number(localStorage.getItem("callerID"));
-            let newCallerID = Number(localStorage.getItem("newCallerID"));
-            if (callerID === newCallerID) {
-              localStorage.setItem("activeCall", false);
-            }
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
-            let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-            dispatch(incomingVideoCallFlag(false));
-            if (activeRoomID !== acceptedRoomID) {
-              dispatch(incomingVideoCallFlag(false));
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            }
-            if (activeRoomID === acceptedRoomID) {
-              if (
-                NormalizeVideoFlag === true ||
-                IncomingVideoCallFlagReducer === true ||
-                MaximizeVideoFlag === true
-              ) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: `Call has been disconnected by ${data.payload.callerName}`,
-                });
-                setNotificationID(id);
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          if (activeRoomID === data.payload.roomID) {
+            let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+            let callerID = JSON.parse(localStorage.getItem("callerID"));
+            let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
+            if (IncomingVideoCallFlagReducer === true && callStatus === false) {
+              console.log("Check 123");
+              let callerID = Number(localStorage.getItem("callerID"));
+              let newCallerID = Number(localStorage.getItem("newCallerID"));
+              if (callerID === newCallerID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
               }
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-            }
-            dispatch(leaveCallModal(false));
-          } else if (
-            IncomingVideoCallFlagReducer === false &&
-            callStatus === true
-          ) {
-            let callerID = Number(localStorage.getItem("callerID"));
-            let newCallerID = Number(localStorage.getItem("newCallerID"));
-            if (callerID === newCallerID) {
-              localStorage.setItem("activeCall", false);
-            }
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-            let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
-            let activeRoomID = Number(localStorage.getItem("activeRoomID"));
-            dispatch(incomingVideoCallFlag(false));
-            if (activeRoomID !== acceptedRoomID) {
-              dispatch(incomingVideoCallFlag(false));
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            }
-            if (activeRoomID === acceptedRoomID) {
-              if (
-                NormalizeVideoFlag === true ||
-                IncomingVideoCallFlagReducer === true ||
-                MaximizeVideoFlag === true
-              ) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: `Call has been disconnected by ${data.payload.callerName}`,
-                });
-                setNotificationID(id);
-              }
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-            }
-            dispatch(leaveCallModal(false));
-          } else if (
-            IncomingVideoCallFlagReducer === true &&
-            callStatus === true
-          ) {
-            if (
-              data.payload.callerID === callerID &&
-              data.payload.callerID === newCallerID
-            ) {
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              localStorage.setItem("activeCall", false);
-            } else if (data.payload.callerID === newCallerID) {
-              dispatch(incomingVideoCallFlag(false));
+              localStorage.setItem("newCallerID", callerID);
+              localStorage.setItem("initiateVideoCall", false);
               let acceptedRoomID = Number(
                 localStorage.getItem("acceptedRoomID")
               );
+
+              dispatch(incomingVideoCallFlag(false));
+              if (activeRoomID !== acceptedRoomID) {
+                console.log("Check 123");
+                dispatch(incomingVideoCallFlag(false));
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              }
+              if (activeRoomID === acceptedRoomID) {
+                console.log("Check 123");
+                if (
+                  NormalizeVideoFlag === true ||
+                  IncomingVideoCallFlagReducer === true ||
+                  MaximizeVideoFlag === true
+                ) {
+                  console.log("Check 123");
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: `Call has been disconnected by ${data.payload.callerName}`,
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+              console.log("Check 123");
+              dispatch(leaveCallModal(false));
+            } else if (
+              IncomingVideoCallFlagReducer === false &&
+              callStatus === true
+            ) {
+              console.log("Check 123");
+              let callerID = Number(localStorage.getItem("callerID"));
+              let newCallerID = Number(localStorage.getItem("newCallerID"));
+              if (callerID === newCallerID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
+              }
               localStorage.setItem("newCallerID", callerID);
-              localStorage.setItem("activeCall", true);
-              localStorage.setItem("activeRoomID", acceptedRoomID);
-            } else if (data.payload.callerID === callerID) {
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              localStorage.setItem("activeCall", false);
+              localStorage.setItem("initiateVideoCall", false);
+              let acceptedRoomID = Number(
+                localStorage.getItem("acceptedRoomID")
+              );
+              let activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              dispatch(incomingVideoCallFlag(false));
+              if (activeRoomID !== acceptedRoomID) {
+                console.log("Check 123");
+                localStorage.setItem("activeCall", false);
+                localStorage.removeItem("acceptedRoomID");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(incomingVideoCallFlag(false));
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              }
+              if (activeRoomID === acceptedRoomID) {
+                console.log("Check 123");
+                if (
+                  NormalizeVideoFlag === true ||
+                  IncomingVideoCallFlagReducer === true ||
+                  MaximizeVideoFlag === true
+                ) {
+                  setNotification({
+                    ...notification,
+                    notificationShow: true,
+                    message: `Call has been disconnected by ${data.payload.callerName}`,
+                  });
+                  setNotificationID(id);
+                }
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+              dispatch(leaveCallModal(false));
+            } else if (
+              IncomingVideoCallFlagReducer === true &&
+              callStatus === true
+            ) {
+              console.log("Check 123");
+              if (
+                data.payload.callerID === callerID &&
+                data.payload.callerID === newCallerID
+              ) {
+                console.log("Check 123");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+              } else if (data.payload.callerID === newCallerID) {
+                console.log("Check 123");
+                dispatch(incomingVideoCallFlag(false));
+                let acceptedRoomID = Number(
+                  localStorage.getItem("acceptedRoomID")
+                );
+                localStorage.setItem("newCallerID", callerID);
+                localStorage.setItem("activeCall", true);
+                localStorage.setItem("activeRoomID", acceptedRoomID);
+              } else if (data.payload.callerID === callerID) {
+                console.log("Check 123");
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.setItem("activeCall", false);
+              }
             }
+            console.log("Check 123");
+            dispatch(leaveCallModal(false));
           }
-          dispatch(leaveCallModal(false));
         } else if (
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
@@ -2687,6 +2883,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
           if (data.payload.recepientID !== Number(createrID)) {
+            localStorage.setItem("ringerRoomId", 0);
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(videoChatMessagesFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
@@ -3049,28 +3246,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className='sidebar_layout' width={"4%"}>
+            <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3087,8 +3285,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3119,25 +3317,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3153,12 +3351,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

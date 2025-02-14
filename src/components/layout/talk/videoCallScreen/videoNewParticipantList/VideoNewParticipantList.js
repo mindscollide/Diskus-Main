@@ -53,6 +53,19 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  console.log(
+    { presenterViewHostFlag, presenterViewFlag },
+    "presenterViewFlagpresenterViewFlag"
+  );
+
   // For acccept Join name participantList
   // const getNewParticipantsMeetingJoin = useSelector(
   //   (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
@@ -581,91 +594,97 @@ const VideoNewParticipantList = () => {
         </div>
       </Col>
 
-      {/* Waiting For Entry Title Tab  */}
-      <Col sm={12} md={12} lg={12}>
-        <div className={styles["Waiting-New-Participant-hosttab"]}>
-          <Row>
-            <Col sm={12} md={12} lg={12}>
-              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                {t("Waiting-for-entry")}
-              </p>
-            </Col>
-          </Row>
-        </div>
-      </Col>
-
-      <Col sm={12} md={12} lg={12}>
-        <div
-          className={
-            NormalizeVideoFlag
-              ? styles["AcceptAndDeniedManual_Nor"]
-              : styles["AcceptAndDeniedManual"]
-          }
-        >
-          {filteredWaitingParticipants.length > 0 && (
-            <>
-              <Row className="mb-3">
-                <Col sm={6} md={6} lg={6}>
-                  <Button
-                    className={styles["Waiting-New-Participant-denyAllBtn"]}
-                    text={t("Deny-all")}
-                    onClick={() => handleClickAllAcceptAndReject(2)}
-                  />
-                </Col>
-                <Col sm={6} md={6} lg={6}>
-                  <Button
-                    className={styles["Waiting-New-Participant-AcceptAllBtn"]}
-                    text={t("Allow-all")}
-                    onClick={() => handleClickAllAcceptAndReject(1)}
-                  />
+      {!presenterViewFlag && !presenterViewHostFlag ? (
+        <>
+          {/* Waiting For Entry Title Tab  */}
+          <Col sm={12} md={12} lg={12}>
+            <div className={styles["Waiting-New-Participant-hosttab"]}>
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+                    {t("Waiting-for-entry")}
+                  </p>
                 </Col>
               </Row>
+            </div>
+          </Col>
 
-              {filteredWaitingParticipants.map((data, index) => (
-                <Row className="mb-2" key={data.guid}>
-                  <Col
-                    sm={5}
-                    md={5}
-                    lg={5}
-                    className="d-flex align-items-center gap-2"
-                  >
-                    <img
-                      draggable="false"
-                      src={UserImage}
-                      className={styles["participantImage"]}
-                      alt=""
-                    />
-                    <span className={styles["participant_name"]}>
-                      {data.name}
-                    </span>
-                  </Col>
-                  <Col
-                    sm={7}
-                    md={7}
-                    lg={7}
-                    className="d-flex align-items-center gap-2"
-                  >
-                    <Button
-                      className={
-                        styles["Waiting-New-Participant-denyAllBtn-small"]
-                      }
-                      text={t("Deny")}
-                      onClick={() => handleClickAcceptAndReject(data, 2)}
-                    />
-                    <Button
-                      className={
-                        styles["Waiting-New-Participant-AcceptAllBtn-small"]
-                      }
-                      text={t("Allow")}
-                      onClick={() => handleClickAcceptAndReject(data, 1)}
-                    />
-                  </Col>
-                </Row>
-              ))}
-            </>
-          )}
-        </div>
-      </Col>
+          <Col sm={12} md={12} lg={12}>
+            <div
+              className={
+                NormalizeVideoFlag
+                  ? styles["AcceptAndDeniedManual_Nor"]
+                  : styles["AcceptAndDeniedManual"]
+              }
+            >
+              {filteredWaitingParticipants.length > 0 && (
+                <>
+                  <Row className="mb-3">
+                    <Col sm={6} md={6} lg={6}>
+                      <Button
+                        className={styles["Waiting-New-Participant-denyAllBtn"]}
+                        text={t("Deny-all")}
+                        onClick={() => handleClickAllAcceptAndReject(2)}
+                      />
+                    </Col>
+                    <Col sm={6} md={6} lg={6}>
+                      <Button
+                        className={
+                          styles["Waiting-New-Participant-AcceptAllBtn"]
+                        }
+                        text={t("Allow-all")}
+                        onClick={() => handleClickAllAcceptAndReject(1)}
+                      />
+                    </Col>
+                  </Row>
+
+                  {filteredWaitingParticipants.map((data, index) => (
+                    <Row className="mb-2" key={data.guid}>
+                      <Col
+                        sm={5}
+                        md={5}
+                        lg={5}
+                        className="d-flex align-items-center gap-2"
+                      >
+                        <img
+                          draggable="false"
+                          src={UserImage}
+                          className={styles["participantImage"]}
+                          alt=""
+                        />
+                        <span className={styles["participant_name"]}>
+                          {data.name}
+                        </span>
+                      </Col>
+                      <Col
+                        sm={7}
+                        md={7}
+                        lg={7}
+                        className="d-flex align-items-center gap-2"
+                      >
+                        <Button
+                          className={
+                            styles["Waiting-New-Participant-denyAllBtn-small"]
+                          }
+                          text={t("Deny")}
+                          onClick={() => handleClickAcceptAndReject(data, 2)}
+                        />
+                        <Button
+                          className={
+                            styles["Waiting-New-Participant-AcceptAllBtn-small"]
+                          }
+                          text={t("Allow")}
+                          onClick={() => handleClickAcceptAndReject(data, 1)}
+                        />
+                      </Col>
+                    </Row>
+                  ))}
+                </>
+              )}
+            </div>
+          </Col>
+        </>
+      ) : null}
     </section>
   );
 };

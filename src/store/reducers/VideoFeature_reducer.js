@@ -50,6 +50,8 @@ const initialState = {
   normalParticipantVideoFlag: false,
   maxParticipantVideoDeniedFlag: false,
   maxParticipantVideoRemovedFlag: false,
+  participantRemovedFromVideobyHost: false,
+  participantLeaveCallForJoinNonMeetingCall: false,
   getVideoParticpantListandWaitingList: [], // Active participants list
   waitingParticipantsList: [],
   participantVideoNavigationData: 1,
@@ -79,6 +81,19 @@ const initialState = {
   leaveMeetingVideoOnEndStatusMqttFlag: false,
   enableDisableVideoState: false,
   participantEnableVideoState: false,
+  disableBeforeJoinZoom: true,
+  presenterMeetingId: 0,
+  presenterViewFlag: false,
+  presenterViewHostFlag: false,
+  presenterViewJoinFlag: false,
+  presenterOpenView: [],
+  presenterViewStart: null,
+  presenterViewStop: null,
+  joinPresenterView: null,
+  leavePresenterView: null,
+  meetingStoppedByPresenter: false,
+  presenterStartedFlag: false,
+
   // startOrStopPresenter: false,
 };
 
@@ -747,12 +762,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
 
     case actions.MAX_PARTICIPANT_VIDEO_REMOVED:
-      console.log(action, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
       return {
         ...state,
         maxParticipantVideoRemovedFlag: action.response,
         MaximizeVideoFlag: false,
+      };
+
+    case actions.PARTICIPANT_REMOVED_FROM_VIDEO_BY_HOST:
+      return {
+        ...state,
+        participantRemovedFromVideobyHost: action.response,
+      };
+    case actions.PARTICIPANT_LEAVE_CALL_FOR_JOIN_NON_MEETING_CALL:
+      return {
+        ...state,
+        participantLeaveCallForJoinNonMeetingCall: action.response,
       };
 
     case actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT: {
@@ -956,12 +980,181 @@ const videoFeatureReducer = (state = initialState, action) => {
         leaveMeetingOnLogoutResponse: action.response,
       };
 
+    case actions.DISABLE_BUTTONS_ZOOM_BEFORE_JOIN_SESSION:
+      return {
+        ...state,
+        disableBeforeJoinZoom: action.response,
+      };
+
+    // Stop Meeting Video By presenter View when Some one Already Join the meeting Video
+    case actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW:
+      console.log("CheckStopMeetingVideo", action.response);
+      return {
+        ...state,
+        meetingStoppedByPresenter: action.response,
+      };
+
+    // For Presenter Join Started Main State
+    case actions.PRESENTER_STARTED_MAIN_FLAG:
+      console.log("PRESENTER_STARTED_MAIN_FLAG", action.response);
+      return {
+        ...state,
+        presenterStartedFlag: action.response,
+      };
+
     // Start and Stop Presenter View State
     // case actions.START_OR_STOP_PRESENTER_STATE:
     //   return {
     //     ...state,
     //     startOrStopPresenter: action.response,
     //   };
+
+    //For Presenter View Global State
+    case actions.SET_MQTT_PRESENTER_RESPONSE:
+      console.log(
+        "presenterMeetingIdpresenterMeetingId",
+        action.response,
+        action.presenterMeetingId,
+        action.presenterViewFlag
+      );
+
+      return {
+        ...state,
+        presenterMeetingId: action.payload.presenterMeetingId,
+        presenterViewFlag: action.payload.presenterViewFlag,
+        presenterViewHostFlag: action.payload.presenterViewHostFlag,
+        presenterViewJoinFlag: action.payload.presenterViewJoinFlag,
+      };
+
+    // For Open Presenter View Api
+    case actions.OPEN_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.OPEN_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterOpenView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.OPEN_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterOpenView: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Start Presenter View Api
+    case actions.START_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.START_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStart: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.START_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStart: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Stop Presenter View Api
+    case actions.STOP_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.STOP_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStop: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.STOP_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        presenterViewStop: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For Join Presenter View Api
+    case actions.JOIN_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresenterView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.JOIN_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresenterView: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    // For leave Presenter View Api
+    case actions.LEAVE_PRESENTER_VIEW_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.LEAVE_PRESENTER_VIEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        leavePresenterView: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.LEAVE_PRESENTER_VIEW_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        leavePresenterView: null,
+        ResponseMessage: action.message,
+      };
+    }
 
     case actions.LEAVE_MEETING_VIDEO_ON_LOGOUT:
       return {

@@ -421,7 +421,7 @@ const Polls = ({ committeeStatus }) => {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitle(record)}
+              onClick={() => ViewVoteButtonOnClick(record)}
             >
               {truncateString(text, 55)}
             </span>

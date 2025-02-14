@@ -4,7 +4,13 @@ import {
   getVideoCallParticipantsForGuest,
   hideUnHidePaticipantVideo,
   joinMeetingVideoRequest,
+  joinPresenterView,
+  leavePresenterView,
   muteUnMuteParticipant,
+  openPresenterView,
+  OpenPresenterView,
+  startPresenterView,
+  stopPresenterView,
 } from "../../commen/apis/Api_config";
 import { meetingApi, videoApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -792,6 +798,21 @@ const maxParticipantVideoRemoved = (response) => {
   };
 };
 
+// For Removed Max Patrticipant Video Compnent
+const setParticipantRemovedFromVideobyHost = (response) => {
+  return {
+    type: actions.PARTICIPANT_REMOVED_FROM_VIDEO_BY_HOST,
+    response: response,
+  };
+};
+
+// For LeaveMeeting To join Different
+const setParticipantLeaveCallForJoinNonMeetingCall = (response) => {
+  return {
+    type: actions.PARTICIPANT_LEAVE_CALL_FOR_JOIN_NON_MEETING_CALL,
+    response: response,
+  };
+};
 const participantListAndWaitingListInit = () => {
   return {
     type: actions.GET_VIDEO_CALL_PARTICIPANT_AND_WAITING_LIST_INIT,
@@ -924,23 +945,7 @@ const getVideoUrlForParticipant = (response) => {
   };
 };
 
-// SET MQTTT FOR VOICE PARTICIPANT
-const setAudioControlForParticipant = (response) => {
-  console.log(response, "datadtadttadtadta");
-  return {
-    type: actions.SET_MQTT_VOICE_PARTICIPANT,
-    response: response,
-  };
-};
 
-// SET HOST VIDEO CAMERA
-const setVideoControlForParticipant = (response) => {
-  console.log(response, "datadtadttadtadta");
-  return {
-    type: actions.SET_MQTT_VIDEO_MEETING_PARTICIPANT,
-    response: response,
-  };
-};
 
 // SET MQTTT FOR VOICE PARTICIPANT
 const setRaisedUnRaisedParticiant = (response) => {
@@ -1225,6 +1230,705 @@ const clearMessegesVideoFeature = (response) => {
   };
 };
 
+//For VideoIcon Enable and Disable button From Participant Side
+const disableZoomBeforeJoinSession = (response) => {
+  return {
+    type: actions.DISABLE_BUTTONS_ZOOM_BEFORE_JOIN_SESSION,
+    response: response,
+  };
+};
+
+//For Presenter View Global State
+const presenterViewGlobalState = (
+  presenterMeetingId,
+  presenterViewFlag,
+  presenterViewHostFlag,
+  presenterViewJoinFlag
+) => {
+  console.log(
+    presenterMeetingId,
+    presenterViewFlag,
+    "responseresponseresponsedatat"
+  );
+
+  return {
+    type: actions.SET_MQTT_PRESENTER_RESPONSE,
+    payload: {
+      presenterMeetingId,
+      presenterViewFlag,
+      presenterViewHostFlag,
+      presenterViewJoinFlag,
+    },
+  };
+};
+
+// For Open Presenter View
+const openPresenterInit = () => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_INIT,
+  };
+};
+
+const openPresenterSuccess = (response, message) => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const openPresenterFail = (message) => {
+  return {
+    type: actions.OPEN_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const openPresenterViewMainApi = (
+  t,
+  navigate,
+  data,
+  currentMeeting,
+  actiontype
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(openPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", openPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            openPresenterViewMainApi(
+              t,
+              navigate,
+              data,
+              currentMeeting,
+              actiontype
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase()
+                )
+            ) {
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              if (actiontype === 4) {
+                let isMeetingVideo = JSON.parse(
+                  localStorage.getItem("isMeetingVideo")
+                );
+                if (isMeetingVideo) {
+                  sessionStorage.setItem("alreadyInMeetingVideo", true);
+                } else {
+                  const meetingHost = {
+                    isHost: isMeetingVideoHostCheck,
+                    isHostId: 0,
+                    isDashboardVideo: true,
+                  };
+                  dispatch(makeHostNow(meetingHost));
+                  localStorage.setItem(
+                    "meetinHostInfo",
+                    JSON.stringify(meetingHost)
+                  );
+                  if (isMeetingVideoHostCheck) {
+                    localStorage.setItem(
+                      "isGuid",
+                      response.data.responseResult.guid
+                    );
+                  } else {
+                    localStorage.setItem(
+                      "participantUID",
+                      response.data.responseResult.guid
+                    );
+                  }
+                  localStorage.setItem(
+                    "acceptedRoomID",
+                    response.data.responseResult.roomID
+                  );
+                  sessionStorage.removeItem("alreadyInMeetingVideo");
+                  localStorage.setItem(
+                    "acceptedRoomID",
+                    response.data.responseResult.roomID
+                  );
+                }
+                await dispatch(
+                  presenterViewGlobalState(currentMeeting, true, true, true)
+                );
+                await dispatch(maximizeVideoPanelFlag(true));
+                await dispatch(normalizeVideoPanelFlag(false));
+              }
+
+              await dispatch(
+                openPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(openPresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_OpenPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(openPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(openPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(openPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(openPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR START PRESENTER
+const startPresenterInit = () => {
+  return {
+    type: actions.START_PRESENTER_VIEW_INIT,
+  };
+};
+
+const startPresenterSuccess = (response, message) => {
+  return {
+    type: actions.START_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const startPresenterFail = (message) => {
+  return {
+    type: actions.START_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const startPresenterViewMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(startPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", startPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(startPresenterViewMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase()
+                )
+            ) {
+              dispatch(presenterStartedMainFlag(true));
+              await dispatch(
+                startPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                startPresenterFail(t("Presentation-is-already-underway"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                startPresenterFail(t("Error-while-starting-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(startPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(startPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(startPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(startPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR STop PRESENTER
+const stopPresenterInit = () => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_INIT,
+  };
+};
+
+const stopPresenterSuccess = (response, message) => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const stopPresenterFail = (message) => {
+  return {
+    type: actions.STOP_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const stopPresenterViewMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  console.log(data, "presenterViewJoinFlag");
+
+  return (dispatch) => {
+    dispatch(stopPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", stopPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(stopPresenterViewMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
+                )
+            ) {
+              let alreadyInMeetingVideo = JSON.parse(
+                sessionStorage.getItem("alreadyInMeetingVideo")
+                  ? sessionStorage.getItem("alreadyInMeetingVideo")
+                  : false
+              );
+              if (alreadyInMeetingVideo) {
+                sessionStorage.removeItem("alreadyInMeetingVideo");
+                await dispatch(
+                  presenterViewGlobalState(0, false, false, false)
+                );
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(minimizeVideoPanelFlag(false));
+                localStorage.removeItem("presenterViewvideoURL");
+              } else {
+                localStorage.removeItem("participantUID");
+                localStorage.removeItem("isGuid");
+                localStorage.removeItem("videoIframe");
+                localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("newRoomId");
+                localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("presenterViewvideoURL");
+
+                await dispatch(
+                  presenterViewGlobalState(0, false, false, false)
+                );
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+              await dispatch(
+                stopPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              sessionStorage.removeItem("StopPresenterViewAwait");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(stopPresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                stopPresenterFail(t("Error-while-stop-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(stopPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(stopPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(stopPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(stopPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR JOIN PRESENTER
+const joinPresenterInit = () => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_INIT,
+  };
+};
+
+const joinPresenterSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinPresenterFail = (message) => {
+  return {
+    type: actions.JOIN_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const joinPresenterViewMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(joinPresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase()
+                )
+            ) {
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
+              );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              if (isMeetingVideo) {
+                sessionStorage.setItem("alreadyInMeetingVideo", true);
+              } else {
+                const meetingHost = {
+                  isHost: isMeetingVideoHostCheck,
+                  isHostId: 0,
+                  isDashboardVideo: true,
+                };
+                dispatch(makeHostNow(meetingHost));
+                localStorage.setItem(
+                  "meetinHostInfo",
+                  JSON.stringify(meetingHost)
+                );
+                if (isMeetingVideoHostCheck) {
+                  localStorage.setItem(
+                    "isGuid",
+                    response.data.responseResult.guid
+                  );
+                } else {
+                  localStorage.setItem(
+                    "participantUID",
+                    response.data.responseResult.guid
+                  );
+                }
+                localStorage.setItem(
+                  "acceptedRoomID",
+                  response.data.responseResult.roomID
+                );
+                sessionStorage.removeItem("alreadyInMeetingVideo");
+                localStorage.setItem(
+                  "acceptedRoomID",
+                  response.data.responseResult.roomID
+                );
+                localStorage.setItem(
+                  "presenterViewvideoURL",
+                  response.data.responseResult.videoURL
+                );
+              }
+              await dispatch(
+                presenterViewGlobalState(currentMeetingID, true, false, true)
+              );
+              dispatch(maximizeVideoPanelFlag(true));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+              await dispatch(
+                joinPresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("could-not-join-schedule-call"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("invalid-video-call-url-provided"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("Could-not-join-presentation"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_05".toLowerCase()
+                )
+            ) {
+              await dispatch(joinPresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(joinPresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(joinPresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(joinPresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//FOR LEAVE PRESENTER
+const leavePresenterInit = () => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_INIT,
+  };
+};
+
+const leavePresenterSuccess = (response, message) => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const leavePresenterFail = (message) => {
+  return {
+    type: actions.LEAVE_PRESENTER_VIEW_FAIL,
+    message: message,
+  };
+};
+
+const leavePresenterViewMainApi = (navigate, t, data, flag) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(leavePresenterInit());
+    let form = new FormData();
+    form.append("RequestMethod", leavePresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(leavePresenterViewMainApi(navigate, t, data, flag));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase()
+                )
+            ) {
+              dispatch(presenterStartedMainFlag(false));
+
+              localStorage.removeItem("participantUID");
+              localStorage.removeItem("isGuid");
+              localStorage.removeItem("videoIframe");
+              localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("newRoomId");
+              localStorage.removeItem("acceptedRoomID");
+              localStorage.removeItem("presenterViewvideoURL");
+              if (flag === 1) {
+                dispatch(presenterViewGlobalState(0, true, false, false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              } else if (flag === 2) {
+                dispatch(presenterViewGlobalState(0, false, false, false));
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+
+              await dispatch(
+                leavePresenterSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_02".toLowerCase()
+                )
+            ) {
+              await dispatch(leavePresenterFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeavePresenterView_03".toLowerCase()
+                )
+            ) {
+              await dispatch(leavePresenterFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(leavePresenterFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(leavePresenterFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leavePresenterFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Stop Meeting Video By presenter View when Some one Already Join the meeting Video
+const stopMeetingVideoByPresenter = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.STOP_MEETING_VIDEO_BY_PRESENTER_VIEW,
+    response: response,
+  };
+};
+
+// For Presenter Join Started Main State
+const presenterStartedMainFlag = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.PRESENTER_STARTED_MAIN_FLAG,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -1286,8 +1990,6 @@ export {
   setVideoControlHost,
   setAudioControlHost,
   getVideoUrlForParticipant,
-  setVideoControlForParticipant,
-  setAudioControlForParticipant,
   setRaisedUnRaisedParticiant,
   normalParticipantVideoCallPanel,
   checkHostNow,
@@ -1312,4 +2014,15 @@ export {
   participantVideoButtonState,
   clearMessegesVideoFeature,
   // startOrStopPresenterGlobal,
+  disableZoomBeforeJoinSession,
+  setParticipantRemovedFromVideobyHost,
+  setParticipantLeaveCallForJoinNonMeetingCall,
+  presenterViewGlobalState,
+  openPresenterViewMainApi,
+  startPresenterViewMainApi,
+  stopPresenterViewMainApi,
+  joinPresenterViewMainApi,
+  leavePresenterViewMainApi,
+  stopMeetingVideoByPresenter,
+  presenterStartedMainFlag,
 };

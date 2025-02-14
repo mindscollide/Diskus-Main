@@ -47,6 +47,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         PollID: viewProgressPollsDetails.PollID,
         UserID: parseInt(userID),
         PollOptionIDs: viewProgressPollsDetails.answer,
+        IsCratedFromMainPoll: false,
       };
       dispatch(UpdatedCastVoteAPI(navigate, data, t, 2, setvotePolls));
     } else {

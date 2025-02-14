@@ -1945,6 +1945,31 @@ const updateCastVotePolls = {
   RequestMethod: "ServiceManager.UpdateCastedVote",
 };
 
+//Open Presenter View
+const openPresenterView = {
+  RequestMethod: "ServiceManager.OpenPresenterView",
+};
+
+//Start Presenter View
+const startPresenterView = {
+  RequestMethod: "ServiceManager.StartPresenterView",
+};
+
+//Stop Presenter View
+const stopPresenterView = {
+  RequestMethod: "ServiceManager.StopPresenterView",
+};
+
+//Join Presenter View
+const joinPresenterView = {
+  RequestMethod: "ServiceManager.JoinPresenterView",
+};
+
+//Leave Presenter View
+const leavePresenterView = {
+  RequestMethod: "ServiceManager.LeavePresenterView",
+};
+
 const ValidateEncryptedStringMinuteReviewDataRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringMinuteReviewData",
 };
@@ -2464,4 +2489,9 @@ export {
   RetrieveNotesDocument,
   DeleteNotesDocuments,
   updateCastVotePolls,
+  openPresenterView,
+  startPresenterView,
+  stopPresenterView,
+  joinPresenterView,
+  leavePresenterView,
 };

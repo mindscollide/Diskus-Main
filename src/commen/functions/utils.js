@@ -2014,3 +2014,12 @@ export const SideBarGlobalNavigationFunction = async (
     navigate(navigateValue);
   }
 };
+
+// Sorting function
+export const sortTasksByDeadline = (tasks) => {
+  return tasks.sort((taskA, taskB) => {
+    const deadlineA = taskA?.deadlineDateTime;
+    const deadlineB = taskB?.deadlineDateTime;
+    return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+  });
+};

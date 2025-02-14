@@ -116,6 +116,7 @@ const Votepoll = () => {
         PollID: viewProgressPollsDetails.PollID,
         UserID: parseInt(userID),
         PollOptionIDs: viewProgressPollsDetails.answer,
+        IsCratedFromMainPoll: true,
       };
 
       dispatch(UpdatedCastVoteAPI(navigate, data, t));

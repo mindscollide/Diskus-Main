@@ -115,7 +115,7 @@ const Polls = () => {
   const AccessDeniedGlobalState = useSelector(
     (state) => state.PollsReducer.AccessDeniedPolls
   );
-
+  console.log(AccessDeniedGlobalState, "AccessDeniedGlobalState");
   const { setEditorRole } = useContext(MeetingContext);
 
   const [createpoll, setCreatepoll] = useState(false);
@@ -344,6 +344,7 @@ const Polls = () => {
     return () => {
       dispatch(cleareAllState());
       setPollsRows([]);
+      setvotePolls(false);
     };
   }, []);
 

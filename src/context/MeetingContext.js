@@ -74,6 +74,45 @@ export const MeetingProvider = ({ children }) => {
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
 
+  // this is the state of isMeeting which is used For create Meeting and Videos
+  const [meetingId, setMeetingId] = useState(0);
+  const [roomId, setRoomId] = useState(0);
+  const [isMeeting, setIsMeeting] = useState(false);
+  const [isMeetingHostFlag, setIsMeetingHostFlag] = useState(false);
+  const [isMeetingVideo, setIsMeetingVideo] = useState(false);
+  const [endMeeting, setEndMeeting] = useState(false);
+  const [isRemoveFromMeetingVideo, setIsRemoveFromMeetingVideo] = useState({
+    flag: false,
+    guid: 0,
+  });
+  const [leaveMeetingAndLogout, setLeaveMeetingAndLogout] = useState(false);
+  const [leaveMeeting, setLeaveMeeting] = useState(false);
+  const [leaveMeetingVideo, setLeaveMeetingVideo] = useState(false);
+  const [mic, setMic] = useState(false);
+  const [camera, setCamera] = useState(false);
+  const [actionOnMicByHost, setActionOnMicByHost] = useState(false);
+  const [actionOnCameraByHost, setActionOnCameraByHost] = useState(false);
+  const [handRaise, setHandRaise] = useState(false);
+  const [participantLeft, setParticipantLeft] = useState({
+    flag: false,
+    guid: 0,
+  });
+  const [isZoomEnabled, setIsZoomEnabled] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
+  const [iframeUrl, setIframeUrl] = useState("");
+  const [presenterViewFlag, setPresenterViewFlag] = useState(false);
+  const [presenterViewHostFlag, setPresenterViewHostFlag] = useState(false);
+  const [presenterMeetingId, setPresenterMeetingId] = useState(0);
+  const [presenterJoinFlag, setPresenterJoinFlag] = useState(false);
+  const [isPresenterParticipant, setIsPresenterParticipant] = useState(false);
+  const [alreadyPartOfMeetingVideo, setAlreadyPartOfMeetingVideo] =
+    useState(false);
+  const [minimizeMeetingVideo, setMinimizeMeetingVideo] = useState(false);
+  const [normalizedMeetingVideo, setNormalizedMeetingVideo] = useState(false);
+  const [maximizeMeetingVideo, setMaximizeMeetingVideo] = useState(false);
+  const [callType, setCallType] = useState(0);
+  const [typeOfMeeting, setTypeOfMeeting] = useState("");
+
   // Effect to update the agenda update state based on user profile data
   useEffect(() => {
     try {
@@ -153,6 +192,68 @@ export const MeetingProvider = ({ children }) => {
     sceduleMeeting,
     setDataroomMapFolderId,
     dataroomMapFolderId,
+
+    //For Meeting Video
+    setIsMeeting,
+    isMeeting,
+    meetingId,
+    setMeetingId,
+    roomId,
+    setRoomId,
+    isMeetingHostFlag,
+    setIsMeetingHostFlag,
+    isMeetingVideo,
+    setIsMeetingVideo,
+    endMeeting,
+    setEndMeeting,
+    isRemoveFromMeetingVideo,
+    setIsRemoveFromMeetingVideo,
+    leaveMeetingAndLogout,
+    setLeaveMeetingAndLogout,
+    leaveMeeting,
+    setLeaveMeeting,
+    leaveMeetingVideo,
+    setLeaveMeetingVideo,
+    mic,
+    setMic,
+    camera,
+    setCamera,
+    actionOnMicByHost,
+    setActionOnMicByHost,
+    actionOnCameraByHost,
+    setActionOnCameraByHost,
+    handRaise,
+    setHandRaise,
+    participantLeft,
+    setParticipantLeft,
+    isZoomEnabled,
+    setIsZoomEnabled,
+    videoUrl,
+    setVideoUrl,
+    iframeUrl,
+    setIframeUrl,
+    presenterViewFlag,
+    setPresenterViewFlag,
+    presenterViewHostFlag,
+    setPresenterViewHostFlag,
+    presenterMeetingId,
+    setPresenterMeetingId,
+    presenterJoinFlag,
+    setPresenterJoinFlag,
+    isPresenterParticipant,
+    setIsPresenterParticipant,
+    alreadyPartOfMeetingVideo,
+    setAlreadyPartOfMeetingVideo,
+    minimizeMeetingVideo,
+    setMinimizeMeetingVideo,
+    normalizedMeetingVideo,
+    setNormalizedMeetingVideo,
+    maximizeMeetingVideo,
+    setMaximizeMeetingVideo,
+    callType,
+    setCallType,
+    typeOfMeeting,
+    setTypeOfMeeting,
     setEditMeeting,
     isEditMeeting,
   };

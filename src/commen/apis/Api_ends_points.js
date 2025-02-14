@@ -11,6 +11,7 @@ const settingURL = ":11004/Settings";
 const settingDownloadURL = ":11004/Report";
 
 // Huzeifa work for Meetings
+// const meetingURL = ":11024/Meeting";
 const meetingURL = ":11002/Meeting";
 
 // huzeifa work
@@ -83,6 +84,8 @@ const getNotesApi = baseURL + getNotesURL;
 
 const getResolutionApi = baseURL + getResolutionURL;
 
+//const getResolutionApi = "http://localhost:37813/Resolution";
+
 // get Talk Api
 const talkApi = baseURL + talkURL;
 
@@ -98,6 +101,7 @@ const getCommitteesApi = baseURL + getCommitteeURL;
 const getCalender = baseURL + calenderURL;
 
 const pollApi = baseURL + PollURL;
+//const pollApi = "http://localhost:12777/Polls";
 
 const videoApi = baseURL + videoURL;
 
