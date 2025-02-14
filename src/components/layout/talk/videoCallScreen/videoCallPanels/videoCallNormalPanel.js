@@ -31,6 +31,7 @@ import {
   maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
   participantWaitingListBox,
+  presenterFlagForAlreadyInParticipantMeetingVideo,
   presenterStartedMainFlag,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
@@ -38,6 +39,7 @@ import {
   setRaisedUnRaisedParticiant,
   setVideoControlHost,
   startPresenterViewMainApi,
+  stopPresenterViewMainApi,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
@@ -199,6 +201,7 @@ const VideoPanelNormal = () => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
+  console.log(presenterViewFlag, "presenterViewFlag");
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -212,8 +215,10 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterMeetingId
   );
 
-  console.log(presenterViewHostFlag, "presenterViewHostFlag");
-  console.log(presenterViewFlag, "presenterViewFlag");
+  const presenterParticipantAlreadyInMeetingVideo = useSelector(
+    (state) =>
+      state.videoFeatureReducer.presenterParticipantAlreadyInMeetingVideo
+  );
 
   const [allParticipant, setAllParticipant] = useState([]);
 
@@ -456,13 +461,6 @@ const VideoPanelNormal = () => {
           iframe.contentWindow.postMessage("leaveSession", "*");
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
-        localStorage.removeItem("presenterViewFlag");
-        localStorage.setItem("CallType", 0);
-        localStorage.setItem("activeRoomID", 0);
-        localStorage.removeItem("hostUrl");
-        localStorage.removeItem("isGuid");
-        localStorage.removeItem("participantUID");
-        localStorage.removeItem("newRoomId");
       } catch (error) {}
     };
 
@@ -472,41 +470,6 @@ const VideoPanelNormal = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [iframe]);
-
-  // useEffect(() => {
-  //   // Determine the control source based on the user role
-  //   if (isMeetingHost === false) {
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow !== null) {
-  //       if (audioControl === true) {
-  //         console.log("Check Connection");
-  //         iframe.contentWindow.postMessage("MicOn", "*");
-  //       } else {
-  //         iframe.contentWindow.postMessage("MicOff", "*");
-  //       }
-  //     }
-  //   }
-  // }, [audioControl]);
-
-  // useEffect(() => {
-  //   if (
-  //     isMeetingHost === false ||
-  //     (presenterViewFlag && !presenterViewHostFlag)
-  //   ) {
-  //     console.log("videoHideUnHideForHost");
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow !== null) {
-  //       console.log("videoHideUnHideForHost");
-  //       if (videoControl === true) {
-  //         console.log("videoHideUnHideForHost");
-  //         iframe.contentWindow.postMessage("VidOn", "*");
-  //       } else {
-  //         console.log("videoHideUnHideForHost");
-  //         iframe.contentWindow.postMessage("VidOff", "*");
-  //       }
-  //     }
-  //   }
-  // }, [videoControl]);
 
   useEffect(() => {
     if (getAllParticipantGuest?.length) {
@@ -627,13 +590,6 @@ const VideoPanelNormal = () => {
           ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
           : "";
       }
-
-      // let randomGuestName = generateRandomGuest();
-      console.log("iframeiframe", endIndexBaseURLCaller);
-      console.log("iframeiframe", extractedBaseURLCaller);
-      console.log("iframeiframe", isMeeting);
-      console.log("iframeiframe", callAcceptedRoomID);
-      console.log("iframeiframe", VideoCallResponseData);
 
       if (isMeeting === false) {
         if (callAcceptedRoomID && Number(callAcceptedRoomID) !== 0) {
@@ -785,6 +741,21 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [newRoomID]);
 
+  useEffect(() => {
+    try {
+      if (presenterParticipantAlreadyInMeetingVideo) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          // Post message to iframe
+          iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+          dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(false));
+        } else {
+          console.log("share screen Iframe contentWindow is not available.");
+        }
+      }
+    } catch {}
+  }, [presenterParticipantAlreadyInMeetingVideo]);
+
   // Function to trigger the action in the iframe
   // const handleScreenShareButton = async () => {
   //   if (!LeaveCallModalFlag) {
@@ -854,25 +825,25 @@ const VideoPanelNormal = () => {
     console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
-      dispatch(setVideoControlHost(true));
-      console.log("videoHideUnHideForHost");
+      await dispatch(setVideoControlHost(true));
+      dispatch(setAudioControlHost(false));
       iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
     }
   };
+
   const handlePresenterViewForParticipent = async () => {
-    console.log("Check Connection");
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow) {
-      console.log("Check Connection");
-      dispatch(setAudioControlHost(true));
-      dispatch(setVideoControlHost(true));
-    }
+    dispatch(setAudioControlHost(true));
+    dispatch(setVideoControlHost(true));
   };
 
+  let alreadyInMeetingVideo = JSON.parse(
+    sessionStorage.getItem("alreadyInMeetingVideo")
+  );
+
   const handlerForStaringPresenterView = async () => {
-    const iframe = iframeRef.current;
+    console.log("maximizeParticipantVideoFlag");
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
@@ -882,25 +853,68 @@ const VideoPanelNormal = () => {
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
-      RoomID: callAcceptedRoomID,
+      RoomID: String(alreadyInMeetingVideo ? newRoomID : callAcceptedRoomID),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
-    // iframe.contentWindow.postMessage("VidOff", "*");
-    dispatch(startPresenterViewMainApi(navigate, t, data));
+    dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
+  const stopScreenShareEventTRiger = () => {
+    if (alreadyInMeetingVideo) {
+      sessionStorage.removeItem("alreadyInMeetingVideo");
+    } else if (presenterViewFlag && presenterViewHostFlag) {
+      let meetingTitle = localStorage.getItem("meetingTitle");
+      let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      let participantUID = localStorage.getItem("participantUID");
+      let isGuid = localStorage.getItem("isGuid");
+      localStorage.setItem("VidOff", false);
+      let data = {
+        RoomID: String(callAcceptedRoomID),
+        UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+        Name: String(meetingTitle),
+      };
+      dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+    }
+  };
   // Add event listener for messages
   useEffect(() => {
+    sessionStorage.removeItem("isWaiting");
     const messageHandler = (event) => {
+      console.log(event.data, "eventevent");
       // Check the origin for security
+      console.log("handlePostMessage", event.data);
       if (event.origin === "https://portal.letsdiskus.com:9414") {
         // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
+        console.log("maximizeParticipantVideoFlag");
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
+            let alreadyInMeetingVideo = JSON.parse(
+              sessionStorage.getItem("alreadyInMeetingVideo")
+            );
+            let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
+              sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
+            );
             setIsScreenActive(true); // Show a modal or perform an action
-            if (presenterViewFlag && presenterViewHostFlag) {
+            if (alreadyInMeetingVideo) {
+              if (alreadyInMeetingVideoStartPresenterCheck) {
+                console.log("maximizeParticipantVideoFlag");
+                dispatch(setAudioControlHost(false));
+                dispatch(setVideoControlHost(true));
+              } else {
+                console.log("maximizeParticipantVideoFlag");
+                dispatch(setAudioControlHost(true));
+                dispatch(setVideoControlHost(true));
+              }
+              console.log("maximizeParticipantVideoFlag");
+
+              handlerForStaringPresenterView();
+            } else if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("true check");
               handlerForStaringPresenterView();
             }
 
@@ -908,21 +922,17 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
             if (presenterViewFlag && presenterViewHostFlag) {
-              let meetingTitle = localStorage.getItem("meetingTitle");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
               );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
               let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(
-                  isMeetingVideoHostCheck ? isGuid : participantUID
-                ),
-                Name: String(meetingTitle),
+                MeetingID: currentMeetingID,
+                RoomID: callAcceptedRoomID,
               };
-              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+              sessionStorage.setItem("StopPresenterViewAwait", true);
+              console.log(data, "presenterViewJoinFlag");
+              dispatch(stopPresenterViewMainApi(navigate, t, data));
             }
 
             break;
@@ -935,25 +945,9 @@ const VideoPanelNormal = () => {
               handlePresenterViewForParticipent();
             }
             break;
+
           case "ScreenSharedCancelMsg":
-            dispatch(disableZoomBeforeJoinSession(false));
-            if (presenterViewFlag && presenterViewHostFlag) {
-              let meetingTitle = localStorage.getItem("meetingTitle");
-              let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
-              let data = {
-                RoomID: String(callAcceptedRoomID),
-                UserGUID: String(
-                  isMeetingVideoHostCheck ? isGuid : participantUID
-                ),
-                Name: String(meetingTitle),
-              };
-              dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
-            }
+            stopScreenShareEventTRiger();
             break;
 
           default:

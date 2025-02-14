@@ -61,6 +61,12 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
+  const newJoinPresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+  );
+
+  console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
+
   console.log(
     { presenterViewHostFlag, presenterViewFlag },
     "presenterViewFlagpresenterViewFlag"
@@ -138,6 +144,11 @@ const VideoNewParticipantList = () => {
       }
     }
   }, [filteredParticipants]);
+
+  useEffect(() => {
+    console.log("Updated Participants List:", newJoinPresenterParticipant);
+  }, [newJoinPresenterParticipant]);
+
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
@@ -285,10 +296,23 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
+
+  const participantsToDisplay =
+    presenterViewFlag && presenterViewHostFlag
+      ? newJoinPresenterParticipant
+      : filteredParticipants;
+
+  console.log(
+    participantsToDisplay,
+    "participantsToDisplayparticipantsToDisplay"
+  );
+
   return (
     <section
       className={
-        NormalizeVideoFlag
+        presenterViewFlag
+          ? styles["Waiting-New-Participant-List-For-Presenter"]
+          : NormalizeVideoFlag
           ? styles["WaitingParticipantBoxNorm"]
           : styles["Waiting-New-Participant-List"]
       }
@@ -369,8 +393,8 @@ const VideoNewParticipantList = () => {
       {/* Participants Name List */}
       <Col sm={12} md={12} lg={12}>
         <div className={styles["Waiting-New-ParticipantNameList"]}>
-          {filteredParticipants.length > 0 ? (
-            filteredParticipants.map((usersData, index) => {
+          {participantsToDisplay.length > 0 ? (
+            participantsToDisplay.map((usersData, index) => {
               console.log(usersData, "usersDatausersData");
               return (
                 <>
@@ -503,25 +527,33 @@ const VideoNewParticipantList = () => {
                             <img draggable="false" src={Menu} alt="" />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {usersData.isGuest === false && (
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() => makeHostOnClick(usersData)}
-                              >
-                                {t("Make-host")}
-                              </Dropdown.Item>
+                            {!presenterViewFlag && !presenterViewHostFlag && (
+                              <>
+                                {usersData.isGuest === false ? (
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => makeHostOnClick(usersData)}
+                                  >
+                                    {t("Make-host")}
+                                  </Dropdown.Item>
+                                ) : null}
+                              </>
                             )}
 
-                            {usersData.isHost === false ? (
-                              <Dropdown.Item
-                                className="participant-dropdown-item"
-                                onClick={() =>
-                                  removeParticipantMeetingOnClick(usersData)
-                                }
-                              >
-                                {t("Remove")}
-                              </Dropdown.Item>
-                            ) : null}
+                            {!presenterViewFlag && !presenterViewHostFlag && (
+                              <>
+                                {usersData.isHost === false ? (
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() =>
+                                      removeParticipantMeetingOnClick(usersData)
+                                    }
+                                  >
+                                    {t("Remove")}
+                                  </Dropdown.Item>
+                                ) : null}
+                              </>
+                            )}
                             {usersData.mute === false ? (
                               <>
                                 <Dropdown.Item

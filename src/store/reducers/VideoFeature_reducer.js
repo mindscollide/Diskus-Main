@@ -93,7 +93,9 @@ const initialState = {
   leavePresenterView: null,
   meetingStoppedByPresenter: false,
   presenterStartedFlag: false,
-
+  presenterParticipantAlreadyInMeetingVideo: false,
+  newJoinPresenterParticipant: [],
+  closeVideoStreamForParticipant: false,
   // startOrStopPresenter: false,
 };
 
@@ -1002,12 +1004,50 @@ const videoFeatureReducer = (state = initialState, action) => {
         presenterStartedFlag: action.response,
       };
 
-    // Start and Stop Presenter View State
-    // case actions.START_OR_STOP_PRESENTER_STATE:
-    //   return {
-    //     ...state,
-    //     startOrStopPresenter: action.response,
-    //   };
+    //State for start presenter view flag for already In participant Meeting Video
+    case actions.START_PRESENTER_VIEW_FLAG_FOR_ALREADYIN_PARTICIPANT_MEETINGVIDEO:
+      return {
+        ...state,
+        presenterParticipantAlreadyInMeetingVideo: action.response,
+      };
+
+    // global state for Presenter Participants who joined Presenter Video
+    case actions.PRESENTER_JOIN_PARTICIPANT_VIDEO:
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO", action.response);
+      return {
+        ...state,
+        newJoinPresenterParticipant: [
+          ...state.newJoinPresenterParticipant, // Keep existing participants
+          action.response.newParticipant, // Add new participant
+        ],
+      };
+
+    case actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO:
+      console.log("PRESENTATION_PARTICIPANT_LEFT", action.uid);
+      return {
+        ...state,
+        newJoinPresenterParticipant: state.newJoinPresenterParticipant.filter(
+          (participant) => participant.guid !== action.uid //  Remove participant by UID
+        ),
+      };
+
+    case actions.CLEAR_PRESENTER_PARTICIPANTS:
+      console.log("MEETING_PRESENTATION_STOPPED - Clearing Participants");
+      return {
+        ...state,
+        newJoinPresenterParticipant: [], // Empty the list
+      };
+
+    // Close max Participant Video Stream
+    case actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM:
+      console.log(
+        "CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM",
+        action.response
+      );
+      return {
+        ...state,
+        closeVideoStreamForParticipant: action.response, // Add new participant
+      };
 
     //For Presenter View Global State
     case actions.SET_MQTT_PRESENTER_RESPONSE:
