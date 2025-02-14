@@ -26,6 +26,7 @@ import {
 } from "../../../../../context/MeetingContext";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
+  closeWaitingParticipantVideoStream,
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
   getParticipantMeetingJoinMainApi,
@@ -97,6 +98,10 @@ const ParticipantVideoCallComponent = () => {
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+  );
+
+  const closeVideoStreamForParticipant = useSelector(
+    (state) => state.videoFeatureReducer.closeVideoStreamForParticipant
   );
 
   let meetingId = localStorage.getItem("currentMeetingID");
@@ -344,6 +349,69 @@ const ParticipantVideoCallComponent = () => {
       });
     }
   }, [minimizeState]);
+
+  useEffect(() => {
+    console.log("maximizeParticipantVideoFlag", closeVideoStreamForParticipant);
+    if (closeVideoStreamForParticipant && stream) {
+      console.log("maximizeParticipantVideoFlag");
+      if (stream) {
+        console.log("maximizeParticipantVideoFlag");
+        stream.getVideoTracks().forEach((track) => track.stop());
+        setStream(null); // Clear the stream from state
+        if (videoRef.current) {
+          console.log("maximizeParticipantVideoFlag");
+          videoRef.current.srcObject = null; // Clear the video source
+        }
+
+        sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+        sessionStorage.removeItem("videoStreamId");
+      }
+      if (streamAudio) {
+        console.log("maximizeParticipantVideoFlag");
+        streamAudio.getAudioTracks().forEach((track) => track.stop());
+        setStreamAudio(null); // Clear the stream from state
+      }
+      sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+      sessionStorage.removeItem("audioStreamId");
+      dispatch(participantVideoButtonState(false));
+
+      setIsMicEnabled(false);
+      console.log("maximizeParticipantVideoFlag");
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      let currentMeetingVideoURL = JSON.parse(
+        sessionStorage.getItem("currentMeetingVideoURL")
+      );
+      let leaveRoomId = getJoinMeetingParticipantorHostrequest
+        ? getJoinMeetingParticipantorHostrequest.roomID
+        : 0;
+
+      let userGUID = getJoinMeetingParticipantorHostrequest
+        ? getJoinMeetingParticipantorHostrequest.guid
+        : 0;
+      let newName = localStorage.getItem("name");
+      let currentMeetingID = localStorage.getItem("currentMeetingID");
+      sessionStorage.removeItem("isWaiting");
+      console.log("maximizeParticipantVideoFlag");
+
+      let Data = {
+        RoomID: leaveRoomId,
+        UserGUID: userGUID,
+        Name: String(newName),
+        IsHost: false,
+        MeetingID: Number(currentMeetingID),
+      };
+      console.log("maximizeParticipantVideoFlag");
+
+      let data = {
+        VideoCallURL: String(currentMeetingVideoURL || ""),
+        Guid: "",
+        WasInVideo: Boolean(isMeetingVideo),
+      };
+      dispatch(closeWaitingParticipantVideoStream(false));
+      console.log("maximizeParticipantVideoFlag");
+      dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
+    }
+  }, [closeVideoStreamForParticipant]);
 
   const onClickToNormalParticipantPanel = () => {
     setIsNormalPanel((prevState) => !prevState);
