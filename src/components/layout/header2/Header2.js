@@ -28,6 +28,7 @@ import RequestExtensionModal from "../../../container/pages/UserMangement/Modals
 import {
   checkFeatureIDAvailability,
   getLocalStorageItemNonActiveCheck,
+  SideBarGlobalNavigationFunction,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
@@ -47,6 +48,7 @@ import {
 import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { useNotesContext } from "../../../context/NotesContext.js";
 import CreateQuickMeeting from "../../../container/QuickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
+import { useMeetingContext } from "../../../context/MeetingContext.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -57,7 +59,19 @@ const Header2 = ({ isVideo }) => {
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
-  const { createNotesModal, setCreateNotesModal } = useNotesContext();
+  const { setCreateNotesModal } = useNotesContext();
+  const {
+    editorRole,
+    minutes,
+    polls,
+    actionsPage,
+    viewAdvanceMeetingModal,
+    setViewAdvanceMeetingModal,
+    setCancelConfirmationModal,
+    sceduleMeeting,
+    setSceduleMeeting,
+    setGoBackCancelModal,
+  } = useMeetingContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
   );
@@ -402,7 +416,23 @@ const Header2 = ({ isVideo }) => {
   };
 
   const homePageDashboardClickNoCall = () => {
-    navigate("/Diskus/");
+    localStorage.setItem("navigateLocation", "MainDashBoard");
+    SideBarGlobalNavigationFunction(
+      viewAdvanceMeetingModal,
+      editorRole,
+      minutes,
+      actionsPage,
+      polls,
+      navigate,
+      dispatch,
+      setCancelConfirmationModal,
+      setViewAdvanceMeetingModal,
+      "/Diskus/",
+      t,
+      sceduleMeeting,
+      setSceduleMeeting,
+      setGoBackCancelModal
+    );
   };
 
   const handleMeetingSidebarSettings = () => {

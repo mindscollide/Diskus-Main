@@ -35,31 +35,35 @@ const CancelConfirmationModal = () => {
 
     if (localStorage.getItem("navigateLocation") === "resolution") {
       navigate("/Diskus/resolution");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "dataroom") {
       navigate("/Diskus/dataroom");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "committee") {
       navigate("/Diskus/committee");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "groups") {
       navigate("/Diskus/groups");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "polling") {
       navigate("/Diskus/polling");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "polling") {
       navigate("/Diskus/polling");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "calendar") {
       navigate("/Diskus/calendar");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "todolist") {
       navigate("/Diskus/todolist");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Notes") {
       navigate("/Diskus/Notes");
-      localStorage.removeItem("navigateLocation")
+      localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
+      navigate("/Diskus/");
+      console.log("navigateLocation");
+      localStorage.removeItem("navigateLocation");
     } else {
       let searchData = {
         Date: "",
@@ -106,7 +110,7 @@ const CancelConfirmationModal = () => {
               </span>
             </Col>
           </Row>
-          <Row className='mt-2'>
+          <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
@@ -124,7 +128,8 @@ const CancelConfirmationModal = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-end gap-2'>
+              className="d-flex justify-content-end gap-2"
+            >
               <Button
                 text={t("Discard")}
                 className={styles["No_unsave_File_Upload"]}

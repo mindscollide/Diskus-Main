@@ -68,6 +68,11 @@ const CancelButtonModal = ({
       setSceduleMeeting(false);
       setGoBackCancelModal(false);
       localStorage.removeItem("navigateLocation");
+    } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
+      navigate("/Diskus/");
+      setSceduleMeeting(false);
+      setGoBackCancelModal(false);
+      localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Meeting") {
       let searchData = {
         Date: "",
