@@ -824,7 +824,7 @@ const AgendaViewer = () => {
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
-          dispatch(stopPresenterViewMainApi(navigate, t, data));
+          dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
           let data = {
             RoomID: String(RoomID),

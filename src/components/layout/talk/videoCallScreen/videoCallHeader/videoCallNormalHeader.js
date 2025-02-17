@@ -247,6 +247,7 @@ const VideoCallNormalHeader = ({
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
   let callerObject = localStorage.getItem("callerStatusObject");
   let currentCallType = Number(localStorage.getItem("CallType"));
+  let videoCallURL = Number(localStorage.getItem("videoCallURL"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
   let getMeetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -404,12 +405,13 @@ const VideoCallNormalHeader = ({
       if (presenterStartedFlag) {
         let data = {
           MeetingID: currentMeetingID,
-          RoomID: RoomID,
+          RoomID: String(RoomID),
+          VideoCallUrl: videoCallURL,
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         console.log(data, "presenterViewJoinFlag");
 
-        await dispatch(stopPresenterViewMainApi(navigate, t, data));
+        await dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
       } else {
         if (iframeCurrent && iframeCurrent.contentWindow) {
           iframeCurrent.contentWindow.postMessage("ScreenShare", "*");

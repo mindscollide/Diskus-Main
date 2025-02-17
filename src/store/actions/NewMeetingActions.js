@@ -9166,6 +9166,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 console.log("maximizeParticipantVideoFlag");
                 let currentMeeting = localStorage.getItem("currentMeetingID");
                 if (flag === 1) {
+                  console.log("Check Leave");
                   console.log("maximizeParticipantVideoFlag");
                   console.log("maximizeParticipantVideoFlag");
 
@@ -9182,6 +9183,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                     )
                   );
                 } else if (flag === 2) {
+                  console.log("Check Leave");
                   let currentMeetingVideoURL =
                     localStorage.getItem("videoCallURL");
                   await dispatch(videoIconOrButtonState(false));
@@ -9235,6 +9237,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
+              console.log("Check Leave");
               console.log(getMeetingHostData, "asdadadadadaddda");
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {

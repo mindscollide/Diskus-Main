@@ -2589,6 +2589,7 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           console.log("mqtt");
+          let NewRoomID = localStorage.getItem("NewRoomID");
           let initiateRoomID = localStorage.getItem("initiateCallRoomID");
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -2604,7 +2605,7 @@ const Dashboard = () => {
               console.log("mqtt");
               let Data = {
                 OrganizationID: Number(currentOrganization),
-                RoomID: initiateRoomID,
+                RoomID: presenterViewFlag ? NewRoomID : initiateRoomID,
                 IsCaller: true,
                 CallTypeID: callTypeID,
               };

@@ -7,12 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   getParticipantMeetingJoinMainApi,
+  incomingVideoCallFlag,
+  leavePresenterViewMainApi,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
+  presenterViewGlobalState,
+  stopPresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
-import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
+import {
+  LeaveCall,
+  VideoCallResponse,
+} from "../../../../../store/actions/VideoMain_actions";
+import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 
 const NonMeetingVideoModal = () => {
   const dispatch = useDispatch();
@@ -23,6 +31,29 @@ const NonMeetingVideoModal = () => {
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
 
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  let currentMeeting = localStorage.getItem("currentMeetingID");
+  let acceptedRoomID = localStorage.getItem("acceptedRoomID");
+  let currentUserId = Number(localStorage.getItem("userID"));
+  let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+  let activeRoomID = localStorage.getItem("activeRoomID");
+  let NewRoomID = localStorage.getItem("NewRoomID");
+  let incomingRoomID = localStorage.getItem("NewRoomID");
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+  let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  let isGuid = localStorage.getItem("isGuid");
+  let meetingTitle = localStorage.getItem("meetingTitle");
+  let videoCallURL = localStorage.getItem("videoCallURL");
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let newRoomId = localStorage.getItem("newRoomId");
+
   //handle NO button
   const onClickOnNoMeetingModal = () => {
     dispatch(nonMeetingVideoGlobalModal(false));
@@ -30,41 +61,82 @@ const NonMeetingVideoModal = () => {
 
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
-    dispatch(normalizeVideoPanelFlag(false));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    localStorage.setItem("activeCall", false);
-    localStorage.setItem("initiateVideoCall", false);
-    // localStorage.setItem("isCaller", false);
-    localStorage.setItem("isMeeting", true);
-
-    //Before Joining the Meeting Video we should need to make a LeaveCall for Dashboard Video
-    let currentOrganization = Number(localStorage.getItem("organizationID"));
-    let initiateCallRoomID = String(localStorage.getItem("initiateCallRoomID"));
-    let currentCallType = Number(localStorage.getItem("CallType"));
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: initiateCallRoomID,
-      IsCaller: true,
-      CallTypeID: currentCallType,
-    };
-    await dispatch(LeaveCall(Data, navigate, t));
-    await dispatch(nonMeetingVideoGlobalModal(false));
-
-    // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi
-    let getVideoCallMeeting = JSON.parse(
-      sessionStorage.getItem("NonMeetingVideoCall")
-    );
-    if (getVideoCallMeeting) {
-      let currentMeeting = localStorage.getItem("currentMeetingID");
-      let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+    if (presenterViewFlag && presenterViewHostFlag) {
+      if (isMeetingVideo) {
+        // const meetingHost = {
+        //   isHost: false,
+        //   isHostId: 0,
+        //   isDashboardVideo: false,
+        // };
+        // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+        console.log("Check First");
+        let Data = {
+          RoomID: String(newRoomId),
+          UserGUID: String(isGuid),
+          Name: String(meetingTitle),
+          IsHost: getMeetingHost?.isHost ? true : false,
+          MeetingID: Number(currentMeeting),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
       let data = {
-        MeetingId: Number(currentMeeting),
-        VideoCallURL: String(currentMeetingVideoURL),
-        IsMuted: false,
-        HideVideo: false,
+        MeetingID: Number(currentMeeting),
+        RoomID: String(NewRoomID),
+        VideoCallUrl: Number(videoCallURL),
       };
-      dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      // sessionStorage.setItem("StopPresenterViewAwait", true);
+      console.log(data, "presenterViewJoinFlag");
+
+      await dispatch(stopPresenterViewMainApi(navigate, t, data, 1));
+      await dispatch(nonMeetingVideoGlobalModal(false));
+
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      localStorage.setItem("activeCall", true);
+    } else {
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("initiateVideoCall", false);
+      // localStorage.setItem("isCaller", false);
+      localStorage.setItem("isMeeting", true);
+
+      //Before Joining the Meeting Video we should need to make a LeaveCall for Dashboard Video
+      let currentOrganization = Number(localStorage.getItem("organizationID"));
+      let initiateCallRoomID = String(
+        localStorage.getItem("initiateCallRoomID")
+      );
+      let currentCallType = Number(localStorage.getItem("CallType"));
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: initiateCallRoomID,
+        IsCaller: true,
+        CallTypeID: currentCallType,
+      };
+      await dispatch(LeaveCall(Data, navigate, t));
+      await dispatch(nonMeetingVideoGlobalModal(false));
+
+      // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi
+      let getVideoCallMeeting = JSON.parse(
+        sessionStorage.getItem("NonMeetingVideoCall")
+      );
+      if (getVideoCallMeeting) {
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let data = {
+          MeetingId: Number(currentMeeting),
+          VideoCallURL: String(currentMeetingVideoURL),
+          IsMuted: false,
+          HideVideo: false,
+        };
+        dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
+      }
     }
   };
 
@@ -85,7 +157,11 @@ const NonMeetingVideoModal = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["NonMeetingVideo-Message"]}>
-                  {t("Are-You-Sure-you-Want-to-Leave-video")}
+                  {presenterViewFlag && presenterViewHostFlag ? (
+                    <>{t("Are-you-sure-you-want-to-stop-presenter-view")}</>
+                  ) : (
+                    <>{t("Are-You-Sure-you-Want-to-Leave-video")}</>
+                  )}
                 </span>
               </Col>
             </Row>

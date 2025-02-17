@@ -630,7 +630,7 @@ const getParticipantMeetingJoinMainApi = (
             ) {
               await dispatch(maxHostVideoCallPanel(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
-              localStorage.setItem("activeCall", true);
+              // localStorage.setItem("activeCall", true);
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
@@ -1578,7 +1578,7 @@ const stopPresenterFail = (message) => {
   };
 };
 
-const stopPresenterViewMainApi = (navigate, t, data) => {
+const stopPresenterViewMainApi = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
   let videoCallURL = Number(localStorage.getItem("videoCallURL"));
@@ -1604,7 +1604,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(stopPresenterViewMainApi(navigate, t, data));
+          dispatch(stopPresenterViewMainApi(navigate, t, data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1649,6 +1649,12 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 );
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
+                dispatch(minimizeVideoPanelFlag(false));
+              }
+
+              if (flag === 1) {
+                dispatch(maximizeVideoPanelFlag(false));
+                dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
               }
               await dispatch(
@@ -2034,9 +2040,17 @@ const clearPresenterParticipants = () => {
 
 // Close max Participant Video Stream
 const closeWaitingParticipantVideoStream = (response) => {
-  console.log("checkMeetingResponse", response);
   return {
     type: actions.CLOSE_IS_WAITING_MAXPARTICIPANT_VIDEO_STREAM,
+    response: response,
+  };
+};
+
+// state for leave Presenter View and Join one to one and other group calls
+const leavePresenterJoinOneToOneOrOtherCall = (response) => {
+  console.log("checkMeetingResponse", response);
+  return {
+    type: actions.LEAVE_PRESENTER_JOIN_ONE_TO_OR_GROUP_CALL,
     response: response,
   };
 };
@@ -2142,4 +2156,5 @@ export {
   closeWaitingParticipantVideoStream,
   presenterLeaveParticipant,
   clearPresenterParticipants,
+  leavePresenterJoinOneToOneOrOtherCall,
 };

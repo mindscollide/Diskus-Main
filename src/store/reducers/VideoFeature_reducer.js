@@ -96,6 +96,7 @@ const initialState = {
   presenterParticipantAlreadyInMeetingVideo: false,
   newJoinPresenterParticipant: [],
   closeVideoStreamForParticipant: false,
+  leavePresenterOrJoinOtherCalls: false,
   // startOrStopPresenter: false,
 };
 
@@ -1036,6 +1037,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         newJoinPresenterParticipant: [], // Empty the list
+      };
+
+    // state for leave Presenter View and Join one to one and other group calls
+
+    case actions.LEAVE_PRESENTER_JOIN_ONE_TO_OR_GROUP_CALL:
+      console.log("leave Presenter Or Join Other Calls");
+      return {
+        ...state,
+        leavePresenterOrJoinOtherCalls: action.response,
       };
 
     // Close max Participant Video Stream

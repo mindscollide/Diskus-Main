@@ -264,7 +264,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
           console.log(data, "presenterViewJoinFlag");
-          dispatch(stopPresenterViewMainApi(navigate, t, data));
+          dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
           if (alreadyInMeetingVideo) {
             sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -553,7 +553,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       };
       sessionStorage.setItem("StopPresenterViewAwait", true);
       console.log(data, "presenterViewJoinFlag");
-      dispatch(stopPresenterViewMainApi(navigate, t, data));
+      dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
       console.log("busyCall");
       console.log(presenterViewHostFlag, "presenterViewHostFlag");
     } else {
