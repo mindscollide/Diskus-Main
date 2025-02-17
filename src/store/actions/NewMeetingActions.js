@@ -8474,6 +8474,11 @@ const LeaveCurrentMeeting = (
                     localStorage.getItem("navigateLocation") === "Notes"
                   ) {
                     navigate("/Diskus/Notes");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "MainDashBoard"
+                  ) {
+                    console.log("navigateLocation");
+                    navigate("/Diskus/");
                   } else {
                     let searchData = {
                       Date: "",

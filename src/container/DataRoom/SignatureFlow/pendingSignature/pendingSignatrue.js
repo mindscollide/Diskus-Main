@@ -112,9 +112,11 @@ const SignatureViewer = () => {
   useEffect(() => {
     readOnlyUsersRef.current = readOnlyUsers;
   }, [readOnlyUsers]);
+
   useEffect(() => {
     hiddenUsersRef.current = hiddenUsers;
   }, [hiddenUsers]);
+
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
   }, [userAnnotations]);
@@ -138,8 +140,6 @@ const SignatureViewer = () => {
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
-
-  console.log(signerDataRef, "signerDataRefsignerDataRef");
 
   useEffect(() => {
     removeXmlAfterHideDAtaRef.current = removeXmlAfterHideDAta;
@@ -401,6 +401,7 @@ const SignatureViewer = () => {
           updatedXmlString,
           readOnlyUsersRef.current
         );
+        console.log("readOnlyUsersRef", readOnlyUsersRef);
         const { hideFreetextXmlString, removedHideFreetextElements } =
           hideFreetextElements(
             readonlyFreetextXmlString,
@@ -452,6 +453,17 @@ const SignatureViewer = () => {
                 await annotationManager.importAnnotations(
                   pdfResponceDataRef.current
                 );
+                // Lock All Annotations
+                const annotations = annotationManager.getAnnotationsList();
+                annotations.forEach((annot) => {
+                  annot.Locked = true; // Prevent any modifications
+                  annot.ReadOnly = true; // Prevent editing
+                  annot.NoResize = true; // No resizing
+                  annot.NoMove = true; // No moving
+                  annot.NoRotate = true; // No rotating
+                });
+
+                annotationManager.redrawAnnotation(annotations);
               } catch (error) {
                 console.error("Error importing annotations:", error);
               }
@@ -633,13 +645,16 @@ const SignatureViewer = () => {
                 AnnotationString: afterAddRevertHideFreetextElements,
                 CreatorID: pdfResponceData.creatorID,
               };
+
               let userID =
                 localStorage.getItem("userID") !== null
                   ? Number(localStorage.getItem("userID"))
                   : 0;
+
               let findActionBundleID = FieldsData.find(
                 (actorData, index) => Number(actorData.userID) === userID
               );
+
               // Update Actor Bundle Status APi Call
               let UpdateActorBundle = {
                 WorkFlowID: pdfResponceData.workFlowID,
@@ -650,13 +665,9 @@ const SignatureViewer = () => {
               };
 
               let newData = { ActorsFieldValuesList: convertData };
-              // console.log(
-              //   newData,
-              //   UpdateActorBundle,
-              //   addAnnoatationofFilesAttachment,
-              //   "handleClickSaveBtnhandleClickSaveBtn"
-              // );
-
+              console.log("readOnlyUsersRef",newData);
+              console.log("readOnlyUsersRef", userAnnotationsRef.current);
+             
               dispatch(
                 addUpdateFieldValueApi(
                   newData,
@@ -704,10 +715,12 @@ const SignatureViewer = () => {
             //   // Handle
             // }
           };
+
           let ifUserExist = signerDataRef.current.find(
             (user) =>
               Number(user.userID) === Number(localStorage.getItem("userID"))
           );
+
           if (ifUserExist !== undefined) {
             instance.UI.setHeaderItems((header) => {
               header.push({
@@ -730,7 +743,7 @@ const SignatureViewer = () => {
                 type: "customElement",
                 render: () => {
                   const SaveButton = document.createElement("button");
-                  SaveButton.textContent = "Save";
+                  SaveButton.textContent = "Signed";
                   SaveButton.style.background = "#6172d6";
                   SaveButton.style.color = "#fff";
                   SaveButton.style.borderRadius = "4px";
@@ -845,10 +858,10 @@ const SignatureViewer = () => {
   }, [participants]);
   // ==== End ====//
 
+  // // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {
       const { annotationManager, Annotations } = Instance.Core;
-
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -857,18 +870,7 @@ const SignatureViewer = () => {
           }
 
           try {
-            // Loop through annotations
-            annotations.forEach((annot) => {
-              if (
-                annot instanceof Annotations.FreeHandAnnotation
-              ) {
-                annot.Locked = true;
-                annot.NoMove = true; // Allow movement of the signature
-                annotationManager.redrawAnnotation(annot);
-              }
-            });
-
-            // Export annotations to XFDF format
+            // Export annotations to XFDF format using `exportAnnotations`
             const xfdfString = await annotationManager.exportAnnotations();
 
             // Update the user's annotations based on the action
@@ -885,36 +887,6 @@ const SignatureViewer = () => {
       );
     }
   }, [Instance]);
-
-  // // === this is for update intance in ===//
-  // useEffect(() => {
-  //   if (Instance) {
-  //     const { annotationManager, Annotations } = Instance.Core;
-  //     annotationManager.addEventListener(
-  //       "annotationChanged",
-  //       async (annotations, action, { imported }) => {
-  //         if (imported) {
-  //           return;
-  //         }
-
-  //         try {
-  //           // Export annotations to XFDF format using `exportAnnotations`
-  //           const xfdfString = await annotationManager.exportAnnotations();
-
-  //           // Update the user's annotations based on the action
-  //           updateXFDF(
-  //             action,
-  //             xfdfString,
-  //             selectedUserRef.current,
-  //             userAnnotationsRef.current
-  //           );
-  //         } catch (error) {
-  //           console.error(error);
-  //         }
-  //       }
-  //     );
-  //   }
-  // }, [Instance]);
   // === End ===//
 
   // === this is for Response Message===//
