@@ -2021,7 +2021,7 @@ const UpdateActorBundleStatusApi = (navigate, t, Data) => {
               dispatch(
                 UpdateActorBundleStatus_success(
                   response.data.responseResult,
-                  t("Updated-successfully")
+                  t("Document-has-been-signed-successfully")
                 )
               );
               window.close();
