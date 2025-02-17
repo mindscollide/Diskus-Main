@@ -31,7 +31,6 @@ const ViewSignatureDocument = () => {
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
 
-
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const viewer = useRef(null);
@@ -66,6 +65,7 @@ const ViewSignatureDocument = () => {
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
+  const [Instance, setInstance] = useState(null);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
 
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
@@ -75,7 +75,7 @@ const ViewSignatureDocument = () => {
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
 
-  console.log(signerDataRef, "signerDataRefsignerDataRef")
+  console.log(signerDataRef, "signerDataRefsignerDataRef");
 
   // ===== this use for current state update get =====//
 
@@ -373,6 +373,7 @@ const ViewSignatureDocument = () => {
         },
         viewer.current
       ).then(async (instance) => {
+        setInstance(instance);
         instance.UI.loadDocument(
           handleBlobFiles(pdfResponceData.attachmentBlob),
           {
@@ -393,6 +394,17 @@ const ViewSignatureDocument = () => {
               await annotationManager.importAnnotations(
                 pdfResponceDataRef.current
               );
+              // Lock All Annotations
+              const annotations = annotationManager.getAnnotationsList();
+              annotations.forEach((annot) => {
+                annot.Locked = true; // Prevent any modifications
+                annot.ReadOnly = true; // Prevent editing
+                annot.NoResize = true; // No resizing
+                annot.NoMove = true; // No moving
+                annot.NoRotate = true; // No rotating
+              });
+
+              annotationManager.redrawAnnotation(annotations);
             } catch (error) {
               console.error("Error importing annotations:", error);
             }
@@ -457,6 +469,55 @@ const ViewSignatureDocument = () => {
   }, [pdfResponceData.attachmentBlob]);
 
   // ==== End ====//
+
+  const disableSignatureActions = (Instance) => {
+    if (!Instance) return;
+
+    const { annotationManager, Annotations } = Instance.Core;
+
+    // Event Listener for annotation changes
+    const handleAnnotationChange = (annotations) => {
+      annotations.forEach((annot) => {
+        console.log(
+          annot,
+          annot instanceof Annotations.FreeHandAnnotation,
+          "annotannotannot"
+        );
+        if (annot.ToolName === "AnnotationCreateRubberStamp") {
+          annot.NoMove = true; // Prevent dragging
+          annot.NoResize = true; // Prevent resizing
+          annot.NoRotate = true; // Prevent rotation
+          annot.Locked = true; // Fully lock annotation
+          annotationManager.redrawAnnotation(annot);
+        }
+      });
+    };
+
+    annotationManager.addEventListener(
+      "annotationChanged",
+      handleAnnotationChange
+    );
+
+    // Prevent signature deletion
+    const originalGetPermissions = annotationManager.getPermissions;
+    annotationManager.getPermissions = function (annotation, action) {
+      if (annotation.ToolName === "AnnotationCreateRubberStamp") {
+        if (action === "delete") {
+          return false; // Prevent deletion
+        }
+        if (action === "modify") {
+          return false; // Prevent modifications
+        }
+      }
+      return originalGetPermissions
+        ? originalGetPermissions(annotation, action)
+        : true;
+    };
+  };
+
+  useEffect(() => {
+    disableSignatureActions(Instance);
+  }, [Instance]);
 
   // === this is for Response Message===//
   useEffect(() => {
