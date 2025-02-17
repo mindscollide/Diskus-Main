@@ -134,7 +134,7 @@ const VideoMaxIncoming = () => {
   const acceptCall = () => {
     console.log("busyCall");
 
-    if (presenterViewFlag && presenterViewHostFlag) {
+    if (presenterViewFlag) {
       dispatch(nonMeetingVideoGlobalModal(true));
       dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
     } else {
@@ -170,7 +170,7 @@ const VideoMaxIncoming = () => {
           await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
           setIsTimerRunning(false);
         } else {
-          if (presenterViewFlag && presenterViewHostFlag) {
+          if (presenterViewFlag) {
             dispatch(nonMeetingVideoGlobalModal(true));
             dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
           } else {

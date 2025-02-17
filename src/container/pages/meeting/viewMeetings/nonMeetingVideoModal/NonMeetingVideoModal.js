@@ -49,6 +49,7 @@ const NonMeetingVideoModal = () => {
   let callTypeID = Number(localStorage.getItem("callTypeID"));
   let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   let isGuid = localStorage.getItem("isGuid");
+  let participantUID = localStorage.getItem("participantUID");
   let meetingTitle = localStorage.getItem("meetingTitle");
   let videoCallURL = localStorage.getItem("videoCallURL");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -88,6 +89,45 @@ const NonMeetingVideoModal = () => {
       console.log(data, "presenterViewJoinFlag");
 
       await dispatch(stopPresenterViewMainApi(navigate, t, data, 1));
+      await dispatch(nonMeetingVideoGlobalModal(false));
+
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      localStorage.setItem("activeCall", true);
+    } else if (presenterViewFlag && !presenterViewHostFlag) {
+      console.log("Check");
+      if (isMeetingVideo) {
+        // const meetingHost = {
+        //   isHost: false,
+        //   isHostId: 0,
+        //   isDashboardVideo: false,
+        // };
+        // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+        console.log("Check First");
+        let Data = {
+          RoomID: String(newRoomId),
+          UserGUID: String(isGuid),
+          Name: String(meetingTitle),
+          IsHost: getMeetingHost?.isHost ? true : false,
+          MeetingID: Number(currentMeeting),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      }
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      let data = {
+        RoomID: String(NewRoomID),
+        UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+        Name: String(meetingTitle),
+      };
+      dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       await dispatch(nonMeetingVideoGlobalModal(false));
 
       let Data = {
