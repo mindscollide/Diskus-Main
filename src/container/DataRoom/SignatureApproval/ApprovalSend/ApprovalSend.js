@@ -389,14 +389,6 @@ const ApprovalSend = () => {
         "_blank",
         "noopener noreferrer"
       );
-    } else if (Number(record.workFlowStatusID) === 1) {
-      window.open(
-        `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
-          reponseData
-        )}`,
-        "_blank",
-        "noopener noreferrer"
-      );
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
