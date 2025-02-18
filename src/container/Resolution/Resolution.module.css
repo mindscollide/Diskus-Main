@@ -590,7 +590,7 @@ body[dir="rtl"] .SearchButton_SearchBar_Resolution {
 }
 
 .resolution_spinner {
-  min-height: 50vh !important;
+  min-height: 10vh !important;
 }
 
 .decision_Approved {

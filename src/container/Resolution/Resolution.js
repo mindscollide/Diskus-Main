@@ -1330,7 +1330,7 @@ const Resolution = () => {
 
   //Scroll for table
   const scroll = {
-    y: "49vh",
+    y: "51vh",
     scrollbar: {
       verticalWidth: 20, // Width of the vertical scrollbar
       handleSize: 10, // Distance between data and scrollbar
@@ -1661,14 +1661,9 @@ const Resolution = () => {
                       className="Resolution_table"
                       scroll={scroll}
                       pagination={false}
-                      loading={{
-                        indicator: (
-                          <div className={styles["resolution_spinner"]}>
-                            <Spin />
-                          </div>
-                        ),
-                        spinning: ResolutionReducerLoading,
-                      }}
+                      // loading={{
+                      //   spinning: ResolutionReducerLoading,
+                      // }}
                       rows={rows}
                       locale={{
                         emptyText: (
@@ -1715,6 +1710,9 @@ const Resolution = () => {
                                     onClick={() => createresolution()}
                                   />
                                 )}
+                                <div>
+                                  <Spin />
+                                </div>
                               </Col>
                             </Row>
                           </>
@@ -1759,14 +1757,14 @@ const Resolution = () => {
                     className="Resolution_table"
                     scroll={scroll}
                     pagination={false}
-                    loading={{
-                      indicator: (
-                        <div className={styles["resolution_spinner"]}>
-                          <Spin />
-                        </div>
-                      ),
-                      spinning: ResolutionReducerLoading,
-                    }}
+                    // loading={{
+                    //   indicator: (
+                    //     <div className={styles["resolution_spinner"]}>
+                    //       <Spin />
+                    //     </div>
+                    //   ),
+                    //   spinning: ResolutionReducerLoading,
+                    // }}
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (
@@ -1811,6 +1809,9 @@ const Resolution = () => {
                                   onClick={() => createresolution()}
                                 />
                               )}
+                              <div>
+                                <Spin />
+                              </div>
                             </Col>
                           </Row>
                         </>
