@@ -3325,7 +3325,7 @@ const Dashboard = () => {
             );
           } else if (data.payload.data.status === "Declined") {
             showMessage(
-             ("Document-has-been-declined-successfully"),
+             t("Document-has-been-declined-successfully"),
               "success",
               setOpen
             );
