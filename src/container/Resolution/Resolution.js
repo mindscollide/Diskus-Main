@@ -233,6 +233,7 @@ const Resolution = () => {
       localStorage.removeItem("voterPage");
       localStorage.removeItem("voterRows");
       localStorage.removeItem("ResolutionID");
+      localStorage.removeItem("ResolutionAccessDenied");
       dispatch(createResolutionModal(false));
       dispatch(updateResolutionModal(false));
       dispatch(viewResolutionModal(false));
