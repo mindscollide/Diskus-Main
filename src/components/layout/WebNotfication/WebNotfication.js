@@ -469,12 +469,9 @@ const WebNotfication = ({
             "NotificationClickMinutesMeetingID",
             PayLoadData.MeetingID
           );
-          //Notification for being added as a minute reviewer
-          let Data = {
-            MeetingID: Number(PayLoadData.MeetingID),
-          };
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
-            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+            GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
           );
         } else {
           //Notification for being added as a minute reviewer
@@ -485,12 +482,9 @@ const WebNotfication = ({
             "NotificationClickMinutesMeetingID",
             PayLoadData.MeetingID
           );
-          //Notification for being added as a minute reviewer
-          let Data = {
-            MeetingID: Number(PayLoadData.MeetingID),
-          };
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
-            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+            GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
           );
         }
       } else if (NotificationData.notificationActionID === 8) {
@@ -1211,12 +1205,9 @@ const WebNotfication = ({
             "NotificationClickMinutesMeetingID",
             PayLoadData.MeetingID
           );
-          //Notification for being added as a minute reviewer
-          let Data = {
-            MeetingID: Number(PayLoadData.MeetingID),
-          };
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
-            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+            GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
           );
         } else {
           //Notification for being added as a minute reviewer
@@ -1227,12 +1218,9 @@ const WebNotfication = ({
             "NotificationClickMinutesMeetingID",
             PayLoadData.MeetingID
           );
-          //Notification for being added as a minute reviewer
-          let Data = {
-            MeetingID: Number(PayLoadData.MeetingID),
-          };
+          let Data = { MeetingID: Number(PayLoadData.MeetingID) };
           dispatch(
-            MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+            GetMeetingStatusDataAPI(navigate, t, Data, false, false, false, 3)
           );
         }
       } else if (NotificationData.notificationActionID === 42) {

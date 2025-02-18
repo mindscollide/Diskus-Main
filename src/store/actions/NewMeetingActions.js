@@ -104,7 +104,10 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   SaveMeetingDocuments,
 } from "./MeetingAgenda_action";
-import { ResendUpdatedMinuteForReview } from "./Minutes_action";
+import {
+  MinutesWorkFlowActorStatusNotificationAPI,
+  ResendUpdatedMinuteForReview,
+} from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
 import { isFunction } from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
@@ -9546,6 +9549,13 @@ const GetMeetingStatusDataAPI = (
                   "MeetingStatusID",
                   response.data.responseResult.meetingStatusID
                 );
+
+                // For Setting Minutes Published Status
+                localStorage.setItem(
+                  "MinutesPublishedStatus",
+                  response.data.responseResult.isMinutesPublished
+                );
+
                 //Global Edit States Context State
                 isFunction(setEditorRole) &&
                   setEditorRole({
@@ -9604,6 +9614,16 @@ const GetMeetingStatusDataAPI = (
                   ) {
                     dispatch(showSceduleProposedMeeting(true));
                   }
+                } else if (Check === 3) {
+                  //Notification for being added as a minute reviewer
+                  let Data = {
+                    MeetingID: Number(
+                      localStorage.getItem("NotificationClickMinutesMeetingID")
+                    ),
+                  };
+                  dispatch(
+                    MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+                  );
                 }
               } catch (error) {
                 console.log(error, "errorerrorerror");

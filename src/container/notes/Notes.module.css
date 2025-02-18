@@ -189,6 +189,7 @@ body[dir="rtl"] .editIconBox {
   overflow: hidden !important;
   overflow-y: auto !important;
   height: 100px !important;
+  position: relative !important;
 }
 
 .notesViewContainer::-webkit-scrollbar {
@@ -378,4 +379,14 @@ body[dir="rtl"] .polling_searchinput {
 
 .Search_Bar_icon_class {
   cursor: pointer;
+}
+
+.Notes_spinner {
+  position: absolute !important;
+  z-index: 1 !important;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
