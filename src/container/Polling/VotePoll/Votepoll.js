@@ -201,8 +201,30 @@ const Votepoll = () => {
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
                               return (
-                                <>
-                                  <Row key={index}>
+                                <div
+                                  key={index}
+                                  onClick={() => {
+                                    if (
+                                      viewProgressPollsDetails.AllowMultipleAnswers
+                                    ) {
+                                      handleCheckBoxYes({
+                                        target: {
+                                          checked: !handleForCheck(
+                                            data.pollAnswerID
+                                          ),
+                                          name: data.pollAnswerID,
+                                        },
+                                      });
+                                    } else {
+                                      handleCheckBoxForOneOnly({
+                                        target: { value: data.pollAnswerID },
+                                      });
+                                    }
+                                  }}
+                                  className="clickable-row"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <Row>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
@@ -226,14 +248,13 @@ const Votepoll = () => {
                                   <Row>
                                     <Col
                                       lg={1}
-                                      ms={1}
+                                      md={1}
                                       sm={12}
                                       className={
                                         styles["CheckBox_ViewProgressPolls"]
                                       }
                                     >
-                                      {viewProgressPollsDetails.AllowMultipleAnswers ===
-                                      true ? (
+                                      {viewProgressPollsDetails.AllowMultipleAnswers ? (
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(
@@ -267,7 +288,7 @@ const Votepoll = () => {
                                       />
                                     </Col>
                                   </Row>
-                                </>
+                                </div>
                               );
                             })
                           ) : (
