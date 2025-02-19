@@ -503,7 +503,12 @@ const Dashboard = () => {
             dispatch(LeaveMeetingVideo(Data, navigate, t, 2, data));
           } else {
             let newRoomID = localStorage.getItem("newRoomId");
-            localStorage.setItem("acceptedRoomID", newRoomID);
+            let activeRoomID = localStorage.getItem("activeRoomID");
+            if (newRoomID) {
+              localStorage.setItem("acceptedRoomID", newRoomID);
+            } else {
+              localStorage.setItem("acceptedRoomID", activeRoomID);
+            }
             sessionStorage.setItem("alreadyInMeetingVideo", true);
             dispatch(participantWaitingListBox(false));
             await dispatch(
