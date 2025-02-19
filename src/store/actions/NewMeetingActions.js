@@ -85,6 +85,7 @@ import {
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
+  nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   openPresenterViewMainApi,
   participantVideoButtonState,
@@ -109,6 +110,7 @@ import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_g
 import { isFunction } from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
+import NonMeetingVideoModal from "../../container/pages/meeting/viewMeetings/nonMeetingVideoModal/NonMeetingVideoModal";
 
 const boardDeckModal = (response) => {
   return {
@@ -8236,13 +8238,25 @@ const JoinCurrentMeeting = (
               }
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
               await dispatch(currentMeetingStatus(10));
-              if (response.data.responseResult.isPresenterViewStarted) {
+              let activeStatusOneToOne = JSON.parse(
+                localStorage.getItem("activeCall")
+              );
+
+              let presenterViewStatus =
+                response.data.responseResult.isPresenterViewStarted;
+              if (presenterViewStatus && !activeStatusOneToOne) {
+                console.log("Check 21");
+
                 let data = {
                   VideoCallURL: String(Data.VideoCallURL),
                   WasInVideo: false,
                 };
                 console.log("onClickStopPresenter", data);
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
+              } else if (presenterViewStatus && activeStatusOneToOne) {
+                console.log("Check 21");
+                dispatch(nonMeetingVideoGlobalModal(true));
+                dispatch(presenterViewGlobalState(0, true, false, false));
               }
             } else if (
               response.data.responseResult.responseMessage

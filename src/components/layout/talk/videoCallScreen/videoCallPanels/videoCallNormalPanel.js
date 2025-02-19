@@ -201,7 +201,7 @@ const VideoPanelNormal = () => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
-  console.log(presenterViewFlag, "presenterViewFlag");
+  console.log(presenterViewFlag, "presenterViewFlagNormal");
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -219,6 +219,12 @@ const VideoPanelNormal = () => {
     (state) =>
       state.videoFeatureReducer.presenterParticipantAlreadyInMeetingVideo
   );
+
+  const leavePresenterOrJoinOtherCalls = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
+  );
+
+  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [allParticipant, setAllParticipant] = useState([]);
 
@@ -288,12 +294,16 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
-      let Data = {
-        RoomID: String(
-          presenterViewFlag ? callAcceptedRoomID : participantRoomIds
-        ),
-      };
-      dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      console.log("Check 22");
+      if (!leavePresenterOrJoinOtherCalls) {
+        console.log("Check 22");
+        let Data = {
+          RoomID: String(
+            presenterViewFlag ? callAcceptedRoomID : participantRoomIds
+          ),
+        };
+        dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      }
       setIsMeetinVideoCeckForParticipant(true);
       if (validateRoomID(refinedParticipantVideoUrl)) {
         console.log("iframeiframe", refinedParticipantVideoUrl !== callerURL);
@@ -577,6 +587,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
+      console.log("Check iframe Presenter");
       let dynamicBaseURLCaller = localStorage.getItem(
         "videoBaseURLParticipant"
       );
@@ -624,6 +635,7 @@ const VideoPanelNormal = () => {
             if (newurl !== callerURL) {
               console.log("iframeiframe", newurl !== callerURL);
               console.log("iframeiframe", newurl);
+              console.log("Check iframe Presenter", newurl);
               setCallerURL(newurl);
             }
           }

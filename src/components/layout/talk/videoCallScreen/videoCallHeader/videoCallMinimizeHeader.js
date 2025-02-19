@@ -105,6 +105,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
   let userGUID = localStorage.getItem("userGUID");
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state
@@ -621,7 +622,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
           <Col lg={6} md={6} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
-              {presenterViewFlag && (
+              {presenterViewFlag && presenterViewHostFlag && (
                 <div onClick={minimizeStopPresenter}>
                   <Tooltip placement="topRight" title={t("Stop-presenting")}>
                     <img src={StopMinPresenter} alt="Video" />
@@ -750,7 +751,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   />
                 </Tooltip>
               </div>
-              {presenterViewFlag && (
+              {presenterViewFlag && !activeCall && (
                 <Tooltip placement="topRight" title={t("Participants")}>
                   <div className={"grayScaleImage"}>
                     <img src={ParticipantIcon} alt="Participants" />
@@ -874,7 +875,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     </div>
                   ) : null} */}
               {console.log("LeaveCallModalFlag 1", callerID, currentUserID)}
-              {!presenterViewFlag && (
+              {(!presenterViewFlag ||
+                (activeCall && currentCallType === 1)) && (
                 <div className="position-relative">
                   {LeaveCallModalFlag === true && callerID === currentUserID ? (
                     <>
@@ -969,7 +971,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 </div>
               )}
 
-              {!presenterViewFlag && (
+              {(!presenterViewFlag ||
+                (activeCall && currentCallType === 1)) && (
                 <div>
                   <Tooltip placement="bottomLeft" title={t("Normalize-screen")}>
                     <div

@@ -13,6 +13,7 @@ import {
 } from "../../commen/apis/Api_config";
 import {
   getParticipantMeetingJoinMainApi,
+  leavePresenterJoinOneToOneOrOtherCall,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   videoOutgoingCallFlag,
@@ -704,6 +705,7 @@ const LeaveCall = (Data, navigate, t) => {
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 0);
               sessionStorage.setItem("NonMeetingVideoCall", false);
+              dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage
@@ -712,6 +714,7 @@ const LeaveCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
+              dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(
                 leaveCallAction(t("Call-disconnected-by-recipient"))
               );
