@@ -403,6 +403,9 @@ const VideoCallNormalHeader = ({
       }
       // Stop presenter view
       if (presenterStartedFlag) {
+        if (iframeCurrent && iframeCurrent.contentWindow) {
+          iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
+        }
         let data = {
           MeetingID: currentMeetingID,
           RoomID: RoomID,
@@ -412,19 +415,12 @@ const VideoCallNormalHeader = ({
 
         await dispatch(stopPresenterViewMainApi(navigate, t, data));
       } else {
-        if (iframeCurrent && iframeCurrent.contentWindow) {
-          iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
-        }
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
           Name: String(meetingTitle),
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
-      }
-      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-        console.log("busyCall");
-        iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
       }
     } else {
       console.log("busyCall");
