@@ -36,7 +36,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
-import SignatoriesListModal from '../ApprovalSend/SignatoriesList/SignatoriesListModal'
+import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,6 +47,9 @@ const ReviewSignature = () => {
     getAllPendingApprovalStatuses,
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
+  const workflowResponseMessage = useSelector((state) => state.webViewer);
+  const globalState = useSelector((state) => state);
+  console.log(globalState, "globalStateglobalState");
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument
   );
@@ -108,7 +111,7 @@ const ReviewSignature = () => {
   ]);
 
   const filters = [
-    { text: t("Pending"), value: "Pending Signature" },
+    { text: t("Signature-pending"), value: "Pending Signature" },
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
@@ -183,7 +186,7 @@ const ReviewSignature = () => {
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Pending Signature", "Signed", "Declined"]);
+    setSelectedValues(["Signature Pending", "Signed", "Declined"]);
     setReviewSignature(originalData);
     setVisible(false);
   };

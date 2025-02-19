@@ -1348,7 +1348,6 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   text-overflow: ellipsis;
 }
 
-
 .breadCrumbsThreeDotsDiv_Row {
   display: flex;
   align-items: center;
@@ -1366,7 +1365,16 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   position: absolute;
   bottom: 4px;
   left: 0;
-  background-color: #E1E1E1;
+  background-color: #e1e1e1;
   height: 1px;
   width: 100%;
+}
+
+.empty_DataRoom {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

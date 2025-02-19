@@ -26,7 +26,7 @@ import {
   Notification,
   TextField,
 } from "../../components/elements";
-import { Tooltip } from "antd";
+import { Spin, Tooltip } from "antd";
 import {
   GetNotes,
   GetNotesByIdAPI,
@@ -1014,19 +1014,31 @@ const Notes = () => {
                 );
               })
             ) : (
-              <Row>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className={styles["emptyNotesState"]}
-                >
-                  <img draggable="false" src={NotesMainEmpty} alt="" />
-                  <p className={styles["emptystatetext"]}>
-                    {t("Notes-you-add-appear-here")}
-                  </p>
-                </Col>
-              </Row>
+              <>
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={styles["emptyNotesState"]}
+                  >
+                    <img draggable="false" src={NotesMainEmpty} alt="" />
+                    <p className={styles["emptystatetext"]}>
+                      {t("Notes-you-add-appear-here")}
+                    </p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Notes_spinner"]}
+                  >
+                    <Spin />
+                  </Col>
+                </Row>
+              </>
             )}
           </Col>
 

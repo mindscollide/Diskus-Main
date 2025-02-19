@@ -48,6 +48,7 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
+import { Spin } from "antd";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -623,8 +624,8 @@ const Committee = () => {
           </>
         ) : (
           <>
-            <Row className='mt-3'>
-              <Col md={6} sm={6} lg={6} className='d-flex gap-3 '>
+            <Row className="mt-3">
+              <Col md={6} sm={6} lg={6} className="d-flex gap-3 ">
                 <span className={styles["Committee-heading-size"]}>
                   {t("Committees")}
                 </span>
@@ -634,12 +635,12 @@ const Committee = () => {
                   onClick={groupModal}
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={plusbutton}
-                      height='7.6px'
-                      width='7.6px'
+                      height="7.6px"
+                      width="7.6px"
                       className={styles["PLusICon"]}
-                      alt=''
+                      alt=""
                     />
                   }
                 />
@@ -649,31 +650,38 @@ const Committee = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className='d-flex justify-content-end mt-2 '>
+                className="d-flex justify-content-end mt-2 "
+              >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
                   text={t("Archived-committees")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={archivedbtn}
-                      width='18px'
-                      height='18px'
+                      width="18px"
+                      height="18px"
                       className={styles["archivedbtnIcon"]}
-                      alt=''
+                      alt=""
                     />
                   }
                 />
               </Col>
             </Row>
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col lg={12} md={12} sm={12}>
                 <Row
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
-                  }`}>
-                  <Col sm={12} md={12} lg={12} className='m-0 p-0 mt-2 '>
+                  }`}
+                >
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="m-0 p-0 mt-2 position-relative"
+                  >
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
@@ -682,8 +690,9 @@ const Committee = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className='mb-3'
-                              key={index}>
+                              className="mb-3"
+                              key={index}
+                            >
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -738,11 +747,11 @@ const Committee = () => {
                                 changeHandleStatus={changeHandleStatus}
                                 Icon={
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={committeeicon}
-                                    width='32.88px'
-                                    height='28.19px'
-                                    alt=''
+                                    width="32.88px"
+                                    height="28.19px"
+                                    alt=""
                                   />
                                 }
                                 BtnText={
@@ -759,59 +768,77 @@ const Committee = () => {
                           );
                         })
                       ) : (
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className={styles["CommiiteeNotFoundContainer"]}>
+                        <>
                           <Row>
-                            <Col sm={12} md={12} lg={12} className='mb-3'>
-                              <img
-                                draggable='false'
-                                src={NoCommitteeImg}
-                                alt=''
-                              />
-                            </Col>
                             <Col
-                              sm={12}
-                              md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
-                              {t("You-dont-have-any-committee-yet")}
-                            </Col>
-                            <Col
-                              sm={12}
                               md={12}
-                              lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
-                              {t("Click-create-new-committee")}
-                            </Col>
-                            <Col
                               sm={12}
-                              md={12}
-                              lg={12}
-                              className='d-flex justify-content-center mt-3'>
-                              <Button
-                                className={styles["create-Committee-btn"]}
-                                text={t("Create-new-committee")}
-                                onClick={groupModal}
-                                icon={
-                                  <img
-                                    draggable='false'
-                                    src={plusbutton}
-                                    height='7.6px'
-                                    width='7.6px'
-                                    className={styles["PLusICon"]}
-                                    alt=''
-                                  />
-                                }
-                              />
+                              className={styles["committee_spinner"]}
+                            >
+                              <Spin />
                             </Col>
                           </Row>
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["CommiiteeNotFoundContainer"]}
+                            >
+                              <Row>
+                                <Col sm={12} md={12} lg={12} className="mb-3">
+                                  <img
+                                    draggable="false"
+                                    src={NoCommitteeImg}
+                                    alt=""
+                                  />
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["CommitteeNotFoundText"]}
+                                >
+                                  {t("You-dont-have-any-committee-yet")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["CommitteeNotFoundText"]}
+                                >
+                                  {t("Click-create-new-committee")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className="d-flex justify-content-center mt-3"
+                                >
+                                  <Button
+                                    className={styles["create-Committee-btn"]}
+                                    text={t("Create-new-committee")}
+                                    onClick={groupModal}
+                                    icon={
+                                      <img
+                                        draggable="false"
+                                        src={plusbutton}
+                                        height="7.6px"
+                                        width="7.6px"
+                                        className={styles["PLusICon"]}
+                                        alt=""
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </Row>
 
-                          <p></p>
-                          <p></p>
-                        </Col>
+                              <p></p>
+                              <p></p>
+                            </Col>
+                          </Row>
+                        </>
                       )}
                     </Row>
                   </Col>
@@ -819,19 +846,21 @@ const Committee = () => {
               </Col>
             </Row>
             {getcommitteedata.length > 0 && (
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center '>
+                  className="d-flex justify-content-center "
+                >
                   <Container className={styles["PaginationStyle-Committee"]}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={"pagination-groups-table"}>
+                        className={"pagination-groups-table"}
+                      >
                         <CustomPagination
                           total={totalRecords}
                           current={JSON.parse(currentPage)}

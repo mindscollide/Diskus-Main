@@ -6,7 +6,7 @@ import {
   ChevronDown,
   Plus,
 } from "react-bootstrap-icons";
-import { Checkbox, Dropdown, Menu, Select } from "antd";
+import { Checkbox, Dropdown, Menu, Select, Spin } from "antd";
 import {
   Button,
   TableToDo,
@@ -1057,6 +1057,7 @@ const TodoList = () => {
                       <section className="d-flex flex-column align-items-center justify-content-center">
                         <img src={TodoMessageIcon1} width={"250px"} alt="" />
                         <span className="NotaskTodolist">{t("No-Task")}</span>
+                        <Spin />
                       </section>
                     </>
                   ), // Set your custom empty text here
