@@ -36,6 +36,8 @@ const VideoNewParticipantList = () => {
 
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
+  let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+
   let HostName = localStorage.getItem("name");
   const participantWaitingList = useSelector(
     (state) => state.videoFeatureReducer.participantWaitingList
@@ -43,6 +45,10 @@ const VideoNewParticipantList = () => {
 
   const participantList = useSelector(
     (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  );
+
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
   const waitingParticipants = useSelector(
@@ -78,6 +84,7 @@ const VideoNewParticipantList = () => {
   // );
 
   const [filteredParticipants, setFilteredParticipants] = useState([]);
+  console.log(filteredParticipants, "filteredParticipants");
 
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
@@ -107,10 +114,23 @@ const VideoNewParticipantList = () => {
   // }, []);
 
   // Update filteredParticipants based on participantList
+
   useEffect(() => {
-    console.log("hell");
-    if (participantList?.length) {
-      const uniqueParticipants = participantList.filter(
+    // Decide which participant list to use based on meetingHost state
+    const selectedParticipants =
+      meetinHostInfo?.isHost === false && meetinHostInfo?.isDashboard === false
+        ? getAllParticipantMain
+        : participantList;
+
+    if (newJoinPresenterParticipant?.length) {
+      // Merge new participants with the selected participant list
+      const mergedParticipants = [
+        ...selectedParticipants,
+        ...newJoinPresenterParticipant,
+      ];
+
+      // Ensure uniqueness based on userID or guid
+      const uniqueParticipants = mergedParticipants.filter(
         (participant, index, self) =>
           participant.userID === 0
             ? self.findIndex((p) => p.guid === participant.guid) === index
@@ -118,12 +138,12 @@ const VideoNewParticipantList = () => {
       );
 
       setFilteredParticipants(uniqueParticipants);
-      console.log(uniqueParticipants, "participantListMainReducer");
     } else {
-      setFilteredParticipants([]);
-      console.log("participantListMainReducer");
+      // If newJoinPresenterParticipant is empty, reset to selectedParticipants
+      setFilteredParticipants(selectedParticipants);
     }
-  }, [participantList]);
+  }, [newJoinPresenterParticipant, getAllParticipantMain, participantList]);
+
   // Ensure it listens to participantList updates
 
   function isEveryoneUnmuted(participants) {
@@ -144,10 +164,6 @@ const VideoNewParticipantList = () => {
       }
     }
   }, [filteredParticipants]);
-
-  useEffect(() => {
-    console.log("Updated Participants List:", newJoinPresenterParticipant);
-  }, [newJoinPresenterParticipant]);
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
@@ -299,7 +315,7 @@ const VideoNewParticipantList = () => {
 
   const participantsToDisplay =
     presenterViewFlag && presenterViewHostFlag
-      ? newJoinPresenterParticipant
+      ? filteredParticipants
       : filteredParticipants;
 
   console.log(
@@ -393,8 +409,8 @@ const VideoNewParticipantList = () => {
       {/* Participants Name List */}
       <Col sm={12} md={12} lg={12}>
         <div className={styles["Waiting-New-ParticipantNameList"]}>
-          {participantsToDisplay.length > 0 ? (
-            participantsToDisplay.map((usersData, index) => {
+          {filteredParticipants.length > 0 ? (
+            filteredParticipants.map((usersData, index) => {
               console.log(usersData, "usersDatausersData");
               return (
                 <>

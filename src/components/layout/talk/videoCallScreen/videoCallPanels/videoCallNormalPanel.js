@@ -221,6 +221,7 @@ const VideoPanelNormal = () => {
   );
 
   const [allParticipant, setAllParticipant] = useState([]);
+  console.log(allParticipant, "allParticipant123");
 
   const [participantsList, setParticipantsList] = useState([]);
 
@@ -288,6 +289,7 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
+      console.log("Check new");
       let Data = {
         RoomID: String(
           presenterViewFlag ? callAcceptedRoomID : participantRoomIds
@@ -528,8 +530,8 @@ const VideoPanelNormal = () => {
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
               if (urlFormeetingapi !== callerURL) {
-              console.log("iframeiframe", urlFormeetingapi);
-              setCallerURL(urlFormeetingapi);
+                console.log("iframeiframe", urlFormeetingapi);
+                setCallerURL(urlFormeetingapi);
               }
             }
           } else {
@@ -546,7 +548,7 @@ const VideoPanelNormal = () => {
               if (validateRoomID(newurl)) {
                 console.log("iframeiframe", newurl);
                 if (newurl !== callerURL) {
-                console.log("iframeiframe", newurl);
+                  console.log("iframeiframe", newurl);
                   setCallerURL(newurl);
                 }
               }
@@ -567,7 +569,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", newurl);
               if (newurl !== callerURL) {
-              console.log("iframeiframe", newurl);
+                console.log("iframeiframe", newurl);
                 setCallerURL(newurl);
                 dispatch(initiateVideoCallFail(""));
               }
