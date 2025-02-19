@@ -396,8 +396,9 @@ const VideoCallNormalHeader = ({
     );
     console.log("busyCall");
     if (presenterViewHostFlag) {
-      console.log("busyCall");
+      console.log("busyCall", alreadyInMeetingVideo);
       if (!alreadyInMeetingVideo) {
+        console.log("busyCall", alreadyInMeetingVideo);
         await leaveSuccess();
       }
       // Stop presenter view
@@ -743,19 +744,6 @@ const VideoCallNormalHeader = ({
   const participantLeaveCall = async () => {
     dispatch(toggleParticipantsVisibility(false));
     console.log("busyCall");
-    try {
-      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-        console.log("busyCall");
-
-        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
-      }
-    } catch (error) {}
-
-    localStorage.removeItem("currentHostUserID");
-    localStorage.removeItem("currentHostUserID");
-    localStorage.removeItem("isHost");
-    localStorage.removeItem("isNewHost");
     const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
 
     if (isMeeting === true) {
@@ -766,6 +754,17 @@ const VideoCallNormalHeader = ({
         console.log("Check Presenter");
         handlePresenterViewFunc();
       } else if (isMeetingVideoHostCheck) {
+        try {
+          if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+            console.log("busyCall");
+
+            iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+            await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+          }
+        } catch (error) {}
+        localStorage.removeItem("currentHostUserID");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isNewHost");
         console.log("busyCall");
         let Data = {
           RoomID: String(RoomID),
@@ -776,7 +775,34 @@ const VideoCallNormalHeader = ({
         };
 
         dispatch(LeaveMeetingVideo(Data, navigate, t));
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("isMeetingVideo", false);
+        const emptyArray = [];
+        localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+        setParticipantStatus([]);
+        localStorage.setItem("activeCall", false);
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("acceptedRoomID", 0);
+        localStorage.setItem("activeRoomID", 0);
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+        dispatch(leaveCallModal(false));
+        dispatch(participantPopup(false));
+        localStorage.setItem("MicOff", true);
+        localStorage.setItem("VidOff", true);
       } else {
+        localStorage.removeItem("currentHostUserID");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isNewHost");
+        try {
+          if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+            console.log("busyCall");
+
+            iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+            await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+          }
+        } catch (error) {}
         console.log("busyCall");
         let Data = {
           RoomID: String(RoomID),
@@ -788,11 +814,38 @@ const VideoCallNormalHeader = ({
 
         dispatch(setRaisedUnRaisedParticiant(false));
         dispatch(LeaveMeetingVideo(Data, navigate, t));
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("isMeetingVideo", false);
+        const emptyArray = [];
+        localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+        setParticipantStatus([]);
+        localStorage.setItem("activeCall", false);
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("acceptedRoomID", 0);
+        localStorage.setItem("activeRoomID", 0);
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+        dispatch(leaveCallModal(false));
+        dispatch(participantPopup(false));
+        localStorage.setItem("MicOff", true);
+        localStorage.setItem("VidOff", true);
       }
     } else if (
       isMeeting === false &&
       getDashboardVideo.isDashboardVideo === false
     ) {
+      try {
+        if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+          console.log("busyCall");
+
+          iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+          await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        }
+      } catch (error) {}
+      localStorage.removeItem("currentHostUserID");
+      localStorage.removeItem("isHost");
+      localStorage.removeItem("isNewHost");
       console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
@@ -801,23 +854,23 @@ const VideoCallNormalHeader = ({
         CallTypeID: callTypeID,
       };
       dispatch(LeaveCall(Data, navigate, t));
+      localStorage.setItem("isCaller", false);
+      localStorage.setItem("isMeetingVideo", false);
+      const emptyArray = [];
+      localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+      setParticipantStatus([]);
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isCaller", false);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      dispatch(leaveCallModal(false));
+      dispatch(participantPopup(false));
+      localStorage.setItem("MicOff", true);
+      localStorage.setItem("VidOff", true);
     }
-    localStorage.setItem("isCaller", false);
-    localStorage.setItem("isMeetingVideo", false);
-    const emptyArray = [];
-    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-    setParticipantStatus([]);
-    localStorage.setItem("activeCall", false);
-    localStorage.setItem("isCaller", false);
-    localStorage.setItem("acceptedRoomID", 0);
-    localStorage.setItem("activeRoomID", 0);
-    dispatch(normalizeVideoPanelFlag(false));
-    dispatch(maximizeVideoPanelFlag(false));
-    dispatch(minimizeVideoPanelFlag(false));
-    dispatch(leaveCallModal(false));
-    dispatch(participantPopup(false));
-    localStorage.setItem("MicOff", true);
-    localStorage.setItem("VidOff", true);
   };
 
   const closeNotification = () => {

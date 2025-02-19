@@ -608,7 +608,10 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
             }
           }
+        } else {
+          sessionStorage.removeItem("StopPresenterViewAwait");
         }
+
         if (alreadyInMeetingVideo) {
           if (isMeetingVideoHostCheck) {
             if (payload.hostID !== userIDCurrent) {

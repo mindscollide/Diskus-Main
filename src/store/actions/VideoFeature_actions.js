@@ -1620,6 +1620,7 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   : false
               );
               if (alreadyInMeetingVideo) {
+                localStorage.setItem("isMeetingVideo",true);
                 dispatch(leaveCallModal(false));
                 console.log("Check Presenter");
                 dispatch(
@@ -1632,7 +1633,6 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
-                localStorage.removeItem("presenterViewvideoURL");
               } else {
                 console.log("Check Presenter");
                 localStorage.removeItem("participantUID");
@@ -1657,7 +1657,6 @@ const stopPresenterViewMainApi = (navigate, t, data) => {
                   t("Successful")
                 )
               );
-              sessionStorage.removeItem("StopPresenterViewAwait");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -528,7 +528,8 @@ const VideoPanelNormal = () => {
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
               if (urlFormeetingapi !== callerURL) {
-                setCallerURL(urlFormeetingapi);
+              console.log("iframeiframe", urlFormeetingapi);
+              setCallerURL(urlFormeetingapi);
               }
             }
           } else {
@@ -545,6 +546,7 @@ const VideoPanelNormal = () => {
               if (validateRoomID(newurl)) {
                 console.log("iframeiframe", newurl);
                 if (newurl !== callerURL) {
+                console.log("iframeiframe", newurl);
                   setCallerURL(newurl);
                 }
               }
@@ -565,6 +567,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", newurl);
               if (newurl !== callerURL) {
+              console.log("iframeiframe", newurl);
                 setCallerURL(newurl);
                 dispatch(initiateVideoCallFail(""));
               }
