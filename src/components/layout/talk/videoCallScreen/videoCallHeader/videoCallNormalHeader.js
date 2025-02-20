@@ -140,6 +140,8 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.videoControlHost
   );
 
+  console.log(videoControl, "videoControl");
+
   // For Participant Raise Un Raised Hand
   const raisedUnRaisedParticipant = useSelector(
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
@@ -287,6 +289,9 @@ const VideoCallNormalHeader = ({
 
   console.log("participantCounterList", getAllParticipantGuest);
 
+  const [videoDisable, setVideoDisable] = useState(false);
+  console.log(videoDisable, "videoDisable");
+
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
 
@@ -305,19 +310,22 @@ const VideoCallNormalHeader = ({
   }, [getAllParticipantGuest]);
   // for show Participant popUp only
   // Update filteredParticipants based on participantList
- useEffect(() => {
-     if (getVideoParticpantListandWaitingList?.length) {
+  useEffect(() => {
+    if (getVideoParticpantListandWaitingList?.length) {
       setParticipantCounterList((prev) => {
-         const combined = [...getAllParticipantGuest, ...getVideoParticpantListandWaitingList];
-         // Filter duplicates by checking the unique identifier, e.g., `guid`
-         const uniqueParticipants = combined.filter(
-           (participant, index, self) =>
-             index === self.findIndex((p) => p.guid === participant.guid)
-         );
-         return uniqueParticipants.length;
-       });
-     }
-   }, [getVideoParticpantListandWaitingList]);
+        const combined = [
+          ...getAllParticipantGuest,
+          ...getVideoParticpantListandWaitingList,
+        ];
+        // Filter duplicates by checking the unique identifier, e.g., `guid`
+        const uniqueParticipants = combined.filter(
+          (participant, index, self) =>
+            index === self.findIndex((p) => p.guid === participant.guid)
+        );
+        return uniqueParticipants.length;
+      });
+    }
+  }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
     if (makeHostNow !== null) {
@@ -952,6 +960,16 @@ const VideoCallNormalHeader = ({
     // Set the HideVideo flag based on videoControlForParticipant
     // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
+    setVideoDisable(flag);
+    if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+      if (flag) {
+        console.log("CheckMicHost", flag);
+        iframeCurrent.contentWindow.postMessage("VidOn", "*");
+      } else {
+        console.log("CheckMicHost", flag);
+        iframeCurrent.contentWindow.postMessage("VidOff", "*");
+      }
+    }
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       let data = {
@@ -970,6 +988,16 @@ const VideoCallNormalHeader = ({
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
+
+    if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+      if (flag) {
+        console.log("CheckMicHost", flag);
+        iframeCurrent.contentWindow.postMessage("MicOn", "*");
+      } else {
+        console.log("CheckMicHost", flag);
+        iframeCurrent.contentWindow.postMessage("MicOff", "*");
+      }
+    }
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
@@ -1125,7 +1153,7 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? videoControl
+                    ? videoDisable
                       ? VideoOff
                       : VideoOn
                     : isVideoActive
