@@ -853,12 +853,36 @@ const VideoPanelNormal = () => {
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
+    let alreadyInMeetingVideo = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideo")
+    );
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let newRoomID = localStorage.getItem("newRoomId");
+    let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
+    console.log("handlerForStaringPresenterView", alreadyInMeetingVideo);
+    console.log("handlerForStaringPresenterView", newRoomID);
+    console.log("handlerForStaringPresenterView", activeRoomID);
+    console.log("handlerForStaringPresenterView", callAcceptedRoomID);
+    console.log(
+      "handlerForStaringPresenterView",
+      alreadyInMeetingVideo
+        ? newRoomID
+          ? newRoomID
+          : activeRoomID
+        : callAcceptedRoomID
+    );
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
-      RoomID: String(alreadyInMeetingVideo ? newRoomID : callAcceptedRoomID),
+      RoomID: String(
+        alreadyInMeetingVideo
+          ? newRoomID
+            ? newRoomID
+            : activeRoomID
+          : callAcceptedRoomID
+      ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));

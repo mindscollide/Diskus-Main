@@ -116,21 +116,9 @@ const VideoNewParticipantList = () => {
   // Update filteredParticipants based on participantList
 
   useEffect(() => {
-    // Decide which participant list to use based on meetingHost state
-    const selectedParticipants =
-      meetinHostInfo?.isHost === false && meetinHostInfo?.isDashboard === false
-        ? getAllParticipantMain
-        : participantList;
-
-    if (newJoinPresenterParticipant?.length) {
-      // Merge new participants with the selected participant list
-      const mergedParticipants = [
-        ...selectedParticipants,
-        ...newJoinPresenterParticipant,
-      ];
-
-      // Ensure uniqueness based on userID or guid
-      const uniqueParticipants = mergedParticipants.filter(
+    console.log("hell");
+    if (participantList?.length) {
+      const uniqueParticipants = participantList.filter(
         (participant, index, self) =>
           participant.userID === 0
             ? self.findIndex((p) => p.guid === participant.guid) === index
@@ -138,11 +126,12 @@ const VideoNewParticipantList = () => {
       );
 
       setFilteredParticipants(uniqueParticipants);
+      console.log(uniqueParticipants, "participantListMainReducer");
     } else {
-      // If newJoinPresenterParticipant is empty, reset to selectedParticipants
-      setFilteredParticipants(selectedParticipants);
+      setFilteredParticipants([]);
+      console.log("participantListMainReducer");
     }
-  }, [newJoinPresenterParticipant, getAllParticipantMain, participantList]);
+  }, [participantList]);
 
   // Ensure it listens to participantList updates
 
