@@ -437,20 +437,20 @@ const VideoPanelNormal = () => {
     }
   }, [audioControl]);
 
-  useEffect(() => {
-    const iframe = iframeRef.current;
-    console.log("videoHideUnHideForHost");
-    if (iframe && iframe.contentWindow !== null) {
-      console.log("videoHideUnHideForHost");
-      if (videoControl === true) {
-        console.log("videoHideUnHideForHost");
-        iframe.contentWindow.postMessage("VidOn", "*");
-      } else {
-        console.log("videoHideUnHideForHost");
-        iframe.contentWindow.postMessage("VidOff", "*");
-      }
-    }
-  }, [videoControl]);
+  // useEffect(() => {
+  //   const iframe = iframeRef.current;
+  //   console.log("videoHideUnHideForHost");
+  //   if (iframe && iframe.contentWindow !== null) {
+  //     console.log("videoHideUnHideForHost");
+  //     if (videoControl === true) {
+  //       console.log("videoHideUnHideForHost");
+  //       iframe.contentWindow.postMessage("VidOn", "*");
+  //     } else {
+  //       console.log("videoHideUnHideForHost");
+  //       iframe.contentWindow.postMessage("VidOff", "*");
+  //     }
+  //   }
+  // }, [videoControl]);
 
   useEffect(() => {
     // Define the leave function to clean up the session
