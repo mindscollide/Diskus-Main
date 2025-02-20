@@ -1163,11 +1163,15 @@ const Dashboard = () => {
               const meetingHost = JSON.parse(
                 localStorage.getItem("meetinHostInfo")
               );
+
               if (data.payload.isForAll) {
+                if (!meetingHost?.isHost) {
+                  dispatch(setAudioControlHost(true));
+                }
                 // Dispatch action with all UIDs
-                dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted, true)
-                );
+                // dispatch(
+                //   participanMuteUnMuteMeeting(data.payload.isMuted, true)
+                // );
               } else {
                 // Handle individual mute/unmute
                 dispatch(participanMuteUnMuteMeeting(data.payload, false));
