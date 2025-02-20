@@ -427,30 +427,36 @@ const VideoPanelNormal = () => {
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (audioControl === true) {
-        iframe.contentWindow.postMessage("MicOn", "*");
-      } else {
-        iframe.contentWindow.postMessage("MicOff", "*");
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow !== null) {
+        if (audioControl === true) {
+          iframe.contentWindow.postMessage("MicOn", "*");
+        } else {
+          iframe.contentWindow.postMessage("MicOff", "*");
+        }
       }
-    }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
   }, [audioControl]);
 
-  // useEffect(() => {
-  //   const iframe = iframeRef.current;
-  //   console.log("videoHideUnHideForHost");
-  //   if (iframe && iframe.contentWindow !== null) {
-  //     console.log("videoHideUnHideForHost");
-  //     if (videoControl === true) {
-  //       console.log("videoHideUnHideForHost");
-  //       iframe.contentWindow.postMessage("VidOn", "*");
-  //     } else {
-  //       console.log("videoHideUnHideForHost");
-  //       iframe.contentWindow.postMessage("VidOff", "*");
-  //     }
-  //   }
-  // }, [videoControl]);
+  useEffect(() => {
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow !== null) {
+        if (videoControl === true) {
+          iframe.contentWindow.postMessage("VidOn", "*");
+        } else {
+          iframe.contentWindow.postMessage("VidOff", "*");
+        }
+      }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
+  }, [videoControl]);
 
   useEffect(() => {
     // Define the leave function to clean up the session

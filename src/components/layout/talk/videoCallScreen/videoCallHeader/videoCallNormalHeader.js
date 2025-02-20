@@ -53,6 +53,8 @@ import {
   presenterViewGlobalState,
   videoIconOrButtonState,
   participantVideoButtonState,
+  setVideoControlHost,
+  setAudioControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -958,20 +960,10 @@ const VideoCallNormalHeader = ({
 
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControlForParticipant
-    // const flag = videoControl;
     console.log("videoHideUnHideForHost", flag);
-    setVideoDisable(flag);
-    if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-      if (flag) {
-        console.log("CheckMicHost", flag);
-        iframeCurrent.contentWindow.postMessage("VidOn", "*");
-      } else {
-        console.log("CheckMicHost", flag);
-        iframeCurrent.contentWindow.postMessage("VidOff", "*");
-      }
-    }
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      dispatch(setVideoControlHost(flag));
       let data = {
         RoomID: String(RoomID),
         HideVideo: !!flag, // Ensuring it's a boolean
@@ -986,21 +978,12 @@ const VideoCallNormalHeader = ({
   };
 
   const muteUnMuteForHost = (flag) => {
-    // const flag = audioControlHost;
     console.log("videoHideUnHideForHost", flag);
-
-    if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-      if (flag) {
-        console.log("CheckMicHost", flag);
-        iframeCurrent.contentWindow.postMessage("MicOn", "*");
-      } else {
-        console.log("CheckMicHost", flag);
-        iframeCurrent.contentWindow.postMessage("MicOff", "*");
-      }
-    }
 
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       // Prepare data for the API request
+      dispatch(setAudioControlHost(flag));
+
       let data = {
         RoomID: String(RoomID),
         IsMuted: !!flag, // Ensuring it's a boolean
@@ -1153,7 +1136,7 @@ const VideoCallNormalHeader = ({
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
-                    ? videoDisable
+                    ? videoControl
                       ? VideoOff
                       : VideoOn
                     : isVideoActive

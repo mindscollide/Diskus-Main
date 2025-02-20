@@ -1023,7 +1023,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
                   "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
                 )
             ) {
-                await dispatch(setAudioControlHost(data.IsMuted));
+                // await dispatch(setAudioControlHost(data.IsMuted));
               
               localStorage.setItem("isMicEnabled", data.IsMuted);
               await dispatch(
@@ -1121,7 +1121,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
                 console.log("videoHideUnHideForHost", data.HideVideo);
-                await dispatch(setVideoControlHost(data.HideVideo));
+                // await dispatch(setVideoControlHost(data.HideVideo));
           
               await dispatch(
                 hideUnhideSelfSuccess(
