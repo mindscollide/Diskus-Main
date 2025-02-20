@@ -1093,10 +1093,10 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
             ) {
-              localStorage.setItem(
-                "isHost",
-                data.payload.newParticipants.isHost
-              );
+              // localStorage.setItem(
+              //   "isHost",
+              //   data.payload.newParticipants.isHost
+              // );
               dispatch(getParticipantsNewJoin(data.payload.newParticipants));
               console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (

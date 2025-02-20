@@ -220,6 +220,10 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.meetingStoppedByPresenter
   );
 
+  const getAllParticipantGuest = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
+  );
+
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
@@ -281,8 +285,7 @@ const VideoCallNormalHeader = ({
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
-  // to show a host participants list counter
-  const participantCounter = participantCounterList?.length;
+  console.log("participantCounterList", getAllParticipantGuest);
 
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
@@ -293,20 +296,28 @@ const VideoCallNormalHeader = ({
     flag: false,
     message: "",
   });
-
+  useEffect(() => {
+    if (getAllParticipantGuest?.length) {
+      let numbercount = Number(getAllParticipantGuest?.length);
+      console.log("participantCounterList", numbercount);
+      setParticipantCounterList(numbercount);
+    }
+  }, [getAllParticipantGuest]);
   // for show Participant popUp only
   // Update filteredParticipants based on participantList
-  useEffect(() => {
-    if (getVideoParticpantListandWaitingList?.length) {
-      const uniqueParticipants = getVideoParticpantListandWaitingList.filter(
-        (participant, index, self) =>
-          self.findIndex((p) => p.userID === participant.userID) === index
-      );
-      setParticipantCounterList(uniqueParticipants);
-    } else {
-      setParticipantCounterList([]);
-    }
-  }, [getVideoParticpantListandWaitingList]);
+ useEffect(() => {
+     if (getVideoParticpantListandWaitingList?.length) {
+      setParticipantCounterList((prev) => {
+         const combined = [...getAllParticipantGuest, ...getVideoParticpantListandWaitingList];
+         // Filter duplicates by checking the unique identifier, e.g., `guid`
+         const uniqueParticipants = combined.filter(
+           (participant, index, self) =>
+             index === self.findIndex((p) => p.guid === participant.guid)
+         );
+         return uniqueParticipants.length;
+       });
+     }
+   }, [getVideoParticpantListandWaitingList]);
 
   useEffect(() => {
     if (makeHostNow !== null) {
@@ -1336,7 +1347,7 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               )}
               <span className="participants-counter-For-Host">
-                {convertNumbersInString(participantCounter, lan)}
+                {convertNumbersInString(participantCounterList, lan)}
               </span>
               {participantWaitingListCounter > 0 && (
                 <span className="participants-counter-For-Host-waiting-counter">
