@@ -117,16 +117,20 @@ const VideoNewParticipantList = () => {
 
   useEffect(() => {
     console.log("hell");
-    if (participantList?.length) {
-      const uniqueParticipants = participantList.filter(
-        (participant, index, self) =>
-          participant.userID === 0
-            ? self.findIndex((p) => p.guid === participant.guid) === index
-            : self.findIndex((p) => p.userID === participant.userID) === index
-      );
+    if (participantList?.length || getAllParticipantMain.length) {
+      if (presenterViewFlag) {
+        setFilteredParticipants(getAllParticipantMain);
+      } else {
+        const uniqueParticipants = participantList.filter(
+          (participant, index, self) =>
+            participant.userID === 0
+              ? self.findIndex((p) => p.guid === participant.guid) === index
+              : self.findIndex((p) => p.userID === participant.userID) === index
+        );
 
-      setFilteredParticipants(uniqueParticipants);
-      console.log(uniqueParticipants, "participantListMainReducer");
+        setFilteredParticipants(uniqueParticipants);
+        console.log(uniqueParticipants, "participantListMainReducer");
+      }
     } else {
       setFilteredParticipants([]);
       console.log("participantListMainReducer");

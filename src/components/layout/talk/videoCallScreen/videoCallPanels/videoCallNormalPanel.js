@@ -861,18 +861,6 @@ const VideoPanelNormal = () => {
     let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
-    console.log("handlerForStaringPresenterView", alreadyInMeetingVideo);
-    console.log("handlerForStaringPresenterView", newRoomID);
-    console.log("handlerForStaringPresenterView", activeRoomID);
-    console.log("handlerForStaringPresenterView", callAcceptedRoomID);
-    console.log(
-      "handlerForStaringPresenterView",
-      alreadyInMeetingVideo
-        ? newRoomID
-          ? newRoomID
-          : activeRoomID
-        : callAcceptedRoomID
-    );
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
