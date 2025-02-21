@@ -528,7 +528,7 @@ const Polls = () => {
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        if (currentDate < convertIntoGmt) {
+        if (currentDate < convertIntoGmt && record.isVoter) {
           return (
             <span
               className={styles["DateClass"]}

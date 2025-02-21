@@ -395,14 +395,15 @@ const GroupViewPolls = ({ groupStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex  align-items-center justify-content-between p-1'>
+      <div className="d-flex  align-items-center justify-content-between p-1">
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -423,12 +424,12 @@ const GroupViewPolls = ({ groupStatus }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className='d-flex gap-2'>
+              <span className="d-flex gap-2">
                 {t("Poll-title")}{" "}
                 {sortOrderPollingTitle === "descend" ? (
-                  <img src={DescendIcon} alt='' />
+                  <img src={DescendIcon} alt="" />
                 ) : (
-                  <img src={AscendIcon} alt='' />
+                  <img src={AscendIcon} alt="" />
                 )}
               </span>
             </Col>
@@ -452,11 +453,16 @@ const GroupViewPolls = ({ groupStatus }) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
 
-        if (currentDate < convertIntoGmt && groupStatus === 3) {
+        if (
+          currentDate < convertIntoGmt &&
+          record.isVoter &&
+          groupStatus === 3
+        ) {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitleBeforeDueDate(record)}>
+              onClick={() => handleClickonTitleBeforeDueDate(record)}
+            >
               {truncateString(text, 50)}
             </span>
           );
@@ -464,7 +470,8 @@ const GroupViewPolls = ({ groupStatus }) => {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitle(record)}>
+              onClick={() => handleClickonTitle(record)}
+            >
               {truncateString(text, 50)}
             </span>
           );
@@ -481,7 +488,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -489,7 +496,8 @@ const GroupViewPolls = ({ groupStatus }) => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -510,12 +518,12 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Due-date")}
             {sortOrderDueDate === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -557,13 +565,13 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {" "}
             {t("Created-by")}
             {sortOrderCreatedBy === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -661,14 +669,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                       {!record.wasPollPublished ? (
                         <>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
+                            <Tooltip placement="topRight" title={t("Edit")}>
                               <img
                                 src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                alt=""
+                                draggable="false"
                                 onClick={() => handleEditBtn(record)}
                               />
                             </Tooltip>
@@ -679,14 +687,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                         <>
                           <Col sm={12} md={5} lg={5}></Col>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
+                            <Tooltip placement="topLeft" title={t("Delete")}>
                               <img
                                 src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
+                                alt=""
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                draggable="false"
                                 onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
@@ -697,27 +705,27 @@ const GroupViewPolls = ({ groupStatus }) => {
                   ) : (
                     <>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            alt=""
+                            draggable="false"
                             onClick={() => handleEditBtn(record)}
                           />
                         </Tooltip>
                       </Col>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
+                        <Tooltip placement="topLeft" title={t("Delete")}>
                           <img
                             src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
+                            alt=""
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            draggable="false"
                             onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
@@ -770,16 +778,17 @@ const GroupViewPolls = ({ groupStatus }) => {
           <ViewVotesScreen />
         ) : (
           <>
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end '>
+                className="d-flex justify-content-end "
+              >
                 {groupStatus === 3 && (
                   <Button
                     text={t("Create-polls")}
-                    icon={<img draggable={false} src={addmore} alt='' />}
+                    icon={<img draggable={false} src={addmore} alt="" />}
                     className={styles["Create_polls_Button"]}
                     onClick={handleCreatepolls}
                   />
@@ -798,7 +807,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                             rows={pollsRows}
                             scroll={{ y: "40vh" }}
                             pagination={false}
-                            className='Polling_table'
+                            className="Polling_table"
                           />
                         </Col>
                       </Row>
@@ -806,27 +815,29 @@ const GroupViewPolls = ({ groupStatus }) => {
                   </>
                 ) : (
                   <>
-                    <Row className='mt-3'>
+                    <Row className="mt-3">
                       <Col
                         lg={12}
                         ms={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <img
                           draggable={false}
                           src={emtystate}
-                          height='230px'
-                          width='293.93px'
-                          alt=''
+                          height="230px"
+                          width="293.93px"
+                          alt=""
                         />
                       </Col>
                     </Row>
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <span className={styles["EmptyState_heading"]}>
                           {t("No-polls")}
                         </span>
@@ -837,7 +848,8 @@ const GroupViewPolls = ({ groupStatus }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <span className={styles["EmptyState_subHeading"]}>
                           {t(
                             "Be-the-first-to-create-a-poll-and-spark-the-conversation"
@@ -857,7 +869,8 @@ const GroupViewPolls = ({ groupStatus }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='pagination-groups-table d-flex justify-content-center my-3'>
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
                       <CustomPagination
                         pageSizeOptionsValues={["30", "50", "100", "200"]}
                         current={pageNumber}
