@@ -584,7 +584,8 @@ const Polling = () => {
             <span
               className={styles["Ellipses_Class"]}
               onClick={() => {
-                ViewTitleBeforeDueDatePassed(record);
+                // ViewTitleBeforeDueDatePassed(record);
+                handleViewModal(record);
               }}
             >
               {text}
