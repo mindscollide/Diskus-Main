@@ -72,6 +72,8 @@ import {
   GetMeetingStatus,
   ValidateEncryptedStringMeetingRelatedEmailDataRM,
   MoveFilesToFoldersRM,
+  GetMeetingRecordingFilesRM,
+  RequestMeetingRecordingTranscriptRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -10165,8 +10167,241 @@ const moveFilesAndFoldersApi = (
       });
   };
 };
+const getMeetingRecordingFiles_init = () => {
+  return {
+    type: actions.GETMEETINGRECORDINGFILES_INIT,
+  };
+};
+
+const getMeetingRecordingFiles_success = (response) => {
+  return {
+    type: actions.GETMEETINGRECORDINGFILES_SUCCESS,
+    response: response,
+  };
+};
+
+const getMeetingRecordingFiles_fail = (message) => {
+  return {
+    type: actions.GETMEETINGRECORDINGFILES_FAIL,
+    message: message,
+  };
+};
+
+const getMeetingRecordingFilesApi = (
+  navigate,
+  t,
+  Data,
+  setStepDownloadModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(getMeetingRecordingFiles_init());
+
+    let form = new FormData();
+    form.append("RequestMethod", GetMeetingRecordingFilesRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getMeetingRecordingFilesApi(navigate, t, Data, setStepDownloadModal)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_01".toLowerCase()
+                )
+            ) {
+              let apiResonse = {
+                response: {
+                  response: response.data.responseResult,
+                  MeetingID: Data.MeetingID,
+                },
+              };
+              dispatch(
+                getMeetingRecordingFiles_success(apiResonse, t("Successful"))
+              );
+              isFunction(setStepDownloadModal) && setStepDownloadModal(2);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_02".toLowerCase()
+                )
+            ) {
+              let apiResonse = {
+                response: {
+                  response: response.data.responseResult,
+                  MeetingID: Data.MeetingID,
+                },
+              };
+              dispatch(
+                getMeetingRecordingFiles_success(apiResonse, t("Successful"))
+              );
+              isFunction(setStepDownloadModal) && setStepDownloadModal(2);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMeetingRecordingFiles_fail(t("No-meeting-recording-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_04".toLowerCase()
+                )
+            ) {
+              getMeetingRecordingFiles_fail(t("Something-went-wrong"));
+            } else {
+              dispatch(
+                getMeetingRecordingFiles_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(getMeetingRecordingFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getMeetingRecordingFiles_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(getMeetingRecordingFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+const requestMeetingRecordingTranscript_init = () => {
+  return {
+    type: actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_INIT,
+  };
+};
+
+const requestMeetingRecordingTranscript_success = (response, message) => {
+  return {
+    type: actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const requestMeetingRecordingTranscript_fail = (message) => {
+  return {
+    type: actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_FAIL,
+    message: message,
+  };
+};
+
+const requestMeetingRecordingTranscript_clear = () => {
+  return {
+    type: actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_CLEAR,
+  };
+};
+
+const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(requestMeetingRecordingTranscript_init());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      RequestMeetingRecordingTranscriptRM.RequestMethod
+    ); // Replace with actual request method
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: dataRoomApi, // Replace with actual API URL
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(requestMeetingRecordingTranscriptApi(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_RequestMeetingRecordingTranscript_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestMeetingRecordingTranscript_success(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_RequestMeetingRecordingTranscript_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestMeetingRecordingTranscript_fail(t("Unsuccessfull"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_RequestMeetingRecordingTranscript_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                requestMeetingRecordingTranscript_fail(
+                  t("Something went wrong")
+                )
+              );
+            } else {
+              dispatch(
+                requestMeetingRecordingTranscript_fail(
+                  t("Something went wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              requestMeetingRecordingTranscript_fail(t("Something went wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            requestMeetingRecordingTranscript_fail(t("Something went wrong"))
+          );
+        }
+      })
+      .catch(() => {
+        dispatch(
+          requestMeetingRecordingTranscript_fail(t("Something went wrong"))
+        );
+      });
+  };
+};
 
 export {
+  requestMeetingRecordingTranscriptApi,
+  getMeetingRecordingFilesApi,
   moveFilesAndFoldersApi,
   uploadDocumentsQuickMeetingApi,
   saveFilesQuickMeetingApi,

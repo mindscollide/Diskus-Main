@@ -1,0 +1,82 @@
+.Download__Heading {
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.Download___Button {
+  border-radius: 8px;
+  padding: 20px 5px 20px 20px;
+  /* height: 20px; */
+  border: 1px solid #e1e1e1;
+  background: none;
+  color: #5a5a5a !important;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  text-wrap: balance;
+  gap: 10px;
+  cursor: pointer;
+}
+.Download___Button_recording {
+  border-radius: 8px;
+  padding: 20px 5px 20px 20px;
+  /* height: 20px; */
+  border: 1px solid #e1e1e1;
+  background: none;
+  color: #5a5a5a !important;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  text-wrap: balance;
+  gap: 10px;
+  cursor: pointer;
+}
+.Download___Button_recording_disabled {
+  border-radius: 8px;
+  padding: 20px 5px 20px 20px;
+  /* height: 20px; */
+  border: 1px solid #e1e1e1;
+  filter: grayscale(1);
+  background: #eee;
+  color: #5a5a5a !important;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  text-wrap: balance;
+  gap: 10px;
+  cursor: default;
+  pointer-events: none;
+}
+.Download___cancelBtn {
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1;
+  background: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  padding: 12px 30px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #e1e1e1 !important;
+}
+.Download__Heading_MeetingRecording {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
