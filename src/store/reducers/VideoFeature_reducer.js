@@ -454,8 +454,13 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
-      const { payload, isforAll, presenterViewHostFlag, presenterViewFlag } =
-        action;
+      const {
+        payload,
+        isforAll,
+        presenterViewHostFlag,
+        presenterViewFlag,
+        check,
+      } = action;
       console.log("allUidsallUids Payload:", isforAll);
       console.log("allUidsallUids Payload:", payload);
       console.log("allUidsallUids Payload:", presenterViewHostFlag);
@@ -471,16 +476,27 @@ const videoFeatureReducer = (state = initialState, action) => {
         let participantUID = localStorage.getItem("participantUID");
         let isGuid = localStorage.getItem("isGuid");
         if (presenterViewFlag) {
+          console.log("allUidsallUids Payload:", payload);
           if (Object.keys(state.getAllParticipantMain).length > 0) {
             let uid = "";
             if (presenterViewHostFlag) {
+              console.log("allUidsallUids Payload:", payload);
               uid = meetingHostformeetingHost?.isHost ? isGuid : participantUID;
             }
+            console.log("allUidsallUids Payload:", payload);
             updatedParticipantList = state.getAllParticipantMain.map(
-              (participant) =>
-                participant.guid === uid
-                  ? participant
-                  : { ...participant, mute: payload } // Update only non-host participants
+              (participant) => {
+                if (participant.guid === uid) {
+                  return check === 1
+                    ? { ...participant, mute: true }
+                    : participant;
+                }
+                console.log("allUidsallUids Payload:", payload);
+
+                return check === 1
+                  ? { ...participant, mute: payload, hideCamera: payload }
+                  : { ...participant, mute: payload };
+              }
             );
           }
         } else {

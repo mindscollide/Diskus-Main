@@ -29,6 +29,7 @@ import {
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
+  participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterFlagForAlreadyInParticipantMeetingVideo,
@@ -859,6 +860,15 @@ const VideoPanelNormal = () => {
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
+    dispatch(
+      participanMuteUnMuteMeeting(
+        true,
+        true,
+        true,
+        true,
+        1
+      )
+    );
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 

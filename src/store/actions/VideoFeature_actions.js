@@ -266,7 +266,7 @@ const guestLeaveVideoMeeting = (response) => {
   };
 };
 
-const participanMuteUnMuteMeeting = (response, isforAll,presenterViewHostFlag,presenterViewFlag) => {
+const participanMuteUnMuteMeeting = (response, isforAll,presenterViewHostFlag,presenterViewFlag,check) => {
   console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
@@ -274,6 +274,7 @@ const participanMuteUnMuteMeeting = (response, isforAll,presenterViewHostFlag,pr
     isforAll: isforAll,
     presenterViewHostFlag:presenterViewHostFlag,
     presenterViewFlag:presenterViewFlag,
+    check:check
   };
 };
 

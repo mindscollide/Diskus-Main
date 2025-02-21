@@ -352,6 +352,7 @@ const Dashboard = () => {
   let newClient = Helper.socket;
   // for close the realtime Notification bar
   const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
+  const presenterViewHostFlagFlagRef = useRef(presenterViewHostFlag);
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
@@ -365,6 +366,9 @@ const Dashboard = () => {
   useEffect(() => {
     presenterViewJoinFlagRef.current = presenterViewJoinFlag;
   }, [presenterViewJoinFlag]);
+  useEffect(() => {
+    presenterViewHostFlagFlagRef.current = presenterViewHostFlag;
+  }, [presenterViewHostFlag]);
   useEffect(() => {
     presenterViewFlagRef.current = presenterViewFlag;
   }, [presenterViewFlag]);
@@ -554,6 +558,7 @@ const Dashboard = () => {
             dispatch(joinPresenterViewMainApi(navigate, t, data));
           }
         }
+      
       }
     }
   };
@@ -610,6 +615,7 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
             }
           }
+          
         } else {
           sessionStorage.removeItem("StopPresenterViewAwait");
         }
@@ -675,6 +681,14 @@ const Dashboard = () => {
               // make me host
             }
           }
+          dispatch(
+            participanMuteUnMuteMeeting(
+              false,
+              true,
+              true,
+              true,
+              1
+            ))
         }
       }
     }
@@ -1172,20 +1186,32 @@ const Dashboard = () => {
               );
 
               if (data.payload.isForAll) {
-                if(presenterViewFlag){
-                  if(!presenterViewHostFlag){
+                if (presenterViewFlag) {
+                  if (!presenterViewHostFlag) {
                     dispatch(setAudioControlHost(data.payload.isMuted));
                   }
-                }else if (!meetingHost?.isHost) {
+                } else if (!meetingHost?.isHost) {
                   dispatch(setAudioControlHost(data.payload.isMuted));
                 }
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted, true,presenterViewHostFlag,presenterViewFlag)
+                  participanMuteUnMuteMeeting(
+                    data.payload.isMuted,
+                    true,
+                    presenterViewHostFlag,
+                    presenterViewFlag
+                  )
                 );
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload, false,presenterViewHostFlag,presenterViewFlag));
+                dispatch(
+                  participanMuteUnMuteMeeting(
+                    data.payload,
+                    false,
+                    presenterViewHostFlag,
+                    presenterViewFlag
+                  )
+                );
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1419,6 +1445,8 @@ const Dashboard = () => {
               "MEETING_PRESENTATION_STARTED".toLowerCase()
             ) {
               startPresenterView(data.payload);
+                // Dispatch action with all UIDs
+        
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
@@ -1427,6 +1455,7 @@ const Dashboard = () => {
               dispatch(setVideoControlHost(false));
               dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
+             
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
