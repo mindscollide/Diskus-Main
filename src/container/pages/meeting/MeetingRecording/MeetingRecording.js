@@ -96,7 +96,7 @@ const MeetingRecording = ({ title }) => {
 
   const columns = [
     {
-      title: "File",
+      title: t("File"),
       dataIndex: "fileName",
       key: "fileName",
       width: "45%",
@@ -117,7 +117,7 @@ const MeetingRecording = ({ title }) => {
       },
     },
     {
-      title: "Size",
+      title: t("Size"),
       dataIndex: "fileSize",
       key: "fileSize",
       width: "17%",
@@ -152,12 +152,12 @@ const MeetingRecording = ({ title }) => {
                 className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Transcribe"}
+                  text={t("Transcribe")}
                   onClick={() => handleClickTranscribe(record)}
                 />
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Download"}
+                  text={t("Download")}
                   onClick={() => DownloadRecording(record)}
                 />
               </Col>
@@ -176,7 +176,7 @@ const MeetingRecording = ({ title }) => {
                 className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Download"}
+                  text={t("Download")}
                   onClick={() => DownloadRecording(record)}
                 />
               </Col>
@@ -191,7 +191,7 @@ const MeetingRecording = ({ title }) => {
                 lg={12}
                 className='d-flex justify-content-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
-                  Transcibing....
+                  {t("Transcibing")}
                 </span>
               </Col>
             </Row>
@@ -224,7 +224,7 @@ const MeetingRecording = ({ title }) => {
                   onClick={() => setStepDownloadModal(1)}
                   className='cursor-pointer'
                 />{" "}
-                Meeting Recording
+                {t("Meeting-recording")}
               </span>
             </Col>
             <Col sm={12} md={12} lg={12}>
@@ -243,7 +243,7 @@ const MeetingRecording = ({ title }) => {
               className={"d-flex justify-content-end p-0 m-0"}>
               <Button
                 className={styles["Download___cancelBtn"]}
-                text={"Cancel"}
+                text={t("Cancel")}
                 onClick={() => setStepDownloadModal(1)}
               />
             </Col>

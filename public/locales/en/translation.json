@@ -2433,5 +2433,9 @@
   "Document-has-been-signed-successfully": "Document has been signed successfully",
   "Document-has-been-declined-successfully": "Document has been declined successfully",
   "Signature-is-must-required": "Signature is must required",
-  "Click": "Click"
+  "Click": "Click",
+  "Download-meeting-recording": "Download Meeting Recording",
+  "Download-board-deck": "Download Board Deck",
+  "Transcribe": "Transcribe",
+  "Transcibing": "Transcibing"
 }
