@@ -2378,5 +2378,9 @@
   "Approvals": "Approvals",
   "Signature-pending": "Signature Pending",
   "Has-deleted-the-poll-main": "has deleted the poll",
-  "Document-has-been-signed-successfully": "Document has been signed successfully"
+  "Document-has-been-signed-successfully": "Document has been signed successfully",
+  "Document-has-been-declined-successfully": "Document has been declined successfully",
+  "Signature-is-must-required": "Signature is must required",
+  "Decision-announcement": "إعلان القرار",
+  "Click": "انقر"
 }

@@ -1977,7 +1977,15 @@ const ValidateEncryptedStringMinuteReviewDataRM = {
 const ValidateEncryptedStringSignatureDataRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringSignatureData"
 }
+const GetMeetingRecordingFilesRM = {
+  RequestMethod: "ServiceManager.GetMeetingRecordingFiles"
+}
+const RequestMeetingRecordingTranscriptRM = {
+  RequestMethod: "ServiceManager.RequestMeetingRecordingTranscript"
+}
 export {
+  RequestMeetingRecordingTranscriptRM,
+  GetMeetingRecordingFilesRM,
   ValidateEncryptedStringSignatureDataRM,
   ValidateEncryptedStringMinuteReviewDataRM,
   MoveFilesToFoldersRM,

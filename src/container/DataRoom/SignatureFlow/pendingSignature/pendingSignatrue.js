@@ -49,6 +49,7 @@ const SignatureViewer = () => {
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const [Instance, setInstance] = useState(null);
   const viewer = useRef(null);
+  const [isSigned, setIsSigned] = useState(true);
   const [signerData, setSignerData] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
@@ -537,6 +538,10 @@ const SignatureViewer = () => {
           const handleClickSaveBtn = async () => {
             try {
               const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
+              console.log(
+                { xfdfString, userAnnotationsRef },
+                "handleClickSaveBtnhandleClickSaveBtn"
+              );
               let currentUserID =
                 localStorage.getItem("userID") !== null
                   ? Number(localStorage.getItem("userID"))
@@ -575,6 +580,10 @@ const SignatureViewer = () => {
                 xfdfString,
                 ReadArray
               );
+              console.log(
+                { newProcessXmlForReadOnly },
+                "handleClickSaveBtnhandleClickSaveBtn"
+              );
 
               const revertedHideFieldsXml = await revertProcessXmlToHideFields(
                 newProcessXmlForReadOnly,
@@ -586,6 +595,20 @@ const SignatureViewer = () => {
                   revertedHideFieldsXml,
                   readOnlyUsersRef.current
                 );
+              const doc = new DOMParser().parseFromString(
+                afterAddReadOnlyFreetextElements,
+                "text/xml"
+              );
+              const annots = doc.getElementsByTagName("annots");
+
+              if (annots?.length === 0 || !annots[0].hasChildNodes()) {
+                showMessage(
+                  t("Signature-is-must-required"),
+                  "warning",
+                  setOpen
+                );
+                return;
+              }
 
               const afterAddRevertHideFreetextElements =
                 await revertHideFreetextElements(
@@ -597,6 +620,10 @@ const SignatureViewer = () => {
               const mainXmlDoc = parser.parseFromString(
                 afterAddRevertHideFreetextElements,
                 "text/xml"
+              );
+              console.log(
+                { mainXmlDoc },
+                "handleClickSaveBtnhandleClickSaveBtn"
               );
 
               function existsInMainXML(name, type, mainXmlDoc) {
@@ -619,7 +646,10 @@ const SignatureViewer = () => {
                     ffieldDoc.documentElement.getAttribute("name");
                   const widgetName =
                     widgetDoc.documentElement.getAttribute("name");
-
+                  console.log(
+                    { ffieldName, widgetName },
+                    "handleClickSaveBtnhandleClickSaveBtn"
+                  );
                   return (
                     existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
                     existsInMainXML(widgetName, "widget", mainXmlDoc)
@@ -665,9 +695,9 @@ const SignatureViewer = () => {
               };
 
               let newData = { ActorsFieldValuesList: convertData };
-              console.log("readOnlyUsersRef",newData);
+              console.log("readOnlyUsersRef", newData);
               console.log("readOnlyUsersRef", userAnnotationsRef.current);
-             
+
               dispatch(
                 addUpdateFieldValueApi(
                   newData,
@@ -752,6 +782,7 @@ const SignatureViewer = () => {
                   SaveButton.style.margin = "10px 0 10px 10px";
                   SaveButton.style.border = "1px solid #6172d6";
                   SaveButton.onclick = handleClickSaveBtn;
+
                   return SaveButton;
                 },
               });
@@ -890,12 +921,12 @@ const SignatureViewer = () => {
   // === End ===//
 
   // === this is for Response Message===//
-  useEffect(() => {
-    if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-      showMessage(ResponseMessage, "error", setOpen);
-      dispatch(clearWorkFlowResponseMessage());
-    }
-  }, [ResponseMessage]);
+  // useEffect(() => {
+  //   if (ResponseMessage !== "" && ResponseMessage !== undefined) {
+  //     showMessage(ResponseMessage, "error", setOpen);
+  //     dispatch(clearWorkFlowResponseMessage());
+  //   }
+  // }, [ResponseMessage]);
   // === End ===//
 
   const handleClickDeclineBtn = () => {
@@ -950,12 +981,7 @@ const SignatureViewer = () => {
           show={declineConfirmationModal}
         />
       )}
-      <Notification
-        open={open.open}
-        message={open.message}
-        setOpen={(status) => setOpen({ ...open, open: status.open })}
-        severity={open.severity}
-      />
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

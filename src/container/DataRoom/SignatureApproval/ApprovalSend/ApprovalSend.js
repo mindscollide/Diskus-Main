@@ -145,12 +145,12 @@ const ApprovalSend = () => {
       <Menu.Divider />
       <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text={t("Ok")}
           disableBtn={sortingData.statusID.length === 0 ? true : false}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -386,14 +386,6 @@ const ApprovalSend = () => {
     if (Number(record.workFlowStatusID) === 4) {
       window.open(
         `/#/Diskus/signatureviewer?documentID=${encodeURIComponent(
-          reponseData
-        )}`,
-        "_blank",
-        "noopener noreferrer"
-      );
-    } else if (Number(record.workFlowStatusID) === 1) {
-      window.open(
-        `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
