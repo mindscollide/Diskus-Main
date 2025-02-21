@@ -2016,12 +2016,11 @@ const presenterNewParticipantJoin = (response) => {
   };
 };
 
-const presenterLeaveParticipant = (uid) => {
-  console.log("Removing participant with UID:", uid);
+const presenterLeaveParticipant = (response) => {
 
   return {
     type: actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO,
-    uid: uid, // Pass UID to reducer
+    response: response, // Pass UID to reducer
   };
 };
 

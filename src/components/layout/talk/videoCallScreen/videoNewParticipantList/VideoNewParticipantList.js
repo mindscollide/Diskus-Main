@@ -122,8 +122,19 @@ const VideoNewParticipantList = () => {
     console.log("hell", participantList);
     console.log("hell", getAllParticipantMain);
     if (participantList?.length || getAllParticipantMain.length) {
+      console.log("hell");
       if (presenterViewFlag && presenterViewHostFlag) {
-        setFilteredParticipants(getAllParticipantMain);
+        const mergedParticipants = [
+          ...participantList,
+          ...getAllParticipantMain,
+        ].reduce((acc, curr) => {
+          if (!acc.some((item) => item.userID === curr.userID)) {
+            acc.push(curr);
+          }
+          return acc;
+        }, []);
+        console.log("hell");
+        setFilteredParticipants(mergedParticipants);
       } else {
         const uniqueParticipants = participantList.filter(
           (participant, index, self) =>
@@ -148,6 +159,7 @@ const VideoNewParticipantList = () => {
       (participant) => !participant.isHost && participant.mute === true
     );
   }
+
   useEffect(() => {
     if (filteredParticipants?.length) {
       if (isEveryoneUnmuted(filteredParticipants)) {
@@ -175,8 +187,6 @@ const VideoNewParticipantList = () => {
   }, [waitingParticipants]);
 
   const makeHostOnClick = async (usersData) => {
-    console.log("makeHostOnClick", usersData);
-
     let newRoomId = localStorage.getItem("newRoomId");
     let data = {
       RoomID: String(newRoomId),
@@ -187,8 +197,6 @@ const VideoNewParticipantList = () => {
   };
 
   const muteUnmuteByHost = (usersData, flag) => {
-    console.log(usersData, "usersData");
-    console.log(flag, "usersData");
     if (usersData) {
       // Mute/Unmute a specific participant
       if (!usersData.isHost) {
@@ -204,7 +212,7 @@ const VideoNewParticipantList = () => {
           ],
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      } else if(presenterViewFlag){
+      } else if (presenterViewFlag) {
         // Exclude hosts from muting
         const data = {
           RoomID: roomID,
@@ -217,7 +225,7 @@ const VideoNewParticipantList = () => {
           ],
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      }else {
+      } else {
         console.log("Cannot mute/unmute host.");
       }
     }
@@ -363,7 +371,9 @@ const VideoNewParticipantList = () => {
           <Row>
             <Col sm={12} md={12} lg={12}>
               <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                {t("Host")}
+                {presenterViewFlag && presenterViewHostFlag
+                  ? t("Presenter")
+                  : t("Host")}
               </p>
             </Col>
           </Row>
@@ -427,7 +437,7 @@ const VideoNewParticipantList = () => {
                           <>
                             <p className={styles["Host-name"]}>
                               <span className={styles["Host-title-name"]}>
-                                {t("(Host)")}
+                                {t("(Presenter)")}
                               </span>
                             </p>
                           </>

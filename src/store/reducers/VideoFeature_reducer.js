@@ -95,6 +95,7 @@ const initialState = {
   presenterStartedFlag: false,
   presenterParticipantAlreadyInMeetingVideo: false,
   newJoinPresenterParticipant: [],
+  leavePresenterParticipant: [],
   closeVideoStreamForParticipant: false,
   // startOrStopPresenter: false,
 };
@@ -1026,9 +1027,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log("PRESENTATION_PARTICIPANT_LEFT", action.uid);
       return {
         ...state,
-        newJoinPresenterParticipant: state.newJoinPresenterParticipant.filter(
-          (participant) => participant.guid !== action.uid //  Remove participant by UID
-        ),
+        newJoinPresenterParticipant: action.response
       };
 
     case actions.CLEAR_PRESENTER_PARTICIPANTS:

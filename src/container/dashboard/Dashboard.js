@@ -1426,7 +1426,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
             ) {
-              dispatch(presenterLeaveParticipant(data.payload.uid));
+              dispatch(presenterLeaveParticipant(data.payload));
               console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
