@@ -70,6 +70,7 @@ const settingApi = baseURL + settingURL;
 const settingDownloadApi = baseURL + settingDownloadURL;
 
 const meetingApi = baseURL + meetingURL;
+//const meetingApi = "http://localhost:62520/Meeting";
 
 const getTodoListAPI = baseURL + toDoListURL;
 
