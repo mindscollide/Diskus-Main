@@ -137,6 +137,7 @@ const AgendaViewer = () => {
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let currentUserName = localStorage.getItem("name");
 
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
@@ -829,7 +830,7 @@ const AgendaViewer = () => {
           let data = {
             RoomID: String(RoomID),
             UserGUID: String(UID),
-            Name: String(meetingTitle),
+            Name: String(currentUserName),
           };
           dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
         }
@@ -853,7 +854,7 @@ const AgendaViewer = () => {
         let data = {
           RoomID: String(callAcceptedRoomID),
           UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-          Name: String(meetingTitle),
+          Name: String(currentUserName),
         };
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
         // }
