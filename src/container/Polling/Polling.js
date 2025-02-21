@@ -780,9 +780,6 @@ const Polling = () => {
               if (record.voteStatus === "Not Voted") {
                 return (
                   <Col lg={12} md={12} sm={12}>
-                    {/* <span className={styles["Not-voted"]}>
-                      {t("Not-voted")}
-                    </span> */}
                     <Button
                       text={t("View-votes")}
                       className={styles["ViewVotesButtonStyles"]}
