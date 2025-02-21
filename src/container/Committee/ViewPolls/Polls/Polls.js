@@ -544,7 +544,11 @@ const Polls = ({ committeeStatus }) => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
+                  <Button
+                    className={styles["ViewVotesButtonStyles"]}
+                    text={t("View-votes")}
+                    onClick={() => ViewVoteButtonOnClick(record)}
+                  />
                 );
               } else {
                 return (

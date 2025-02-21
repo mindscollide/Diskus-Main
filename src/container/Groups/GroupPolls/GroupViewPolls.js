@@ -634,7 +634,11 @@ const GroupViewPolls = ({ groupStatus }) => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
+                  <Button
+                    className={styles["ViewVotesButtonStyles"]}
+                    buttonValue={t("View-vote")}
+                    onClick={() => handleViewVotes(record)}
+                  />
                 );
               } else {
                 <Button
