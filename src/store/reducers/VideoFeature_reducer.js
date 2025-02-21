@@ -1027,7 +1027,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log("PRESENTATION_PARTICIPANT_LEFT", action.uid);
       return {
         ...state,
-        newJoinPresenterParticipant: action.response
+        leavePresenterParticipant: action.response,
       };
 
     case actions.CLEAR_PRESENTER_PARTICIPANTS:
