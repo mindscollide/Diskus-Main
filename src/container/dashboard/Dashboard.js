@@ -1064,7 +1064,14 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload, false));
+              dispatch(
+                participanMuteUnMuteMeeting(
+                  data.payload,
+                  false,
+                  presenterViewHostFlag,
+                  presenterViewFlag
+                )
+              );
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()

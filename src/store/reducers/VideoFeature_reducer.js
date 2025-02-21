@@ -140,22 +140,18 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
     case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
       console.log(action, "actionactionactionactionaction");
-      let copyState = [...state.getVideoParticpantListandWaitingList];
+      let copyState = [...state.getAllParticipantMain];
       let newData = copyState.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
       );
       return {
         ...state,
-        getVideoParticpantListandWaitingList: newData,
+        getAllParticipantMain: newData,
       };
     }
 
     case actions.VIDEO_PARTICIPANT_NON_GUEST_LEFT: {
       console.log(action, "responseDataDataData");
-      let copyState = [...state.getVideoParticpantListandWaitingList];
-      let newData = copyState.filter(
-        (videoParticipants, index) => videoParticipants.guid !== action.payload
-      );
       let copyState2 = [...state.waitingParticipantsList];
       let newData2 = copyState2.filter(
         (videoParticipants, index) => videoParticipants.guid !== action.payload
@@ -163,12 +159,10 @@ const videoFeatureReducer = (state = initialState, action) => {
       let updatedList = state.getAllParticipantMain.filter(
         (guest) => guest.guid !== action.payload
       );
-      console.log(updatedList, "newDatanewDatanewDataasxas");
 
       return {
         ...state,
         waitingParticipantsList: newData2,
-        getVideoParticpantListandWaitingList: newData,
         getAllParticipantMain: updatedList,
       };
     }
@@ -460,9 +454,11 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
-      const { payload, flag } = action;
+      const { payload, flag, presenterViewHostFlag, presenterViewFlag } =
+        action;
       console.log("allUidsallUids Payload:", flag);
       console.log("allUidsallUids Payload:", payload);
+      console.log("allUidsallUids Payload:", presenterViewHostFlag);
       let meetinHostInfo = false;
       let isGuid = "";
       let isuid = 0;
@@ -474,12 +470,18 @@ const videoFeatureReducer = (state = initialState, action) => {
         isGuid = localStorage.getItem("isGuid");
         isuid = Number(localStorage.getItem("userID"));
       } else {
-        const hostsData = sessionStorage.getItem("currentmeetingHost");
-        // Parse it back to a JavaScript object
-        const hosts = hostsData ? JSON.parse(hostsData) : [];
-        meetinHostInfo = false;
-        isGuid = hosts.guid;
-        isuid = Number(hosts.userID);
+        if (presenterViewHostFlag) {
+          meetinHostInfo = false;
+          isGuid = localStorage.getItem("isGuid");
+          isuid = Number(localStorage.getItem("userID"));
+        } else {
+          const hostsData = sessionStorage.getItem("currentmeetingHost");
+          // Parse it back to a JavaScript object
+          const hosts = hostsData ? JSON.parse(hostsData) : [];
+          meetinHostInfo = false;
+          isGuid = hosts.guid;
+          isuid = Number(hosts.userID);
+        }
       }
       // Ensure proper use of isForAll
       if (action.flag) {
@@ -487,51 +489,49 @@ const videoFeatureReducer = (state = initialState, action) => {
         let updatedParticipantList = [];
         let newParticipantList = [];
         if (meetinHostInfo) {
-          console.log("participanMuteUnMuteMeeting");
-          if (
-            Object.keys(state.getVideoParticpantListandWaitingList).length > 0
-          ) {
-            console.log("participanMuteUnMuteMeeting");
-            updatedParticipantList =
-              state.getVideoParticpantListandWaitingList.map(
-                (participant) =>
-                  participant.isHost
-                    ? participant // Do not modify if the participant is a host
-                    : { ...participant, mute: payload } // Update only non-host participants
-              );
-            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
-
-            updatedParticipantList = filterHostData(
-              updatedParticipantList,
-              isGuid
-            );
-            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
-          }
-        } else {
-          console.log("allUidsallUids");
           if (Object.keys(state.getAllParticipantMain).length > 0) {
-            newParticipantList = state.getAllParticipantMain.map(
+            updatedParticipantList = state.getAllParticipantMain.map(
               (participant) =>
-                participant.isHost
+                presenterViewFlag
+                  ? presenterViewHostFlag
+                    ? participant
+                    : { ...participant, mute: payload }
+                  : participant.isHost
                   ? participant // Do not modify if the participant is a host
                   : { ...participant, mute: payload } // Update only non-host participants
             );
-            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
+            newParticipantList = filterHostData(updatedParticipantList, isGuid);
+          }
+        } else {
+          if (Object.keys(state.getAllParticipantMain).length > 0) {
+            newParticipantList = state.getAllParticipantMain.map(
+              (participant) => {
+                if (presenterViewFlag) {
+                  // If presenterViewHostFlag is true, return the participant as is
+                  if (presenterViewHostFlag) {
+                    return participant;
+                  }
+                  // Otherwise, update non-host participants' mute status
+                  return { ...participant, mute: payload };
+                }
+
+                // If presenterViewFlag is false, do not modify hosts
+                if (participant.isHost) {
+                  return participant;
+                }
+
+                // Update only non-host participants
+                return { ...participant, mute: payload };
+              }
+            );
 
             newParticipantList = filterHostData(newParticipantList, isGuid);
-            console.log("participanMuteUnMuteMeeting", updatedParticipantList);
           }
         }
 
-        console.log(state.getAllParticipantMain, "participanMuteUnMuteMeeting");
-        console.log(
-          state.getVideoParticpantListandWaitingList,
-          "participanMuteUnMuteMeeting"
-        );
-
         return {
           ...state,
-          getVideoParticpantListandWaitingList: updatedParticipantList,
+          // getAllParticipantMain: updatedParticipantList,
           audioControlForParticipant: payload, // Update global state only for "Mute All"
           getAllParticipantMain: newParticipantList,
         };
@@ -541,14 +541,6 @@ const videoFeatureReducer = (state = initialState, action) => {
           console.error("Missing uid for individual mute/unmute action.");
           return state; // Return unchanged state if uid is not provided
         }
-
-        const updatedParticipantList =
-          state.getVideoParticpantListandWaitingList.map((participant) =>
-            participant.guid === payload.uid
-              ? { ...participant, mute: payload.isMuted }
-              : participant
-          );
-
         const getMainMuteUnmuteParticipant = state.getAllParticipantMain.map(
           (participant) =>
             participant.guid === payload.uid
@@ -558,7 +550,6 @@ const videoFeatureReducer = (state = initialState, action) => {
 
         return {
           ...state,
-          getVideoParticpantListandWaitingList: updatedParticipantList,
           getAllParticipantMain: getMainMuteUnmuteParticipant,
         };
       }
@@ -566,13 +557,8 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.PARTICIPANT_RAISEDUNRAISEDHAND_VIDEO: {
       let { payload } = action;
-      console.log(
-        payload,
-        state.getVideoParticpantListandWaitingList,
-        "getNewParticipantsMeetingJoinRaiseHand"
-      );
-      let updatedRaisedParticipant =
-        state.getVideoParticpantListandWaitingList.map((participantData) => {
+      let updatedRaisedParticipant = state.getAllParticipantMain.map(
+        (participantData) => {
           let handraisedPayload =
             payload.participantGuid === participantData.guid ? true : false;
           if (handraisedPayload) {
@@ -582,53 +568,17 @@ const videoFeatureReducer = (state = initialState, action) => {
             };
           }
           return participantData;
-        });
-
-      //For main Participant Hand Raised
-      let updateParticipantHandRaised = state.getAllParticipantMain.map(
-        (handRaiseMainarticipant) => {
-          let handRaiseParticipant =
-            payload.participantGuid === handRaiseMainarticipant.guid
-              ? true
-              : false;
-          if (handRaiseParticipant) {
-            return {
-              ...handRaiseMainarticipant,
-              raiseHand: payload.isHandRaised,
-            };
-          }
-          return handRaiseMainarticipant;
         }
-      );
+      )
 
       return {
         ...state,
-        getVideoParticpantListandWaitingList: updatedRaisedParticipant,
-        getAllParticipantMain: updateParticipantHandRaised,
+        getAllParticipantMain: updatedRaisedParticipant,
       };
     }
 
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
       let { payload } = action;
-      console.log(
-        payload,
-        state.getVideoParticpantListandWaitingList,
-        " hidehidehidheVideoDataa"
-      );
-      let updateHideVideo = state.getVideoParticpantListandWaitingList.map(
-        (hideUnhideData) => {
-          let hideUnHideVideoPayload =
-            payload.uid === hideUnhideData.guid ? true : false;
-          if (hideUnHideVideoPayload) {
-            return {
-              ...hideUnhideData,
-              hideCamera: payload.isVideoHidden,
-            };
-          }
-          return hideUnhideData;
-        }
-      );
-
       let updateParticipantHideUnHide = state.getAllParticipantMain.map(
         (hideUnHideParticipant) => {
           let hideUnHideVideoPayload =
@@ -642,10 +592,8 @@ const videoFeatureReducer = (state = initialState, action) => {
           return hideUnHideParticipant;
         }
       );
-      console.log(updateHideVideo, "updateHideVideoupdateHideVideo");
       return {
         ...state,
-        getVideoParticpantListandWaitingList: updateHideVideo,
         getAllParticipantMain: updateParticipantHideUnHide,
       };
     }
@@ -658,10 +606,6 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_SUCCESS: {
-      console.log(
-        action,
-        "getAllParticipantMain-ForParticipacnt Video Reducer"
-      );
       return {
         ...state,
         Loading: false,
@@ -681,13 +625,10 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     case actions.GET_MEETING_NEW_PARTICIPANT_JOIN: {
       console.log(action, "dtadtatatatatattata");
-      let getPrevState = [
-        ...state.getVideoParticpantListandWaitingList,
-        ...action.response,
-      ];
+      let getPrevState = [...state.getAllParticipantMain, ...action.response];
       return {
         ...state,
-        getVideoParticpantListandWaitingList: getPrevState,
+        getAllParticipantMain: getPrevState,
       };
     }
 
@@ -795,7 +736,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getVideoParticpantListandWaitingList: action.response.participantList,
+        getAllParticipantMain: action.response.participantList,
         waitingParticipantsList: action.response.waitingParticipants,
       };
     }

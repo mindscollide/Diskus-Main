@@ -47,10 +47,6 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.participantWaitingList
   );
 
-  const participantList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
-  );
-
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
@@ -105,7 +101,7 @@ const VideoNewParticipantList = () => {
     setSearchValue(value);
 
     // Filter participants based on the search value
-    const filtered = participantList.filter((participant) =>
+    const filtered = getAllParticipantMain.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
 
@@ -123,42 +119,15 @@ const VideoNewParticipantList = () => {
   // Update filteredParticipants based on participantList
 
   useEffect(() => {
-    console.log("hell");
-    console.log("hell", participantList);
-    console.log("hell", getAllParticipantMain);
-    if (participantList?.length || getAllParticipantMain.length) {
+    if (Object.keys(getAllParticipantMain).length) {
       console.log("hell");
-      if (presenterViewFlag && presenterViewHostFlag) {
-        const mergedParticipants = [
-          ...participantList,
-          ...getAllParticipantMain,
-        ].reduce((acc, curr) => {
-          if (!acc.some((item) => item.userID === curr.userID)) {
-            acc.push(curr);
-          }
-          return acc;
-        }, []);
-        console.log("hell");
-        setFilteredParticipants(mergedParticipants);
-      } else {
-        const uniqueParticipants = participantList.filter(
-          (participant, index, self) =>
-            participant.userID === 0
-              ? self.findIndex((p) => p.guid === participant.guid) === index
-              : self.findIndex((p) => p.userID === participant.userID) === index
-        );
-
-        setFilteredParticipants(uniqueParticipants);
-        console.log(uniqueParticipants, "hell");
-      }
+      setFilteredParticipants(getAllParticipantMain);
     } else {
       setFilteredParticipants([]);
-      console.log("participantListMainReducer");
     }
-  }, [participantList]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
-    console.log("hell", leavePresenterParticipant);
     if (
       Object.keys(leavePresenterParticipant).length > 0 &&
       presenterViewFlag &&
@@ -168,7 +137,6 @@ const VideoNewParticipantList = () => {
       const updatedParticipants = filteredParticipants.filter(
         (participant) => participant.guid !== leavePresenterParticipant.uid
       );
-
       // Update the state with the filtered list
       setFilteredParticipants(updatedParticipants);
       console.log("hell", leavePresenterParticipant);
@@ -177,7 +145,6 @@ const VideoNewParticipantList = () => {
   }, [leavePresenterParticipant]);
 
   useEffect(() => {
-    console.log("hell", newJoinPresenterParticipant);
     if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
@@ -283,16 +250,47 @@ const VideoNewParticipantList = () => {
     // Update the isForAll state
     let duplicatesData = [...filteredParticipants];
     // Exclude hosts from the mute/unmute list
-    const allUids = duplicatesData
-      .filter((participant) => !participant.isHost) // Filter out hosts
-      .map((participant) => ({
-        UID: participant.guid,
-      }));
+    let allUids = [];
+    let isHost = JSON.parse(localStorage.getItem("isHost"));
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let newRoomID = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    if (presenterViewFlag && presenterViewHostFlag) {
+      let currentUserId = isHost ? isGuid : participantUID;
+      allUids = duplicatesData
+        .filter((participant) => participant.guid !== currentUserId) // Filter out hosts
+        .map((participant) => ({
+          UID: participant.guid,
+        }));
+    } else {
+      allUids = duplicatesData
+        .filter((participant) => !participant.isHost) // Filter out hosts
+        .map((participant) => ({
+          UID: participant.guid,
+        }));
+    }
 
     console.log(allUids, "allUids after excluding hosts");
-
+    let RoomID = presenterViewFlag
+      ? roomID
+        ? roomID
+        : callAcceptedRoomID
+      : isMeetingVideoHostCheck
+      ? newRoomID
+      : participantRoomId;
+    console.log(presenterViewFlag, "allUids after excluding hosts");
+    console.log(roomID, "allUids after excluding hosts");
+    console.log(callAcceptedRoomID, "allUids after excluding hosts");
+    console.log(isMeetingVideoHostCheck, "allUids after excluding hosts");
+    console.log(newRoomID, "allUids after excluding hosts");
+    console.log(participantRoomId, "allUids after excluding hosts");
     const data = {
-      RoomID: roomID,
+      RoomID: RoomID,
       IsMuted: !flag,
       isForAll: true, // Pass the current flag
       MuteUnMuteList: allUids,
@@ -323,8 +321,6 @@ const VideoNewParticipantList = () => {
   };
 
   const removeParticipantMeetingOnClick = (usersData) => {
-    console.log("hell");
-    console.log(usersData, "RemoveUserDataa");
     let data = {
       RoomID: String(roomID),
       UID: usersData.guid,
@@ -339,7 +335,6 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAllAcceptAndReject = (flag) => {
-    console.log("hell");
     let Data = {
       MeetingId: filteredWaitingParticipants[0]?.meetingID,
       RoomId: String(roomID),

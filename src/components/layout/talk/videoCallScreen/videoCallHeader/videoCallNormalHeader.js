@@ -119,11 +119,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.LeaveCallModalFlag
   );
 
-  // For acccept Join name participantList
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
-  );
-
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
@@ -224,10 +219,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.meetingStoppedByPresenter
   );
 
-  const getAllParticipantGuest = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
@@ -289,8 +280,6 @@ const VideoCallNormalHeader = ({
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
-  console.log("participantCounterList", getAllParticipantGuest);
-
   const [videoDisable, setVideoDisable] = useState(false);
   console.log(videoDisable, "videoDisable");
 
@@ -304,30 +293,10 @@ const VideoCallNormalHeader = ({
     message: "",
   });
   useEffect(() => {
-    if (getAllParticipantGuest?.length) {
-      let numbercount = Number(getAllParticipantGuest?.length);
-      console.log("participantCounterList", numbercount);
-      setParticipantCounterList(numbercount);
+    if (Object.keys(getAllParticipantMain)?.length > 0) {
+      setParticipantCounterList(getAllParticipantMain?.length);
     }
-  }, [getAllParticipantGuest]);
-  // for show Participant popUp only
-  // Update filteredParticipants based on participantList
-  useEffect(() => {
-    if (getVideoParticpantListandWaitingList?.length) {
-      setParticipantCounterList((prev) => {
-        const combined = [
-          ...getAllParticipantGuest,
-          ...getVideoParticpantListandWaitingList,
-        ];
-        // Filter duplicates by checking the unique identifier, e.g., `guid`
-        const uniqueParticipants = combined.filter(
-          (participant, index, self) =>
-            index === self.findIndex((p) => p.guid === participant.guid)
-        );
-        return uniqueParticipants.length;
-      });
-    }
-  }, [getVideoParticpantListandWaitingList]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
     if (makeHostNow !== null) {

@@ -150,17 +150,13 @@ const VideoPanelNormal = () => {
       state.videoFeatureReducer.participantLeaveCallForJoinNonMeetingCall
   );
 
-  const getAllParticipantGuest = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
 
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
   const audioControl = useSelector(
@@ -480,26 +476,10 @@ const VideoPanelNormal = () => {
   }, [iframe]);
 
   useEffect(() => {
-    if (getAllParticipantGuest?.length) {
-      setAllParticipant(getAllParticipantGuest);
-    } else {
-      setAllParticipant([]);
+    if (getAllParticipantMain?.length) {
+      setAllParticipant(getAllParticipantMain);
     }
-  }, [getAllParticipantGuest]);
-
-  useEffect(() => {
-    if (getVideoParticpantListandWaitingList?.length) {
-      setAllParticipant((prev) => {
-        const combined = [...prev, ...getVideoParticpantListandWaitingList];
-        // Filter duplicates by checking the unique identifier, e.g., `guid`
-        const uniqueParticipants = combined.filter(
-          (participant, index, self) =>
-            index === self.findIndex((p) => p.guid === participant.guid)
-        );
-        return uniqueParticipants;
-      });
-    }
-  }, [getVideoParticpantListandWaitingList]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
     if (

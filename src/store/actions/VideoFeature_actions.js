@@ -266,12 +266,14 @@ const guestLeaveVideoMeeting = (response) => {
   };
 };
 
-const participanMuteUnMuteMeeting = (response, flag) => {
+const participanMuteUnMuteMeeting = (response, flag,presenterViewHostFlag,presenterViewFlag) => {
   console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
     flag: flag,
+    presenterViewHostFlag:presenterViewHostFlag,
+    presenterViewFlag:presenterViewFlag
   };
 };
 
@@ -1045,21 +1047,21 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
                   "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
                 )
             ) {
-              function saveCurrentMeetingHost(data) {
-                // Filter the data to get only participants where isHost is true
-                const hosts = data
-                  .filter((participant) => participant.isHost)
-                  .map(({ guid, userID }) => ({ guid, userID }));
+              // function saveCurrentMeetingHost(data) {
+              //   // Filter the data to get only participants where isHost is true
+              //   const hosts = data
+              //     .filter((participant) => participant.isHost)
+              //     .map(({ guid, userID }) => ({ guid, userID }));
 
-                // Save the result in session storage with the key 'currentmeetingHost'
-                sessionStorage.setItem(
-                  "currentmeetingHost",
-                  JSON.stringify(hosts)
-                );
-              }
-              saveCurrentMeetingHost(
-                response.data.responseResult.participantList
-              );
+              //   // Save the result in session storage with the key 'currentmeetingHost'
+              //   sessionStorage.setItem(
+              //     "currentmeetingHost",
+              //     JSON.stringify(hosts)
+              //   );
+              // }
+              // saveCurrentMeetingHost(
+              //   response.data.responseResult.participantList
+              // );
               await dispatch(
                 getVideoCallParticipantSuccess(
                   response.data.responseResult,
