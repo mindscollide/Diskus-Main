@@ -9,6 +9,7 @@ import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
   participantWaitingListBox,
+  presenterLeaveParticipant,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +72,9 @@ const VideoNewParticipantList = () => {
 
   const newJoinPresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+  );
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
 
   console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
@@ -151,6 +155,28 @@ const VideoNewParticipantList = () => {
       console.log("participantListMainReducer");
     }
   }, [participantList]);
+  useEffect(() => {
+    console.log("hell");
+    if (
+      leavePresenterParticipant &&
+      presenterViewFlag &&
+      presenterViewHostFlag
+    ) {
+      // console.log("hell");
+      //   const mergedParticipants = [
+      //     ...participantList,
+      //     ...getAllParticipantMain,
+      //   ].reduce((acc, curr) => {
+      //     if (!acc.some((item) => item.userID === curr.userID)) {
+      //       acc.push(curr);
+      //     }
+      //     return acc;
+      //   }, []);
+      //   console.log("hell");
+      //   setFilteredParticipants(mergedParticipants);
+      dispatch(presenterLeaveParticipant([]));
+    }
+  }, [leavePresenterParticipant]);
 
   // Ensure it listens to participantList updates
 
