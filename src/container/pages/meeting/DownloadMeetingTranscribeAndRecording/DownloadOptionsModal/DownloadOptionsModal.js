@@ -68,20 +68,21 @@ const DownloadOptionsModal = ({
                 md={12}
                 lg={12}
                 className={styles["Download__Heading"]}>
-                Download
+                {t("Download")}
               </Col>
             </Row>
             <Row className='my-3'>
               <Col sm={6} md={6} lg={6}>
                 <div
-                  className={
-                    isDownloadAvailable
-                      ? styles["Download___Button_recording"]
-                      : styles["Download___Button_recording_disabled"]
-                  }
+                  // className={
+                  //   isDownloadAvailable
+                  //     ? styles["Download___Button_recording"]
+                  //     : styles["Download___Button_recording_disabled"]
+                  // }
+                  className={styles["Download___Button_recording_disabled"]}
                   onClick={downloadMeetingDetails}>
                   <img width={35} src={DownloadRecording} />
-                  <span>Download Meeting Recording</span>
+                  <span>{t("Download-meeting-recording")}</span>
                 </div>
               </Col>
               <Col sm={6} md={6} lg={6}>
@@ -89,7 +90,7 @@ const DownloadOptionsModal = ({
                   className={styles["Download___Button"]}
                   onClick={boardDeckOnClick}>
                   <img width={35} src={DownloadBoardDeck} />
-                  <span>Download Board Deck</span>
+                  <span>{t("Download-board-deck")}</span>
                 </div>
               </Col>
             </Row>
@@ -105,7 +106,7 @@ const DownloadOptionsModal = ({
                 className={"d-flex justify-content-end p-0 m-0"}>
                 <Button
                   className={styles["Download___cancelBtn"]}
-                  text={"Cancel"}
+                  text={t("Cancel")}
                   onClick={() => setDownloadMeeting(false)}
                 />
               </Col>
