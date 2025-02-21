@@ -429,14 +429,14 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
     // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
-        if (audioControl === true) {
-          iframe.contentWindow.postMessage("MicOn", "*");
-        } else {
-          iframe.contentWindow.postMessage("MicOff", "*");
-        }
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (audioControl === true) {
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("MicOff", "*");
       }
+    }
     // } else {
     //   localStorage.removeItem("audioVideoHideButton");
     // }
@@ -445,14 +445,14 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
     // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow !== null) {
-        if (videoControl === true) {
-          iframe.contentWindow.postMessage("VidOn", "*");
-        } else {
-          iframe.contentWindow.postMessage("VidOff", "*");
-        }
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (videoControl === true) {
+        iframe.contentWindow.postMessage("VidOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("VidOff", "*");
       }
+    }
     // } else {
     //   localStorage.removeItem("audioVideoHideButton");
     // }
@@ -886,7 +886,7 @@ const VideoPanelNormal = () => {
     if (alreadyInMeetingVideo) {
       sessionStorage.removeItem("alreadyInMeetingVideo");
     } else if (presenterViewFlag && presenterViewHostFlag) {
-      let meetingTitle = localStorage.getItem("meetingTitle");
+      let currentName = localStorage.getItem("name");
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
@@ -897,7 +897,7 @@ const VideoPanelNormal = () => {
       let data = {
         RoomID: String(callAcceptedRoomID),
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(meetingTitle),
+        Name: String(currentName),
       };
       dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
     }

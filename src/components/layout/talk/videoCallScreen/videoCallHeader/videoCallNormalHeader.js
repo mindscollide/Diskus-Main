@@ -439,7 +439,7 @@ const VideoCallNormalHeader = ({
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
-          Name: String(meetingTitle),
+          Name: String(newName),
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
       }
@@ -457,7 +457,7 @@ const VideoCallNormalHeader = ({
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
-          Name: String(meetingTitle),
+          Name: String(newName),
         };
         await dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
         leaveSuccess();

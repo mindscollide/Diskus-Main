@@ -273,7 +273,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             dispatch(normalizeVideoPanelFlag(true));
             dispatch(minimizeVideoPanelFlag(false));
           } else {
-            let meetingTitle = localStorage.getItem("meetingTitle");
             let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
             let isMeetingVideoHostCheck = JSON.parse(
               localStorage.getItem("isMeetingVideoHostCheck")
@@ -285,7 +284,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               UserGUID: String(
                 isMeetingVideoHostCheck ? isGuid : participantUID
               ),
-              Name: String(meetingTitle),
+              Name: String(currentUserName),
             };
             dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
           }
@@ -306,7 +305,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           let data = {
             RoomID: String(callAcceptedRoomID),
             UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-            Name: String(meetingTitle),
+            Name: String(currentUserName),
           };
 
           dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
@@ -563,7 +562,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
         dispatch(normalizeVideoPanelFlag(false));
         dispatch(minimizeVideoPanelFlag(false));
       } else {
-        let meetingTitle = localStorage.getItem("meetingTitle");
         let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
         let isMeetingVideoHostCheck = JSON.parse(
           localStorage.getItem("isMeetingVideoHostCheck")
@@ -573,7 +571,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
         let data = {
           RoomID: String(callAcceptedRoomID),
           UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-          Name: String(meetingTitle),
+          Name: String(currentUserName),
         };
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
       }
