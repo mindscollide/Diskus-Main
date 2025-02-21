@@ -1,0 +1,59 @@
+.Download___cancelBtn {
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1;
+  background: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  padding: 12px 30px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #e1e1e1 !important;
+}
+.Download__Heading_MeetingRecording {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+.Download__Heading {
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.DownloadBtn {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  background: #ffffff !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none;
+}
+.TranscibingLabel {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19.5px;
+  color: #6172d6;
+}
+
+.RecordingTable___title {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14.63px;
+  color: #5a5a5a;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}
+
+.RecordingTable___size {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14.63px;
+  color: #a2a2a2;
+
+}

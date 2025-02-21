@@ -163,10 +163,34 @@ const initialState = {
   uploadQuickMeetingDocment: null,
   saveQuickMeetingDocuments: null,
   moveFilesandFolders: null,
+  meetingRecordingFiles: null,
+  meetingTranscriptResponse: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.GETMEETINGRECORDINGFILES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETMEETINGRECORDINGFILES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingRecordingFiles: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMEETINGRECORDINGFILES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        meetingRecordingFiles: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.MOVEFILEANDFODLER_INIT: {
       return {
         ...state,
@@ -2122,7 +2146,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        userAvailibilityData:null,
+        userAvailibilityData: null,
         ResponseMessage: action.message,
       };
     }
@@ -2661,6 +2685,35 @@ const NewMeetingreducer = (state = initialState, action) => {
         agendavotingPollStartedData: action.response,
       };
     }
+    case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_INIT:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        meetingTranscriptResponse: action.response,
+        responseMessage: action.message,
+      };
+
+    case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        responseMessage: action.message,
+      };
+
+    case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_CLEAR:
+      return {
+        ...state,
+        loading: false,
+        meetingTranscriptResponse: null,
+        responseMessage: "",
+      };
+
 
     default:
       return {
