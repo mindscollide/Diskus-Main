@@ -10,6 +10,7 @@ import {
   muteUnMuteParticipantMainApi,
   participantWaitingListBox,
   presenterLeaveParticipant,
+  presenterNewParticipantJoin,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -155,31 +156,52 @@ const VideoNewParticipantList = () => {
       console.log("participantListMainReducer");
     }
   }, [participantList]);
+
   useEffect(() => {
-    console.log("hell");
+    console.log("hell", leavePresenterParticipant);
     if (
-      leavePresenterParticipant &&
+      Object.keys(leavePresenterParticipant).length > 0 &&
       presenterViewFlag &&
       presenterViewHostFlag
     ) {
-      // console.log("hell");
-      //   const mergedParticipants = [
-      //     ...participantList,
-      //     ...getAllParticipantMain,
-      //   ].reduce((acc, curr) => {
-      //     if (!acc.some((item) => item.userID === curr.userID)) {
-      //       acc.push(curr);
-      //     }
-      //     return acc;
-      //   }, []);
-      //   console.log("hell");
-      //   setFilteredParticipants(mergedParticipants);
+      // Remove the participant whose guid matches the uid
+      const updatedParticipants = filteredParticipants.filter(
+        (participant) => participant.guid !== leavePresenterParticipant.uid
+      );
+
+      // Update the state with the filtered list
+      setFilteredParticipants(updatedParticipants);
+      console.log("hell", leavePresenterParticipant);
       dispatch(presenterLeaveParticipant([]));
     }
   }, [leavePresenterParticipant]);
 
-  // Ensure it listens to participantList updates
+  useEffect(() => {
+    console.log("hell", newJoinPresenterParticipant);
+    if (
+      Object.keys(newJoinPresenterParticipant).length > 0 &&
+      presenterViewFlag &&
+      presenterViewHostFlag
+    ) {
+      // Step 1: Remove any existing participant with the same userID or guid
+      const updatedParticipants = filteredParticipants.filter(
+        (participant) =>
+          participant.userID !== newJoinPresenterParticipant.userID &&
+          participant.guid !== newJoinPresenterParticipant.guid
+      );
 
+      // Step 2: Add the new participant
+      updatedParticipants.push(newJoinPresenterParticipant);
+
+      // Step 3: Update the state
+      setFilteredParticipants(updatedParticipants);
+      dispatch(presenterNewParticipantJoin([]));
+
+      console.log(updatedParticipants);
+    }
+  }, [newJoinPresenterParticipant]);
+
+  // Ensure it listens to participantList updates
   function isEveryoneUnmuted(participants) {
     return !participants.some(
       (participant) => !participant.isHost && participant.mute === true

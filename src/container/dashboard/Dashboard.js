@@ -1420,7 +1420,9 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
             ) {
-              dispatch(presenterNewParticipantJoin(data.payload));
+              dispatch(
+                presenterNewParticipantJoin(data.payload.newParticipant)
+              );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
               data.payload.message.toLowerCase() ===

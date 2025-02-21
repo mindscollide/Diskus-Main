@@ -809,6 +809,13 @@ const AgendaViewer = () => {
 
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
+    // let data = {
+    //   MeetingID: currentMeetingID,
+    //   RoomID: "21497",
+    // };
+    // sessionStorage.setItem("StopPresenterViewAwait", true);
+    // console.log(data, "presenterViewJoinFlag");
+    // dispatch(stopPresenterViewMainApi(navigate, t, data));
     // presenterViewHostFlag
     // ? t("Stop-presenting")
     // : presenterViewJoinFlag

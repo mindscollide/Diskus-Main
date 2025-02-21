@@ -1014,17 +1014,14 @@ const videoFeatureReducer = (state = initialState, action) => {
 
     // global state for Presenter Participants who joined Presenter Video
     case actions.PRESENTER_JOIN_PARTICIPANT_VIDEO:
-      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO", action.response);
+      console.log("hell", action.response);
       return {
         ...state,
-        newJoinPresenterParticipant: [
-          ...state.newJoinPresenterParticipant, // Keep existing participants
-          action.response.newParticipant, // Add new participant
-        ],
+        newJoinPresenterParticipant: action.response,
       };
 
     case actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO:
-      console.log("PRESENTATION_PARTICIPANT_LEFT", action.uid);
+      console.log("hell", action);
       return {
         ...state,
         leavePresenterParticipant: action.response,

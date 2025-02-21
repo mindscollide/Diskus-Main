@@ -2008,7 +2008,7 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
-  console.log("responseParticicpant", response);
+  console.log("hell", response);
 
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
@@ -2017,7 +2017,7 @@ const presenterNewParticipantJoin = (response) => {
 };
 
 const presenterLeaveParticipant = (response) => {
-
+  console.log("hell", response);
   return {
     type: actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO,
     response: response, // Pass UID to reducer
