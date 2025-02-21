@@ -48,6 +48,7 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
+import { Spin } from "antd";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -673,7 +674,11 @@ const Committee = () => {
                   className={`${"d-flex text-center committees_box   color-5a5a5a m-0 p-0  mt-1"} ${
                     styles["committess_box"]
                   }`}>
-                  <Col sm={12} md={12} lg={12} className='m-0 p-0 mt-2 '>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className='m-0 p-0 mt-2 position-relative'>
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
@@ -759,59 +764,73 @@ const Committee = () => {
                           );
                         })
                       ) : (
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className={styles["CommiiteeNotFoundContainer"]}>
+                        <>
                           <Row>
-                            <Col sm={12} md={12} lg={12} className='mb-3'>
-                              <img
-                                draggable='false'
-                                src={NoCommitteeImg}
-                                alt=''
-                              />
-                            </Col>
                             <Col
-                              sm={12}
-                              md={12}
                               lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
-                              {t("You-dont-have-any-committee-yet")}
-                            </Col>
-                            <Col
-                              sm={12}
                               md={12}
-                              lg={12}
-                              className={styles["CommitteeNotFoundText"]}>
-                              {t("Click-create-new-committee")}
-                            </Col>
-                            <Col
                               sm={12}
-                              md={12}
-                              lg={12}
-                              className='d-flex justify-content-center mt-3'>
-                              <Button
-                                className={styles["create-Committee-btn"]}
-                                text={t("Create-new-committee")}
-                                onClick={groupModal}
-                                icon={
-                                  <img
-                                    draggable='false'
-                                    src={plusbutton}
-                                    height='7.6px'
-                                    width='7.6px'
-                                    className={styles["PLusICon"]}
-                                    alt=''
-                                  />
-                                }
-                              />
+                              className={styles["committee_spinner"]}>
+                              <Spin />
                             </Col>
                           </Row>
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["CommiiteeNotFoundContainer"]}>
+                              <Row>
+                                <Col sm={12} md={12} lg={12} className='mb-3'>
+                                  <img
+                                    draggable='false'
+                                    src={NoCommitteeImg}
+                                    alt=''
+                                  />
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["CommitteeNotFoundText"]}>
+                                  {t("You-dont-have-any-committee-yet")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["CommitteeNotFoundText"]}>
+                                  {t("Click")}
+                                  {t("Create-new-committee")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className='d-flex justify-content-center mt-3'>
+                                  <Button
+                                    className={styles["create-Committee-btn"]}
+                                    text={t("Create-new-committee")}
+                                    onClick={groupModal}
+                                    icon={
+                                      <img
+                                        draggable='false'
+                                        src={plusbutton}
+                                        height='7.6px'
+                                        width='7.6px'
+                                        className={styles["PLusICon"]}
+                                        alt=''
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </Row>
 
-                          <p></p>
-                          <p></p>
-                        </Col>
+                              <p></p>
+                              <p></p>
+                            </Col>
+                          </Row>
+                        </>
                       )}
                     </Row>
                   </Col>

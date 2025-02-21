@@ -338,3 +338,9 @@ body[dir="rtl"] .CommitteeNotFoundText {
   background: #ccc;
   margin-left: -15px !important;
 }
+
+.committee_spinner {
+  position: absolute !important;
+  z-index: 1 !important;
+  bottom: 16px;
+}

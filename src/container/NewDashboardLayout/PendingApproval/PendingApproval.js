@@ -14,7 +14,7 @@ const PendingApproval = ({ pendingAppr }) => {
           {formatValue(pendingAppr, lang)}
         </Col>
         <Col sm={12} md={12} lg={12} className={styles["PendingApprovalText"]}>
-          {t("Pending-approval")}
+          {t("Pending-approvals")}
         </Col>
       </Row>
     </>

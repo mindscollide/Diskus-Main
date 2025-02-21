@@ -1157,8 +1157,17 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResolutionByID_02".toLowerCase()
             ) {
+              if (no === 2) {
+                console.log("ResolutionAccessDenied");
+                if (
+                  JSON.parse(localStorage.getItem("ResolutionAccessDenied")) ===
+                  true
+                ) {
+                  console.log("ResolutionAccessDenied");
+                  dispatch(AccessDeniedPolls(true));
+                }
+              }
               dispatch(getResolutionById_Fail(t("Unable-to-fetch-data")));
-              dispatch(AccessDeniedPolls(true));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResolutionByID_03".toLowerCase()

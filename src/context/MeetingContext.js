@@ -62,6 +62,7 @@ export const MeetingProvider = ({ children }) => {
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
   const [attendees, setAttendees] = useState(false);
+  const [isRecording, setRecording] = useState(false);
 
   // State for managing polls view mode
   const [editPolls, setEditPolls] = useState(false);
@@ -112,6 +113,12 @@ export const MeetingProvider = ({ children }) => {
   const [maximizeMeetingVideo, setMaximizeMeetingVideo] = useState(false);
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
+
+  // Meeting BoardDeck
+  const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
+  const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
+  const [stepDownloadModal, setStepDownloadModal] = useState(1);
+  const [downloadMeetinModal, setDownloadMeeting] = useState(false);
 
   // Effect to update the agenda update state based on user profile data
   useEffect(() => {
@@ -256,6 +263,15 @@ export const MeetingProvider = ({ children }) => {
     setTypeOfMeeting,
     setEditMeeting,
     isEditMeeting,
+    boardDeckMeetingID,
+    setBoardDeckMeetingID,
+    boardDeckMeetingTitle,
+    setBoardDeckMeetingTitle,
+    setStepDownloadModal,
+    stepDownloadModal,
+    downloadMeetinModal,
+    setDownloadMeeting,
+    isRecording, setRecording
   };
 
   // Provide the state data to the context

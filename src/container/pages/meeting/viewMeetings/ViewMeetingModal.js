@@ -58,6 +58,7 @@ import { webnotificationGlobalFlag } from "../../../../store/actions/UpdateUserN
 import { useResolutionContext } from "../../../../context/ResolutionContext";
 import { clearResponseMessage } from "../../../../store/actions/MeetingOrganizers_action";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import Recording from "./recording/Recording";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -133,6 +134,8 @@ const ViewMeetingModal = ({
     setAttendance,
     attendees,
     setAttendees,
+    isRecording,
+    setRecording,
   } = useMeetingContext();
 
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -202,6 +205,8 @@ const ViewMeetingModal = ({
           setParticipants(false);
           setPolls(false);
           setAttendees(false);
+          setRecording(false);
+
           setactionsPage(false);
         } else if (Number(routeID) === 2) {
           setMeetingMaterial(false);
@@ -211,6 +216,8 @@ const ViewMeetingModal = ({
           setMinutes(false);
           setAttendance(false);
           setAgenda(false);
+          setRecording(false);
+
           setParticipants(false);
           setPolls(false);
           setAttendees(false);
@@ -225,6 +232,8 @@ const ViewMeetingModal = ({
           setAgenda(false);
           setParticipants(false);
           setPolls(false);
+          setRecording(false);
+
           setAttendees(false);
           setactionsPage(false);
         } else if (Number(routeID) === 5) {
@@ -237,6 +246,8 @@ const ViewMeetingModal = ({
           setAgenda(false);
           setParticipants(false);
           setPolls(false);
+          setRecording(false);
+
           setAttendees(false);
           setactionsPage(false);
         }
@@ -250,6 +261,8 @@ const ViewMeetingModal = ({
         setAgenda(false);
         setParticipants(false);
         setPolls(true);
+        setRecording(false);
+
         setAttendees(false);
         setactionsPage(false);
       } else if (ViewAdvanceMeetingTask) {
@@ -263,6 +276,8 @@ const ViewMeetingModal = ({
         setParticipants(false);
         setPolls(false);
         setAttendees(false);
+        setRecording(false);
+
         setactionsPage(true);
       } else if (advanceMeetingOperations) {
         setMeetingMaterial(true);
@@ -276,6 +291,7 @@ const ViewMeetingModal = ({
         setPolls(false);
         setAttendees(false);
         setactionsPage(false);
+        setRecording(false);
       } else {
         if (Number(editorRole.status) === 10) {
           if (
@@ -294,6 +310,7 @@ const ViewMeetingModal = ({
             setPolls(false);
             setAttendees(false);
             setactionsPage(false);
+            setRecording(false);
           }
         } else {
           setMeetingMaterial(false);
@@ -307,6 +324,7 @@ const ViewMeetingModal = ({
           setPolls(false);
           setAttendees(false);
           setactionsPage(false);
+          setRecording(false);
         }
       }
     } else {
@@ -321,6 +339,7 @@ const ViewMeetingModal = ({
       setPolls(false);
       setAttendees(false);
       setactionsPage(false);
+      setRecording(false);
     }
 
     return () => {
@@ -486,6 +505,7 @@ const ViewMeetingModal = ({
       setPolls(false);
       setAttendees(false);
       setactionsPage(false);
+      setRecording(false);
     };
   }, [dispatch]);
 
@@ -529,6 +549,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setMeetingMaterial(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showParticipants = () => {
@@ -543,6 +564,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setMeetingMaterial(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showAgenda = () => {
@@ -557,10 +579,27 @@ const ViewMeetingModal = ({
     setPolls(false);
     setMeetingMaterial(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showAttendees = () => {
     setAttendees(true);
+    setAgenda(false);
+    setParticipants(false);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+    setMinutes(false);
+    setactionsPage(false);
+    setAttendance(false);
+    setPolls(false);
+    setMeetingMaterial(false);
+    setRecording(false);
+  };
+
+  const showRecording = () => {
+    setAttendees(false);
+    setRecording(true);
     setAgenda(false);
     setParticipants(false);
     setAgendaContributors(false);
@@ -585,6 +624,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setmeetingDetails(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showMinutes = () => {
@@ -599,6 +639,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setAttendees(false);
     setactionsPage(false);
+    setRecording(false);
   };
 
   const showActions = () => {
@@ -612,6 +653,8 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setAttendees(false);
     setPolls(false);
+    setRecording(false);
+
     setmeetingDetails(false);
   };
 
@@ -627,6 +670,7 @@ const ViewMeetingModal = ({
     setAttendance(false);
     setAttendees(false);
     setmeetingDetails(false);
+    setRecording(false);
   };
 
   const showAttendance = () => {
@@ -641,6 +685,7 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setAttendees(false);
     setPolls(false);
+    setRecording(false);
   };
 
   useEffect(() => {
@@ -1074,6 +1119,19 @@ const ViewMeetingModal = ({
                         onClick={showAttendees}
                       />
                     )}
+                    {editorRole.role === "Organizer" &&
+                      Number(editorRole.status) === 9 &&
+                      editorRole?.isPrimaryOrganizer === true && (
+                        <Button
+                          text={t("Recording")}
+                          className={
+                            isRecording === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showRecording}
+                        />
+                      )}
                   </>
                 </Col>
               </Row>
@@ -1084,12 +1142,14 @@ const ViewMeetingModal = ({
               {participants && <Participants />}
               {agenda && <Agenda />}
               {meetingMaterial && <AgendaViewer />}
+
               {unPublish ? null : (
                 <>
                   {minutes && <Minutes />}
                   {actionsPage && <Actions />}
                   {polls && <Polls />}
                   {attendance && <Attendence />}
+                  {isRecording && <Recording />}
                 </>
               )}
             </span>

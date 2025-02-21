@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container } from "react-bootstrap";
@@ -58,15 +58,12 @@ import {
   minimizeVideoPanelFlag,
   leaveCallModal,
   participantPopup,
-  maxHostVideoCallPanel,
-  normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
-  normalParticipantVideoCallPanel,
-  getParticipantMeetingJoinMainApi,
   nonMeetingVideoGlobalModal,
   videoIconOrButtonState,
   participantVideoButtonState,
   clearMessegesVideoFeature,
+  getParticipantMeetingJoinMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -76,7 +73,6 @@ import {
 
 import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import {
-  MeetingContext,
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { useCallback } from "react";
@@ -115,10 +111,7 @@ const ViewMeetingDetails = ({}) => {
   } = useMeetingContext();
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
-  console.log(
-    advanceMeetingModalID,
-    "advanceMeetingModalIDadvanceMeetingModalID"
-  );
+  
 
   const guestVideoUrlNotification = useSelector(
     (state) => state.GuestVideoReducer.ResponseMessage
@@ -136,9 +129,7 @@ const ViewMeetingDetails = ({}) => {
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
-  const participantVideoNavigationData = useSelector(
-    (state) => state.videoFeatureReducer.participantVideoNavigationData
-  );
+
 
   const normalParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.normalParticipantVideoFlag
@@ -159,26 +150,20 @@ const ViewMeetingDetails = ({}) => {
   const AgendaVideoResponseMessage = useSelector(
     (state) => state.videoFeatureReducer.ResponseMessage
   );
-  console.log(AgendaVideoResponseMessage, "ResponseMessageResponseMessage");
 
-  console.log(enableDisableVideoState, "videoIconOrButtonStatehavsh");
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
     (state) => state.videoFeatureReducer.participantEnableVideoState
   );
 
-  console.log(participantEnableVideoState, "participantEnableVideoState");
 
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
 
-  console.log(
-    guestVideoUrlNotification,
-    "guestVideoUrlNotificationguestVideoUrlNotification"
-  );
+
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");

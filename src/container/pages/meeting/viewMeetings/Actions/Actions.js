@@ -55,9 +55,11 @@ const Actions = () => {
     setViewAdvanceMeetingModal,
     setactionsPage,
     setPolls,
-    currentMeeting,
+    advanceMeetingModalID,
     dataroomMapFolderId,
   } = useMeetingContext();
+
+  console.log(advanceMeetingModalID, "advanceMeetingModalIDadvanceMeetingModalIDadvanceMeetingModalID");
   const cancelActions = useSelector(
     (state) => state.NewMeetingreducer.cancelActions
   );
@@ -139,7 +141,7 @@ const Actions = () => {
     dispatch(getTodoStatus(navigate, t));
 
     let meetingTaskData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
       Date: actionState.Date,
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
@@ -237,7 +239,7 @@ const Actions = () => {
       setRemoveTodo(statusdata);
     }
     dispatch(
-      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, currentMeeting)
+      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, advanceMeetingModalID)
     );
   };
 
@@ -626,7 +628,7 @@ const Actions = () => {
         setCreateaTask,
         newData,
         0,
-        currentMeeting
+        advanceMeetingModalID
       )
     );
   };
@@ -655,7 +657,7 @@ const Actions = () => {
       if (createTaskMeeting !== null) {
         let taskData = createTaskMeeting;
         let taskInfo = createTaskMeeting.todoList;
-        if (Number(taskData.meetingID) === Number(currentMeeting)) {
+        if (Number(taskData.meetingID) === Number(advanceMeetingModalID)) {
           let findisAlreadExist = actionsRows.findIndex(
             (data, index) => data.pK_TID === taskData.todoList.pK_TID
           );
@@ -674,7 +676,7 @@ const Actions = () => {
   // for pagination in Create Task
   const handleForPagination = (current, pageSize) => {
     let data = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
       Date: actionState.Date,
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
@@ -739,7 +741,7 @@ const Actions = () => {
       {createaTask ? (
         <CreateTask
           setCreateaTask={setCreateaTask}
-          currentMeeting={currentMeeting}
+          currentMeeting={advanceMeetingModalID}
           setActionState={setActionState}
           actionState={actionState}
           dataroomMapFolderId={dataroomMapFolderId}

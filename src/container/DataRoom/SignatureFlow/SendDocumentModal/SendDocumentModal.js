@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SendDocumentModal.module.css";
 import { Button, Modal, TextField } from "../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
@@ -26,7 +26,11 @@ const SendDocumentModal = ({
 }) => {
   console.log(signersData, "pdfResponceDatapdfResponceData");
   const [showCcUserInput, setShowCcUserInput] = useState(false);
+  const [documenttitle, setDocumentTitle] = useState("")
   const [validEmail, setValidEmail] = useState(false);
+  useEffect(() => {
+    setDocumentTitle(pdfResponceData?.title)
+  }, [])
   // const handleChangeAddCc = (event) => {
   //   const { name, value } = event.target;
 
@@ -73,8 +77,8 @@ const SendDocumentModal = ({
               md={12}
               lg={12}
               className={styles["sendDocument_Heading"]}>
-                <Tooltip placement="top" title={getFileName(pdfResponceData?.title)} showArrow={false}>
-              {getFileName(pdfResponceData?.title)}
+                <Tooltip placement="top" title={getFileName(documenttitle)} showArrow={false}>
+              {getFileName(documenttitle)}
               </Tooltip>
               {/* {t("Send-data-storage-retention-policy")} */}
             </Col>
