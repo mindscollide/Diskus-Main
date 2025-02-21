@@ -1172,16 +1172,20 @@ const Dashboard = () => {
               );
 
               if (data.payload.isForAll) {
-                if (!meetingHost?.isHost) {
-                  dispatch(setAudioControlHost(true));
+                if(presenterViewFlag){
+                  if(!presenterViewHostFlag){
+                    dispatch(setAudioControlHost(data.payload.isMuted));
+                  }
+                }else if (!meetingHost?.isHost) {
+                  dispatch(setAudioControlHost(data.payload.isMuted));
                 }
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted, true)
+                  participanMuteUnMuteMeeting(data.payload.isMuted, true,presenterViewHostFlag,presenterViewFlag)
                 );
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload, false));
+                dispatch(participanMuteUnMuteMeeting(data.payload, false,presenterViewHostFlag,presenterViewFlag));
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {

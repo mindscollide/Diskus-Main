@@ -454,86 +454,48 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_MUTEUNMUTE_VIDEO: {
-      const { payload, flag, presenterViewHostFlag, presenterViewFlag } =
+      const { payload, isforAll, presenterViewHostFlag, presenterViewFlag } =
         action;
-      console.log("allUidsallUids Payload:", flag);
+      console.log("allUidsallUids Payload:", isforAll);
       console.log("allUidsallUids Payload:", payload);
       console.log("allUidsallUids Payload:", presenterViewHostFlag);
-      let meetinHostInfo = false;
-      let isGuid = "";
-      let isuid = 0;
+
       const meetingHostformeetingHost = JSON.parse(
         localStorage.getItem("meetinHostInfo")
       );
-      if (meetingHostformeetingHost?.isHost) {
-        meetinHostInfo = true;
-        isGuid = localStorage.getItem("isGuid");
-        isuid = Number(localStorage.getItem("userID"));
-      } else {
-        if (presenterViewHostFlag) {
-          meetinHostInfo = false;
-          isGuid = localStorage.getItem("isGuid");
-          isuid = Number(localStorage.getItem("userID"));
-        } else {
-          const hostsData = sessionStorage.getItem("currentmeetingHost");
-          // Parse it back to a JavaScript object
-          const hosts = hostsData ? JSON.parse(hostsData) : [];
-          meetinHostInfo = false;
-          isGuid = hosts.guid;
-          isuid = Number(hosts.userID);
-        }
-      }
+
       // Ensure proper use of isForAll
-      if (action.flag) {
+      if (isforAll) {
         // Mute/Unmute all participants
         let updatedParticipantList = [];
-        let newParticipantList = [];
-        if (meetinHostInfo) {
+        let participantUID = localStorage.getItem("participantUID");
+        let isGuid = localStorage.getItem("isGuid");
+        if (presenterViewFlag) {
+          if (Object.keys(state.getAllParticipantMain).length > 0) {
+            let uid = "";
+            if (presenterViewHostFlag) {
+              uid = meetingHostformeetingHost?.isHost ? isGuid : participantUID;
+            }
+            updatedParticipantList = state.getAllParticipantMain.map(
+              (participant) =>
+                participant.guid === uid
+                  ? participant
+                  : { ...participant, mute: payload } // Update only non-host participants
+            );
+          }
+        } else {
           if (Object.keys(state.getAllParticipantMain).length > 0) {
             updatedParticipantList = state.getAllParticipantMain.map(
               (participant) =>
-                presenterViewFlag
-                  ? presenterViewHostFlag
-                    ? participant
-                    : { ...participant, mute: payload }
-                  : participant.isHost
-                  ? participant // Do not modify if the participant is a host
+                participant.isHost
+                  ? participant
                   : { ...participant, mute: payload } // Update only non-host participants
             );
-            newParticipantList = filterHostData(updatedParticipantList, isGuid);
-          }
-        } else {
-          if (Object.keys(state.getAllParticipantMain).length > 0) {
-            newParticipantList = state.getAllParticipantMain.map(
-              (participant) => {
-                if (presenterViewFlag) {
-                  // If presenterViewHostFlag is true, return the participant as is
-                  if (presenterViewHostFlag) {
-                    return participant;
-                  }
-                  // Otherwise, update non-host participants' mute status
-                  return { ...participant, mute: payload };
-                }
-
-                // If presenterViewFlag is false, do not modify hosts
-                if (participant.isHost) {
-                  return participant;
-                }
-
-                // Update only non-host participants
-                return { ...participant, mute: payload };
-              }
-            );
-
-            newParticipantList = filterHostData(newParticipantList, isGuid);
           }
         }
-
         return {
           ...state,
-          // getAllParticipantMain: updatedParticipantList,
-          audioControlForParticipant: payload, // Update global state only for "Mute All"
-          getAllParticipantMain: newParticipantList,
+          getAllParticipantMain: updatedParticipantList,
         };
       } else {
         // Individual participant mute/unmute
@@ -569,7 +531,7 @@ const videoFeatureReducer = (state = initialState, action) => {
           }
           return participantData;
         }
-      )
+      );
 
       return {
         ...state,
