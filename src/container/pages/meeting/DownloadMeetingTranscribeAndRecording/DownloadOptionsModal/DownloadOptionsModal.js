@@ -79,16 +79,16 @@ const DownloadOptionsModal = ({
             <Row className='my-3'>
               <Col sm={6} md={6} lg={6}>
                 <div
-                  className={
-                    MeetingRecord?.isVideoCall &&
-                    MeetingRecord?.isRecordingAvailable
-                      ? styles["Download___Button_recording"]
-                      : MeetingRecord?.isVideoCall ||
-                        MeetingRecord?.isRecordingAvailable
-                      ? styles["Download___Button_recording_disabled"]
-                      : styles["Download___Button_recording_disabled"]
-                  }
-                  // className={styles["Download___Button_recording_disabled"]}
+                  // className={
+                  //   MeetingRecord?.isVideoCall &&
+                  //   MeetingRecord?.isRecordingAvailable
+                  //     ? styles["Download___Button_recording"]
+                  //     : MeetingRecord?.isVideoCall ||
+                  //       MeetingRecord?.isRecordingAvailable
+                  //     ? styles["Download___Button_recording_disabled"]
+                  //     : styles["Download___Button_recording_disabled"]
+                  // }
+                  className={styles["Download___Button_recording_disabled"]}
                   onClick={downloadMeetingDetails}>
                   <img width={35} src={DownloadRecording} />
                   <span>
