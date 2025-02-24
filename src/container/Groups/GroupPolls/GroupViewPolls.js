@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
+import Tick from "../../../assets/images/Tick-Icon.png";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -405,29 +406,48 @@ const GroupViewPolls = ({ groupStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
+          onClick={() => {
+            console.log(filter, "filterfilterfilter");
+            handleMenuClick(filter.value);
+          }}
+          className="d-flex align-items-center justify-content-between"
         >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
+          <div className="Polls_Menu_items">
+            <span
+              className={
+                filter.value === "Published"
+                  ? "userstatus-signal-PublishedPolls_Menu"
+                  : filter.value === "UnPublished"
+                  ? "userstatus-signal-Unpublished_Menu"
+                  : "userstatus-signal-disabled_Menu"
+              }
+            ></span>
+            <span className="menu-text">{filter.text}</span>
+            {selectedValues.includes(filter.value) && (
+              <span className="checkmark">
+                <img src={Tick} alt="" />
+              </span>
+            )}
+          </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className="d-flex align-items-center justify-content-between p-2">
         <Button
           text={"Reset"}
-          className={"FilterResetBtn"}
+          className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text="Ok"
           disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
+          className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
       </div>
     </Menu>
   );
+
   const PollsColoumn = [
     {
       title: (
@@ -497,10 +517,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className="filter-chevron-icon-todolist"
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown
@@ -813,68 +830,71 @@ const GroupViewPolls = ({ groupStatus }) => {
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {pollsRows.length > 0 ? (
-                  <>
-                    <section className={styles["MaintainingHeight"]}>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <Table
-                            column={PollsColoumn}
-                            rows={pollsRows}
-                            scroll={{ y: "40vh" }}
-                            pagination={false}
-                            className="Polling_table"
-                          />
-                        </Col>
-                      </Row>
-                    </section>
-                  </>
-                ) : (
-                  <>
-                    <Row className="mt-3">
-                      <Col
-                        lg={12}
-                        ms={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <img
-                          draggable={false}
-                          src={emtystate}
-                          height="230px"
-                          width="293.93px"
-                          alt=""
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["EmptyState_heading"]}>
-                          {t("No-polls")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["EmptyState_subHeading"]}>
-                          {t(
-                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                          )}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                )}
+                <section className={styles["MaintainingHeight"]}>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <Table
+                        column={PollsColoumn}
+                        rows={pollsRows}
+                        scroll={{ y: "40vh" }}
+                        pagination={false}
+                        className="Polling_table"
+                        locale={{
+                          emptyText: (
+                            <>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  ms={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <img
+                                    draggable={false}
+                                    src={emtystate}
+                                    height="230px"
+                                    width="293.93px"
+                                    alt=""
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["EmptyState_heading"]}
+                                  >
+                                    {t("No-polls")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["EmptyState_subHeading"]}
+                                  >
+                                    {t(
+                                      "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                                    )}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </>
+                          ),
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </section>
               </Col>
             </Row>
             {pollsRows.length > 0 && (
