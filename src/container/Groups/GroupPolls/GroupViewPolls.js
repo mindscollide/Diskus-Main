@@ -227,71 +227,81 @@ const GroupViewPolls = ({ groupStatus }) => {
   };
 
   const handleClickonTitle = (record) => {
-    // getPollsByGroupMainApi;
+    console.log(record, "handleClickonTitle");
+    // // getPollsByGroupMainApi;
+    // let data = {
+    //   PollID: record.pollID,
+    //   UserID: parseInt(userID),
+    // };
+    // if (record.pollStatus.pollStatusId === 1) {
+    //   // UnPublished Poll
+    //   dispatch(
+    //     getPollByPollIdforGroups(
+    //       navigate,
+    //       data,
+    //       3,
+    //       t,
+    //       setEditPolls,
+    //       setvotePolls,
+    //       setViewUnPublished,
+    //       setViewPublishedPoll,
+    //       setviewVotes
+    //     )
+    //   );
+    // } else if (record.pollStatus.pollStatusId === 2) {
+    //   // Poll Published
+    //   dispatch(
+    //     getPollByPollIdforGroups(
+    //       navigate,
+    //       data,
+    //       4,
+    //       t,
+    //       setEditPolls,
+    //       setvotePolls,
+    //       setViewUnPublished,
+    //       setViewPublishedPoll,
+    //       setviewVotes
+    //     )
+    //   );
+    // } else if (record.pollStatus.pollStatusId === 3) {
+    //   // Expired Poll
+    //   if (Number(record?.pollCreatorID) === Number(userID)) {
+    //     // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
+    //     dispatch(
+    //       getPollByPollIdforGroups(
+    //         navigate,
+    //         data,
+    //         4,
+    //         t,
+    //         setEditPolls,
+    //         setvotePolls,
+    //         setViewUnPublished,
+    //         setViewPublishedPoll,
+    //         setviewVotes
+    //       )
+    //     );
+    //   } else {
+    //     // If User is just a Participant then modal should open like Unpublished Poll
+    //     dispatch(
+    //       getPollByPollIdforGroups(
+    //         navigate,
+    //         data,
+    //         3,
+    //         t,
+    //         setEditPolls,
+    //         setvotePolls,
+    //         setViewUnPublished,
+    //         setViewPublishedPoll
+    //       )
+    //     );
+    //   }
+    // }
     let data = {
       PollID: record.pollID,
-      UserID: parseInt(userID),
     };
-    if (record.pollStatus.pollStatusId === 1) {
-      // UnPublished Poll
-      dispatch(
-        getPollByPollIdforGroups(
-          navigate,
-          data,
-          3,
-          t,
-          setEditPolls,
-          setvotePolls,
-          setViewUnPublished,
-          setViewPublishedPoll
-        )
-      );
-    } else if (record.pollStatus.pollStatusId === 2) {
-      // Poll Published
-      dispatch(
-        getPollByPollIdforGroups(
-          navigate,
-          data,
-          4,
-          t,
-          setEditPolls,
-          setvotePolls,
-          setViewUnPublished,
-          setViewPublishedPoll
-        )
-      );
-    } else if (record.pollStatus.pollStatusId === 3) {
-      // Expired Poll
-      if (Number(record?.pollCreatorID) === Number(userID)) {
-        // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
-        dispatch(
-          getPollByPollIdforGroups(
-            navigate,
-            data,
-            4,
-            t,
-            setEditPolls,
-            setvotePolls,
-            setViewUnPublished,
-            setViewPublishedPoll
-          )
-        );
-      } else {
-        // If User is just a Participant then modal should open like Unpublished Poll
-        dispatch(
-          getPollByPollIdforGroups(
-            navigate,
-            data,
-            3,
-            t,
-            setEditPolls,
-            setvotePolls,
-            setViewUnPublished,
-            setViewPublishedPoll
-          )
-        );
-      }
-    }
+    dispatch(
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
+    );
   };
 
   const handleClickonTitleBeforeDueDate = (record) => {
@@ -780,6 +790,8 @@ const GroupViewPolls = ({ groupStatus }) => {
           />
         ) : viewVotes ? (
           <ViewVotesScreen />
+        ) : viewVotes ? (
+          <ViewVotesScreen setviewVotes={setviewVotes} />
         ) : (
           <>
             <Row className="mt-4">
