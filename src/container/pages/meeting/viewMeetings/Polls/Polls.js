@@ -621,6 +621,7 @@ const Polls = () => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
+      align: "center",
       width: "70px",
       render: (text, record) => {
         console.log("votevotevotevote", record);

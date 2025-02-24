@@ -631,7 +631,7 @@ const GroupViewPolls = ({ groupStatus }) => {
               return (
                 <Button
                   className={styles["ViewVotesButtonStyles"]}
-                  buttonValue={t("View-vote")}
+                  text={t("View-votes")}
                   onClick={() => handleViewVotes(record)}
                 />
               );
@@ -646,14 +646,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                 return (
                   <Button
                     className={styles["ViewVotesButtonStyles"]}
-                    buttonValue={t("View-vote")}
+                    text={t("View-votes")}
                     onClick={() => handleViewVotes(record)}
                   />
                 );
               } else {
                 <Button
                   className={styles["ViewVotesButtonStyles"]}
-                  buttonValue={t("View-vote")}
+                  text={t("View-votes")}
                   onClick={() => handleViewVotes(record)}
                 />;
               }
