@@ -182,9 +182,7 @@ const Attendence = () => {
                           width='22.59px'
                           height='22.59px'
                         />
-                        <span>
-                          {record.meetingAttendancestatus.attendanceStatus}
-                        </span>
+                        <span>{t("Present")}</span>
                       </section>
                     </Col>
                   </Row>
@@ -212,9 +210,7 @@ const Attendence = () => {
                           width='22.59px'
                           height='22.59px'
                         />
-                        <span>
-                          {record.meetingAttendancestatus.attendanceStatus}
-                        </span>
+                        <span>{t("Absent")}</span>
                       </section>
                     </Col>
                   </Row>
@@ -242,9 +238,7 @@ const Attendence = () => {
                           width='22.59px'
                           height='22.59px'
                         />
-                        <span>
-                          {record.meetingAttendancestatus.attendanceStatus}
-                        </span>
+                        <span>{t("Remote")}</span>
                       </section>
                     </Col>
                   </Row>
