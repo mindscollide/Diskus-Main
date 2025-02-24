@@ -2437,5 +2437,7 @@
   "Download-meeting-recording": "Download Meeting Recording",
   "Download-board-deck": "Download Board Deck",
   "Transcribe": "Transcribe",
-  "Transcibing": "Transcibing"
+  "Transcibing": "Transcibing",
+  "Video-recording-not-available-yet": "Video recording not available yet",
+  "Video-was-not-recorded": "Video was not recorded"
 }

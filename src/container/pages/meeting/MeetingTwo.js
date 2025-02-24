@@ -1952,9 +1952,10 @@ const NewMeeting = () => {
     console.log("recordrecordrecord", record);
     if(record.isVideoCall && record.isRecordingAvailable) {
       setIsDownloadAvailable(true);
-      setDownloadMeetingRecord(record)
+  
     }
     // downloadMeetinModal,
+    setDownloadMeetingRecord(record)
     setDownloadMeeting(true)
   };
   //Filteration Work Meeting Type Ends

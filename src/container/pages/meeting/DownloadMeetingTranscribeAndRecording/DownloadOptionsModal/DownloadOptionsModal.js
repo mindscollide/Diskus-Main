@@ -3,7 +3,8 @@ import CustomModal from "../../../../../components/elements/modal/Modal";
 import styles from "./DownloadOptionsModal.module.css";
 import DownloadRecording from "../../../../../assets/images/Download_video_icon.png";
 import DownloadBoardDeck from "../../../../../assets/images/Download_boarddeck_icon.png";
-import React, { useState } from "react";
+import React from "react";
+import WarningIcon from "../../../../../assets/images/WarningIcon.png";
 import { Button } from "../../../../../components/elements";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
@@ -17,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 const DownloadOptionsModal = ({
   isDownloadAvailable,
-  downloadMeetingRecord,
+  downloadMeetingRecord: MeetingRecord,
 }) => {
   const {
     setBoardDeckMeetingID,
@@ -30,20 +31,22 @@ const DownloadOptionsModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  console.log(MeetingRecord, "downloadMeetingRecorddownloadMeetingRecord");
   //Board Deck Onclick function
   const boardDeckOnClick = () => {
-    if (downloadMeetingRecord !== null) {
+    if (MeetingRecord !== null) {
       setDownloadMeeting(false);
-      setBoardDeckMeetingID(downloadMeetingRecord?.pK_MDID);
-      setBoardDeckMeetingTitle(downloadMeetingRecord?.title);
+      setBoardDeckMeetingID(MeetingRecord?.pK_MDID);
+      setBoardDeckMeetingTitle(MeetingRecord?.title);
       dispatch(boardDeckModal(true));
-      localStorage.setItem("meetingTitle", downloadMeetingRecord?.title);
+      localStorage.setItem("meetingTitle", MeetingRecord?.title);
     }
   };
 
   const downloadMeetingDetails = () => {
-    if (downloadMeetingRecord !== null) {
-      let Data = { MeetingID: downloadMeetingRecord?.pK_MDID };
+    if (MeetingRecord !== null) {
+      let Data = { MeetingID: MeetingRecord?.pK_MDID };
 
       dispatch(
         getMeetingRecordingFilesApi(navigate, t, Data, setStepDownloadModal)
@@ -51,15 +54,17 @@ const DownloadOptionsModal = ({
     }
   };
   if (stepDownloadModal === 2) {
-    return <MeetingRecording title={downloadMeetingRecord?.title} />;
+    return <MeetingRecording title={MeetingRecord?.title} />;
   } else {
     return (
       <CustomModal
         show={downloadMeetinModal}
         size={"md"}
         onHide={() => setDownloadMeeting(false)}
-        modalFooterClassName={"d-block"}
+        modalFooterClassName={styles["Download__ModalFooter"]}
         modalHeaderClassName={"d-none"}
+        centered={true}
+        modalBodyClassName={styles["Download__ModalBody"]}
         ModalBody={
           <>
             <Row>
@@ -74,15 +79,29 @@ const DownloadOptionsModal = ({
             <Row className='my-3'>
               <Col sm={6} md={6} lg={6}>
                 <div
-                  // className={
-                  //   isDownloadAvailable
-                  //     ? styles["Download___Button_recording"]
-                  //     : styles["Download___Button_recording_disabled"]
-                  // }
-                  className={styles["Download___Button_recording_disabled"]}
+                  className={
+                    MeetingRecord?.isVideoCall &&
+                    MeetingRecord?.isRecordingAvailable
+                      ? styles["Download___Button_recording"]
+                      : MeetingRecord?.isVideoCall ||
+                        MeetingRecord?.isRecordingAvailable
+                      ? styles["Download___Button_recording_disabled"]
+                      : styles["Download___Button_recording_disabled"]
+                  }
+                  // className={styles["Download___Button_recording_disabled"]}
                   onClick={downloadMeetingDetails}>
                   <img width={35} src={DownloadRecording} />
-                  <span>{t("Download-meeting-recording")}</span>
+                  <span>
+                    {MeetingRecord?.isVideoCall &&
+                    MeetingRecord?.isRecordingAvailable
+                      ? t("Download-meeting-recording")
+                      : MeetingRecord?.isVideoCall === false
+                      ? t("Video-was-not-recorded")
+                      : MeetingRecord?.isRecordingAvailable === false
+                      ? t("Video-recording-not-available-yet")
+                      : null}
+                  </span>
+                  <img src={WarningIcon}/>
                 </div>
               </Col>
               <Col sm={6} md={6} lg={6}>
