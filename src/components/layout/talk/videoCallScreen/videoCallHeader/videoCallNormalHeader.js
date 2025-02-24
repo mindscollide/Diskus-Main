@@ -634,12 +634,14 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     if (isMeeting === true) {
+        console.log("busyCall");
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
       if (presenterViewFlag) {
         console.log("Check Presenter");
         handlePresenterViewFunc();
       } else if (isMeetingVideoHostCheck) {
+        console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(UID),
@@ -651,6 +653,7 @@ const VideoCallNormalHeader = ({
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
       } else {
+        console.log("busyCall");
         let Data = {
           RoomID: String(participantRoomId),
           UserGUID: String(UID),
