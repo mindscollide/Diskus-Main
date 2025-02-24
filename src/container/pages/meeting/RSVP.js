@@ -44,7 +44,10 @@ const RSVP = () => {
         validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
       );
     }
-  }, [getRSVP]);
+    return () => {
+      localStorage.removeItem("RSVP");
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -65,9 +68,9 @@ const RSVP = () => {
     } catch (error) {
       console.log(error, "errorerrorerrorerror");
     }
-    return () => {
-      dispatch(validateEmptyStringUserAvailibilityFailed(""));
-    };
+    // return () => {
+    //   dispatch(validateEmptyStringUserAvailibilityFailed(""));
+    // };
   }, [UserAvalibilityState]);
 
   return (
