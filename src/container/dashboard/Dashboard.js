@@ -558,7 +558,6 @@ const Dashboard = () => {
             dispatch(joinPresenterViewMainApi(navigate, t, data));
           }
         }
-      
       }
     }
   };
@@ -594,7 +593,7 @@ const Dashboard = () => {
           console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
-            if (alreadyInMeetingVideo) {
+            if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
@@ -615,7 +614,6 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
             }
           }
-          
         } else {
           sessionStorage.removeItem("StopPresenterViewAwait");
         }
@@ -681,14 +679,7 @@ const Dashboard = () => {
               // make me host
             }
           }
-          dispatch(
-            participanMuteUnMuteMeeting(
-              false,
-              true,
-              true,
-              true,
-              1
-            ))
+          dispatch(participanMuteUnMuteMeeting(false, true, true, true, 1));
         }
       }
     }
@@ -1445,8 +1436,7 @@ const Dashboard = () => {
               "MEETING_PRESENTATION_STARTED".toLowerCase()
             ) {
               startPresenterView(data.payload);
-                // Dispatch action with all UIDs
-        
+              // Dispatch action with all UIDs
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
@@ -1455,7 +1445,6 @@ const Dashboard = () => {
               dispatch(setVideoControlHost(false));
               dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
-             
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
