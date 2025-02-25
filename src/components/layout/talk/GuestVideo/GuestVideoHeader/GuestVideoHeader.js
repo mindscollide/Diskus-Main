@@ -41,6 +41,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const joinGuestData = useSelector(
     (state) => state.GuestVideoReducer.joinGuestData
   );
+  console.log(joinGuestData, "joinGuestData");
 
   const guestMuteUnMuteData = useSelector(
     (state) => state.GuestVideoReducer.muteUmMuteByHost
@@ -89,6 +90,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   let guestName = sessionStorage.getItem("guestName");
   let guestUID = sessionStorage.getItem("GuestUserID");
+  let MeetingId = Number(sessionStorage.getItem("MeetingId"));
 
   const [micOn, setMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
@@ -291,6 +293,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(roomId),
       IsMuted: flag,
       UID: String(joinGuestData.guestGuid),
+      MeetingID: MeetingId,
     };
     // Dispatch the API call with the structured request data
     dispatch(muteUnMuteSelfMainApi(navigate, t, data));
@@ -310,6 +313,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(roomId),
       HideVideo: flag,
       UID: String(joinGuestData.guestGuid),
+      MeetingID: MeetingId,
     };
     dispatch(hideUnhideSelfMainApi(navigate, t, data));
 
@@ -365,6 +369,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       RoomID: String(roomId),
       UID: String(joinGuestData.guestGuid),
       Name: String(guestName),
+      MeetingID: MeetingId,
     };
     dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
   };

@@ -222,6 +222,13 @@ const VideoCallNormalHeader = ({
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
+
+  const newJoinPresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+  );
+
+  console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
+
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
@@ -247,7 +254,7 @@ const VideoCallNormalHeader = ({
   let callerObject = localStorage.getItem("callerStatusObject");
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
-  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
   let getMeetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeetingVideoHostCheck = JSON.parse(
@@ -286,12 +293,15 @@ const VideoCallNormalHeader = ({
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
 
+  console.log(getAllParticipantMain.length, "participantWaitingListCounter");
+
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
+
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
       setParticipantCounterList(getAllParticipantMain?.length);
@@ -634,7 +644,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     if (isMeeting === true) {
-        console.log("busyCall");
+      console.log("busyCall");
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
       if (presenterViewFlag) {
@@ -940,6 +950,7 @@ const VideoCallNormalHeader = ({
         RoomID: String(RoomID),
         HideVideo: !!flag, // Ensuring it's a boolean
         UID: String(UID),
+        MeetingID: Number(currentMeetingID),
       };
 
       // Dispatch the API request with the data
@@ -960,6 +971,7 @@ const VideoCallNormalHeader = ({
         RoomID: String(RoomID),
         IsMuted: !!flag, // Ensuring it's a boolean
         UID: String(UID),
+        MeetingID: currentMeetingID,
       };
 
       // Dispatch the API request with the data

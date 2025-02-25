@@ -51,6 +51,8 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
+  console.log(getAllParticipantMain.length, "getAllParticipantMain");
+
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
@@ -207,6 +209,7 @@ const VideoNewParticipantList = () => {
       RoomID: String(newRoomId),
       UID: usersData.guid,
       UserID: usersData.userID,
+      MeetingID: currentMeetingID,
     };
     dispatch(transferMeetingHostMainApi(navigate, t, data, 1));
   };
@@ -225,6 +228,7 @@ const VideoNewParticipantList = () => {
               UID: usersData.guid, // The participant's UID
             },
           ],
+          MeetingID: currentMeetingID,
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
       } else if (presenterViewFlag) {
@@ -238,6 +242,7 @@ const VideoNewParticipantList = () => {
               UID: usersData.guid, // The participant's UID
             },
           ],
+          MeetingID: currentMeetingID,
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
       } else {
@@ -294,6 +299,7 @@ const VideoNewParticipantList = () => {
       IsMuted: !flag,
       isForAll: true, // Pass the current flag
       MuteUnMuteList: allUids,
+      MeetingID: currentMeetingID,
     };
     dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
@@ -306,6 +312,7 @@ const VideoNewParticipantList = () => {
       RoomID: roomID,
       HideVideo: flag,
       UIDList: [usersData.guid],
+      MeetingID: currentMeetingID,
     };
 
     // Update the specific participant's hideCamera state in `newParticipants`
@@ -325,6 +332,7 @@ const VideoNewParticipantList = () => {
       RoomID: String(roomID),
       UID: usersData.guid,
       Name: usersData.name,
+      MeetingID: currentMeetingID,
     };
 
     setFilteredParticipants((prev) =>

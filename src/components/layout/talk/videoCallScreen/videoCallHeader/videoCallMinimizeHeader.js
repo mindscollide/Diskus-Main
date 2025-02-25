@@ -466,6 +466,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           ? newUserGUID
           : participantUID
       ),
+      MeetingID: Number(currentMeetingID),
     };
 
     // Dispatch the API request with the data
@@ -489,6 +490,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           ? newUserGUID
           : participantUID
       ),
+      MeetingID: Number(currentMeetingID),
     };
 
     // Dispatch the API request with the data
@@ -510,6 +512,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           ? newUserGUID
           : participantUID
       ),
+      MeetingID: Number(currentMeetingID),
     };
     // Dispatch the API call with the structured request data
     dispatch(muteUnMuteSelfMainApi(navigate, t, data, 2));
@@ -529,6 +532,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           ? newUserGUID
           : participantUID
       ),
+      MeetingID: Number(currentMeetingID),
     };
 
     // Dispatch the API request with the data
