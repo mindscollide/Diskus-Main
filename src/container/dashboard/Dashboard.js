@@ -601,6 +601,7 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
               console.log("mqtt mqmqmqmqmqmq");
             } else {
+              sessionStorage.removeItem("alreadyInMeetingVideo")
               console.log("mqtt mqmqmqmqmqmq");
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
