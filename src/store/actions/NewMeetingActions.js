@@ -9148,17 +9148,17 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
 
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
-              const meetingHost = {
-                isHost: false,
-                isHostId: 0,
-                isDashboardVideo: false,
-              };
-              // dispatch(makeHostNow(meetingHost));
-              localStorage.setItem(
-                "meetinHostInfo",
-                JSON.stringify(meetingHost)
-              );
-              localStorage.setItem("isMeetingVideo", false);
+              // const meetingHost = {
+              //   isHost: false,
+              //   isHostId: 0,
+              //   isDashboardVideo: false,
+              // };
+              // // dispatch(makeHostNow(meetingHost));
+              // localStorage.setItem(
+              //   "meetinHostInfo",
+              //   JSON.stringify(meetingHost)
+              // );
+              // localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
               localStorage.setItem("refinedVideoGiven", false);
@@ -9239,6 +9239,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               await dispatch(setAudioControlHost(false));
               await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");

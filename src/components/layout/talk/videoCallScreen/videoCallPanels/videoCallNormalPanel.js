@@ -230,7 +230,7 @@ const VideoPanelNormal = () => {
 
   const [isScreenActive, setIsScreenActive] = useState(false);
 
-  const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  let meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   // for make host
   const [isMeetingHost, setIsMeetingHost] = useState(
     meetingHost?.isHost ? true : false
@@ -860,15 +860,7 @@ const VideoPanelNormal = () => {
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
-    dispatch(
-      participanMuteUnMuteMeeting(
-        true,
-        true,
-        true,
-        true,
-        1
-      )
-    );
+    dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
@@ -1087,7 +1079,6 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }
-
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
@@ -1098,7 +1089,14 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
-
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      // for make host
+      setIsMeetingHost(meetingHost?.isHost ? true : false);
+    } catch {}
+  }, [participantWaitinglistBox]);
   return (
     <>
       {MaximizeHostVideoFlag ? (

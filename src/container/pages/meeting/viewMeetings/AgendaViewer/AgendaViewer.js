@@ -935,21 +935,6 @@ const AgendaViewer = () => {
                         </Tooltip>
                       ) : null}
 
-                      {/* {editorRole.status === "10" ||
-                      editorRole.status === 10 ? (
-                        <Tooltip
-                          placement="topRight"
-                          title={t("Leave-meeting")}
-                        >
-                          <div
-                            className={styles["box-agendas-leave"]}
-                            onClick={() => leaveMeeting(false)}
-                          >
-                            <img src={LeaveMeetingIcon} alt="" />
-                          </div>
-                        </Tooltip>
-                      ) : null} */}
-
                       {editorRole.status === 10 ||
                       editorRole.status === "10" ? (
                         <>
@@ -993,7 +978,7 @@ const AgendaViewer = () => {
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&
-                      videoTalk?.isVideoCall ? (
+                      videoTalk?.isVideoCall && (
                         <Tooltip
                           placement="topRight"
                           title={t("Enable-video-call")}
@@ -1019,18 +1004,7 @@ const AgendaViewer = () => {
                             />
                           </div>
                         </Tooltip>
-                      ) : null}
-
-                      {/* 
-                      <Tooltip placement="topRight" title={t("Expand")}>
-                        <div
-                          className={styles["box-agendas"]}
-                          onClick={fullScreenModal}
-                        >
-                          <img src={ExpandAgendaIcon} alt="" />
-                        </div>
-                      </Tooltip> */}
-
+                      ) }
                       <div
                         onClick={menuPopupAgenda}
                         className={styles["box-agendas"]}
