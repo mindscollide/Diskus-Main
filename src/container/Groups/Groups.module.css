@@ -345,3 +345,9 @@ body[dir="rtl"] .Cancel-activegroup-modal {
   background: #ccc;
   margin-left: -15px !important;
 }
+
+.Groups_spinner {
+  position: absolute !important;
+  z-index: 1 !important;
+  bottom: 16px;
+}

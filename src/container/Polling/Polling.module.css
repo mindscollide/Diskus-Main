@@ -382,3 +382,13 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 95px !important;
   font-weight: 600 !important;
 }
+
+.Polling_spinner {
+  position: absolute !important;
+  z-index: 1 !important;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

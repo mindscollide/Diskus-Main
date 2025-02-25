@@ -2433,6 +2433,13 @@
   "Are-you-sure-you-want-to-stop-presenter-view": "Are you sure you want to Stop Presenter View",
   "Document-has-been-signed-successfully": "Document has been signed successfully",
   "Document-has-been-declined-successfully": "Document has been declined successfully",
+  "Are-You-Sure-you-Want-to-Leave-One-to-One": "Are You Sure you Want to Leave One to One",
   "Signature-is-must-required": "Signature is must required",
-  "Are-You-Sure-you-Want-to-Leave-One-to-One": "Are You Sure you Want to Leave One to One"
+  "Click": "Click",
+  "Download-meeting-recording": "Download Meeting Recording",
+  "Download-board-deck": "Download Board Deck",
+  "Transcribe": "Transcribe",
+  "Transcibing": "Transcibing",
+  "Video-recording-not-available-yet": "Video recording not available yet",
+  "Video-was-not-recorded": "Video was not recorded"
 }

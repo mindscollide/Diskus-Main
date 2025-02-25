@@ -47,6 +47,7 @@ import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
+import { Spin } from "antd";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -175,7 +176,7 @@ const Groups = () => {
           setViewGroupTab(1);
           setViewGroupPage(true);
           dispatch(viewGroupPageFlag(true));
-        } 
+        }
         localStorage.removeItem("groupView_Id"); // Cleanup the localStorage key
       };
       callApi(); // Invoke the API call
@@ -434,8 +435,7 @@ const Groups = () => {
       GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID),
     };
-    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange,));
-
+    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
   };
 
   useEffect(() => {
@@ -488,12 +488,13 @@ const Groups = () => {
           </>
         ) : (
           <>
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col
                 md={4}
                 sm={4}
                 lg={4}
-                className='d-flex gap-3 align-items-center '>
+                className="d-flex gap-3 align-items-center "
+              >
                 <span className={styles["Groups-heading-size"]}>
                   {t("Groups")}
                 </span>
@@ -509,35 +510,42 @@ const Groups = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className='d-flex justify-content-end align-items-center gap-1 mt-2 '>
+                className="d-flex justify-content-end align-items-center gap-1 mt-2 "
+              >
                 <Button
                   className={styles["Archived-Group-btn"]}
                   text={t("Archived-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
-                      draggable='false'
+                      draggable="false"
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
-                      alt=''
+                      alt=""
                     />
                   }
                 />
               </Col>
             </Row>
 
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col lg={12} sm={12} md={12}>
                 <Row
                   className={`${"d-flex text-center  color-5a5a5a m-0 p-0"} ${
                     styles["groups_box"]
-                  }`}>
-                  <Col sm={12} md={12} lg={12} className='m-0 p-0'>
+                  }`}
+                >
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="m-0 p-0 position-relative"
+                  >
                     <Row>
                       {groupsData.length > 0 ? (
                         groupsData.map((data, index) => {
                           return (
-                            <Col lg={3} md={3} sm={12} className='mb-3'>
+                            <Col lg={3} md={3} sm={12} className="mb-3">
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -562,11 +570,11 @@ const Groups = () => {
                                 flag={false}
                                 Icon={
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={GroupIcon}
-                                    height='29.23px'
-                                    width='32.39px'
-                                    alt=''
+                                    height="29.23px"
+                                    width="32.39px"
+                                    alt=""
                                   />
                                 }
                                 handleClickDiscussion={
@@ -607,54 +615,71 @@ const Groups = () => {
                           );
                         })
                       ) : (
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className={styles["NoGroupsData"]}>
+                        <>
                           <Row>
-                            <Col>
-                              <img
-                                draggable='false'
-                                src={NoGroupsData}
-                                alt=''
-                              />
-                            </Col>
                             <Col
-                              sm={12}
-                              md={12}
                               lg={12}
-                              className={styles["NoGroupsDataFoundText"]}>
-                              {t("You-dont-have-any-group-yet")}
-                            </Col>
-                            <Col
-                              sm={12}
                               md={12}
-                              lg={12}
-                              className={styles["NoGroupsDataFoundText"]}>
-                              {t("Click-create-new-group")}
-                            </Col>
-
-                            <Col
                               sm={12}
-                              md={12}
-                              lg={12}
-                              className='d-flex justify-content-center mt-3'>
-                              <Button
-                                className={styles["create-Group-btn"]}
-                                text={t("Create-new-group")}
-                                onClick={groupModal}
-                                icon={
-                                  <Plus
-                                    width={20}
-                                    height={20}
-                                    fontWeight={800}
-                                  />
-                                }
-                              />
+                              className={styles["Groups_spinner"]}
+                            >
+                              <Spin />
                             </Col>
                           </Row>
-                        </Col>
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["NoGroupsData"]}
+                            >
+                              <Row>
+                                <Col>
+                                  <img
+                                    draggable="false"
+                                    src={NoGroupsData}
+                                    alt=""
+                                  />
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["NoGroupsDataFoundText"]}
+                                >
+                                  {t("You-dont-have-any-group-yet")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["NoGroupsDataFoundText"]}
+                                >
+                                  {t("Click-create-new-group")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className="d-flex justify-content-center mt-3"
+                                >
+                                  <Button
+                                    className={styles["create-Group-btn"]}
+                                    text={t("Create-new-group")}
+                                    onClick={groupModal}
+                                    icon={
+                                      <Plus
+                                        width={20}
+                                        height={20}
+                                        fontWeight={800}
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </>
                       )}
                     </Row>
                   </Col>
@@ -671,7 +696,8 @@ const Groups = () => {
                   sm={12}
                   className={
                     "pagination-groups-table d-flex justify-content-center"
-                  }>
+                  }
+                >
                   <span className={styles["PaginationStyle-Committee"]}>
                     <CustomPagination
                       total={totalLength}
@@ -707,7 +733,7 @@ const Groups = () => {
             setStatusValue("");
           }}
           setShow={setModalStatusChange}
-          modalFooterClassName='d-block'
+          modalFooterClassName="d-block"
           centered
           ModalBody={
             <>
@@ -717,9 +743,11 @@ const Groups = () => {
                     lg={12}
                     sm={12}
                     md={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <span
-                      className={styles["heading-modal-active-contfirmation"]}>
+                      className={styles["heading-modal-active-contfirmation"]}
+                    >
                       {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
@@ -729,9 +757,11 @@ const Groups = () => {
                     lg={12}
                     sm={12}
                     md={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <span
-                      className={styles["heading-modal-active-contfirmation"]}>
+                      className={styles["heading-modal-active-contfirmation"]}
+                    >
                       {statusValue || ""} {t("this-group?")}
                     </span>
                   </Col>
@@ -746,7 +776,8 @@ const Groups = () => {
                   lg={6}
                   sm={6}
                   md={6}
-                  className='d-flex justify-content-end'>
+                  className="d-flex justify-content-end"
+                >
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
@@ -757,7 +788,8 @@ const Groups = () => {
                   lg={6}
                   md={6}
                   sm={6}
-                  className='d-flex justify-content-start'>
+                  className="d-flex justify-content-start"
+                >
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel-activegroup-modal"]}

@@ -186,7 +186,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   );
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
-
+  console.log(fileForSend, "fileForSendfileForSend");
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
   const [reminderOptValue, setReminderOptValue] = useState({
@@ -618,8 +618,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           OriginalAttachmentName: "",
         };
         setAttachments((prev) => [...prev, fileData]);
-        // fileSizeArr += uploadedFile.size;
-        setFileForSend([...fileForSend, uploadedFile]);
+        setFileForSend((prev) => [...prev, uploadedFile]);
       }
     });
     // // Update the states with the accumulated values
@@ -693,14 +692,9 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           setModalField(false);
           let fileforSend = [...attachments];
           let newfile = [];
-          const uploadPromises = fileForSend.map(async (newData) => {
-            // Return the promise from FileUploadToDo
-            return await dispatch(
-              uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
-            );
-          });
-          // Wait for all uploadPromises to resolve
-          await Promise.all(uploadPromises);
+          for (const newData of fileForSend) {
+            await dispatch(uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile));
+          }
           let newFolder = [];
           const getSaveFilesRepsonse = await dispatch(
             saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)

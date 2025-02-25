@@ -78,7 +78,7 @@ export const getAllUnpublishedMeetingData = async (
       let usersData = await getUserInfo(data, currentUserId, currentSourceID);
       newMeetingData.push({
         dateOfMeeting: data.dateOfMeeting,
-        host: primaryOrganizerA?.user?.name,
+        host: data.host,
         isAttachment: data.isAttachment,
         isChat: data.isChat,
         isVideoCall: data.isVideoCall || false,

@@ -355,6 +355,7 @@ const Dashboard = () => {
   let newClient = Helper.socket;
   // for close the realtime Notification bar
   const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
+  const presenterViewHostFlagFlagRef = useRef(presenterViewHostFlag);
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
@@ -368,6 +369,9 @@ const Dashboard = () => {
   useEffect(() => {
     presenterViewJoinFlagRef.current = presenterViewJoinFlag;
   }, [presenterViewJoinFlag]);
+  useEffect(() => {
+    presenterViewHostFlagFlagRef.current = presenterViewHostFlag;
+  }, [presenterViewHostFlag]);
   useEffect(() => {
     presenterViewFlagRef.current = presenterViewFlag;
   }, [presenterViewFlag]);
@@ -508,7 +512,12 @@ const Dashboard = () => {
             dispatch(LeaveMeetingVideo(Data, navigate, t, 2, data));
           } else {
             let newRoomID = localStorage.getItem("newRoomId");
-            localStorage.setItem("acceptedRoomID", newRoomID);
+            let activeRoomID = localStorage.getItem("activeRoomID");
+            if (newRoomID) {
+              localStorage.setItem("acceptedRoomID", newRoomID);
+            } else {
+              localStorage.setItem("acceptedRoomID", activeRoomID);
+            }
             sessionStorage.setItem("alreadyInMeetingVideo", true);
             dispatch(participantWaitingListBox(false));
             await dispatch(
@@ -587,7 +596,7 @@ const Dashboard = () => {
           console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
-            if (alreadyInMeetingVideo) {
+            if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
@@ -595,6 +604,7 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
               console.log("mqtt mqmqmqmqmqmq");
             } else {
+              sessionStorage.removeItem("alreadyInMeetingVideo");
               console.log("mqtt mqmqmqmqmqmq");
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
@@ -608,7 +618,10 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
             }
           }
+        } else {
+          sessionStorage.removeItem("StopPresenterViewAwait");
         }
+
         if (alreadyInMeetingVideo) {
           if (isMeetingVideoHostCheck) {
             if (payload.hostID !== userIDCurrent) {
@@ -671,6 +684,7 @@ const Dashboard = () => {
               // make me host
             }
           }
+          dispatch(participanMuteUnMuteMeeting(false, true, true, true, 1));
         }
       }
     }
@@ -1060,7 +1074,14 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
-              dispatch(participanMuteUnMuteMeeting(data.payload, false));
+              dispatch(
+                participanMuteUnMuteMeeting(
+                  data.payload,
+                  false,
+                  presenterViewHostFlag,
+                  presenterViewFlag
+                )
+              );
             } else if (
               data.payload.message.toLowerCase() ===
               "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
@@ -1089,10 +1110,10 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
             ) {
-              localStorage.setItem(
-                "isHost",
-                data.payload.newParticipants.isHost
-              );
+              // localStorage.setItem(
+              //   "isHost",
+              //   data.payload.newParticipants.isHost
+              // );
               dispatch(getParticipantsNewJoin(data.payload.newParticipants));
               console.log(data.payload, "JOINEDJOINEDJOINED");
             } else if (
@@ -1159,14 +1180,34 @@ const Dashboard = () => {
               const meetingHost = JSON.parse(
                 localStorage.getItem("meetinHostInfo")
               );
+
               if (data.payload.isForAll) {
+                if (presenterViewFlag) {
+                  if (!presenterViewHostFlag) {
+                    dispatch(setAudioControlHost(data.payload.isMuted));
+                  }
+                } else if (!meetingHost?.isHost) {
+                  dispatch(setAudioControlHost(data.payload.isMuted));
+                }
                 // Dispatch action with all UIDs
                 dispatch(
-                  participanMuteUnMuteMeeting(data.payload.isMuted, true)
+                  participanMuteUnMuteMeeting(
+                    data.payload.isMuted,
+                    true,
+                    presenterViewHostFlag,
+                    presenterViewFlag
+                  )
                 );
               } else {
                 // Handle individual mute/unmute
-                dispatch(participanMuteUnMuteMeeting(data.payload, false));
+                dispatch(
+                  participanMuteUnMuteMeeting(
+                    data.payload,
+                    false,
+                    presenterViewHostFlag,
+                    presenterViewFlag
+                  )
+                );
 
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1400,6 +1441,7 @@ const Dashboard = () => {
               "MEETING_PRESENTATION_STARTED".toLowerCase()
             ) {
               startPresenterView(data.payload);
+              // Dispatch action with all UIDs
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
@@ -1412,13 +1454,15 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
             ) {
-              dispatch(presenterNewParticipantJoin(data.payload));
+              dispatch(
+                presenterNewParticipantJoin(data.payload.newParticipant)
+              );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
             ) {
-              dispatch(presenterLeaveParticipant(data.payload.uid));
+              dispatch(presenterLeaveParticipant(data.payload));
               console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
@@ -3330,7 +3374,7 @@ const Dashboard = () => {
             );
           } else if (data.payload.data.status === "Declined") {
             showMessage(
-              "Document-has-been-declined-successfully",
+              t("Document-has-been-declined-successfully"),
               "success",
               setOpen
             );

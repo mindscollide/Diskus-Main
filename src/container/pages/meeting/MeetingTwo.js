@@ -136,6 +136,7 @@ import { webnotificationGlobalFlag } from "../../../store/actions/UpdateUserNoti
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import { useResolutionContext } from "../../../context/ResolutionContext";
+import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -163,6 +164,12 @@ const NewMeeting = () => {
     isEditMeeting,
     setEditMeeting,
     setPolls,
+    boardDeckMeetingID,
+    setBoardDeckMeetingID,
+    boardDeckMeetingTitle,
+    setBoardDeckMeetingTitle,
+    downloadMeetinModal,
+    setDownloadMeeting,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -289,11 +296,12 @@ const NewMeeting = () => {
   const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
 
   const [quickMeeting, setQuickMeeting] = useState(false);
-  const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   //Edit proposed Meeting Flow
   const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  const [isDownloadAvailable, setIsDownloadAvailable] = useState(false);
+  const [downloadMeetingRecord, setDownloadMeetingRecord] = useState(null)
 
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
@@ -342,7 +350,6 @@ const NewMeeting = () => {
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [responseByDate, setResponseByDate] = useState("");
-  const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [radioValue, setRadioValue] = useState(1);
   const [
     viewAdvanceMeetingModalUnpublish,
@@ -432,7 +439,10 @@ const NewMeeting = () => {
             )
           );
           console.log(getResponse, "viewFol_action");
-          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          if (
+            getResponse.isExecuted === true &&
+            getResponse.responseCode === 1
+          ) {
             const {
               attendeeId,
               isQuickMeeting,
@@ -474,9 +484,8 @@ const NewMeeting = () => {
         action();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  
   }, [reviewSubmittedMinutesLink]);
 
   useEffect(() => {
@@ -1938,6 +1947,17 @@ const NewMeeting = () => {
       </div>
     </Menu>
   );
+
+  const handleClickDownloadBtn = (record) => {
+    console.log("recordrecordrecord", record);
+    if(record.isVideoCall && record.isRecordingAvailable) {
+      setIsDownloadAvailable(true);
+  
+    }
+    // downloadMeetinModal,
+    setDownloadMeetingRecord(record)
+    setDownloadMeeting(true)
+  };
   //Filteration Work Meeting Type Ends
 
   const MeetingColoumns = [
@@ -2495,10 +2515,6 @@ const NewMeeting = () => {
               </span>
             );
           }
-        } else if (Number(record.status) === 2) {
-          if (record.isOrganizer) {
-          } else if (record.isParticipant) {
-          }
         } else if (
           Number(record.status) === 9 &&
           record.isOrganizer &&
@@ -2508,26 +2524,27 @@ const NewMeeting = () => {
             <>
               <span className='d-flex justify-content-center'>
                 <Button
-                  text={t("Board-deck")}
+                  text={t("Download")}
                   className={styles["Board-Deck"]}
-                  onClick={() => {
-                    boardDeckOnClick(record);
-                    setEditorRole({
-                      status: record.status,
-                      role: record.isParticipant
-                        ? "Participant"
-                        : record.isAgendaContributor
-                        ? "Agenda Contributor"
-                        : "Organizer",
-                      isPrimaryOrganizer: record.isPrimaryOrganizer,
-                    });
-                    setVideoTalk({
-                      isChat: record.isChat,
-                      isVideoCall: record.isVideoCall,
-                      talkGroupID: record.talkGroupID,
-                    });
-                    localStorage.setItem("videoCallURL", record.videoCallURL);
-                  }}
+                  onClick={() => handleClickDownloadBtn(record)}
+                  // onClick={() => {
+                  //   boardDeckOnClick(record);
+                  //   setEditorRole({
+                  //     status: record.status,
+                  //     role: record.isParticipant
+                  //       ? "Participant"
+                  //       : record.isAgendaContributor
+                  //       ? "Agenda Contributor"
+                  //       : "Organizer",
+                  //     isPrimaryOrganizer: record.isPrimaryOrganizer,
+                  //   });
+                  //   setVideoTalk({
+                  //     isChat: record.isChat,
+                  //     isVideoCall: record.isVideoCall,
+                  //     talkGroupID: record.talkGroupID,
+                  //   });
+                  //   localStorage.setItem("videoCallURL", record.videoCallURL);
+                  // }}
                 />
               </span>
             </>
@@ -2746,13 +2763,7 @@ const NewMeeting = () => {
     }
   };
 
-  //Board Deck Onclick function
-  const boardDeckOnClick = (record) => {
-    setBoardDeckMeetingID(record.pK_MDID);
-    setBoardDeckMeetingTitle(record.title);
-    dispatch(boardDeckModal(true));
-    localStorage.setItem("meetingTitle", record.title);
-  };
+
 
   const callStartMeetingFromEvents = async (dashboardEventData) => {
     let startMeetingRequest = {
@@ -4114,7 +4125,7 @@ const NewMeeting = () => {
           setBoarddeckOptions={setBoarddeckOptions}
         />
       )}
-
+      <DownloadOptionsModal isDownloadAvailable={isDownloadAvailable} downloadMeetingRecord={downloadMeetingRecord} />
       {shareViaDataRoomPathConfirmModal && (
         <ShareViaDataRoomPathModal
           boardDeckMeetingTitle={boardDeckMeetingTitle}

@@ -39,9 +39,14 @@ const ReviewMinutes = () => {
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
   const [minuteStatus, setMinuteStatus] = useState(0); // Local state for minute status
+  let MinutesPublishedNotificationStatus = JSON.parse(
+    localStorage.getItem("MinutesPublishedStatus")
+  );
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
   console.log(minuteStatus, "minuteStatusminuteStatus");
+  console.log(MinutesPublishedNotificationStatus, "minuteStatusminuteStatus");
+
   const currentMeetingMinutesToReviewData = useSelector(
     (state) => state.MinutesReducer.currentMeetingMinutesToReviewData
   );
@@ -553,6 +558,7 @@ const ReviewMinutes = () => {
     return () => {
       localStorage.removeItem("MinutesOperations");
       localStorage.removeItem("NotificationClickMinutesMeetingID");
+      localStorage.removeItem("MinutesPublishedStatus");
       dispatch(reviewMinutesPage(false));
     };
   }, []);
@@ -3828,6 +3834,7 @@ const ReviewMinutes = () => {
                 onClick={() => {
                   dispatch(reviewMinutesPage(false));
                   dispatch(pendingApprovalPage(true));
+                  localStorage.removeItem("MinutesPublishedStatus");
                 }}
                 text={t("Cancel")}
                 className={styles["Cancel"]}
@@ -3836,7 +3843,11 @@ const ReviewMinutes = () => {
                 text={t("Submit-review")}
                 className={styles["Submit-review"]}
                 onClick={submitReviews}
-                disableBtn={minuteStatus === 2 ? true : disableSubmit}
+                disableBtn={
+                  minuteStatus === 2 || MinutesPublishedNotificationStatus
+                    ? true
+                    : disableSubmit
+                }
               />
             </Col>
           </Row>

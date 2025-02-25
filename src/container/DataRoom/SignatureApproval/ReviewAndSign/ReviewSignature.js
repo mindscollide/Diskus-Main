@@ -111,7 +111,7 @@ const ReviewSignature = () => {
   ]);
 
   const filters = [
-    { text: t("Pending"), value: "Pending Signature" },
+    { text: t("Signature-pending"), value: "Pending Signature" },
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
@@ -186,7 +186,7 @@ const ReviewSignature = () => {
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Pending Signature", "Signed", "Declined"]);
+    setSelectedValues(["Signature Pending", "Signed", "Declined"]);
     setReviewSignature(originalData);
     setVisible(false);
   };

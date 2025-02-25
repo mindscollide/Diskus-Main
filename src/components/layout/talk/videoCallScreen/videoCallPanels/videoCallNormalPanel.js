@@ -29,6 +29,7 @@ import {
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
+  participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterFlagForAlreadyInParticipantMeetingVideo,
@@ -150,17 +151,13 @@ const VideoPanelNormal = () => {
       state.videoFeatureReducer.participantLeaveCallForJoinNonMeetingCall
   );
 
-  const getAllParticipantGuest = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
 
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
   const audioControl = useSelector(
@@ -227,6 +224,7 @@ const VideoPanelNormal = () => {
   console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [allParticipant, setAllParticipant] = useState([]);
+  console.log(allParticipant, "allParticipant123");
 
   const [participantsList, setParticipantsList] = useState([]);
 
@@ -238,7 +236,7 @@ const VideoPanelNormal = () => {
 
   const [isScreenActive, setIsScreenActive] = useState(false);
 
-  const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  let meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   // for make host
   const [isMeetingHost, setIsMeetingHost] = useState(
     meetingHost?.isHost ? true : false
@@ -294,9 +292,8 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
-      console.log("Check 22");
+      console.log("Check new");
       if (!leavePresenterOrJoinOtherCalls) {
-        console.log("Check 22");
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds
@@ -435,6 +432,8 @@ const VideoPanelNormal = () => {
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
@@ -443,21 +442,25 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
   }, [audioControl]);
 
   useEffect(() => {
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
     const iframe = iframeRef.current;
-    console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow !== null) {
-      console.log("videoHideUnHideForHost");
       if (videoControl === true) {
-        console.log("videoHideUnHideForHost");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
-        console.log("videoHideUnHideForHost");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
   }, [videoControl]);
 
   useEffect(() => {
@@ -482,26 +485,10 @@ const VideoPanelNormal = () => {
   }, [iframe]);
 
   useEffect(() => {
-    if (getAllParticipantGuest?.length) {
-      setAllParticipant(getAllParticipantGuest);
-    } else {
-      setAllParticipant([]);
+    if (getAllParticipantMain?.length) {
+      setAllParticipant(getAllParticipantMain);
     }
-  }, [getAllParticipantGuest]);
-
-  useEffect(() => {
-    if (getVideoParticpantListandWaitingList?.length) {
-      setAllParticipant((prev) => {
-        const combined = [...prev, ...getVideoParticpantListandWaitingList];
-        // Filter duplicates by checking the unique identifier, e.g., `guid`
-        const uniqueParticipants = combined.filter(
-          (participant, index, self) =>
-            index === self.findIndex((p) => p.guid === participant.guid)
-        );
-        return uniqueParticipants;
-      });
-    }
-  }, [getVideoParticpantListandWaitingList]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
     if (
@@ -538,6 +525,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
               if (urlFormeetingapi !== callerURL) {
+                console.log("iframeiframe", urlFormeetingapi);
                 setCallerURL(urlFormeetingapi);
               }
             }
@@ -555,6 +543,7 @@ const VideoPanelNormal = () => {
               if (validateRoomID(newurl)) {
                 console.log("iframeiframe", newurl);
                 if (newurl !== callerURL) {
+                  console.log("iframeiframe", newurl);
                   setCallerURL(newurl);
                 }
               }
@@ -575,6 +564,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", newurl);
               if (newurl !== callerURL) {
+                console.log("iframeiframe", newurl);
                 setCallerURL(newurl);
                 dispatch(initiateVideoCallFail(""));
               }
@@ -860,14 +850,27 @@ const VideoPanelNormal = () => {
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
+    let alreadyInMeetingVideo = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideo")
+    );
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let newRoomID = localStorage.getItem("newRoomId");
+    let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
-      RoomID: String(alreadyInMeetingVideo ? newRoomID : callAcceptedRoomID),
+      RoomID: String(
+        alreadyInMeetingVideo
+          ? newRoomID
+            ? newRoomID
+            : activeRoomID
+          : callAcceptedRoomID
+      ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
+    dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
@@ -875,7 +878,7 @@ const VideoPanelNormal = () => {
     if (alreadyInMeetingVideo) {
       sessionStorage.removeItem("alreadyInMeetingVideo");
     } else if (presenterViewFlag && presenterViewHostFlag) {
-      let meetingTitle = localStorage.getItem("meetingTitle");
+      let currentName = localStorage.getItem("name");
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
@@ -886,7 +889,7 @@ const VideoPanelNormal = () => {
       let data = {
         RoomID: String(callAcceptedRoomID),
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(meetingTitle),
+        Name: String(currentName),
       };
       dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
     }
@@ -1086,7 +1089,6 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }
-
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
@@ -1097,7 +1099,14 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
-
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      // for make host
+      setIsMeetingHost(meetingHost?.isHost ? true : false);
+    } catch {}
+  }, [participantWaitinglistBox]);
   return (
     <>
       {MaximizeHostVideoFlag ? (

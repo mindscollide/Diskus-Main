@@ -9,6 +9,8 @@ import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
   participantWaitingListBox,
+  presenterLeaveParticipant,
+  presenterNewParticipantJoin,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -36,14 +38,20 @@ const VideoNewParticipantList = () => {
 
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
+  let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+
   let HostName = localStorage.getItem("name");
+  let PresenterHostuserID = Number(localStorage.getItem("userID"));
+
   const participantWaitingList = useSelector(
     (state) => state.videoFeatureReducer.participantWaitingList
   );
 
-  const participantList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
+
+  console.log(getAllParticipantMain.length, "getAllParticipantMain");
 
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
@@ -64,6 +72,9 @@ const VideoNewParticipantList = () => {
   const newJoinPresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.newJoinPresenterParticipant
   );
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
+  );
 
   console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
 
@@ -78,6 +89,7 @@ const VideoNewParticipantList = () => {
   // );
 
   const [filteredParticipants, setFilteredParticipants] = useState([]);
+  console.log(filteredParticipants, "filteredParticipants");
 
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
@@ -91,7 +103,7 @@ const VideoNewParticipantList = () => {
     setSearchValue(value);
 
     // Filter participants based on the search value
-    const filtered = participantList.filter((participant) =>
+    const filtered = getAllParticipantMain.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
 
@@ -107,30 +119,64 @@ const VideoNewParticipantList = () => {
   // }, []);
 
   // Update filteredParticipants based on participantList
-  useEffect(() => {
-    console.log("hell");
-    if (participantList?.length) {
-      const uniqueParticipants = participantList.filter(
-        (participant, index, self) =>
-          participant.userID === 0
-            ? self.findIndex((p) => p.guid === participant.guid) === index
-            : self.findIndex((p) => p.userID === participant.userID) === index
-      );
 
-      setFilteredParticipants(uniqueParticipants);
-      console.log(uniqueParticipants, "participantListMainReducer");
+  useEffect(() => {
+    if (Object.keys(getAllParticipantMain).length) {
+      console.log("hell");
+      setFilteredParticipants(getAllParticipantMain);
     } else {
       setFilteredParticipants([]);
-      console.log("participantListMainReducer");
     }
-  }, [participantList]);
-  // Ensure it listens to participantList updates
+  }, [getAllParticipantMain]);
 
+  useEffect(() => {
+    if (
+      Object.keys(leavePresenterParticipant).length > 0 &&
+      presenterViewFlag &&
+      presenterViewHostFlag
+    ) {
+      // Remove the participant whose guid matches the uid
+      const updatedParticipants = filteredParticipants.filter(
+        (participant) => participant.guid !== leavePresenterParticipant.uid
+      );
+      // Update the state with the filtered list
+      setFilteredParticipants(updatedParticipants);
+      console.log("hell", leavePresenterParticipant);
+      dispatch(presenterLeaveParticipant([]));
+    }
+  }, [leavePresenterParticipant]);
+
+  useEffect(() => {
+    if (
+      Object.keys(newJoinPresenterParticipant).length > 0 &&
+      presenterViewFlag &&
+      presenterViewHostFlag
+    ) {
+      // Step 1: Remove any existing participant with the same userID or guid
+      const updatedParticipants = filteredParticipants.filter(
+        (participant) =>
+          participant.userID !== newJoinPresenterParticipant.userID &&
+          participant.guid !== newJoinPresenterParticipant.guid
+      );
+
+      // Step 2: Add the new participant
+      updatedParticipants.push(newJoinPresenterParticipant);
+
+      // Step 3: Update the state
+      setFilteredParticipants(updatedParticipants);
+      dispatch(presenterNewParticipantJoin([]));
+
+      console.log(updatedParticipants);
+    }
+  }, [newJoinPresenterParticipant]);
+
+  // Ensure it listens to participantList updates
   function isEveryoneUnmuted(participants) {
     return !participants.some(
       (participant) => !participant.isHost && participant.mute === true
     );
   }
+
   useEffect(() => {
     if (filteredParticipants?.length) {
       if (isEveryoneUnmuted(filteredParticipants)) {
@@ -145,10 +191,6 @@ const VideoNewParticipantList = () => {
     }
   }, [filteredParticipants]);
 
-  useEffect(() => {
-    console.log("Updated Participants List:", newJoinPresenterParticipant);
-  }, [newJoinPresenterParticipant]);
-
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
@@ -162,20 +204,17 @@ const VideoNewParticipantList = () => {
   }, [waitingParticipants]);
 
   const makeHostOnClick = async (usersData) => {
-    console.log("makeHostOnClick", usersData);
-
     let newRoomId = localStorage.getItem("newRoomId");
     let data = {
       RoomID: String(newRoomId),
       UID: usersData.guid,
       UserID: usersData.userID,
+      MeetingID: currentMeetingID,
     };
     dispatch(transferMeetingHostMainApi(navigate, t, data, 1));
   };
 
   const muteUnmuteByHost = (usersData, flag) => {
-    console.log(usersData, "usersData");
-    console.log(flag, "usersData");
     if (usersData) {
       // Mute/Unmute a specific participant
       if (!usersData.isHost) {
@@ -189,6 +228,21 @@ const VideoNewParticipantList = () => {
               UID: usersData.guid, // The participant's UID
             },
           ],
+          MeetingID: currentMeetingID,
+        };
+        dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
+      } else if (presenterViewFlag) {
+        // Exclude hosts from muting
+        const data = {
+          RoomID: roomID,
+          IsMuted: flag,
+          isForAll: false,
+          MuteUnMuteList: [
+            {
+              UID: usersData.guid, // The participant's UID
+            },
+          ],
+          MeetingID: currentMeetingID,
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
       } else {
@@ -201,19 +255,51 @@ const VideoNewParticipantList = () => {
     // Update the isForAll state
     let duplicatesData = [...filteredParticipants];
     // Exclude hosts from the mute/unmute list
-    const allUids = duplicatesData
-      .filter((participant) => !participant.isHost) // Filter out hosts
-      .map((participant) => ({
-        UID: participant.guid,
-      }));
+    let allUids = [];
+    let isHost = JSON.parse(localStorage.getItem("isHost"));
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let newRoomID = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    if (presenterViewFlag && presenterViewHostFlag) {
+      let currentUserId = isHost ? isGuid : participantUID;
+      allUids = duplicatesData
+        .filter((participant) => participant.guid !== currentUserId) // Filter out hosts
+        .map((participant) => ({
+          UID: participant.guid,
+        }));
+    } else {
+      allUids = duplicatesData
+        .filter((participant) => !participant.isHost) // Filter out hosts
+        .map((participant) => ({
+          UID: participant.guid,
+        }));
+    }
 
     console.log(allUids, "allUids after excluding hosts");
-
+    let RoomID = presenterViewFlag
+      ? roomID
+        ? roomID
+        : callAcceptedRoomID
+      : isMeetingVideoHostCheck
+      ? newRoomID
+      : participantRoomId;
+    console.log(presenterViewFlag, "allUids after excluding hosts");
+    console.log(roomID, "allUids after excluding hosts");
+    console.log(callAcceptedRoomID, "allUids after excluding hosts");
+    console.log(isMeetingVideoHostCheck, "allUids after excluding hosts");
+    console.log(newRoomID, "allUids after excluding hosts");
+    console.log(participantRoomId, "allUids after excluding hosts");
     const data = {
-      RoomID: roomID,
+      RoomID: RoomID,
       IsMuted: !flag,
       isForAll: true, // Pass the current flag
       MuteUnMuteList: allUids,
+      MeetingID: currentMeetingID,
     };
     dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
   };
@@ -226,6 +312,7 @@ const VideoNewParticipantList = () => {
       RoomID: roomID,
       HideVideo: flag,
       UIDList: [usersData.guid],
+      MeetingID: currentMeetingID,
     };
 
     // Update the specific participant's hideCamera state in `newParticipants`
@@ -239,15 +326,13 @@ const VideoNewParticipantList = () => {
 
     dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
   };
-  console.log("filteredParticipants", filteredParticipants);
 
   const removeParticipantMeetingOnClick = (usersData) => {
-    console.log("hell");
-    console.log(usersData, "RemoveUserDataa");
     let data = {
       RoomID: String(roomID),
       UID: usersData.guid,
       Name: usersData.name,
+      MeetingID: currentMeetingID,
     };
 
     setFilteredParticipants((prev) =>
@@ -258,33 +343,24 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAllAcceptAndReject = (flag) => {
-    if (!presenterViewFlag) {
-      console.log("hell");
-      let Data = {
-        MeetingId: filteredWaitingParticipants[0]?.meetingID,
-        RoomId: String(roomID),
-        IsRequestAccepted: flag === 1 ? true : false,
-        AttendeeResponseList: filteredWaitingParticipants.map(
-          (participantData, index) => {
-            return {
-              IsGuest: participantData.isGuest,
-              UID: participantData.guid,
-              UserID: participantData.userID,
-            };
-          }
-        ),
-      };
+    let Data = {
+      MeetingId: filteredWaitingParticipants[0]?.meetingID,
+      RoomId: String(roomID),
+      IsRequestAccepted: flag === 1 ? true : false,
+      AttendeeResponseList: filteredWaitingParticipants.map(
+        (participantData, index) => {
+          return {
+            IsGuest: participantData.isGuest,
+            UID: participantData.guid,
+            UserID: participantData.userID,
+          };
+        }
+      ),
+    };
 
-      dispatch(
-        admitRejectAttendeeMainApi(
-          Data,
-          navigate,
-          t,
-          true,
-          filteredParticipants
-        )
-      );
-    }
+    dispatch(
+      admitRejectAttendeeMainApi(Data, navigate, t, true, filteredParticipants)
+    );
   };
 
   const handleClickAcceptAndReject = (participantInfo, flag) => {
@@ -304,16 +380,6 @@ const VideoNewParticipantList = () => {
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
     );
   };
-
-  const participantsToDisplay =
-    presenterViewFlag && presenterViewHostFlag
-      ? newJoinPresenterParticipant
-      : filteredParticipants;
-
-  console.log(
-    participantsToDisplay,
-    "participantsToDisplayparticipantsToDisplay"
-  );
 
   return (
     <section
@@ -356,7 +422,9 @@ const VideoNewParticipantList = () => {
           <Row>
             <Col sm={12} md={12} lg={12}>
               <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                {t("Hosts")}
+                {presenterViewFlag && presenterViewHostFlag
+                  ? t("Presenter")
+                  : t("Host")}
               </p>
             </Col>
           </Row>
@@ -401,8 +469,8 @@ const VideoNewParticipantList = () => {
       {/* Participants Name List */}
       <Col sm={12} md={12} lg={12}>
         <div className={styles["Waiting-New-ParticipantNameList"]}>
-          {participantsToDisplay.length > 0 ? (
-            participantsToDisplay.map((usersData, index) => {
+          {filteredParticipants.length > 0 ? (
+            filteredParticipants.map((usersData, index) => {
               console.log(usersData, "usersDatausersData");
               return (
                 <>
@@ -414,15 +482,29 @@ const VideoNewParticipantList = () => {
                       sm={12}
                     >
                       <p className="participant-name">{usersData?.name}</p>
-                      {usersData.isHost ? (
-                        <>
-                          <p className={styles["Host-name"]}>
-                            <span className={styles["Host-title-name"]}>
-                              {t("(Host)")}
-                            </span>
-                          </p>
-                        </>
-                      ) : null}
+                      {presenterViewFlag ? (
+                        presenterViewHostFlag &&
+                        PresenterHostuserID === usersData.userID ? (
+                          <>
+                            <p className={styles["Host-name"]}>
+                              <span className={styles["Host-title-name"]}>
+                                {t("(Presenter)")}
+                              </span>
+                            </p>
+                          </>
+                        ) : null
+                      ) : (
+                        usersData.isHost && (
+                          <>
+                            <p className={styles["Host-name"]}>
+                              <span className={styles["Host-title-name"]}>
+                                {t("(Host)")}
+                              </span>
+                            </p>
+                          </>
+                        )
+                      )}{" "}
+                      {}
                       {usersData.raiseHand === true ? (
                         <>
                           <img
@@ -529,93 +611,188 @@ const VideoNewParticipantList = () => {
                           alt="Microphone Enabled"
                         />
                       )}
-                      {!usersData.isHost && (
-                        <Dropdown>
-                          <Dropdown.Toggle className="participant-toggle">
-                            <img draggable="false" src={Menu} alt="" />
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu>
-                            {!presenterViewFlag && !presenterViewHostFlag && (
-                              <>
-                                {usersData.isGuest === false ? (
-                                  <Dropdown.Item
-                                    className="participant-dropdown-item"
-                                    onClick={() => makeHostOnClick(usersData)}
-                                  >
-                                    {t("Make-host")}
-                                  </Dropdown.Item>
-                                ) : null}
-                              </>
-                            )}
+                      {presenterViewFlag ? (
+                        PresenterHostuserID !== usersData.userID ? (
+                          <Dropdown>
+                            <Dropdown.Toggle className="participant-toggle">
+                              <img draggable="false" src={Menu} alt="" />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              {!presenterViewFlag && !presenterViewHostFlag && (
+                                <>
+                                  {usersData.isGuest === false ? (
+                                    <Dropdown.Item
+                                      className="participant-dropdown-item"
+                                      onClick={() => makeHostOnClick(usersData)}
+                                    >
+                                      {t("Make-host")}
+                                    </Dropdown.Item>
+                                  ) : null}
+                                </>
+                              )}
 
-                            {!presenterViewFlag && !presenterViewHostFlag && (
-                              <>
-                                {usersData.isHost === false ? (
+                              {!presenterViewFlag && !presenterViewHostFlag && (
+                                <>
+                                  {usersData.isHost === false ? (
+                                    <Dropdown.Item
+                                      className="participant-dropdown-item"
+                                      onClick={() =>
+                                        removeParticipantMeetingOnClick(
+                                          usersData
+                                        )
+                                      }
+                                    >
+                                      {t("Remove")}
+                                    </Dropdown.Item>
+                                  ) : null}
+                                </>
+                              )}
+                              {usersData.mute === false ? (
+                                <>
                                   <Dropdown.Item
                                     className="participant-dropdown-item"
                                     onClick={() =>
-                                      removeParticipantMeetingOnClick(usersData)
+                                      muteUnmuteByHost(usersData, true)
                                     }
                                   >
-                                    {t("Remove")}
+                                    {t("Mute")}
                                   </Dropdown.Item>
-                                ) : null}
-                              </>
-                            )}
-                            {usersData.mute === false ? (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() =>
-                                    muteUnmuteByHost(usersData, true)
-                                  }
-                                >
-                                  {t("Mute")}
-                                </Dropdown.Item>
-                              </>
-                            ) : (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() =>
-                                    muteUnmuteByHost(usersData, false)
-                                  }
-                                >
-                                  {t("UnMute")}
-                                </Dropdown.Item>
-                              </>
-                            )}
-                            {usersData.hideCamera === false ? (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() => {
-                                    hideUnHideVideoParticipantByHost(
-                                      usersData,
-                                      true
-                                    );
-                                  }}
-                                >
-                                  {t("Hide-video")}
-                                </Dropdown.Item>
-                              </>
-                            ) : (
-                              <>
-                                <Dropdown.Item
-                                  className="participant-dropdown-item"
-                                  onClick={() => {
-                                    hideUnHideVideoParticipantByHost(
-                                      usersData,
-                                      false
-                                    );
-                                  }}
-                                >
-                                  {t("UnHide-video")}
-                                </Dropdown.Item>
-                              </>
-                            )}
-                          </Dropdown.Menu>
-                        </Dropdown>
+                                </>
+                              ) : (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() =>
+                                      muteUnmuteByHost(usersData, false)
+                                    }
+                                  >
+                                    {t("UnMute")}
+                                  </Dropdown.Item>
+                                </>
+                              )}
+                              {usersData.hideCamera === false ? (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => {
+                                      hideUnHideVideoParticipantByHost(
+                                        usersData,
+                                        true
+                                      );
+                                    }}
+                                  >
+                                    {t("Hide-video")}
+                                  </Dropdown.Item>
+                                </>
+                              ) : (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => {
+                                      hideUnHideVideoParticipantByHost(
+                                        usersData,
+                                        false
+                                      );
+                                    }}
+                                  >
+                                    {t("UnHide-video")}
+                                  </Dropdown.Item>
+                                </>
+                              )}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        ) : null
+                      ) : (
+                        !usersData.isHost && (
+                          <Dropdown>
+                            <Dropdown.Toggle className="participant-toggle">
+                              <img draggable="false" src={Menu} alt="" />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              {!presenterViewFlag && !presenterViewHostFlag && (
+                                <>
+                                  {usersData.isGuest === false ? (
+                                    <Dropdown.Item
+                                      className="participant-dropdown-item"
+                                      onClick={() => makeHostOnClick(usersData)}
+                                    >
+                                      {t("Make-host")}
+                                    </Dropdown.Item>
+                                  ) : null}
+                                </>
+                              )}
+
+                              {!presenterViewFlag && !presenterViewHostFlag && (
+                                <>
+                                  {usersData.isHost === false ? (
+                                    <Dropdown.Item
+                                      className="participant-dropdown-item"
+                                      onClick={() =>
+                                        removeParticipantMeetingOnClick(
+                                          usersData
+                                        )
+                                      }
+                                    >
+                                      {t("Remove")}
+                                    </Dropdown.Item>
+                                  ) : null}
+                                </>
+                              )}
+                              {usersData.mute === false ? (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() =>
+                                      muteUnmuteByHost(usersData, true)
+                                    }
+                                  >
+                                    {t("Mute")}
+                                  </Dropdown.Item>
+                                </>
+                              ) : (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() =>
+                                      muteUnmuteByHost(usersData, false)
+                                    }
+                                  >
+                                    {t("UnMute")}
+                                  </Dropdown.Item>
+                                </>
+                              )}
+                              {usersData.hideCamera === false ? (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => {
+                                      hideUnHideVideoParticipantByHost(
+                                        usersData,
+                                        true
+                                      );
+                                    }}
+                                  >
+                                    {t("Hide-video")}
+                                  </Dropdown.Item>
+                                </>
+                              ) : (
+                                <>
+                                  <Dropdown.Item
+                                    className="participant-dropdown-item"
+                                    onClick={() => {
+                                      hideUnHideVideoParticipantByHost(
+                                        usersData,
+                                        false
+                                      );
+                                    }}
+                                  >
+                                    {t("UnHide-video")}
+                                  </Dropdown.Item>
+                                </>
+                              )}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )
                       )}
                     </Col>
                   </Row>

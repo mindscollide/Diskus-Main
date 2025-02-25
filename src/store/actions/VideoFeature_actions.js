@@ -267,12 +267,15 @@ const guestLeaveVideoMeeting = (response) => {
   };
 };
 
-const participanMuteUnMuteMeeting = (response, flag) => {
+const participanMuteUnMuteMeeting = (response, isforAll,presenterViewHostFlag,presenterViewFlag,check) => {
   console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
-    flag: flag,
+    isforAll: isforAll,
+    presenterViewHostFlag:presenterViewHostFlag,
+    presenterViewFlag:presenterViewFlag,
+    check:check
   };
 };
 
@@ -1046,21 +1049,21 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
                   "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
                 )
             ) {
-              function saveCurrentMeetingHost(data) {
-                // Filter the data to get only participants where isHost is true
-                const hosts = data
-                  .filter((participant) => participant.isHost)
-                  .map(({ guid, userID }) => ({ guid, userID }));
+              // function saveCurrentMeetingHost(data) {
+              //   // Filter the data to get only participants where isHost is true
+              //   const hosts = data
+              //     .filter((participant) => participant.isHost)
+              //     .map(({ guid, userID }) => ({ guid, userID }));
 
-                // Save the result in session storage with the key 'currentmeetingHost'
-                sessionStorage.setItem(
-                  "currentmeetingHost",
-                  JSON.stringify(hosts)
-                );
-              }
-              saveCurrentMeetingHost(
-                response.data.responseResult.participantList
-              );
+              //   // Save the result in session storage with the key 'currentmeetingHost'
+              //   sessionStorage.setItem(
+              //     "currentmeetingHost",
+              //     JSON.stringify(hosts)
+              //   );
+              // }
+              // saveCurrentMeetingHost(
+              //   response.data.responseResult.participantList
+              // );
               await dispatch(
                 getVideoCallParticipantSuccess(
                   response.data.responseResult,
@@ -1621,6 +1624,7 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
                   : false
               );
               if (alreadyInMeetingVideo) {
+                localStorage.setItem("isMeetingVideo",true);
                 dispatch(leaveCallModal(false));
                 console.log("Check Presenter");
                 dispatch(
@@ -1633,7 +1637,6 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
-                localStorage.removeItem("presenterViewvideoURL");
               } else {
                 console.log("Check Presenter");
                 localStorage.removeItem("participantUID");
@@ -1665,7 +1668,6 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
                   t("Successful")
                 )
               );
-              sessionStorage.removeItem("StopPresenterViewAwait");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2032,7 +2034,7 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
-  console.log("responseParticicpant", response);
+  console.log("hell", response);
 
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,
@@ -2040,12 +2042,11 @@ const presenterNewParticipantJoin = (response) => {
   };
 };
 
-const presenterLeaveParticipant = (uid) => {
-  console.log("Removing participant with UID:", uid);
-
+const presenterLeaveParticipant = (response) => {
+  console.log("hell", response);
   return {
     type: actions.PRESENTER_LEAVE_PARTICIPANT_VIDEO,
-    uid: uid, // Pass UID to reducer
+    response: response, // Pass UID to reducer
   };
 };
 

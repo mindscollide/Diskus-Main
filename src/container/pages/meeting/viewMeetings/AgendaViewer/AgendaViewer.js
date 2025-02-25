@@ -137,6 +137,7 @@ const AgendaViewer = () => {
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let currentUserName = localStorage.getItem("name");
 
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
@@ -717,27 +718,35 @@ const AgendaViewer = () => {
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
   const onClickVideoIconOpenVideo = () => {
+    console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
 
+    console.log("onClickVideoIconOpenVideo");
     let nonMeetingCheck = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
 
+    console.log("onClickVideoIconOpenVideo");
     if (nonMeetingCheck) {
+      console.log("onClickVideoIconOpenVideo");
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
       if (!isMeetingVideoHostCheck) {
+        console.log("onClickVideoIconOpenVideo");
         dispatch(participantVideoButtonState(true));
         // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
+          console.log("onClickVideoIconOpenVideo");
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
+        console.log("onClickVideoIconOpenVideo");
         localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
+          console.log("onClickVideoIconOpenVideo");
           let data = {
             MeetingId: Number(currentMeeting),
             VideoCallURL: String(currentMeetingVideoURL),
@@ -746,6 +755,7 @@ const AgendaViewer = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
+          console.log("onClickVideoIconOpenVideo");
           console.log("No Need To Hit");
         }
       }
@@ -808,6 +818,13 @@ const AgendaViewer = () => {
 
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
+    // let data = {
+    //   MeetingID: currentMeetingID,
+    //   RoomID: "21497",
+    // };
+    // sessionStorage.setItem("StopPresenterViewAwait", true);
+    // console.log(data, "presenterViewJoinFlag");
+    // dispatch(stopPresenterViewMainApi(navigate, t, data));
     // presenterViewHostFlag
     // ? t("Stop-presenting")
     // : presenterViewJoinFlag
@@ -829,7 +846,7 @@ const AgendaViewer = () => {
           let data = {
             RoomID: String(RoomID),
             UserGUID: String(UID),
-            Name: String(meetingTitle),
+            Name: String(currentUserName),
           };
           dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
         }
@@ -853,7 +870,7 @@ const AgendaViewer = () => {
         let data = {
           RoomID: String(callAcceptedRoomID),
           UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-          Name: String(meetingTitle),
+          Name: String(currentUserName),
         };
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
         // }
@@ -927,21 +944,6 @@ const AgendaViewer = () => {
                         </Tooltip>
                       ) : null}
 
-                      {/* {editorRole.status === "10" ||
-                      editorRole.status === 10 ? (
-                        <Tooltip
-                          placement="topRight"
-                          title={t("Leave-meeting")}
-                        >
-                          <div
-                            className={styles["box-agendas-leave"]}
-                            onClick={() => leaveMeeting(false)}
-                          >
-                            <img src={LeaveMeetingIcon} alt="" />
-                          </div>
-                        </Tooltip>
-                      ) : null} */}
-
                       {editorRole.status === 10 ||
                       editorRole.status === "10" ? (
                         <>
@@ -985,44 +987,33 @@ const AgendaViewer = () => {
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&
-                      videoTalk?.isVideoCall ? (
-                        <Tooltip
-                          placement="topRight"
-                          title={t("Enable-video-call")}
-                        >
-                          <div
-                            className={
-                              enableDisableVideoState ||
-                              participantEnableVideoState ||
-                              presenterViewFlag
-                                ? styles["disabled-box-agenda-camera"]
-                                : styles["box-agendas-camera"]
-                            }
-                            // onClick={joinMeetingCall}
+                        videoTalk?.isVideoCall && (
+                          <Tooltip
+                            placement="topRight"
+                            title={t("Enable-video-call")}
                           >
-                            <img
-                              src={VideocameraIcon}
-                              alt=""
-                              onClick={
-                                presenterViewFlag === false
-                                  ? onClickVideoIconOpenVideo
-                                  : undefined
+                            <div
+                              className={
+                                enableDisableVideoState ||
+                                participantEnableVideoState ||
+                                presenterViewFlag
+                                  ? styles["disabled-box-agenda-camera"]
+                                  : styles["box-agendas-camera"]
                               }
-                            />
-                          </div>
-                        </Tooltip>
-                      ) : null}
-
-                      {/* 
-                      <Tooltip placement="topRight" title={t("Expand")}>
-                        <div
-                          className={styles["box-agendas"]}
-                          onClick={fullScreenModal}
-                        >
-                          <img src={ExpandAgendaIcon} alt="" />
-                        </div>
-                      </Tooltip> */}
-
+                              // onClick={joinMeetingCall}
+                            >
+                              <img
+                                src={VideocameraIcon}
+                                alt=""
+                                onClick={
+                                  presenterViewFlag === false
+                                    ? onClickVideoIconOpenVideo
+                                    : undefined
+                                }
+                              />
+                            </div>
+                          </Tooltip>
+                        )}
                       <div
                         onClick={menuPopupAgenda}
                         className={styles["box-agendas"]}
