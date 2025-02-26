@@ -33,6 +33,7 @@ const NonMeetingVideoModal = () => {
     joinPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
     setLeavePresenterViewToJoinOneToOne,
+    setPresenterForOneToOneOrGroup,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
@@ -67,8 +68,16 @@ const NonMeetingVideoModal = () => {
 
   //handle NO button
   const onClickOnNoMeetingModal = () => {
+    let JoinpresenterForonetoone = JSON.parse(
+      localStorage.getItem("JoinpresenterForonetoone")
+    );
+
     dispatch(nonMeetingVideoGlobalModal(false));
-    if (joinPresenterForOneToOneOrGroup) {
+    if(JoinpresenterForonetoone){
+      localStorage.removeItem("JoinpresenterForonetoone")
+      dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
+
+    }else if (joinPresenterForOneToOneOrGroup) {
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
     } else if (presenterViewFlag && !presenterViewHostFlag) {
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
@@ -78,9 +87,18 @@ const NonMeetingVideoModal = () => {
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
     console.log("busyCall");
+    let JoinpresenterForonetoone = JSON.parse(
+      localStorage.getItem("JoinpresenterForonetoone")
+    );
     let currentCallType = Number(localStorage.getItem("CallType"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-    if (joinPresenterForOneToOneOrGroup) {
+    if(JoinpresenterForonetoone){
+    dispatch(nonMeetingVideoGlobalModal(false));
+    localStorage.removeItem("JoinpresenterForonetoone")
+      setPresenterForOneToOneOrGroup(true)
+      setLeaveOneToOne(true);
+
+    }else if (joinPresenterForOneToOneOrGroup) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);

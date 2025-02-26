@@ -8250,7 +8250,7 @@ const JoinCurrentMeeting = (
               let presenterViewStatus =
                 response.data.responseResult.isPresenterViewStarted;
               if (presenterViewStatus && !activeStatusOneToOne) {
-                console.log("Check 21");
+                console.log("busyCall 21");
 
                 let data = {
                   VideoCallURL: String(Data.VideoCallURL),
@@ -8259,9 +8259,11 @@ const JoinCurrentMeeting = (
                 console.log("onClickStopPresenter", data);
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
-                console.log("Check 21");
+                console.log("busyCall 21");
+                localStorage.setItem("JoinpresenterForonetoone",true)
                 dispatch(nonMeetingVideoGlobalModal(true));
                 dispatch(presenterViewGlobalState(0, true, false, false));
+                
               }
             } else if (
               response.data.responseResult.responseMessage
