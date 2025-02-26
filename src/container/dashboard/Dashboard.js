@@ -249,6 +249,8 @@ const Dashboard = () => {
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag
   );
+
+  console.log(IncomingVideoCallFlagReducer, "IncomingVideoCallFlagReducer");
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
@@ -2518,6 +2520,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
         ) {
+          console.log("Check active");
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           localStorage.setItem("RingerCallCheckFlag", true);
           localStorage.setItem("callType", data.payload.callType);
@@ -2535,6 +2538,8 @@ const Dashboard = () => {
           // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
           dispatch(CallRequestReceived(Dataa, navigate, t));
           if (callStatus === true) {
+            console.log(callStatus, "Check active");
+            console.log("Check active");
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             dispatch(incomingVideoCallFlag(true));
             let timeValue = Number(localStorage.getItem("callRingerTimeout"));
@@ -2542,6 +2547,8 @@ const Dashboard = () => {
             localStorage.setItem("NewRoomID", data.payload.roomID);
             timeValue = timeValue * 1000;
             const timeoutId = setTimeout(() => {
+              console.log("Check active");
+
               let Data = {
                 ReciepentID: Number(createrID),
                 RoomID: data.payload.roomID,
@@ -2549,6 +2556,8 @@ const Dashboard = () => {
                 CallTypeID: callTypeID,
               };
               if (IncomingVideoCallFlagReducer === true) {
+                console.log("Check active");
+
                 dispatch(VideoCallResponse(Data, navigate, t));
                 localStorage.setItem("NewRoomID", 0);
               }
@@ -2559,6 +2568,8 @@ const Dashboard = () => {
             callStatus === false &&
             IncomingVideoCallFlagReducer === false
           ) {
+            console.log("Check active");
+
             dispatch(incomingVideoCallFlag(true));
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             localStorage.setItem("NewRoomID", data.payload.roomID);

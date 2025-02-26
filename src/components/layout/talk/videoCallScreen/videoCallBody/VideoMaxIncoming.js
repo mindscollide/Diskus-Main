@@ -87,6 +87,8 @@ const VideoMaxIncoming = () => {
   timeValue = timeValue * 1000;
 
   useEffect(() => {
+    dispatch(incomingVideoCallFlag(true));
+
     // Create the audio element
     const audioElement = new Audio("/IncomingCall.wav");
 
@@ -367,7 +369,7 @@ const VideoMaxIncoming = () => {
                       : "avatar-column-max-call"
                   }
                 >
-                  {activeCallState === false && !isMeeting ? (
+                  {activeCallState === false ? (
                     // <img
                     //   src={`data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}`}
                     //   width={150}

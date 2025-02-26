@@ -828,7 +828,7 @@ const AgendaViewer = () => {
     // presenterViewHostFlag
     // ? t("Stop-presenting")
     // : presenterViewJoinFlag
-    // ? t("Leave-presenting")
+    // ? t("Leave-presentation")
     // : t("Join-presenting")}
     try {
       // if (presenterMeetingId === currentMeeting) {
@@ -964,10 +964,10 @@ const AgendaViewer = () => {
                                 <img src={StopImage} />
                                 <p>
                                   {presenterViewHostFlag
-                                    ? t("Stop-presenting")
+                                    ? t("Stop-presentation")
                                     : presenterViewJoinFlag
-                                    ? t("Leave-presenting")
-                                    : t("Join-presenting")}
+                                    ? t("Leave-presentation")
+                                    : t("Join-presentation")}
                                 </p>
                               </div>
                             </Tooltip>
@@ -978,7 +978,7 @@ const AgendaViewer = () => {
                                 onClick={onClickStartPresenter}
                               >
                                 <img src={PresenterView} />
-                                <p>{t("Start-presenting")}</p>
+                                <p>{t("Start-presentation")}</p>
                               </div>
                             </Tooltip>
                           )}

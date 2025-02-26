@@ -626,7 +626,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
             <div className="d-flex gap-10 justify-content-end">
               {presenterViewFlag && presenterViewHostFlag && (
                 <div onClick={minimizeStopPresenter}>
-                  <Tooltip placement="topRight" title={t("Stop-presenting")}>
+                  <Tooltip placement="topRight" title={t("Stop-presentation")}>
                     <img src={StopMinPresenter} alt="Video" />
                   </Tooltip>
                 </div>
@@ -1027,9 +1027,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
                       presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presenting")
+                        ? t("Stop-presentation")
                         : presenterViewFlag && !presenterViewHostFlag
-                        ? t("Leave-presenting")
+                        ? t("Leave-presentation")
                         : t("Leave-call")
                     }
                     onClick={() =>

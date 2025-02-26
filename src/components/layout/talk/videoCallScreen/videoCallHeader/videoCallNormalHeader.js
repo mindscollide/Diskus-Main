@@ -1020,7 +1020,11 @@ const VideoCallNormalHeader = ({
     <>
       <Row className="mb-4">
         <Col lg={3} md={3} sm={12} className="mt-1">
-          <p className="title-heading">
+          <p
+            className={
+              presenterViewFlag ? "title-for-presenter" : "title-heading"
+            }
+          >
             {currentCallType === 2 && callTypeID === 2
               ? meetingTitle?.trim() || t("Group-call")
               : meetingTitle?.trim()
@@ -1142,9 +1146,10 @@ const VideoCallNormalHeader = ({
             <div
               className={
                 LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom) ||
-                presenterViewFlag
+                (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
+                  : presenterViewFlag
+                  ? "presenterImage"
                   : "screenShare-Toggle inactive-state"
               }
             >
@@ -1182,7 +1187,8 @@ const VideoCallNormalHeader = ({
                     ? handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
-                    : raisedUnRaisedParticipant
+                    : raisedUnRaisedParticipant ||
+                      (presenterViewFlag && !presenterViewHostFlag)
                     ? t("Lower-hand")
                     : t("Raise-hand")
                 }
@@ -1198,7 +1204,8 @@ const VideoCallNormalHeader = ({
                       ? handStatus
                         ? LowerHand
                         : RaiseHand
-                      : raisedUnRaisedParticipant === true
+                      : raisedUnRaisedParticipant === true ||
+                        (presenterViewFlag && !presenterViewHostFlag)
                       ? Raisehandselected
                       : RaiseHand
                   }
@@ -1230,9 +1237,10 @@ const VideoCallNormalHeader = ({
             <div
               className={
                 LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom) ||
-                (presenterViewFlag && !presenterViewHostFlag)
+                (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
+                  : presenterViewFlag && !presenterViewHostFlag
+                  ? "presenterImage"
                   : "screenShare-Toggle"
               }
             >
@@ -1435,8 +1443,10 @@ const VideoCallNormalHeader = ({
             >
               <div
                 className={
-                  LeaveCallModalFlag === true || presenterViewFlag
+                  LeaveCallModalFlag === true
                     ? "grayScaleImage"
+                    : presenterViewFlag
+                    ? "presenterImage"
                     : "inactive-state"
                 }
               >
@@ -1481,9 +1491,9 @@ const VideoCallNormalHeader = ({
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
                       presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presenting")
+                        ? t("Stop-presentation")
                         : presenterViewFlag && !presenterViewHostFlag
-                        ? t("Leave-presenting")
+                        ? t("Leave-presentation")
                         : t("Leave-call")
                     }
                     onClick={() => leaveCall(false, false, false)}
@@ -1500,9 +1510,9 @@ const VideoCallNormalHeader = ({
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
                       presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presenting")
+                        ? t("Stop-presentation")
                         : presenterViewFlag && !presenterViewHostFlag
-                        ? t("Leave-presenting")
+                        ? t("Leave-presentation")
                         : t("Leave-call")
                     }
                     onClick={participantLeaveCall}
