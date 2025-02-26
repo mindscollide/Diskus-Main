@@ -12,6 +12,7 @@ import { viewVotesApi } from "../../../../store/actions/Polls_actions";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../context/MeetingContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
 const ViewPollsPublishedScreen = () => {
   const { setViewPublishedPoll } = useMeetingContext();
@@ -19,8 +20,7 @@ const ViewPollsPublishedScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
-  const [viewVotes, setviewVotes] = useState(false);
-
+  const { viewVotes, setviewVotes } = useGroupsContext();
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
 
