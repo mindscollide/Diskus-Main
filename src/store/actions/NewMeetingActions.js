@@ -8898,7 +8898,7 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
           ) {
             // Failure case
             dispatch(validateStringParticipantProposed_fail(t("Unsuccessful")));
-            throw new Error(t("Something-went-wrong"));
+            // throw new Error(t("Something-went-wrong"));
           } else if (
             message.includes(
               "validateencryptedstringusermeetingproposedatesselection_03"
@@ -8908,25 +8908,25 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
             dispatch(
               validateStringParticipantProposed_fail(t("Something-went-wrong"))
             );
-            throw new Error(t("Something-went-wrong"));
+            // throw new Error(t("Something-went-wrong"));
           }
         } else {
           dispatch(
             validateStringParticipantProposed_fail(t("Something-went-wrong"))
           );
-          throw new Error(t("Something-went-wrong"));
+          // throw new Error(t("Something-went-wrong"));
         }
       } else {
         dispatch(
           validateStringParticipantProposed_fail(t("Something-went-wrong"))
         );
-        throw new Error(t("Something-went-wrong"));
+        // throw new Error(t("Something-went-wrong"));
       }
     } catch (error) {
       dispatch(
         validateStringParticipantProposed_fail(t("Something-went-wrong"))
       );
-      throw new Error(t("Something-went-wrong"));
+      // throw new Error(t("Something-went-wrong"));
     }
   };
 };
@@ -9406,7 +9406,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
                 t("Unsuccessful")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            // throw new Error(t("Something-went-wrong"));
           } else if (
             message.includes(
               "Meeting_MeetingServiceManager_ValidateEncryptedStringUserMeetingProposeDatesPoll_03".toLowerCase()
@@ -9418,7 +9418,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
                 t("Something-went-wrong")
               )
             );
-            throw new Error(t("Something-went-wrong"));
+            // throw new Error(t("Something-went-wrong"));
           }
         } else {
           dispatch(
@@ -9426,7 +9426,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
               t("Something-went-wrong")
             )
           );
-          throw new Error(t("Something-went-wrong"));
+          // throw new Error(t("Something-went-wrong"));
         }
       } else {
         dispatch(
@@ -9434,7 +9434,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
             t("Something-went-wrong")
           )
         );
-        throw new Error(t("Something-went-wrong"));
+        // throw new Error(t("Something-went-wrong"));
       }
     } catch (error) {
       dispatch(
@@ -9442,7 +9442,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
           t("Something-went-wrong")
         )
       );
-      throw new Error(t("Something-went-wrong"));
+      // throw new Error(t("Something-went-wrong"));
     }
   };
 };
@@ -10586,4 +10586,5 @@ export {
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
   validateEmptyStringUserAvailibilityFailed,
+  requestMeetingRecordingTranscript_clear
 };

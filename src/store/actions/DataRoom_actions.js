@@ -946,7 +946,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
       }
     } catch (error) {
       dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
-      throw error; // Re-throw error for further handling
+      // throw new Error(error); // Re-throw error for further handling
     }
   };
 };
@@ -1042,6 +1042,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         dispatch(tableSpinner(false));
+        return new Error(error)
       });
   };
 };

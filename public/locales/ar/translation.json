@@ -87,7 +87,7 @@
   "Add-attendees": "إضافة الحضور",
   "Participant ": "المشارك",
   "Add": "إضافة",
-  "Participants": "المشاركين",
+  "Participants": "مشاركون",
   "Participant": "المشارك",
   "Publish": "نشر",
   "Data-room": "غرفة البيانات",
@@ -2388,5 +2388,6 @@
   "Transcribe": "Transcribe",
   "Transcibing": "Transcibing",
   "Video-recording-not-available-yet": "Video recording not available yet",
-  "Video-was-not-recorded": "Video was not recorded"
+  "Video-was-not-recorded": "Video was not recorded",
+  "Meeting-recording": "Meeting Recording"
 }
