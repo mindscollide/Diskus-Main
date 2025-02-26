@@ -269,7 +269,7 @@ const VideoCallNormalHeader = ({
 
   const { leaveOneToOne, setJoinMeetingVideoParticipant, setLeaveOneToOne } =
     useMeetingContext();
-    
+
   const getDashboardVideo = getMeetingHostInfo;
 
   const [showNotification, setShowNotification] = useState(true);
@@ -783,6 +783,7 @@ const VideoCallNormalHeader = ({
       dispatch(participantPopup(false));
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
+      sessionStorage.setItem("NonMeetingVideoCall", false);
       if (flag) {
         setJoinMeetingVideoParticipant(true);
         setLeaveOneToOne(false);

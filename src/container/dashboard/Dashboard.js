@@ -68,6 +68,7 @@ import {
   maxParticipantVideoCallPanel,
   presenterLeaveParticipant,
   clearPresenterParticipants,
+  nonMeetingVideoGlobalModal,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -481,11 +482,20 @@ const Dashboard = () => {
     let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
     );
+    let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+    let currentCallType = Number(localStorage.getItem("CallType"));
+    console.log("mqtt mqmqmqmqmqmq", activeCallState);
+    console.log("mqtt mqmqmqmqmqmq", currentCallType);
 
     if (isMeeting) {
+      console.log("mqtt mqmqmqmqmqmq", currentCallType);
       if (String(meetingVideoID) === String(payload?.meetingID)) {
+        console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
+        } else if (activeCallState && currentCallType === 1) {
+          console.log("mqtt mqmqmqmqmqmq", payload);
+          await dispatch(nonMeetingVideoGlobalModal(true));
         } else if (isMeetingVideo) {
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
           let leaveRoomId =
@@ -2678,6 +2688,7 @@ const Dashboard = () => {
                 callRequestReceivedMQTT(data.payload, data.payload.message)
               );
               console.log("mqtt");
+              sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("activeCall", false);
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);

@@ -171,7 +171,6 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 JSON.stringify(meetingHost)
               );
               localStorage.setItem("initiateVideoCall", true);
-              localStorage.setItem("isMeeting", false);
               localStorage.setItem("meetingTitle", "");
             } else if (
               response.data.responseResult.responseMessage
