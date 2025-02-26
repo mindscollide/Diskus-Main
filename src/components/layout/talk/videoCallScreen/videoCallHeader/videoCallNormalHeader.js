@@ -445,7 +445,7 @@ const VideoCallNormalHeader = ({
             leavePresenterViewToJoinOneToOne,
             setLeaveMeetingVideoForOneToOneOrGroup,
             setJoiningOneToOneAfterLeavingPresenterView,
-            setStartPresenterViewOrLeaveOneToOne
+            setLeavePresenterViewToJoinOneToOne
           )
         );
       } else {
@@ -762,12 +762,12 @@ const VideoCallNormalHeader = ({
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
-    if (flag4) {
-      console.log("busyCall");
+    // if (flag4) {
+    //   console.log("busyCall");
 
-      setLeaveMeetingVideoForOneToOneOrGroup(false);
-      setJoiningOneToOneAfterLeavingPresenterView(true);
-    }
+    //   setLeaveMeetingVideoForOneToOneOrGroup(false);
+    //   setJoiningOneToOneAfterLeavingPresenterView(true);
+    // }
   };
 
   // useEffect(() => {
@@ -775,12 +775,14 @@ const VideoCallNormalHeader = ({
   //     leaveCall(false, false, false, true);
   //   }
   // }, [meetingStoppedByPresenter]);
-  useEffect(() => {
-    if (leaveMeetingVideoForOneToOneOrGroup) {
-      console.log("busyCall");
-      leaveCall(false, false, false, true);
-    }
-  }, [leaveMeetingVideoForOneToOneOrGroup]);
+  // /////
+  // useEffect(() => {
+  //   if (leaveMeetingVideoForOneToOneOrGroup) {
+  //     console.log("busyCall");
+  //     leaveCall(false, false, false, true);
+  //   }
+  // }, [leaveMeetingVideoForOneToOneOrGroup]);
+
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
@@ -981,9 +983,21 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
+        console.log("busyCall",leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,);
 
         dispatch(setRaisedUnRaisedParticiant(false));
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(
+          LeaveMeetingVideo(
+            Data,
+            navigate,
+            t,
+            leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,
+            null,
+            setJoiningOneToOneAfterLeavingPresenterView,
+            setLeaveMeetingVideoForOneToOneOrGroup
+          )
+        );
+  
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];

@@ -9129,7 +9129,15 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
-const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
+const LeaveMeetingVideo = (
+  Data,
+  navigate,
+  t,
+  flag,
+  organizerData,
+  setJoiningOneToOneAfterLeavingPresenterView,
+  setLeaveMeetingVideoForOneToOneOrGroup
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     let form = new FormData();
@@ -9146,7 +9154,17 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveMeetingVideo(Data, navigate, t, flag, organizerData));
+          dispatch(
+            LeaveMeetingVideo(
+              Data,
+              navigate,
+              t,
+              flag,
+              organizerData,
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeaveMeetingVideoForOneToOneOrGroup
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9221,6 +9239,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 }
                 dispatch(maxParticipantVideoCallPanel(false));
                 sessionStorage.removeItem("isWaiting");
+                console.log("busyCall", flag);
+                if (flag === 3) {
+                  console.log("busyCall");
+                  await setLeaveMeetingVideoForOneToOneOrGroup(false)
+                  setJoiningOneToOneAfterLeavingPresenterView(true);
+                }
               } catch {}
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
@@ -10604,5 +10628,5 @@ export {
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
   validateEmptyStringUserAvailibilityFailed,
-  requestMeetingRecordingTranscript_clear
+  requestMeetingRecordingTranscript_clear,
 };
