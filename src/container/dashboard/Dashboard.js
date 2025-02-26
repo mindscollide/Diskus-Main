@@ -226,7 +226,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const { cancelConfirmationModal,setPresenterForOneToOneOrGroup } = useMeetingContext();
+  const { cancelConfirmationModal, setPresenterForOneToOneOrGroup } =
+    useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -495,7 +496,7 @@ const Dashboard = () => {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
         } else if (activeCallState && currentCallType === 1) {
           console.log("mqtt mqmqmqmqmqmq", payload);
-          setPresenterForOneToOneOrGroup(true)
+          setPresenterForOneToOneOrGroup(true);
           await dispatch(nonMeetingVideoGlobalModal(true));
         } else if (isMeetingVideo) {
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
@@ -583,7 +584,8 @@ const Dashboard = () => {
       sessionStorage.getItem("StopPresenterViewAwait")
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
-
+    let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+    let currentCallType = Number(localStorage.getItem("CallType"));
     let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
     let hostUrl = localStorage.getItem("hostUrl");
     let newRoomId = localStorage.getItem("newRoomId");
@@ -602,7 +604,11 @@ const Dashboard = () => {
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       if (isMeeting) {
-        if (
+        if (activeCallState && currentCallType === 1) {
+          dispatch(presenterViewGlobalState(0, false, false, false));
+
+          console.log("mqtt mqmqmqmqmqmq", payload);
+        } else if (
           StopPresenterViewAwait === null ||
           StopPresenterViewAwait === undefined
         ) {

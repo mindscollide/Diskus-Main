@@ -67,7 +67,9 @@ const NonMeetingVideoModal = () => {
   //handle NO button
   const onClickOnNoMeetingModal = () => {
     dispatch(nonMeetingVideoGlobalModal(false));
-    if (presenterViewFlag && !presenterViewHostFlag) {
+    if (joinPresenterForOneToOneOrGroup) {
+      dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
+    } else if (presenterViewFlag && !presenterViewHostFlag) {
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
     }
   };

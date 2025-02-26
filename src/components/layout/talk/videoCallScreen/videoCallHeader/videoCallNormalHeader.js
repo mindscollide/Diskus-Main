@@ -55,6 +55,7 @@ import {
   participantVideoButtonState,
   setVideoControlHost,
   setAudioControlHost,
+  joinPresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -267,8 +268,13 @@ const VideoCallNormalHeader = ({
     : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
-  const { leaveOneToOne, setJoinMeetingVideoParticipant, setLeaveOneToOne } =
-    useMeetingContext();
+  const {
+    leaveOneToOne,
+    setJoinMeetingVideoParticipant,
+    setLeaveOneToOne,
+    joinPresenterForOneToOneOrGroup,
+    setPresenterForOneToOneOrGroup,
+  } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
 
@@ -784,17 +790,30 @@ const VideoCallNormalHeader = ({
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
       sessionStorage.setItem("NonMeetingVideoCall", false);
-      if (flag) {
+        console.log("mqtt mqmqmqmqmqmq",flag);
+      if (flag === 1) {
+        console.log("mqtt mqmqmqmqmqmq",flag);
         setJoinMeetingVideoParticipant(true);
         setLeaveOneToOne(false);
+      } else if (flag === 2) {
+        setLeaveOneToOne(false);
+        console.log("mqtt mqmqmqmqmqmq",flag);
+        setPresenterForOneToOneOrGroup(false);
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL),
+          WasInVideo: false,
+        };
+        console.log("onClickStopPresenter", data);
+        dispatch(joinPresenterViewMainApi(navigate, t, data));
       }
     } catch (error) {}
   };
   useEffect(() => {
     try {
-      if (leaveOneToOne) {
+      if (leaveOneToOne || joinPresenterForOneToOneOrGroup) {
         console.log("mqtt mqmqmqmqmqmq");
-        leaveCallForNonMeating(true);
+        leaveCallForNonMeating(joinPresenterForOneToOneOrGroup ? 2 : 1);
       }
     } catch (error) {}
   }, [leaveOneToOne]);
@@ -896,11 +915,11 @@ const VideoCallNormalHeader = ({
         localStorage.setItem("VidOff", true);
       } else {
         console.log("busyCall");
-        leaveCallForNonMeating(false);
+        leaveCallForNonMeating(0);
       }
     } else if (isMeeting === false && meetHostFlag.isDashboardVideo === false) {
       console.log("busyCall");
-      leaveCallForNonMeating(false);
+      leaveCallForNonMeating(0);
     }
   };
 
