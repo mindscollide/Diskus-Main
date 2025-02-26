@@ -26,6 +26,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -36,6 +37,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
 }
 
 .CopyLinkButton {
@@ -50,6 +52,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 .CopyLinkButton:is(:active, :hover, :focus, :focus-visible) {
@@ -64,6 +67,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 .CopyLinkButton_Disabled {
   padding: 8px 24px !important;
@@ -77,6 +81,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 .CopyLinkButton_Disabled:is(:active, :hover, :focus, :focus-visible) {
   padding: 8px 24px !important;
@@ -89,6 +94,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 .ScrollerMeeting_Active {
