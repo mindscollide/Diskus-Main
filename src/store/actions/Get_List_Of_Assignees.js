@@ -250,7 +250,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                 // dispatch(meetingLoaderDashboard(false));
               } catch (error) {
                 dispatch(meetingLoaderDashboard(false));
-                throw new Error(error);
+                // throw new Error(error);
               }
             } else if (
               response.data.responseResult.responseMessage

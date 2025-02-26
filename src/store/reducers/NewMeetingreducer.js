@@ -2688,13 +2688,13 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_INIT:
       return {
         ...state,
-        loading: true,
+        Loading: true,
       };
 
     case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_SUCCESS:
       return {
         ...state,
-        loading: false,
+        Loading: false,
         meetingTranscriptResponse: action.response,
         responseMessage: action.message,
       };
@@ -2702,14 +2702,15 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_FAIL:
       return {
         ...state,
-        loading: false,
+        Loading: false,
+        meetingTranscriptResponse: null,
         responseMessage: action.message,
       };
 
     case actions.REQUEST_MEETING_RECORDING_TRANSCRIPT_CLEAR:
       return {
         ...state,
-        loading: false,
+        Loading: false,
         meetingTranscriptResponse: null,
         responseMessage: "",
       };

@@ -146,13 +146,21 @@ const Attendees = () => {
       setAttendees(false);
     }
   };
-
+  let currentLanauge = localStorage.getItem("i18nextLng");
   return (
     <Row>
       <Col sm={12} md={12} lg={12} className={` ${"my-2"}`}>
         <section className={styles["Attendees_bar"]}>
           <Row>
-            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className={
+                currentLanauge === "ar"
+                  ? styles["AttendingBox_Ar"]
+                  : styles["AttendingBox"]
+              }>
               <span className={styles["AttendeesCount_Attending"]}>
                 {Attending < 10 ? `0${Attending}` : Attending}
               </span>
@@ -160,7 +168,15 @@ const Attendees = () => {
                 {t("Attending")}
               </span>
             </Col>
-            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className={
+                currentLanauge === "ar"
+                  ? styles["AttendingBox_Ar"]
+                  : styles["AttendingBox"]
+              }>
               <span className={styles["AttendeesCount_Maybe"]}>
                 {" "}
                 {mayBe < 10 ? `0${mayBe}` : mayBe}
@@ -170,7 +186,15 @@ const Attendees = () => {
               </span>
             </Col>
 
-            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className={
+                currentLanauge === "ar"
+                  ? styles["AttendingBox_Ar"]
+                  : styles["AttendingBox"]
+              }>
               <span className={styles["AttendeesCount_NotAttending"]}>
                 {" "}
                 {notAttending < 10 ? `0${notAttending}` : notAttending}
@@ -180,7 +204,15 @@ const Attendees = () => {
               </span>
             </Col>
 
-            <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className={
+                currentLanauge === "ar"
+                  ? styles["AttendingBox_Ar"]
+                  : styles["AttendingBox"]
+              }>
               <span className={styles["AttendeesCount_NotResponded"]}>
                 {notResponded < 10 ? `0${notResponded}` : notResponded}
               </span>
@@ -207,7 +239,9 @@ const Attendees = () => {
           </div>
         </section>
         <section className={styles["Members_Area"]}>
-          <p className={styles["AttendeesAreaHeading"]}>{t("Agenda-contributors")}</p>
+          <p className={styles["AttendeesAreaHeading"]}>
+            {t("Agenda-contributors")}
+          </p>
           <div className={styles["Cards"]}>
             {agendaContributorsData.length > 0 &&
               agendaContributorsData.map((data) => {
