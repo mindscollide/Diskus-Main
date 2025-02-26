@@ -81,27 +81,27 @@ const NonMeetingVideoModal = () => {
 
       await dispatch(stopPresenterViewMainApi(navigate, t, data, 1));
       await dispatch(nonMeetingVideoGlobalModal(false));
-      if (isMeetingVideo) {
-        console.log("Check First");
-        let Data = {
-          RoomID: String(newRoomId),
-          UserGUID: String(isGuid),
-          Name: String(meetingTitle),
-          IsHost: getMeetingHost?.isHost ? true : false,
-          MeetingID: Number(currentMeeting),
-        };
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
-      }
+      // if (isMeetingVideo) {
+      //   console.log("Check First");
+      //   let Data = {
+      //     RoomID: String(newRoomId),
+      //     UserGUID: String(isGuid),
+      //     Name: String(meetingTitle),
+      //     IsHost: getMeetingHost?.isHost ? true : false,
+      //     MeetingID: Number(currentMeeting),
+      //   };
+      //   await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      // }
 
-      let Data = {
-        ReciepentID: currentUserId,
-        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-        CallStatusID: 1,
-        CallTypeID: callTypeID,
-      };
-      dispatch(VideoCallResponse(Data, navigate, t));
-      dispatch(incomingVideoCallFlag(false));
-      localStorage.setItem("activeCall", true);
+      // let Data = {
+      //   ReciepentID: currentUserId,
+      //   RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+      //   CallStatusID: 1,
+      //   CallTypeID: callTypeID,
+      // };
+      // dispatch(VideoCallResponse(Data, navigate, t));
+      // dispatch(incomingVideoCallFlag(false));
+      // localStorage.setItem("activeCall", true);
     } else if (
       presenterViewFlag &&
       !presenterViewHostFlag &&
@@ -118,33 +118,33 @@ const NonMeetingVideoModal = () => {
       };
       dispatch(leavePresenterViewMainApi(navigate, t, data, 3));
       await dispatch(nonMeetingVideoGlobalModal(false));
-      if (isMeetingVideo) {
-        // const meetingHost = {
-        //   isHost: false,
-        //   isHostId: 0,
-        //   isDashboardVideo: false,
-        // };
-        // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-        console.log("Check First");
-        let Data = {
-          RoomID: String(newRoomId),
-          UserGUID: String(isGuid),
-          Name: String(meetingTitle),
-          IsHost: getMeetingHost?.isHost ? true : false,
-          MeetingID: Number(currentMeeting),
-        };
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
-      }
+      // if (isMeetingVideo) {
+      //   // const meetingHost = {
+      //   //   isHost: false,
+      //   //   isHostId: 0,
+      //   //   isDashboardVideo: false,
+      //   // };
+      //   // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      //   console.log("Check First");
+      //   let Data = {
+      //     RoomID: String(newRoomId),
+      //     UserGUID: String(isGuid),
+      //     Name: String(meetingTitle),
+      //     IsHost: getMeetingHost?.isHost ? true : false,
+      //     MeetingID: Number(currentMeeting),
+      //   };
+      //   await dispatch(LeaveMeetingVideo(Data, navigate, t));
+      // }
 
-      let Data = {
-        ReciepentID: currentUserId,
-        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-        CallStatusID: 1,
-        CallTypeID: callTypeID,
-      };
-      dispatch(VideoCallResponse(Data, navigate, t));
-      dispatch(incomingVideoCallFlag(false));
-      localStorage.setItem("activeCall", true);
+      // let Data = {
+      //   ReciepentID: currentUserId,
+      //   RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+      //   CallStatusID: 1,
+      //   CallTypeID: callTypeID,
+      // };
+      // dispatch(VideoCallResponse(Data, navigate, t));
+      // dispatch(incomingVideoCallFlag(false));
+      // localStorage.setItem("activeCall", true);
     } else if (activeCallState && currentCallType === 1) {
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);

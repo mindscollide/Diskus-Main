@@ -343,24 +343,32 @@ const VideoNewParticipantList = () => {
   };
 
   const handleClickAllAcceptAndReject = (flag) => {
-    let Data = {
-      MeetingId: filteredWaitingParticipants[0]?.meetingID,
-      RoomId: String(roomID),
-      IsRequestAccepted: flag === 1 ? true : false,
-      AttendeeResponseList: filteredWaitingParticipants.map(
-        (participantData, index) => {
-          return {
-            IsGuest: participantData.isGuest,
-            UID: participantData.guid,
-            UserID: participantData.userID,
-          };
-        }
-      ),
-    };
+    if (!presenterViewFlag) {
+      let Data = {
+        MeetingId: filteredWaitingParticipants[0]?.meetingID,
+        RoomId: String(roomID),
+        IsRequestAccepted: flag === 1 ? true : false,
+        AttendeeResponseList: filteredWaitingParticipants.map(
+          (participantData, index) => {
+            return {
+              IsGuest: participantData.isGuest,
+              UID: participantData.guid,
+              UserID: participantData.userID,
+            };
+          }
+        ),
+      };
 
-    dispatch(
-      admitRejectAttendeeMainApi(Data, navigate, t, true, filteredParticipants)
-    );
+      dispatch(
+        admitRejectAttendeeMainApi(
+          Data,
+          navigate,
+          t,
+          true,
+          filteredParticipants
+        )
+      );
+    }
   };
 
   const handleClickAcceptAndReject = (participantInfo, flag) => {
