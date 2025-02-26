@@ -31,7 +31,7 @@ const NonMeetingVideoModal = () => {
   const {
     setLeaveOneToOne,
     joinPresenterForOneToOneOrGroup,
-    setPresenterForOneToOneOrGroup,
+    startPresenterViewOrLeaveOneToOne,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
@@ -77,6 +77,10 @@ const NonMeetingVideoModal = () => {
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
     if (joinPresenterForOneToOneOrGroup) {
+      await dispatch(nonMeetingVideoGlobalModal(false));
+      setLeaveOneToOne(true);
+    }
+    if (startPresenterViewOrLeaveOneToOne) {
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
     } else if (presenterViewFlag && presenterViewHostFlag && !activeCallState) {
@@ -157,13 +161,6 @@ const NonMeetingVideoModal = () => {
     } else if (activeCallState && currentCallType === 1) {
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
-
-      // let data = {
-      //   VideoCallURL: String(videoCallURL),
-      //   WasInVideo: false,
-      // };
-      // console.log("onClickStopPresenter", data);
-      // dispatch(joinPresenterViewMainApi(navigate, t, data));
     } else {
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));

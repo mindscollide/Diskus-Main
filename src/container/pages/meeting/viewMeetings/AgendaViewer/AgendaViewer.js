@@ -121,6 +121,7 @@ const AgendaViewer = () => {
     videoTalk,
     setJoinMeetingVideoParticipant,
     joinMeetingVideoParticipant,
+    setStartPresenterViewOrLeaveOneToOne,
   } = useMeetingContext();
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -390,7 +391,6 @@ const AgendaViewer = () => {
   const shareEmailModal = () => {
     setShareEmailView(!shareEmailView);
   };
-
 
   const leaveCallHost = () => {
     let Data = {
@@ -780,7 +780,12 @@ const AgendaViewer = () => {
   const onClickStartPresenter = async () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
-    if (isMeetingVideo) {
+    let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+    let currentCallType = JSON.parse(localStorage.getItem("CallType"));
+    if (activeCallState && currentCallType === 1) {
+      setStartPresenterViewOrLeaveOneToOne(true);
+      await dispatch(nonMeetingVideoGlobalModal(true));
+    } else if (isMeetingVideo) {
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));

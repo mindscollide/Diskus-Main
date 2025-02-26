@@ -56,6 +56,8 @@ import {
   setVideoControlHost,
   setAudioControlHost,
   joinPresenterViewMainApi,
+  maxParticipantVideoCallPanel,
+  openPresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -274,6 +276,8 @@ const VideoCallNormalHeader = ({
     setLeaveOneToOne,
     joinPresenterForOneToOneOrGroup,
     setPresenterForOneToOneOrGroup,
+    startPresenterViewOrLeaveOneToOne,
+    setStartPresenterViewOrLeaveOneToOne,
   } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
@@ -790,14 +794,14 @@ const VideoCallNormalHeader = ({
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
       sessionStorage.setItem("NonMeetingVideoCall", false);
-        console.log("mqtt mqmqmqmqmqmq",flag);
+      console.log("mqtt mqmqmqmqmqmq", flag);
       if (flag === 1) {
-        console.log("mqtt mqmqmqmqmqmq",flag);
+        console.log("mqtt mqmqmqmqmqmq", flag);
         setJoinMeetingVideoParticipant(true);
         setLeaveOneToOne(false);
       } else if (flag === 2) {
         setLeaveOneToOne(false);
-        console.log("mqtt mqmqmqmqmqmq",flag);
+        console.log("mqtt mqmqmqmqmqmq", flag);
         setPresenterForOneToOneOrGroup(false);
         let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
         let data = {
@@ -806,14 +810,36 @@ const VideoCallNormalHeader = ({
         };
         console.log("onClickStopPresenter", data);
         dispatch(joinPresenterViewMainApi(navigate, t, data));
+      } else if (flag === 3) {
+        setLeaveOneToOne(false);
+        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+        let currentMeeting = localStorage.getItem("currentMeetingID");
+        console.log("mqtt mqmqmqmqmqmq", flag);
+        setStartPresenterViewOrLeaveOneToOne(false);
+        dispatch(maxParticipantVideoCallPanel(false));
+        let data = {
+          VideoCallURL: String(currentMeetingVideoURL || ""),
+          Guid: "",
+          WasInVideo: false,
+        };
+
+        dispatch(
+          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+        );
       }
     } catch (error) {}
   };
   useEffect(() => {
     try {
-      if (leaveOneToOne || joinPresenterForOneToOneOrGroup) {
+      if (leaveOneToOne) {
         console.log("mqtt mqmqmqmqmqmq");
-        leaveCallForNonMeating(joinPresenterForOneToOneOrGroup ? 2 : 1);
+        leaveCallForNonMeating(
+          joinPresenterForOneToOneOrGroup
+            ? 2
+            : startPresenterViewOrLeaveOneToOne
+            ? 3
+            : 1
+        );
       }
     } catch (error) {}
   }, [leaveOneToOne]);
