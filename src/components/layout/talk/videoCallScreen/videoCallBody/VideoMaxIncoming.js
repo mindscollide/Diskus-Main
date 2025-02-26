@@ -26,6 +26,7 @@ import {
   LeaveMeetingVideo,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -37,7 +38,10 @@ const VideoMaxIncoming = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
+  const {
+    joiningOneToOneAfterLeavingPresenterView,
+    setJoiningOneToOneAfterLeavingPresenterView,
+  } = useMeetingContext();
   const { VideoMainReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
@@ -159,7 +163,28 @@ const VideoMaxIncoming = () => {
       setIsTimerRunning(false);
     }
   };
-
+  useEffect(() => {
+    if (joiningOneToOneAfterLeavingPresenterView) {
+      setJoiningOneToOneAfterLeavingPresenterView(false);
+      const meetingHost = {
+        isHost: false,
+        isHostId: 0,
+        isDashboardVideo: false,
+      };
+      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      dispatch(normalizeVideoPanelFlag(true));
+      localStorage.setItem("activeCall", true);
+      setIsTimerRunning(false);
+    }
+  }, [joiningOneToOneAfterLeavingPresenterView]);
   const endAndAccept = async () => {
     console.log("busyCall");
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));

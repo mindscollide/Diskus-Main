@@ -61,7 +61,10 @@ import {
   incomingVideoCallFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
-import { LeaveCall, VideoCallResponse } from "../../../../../store/actions/VideoMain_actions";
+import {
+  LeaveCall,
+  VideoCallResponse,
+} from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
@@ -279,8 +282,10 @@ const VideoCallNormalHeader = ({
     setPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
     setStartPresenterViewOrLeaveOneToOne,
-    joiningOneToOneAfterLeavingPresenterView,
+    leavePresenterViewToJoinOneToOne,
     setJoiningOneToOneAfterLeavingPresenterView,
+    setLeavePresenterViewToJoinOneToOne,
+    setLeaveMeetingVideoForOneToOneOrGroup,
   } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
@@ -413,7 +418,7 @@ const VideoCallNormalHeader = ({
     console.log("busyCall");
     if (presenterViewHostFlag) {
       console.log("busyCall", alreadyInMeetingVideo);
-      if (!alreadyInMeetingVideo) {
+      if (!alreadyInMeetingVideo || leavePresenterViewToJoinOneToOne) {
         console.log("busyCall", alreadyInMeetingVideo);
         await leaveSuccess();
       }
@@ -430,7 +435,18 @@ const VideoCallNormalHeader = ({
         sessionStorage.setItem("StopPresenterViewAwait", true);
         console.log(data, "presenterViewJoinFlag");
 
-        await dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+        await dispatch(
+          stopPresenterViewMainApi(
+            navigate,
+            t,
+            data,
+            leavePresenterViewToJoinOneToOne ? 3 : 0,
+            leavePresenterViewToJoinOneToOne &&
+              leavePresenterViewToJoinOneToOne,
+            setLeaveMeetingVideoForOneToOneOrGroup,
+            setStartPresenterViewOrLeaveOneToOne
+          )
+        );
       } else {
         console.log("Check");
         let data = {
@@ -438,14 +454,22 @@ const VideoCallNormalHeader = ({
           UserGUID: String(UID),
           Name: String(newName),
         };
-        await dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+        await dispatch(
+          leavePresenterViewMainApi(
+            navigate,
+            t,
+            data,
+            leavePresenterViewToJoinOneToOne ? 3 : 2,
+            leavePresenterViewToJoinOneToOne &&
+              setLeavePresenterViewToJoinOneToOne,
+            setJoiningOneToOneAfterLeavingPresenterView
+          )
+        );
       }
     } else {
       console.log("busyCall");
       if (presenterViewJoinFlag) {
         // Leave presenter view
-        // localStorage.setItem("isMeetingVideoHostCheck", true);
-        // sessionStorage.removeItem("alreadyInMeetingVideo");
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
         } else {
@@ -457,7 +481,17 @@ const VideoCallNormalHeader = ({
           UserGUID: String(UID),
           Name: String(newName),
         };
-        await dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
+        await dispatch(
+          leavePresenterViewMainApi(
+            navigate,
+            t,
+            data,
+            leavePresenterViewToJoinOneToOne ? 3 : 1,
+            leavePresenterViewToJoinOneToOne &&
+              setLeavePresenterViewToJoinOneToOne,
+            setJoiningOneToOneAfterLeavingPresenterView
+          )
+        );
         leaveSuccess();
       }
     }
@@ -850,14 +884,14 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     try {
-      if (joiningOneToOneAfterLeavingPresenterView) {
+      if (leavePresenterViewToJoinOneToOne) {
         console.log("mqtt mqmqmqmqmqmq");
-        participantLeaveCall(1);
+        participantLeaveCall();
       }
     } catch (error) {}
-  }, [joiningOneToOneAfterLeavingPresenterView]);
+  }, [leavePresenterViewToJoinOneToOne]);
   // For Participant Leave Call
-  const participantLeaveCall = async (flag) => {
+  const participantLeaveCall = async () => {
     dispatch(toggleParticipantsVisibility(false));
     console.log("busyCall");
     let meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -869,7 +903,6 @@ const VideoCallNormalHeader = ({
 
     if (isMeeting === true) {
       console.log("busyCall");
-      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
       if (presenterViewFlag) {
         console.log("busyCall");
         handlePresenterViewFunc();
@@ -895,7 +928,7 @@ const VideoCallNormalHeader = ({
           MeetingID: Number(currentMeetingID),
         };
 
-    await    dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -935,7 +968,7 @@ const VideoCallNormalHeader = ({
         };
 
         dispatch(setRaisedUnRaisedParticiant(false));
-     await   dispatch(LeaveMeetingVideo(Data, navigate, t));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -959,11 +992,6 @@ const VideoCallNormalHeader = ({
     } else if (isMeeting === false && meetHostFlag.isDashboardVideo === false) {
       console.log("busyCall");
       leaveCallForNonMeating(0);
-    }
-    if(flag===1&&joiningOneToOneAfterLeavingPresenterView){
-  
-      setJoiningOneToOneAfterLeavingPresenterView(true)
-      
     }
   };
 
@@ -1606,7 +1634,7 @@ const VideoCallNormalHeader = ({
                         ? t("Leave-presentation")
                         : t("Leave-call")
                     }
-                    onClick={()=>participantLeaveCall(0)}
+                    onClick={participantLeaveCall}
                   />
 
                   <Button

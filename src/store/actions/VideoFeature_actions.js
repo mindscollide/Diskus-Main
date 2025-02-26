@@ -1589,7 +1589,15 @@ const stopPresenterFail = (message) => {
   };
 };
 
-const stopPresenterViewMainApi = (navigate, t, data, flag) => {
+const stopPresenterViewMainApi = (
+  navigate,
+  t,
+  data,
+  flag,
+  leavePresenterViewToJoinOneToOne,
+  setLeaveMeetingVideoForOneToOneOrGroup,
+  setStartPresenterViewOrLeaveOneToOne,
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
   let videoCallURL = Number(localStorage.getItem("videoCallURL"));
@@ -1615,7 +1623,17 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(stopPresenterViewMainApi(navigate, t, data, flag));
+          dispatch(
+            stopPresenterViewMainApi(
+              navigate,
+              t,
+              data,
+              flag,
+              leavePresenterViewToJoinOneToOne,
+              setLeaveMeetingVideoForOneToOneOrGroup,
+              setStartPresenterViewOrLeaveOneToOne,
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1660,57 +1678,26 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
-
-                let isMeetingVideo = JSON.parse(
-                  localStorage.getItem("isMeetingVideo")
-                );
-                let newRoomId = localStorage.getItem("newRoomId");
-                let isGuid = localStorage.getItem("isGuid");
-                let meetingTitle = localStorage.getItem("meetingTitle");
-                let getMeetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
-                );
-                let currentMeeting = localStorage.getItem("currentMeetingID");
-                let currentUserId = Number(localStorage.getItem("userID"));
-                let activeCallState = JSON.parse(
-                  localStorage.getItem("activeCall")
-                );
-                let activeRoomID = localStorage.getItem("activeRoomID");
-                let incomingRoomID = localStorage.getItem("NewRoomID");
-                let callTypeID = Number(localStorage.getItem("callTypeID"));
-
-                if (isMeetingVideo) {
-                  console.log("Check First");
-                  let Data = {
-                    RoomID: String(newRoomId),
-                    UserGUID: String(isGuid),
-                    Name: String(meetingTitle),
-                    IsHost: getMeetingHost?.isHost ? true : false,
-                    MeetingID: Number(currentMeeting),
-                  };
-                  await dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
-
-                let Data = {
-                  ReciepentID: currentUserId,
-                  RoomID:
-                    activeCallState === true ? activeRoomID : incomingRoomID,
-                  CallStatusID: 1,
-                  CallTypeID: callTypeID,
-                };
-                dispatch(VideoCallResponse(Data, navigate, t));
-                dispatch(incomingVideoCallFlag(false));
-                localStorage.setItem("activeCall", true);
               }
-
+              if (!alreadyInMeetingVideo) {
+                localStorage.removeItem("participantUID");
+                localStorage.removeItem("isGuid");
+                localStorage.removeItem("videoIframe");
+                localStorage.removeItem("acceptedRoomID");
+                // localStorage.removeItem("newRoomId");
+                localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("presenterViewvideoURL");
+              } else {
+                localStorage.removeItem("presenterViewvideoURL");
+              }
+              if(flag===3){
+                if(leavePresenterViewToJoinOneToOne){
+                  setStartPresenterViewOrLeaveOneToOne(false)
+                  setLeaveMeetingVideoForOneToOneOrGroup(true)
+                }
+              }
               console.log("Check Presenter");
-              localStorage.removeItem("participantUID");
-              localStorage.removeItem("isGuid");
-              localStorage.removeItem("videoIframe");
-              localStorage.removeItem("acceptedRoomID");
-              // localStorage.removeItem("newRoomId");
-              localStorage.removeItem("acceptedRoomID");
-              localStorage.removeItem("presenterViewvideoURL");
+
               await dispatch(
                 stopPresenterSuccess(
                   response.data.responseResult,
@@ -1948,7 +1935,14 @@ const leavePresenterFail = (message) => {
   };
 };
 
-const leavePresenterViewMainApi = (navigate, t, data, flag) => {
+const leavePresenterViewMainApi = (
+  navigate,
+  t,
+  data,
+  flag,
+  setLeavePresenterViewToJoinOneToOne,
+  setJoiningOneToOneAfterLeavingPresenterView
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(leavePresenterInit());
@@ -1967,7 +1961,16 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(leavePresenterViewMainApi(navigate, t, data, flag));
+          dispatch(
+            leavePresenterViewMainApi(
+              navigate,
+              t,
+              data,
+              flag,
+              setLeavePresenterViewToJoinOneToOne,
+              setJoiningOneToOneAfterLeavingPresenterView
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1980,6 +1983,15 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
               let alreadyInMeetingVideo = JSON.parse(
                 sessionStorage.getItem("alreadyInMeetingVideo")
               );
+              await dispatch(presenterStartedMainFlag(false));
+              if (!alreadyInMeetingVideo) {
+                localStorage.removeItem("participantUID");
+                localStorage.removeItem("isGuid");
+                localStorage.removeItem("videoIframe");
+                localStorage.removeItem("acceptedRoomID");
+                localStorage.removeItem("newRoomId");
+                localStorage.removeItem("presenterViewvideoURL");
+              }
               if (flag === 1) {
                 console.log("Check");
                 dispatch(presenterViewGlobalState(0, true, false, false));
@@ -2004,72 +2016,15 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                   dispatch(minimizeVideoPanelFlag(false));
                 }
               } else if (flag === 3) {
-                console.log("Check Flag");
-                dispatch(presenterViewGlobalState(0, false, false, false));
-                dispatch(maximizeVideoPanelFlag(false));
-                dispatch(normalizeVideoPanelFlag(true));
-                dispatch(minimizeVideoPanelFlag(false));
-                dispatch(setAudioControlHost(false));
-                dispatch(setVideoControlHost(false));
-                let isMeetingVideo = JSON.parse(
-                  localStorage.getItem("isMeetingVideo")
+                await dispatch(
+                  leavePresenterSuccess(
+                    response.data.responseResult,
+                    t("Successful")
+                  )
                 );
-                let participantUID = localStorage.getItem("participantUID");
-                let isGuid = localStorage.getItem("isGuid");
-                let meetingTitle = localStorage.getItem("meetingTitle");
-                let getMeetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
-                );
-                let currentMeeting = localStorage.getItem("currentMeetingID");
-                let currentUserId = Number(localStorage.getItem("userID"));
-                let activeCallState = JSON.parse(
-                  localStorage.getItem("activeCall")
-                );
-                let activeRoomID = localStorage.getItem("activeRoomID");
-                let incomingRoomID = localStorage.getItem("NewRoomID");
-                let callTypeID = Number(localStorage.getItem("callTypeID"));
-                if (isMeetingVideo) {
-                  // const meetingHost = {
-                  //   isHost: false,
-                  //   isHostId: 0,
-                  //   isDashboardVideo: false,
-                  // };
-                  // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-                  console.log("Check First");
-                  let Data = {
-                    RoomID: String(activeRoomID),
-                    UserGUID: String(participantUID),
-                    Name: String(meetingTitle),
-                    IsHost: getMeetingHost?.isHost ? true : false,
-                    MeetingID: Number(currentMeeting),
-                  };
-                  await dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
-                let Data = {
-                  ReciepentID: currentUserId,
-                  RoomID:
-                    activeCallState === true ? activeRoomID : incomingRoomID,
-                  CallStatusID: 1,
-                  CallTypeID: callTypeID,
-                };
-                dispatch(VideoCallResponse(Data, navigate, t));
-                dispatch(incomingVideoCallFlag(false));
-                localStorage.setItem("activeCall", true);
+                setLeavePresenterViewToJoinOneToOne(false);
+                setJoiningOneToOneAfterLeavingPresenterView(true);
               }
-              dispatch(presenterStartedMainFlag(false));
-              localStorage.removeItem("participantUID");
-              localStorage.removeItem("isGuid");
-              localStorage.removeItem("videoIframe");
-              localStorage.removeItem("acceptedRoomID");
-              localStorage.removeItem("newRoomId");
-              localStorage.removeItem("presenterViewvideoURL");
-
-              await dispatch(
-                leavePresenterSuccess(
-                  response.data.responseResult,
-                  t("Successful")
-                )
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

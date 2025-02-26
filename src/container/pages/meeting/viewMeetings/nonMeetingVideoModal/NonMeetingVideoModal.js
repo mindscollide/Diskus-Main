@@ -32,7 +32,7 @@ const NonMeetingVideoModal = () => {
     setLeaveOneToOne,
     joinPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
-    setJoiningOneToOneAfterLeavingPresenterView,
+    setLeavePresenterViewToJoinOneToOne,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
@@ -121,7 +121,7 @@ const NonMeetingVideoModal = () => {
       !presenterViewHostFlag &&
       !activeCallState
     ) {
-      setJoiningOneToOneAfterLeavingPresenterView(true);
+      setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
       // if (isMeetingVideo) {
       //   // const meetingHost = {
