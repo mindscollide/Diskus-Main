@@ -60,7 +60,7 @@ const MeetingRecording = ({ title }) => {
             fileID: meetingRecording.fileID,
             fileName: meetingRecording.fileName,
             fileSize: meetingRecording.fileSize,
-            transcriptStatus: 2,
+            transcriptStatus: transcriptionStatusID,
             meetingID: MeetingID,
           });
         } else if (
@@ -115,10 +115,36 @@ const MeetingRecording = ({ title }) => {
 
   useEffect(() => {
     if (meetingTranscriptDownloaded !== null) {
-      console.log(
-        { meetingTranscriptDownloaded },
-        "meetingTranscriptDownloaded"
-      );
+      try {
+        const { transcriptFileDetails, minutesFileDetails, meetingID } =
+          meetingTranscriptDownloaded;
+        let copyData = [...data];
+        copyData[0].transcriptStatus = 4;
+        copyData.push(
+          {
+            fileID: transcriptFileDetails.pK_FileID,
+            fileName: transcriptFileDetails.displayFileName,
+            fileSize: transcriptFileDetails.fileSize,
+            transcriptStatus: 4,
+            meetingID: meetingID,
+          },
+          {
+            fileID: minutesFileDetails.pK_FileID,
+            fileName: minutesFileDetails.displayFileName,
+            fileSize: minutesFileDetails.fileSize,
+            transcriptStatus: 4,
+            meetingID: meetingID,
+          }
+        );
+        setData(copyData);
+        dispatch(meetingTranscriptDownloaded(null));
+        console.log(
+          { meetingTranscriptDownloaded, copyData },
+          "meetingTranscriptDownloaded"
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [meetingTranscriptDownloaded]);
 

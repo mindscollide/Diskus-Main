@@ -3200,88 +3200,94 @@ const Dashboard = () => {
         }
       }
       if (data.action.toLowerCase() === "DATAROOM".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("FILE_SHARED"),
-                  "[Place holder]",
-                  data?.payload?.data?.displayFileName
-                ),
-              });
-            }
-            setNotificationID(id);
-            dispatch(fileSharedMQTT(data.payload));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("FOLDER_SHARED"),
-                  "[Place holder]",
-                  data?.payload?.data?.displayFolderName
-                ),
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderSharedMQTT(data.payload));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() ===
-            "FILE_SHARING_REMOVED".toLowerCase() ||
-          "FILE_DELETED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: `file remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(fileRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "FOLDER_SHARING_REMOVED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: `folder remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderRemoveMQTT(data?.payload?.fileID));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() === "FOLDER_DELETED".toLowerCase()
-        ) {
-          try {
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: `folder remove to you`,
-              });
-            }
-            setNotificationID(id);
-            dispatch(folderRemoveMQTT(data?.payload?.folderID));
-          } catch (error) {}
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "MEETING_TRANSCRIPT_DOWNLOADED".toLowerCase()
-        ) {
-          dispatch(meetingTranscriptDownloaded(data.payload));
-          console.log(data.payload, "datapayload");
+        try {
+          if (
+            data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("FILE_SHARED"),
+                    "[Place holder]",
+                    data?.payload?.data?.displayFileName
+                  ),
+                });
+              }
+              setNotificationID(id);
+              dispatch(fileSharedMQTT(data.payload));
+            } catch (error) {}
+          } else if (
+            data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("FOLDER_SHARED"),
+                    "[Place holder]",
+                    data?.payload?.data?.displayFolderName
+                  ),
+                });
+              }
+              setNotificationID(id);
+              dispatch(folderSharedMQTT(data.payload));
+            } catch (error) {}
+          } else if (
+            data.payload.message.toLowerCase() ===
+              "FILE_SHARING_REMOVED".toLowerCase() ||
+            "FILE_DELETED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: `file remove to you`,
+                });
+              }
+              setNotificationID(id);
+              dispatch(fileRemoveMQTT(data?.payload?.fileID));
+            } catch (error) {}
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "FOLDER_SHARING_REMOVED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: `folder remove to you`,
+                });
+              }
+              setNotificationID(id);
+              dispatch(folderRemoveMQTT(data?.payload?.fileID));
+            } catch (error) {}
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "FOLDER_DELETED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: `folder remove to you`,
+                });
+              }
+              setNotificationID(id);
+              dispatch(folderRemoveMQTT(data?.payload?.folderID));
+            } catch (error) {}
+          }
+          if (
+            data.payload.message.toLowerCase() ===
+            "MEETING_TRANSCRIPT_DOWNLOADED".toLowerCase()
+          ) {
+            dispatch(meetingTranscriptDownloaded(data.payload));
+            console.log(data.payload, "datapayload");
+          }
+        } catch (error) {
+          console.log(error, "errorerrorerror");
         }
       }
       //Web Notification
@@ -3348,7 +3354,9 @@ const Dashboard = () => {
           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async function joinRequestForMeetingVideo(mqttData) {
