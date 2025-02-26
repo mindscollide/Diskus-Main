@@ -114,6 +114,11 @@ export const MeetingProvider = ({ children }) => {
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
 
+  // state for leave one to one  and Join Meeting Video
+  const [leaveOneToOne, setLeaveOneToOne] = useState(false);
+  const [joinMeetingVideoParticipant, setJoinMeetingVideoParticipant] =
+    useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -271,7 +276,12 @@ export const MeetingProvider = ({ children }) => {
     stepDownloadModal,
     downloadMeetinModal,
     setDownloadMeeting,
-    isRecording, setRecording
+    isRecording,
+    setRecording,
+    leaveOneToOne,
+    setLeaveOneToOne,
+    joinMeetingVideoParticipant,
+    setJoinMeetingVideoParticipant,
   };
 
   // Provide the state data to the context
