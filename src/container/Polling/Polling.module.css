@@ -165,21 +165,21 @@ body[dir="rtl"] .polling_searchinput {
 
 .voteBtn {
   background-color: #81db86 !important;
-  border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  width: 80px !important;
-  font-weight: 600;
+  width: 95px !important;
+  font-weight: 600 !important;
+  border: none !important;
 }
 .voteBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
   background-color: #81db86 !important;
-  border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  width: 80px !important;
-  font-weight: 600;
+  width: 95px !important;
+  font-weight: 600 !important;
+  border: none !important;
 }
 
 .votedBtn {
@@ -365,12 +365,12 @@ body[dir="rtl"] .PaginationStyle-Committee {
 
 .ViewVotesButtonStyles {
   background-color: #ecefff !important;
-  border: none !important;
   color: #6172d6 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
   width: 95px !important;
   font-weight: 600 !important;
+  border: none !important;
 }
 
 .ViewVotesButtonStyles:is(:hover, :focus, :focus-visible, :active) {

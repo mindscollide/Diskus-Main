@@ -577,9 +577,11 @@ const Polling = () => {
         },
       }),
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        console.log(text, "recordrecordrecord");
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        if (currentDate < convertIntoGmt) {
+        if (currentDate < convertIntoGmt && record.isVoter) {
           return (
             <span
               className={styles["Ellipses_Class"]}
@@ -591,6 +593,7 @@ const Polling = () => {
             </span>
           );
         } else {
+          console.log(text, "recordrecordrecord");
           return (
             <span
               className={styles["Ellipses_Class"]}
@@ -777,9 +780,11 @@ const Polling = () => {
               if (record.voteStatus === "Not Voted") {
                 return (
                   <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Not-voted"]}>
-                      {t("Not-voted")}
-                    </span>
+                    <Button
+                      text={t("View-votes")}
+                      className={styles["ViewVotesButtonStyles"]}
+                      onClick={() => handleViewVotesButton(record.pollID)}
+                    />
                   </Col>
                 );
               } else {

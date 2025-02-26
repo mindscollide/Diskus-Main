@@ -7,9 +7,18 @@ export const GroupContext = createContext();
 export const GroupsProvider = ({ children }) => {
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [viewVotes, setviewVotes] = useState(false);
+
   return (
     <GroupContext.Provider
-      value={{ ViewGroupPage, setViewGroupPage, showModal, setShowModal }}
+      value={{
+        ViewGroupPage,
+        setViewGroupPage,
+        showModal,
+        setShowModal,
+        viewVotes,
+        setviewVotes,
+      }}
     >
       {children}
     </GroupContext.Provider>
