@@ -22,12 +22,13 @@ import {
   VideoCallResponse,
 } from "../../../../../store/actions/VideoMain_actions";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const NonMeetingVideoModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const { setLeaveOneToOne } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
@@ -145,14 +146,8 @@ const NonMeetingVideoModal = () => {
       dispatch(incomingVideoCallFlag(false));
       localStorage.setItem("activeCall", true);
     } else if (activeCallState && currentCallType === 1) {
-      let Data = {
-        OrganizationID: currentOrganization,
-        RoomID: initiateCallRoomID,
-        IsCaller: true,
-        CallTypeID: currentCallType,
-      };
-      await dispatch(LeaveCall(Data, navigate, t));
       await dispatch(nonMeetingVideoGlobalModal(false));
+      setLeaveOneToOne(true);
 
       // let data = {
       //   VideoCallURL: String(videoCallURL),
