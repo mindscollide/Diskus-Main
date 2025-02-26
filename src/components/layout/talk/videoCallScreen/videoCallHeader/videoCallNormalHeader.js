@@ -417,6 +417,7 @@ const VideoCallNormalHeader = ({
 
         await dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
       } else {
+        console.log("Check");
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -435,6 +436,7 @@ const VideoCallNormalHeader = ({
         } else {
           dispatch(participantVideoButtonState(false));
         }
+        console.log("Check");
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -1187,8 +1189,7 @@ const VideoCallNormalHeader = ({
                     ? handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
-                    : raisedUnRaisedParticipant ||
-                      (presenterViewFlag && !presenterViewHostFlag)
+                    : raisedUnRaisedParticipant
                     ? t("Lower-hand")
                     : t("Raise-hand")
                 }
@@ -1204,8 +1205,7 @@ const VideoCallNormalHeader = ({
                       ? handStatus
                         ? LowerHand
                         : RaiseHand
-                      : raisedUnRaisedParticipant === true ||
-                        (presenterViewFlag && !presenterViewHostFlag)
+                      : raisedUnRaisedParticipant === true
                       ? Raisehandselected
                       : RaiseHand
                   }

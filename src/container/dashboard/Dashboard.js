@@ -2521,6 +2521,7 @@ const Dashboard = () => {
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
         ) {
           console.log("Check active");
+          localStorage.setItem("activeCall", false);
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           localStorage.setItem("RingerCallCheckFlag", true);
           localStorage.setItem("callType", data.payload.callType);
@@ -2573,7 +2574,7 @@ const Dashboard = () => {
             dispatch(incomingVideoCallFlag(true));
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             localStorage.setItem("NewRoomID", data.payload.roomID);
-            localStorage.setItem("acceptedRoomID", 0);
+            // localStorage.setItem("acceptedRoomID", 0);
             localStorage.setItem("callerID", data.payload.callerID);
             localStorage.setItem("callerNameInitiate", data.payload.callerName);
             localStorage.setItem("recipentID", data.receiverID[0]);

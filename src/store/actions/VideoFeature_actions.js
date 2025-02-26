@@ -267,15 +267,21 @@ const guestLeaveVideoMeeting = (response) => {
   };
 };
 
-const participanMuteUnMuteMeeting = (response, isforAll,presenterViewHostFlag,presenterViewFlag,check) => {
+const participanMuteUnMuteMeeting = (
+  response,
+  isforAll,
+  presenterViewHostFlag,
+  presenterViewFlag,
+  check
+) => {
   console.log(response, "responseresponseresponsedatat");
   return {
     type: actions.PARTICIPANT_MUTEUNMUTE_VIDEO,
     payload: response,
     isforAll: isforAll,
-    presenterViewHostFlag:presenterViewHostFlag,
-    presenterViewFlag:presenterViewFlag,
-    check:check
+    presenterViewHostFlag: presenterViewHostFlag,
+    presenterViewFlag: presenterViewFlag,
+    check: check,
   };
 };
 
@@ -1624,7 +1630,7 @@ const stopPresenterViewMainApi = (navigate, t, data, flag) => {
                   : false
               );
               if (alreadyInMeetingVideo) {
-                localStorage.setItem("isMeetingVideo",true);
+                localStorage.setItem("isMeetingVideo", true);
                 dispatch(leaveCallModal(false));
                 console.log("Check Presenter");
                 dispatch(
@@ -1956,7 +1962,7 @@ const leavePresenterViewMainApi = (navigate, t, data, flag) => {
                 }
               } else if (flag === 3) {
                 console.log("Check Flag");
-                dispatch(presenterViewGlobalState(0, true, false, false));
+                dispatch(presenterViewGlobalState(0, false, false, false));
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
