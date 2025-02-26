@@ -961,28 +961,9 @@ const VideoCallNormalHeader = ({
       leaveCallForNonMeating(0);
     }
     if(flag===1&&joiningOneToOneAfterLeavingPresenterView){
-      let currentUserId = Number(localStorage.getItem("userID"));
-      let activeRoomID = localStorage.getItem("activeRoomID");
-      let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-      let incomingRoomID = localStorage.getItem("NewRoomID");
-      setJoiningOneToOneAfterLeavingPresenterView(false)
-      const meetingHost = {
-        isHost: false,
-        isHostId: 0,
-        isDashboardVideo: false,
-      };
-      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-      let Data = {
-        ReciepentID: currentUserId,
-        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-        CallStatusID: 1,
-        CallTypeID: callTypeID,
-      };
-      dispatch(VideoCallResponse(Data, navigate, t));
-      dispatch(incomingVideoCallFlag(false));
-      dispatch(normalizeVideoPanelFlag(true));
-      localStorage.setItem("activeCall", true);
-      setIsTimerRunning(false);
+  
+      setJoiningOneToOneAfterLeavingPresenterView(true)
+      
     }
   };
 
