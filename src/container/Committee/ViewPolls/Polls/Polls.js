@@ -475,14 +475,27 @@ const Polls = ({ committeeStatus }) => {
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return (
-            <span className={styles["text-success"]}>{t("Published")}</span>
+            <div className='d-flex'>
+              <span className='userstatus-signal-PublishedPolls'></span>
+              <p className='m-0 userName FontArabicRegular'>{t("Published")}</p>
+            </div>
           );
         } else if (record.pollStatus?.pollStatusId === 1) {
           return (
-            <span className={styles["text-success"]}>{t("Unpublished")}</span>
+            <div className='d-flex'>
+              <span className='userstatus-signal-Unpublished'></span>
+              <p className='m-0 userName FontArabicRegular'>
+                {t("Unpublished")}
+              </p>
+            </div>
           );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className={styles["text-success"]}>{t("Expired")}</span>;
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-disabled'></span>
+              <p className='m-0 userName FontArabicRegular'>{t("Expired")}</p>
+            </div>
+          );
         }
       },
     },

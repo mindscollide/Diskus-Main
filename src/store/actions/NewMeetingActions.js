@@ -10399,6 +10399,13 @@ const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
   };
 };
 
+const meetingTranscriptDownloaded = (response) => {
+  return {
+    type: actions.MEETING_TRANSCRIPT_DOWNLOADED,
+    payload: response
+  }
+}
+
 export {
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,
@@ -10586,5 +10593,6 @@ export {
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
   validateEmptyStringUserAvailibilityFailed,
-  requestMeetingRecordingTranscript_clear
+  requestMeetingRecordingTranscript_clear,
+  meetingTranscriptDownloaded
 };
