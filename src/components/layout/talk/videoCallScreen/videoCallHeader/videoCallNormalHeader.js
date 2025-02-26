@@ -278,6 +278,7 @@ const VideoCallNormalHeader = ({
     setPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
     setStartPresenterViewOrLeaveOneToOne,
+    joiningOneToOneAfterLeavingPresenterView
   } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
@@ -829,6 +830,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   };
+
   useEffect(() => {
     try {
       if (leaveOneToOne) {
@@ -843,6 +845,15 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   }, [leaveOneToOne]);
+
+  useEffect(() => {
+    try {
+      if (joiningOneToOneAfterLeavingPresenterView) {
+        console.log("mqtt mqmqmqmqmqmq");
+       
+      }
+    } catch (error) {}
+  }, [joiningOneToOneAfterLeavingPresenterView]);
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     dispatch(toggleParticipantsVisibility(false));
