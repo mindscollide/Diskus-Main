@@ -101,7 +101,10 @@ const DownloadOptionsModal = ({
                       ? t("Video-recording-not-available-yet")
                       : null}
                   </span>
-                  <img src={WarningIcon}/>
+                  {!MeetingRecord?.isVideoCall ||
+                    (!MeetingRecord?.isRecordingAvailable && (
+                      <img src={WarningIcon} />
+                    ))}
                 </div>
               </Col>
               <Col sm={6} md={6} lg={6}>

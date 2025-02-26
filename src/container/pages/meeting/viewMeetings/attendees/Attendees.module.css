@@ -104,6 +104,22 @@
   position: relative;
   padding-left: 35px;
 }
+.AttendingBox_Ar {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  align-items: flex-end;
+  position: relative;
+  padding-left: 35px;
+}
+.AttendingBox_Ar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1px;
+  background-color: #5a5a5a;
+  height: 100%;
+}
 .AttendingBox::after {
   content: "";
   position: absolute;
@@ -123,7 +139,20 @@
     height: 1px;
     background-color: #5a5a5a;
   }
+  .AttendingBox_Ar::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    margin-right: 27px;
+    height: 1px;
+    background-color: #5a5a5a;
+  }
 }
+.AttendingBox_Ar:last-child::after {
+  display: none;
+}
+
 .AttendingBox:last-child::after {
   display: none;
 }

@@ -51,22 +51,22 @@ body[dir="rtl"] .Create_polls_Button {
 }
 
 .Not_Vote_Button_Polls {
-  width: 64px !important;
-  height: auto !important;
   border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 95px !important;
+  font-weight: 600 !important;
   border: none !important;
-  font-size: 8px !important;
   color: #fff !important;
   background: #81db86 !important;
   font-weight: 600 !important;
 }
 
 .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
-  width: 64px !important;
-  height: auto !important;
   border-radius: 4px !important;
+  font-size: 12px !important;
+  width: 95px !important;
+  font-weight: 600 !important;
   border: none !important;
-  font-size: 8px !important;
   color: #fff !important;
   background: #81db86 !important;
   font-weight: 600 !important;

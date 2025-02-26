@@ -344,30 +344,37 @@ const DataRoom = () => {
   }, [DataRoomString]);
 
   const apiCalling = async () => {
-    if (currentView === 4) {
-      let Data = {
-        UserID: Number(userID),
-        OrganizationID: Number(organizationID),
-      };
-      dispatch(getRecentDocumentsApi(navigate, t, Data));
-    } else if (currentView === 5) {
-      // let newData = { IsCreator: true };
-      // await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
-
-      setGetAllData([]);
-      setSharedwithmebtn(true);
-      localStorage.removeItem("folderID");
-      if (searchoptions) {
-        setSearchoptions(false);
+    try {
+      if (currentView === 4) {
+        let Data = {
+          UserID: Number(userID),
+          OrganizationID: Number(organizationID),
+        };
+        dispatch(getRecentDocumentsApi(navigate, t, Data));
+      } else if (currentView === 5) {
+        // let newData = { IsCreator: true };
+        // await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+  
+        setGetAllData([]);
+        setSharedwithmebtn(true);
+        localStorage.removeItem("folderID");
+        if (searchoptions) {
+          setSearchoptions(false);
+        }
+      } else {
+        let getData = await dispatch(
+          getDocumentsAndFolderApi(navigate, currentView, t, 1)
+        );
+        console.log(getData, "getDatagetDatagetData");
+        localStorage.removeItem("folderID");
       }
-    } else {
-      let getData = await dispatch(
-        getDocumentsAndFolderApi(navigate, currentView, t, 1)
-      );
-      console.log(getData, "getDatagetDatagetData");
-      localStorage.removeItem("folderID");
+      dispatch(BreadCrumbsList([]));
+    } catch (error) {
+
+      console.log(error, "errorerror")
+      // throw new Error(error)
     }
-    dispatch(BreadCrumbsList([]));
+  
   };
 
   useEffect(() => {

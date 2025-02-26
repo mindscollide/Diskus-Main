@@ -2386,7 +2386,8 @@ const getPollByPollIdforGroups = (
   setEditPolls,
   setvotePolls,
   setUnPublished,
-  setViewPublishedPoll
+  setViewPublishedPoll,
+  setviewVotes
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("Checking");
@@ -2435,7 +2436,7 @@ const getPollByPollIdforGroups = (
             } else if (Number(check) === 3) {
               setUnPublished(true);
             } else if (Number(check) === 4) {
-              setViewPublishedPoll(true);
+              setviewVotes(true);
             }
             await dispatch(
               getAllPollsByPollsIDSuccess(response.data.responseResult, "")

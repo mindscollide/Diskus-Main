@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
+import Tick from "../../../assets/images/Tick-Icon.png";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -227,71 +228,81 @@ const GroupViewPolls = ({ groupStatus }) => {
   };
 
   const handleClickonTitle = (record) => {
-    // getPollsByGroupMainApi;
+    console.log(record, "handleClickonTitle");
+    // // getPollsByGroupMainApi;
+    // let data = {
+    //   PollID: record.pollID,
+    //   UserID: parseInt(userID),
+    // };
+    // if (record.pollStatus.pollStatusId === 1) {
+    //   // UnPublished Poll
+    //   dispatch(
+    //     getPollByPollIdforGroups(
+    //       navigate,
+    //       data,
+    //       3,
+    //       t,
+    //       setEditPolls,
+    //       setvotePolls,
+    //       setViewUnPublished,
+    //       setViewPublishedPoll,
+    //       setviewVotes
+    //     )
+    //   );
+    // } else if (record.pollStatus.pollStatusId === 2) {
+    //   // Poll Published
+    //   dispatch(
+    //     getPollByPollIdforGroups(
+    //       navigate,
+    //       data,
+    //       4,
+    //       t,
+    //       setEditPolls,
+    //       setvotePolls,
+    //       setViewUnPublished,
+    //       setViewPublishedPoll,
+    //       setviewVotes
+    //     )
+    //   );
+    // } else if (record.pollStatus.pollStatusId === 3) {
+    //   // Expired Poll
+    //   if (Number(record?.pollCreatorID) === Number(userID)) {
+    //     // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
+    //     dispatch(
+    //       getPollByPollIdforGroups(
+    //         navigate,
+    //         data,
+    //         4,
+    //         t,
+    //         setEditPolls,
+    //         setvotePolls,
+    //         setViewUnPublished,
+    //         setViewPublishedPoll,
+    //         setviewVotes
+    //       )
+    //     );
+    //   } else {
+    //     // If User is just a Participant then modal should open like Unpublished Poll
+    //     dispatch(
+    //       getPollByPollIdforGroups(
+    //         navigate,
+    //         data,
+    //         3,
+    //         t,
+    //         setEditPolls,
+    //         setvotePolls,
+    //         setViewUnPublished,
+    //         setViewPublishedPoll
+    //       )
+    //     );
+    //   }
+    // }
     let data = {
       PollID: record.pollID,
-      UserID: parseInt(userID),
     };
-    if (record.pollStatus.pollStatusId === 1) {
-      // UnPublished Poll
-      dispatch(
-        getPollByPollIdforGroups(
-          navigate,
-          data,
-          3,
-          t,
-          setEditPolls,
-          setvotePolls,
-          setViewUnPublished,
-          setViewPublishedPoll
-        )
-      );
-    } else if (record.pollStatus.pollStatusId === 2) {
-      // Poll Published
-      dispatch(
-        getPollByPollIdforGroups(
-          navigate,
-          data,
-          4,
-          t,
-          setEditPolls,
-          setvotePolls,
-          setViewUnPublished,
-          setViewPublishedPoll
-        )
-      );
-    } else if (record.pollStatus.pollStatusId === 3) {
-      // Expired Poll
-      if (Number(record?.pollCreatorID) === Number(userID)) {
-        // if User is Poll Creator then poll should modal should open same like published view poll with View Votes Button
-        dispatch(
-          getPollByPollIdforGroups(
-            navigate,
-            data,
-            4,
-            t,
-            setEditPolls,
-            setvotePolls,
-            setViewUnPublished,
-            setViewPublishedPoll
-          )
-        );
-      } else {
-        // If User is just a Participant then modal should open like Unpublished Poll
-        dispatch(
-          getPollByPollIdforGroups(
-            navigate,
-            data,
-            3,
-            t,
-            setEditPolls,
-            setvotePolls,
-            setViewUnPublished,
-            setViewPublishedPoll
-          )
-        );
-      }
-    }
+    dispatch(
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
+    );
   };
 
   const handleClickonTitleBeforeDueDate = (record) => {
@@ -395,40 +406,60 @@ const GroupViewPolls = ({ groupStatus }) => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {filter.text}
-          </Checkbox>
+          onClick={() => {
+            console.log(filter, "filterfilterfilter");
+            handleMenuClick(filter.value);
+          }}
+          className="d-flex align-items-center justify-content-between"
+        >
+          <div className="Polls_Menu_items">
+            <span
+              className={
+                filter.value === "Published"
+                  ? "userstatus-signal-PublishedPolls_Menu"
+                  : filter.value === "UnPublished"
+                  ? "userstatus-signal-Unpublished_Menu"
+                  : "userstatus-signal-disabled_Menu"
+              }
+            ></span>
+            <span className="menu-text">{filter.text}</span>
+            {selectedValues.includes(filter.value) && (
+              <span className="checkmark">
+                <img src={Tick} alt="" />
+              </span>
+            )}
+          </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex  align-items-center justify-content-between p-1'>
+      <div className="d-flex align-items-center justify-content-between p-2">
         <Button
           text={"Reset"}
-          className={"FilterResetBtn"}
+          className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text="Ok"
           disableBtn={selectedValues.length === 0}
-          className={"ResetOkBtn"}
+          className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
         />
       </div>
     </Menu>
   );
+
   const PollsColoumn = [
     {
       title: (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className='d-flex gap-2'>
+              <span className="d-flex gap-2">
                 {t("Poll-title")}{" "}
                 {sortOrderPollingTitle === "descend" ? (
-                  <img src={DescendIcon} alt='' />
+                  <img src={DescendIcon} alt="" />
                 ) : (
-                  <img src={AscendIcon} alt='' />
+                  <img src={AscendIcon} alt="" />
                 )}
               </span>
             </Col>
@@ -452,11 +483,16 @@ const GroupViewPolls = ({ groupStatus }) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
 
-        if (currentDate < convertIntoGmt && groupStatus === 3) {
+        if (
+          currentDate < convertIntoGmt &&
+          record.isVoter &&
+          groupStatus === 3
+        ) {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitleBeforeDueDate(record)}>
+              onClick={() => handleClickonTitleBeforeDueDate(record)}
+            >
               {truncateString(text, 50)}
             </span>
           );
@@ -464,7 +500,8 @@ const GroupViewPolls = ({ groupStatus }) => {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitle(record)}>
+              onClick={() => handleClickonTitle(record)}
+            >
               {truncateString(text, 50)}
             </span>
           );
@@ -480,16 +517,14 @@ const GroupViewPolls = ({ groupStatus }) => {
       align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown
-          className='filter-chevron-icon-todolist'
-          onClick={handleClickChevron}
-        />
+        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -510,12 +545,12 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Due-date")}
             {sortOrderDueDate === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -557,13 +592,13 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {" "}
             {t("Created-by")}
             {sortOrderCreatedBy === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -613,7 +648,7 @@ const GroupViewPolls = ({ groupStatus }) => {
               return (
                 <Button
                   className={styles["ViewVotesButtonStyles"]}
-                  buttonValue={t("View-vote")}
+                  text={t("View-votes")}
                   onClick={() => handleViewVotes(record)}
                 />
               );
@@ -626,12 +661,16 @@ const GroupViewPolls = ({ groupStatus }) => {
             if (record.wasPollPublished) {
               if (record.voteStatus === "Not Voted") {
                 return (
-                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
+                  <Button
+                    className={styles["ViewVotesButtonStyles"]}
+                    text={t("View-votes")}
+                    onClick={() => handleViewVotes(record)}
+                  />
                 );
               } else {
                 <Button
                   className={styles["ViewVotesButtonStyles"]}
-                  buttonValue={t("View-vote")}
+                  text={t("View-votes")}
                   onClick={() => handleViewVotes(record)}
                 />;
               }
@@ -661,14 +700,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                       {!record.wasPollPublished ? (
                         <>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
+                            <Tooltip placement="topRight" title={t("Edit")}>
                               <img
                                 src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                alt=""
+                                draggable="false"
                                 onClick={() => handleEditBtn(record)}
                               />
                             </Tooltip>
@@ -679,14 +718,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                         <>
                           <Col sm={12} md={5} lg={5}></Col>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
+                            <Tooltip placement="topLeft" title={t("Delete")}>
                               <img
                                 src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
+                                alt=""
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                draggable="false"
                                 onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
@@ -697,27 +736,27 @@ const GroupViewPolls = ({ groupStatus }) => {
                   ) : (
                     <>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            alt=""
+                            draggable="false"
                             onClick={() => handleEditBtn(record)}
                           />
                         </Tooltip>
                       </Col>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
+                        <Tooltip placement="topLeft" title={t("Delete")}>
                           <img
                             src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
+                            alt=""
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            draggable="false"
                             onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
@@ -768,18 +807,21 @@ const GroupViewPolls = ({ groupStatus }) => {
           />
         ) : viewVotes ? (
           <ViewVotesScreen />
+        ) : viewVotes ? (
+          <ViewVotesScreen setviewVotes={setviewVotes} />
         ) : (
           <>
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end '>
+                className="d-flex justify-content-end "
+              >
                 {groupStatus === 3 && (
                   <Button
                     text={t("Create-polls")}
-                    icon={<img draggable={false} src={addmore} alt='' />}
+                    icon={<img draggable={false} src={addmore} alt="" />}
                     className={styles["Create_polls_Button"]}
                     onClick={handleCreatepolls}
                   />
@@ -788,65 +830,71 @@ const GroupViewPolls = ({ groupStatus }) => {
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {pollsRows.length > 0 ? (
-                  <>
-                    <section className={styles["MaintainingHeight"]}>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <Table
-                            column={PollsColoumn}
-                            rows={pollsRows}
-                            scroll={{ y: "40vh" }}
-                            pagination={false}
-                            className='Polling_table'
-                          />
-                        </Col>
-                      </Row>
-                    </section>
-                  </>
-                ) : (
-                  <>
-                    <Row className='mt-3'>
-                      <Col
-                        lg={12}
-                        ms={12}
-                        sm={12}
-                        className='d-flex justify-content-center'>
-                        <img
-                          draggable={false}
-                          src={emtystate}
-                          height='230px'
-                          width='293.93px'
-                          alt=''
-                        />
-                      </Col>
-                    </Row>
-                    <Row className='mt-2'>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex justify-content-center'>
-                        <span className={styles["EmptyState_heading"]}>
-                          {t("No-polls")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex justify-content-center'>
-                        <span className={styles["EmptyState_subHeading"]}>
-                          {t(
-                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                          )}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                )}
+                <section className={styles["MaintainingHeight"]}>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <Table
+                        column={PollsColoumn}
+                        rows={pollsRows}
+                        scroll={{ y: "40vh" }}
+                        pagination={false}
+                        className="Polling_table"
+                        locale={{
+                          emptyText: (
+                            <>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  ms={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <img
+                                    draggable={false}
+                                    src={emtystate}
+                                    height="230px"
+                                    width="293.93px"
+                                    alt=""
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["EmptyState_heading"]}
+                                  >
+                                    {t("No-polls")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["EmptyState_subHeading"]}
+                                  >
+                                    {t(
+                                      "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                                    )}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </>
+                          ),
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </section>
               </Col>
             </Row>
             {pollsRows.length > 0 && (
@@ -857,7 +905,8 @@ const GroupViewPolls = ({ groupStatus }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='pagination-groups-table d-flex justify-content-center my-3'>
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
                       <CustomPagination
                         pageSizeOptionsValues={["30", "50", "100", "200"]}
                         current={pageNumber}

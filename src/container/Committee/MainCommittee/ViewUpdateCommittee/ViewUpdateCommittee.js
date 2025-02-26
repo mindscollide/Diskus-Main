@@ -5,16 +5,21 @@ import { Button } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCommitteesbyCommitteeId, viewCommitteePageFlag } from "../../../../store/actions/Committee_actions";
+import {
+  getCommitteesbyCommitteeId,
+  viewCommitteePageFlag,
+} from "../../../../store/actions/Committee_actions";
 import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.js";
 import Polls from "../../ViewPolls/Polls/Polls.js";
 import CommitteeTodo from "../../ViewTodo/CommitteeTodo.js";
 import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../ViewMeeting/Meeting";
 import { useSelector } from "react-redux";
+import { usePollsContext } from "../../../../context/PollsContext.js";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { setviewVotes } = usePollsContext();
   let NotificationClickCommitteeID = localStorage.getItem(
     "NotifcationClickViewCommitteeID"
   );
@@ -35,8 +40,8 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
       setViewGroupPage(false);
       localStorage.removeItem("ViewCommitteeID");
       dispatch(viewCommitteePageFlag(false));
-    }
-  }, [])
+    };
+  }, []);
   useEffect(() => {
     try {
       if (ViewCommitteeID !== null || NotificationClickCommitteeID !== null) {
@@ -77,6 +82,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
 
   const handleClose = () => {
     setViewGroupPage(false);
+    setviewVotes(false);
     dispatch(viewCommitteePageFlag(false));
     localStorage.removeItem("ViewCommitteeID");
   };

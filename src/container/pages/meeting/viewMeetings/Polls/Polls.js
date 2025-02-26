@@ -528,7 +528,7 @@ const Polls = () => {
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        if (currentDate < convertIntoGmt) {
+        if (currentDate < convertIntoGmt && record.isVoter) {
           return (
             <span
               className={styles["DateClass"]}
@@ -621,6 +621,7 @@ const Polls = () => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
+      align: "center",
       width: "70px",
       render: (text, record) => {
         console.log("votevotevotevote", record);

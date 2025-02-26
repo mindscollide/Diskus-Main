@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { requestMeetingRecordingTranscriptApi } from "../../../../store/actions/NewMeetingActions";
+import { requestMeetingRecordingTranscriptApi, requestMeetingRecordingTranscript_clear } from "../../../../store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import {
@@ -24,6 +24,10 @@ const MeetingRecording = ({ title }) => {
   const meetingRecordingFiles = useSelector(
     (state) => state.NewMeetingreducer.meetingRecordingFiles
   );
+  const meetingtranscribeResponse = useSelector(
+    (state) => state.NewMeetingreducer.meetingTranscriptResponse
+  );
+  console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -86,6 +90,22 @@ const MeetingRecording = ({ title }) => {
       }
     } catch (error) {}
   }, [meetingRecordingFiles]);
+
+  useEffect(() => {
+    if (meetingtranscribeResponse !== null) {
+      if (
+        meetingtranscribeResponse.responseMessage.toLowerCase() ===
+        "DataRoom_DataRoomManager_RequestMeetingRecordingTranscript_01".toLowerCase()
+      ) {
+        let copyData = [...data];
+        if (copyData.length > 0) {
+          copyData[0].transcriptStatus = 3;
+          setData(copyData);
+        }
+        dispatch(requestMeetingRecordingTranscript_clear())
+      }
+    }
+  }, [meetingtranscribeResponse]);
 
   const handleClickTranscribe = (record) => {
     console.log("record", record);
@@ -189,10 +209,15 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-center gap-3'>
+                className='d-flex justify-content-center align-items-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
-                  {t("Transcibing")}
+                  {`${t("Transcibing")}...`}
                 </span>
+                <Button
+                  className={styles["DownloadBtn"]}
+                  text={t("Download")}
+                  onClick={() => DownloadRecording(record)}
+                />
               </Col>
             </Row>
           );
@@ -200,7 +225,7 @@ const MeetingRecording = ({ title }) => {
       },
     },
   ];
-
+  console.log(data, "transcriptStatus");
   const DownloadRecording = async (record) => {
     let data = {
       FileID: Number(record.fileID),
@@ -228,7 +253,12 @@ const MeetingRecording = ({ title }) => {
               </span>
             </Col>
             <Col sm={12} md={12} lg={12}>
-              <Table rows={data} className={"RecordingTable"} column={columns} pagination={false} />
+              <Table
+                rows={data}
+                className={"RecordingTable"}
+                column={columns}
+                pagination={false}
+              />
             </Col>
           </Row>
         </>
