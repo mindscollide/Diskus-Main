@@ -123,6 +123,12 @@ export const MeetingProvider = ({ children }) => {
   const [joinPresenterForOneToOneOrGroup, setPresenterForOneToOneOrGroup] =
     useState(false);
 
+  // Start Presenter View Or Leave One To One Call
+  const [
+    startPresenterViewOrLeaveOneToOne,
+    setStartPresenterViewOrLeaveOneToOne,
+  ] = useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -288,6 +294,8 @@ export const MeetingProvider = ({ children }) => {
     setJoinMeetingVideoParticipant,
     joinPresenterForOneToOneOrGroup,
     setPresenterForOneToOneOrGroup,
+    startPresenterViewOrLeaveOneToOne,
+    setStartPresenterViewOrLeaveOneToOne,
   };
 
   // Provide the state data to the context
