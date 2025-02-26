@@ -11,7 +11,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { requestMeetingRecordingTranscriptApi, requestMeetingRecordingTranscript_clear } from "../../../../store/actions/NewMeetingActions";
+import {
+  requestMeetingRecordingTranscriptApi,
+  requestMeetingRecordingTranscript_clear,
+} from "../../../../store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import {
@@ -26,6 +29,9 @@ const MeetingRecording = ({ title }) => {
   );
   const meetingtranscribeResponse = useSelector(
     (state) => state.NewMeetingreducer.meetingTranscriptResponse
+  );
+  const meetingTranscriptDownloaded = useSelector(
+    (state) => state.NewMeetingreducer.meetingTranscriptDownloaded
   );
   console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
   const dispatch = useDispatch();
@@ -102,10 +108,19 @@ const MeetingRecording = ({ title }) => {
           copyData[0].transcriptStatus = 3;
           setData(copyData);
         }
-        dispatch(requestMeetingRecordingTranscript_clear())
+        dispatch(requestMeetingRecordingTranscript_clear());
       }
     }
   }, [meetingtranscribeResponse]);
+
+  useEffect(() => {
+    if (meetingTranscriptDownloaded !== null) {
+      console.log(
+        { meetingTranscriptDownloaded },
+        "meetingTranscriptDownloaded"
+      );
+    }
+  }, [meetingTranscriptDownloaded]);
 
   const handleClickTranscribe = (record) => {
     console.log("record", record);
