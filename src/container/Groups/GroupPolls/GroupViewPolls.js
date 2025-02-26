@@ -410,9 +410,8 @@ const GroupViewPolls = ({ groupStatus }) => {
             console.log(filter, "filterfilterfilter");
             handleMenuClick(filter.value);
           }}
-          className="d-flex align-items-center justify-content-between"
-        >
-          <div className="Polls_Menu_items">
+          className='d-flex align-items-center justify-content-between'>
+          <div className='Polls_Menu_items'>
             <span
               className={
                 filter.value === "Published"
@@ -420,26 +419,25 @@ const GroupViewPolls = ({ groupStatus }) => {
                   : filter.value === "UnPublished"
                   ? "userstatus-signal-Unpublished_Menu"
                   : "userstatus-signal-disabled_Menu"
-              }
-            ></span>
-            <span className="menu-text">{filter.text}</span>
+              }></span>
+            <span className='menu-text'>{filter.text}</span>
             {selectedValues.includes(filter.value) && (
-              <span className="checkmark">
-                <img src={Tick} alt="" />
+              <span className='checkmark'>
+                <img src={Tick} alt='' />
               </span>
             )}
           </div>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-2">
+      <div className='d-flex align-items-center justify-content-between p-2'>
         <Button
           text={"Reset"}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text="Ok"
+          text='Ok'
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -454,12 +452,12 @@ const GroupViewPolls = ({ groupStatus }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className="d-flex gap-2">
+              <span className='d-flex gap-2'>
                 {t("Poll-title")}{" "}
                 {sortOrderPollingTitle === "descend" ? (
-                  <img src={DescendIcon} alt="" />
+                  <img src={DescendIcon} alt='' />
                 ) : (
-                  <img src={AscendIcon} alt="" />
+                  <img src={AscendIcon} alt='' />
                 )}
               </span>
             </Col>
@@ -491,8 +489,7 @@ const GroupViewPolls = ({ groupStatus }) => {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitleBeforeDueDate(record)}
-            >
+              onClick={() => handleClickonTitleBeforeDueDate(record)}>
               {truncateString(text, 50)}
             </span>
           );
@@ -500,8 +497,7 @@ const GroupViewPolls = ({ groupStatus }) => {
           return (
             <span
               className={styles["DateClass"]}
-              onClick={() => handleClickonTitle(record)}
-            >
+              onClick={() => handleClickonTitle(record)}>
               {truncateString(text, 50)}
             </span>
           );
@@ -517,40 +513,52 @@ const GroupViewPolls = ({ groupStatus }) => {
       align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
-        <ChevronDown className="ChevronPolls" onClick={handleClickChevron} />
+        <ChevronDown className='ChevronPolls' onClick={handleClickChevron} />
       ),
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return (
-            <span className={styles["poll_status"]}>{t("Published")}</span>
+            <div className='d-flex'>
+              <span className='userstatus-signal-PublishedPolls'></span>
+              <p className='m-0 userName FontArabicRegular'>{t("Published")}</p>
+            </div>
           );
         } else if (record.pollStatus?.pollStatusId === 1) {
           return (
-            <span className={styles["poll_status"]}>{t("Unpublished")}</span>
+            <div className='d-flex'>
+              <span className='userstatus-signal-Unpublished'></span>
+              <p className='m-0 userName FontArabicRegular'>
+                {t("Unpublished")}
+              </p>
+            </div>
           );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className={styles["poll_status"]}>{t("Expired")}</span>;
+          return (
+            <div className='d-flex'>
+              <span className='userstatus-signal-disabled'></span>
+              <p className='m-0 userName FontArabicRegular'>{t("Expired")}</p>
+            </div>
+          );
         }
       },
     },
     {
       title: (
         <>
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Due-date")}
             {sortOrderDueDate === "descend" ? (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             ) : (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             )}
           </span>
         </>
@@ -592,13 +600,13 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {" "}
             {t("Created-by")}
             {sortOrderCreatedBy === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -700,14 +708,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                       {!record.wasPollPublished ? (
                         <>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement="topRight" title={t("Edit")}>
+                            <Tooltip placement='topRight' title={t("Edit")}>
                               <img
                                 src={EditIcon}
-                                className="cursor-pointer"
-                                width="21.59px"
-                                height="21.59px"
-                                alt=""
-                                draggable="false"
+                                className='cursor-pointer'
+                                width='21.59px'
+                                height='21.59px'
+                                alt=''
+                                draggable='false'
                                 onClick={() => handleEditBtn(record)}
                               />
                             </Tooltip>
@@ -718,14 +726,14 @@ const GroupViewPolls = ({ groupStatus }) => {
                         <>
                           <Col sm={12} md={5} lg={5}></Col>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement="topLeft" title={t("Delete")}>
+                            <Tooltip placement='topLeft' title={t("Delete")}>
                               <img
                                 src={BinIcon}
-                                alt=""
-                                className="cursor-pointer"
-                                width="21.59px"
-                                height="21.59px"
-                                draggable="false"
+                                alt=''
+                                className='cursor-pointer'
+                                width='21.59px'
+                                height='21.59px'
+                                draggable='false'
                                 onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
@@ -736,27 +744,27 @@ const GroupViewPolls = ({ groupStatus }) => {
                   ) : (
                     <>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement="topRight" title={t("Edit")}>
+                        <Tooltip placement='topRight' title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className="cursor-pointer"
-                            width="21.59px"
-                            height="21.59px"
-                            alt=""
-                            draggable="false"
+                            className='cursor-pointer'
+                            width='21.59px'
+                            height='21.59px'
+                            alt=''
+                            draggable='false'
                             onClick={() => handleEditBtn(record)}
                           />
                         </Tooltip>
                       </Col>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement="topLeft" title={t("Delete")}>
+                        <Tooltip placement='topLeft' title={t("Delete")}>
                           <img
                             src={BinIcon}
-                            alt=""
-                            className="cursor-pointer"
-                            width="21.59px"
-                            height="21.59px"
-                            draggable="false"
+                            alt=''
+                            className='cursor-pointer'
+                            width='21.59px'
+                            height='21.59px'
+                            draggable='false'
                             onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
@@ -811,17 +819,16 @@ const GroupViewPolls = ({ groupStatus }) => {
           <ViewVotesScreen setviewVotes={setviewVotes} />
         ) : (
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end "
-              >
+                className='d-flex justify-content-end '>
                 {groupStatus === 3 && (
                   <Button
                     text={t("Create-polls")}
-                    icon={<img draggable={false} src={addmore} alt="" />}
+                    icon={<img draggable={false} src={addmore} alt='' />}
                     className={styles["Create_polls_Button"]}
                     onClick={handleCreatepolls}
                   />
@@ -838,36 +845,33 @@ const GroupViewPolls = ({ groupStatus }) => {
                         rows={pollsRows}
                         scroll={{ y: "40vh" }}
                         pagination={false}
-                        className="Polling_table"
+                        className='Polling_table'
                         locale={{
                           emptyText: (
                             <>
-                              <Row className="mt-3">
+                              <Row className='mt-3'>
                                 <Col
                                   lg={12}
                                   ms={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <img
                                     draggable={false}
                                     src={emtystate}
-                                    height="230px"
-                                    width="293.93px"
-                                    alt=""
+                                    height='230px'
+                                    width='293.93px'
+                                    alt=''
                                   />
                                 </Col>
                               </Row>
-                              <Row className="mt-2">
+                              <Row className='mt-2'>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span
-                                    className={styles["EmptyState_heading"]}
-                                  >
+                                    className={styles["EmptyState_heading"]}>
                                     {t("No-polls")}
                                   </span>
                                 </Col>
@@ -877,11 +881,9 @@ const GroupViewPolls = ({ groupStatus }) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span
-                                    className={styles["EmptyState_subHeading"]}
-                                  >
+                                    className={styles["EmptyState_subHeading"]}>
                                     {t(
                                       "Be-the-first-to-create-a-poll-and-spark-the-conversation"
                                     )}
@@ -905,8 +907,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="pagination-groups-table d-flex justify-content-center my-3"
-                    >
+                      className='pagination-groups-table d-flex justify-content-center my-3'>
                       <CustomPagination
                         pageSizeOptionsValues={["30", "50", "100", "200"]}
                         current={pageNumber}

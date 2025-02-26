@@ -132,6 +132,7 @@ import {
   removeUpComingEvent,
   AgendaPollVotingStartedAction,
   AgendaPollVotingStartedMQTTObjectDataAction,
+  meetingTranscriptDownloaded,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -3275,6 +3276,12 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(folderRemoveMQTT(data?.payload?.folderID));
           } catch (error) {}
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "MEETING_TRANSCRIPT_DOWNLOADED".toLowerCase()
+        ) {
+          dispatch(meetingTranscriptDownloaded(data.payload));
+          console.log(data.payload, "datapayload");
         }
       }
       //Web Notification
@@ -3325,7 +3332,7 @@ const Dashboard = () => {
             );
           } else if (data.payload.data.status === "Declined") {
             showMessage(
-             t("Document-has-been-declined-successfully"),
+              t("Document-has-been-declined-successfully"),
               "success",
               setOpen
             );

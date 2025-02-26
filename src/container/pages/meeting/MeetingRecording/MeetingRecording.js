@@ -211,7 +211,7 @@ const MeetingRecording = ({ title }) => {
                 lg={12}
                 className='d-flex justify-content-center align-items-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
-                  {`${t("Transcibing")}...`}
+                  {`${t("Transcribing")}...`}
                 </span>
                 <Button
                   className={styles["DownloadBtn"]}
