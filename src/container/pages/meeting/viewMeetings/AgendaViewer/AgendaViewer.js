@@ -119,6 +119,8 @@ const AgendaViewer = () => {
     setMeetingMaterial,
     setMinutes,
     videoTalk,
+    setJoinMeetingVideoParticipant,
+    joinMeetingVideoParticipant,
   } = useMeetingContext();
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -717,6 +719,18 @@ const AgendaViewer = () => {
     }
   }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
+  useEffect(() => {
+    if (joinMeetingVideoParticipant) {
+      console.log("onClickVideoIconOpenVideo");
+      dispatch(participantVideoButtonState(true));
+      // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
+      if (!participantEnableVideoState) {
+        console.log("onClickVideoIconOpenVideo");
+        dispatch(maxParticipantVideoCallPanel(true));
+        setJoinMeetingVideoParticipant(false);
+      }
+    }
+  }, [joinMeetingVideoParticipant]);
   const onClickVideoIconOpenVideo = () => {
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
@@ -818,18 +832,6 @@ const AgendaViewer = () => {
 
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
-    // let data = {
-    //   MeetingID: currentMeetingID,
-    //   RoomID: "21497",
-    // };
-    // sessionStorage.setItem("StopPresenterViewAwait", true);
-    // console.log(data, "presenterViewJoinFlag");
-    // dispatch(stopPresenterViewMainApi(navigate, t, data));
-    // presenterViewHostFlag
-    // ? t("Stop-presenting")
-    // : presenterViewJoinFlag
-    // ? t("Leave-presentation")
-    // : t("Join-presenting")}
     try {
       // if (presenterMeetingId === currentMeeting) {
       console.log("Check Stop");

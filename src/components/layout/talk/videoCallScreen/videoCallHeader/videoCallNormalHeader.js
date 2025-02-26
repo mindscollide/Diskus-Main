@@ -95,7 +95,6 @@ const VideoCallNormalHeader = ({
   const location = useLocation();
 
   const { editorRole } = useContext(MeetingContext);
-  // const { isMeeting } = useMeetingContext();
 
   const leaveModalPopupRef = useRef(null);
 
@@ -268,6 +267,9 @@ const VideoCallNormalHeader = ({
     : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
+  const { leaveOneToOne, setJoinMeetingVideoParticipant, setLeaveOneToOne } =
+    useMeetingContext();
+    
   const getDashboardVideo = getMeetingHostInfo;
 
   const [showNotification, setShowNotification] = useState(true);
@@ -743,7 +745,7 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
-  const leaveCallForNonMeating = async () => {
+  const leaveCallForNonMeating = async (flag) => {
     console.log("busyCall");
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
@@ -781,8 +783,20 @@ const VideoCallNormalHeader = ({
       dispatch(participantPopup(false));
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
+      if (flag) {
+        setJoinMeetingVideoParticipant(true);
+        setLeaveOneToOne(false);
+      }
     } catch (error) {}
   };
+  useEffect(() => {
+    try {
+      if (leaveOneToOne) {
+        console.log("mqtt mqmqmqmqmqmq");
+        leaveCallForNonMeating(true);
+      }
+    } catch (error) {}
+  }, [leaveOneToOne]);
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     dispatch(toggleParticipantsVisibility(false));
@@ -881,11 +895,11 @@ const VideoCallNormalHeader = ({
         localStorage.setItem("VidOff", true);
       } else {
         console.log("busyCall");
-        leaveCallForNonMeating();
+        leaveCallForNonMeating(false);
       }
     } else if (isMeeting === false && meetHostFlag.isDashboardVideo === false) {
       console.log("busyCall");
-      leaveCallForNonMeating();
+      leaveCallForNonMeating(false);
     }
   };
 
