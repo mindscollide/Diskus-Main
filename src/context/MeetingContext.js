@@ -120,7 +120,7 @@ export const MeetingProvider = ({ children }) => {
     useState(false);
 
   // Join One To One or Group Call From Presenter View
-  const [joinOneToOneForPresenterOrGroup, setJoinOneToOneForPresenterOrGroup] =
+  const [joinPresenterForOneToOneOrGroup, setPresenterForOneToOneOrGroup] =
     useState(false);
 
   // Meeting BoardDeck
@@ -286,8 +286,8 @@ export const MeetingProvider = ({ children }) => {
     setLeaveOneToOne,
     joinMeetingVideoParticipant,
     setJoinMeetingVideoParticipant,
-    joinOneToOneForPresenterOrGroup,
-    setJoinOneToOneForPresenterOrGroup,
+    joinPresenterForOneToOneOrGroup,
+    setPresenterForOneToOneOrGroup,
   };
 
   // Provide the state data to the context
