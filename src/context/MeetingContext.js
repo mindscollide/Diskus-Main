@@ -141,6 +141,12 @@ export const MeetingProvider = ({ children }) => {
     setLeavePresenterViewToJoinOneToOne,
   ] = useState(false);
 
+  // state For Leave Meeting Video To Join One To One Or Group Calls
+  const [
+    leaveMeetingVideoForOneToOneOrGroup,
+    setLeaveMeetingVideoForOneToOneOrGroup,
+  ] = useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -312,6 +318,8 @@ export const MeetingProvider = ({ children }) => {
     setJoiningOneToOneAfterLeavingPresenterView,
     leavePresenterViewToJoinOneToOne,
     setLeavePresenterViewToJoinOneToOne,
+    leaveMeetingVideoForOneToOneOrGroup,
+    setLeaveMeetingVideoForOneToOneOrGroup,
   };
 
   // Provide the state data to the context
