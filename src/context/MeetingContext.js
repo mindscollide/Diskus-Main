@@ -116,7 +116,8 @@ export const MeetingProvider = ({ children }) => {
 
   // state for leave one to one  and Join Meeting Video
   const [leaveOneToOne, setLeaveOneToOne] = useState(false);
-  const [joinMeetingVideo, setJoinMeetingVideo] = useState(false);
+  const [joinMeetingVideoParticipant, setJoinMeetingVideoParticipant] =
+    useState(false);
 
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
@@ -279,8 +280,8 @@ export const MeetingProvider = ({ children }) => {
     setRecording,
     leaveOneToOne,
     setLeaveOneToOne,
-    joinMeetingVideo,
-    setJoinMeetingVideo,
+    joinMeetingVideoParticipant,
+    setJoinMeetingVideoParticipant,
   };
 
   // Provide the state data to the context
