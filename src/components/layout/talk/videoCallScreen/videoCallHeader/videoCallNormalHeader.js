@@ -58,9 +58,10 @@ import {
   joinPresenterViewMainApi,
   maxParticipantVideoCallPanel,
   openPresenterViewMainApi,
+  incomingVideoCallFlag,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
-import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
+import { LeaveCall, VideoCallResponse } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
@@ -278,7 +279,8 @@ const VideoCallNormalHeader = ({
     setPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
     setStartPresenterViewOrLeaveOneToOne,
-    joiningOneToOneAfterLeavingPresenterView
+    joiningOneToOneAfterLeavingPresenterView,
+    setJoiningOneToOneAfterLeavingPresenterView,
   } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
@@ -850,12 +852,12 @@ const VideoCallNormalHeader = ({
     try {
       if (joiningOneToOneAfterLeavingPresenterView) {
         console.log("mqtt mqmqmqmqmqmq");
-       
+        participantLeaveCall(1);
       }
     } catch (error) {}
   }, [joiningOneToOneAfterLeavingPresenterView]);
   // For Participant Leave Call
-  const participantLeaveCall = async () => {
+  const participantLeaveCall = async (flag) => {
     dispatch(toggleParticipantsVisibility(false));
     console.log("busyCall");
     let meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -893,7 +895,7 @@ const VideoCallNormalHeader = ({
           MeetingID: Number(currentMeetingID),
         };
 
-        dispatch(LeaveMeetingVideo(Data, navigate, t));
+    await    dispatch(LeaveMeetingVideo(Data, navigate, t));
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -933,7 +935,7 @@ const VideoCallNormalHeader = ({
         };
 
         dispatch(setRaisedUnRaisedParticiant(false));
-        dispatch(LeaveMeetingVideo(Data, navigate, t));
+     await   dispatch(LeaveMeetingVideo(Data, navigate, t));
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -957,6 +959,30 @@ const VideoCallNormalHeader = ({
     } else if (isMeeting === false && meetHostFlag.isDashboardVideo === false) {
       console.log("busyCall");
       leaveCallForNonMeating(0);
+    }
+    if(flag===1&&joiningOneToOneAfterLeavingPresenterView){
+      let currentUserId = Number(localStorage.getItem("userID"));
+      let activeRoomID = localStorage.getItem("activeRoomID");
+      let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+      let incomingRoomID = localStorage.getItem("NewRoomID");
+      setJoiningOneToOneAfterLeavingPresenterView(false)
+      const meetingHost = {
+        isHost: false,
+        isHostId: 0,
+        isDashboardVideo: false,
+      };
+      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      dispatch(normalizeVideoPanelFlag(true));
+      localStorage.setItem("activeCall", true);
+      setIsTimerRunning(false);
     }
   };
 
@@ -1599,7 +1625,7 @@ const VideoCallNormalHeader = ({
                         ? t("Leave-presentation")
                         : t("Leave-call")
                     }
-                    onClick={participantLeaveCall}
+                    onClick={()=>participantLeaveCall(0)}
                   />
 
                   <Button
