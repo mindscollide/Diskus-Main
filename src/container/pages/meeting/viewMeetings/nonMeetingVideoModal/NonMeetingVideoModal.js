@@ -154,12 +154,12 @@ const NonMeetingVideoModal = () => {
       await dispatch(LeaveCall(Data, navigate, t));
       await dispatch(nonMeetingVideoGlobalModal(false));
 
-      let data = {
-        VideoCallURL: String(videoCallURL),
-        WasInVideo: false,
-      };
-      console.log("onClickStopPresenter", data);
-      dispatch(joinPresenterViewMainApi(navigate, t, data));
+      // let data = {
+      //   VideoCallURL: String(videoCallURL),
+      //   WasInVideo: false,
+      // };
+      // console.log("onClickStopPresenter", data);
+      // dispatch(joinPresenterViewMainApi(navigate, t, data));
     } else {
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));

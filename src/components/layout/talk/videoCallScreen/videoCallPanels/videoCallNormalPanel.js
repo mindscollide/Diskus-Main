@@ -1005,9 +1005,15 @@ const VideoPanelNormal = () => {
   };
 
   const disableMicFunction = () => {
+    console.log("disableMicFunction")
     try {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow && presenterViewFlag) {
+        console.log("disableMicFunction");
+        iframe.contentWindow.postMessage("MicOff", "*");
+        setIsMicActive(!isMicActive);
+        localStorage.setItem("MicOff", !isMicActive);
+      }else if(iframe && iframe.contentWindow){
         console.log("disableMicFunction");
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);
