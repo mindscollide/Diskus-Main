@@ -290,6 +290,7 @@ const AgendaViewer = () => {
   const [agendaName, setAgendaName] = useState("");
   const [agendaIndex, setAgendaIndex] = useState(-1);
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
@@ -390,7 +391,6 @@ const AgendaViewer = () => {
     setShareEmailView(!shareEmailView);
   };
 
-  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   const leaveCallHost = () => {
     let Data = {
@@ -731,6 +731,7 @@ const AgendaViewer = () => {
       }
     }
   }, [joinMeetingVideoParticipant]);
+
   const onClickVideoIconOpenVideo = () => {
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(

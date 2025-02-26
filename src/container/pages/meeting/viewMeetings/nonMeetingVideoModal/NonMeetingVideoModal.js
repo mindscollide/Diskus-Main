@@ -28,7 +28,11 @@ const NonMeetingVideoModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setLeaveOneToOne } = useMeetingContext();
+  const {
+    setLeaveOneToOne,
+    joinPresenterForOneToOneOrGroup,
+    setPresenterForOneToOneOrGroup,
+  } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
@@ -70,7 +74,10 @@ const NonMeetingVideoModal = () => {
 
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
-    if (presenterViewFlag && presenterViewHostFlag && !activeCallState) {
+    if (joinPresenterForOneToOneOrGroup) {
+      await dispatch(nonMeetingVideoGlobalModal(false));
+      setLeaveOneToOne(true);
+    } else if (presenterViewFlag && presenterViewHostFlag && !activeCallState) {
       let data = {
         MeetingID: Number(currentMeeting),
         RoomID: String(NewRoomID),

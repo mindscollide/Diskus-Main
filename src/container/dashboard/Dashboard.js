@@ -226,7 +226,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const { cancelConfirmationModal } = useMeetingContext();
+  const { cancelConfirmationModal,setPresenterForOneToOneOrGroup } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -495,6 +495,7 @@ const Dashboard = () => {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
         } else if (activeCallState && currentCallType === 1) {
           console.log("mqtt mqmqmqmqmqmq", payload);
+          setPresenterForOneToOneOrGroup(true)
           await dispatch(nonMeetingVideoGlobalModal(true));
         } else if (isMeetingVideo) {
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
