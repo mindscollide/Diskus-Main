@@ -444,7 +444,8 @@ const VideoCallNormalHeader = ({
             leavePresenterViewToJoinOneToOne ? 3 : 0,
             leavePresenterViewToJoinOneToOne,
             setLeaveMeetingVideoForOneToOneOrGroup,
-            setJoiningOneToOneAfterLeavingPresenterView
+            setJoiningOneToOneAfterLeavingPresenterView,
+            setStartPresenterViewOrLeaveOneToOne
           )
         );
       } else {

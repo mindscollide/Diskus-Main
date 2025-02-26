@@ -1596,7 +1596,8 @@ const stopPresenterViewMainApi = (
   flag,
   leavePresenterViewToJoinOneToOne,
   setLeaveMeetingVideoForOneToOneOrGroup,
-  setJoiningOneToOneAfterLeavingPresenterView
+  setJoiningOneToOneAfterLeavingPresenterView,
+  setStartPresenterViewOrLeaveOneToOne
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
@@ -1631,7 +1632,8 @@ const stopPresenterViewMainApi = (
               flag,
               leavePresenterViewToJoinOneToOne,
               setLeaveMeetingVideoForOneToOneOrGroup,
-              setJoiningOneToOneAfterLeavingPresenterView
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setStartPresenterViewOrLeaveOneToOne
             )
           );
         } else if (response.data.responseCode === 200) {
