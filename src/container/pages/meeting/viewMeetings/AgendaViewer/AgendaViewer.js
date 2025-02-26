@@ -122,6 +122,7 @@ const AgendaViewer = () => {
     setJoinMeetingVideoParticipant,
     joinMeetingVideoParticipant,
     setStartPresenterViewOrLeaveOneToOne,
+    setPresenterForOneToOneOrGroup,
   } = useMeetingContext();
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -859,14 +860,21 @@ const AgendaViewer = () => {
           dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
         }
       } else if (value === 2) {
-        console.log("onClickStopPresenter", value);
-        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL),
-          WasInVideo: isMeetingVideo ? true : false,
-        };
-        console.log("onClickStopPresenter", data);
-        dispatch(joinPresenterViewMainApi(navigate, t, data));
+        let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+        let currentCallType = JSON.parse(localStorage.getItem("CallType"));
+        if (activeCallState && currentCallType === 1) {
+          setPresenterForOneToOneOrGroup(true);
+          dispatch(nonMeetingVideoGlobalModal(true));
+        } else {
+          console.log("onClickStopPresenter", value);
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL),
+            WasInVideo: isMeetingVideo ? true : false,
+          };
+          console.log("onClickStopPresenter", data);
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        }
       } else if (value === 3) {
         // if (alreadyInMeetingVideo) {
         sessionStorage.removeItem("alreadyInMeetingVideo");

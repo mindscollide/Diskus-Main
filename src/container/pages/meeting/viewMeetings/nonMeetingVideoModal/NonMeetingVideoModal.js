@@ -32,6 +32,7 @@ const NonMeetingVideoModal = () => {
     setLeaveOneToOne,
     joinPresenterForOneToOneOrGroup,
     startPresenterViewOrLeaveOneToOne,
+    setJoiningOneToOneAfterLeavingPresenterView,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
@@ -120,16 +121,7 @@ const NonMeetingVideoModal = () => {
       !presenterViewHostFlag &&
       !activeCallState
     ) {
-      console.log("Check");
-      let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
-      );
-      let data = {
-        RoomID: String(acceptedRoomID),
-        UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(meetingTitle),
-      };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 3));
+      setJoiningOneToOneAfterLeavingPresenterView(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
       // if (isMeetingVideo) {
       //   // const meetingHost = {
