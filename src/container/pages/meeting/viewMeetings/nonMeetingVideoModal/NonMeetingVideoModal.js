@@ -77,83 +77,35 @@ const NonMeetingVideoModal = () => {
 
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
+    console.log("busyCall");
+    let currentCallType = Number(localStorage.getItem("CallType"));
+    let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     if (joinPresenterForOneToOneOrGroup) {
+      console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
-    }
-    if (startPresenterViewOrLeaveOneToOne) {
+    } else if (startPresenterViewOrLeaveOneToOne) {
+      console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
     } else if (presenterViewFlag && presenterViewHostFlag && !activeCallState) {
-      let data = {
-        MeetingID: Number(currentMeeting),
-        RoomID: String(NewRoomID),
-        VideoCallUrl: Number(videoCallURL),
-      };
-      // sessionStorage.setItem("StopPresenterViewAwait", true);
-      console.log(data, "presenterViewJoinFlag");
-
-      await dispatch(stopPresenterViewMainApi(navigate, t, data, 1));
+      console.log("busyCall");
+      setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
-      // if (isMeetingVideo) {
-      //   console.log("Check First");
-      //   let Data = {
-      //     RoomID: String(newRoomId),
-      //     UserGUID: String(isGuid),
-      //     Name: String(meetingTitle),
-      //     IsHost: getMeetingHost?.isHost ? true : false,
-      //     MeetingID: Number(currentMeeting),
-      //   };
-      //   await dispatch(LeaveMeetingVideo(Data, navigate, t));
-      // }
-
-      // let Data = {
-      //   ReciepentID: currentUserId,
-      //   RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-      //   CallStatusID: 1,
-      //   CallTypeID: callTypeID,
-      // };
-      // dispatch(VideoCallResponse(Data, navigate, t));
-      // dispatch(incomingVideoCallFlag(false));
-      // localStorage.setItem("activeCall", true);
     } else if (
       presenterViewFlag &&
       !presenterViewHostFlag &&
       !activeCallState
     ) {
+      console.log("busyCall");
       setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
-      // if (isMeetingVideo) {
-      //   // const meetingHost = {
-      //   //   isHost: false,
-      //   //   isHostId: 0,
-      //   //   isDashboardVideo: false,
-      //   // };
-      //   // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-      //   console.log("Check First");
-      //   let Data = {
-      //     RoomID: String(newRoomId),
-      //     UserGUID: String(isGuid),
-      //     Name: String(meetingTitle),
-      //     IsHost: getMeetingHost?.isHost ? true : false,
-      //     MeetingID: Number(currentMeeting),
-      //   };
-      //   await dispatch(LeaveMeetingVideo(Data, navigate, t));
-      // }
-
-      // let Data = {
-      //   ReciepentID: currentUserId,
-      //   RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-      //   CallStatusID: 1,
-      //   CallTypeID: callTypeID,
-      // };
-      // dispatch(VideoCallResponse(Data, navigate, t));
-      // dispatch(incomingVideoCallFlag(false));
-      // localStorage.setItem("activeCall", true);
     } else if (activeCallState && currentCallType === 1) {
+      console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
     } else {
+      console.log("busyCall");
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));

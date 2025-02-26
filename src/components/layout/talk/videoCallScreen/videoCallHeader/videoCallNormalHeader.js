@@ -286,6 +286,7 @@ const VideoCallNormalHeader = ({
     setJoiningOneToOneAfterLeavingPresenterView,
     setLeavePresenterViewToJoinOneToOne,
     setLeaveMeetingVideoForOneToOneOrGroup,
+    leaveMeetingVideoForOneToOneOrGroup,
   } = useMeetingContext();
 
   const getDashboardVideo = getMeetingHostInfo;
@@ -441,10 +442,9 @@ const VideoCallNormalHeader = ({
             t,
             data,
             leavePresenterViewToJoinOneToOne ? 3 : 0,
-            leavePresenterViewToJoinOneToOne &&
-              leavePresenterViewToJoinOneToOne,
+            leavePresenterViewToJoinOneToOne,
             setLeaveMeetingVideoForOneToOneOrGroup,
-            setStartPresenterViewOrLeaveOneToOne
+            setJoiningOneToOneAfterLeavingPresenterView
           )
         );
       } else {
@@ -686,7 +686,7 @@ const VideoCallNormalHeader = ({
   };
 
   // for Host leave Call
-  const leaveCall = async (flag, flag2, flag3) => {
+  const leaveCall = async (flag, flag2, flag3, flag4) => {
     console.log("busyCall");
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
@@ -744,19 +744,28 @@ const VideoCallNormalHeader = ({
     // dispatch(LeaveCall(Data, navigate, t));
 
     if (flag) {
-      console.log("mqtt mqmqmqmqmqmq");
+      console.log("busyCall");
+
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
     if (flag2) {
-      console.log("mqtt mqmqmqmqmqmq");
+      console.log("busyCall");
+
       dispatch(endMeetingStatusForQuickMeetingVideo(false));
       dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
     if (flag3) {
-      console.log("mqtt mqmqmqmqmqmq");
+      console.log("busyCall");
+
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
+    }
+    if (flag4) {
+      console.log("busyCall");
+
+      setLeaveMeetingVideoForOneToOneOrGroup(false);
+      setJoiningOneToOneAfterLeavingPresenterView(true);
     }
   };
 
@@ -765,7 +774,12 @@ const VideoCallNormalHeader = ({
   //     leaveCall(false, false, false, true);
   //   }
   // }, [meetingStoppedByPresenter]);
-
+  useEffect(() => {
+    if (leaveMeetingVideoForOneToOneOrGroup) {
+      console.log("busyCall");
+      leaveCall(false, false, false, true);
+    }
+  }, [leaveMeetingVideoForOneToOneOrGroup]);
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
@@ -885,7 +899,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leavePresenterViewToJoinOneToOne) {
-        console.log("mqtt mqmqmqmqmqmq");
+        console.log("busyCall");
         participantLeaveCall();
       }
     } catch (error) {}

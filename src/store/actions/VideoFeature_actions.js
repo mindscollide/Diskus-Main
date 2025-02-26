@@ -1596,7 +1596,7 @@ const stopPresenterViewMainApi = (
   flag,
   leavePresenterViewToJoinOneToOne,
   setLeaveMeetingVideoForOneToOneOrGroup,
-  setStartPresenterViewOrLeaveOneToOne,
+  setJoiningOneToOneAfterLeavingPresenterView
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
@@ -1631,7 +1631,7 @@ const stopPresenterViewMainApi = (
               flag,
               leavePresenterViewToJoinOneToOne,
               setLeaveMeetingVideoForOneToOneOrGroup,
-              setStartPresenterViewOrLeaveOneToOne,
+              setJoiningOneToOneAfterLeavingPresenterView
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1690,10 +1690,19 @@ const stopPresenterViewMainApi = (
               } else {
                 localStorage.removeItem("presenterViewvideoURL");
               }
-              if(flag===3){
-                if(leavePresenterViewToJoinOneToOne){
-                  setStartPresenterViewOrLeaveOneToOne(false)
-                  setLeaveMeetingVideoForOneToOneOrGroup(true)
+              console.log("busyCall", flag);
+              if (flag === 3) {
+                console.log("busyCall");
+                if (leavePresenterViewToJoinOneToOne) {
+                  console.log("busyCall");
+                  setStartPresenterViewOrLeaveOneToOne(false);
+                  if (alreadyInMeetingVideo) {
+                    console.log("busyCall");
+                    setLeaveMeetingVideoForOneToOneOrGroup(true);
+                  } else {
+                    console.log("busyCall");
+                    setJoiningOneToOneAfterLeavingPresenterView(true);
+                  }
                 }
               }
               console.log("Check Presenter");
