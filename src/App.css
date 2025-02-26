@@ -8092,3 +8092,6 @@ td.ant-table-column-sort {
 .ant-tooltip {
   max-width: 100% !important;
 }
+.ant-table-tbody>tr>td , .ant-table-thead>tr>th {
+  padding: 8px !important; 
+}

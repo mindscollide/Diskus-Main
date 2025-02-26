@@ -182,7 +182,7 @@ const Attendees = () => {
 
             <Col sm={12} md={3} lg={3} className={styles["AttendingBox"]}>
               <span className={styles["AttendeesCount_NotResponded"]}>
-                {notResponded < 10 ? `0${notResponded}` : notResponded}
+                {notResponded < 10 ? `0${t(notResponded)}` : t(notResponded)}
               </span>
               <span className={styles["AttendeesCount_NotResponded_tagline"]}>
                 {t("Not-responded")}
