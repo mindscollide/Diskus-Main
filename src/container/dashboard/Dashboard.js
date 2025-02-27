@@ -227,8 +227,11 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const { cancelConfirmationModal, setPresenterForOneToOneOrGroup } =
-    useMeetingContext();
+  const {
+    cancelConfirmationModal,
+    setPresenterForOneToOneOrGroup,
+    setLeaveOneToOne,
+  } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -2603,51 +2606,91 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_ACCEPTED".toLowerCase()
         ) {
-          dispatch(videoOutgoingCallFlag(false));
-          dispatch(videoCallAccepted(data.payload, data.payload.message));
-          localStorage.setItem("ringerRoomId", 0);
-          localStorage.setItem("NewRoomID", 0);
-          localStorage.setItem("callerID", data.receiverID[0]);
-          localStorage.setItem("callerName", data.payload.callerName);
-          localStorage.setItem("recipentID", data.payload.recepientID);
-          localStorage.setItem("recipentName", data.payload.recepientName);
-          localStorage.setItem("activeCall", true);
-          localStorage.setItem("activeRoomID", data.payload.roomID);
-          localStorage.setItem("CallType", data.payload.callTypeID);
-          console.log("leavecallMeetingVideo");
-          localStorage.setItem("callTypeID", data.payload.callTypeID);
-          if (data.payload.recepientID === Number(createrID)) {
-            localStorage.setItem("initiateVideoCall", false);
-          }
-
-          let existingData =
-            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-
-          let newData = {
-            RecipientName: data.payload.recepientName,
-            RecipientID: data.payload.recepientID,
-            CallStatus: "Accepted",
-            RoomID: data.payload.roomID,
-          };
-
-          let existingObjectIndex = existingData.findIndex(
-            (item) =>
-              item.RecipientName === newData.RecipientName &&
-              item.RecipientID === newData.RecipientID &&
-              item.RoomID === newData.RoomID
+          let NewRoomID = localStorage.getItem("NewRoomID");
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          let userID = localStorage.getItem("userID");
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          let initiateCallRoomID = JSON.parse(
+            localStorage.getItem("initiateCallRoomID")
           );
 
-          if (existingObjectIndex !== -1) {
-            existingData[existingObjectIndex] = newData;
+          let roomID = 0;
+          if (activeRoomID) {
+            if (Number(activeRoomID) !== 0 && !isCaller) {
+              roomID = activeRoomID;
+            } else {
+              if (!isCaller) {
+                roomID = NewRoomID;
+              } else {
+                roomID = initiateCallRoomID;
+              }
+            }
           } else {
-            existingData.push(newData);
+            if (!isCaller) {
+              roomID = NewRoomID;
+            } else {
+              roomID = initiateCallRoomID;
+            }
           }
+          console.log("mqtt", roomID);
+          let RecipentIDsOninitiateVideoCall =
+            JSON.parse(
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+            ) || [];
+          if (
+            !isMeetingVideo &&
+            Number(data.payload.roomID) === Number(roomID) &&
+            userID !== data.senderID
+          ) {
+            dispatch(videoOutgoingCallFlag(false));
+            dispatch(videoCallAccepted(data.payload, data.payload.message));
+            localStorage.setItem("ringerRoomId", 0);
+            localStorage.setItem("NewRoomID", 0);
+            localStorage.setItem("callerID", data.receiverID[0]);
+            localStorage.setItem("callerName", data.payload.callerName);
+            localStorage.setItem("recipentID", data.payload.recepientID);
+            localStorage.setItem("recipentName", data.payload.recepientName);
+            localStorage.setItem("activeCall", true);
+            localStorage.setItem("activeRoomID", data.payload.roomID);
+            localStorage.setItem("CallType", data.payload.callTypeID);
+            console.log("leavecallMeetingVideo");
+            localStorage.setItem("callTypeID", data.payload.callTypeID);
+            if (data.payload.recepientID === Number(createrID)) {
+              localStorage.setItem("initiateVideoCall", false);
+            }
 
-          localStorage.setItem(
-            "callerStatusObject",
-            JSON.stringify(existingData)
-          );
-          dispatch(callRequestReceivedMQTT({}, ""));
+            let existingData =
+              JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+            let newData = {
+              RecipientName: data.payload.recepientName,
+              RecipientID: data.payload.recepientID,
+              CallStatus: "Accepted",
+              RoomID: data.payload.roomID,
+            };
+            if (RecipentIDsOninitiateVideoCall.length > 0) {
+              const index = RecipentIDsOninitiateVideoCall.indexOf(
+                data.payload.recepientID
+              );
+              if (index !== -1) {
+                // Remove the matching value
+                RecipentIDsOninitiateVideoCall.splice(index, 1);
+                localStorage.setItem(
+                  "RecipentIDsOninitiateVideoCall",
+                  JSON.stringify(RecipentIDsOninitiateVideoCall)
+                );
+                existingData.push(newData);
+                localStorage.setItem(
+                  "callerStatusObject",
+                  JSON.stringify(existingData)
+                );
+                dispatch(callRequestReceivedMQTT({}, ""));
+              }
+            }
+          }
         } else if (
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_REJECTED".toLowerCase()
@@ -2656,255 +2699,239 @@ const Dashboard = () => {
           //To make false sessionStorage which is set on VideoCall
           localStorage.setItem("ringerRoomId", 0);
           sessionStorage.setItem("NonMeetingVideoCall", false);
-          console.log("mqtt");
-          let callerID = Number(localStorage.getItem("callerID"));
-          console.log("mqtt");
           let userID = Number(localStorage.getItem("userID"));
-
-          console.log("mqtt");
-          let newCallerID = Number(localStorage.getItem("newCallerID"));
-          console.log("mqtt");
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
-          console.log("mqtt");
-          let NewRoomID = localStorage.getItem("NewRoomID");
-          let initiateRoomID = localStorage.getItem("initiateCallRoomID");
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-          console.log("mqtt");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          console.log("mqtt");
-          let callTypeID = Number(localStorage.getItem("callTypeID"));
-          console.log("mqtt", callTypeID);
+          let NewRoomID = localStorage.getItem("NewRoomID");
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+          let initiateCallRoomID = JSON.parse(
+            localStorage.getItem("initiateCallRoomID")
+          );
 
-          if (callTypeID === 1) {
-            console.log("mqtt");
-            if (userID !== data.recepientID) {
-              console.log("mqtt");
-              let Data = {
-                OrganizationID: Number(currentOrganization),
-                RoomID: presenterViewFlag ? NewRoomID : initiateRoomID,
-                IsCaller: true,
-                CallTypeID: callTypeID,
-              };
-              console.log("mqtt");
-              dispatch(LeaveCall(Data, navigate, t));
-              console.log("mqtt");
-              dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message)
-              );
-              console.log("mqtt");
-              sessionStorage.setItem("NonMeetingVideoCall", false);
-              localStorage.setItem("activeCall", false);
-              localStorage.setItem("newCallerID", callerID);
-              localStorage.setItem("initiateVideoCall", false);
-              localStorage.setItem("NewRoomID", 0);
-              localStorage.setItem("activeRoomID", 0);
-              localStorage.setItem("initiateVideoCall", false);
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(videoOutgoingCallFlag(false));
-            }
-          } else if (callTypeID === 2) {
-            let newData = {
-              RecipientName: data.payload.recepientName,
-              RecipientID: data.payload.recepientID,
-              CallStatus: "Rejected",
-              RoomID: data.payload.roomID,
-            };
-            let existingObjectIndex = existingData.findIndex(
-              (item) =>
-                item.RecipientName === newData.RecipientName &&
-                item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
-            );
-            if (existingObjectIndex !== -1) {
-              existingData[existingObjectIndex] = newData;
+          let roomID = 0;
+          if (activeRoomID) {
+            if (Number(activeRoomID) !== 0 && !isCaller) {
+              roomID = activeRoomID;
             } else {
-              existingData.push(newData);
-            }
-            localStorage.setItem(
-              "callerStatusObject",
-              JSON.stringify(existingData)
-            );
-            console.log("mqtt", isMeeting);
-            if (isMeeting) {
-              console.log("mqtt", isMeetingVideo);
-              if (!isMeetingVideo) {
-                console.log("mqtt");
-              }
-            } else {
-              console.log("mqtt", checkCallStatus(existingData));
-              if (checkCallStatus(existingData)) {
-                localStorage.setItem("activeCall", false);
-                console.log("mqtt", isMeetingVideo);
-                let Data = {
-                  OrganizationID: Number(currentOrganization),
-                  RoomID: initiateRoomID,
-                  IsCaller: true,
-                  CallTypeID: callTypeID,
-                };
-                dispatch(LeaveCall(Data, navigate, t));
-                dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message)
-                );
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(videoOutgoingCallFlag(false));
-                localStorage.setItem("initiateVideoCall", false);
+              if (!isCaller) {
+                roomID = NewRoomID;
               } else {
-                console.log("mqtt", isMeetingVideo);
+                roomID = initiateCallRoomID;
               }
             }
+          } else {
+            if (!isCaller) {
+              roomID = NewRoomID;
+            } else {
+              roomID = initiateCallRoomID;
+            }
           }
+          console.log("mqtt", roomID);
+          let RecipentIDsOninitiateVideoCall =
+            JSON.parse(
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+            ) || [];
+          if (
+            !isMeetingVideo &&
+            Number(data.payload.roomID) === Number(roomID) &&
+            userID !== data.senderID
+          ) {
+            console.log("mqtt", data.payload.callTypeID);
+            if (data.payload.callTypeID === 1) {
+              if (userID !== data.recepientID) {
+                setLeaveOneToOne(true);
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(videoOutgoingCallFlag(false));
+              }
+            } else if (data.payload.callTypeID === 2) {
+              let newData = {
+                RecipientName: data.payload.recepientName,
+                RecipientID: data.payload.recepientID,
+                CallStatus: "Rejected",
+                RoomID: data.payload.roomID,
+              };
+              let RecipentIDsOninitiateVideoCallflag = false;
+              let remainingCount = 0;
+              let existingDataflag = false;
+              let existingDataremainingCount = 0;
+              let existingObjectIndex = [];
+              if (RecipentIDsOninitiateVideoCall.length > 0) {
+                const index = RecipentIDsOninitiateVideoCall.indexOf(
+                  data.payload.recepientID
+                );
+                if (index !== -1) {
+                  // Remove the matching value
+                  RecipentIDsOninitiateVideoCall.splice(index, 1);
+                  localStorage.setItem(
+                    "RecipentIDsOninitiateVideoCall",
+                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                  );
+                  RecipentIDsOninitiateVideoCallflag = true;
+                  remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
+                } else {
+                }
+                console.log("mqtt", RecipentIDsOninitiateVideoCall);
+              } else {
+                if (existingData.length > 0) {
+                  existingObjectIndex = existingData.findIndex(
+                    (item) =>
+                      item.RecipientName === newData.RecipientName &&
+                      item.RecipientID === newData.RecipientID &&
+                      item.RoomID === newData.RoomID
+                  );
+                  if (existingObjectIndex !== -1) {
+                    existingData.splice(existingObjectIndex, 1);
+                    localStorage.setItem(
+                      "callerStatusObject",
+                      JSON.stringify(existingData)
+                    );
+                    existingDataflag = true;
+                    existingDataremainingCount = existingData.length || 0;
+                  }
+                  if (existingDataflag) {
+                    if (existingDataremainingCount === 0) {
+                      if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        setLeaveOneToOne(true);
+                        dispatch(videoChatMessagesFlag(false));
+                        dispatch(videoOutgoingCallFlag(false));
+                      }
+                    }
+                  }
+                }
+              }
+              if (RecipentIDsOninitiateVideoCallflag) {
+                if (remainingCount === 0) {
+                  if (existingData.length === 0) {
+                    setLeaveOneToOne(true);
+                    dispatch(videoChatMessagesFlag(false));
+                    dispatch(videoOutgoingCallFlag(false));
+                  }
+                }
+              } else {
+                if (existingData.length > 0) {
+                  existingObjectIndex = existingData.findIndex(
+                    (item) =>
+                      item.RecipientName === newData.RecipientName &&
+                      item.RecipientID === newData.RecipientID &&
+                      item.RoomID === newData.RoomID
+                  );
+                  if (existingObjectIndex !== -1) {
+                    existingData.splice(existingObjectIndex, 1);
+                    localStorage.setItem(
+                      "callerStatusObject",
+                      JSON.stringify(existingData)
+                    );
+                    existingDataflag = true;
+                    existingDataremainingCount = existingData.length || 0;
+                  }
+                  if (existingDataflag) {
+                    if (existingDataremainingCount === 0) {
+                      if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        setLeaveOneToOne(true);
+                        dispatch(videoChatMessagesFlag(false));
+                        dispatch(videoOutgoingCallFlag(false));
+                      }
+                    }
+                  }
+                }
+              }
+            }
 
-          if (currentUserName !== data.payload.recepientName) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `${data.payload.recepientName} has declined the call`,
-            });
-            setNotificationID(id);
+            if (currentUserName !== data.payload.recepientName) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `${data.payload.recepientName} has declined the call`,
+              });
+              setNotificationID(id);
+            }
+            dispatch(callRequestReceivedMQTT({}, ""));
           }
-          dispatch(callRequestReceivedMQTT({}, ""));
         } else if (
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_UNANSWERED".toLowerCase()
         ) {
-          //To make false sessionStorage which is set on VideoCall
-          sessionStorage.setItem("NonMeetingVideoCall", false);
-          localStorage.setItem("ringerRoomId", 0);
-          let callTypeID = Number(localStorage.getItem("callTypeID"));
-          let callerID = Number(localStorage.getItem("callerID"));
-          let newCallerID = Number(localStorage.getItem("newCallerID"));
+          let roomID = localStorage.getItem("acceptedRoomID");
+          let newRoomID = localStorage.getItem("newRoomId");
+          let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+          let RoomID =
+            presenterViewFlag && !JSON.parse(localStorage.getItem("activeCall"))
+              ? roomID
+              : JSON.parse(localStorage.getItem("activeCall"))
+              ? localStorage.getItem("activeRoomID") != 0 &&
+                localStorage.getItem("activeRoomID") != null
+                ? localStorage.getItem("activeRoomID")
+                : localStorage.getItem("initiateCallRoomID")
+              : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+              ? newRoomID
+              : localStorage.getItem("participantRoomId");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          // For the caller side
-          let initiateRoomID = localStorage.getItem("initiateCallRoomID");
-
-          // For Receiver Side
-          let NewRoomID = localStorage.getItem("NewRoomID");
-
-          let existingData =
-            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-          localStorage.setItem("newCallerID", callerID);
-          if (Number(data.senderID) !== Number(createrID)) {
-            console.log("mqtt", callTypeID);
-            if (Number(createrID) !== data.payload.recepientID) {
-              console.log("mqtt", callTypeID);
-              localStorage.setItem("unansweredFlag", true);
+          console.log("mqtt");
+          console.log("mqtt", RoomID);
+          if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
+            //To make false sessionStorage which is set on VideoCall
+            if (Number(data.senderID) !== Number(createrID)) {
+              if (Number(createrID) !== data.payload.recepientID) {
+                localStorage.setItem("unansweredFlag", true);
+              }
             }
-            console.log("mqtt", callTypeID);
+
             setNotification({
               ...notification,
               notificationShow: true,
               message: t("The-call-was-unanswered"),
             });
             setNotificationID(id);
+            if (data.payload.callTypeID === 1) {
+              sessionStorage.setItem("NonMeetingVideoCall", false);
+              setLeaveOneToOne(true);
+              dispatch(videoChatMessagesFlag(false));
+              dispatch(videoOutgoingCallFlag(false));
+              dispatch(
+                callRequestReceivedMQTT(data.payload, data.payload.message)
+              );
+            } else {
+              let RecipentIDsOninitiateVideoCall =
+                JSON.parse(
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                ) || [];
 
-            let newData = {
-              RecipientName: data.payload.recepientName,
-              RecipientID: data.payload.recepientID,
-              CallStatus: "Unanswered",
-              RoomID: data.payload.roomID,
-            };
-            console.log("mqtt", callTypeID);
-            let existingObjectIndex = existingData.findIndex(
-              (item) =>
-                item.RecipientName === newData.RecipientName &&
-                item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
-            );
-            if (existingObjectIndex !== -1) {
-              console.log("mqtt", callTypeID);
-              existingData[existingObjectIndex] = newData;
-            } else {
-              console.log("mqtt", callTypeID);
-              existingData.push(newData);
-            }
-            console.log("mqtt", callTypeID);
-            localStorage.setItem(
-              "callerStatusObject",
-              JSON.stringify(existingData)
-            );
-          }
-          console.log("mqtt", callTypeID);
-          if (callerID === newCallerID) {
-            console.log("mqtt", callTypeID);
-            if (isMeeting) {
-              console.log("mqtt", callTypeID);
-              if (!isMeetingVideo) {
-                console.log("mqtt", callTypeID);
-                localStorage.setItem("activeCall", false);
-              }
-            } else {
-              console.log("mqtt", callTypeID);
-              localStorage.setItem("activeCall", false);
-            }
-          }
-          console.log("mqtt", callTypeID);
-          if (Number(callTypeID) === 2 || Number(callTypeID) === 1) {
-            console.log("mqtt", isMeeting);
-            if (isMeeting) {
-              console.log("mqtt", isMeetingVideo);
-              if (!isMeetingVideo) {
-                console.log("mqtt");
-              }
-            } else {
-              if (Number(callTypeID) === 1) {
-                console.log("mqtt", isMeetingVideo);
-                console.log("Participant Caller");
-                let unAnsweredCheck = JSON.parse(
-                  localStorage.getItem("unansweredFlag")
+              let existingData =
+                JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+              console.log("mqtt", checkCallStatus(existingData));
+              if (RecipentIDsOninitiateVideoCall.length > 0) {
+                const index = RecipentIDsOninitiateVideoCall.indexOf(
+                  data.payload.recepientID
                 );
-
-                if (unAnsweredCheck) {
-                  let Data = {
-                    OrganizationID: Number(currentOrganization),
-                    RoomID: initiateRoomID,
-                    IsCaller: true,
-                    CallTypeID: callTypeID,
-                  };
-                  dispatch(LeaveCall(Data, navigate, t));
-                } else {
-                  let Data = {
-                    OrganizationID: Number(currentOrganization),
-                    RoomID: NewRoomID,
-                    IsCaller: true,
-                    CallTypeID: callTypeID,
-                  };
-                  dispatch(LeaveCall(Data, navigate, t));
-                }
-                dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message)
-                );
-                dispatch(normalizeVideoPanelFlag(false));
-                dispatch(videoOutgoingCallFlag(false));
-                localStorage.setItem("initiateVideoCall", false);
-              } else {
-                console.log("mqtt", checkCallStatus(existingData));
-                if (checkCallStatus(existingData)) {
-                  console.log("mqtt", isMeetingVideo);
-                  console.log("host Caller");
-                  let Data = {
-                    OrganizationID: Number(currentOrganization),
-                    RoomID: initiateRoomID,
-                    IsCaller: true,
-                    CallTypeID: callTypeID,
-                  };
-                  dispatch(LeaveCall(Data, navigate, t));
-                  dispatch(
-                    callRequestReceivedMQTT(data.payload, data.payload.message)
+                if (index !== -1) {
+                  // Remove the matching value
+                  RecipentIDsOninitiateVideoCall.splice(index, 1);
+                  localStorage.setItem(
+                    "RecipentIDsOninitiateVideoCall",
+                    JSON.stringify(RecipentIDsOninitiateVideoCall)
                   );
-                  dispatch(normalizeVideoPanelFlag(false));
-                  dispatch(videoOutgoingCallFlag(false));
-                  localStorage.setItem("activeCall", false);
-                  localStorage.setItem("initiateVideoCall", false);
-                } else {
-                  console.log("mqtt", isMeetingVideo);
+                  if (
+                    RecipentIDsOninitiateVideoCall.length === 0 &&
+                    existingData.length === 0
+                  ) {
+                    sessionStorage.setItem("NonMeetingVideoCall", false);
+                    setLeaveOneToOne(true);
+                    dispatch(videoChatMessagesFlag(false));
+                    dispatch(videoOutgoingCallFlag(false));
+                    dispatch(
+                      callRequestReceivedMQTT(
+                        data.payload,
+                        data.payload.message
+                      )
+                    );
+                  }
                 }
               }
             }
@@ -2957,15 +2984,25 @@ const Dashboard = () => {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
           let callTypeID = localStorage.getItem("callTypeID");
+          let isCaller = localStorage.getItem("isCaller");
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let roomID = 0;
           if (activeRoomID) {
-            if (Number(activeRoomID) !== 0) {
+            if (Number(activeRoomID) !== 0 && !isCaller) {
               roomID = activeRoomID;
             } else {
-              roomID = NewRoomID;
+              if (!isCaller) {
+                roomID = NewRoomID;
+              } else {
+                roomID = initiateCallRoomID;
+              }
             }
           } else {
-            roomID = NewRoomID;
+            if (!isCaller) {
+              roomID = NewRoomID;
+            } else {
+              roomID = initiateCallRoomID;
+            }
           }
           if (
             Number(roomID) === Number(data.payload.roomID) &&
@@ -3104,74 +3141,76 @@ const Dashboard = () => {
             presenterViewFlag && !JSON.parse(localStorage.getItem("activeCall"))
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
-              ? localStorage.getItem("activeRoomID")
+              ? localStorage.getItem("activeRoomID") != 0 &&
+                localStorage.getItem("activeRoomID") != null
+                ? localStorage.getItem("activeRoomID")
+                : localStorage.getItem("initiateCallRoomID")
               : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
               ? newRoomID
               : localStorage.getItem("participantRoomId");
+          console.log("mqtt");
+          console.log("mqtt", RoomID);
           if (RoomID === data.payload.roomID && activeCall) {
-            let callerID = Number(localStorage.getItem("callerID"));
-            let callTypeID = Number(localStorage.getItem("CallType"));
-            localStorage.setItem("newCallerID", callerID);
-            localStorage.setItem("initiateVideoCall", false);
-
-            let existingData =
-              JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-
-            let newData = {
-              RecipientName: data.payload.recipientName,
-              RecipientID: data.payload.recipientID,
-              CallStatus: "Disconnected",
-              RoomID: data.payload.roomID,
-            };
-
-            let existingObjectIndex = existingData.findIndex(
-              (item) =>
-                item.RecipientName === newData.RecipientName &&
-                item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
-            );
-
-            if (existingObjectIndex !== -1) {
-              existingData[existingObjectIndex] = newData;
-            } else {
-              existingData.push(newData);
-            }
-            localStorage.setItem(
-              "callerStatusObject",
-              JSON.stringify(existingData)
-            );
-
-            if (callTypeID === 1) {
-              let Data = {
-                OrganizationID: Number(currentOrganization),
-                RoomID: RoomID,
-                IsCaller: JSON.parse(localStorage.getItem("isCaller")),
-                CallTypeID: callTypeID,
-              };
-              dispatch(LeaveCall(Data, navigate, t));
-              dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message)
-              );
-
-              localStorage.setItem("activeCall", false);
-              localStorage.setItem("isCaller", false);
-              localStorage.setItem("newCallerID", callerID);
-              localStorage.setItem("initiateVideoCall", false);
-              localStorage.setItem("NewRoomID", 0);
-              localStorage.setItem("activeRoomID", 0);
-              localStorage.setItem("initiateVideoCall", false);
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
+            if (data.payload.callTypeID === 1) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `${data.payload.recipientName} has left the call`,
+              });
+              setNotificationID(id);
+              setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
-            } else if (callTypeID === 2) {
+            } else {
+              console.log("mqtt");
+              let callerID = Number(localStorage.getItem("callerID"));
+              localStorage.setItem("newCallerID", callerID);
+              localStorage.setItem("initiateVideoCall", false);
+
+              let existingData =
+                JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+              let RecipentIDsOninitiateVideoCall =
+                JSON.parse(
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                ) || [];
+
+              let newData = {
+                RecipientName: data.payload.recipientName,
+                RecipientID: data.payload.recipientID,
+                CallStatus: "Disconnected",
+                RoomID: data.payload.roomID,
+              };
+
+              let existingObjectIndex = existingData.findIndex(
+                (item) =>
+                  item.RecipientName === newData.RecipientName &&
+                  item.RecipientID === newData.RecipientID &&
+                  item.RoomID === newData.RoomID
+              );
+              // console.log("mqtt",RoomID)
+
+              if (existingObjectIndex !== -1) {
+                existingData.splice(existingObjectIndex, 1);
+                localStorage.setItem(
+                  "callerStatusObject",
+                  JSON.stringify(existingData)
+                );
+                if (
+                  RecipentIDsOninitiateVideoCall.length === 0 &&
+                  existingData.length === 0
+                ) {
+                  setLeaveOneToOne(true);
+                  dispatch(videoChatMessagesFlag(false));
+                  dispatch(videoOutgoingCallFlag(false));
+                }
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: `${data.payload.recipientName} has left the call`,
+                });
+                setNotificationID(id);
+              }
             }
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `${data.payload.recipientName} has left the call`,
-            });
-            setNotificationID(id);
           }
         } else if (
           data.payload.message.toLowerCase() ===

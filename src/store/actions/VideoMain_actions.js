@@ -172,6 +172,8 @@ const InitiateVideoCall = (Data, navigate, t) => {
               );
               localStorage.setItem("initiateVideoCall", true);
               localStorage.setItem("meetingTitle", "");
+              localStorage.setItem("RecipentIDsOninitiateVideoCall", JSON.stringify(Data.RecipentIDs));
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -704,6 +706,9 @@ const LeaveCall = (Data, navigate, t) => {
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 0);
               sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.setItem("initiateVideoCall", false);
+              localStorage.setItem("NewRoomID", 0);
+              localStorage.setItem("newCallerID", 0);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
