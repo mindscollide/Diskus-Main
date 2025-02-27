@@ -951,7 +951,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <span
                                 className={styles["members-create-group-page"]}
                               >
-                                {t("Members")}
+                                {t("Regular-members")}
                               </span>
                             </Col>
                           </Row>

@@ -374,7 +374,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["members-create-group-page"]}>
-                      {t("Members")}
+                      {t("Regular-members")}
                     </span>
                   </Col>
                 </Row>
