@@ -8260,10 +8260,9 @@ const JoinCurrentMeeting = (
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
                 console.log("busyCall 21");
-                localStorage.setItem("JoinpresenterForonetoone",true)
+                localStorage.setItem("JoinpresenterForonetoone", true);
                 dispatch(nonMeetingVideoGlobalModal(true));
                 dispatch(presenterViewGlobalState(0, true, false, false));
-                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -9244,7 +9243,7 @@ const LeaveMeetingVideo = (
                 console.log("busyCall", flag);
                 if (flag === 3) {
                   console.log("busyCall");
-                  await setLeaveMeetingVideoForOneToOneOrGroup(false)
+                  await setLeaveMeetingVideoForOneToOneOrGroup(false);
                   setJoiningOneToOneAfterLeavingPresenterView(true);
                 }
               } catch {}
@@ -10443,6 +10442,13 @@ const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
   };
 };
 
+const meetingTranscriptDownloaded = (response) => {
+  return {
+    type: actions.MEETING_TRANSCRIPT_DOWNLOADED,
+    payload: response,
+  };
+};
+
 export {
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,
@@ -10631,4 +10637,5 @@ export {
   AgendaPollVotingStartedAction,
   validateEmptyStringUserAvailibilityFailed,
   requestMeetingRecordingTranscript_clear,
+  meetingTranscriptDownloaded,
 };
