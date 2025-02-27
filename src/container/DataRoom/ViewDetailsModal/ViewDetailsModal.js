@@ -68,6 +68,8 @@ const ViewDetailsModal = ({
   });
   const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
 
+  console.log({ documentDetails }, "documentDetailsdocumentDetails");
+
   const handleDetialsButton = () => {
     setDetailsState(true);
     setActivityState(false);
@@ -183,18 +185,17 @@ const ViewDetailsModal = ({
                 lg={11}
                 md={11}
                 sm={11}
-                className="d-flex gap-2 align-items-center"
-              >
+                className='d-flex gap-2 align-items-center'>
                 {documentDetails.type
                   .toLowerCase()
                   .includes("Folder".toLowerCase()) ? (
-                  <img src={folderColor} alt="" height="28px" width="28px" />
+                  <img src={folderColor} alt='' height='28px' width='28px' />
                 ) : (
                   <img
                     src={getIconSource(getFileExtension(documentDetails?.name))}
-                    alt=""
-                    height="28px"
-                    width="28px"
+                    alt=''
+                    height='28px'
+                    width='28px'
                   />
                 )}
 
@@ -205,16 +206,16 @@ const ViewDetailsModal = ({
               <Col lg={1} md={1} sm={1}>
                 <img
                   src={crossIcon}
-                  alt=""
-                  height="18.91px"
-                  width="18.91px"
-                  className="cursor-pointer"
+                  alt=''
+                  height='18.91px'
+                  width='18.91px'
+                  className='cursor-pointer'
                   onClick={handleClose}
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <Row className='mt-3'>
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <Button
                   text={t("Details")}
                   className={
@@ -244,29 +245,27 @@ const ViewDetailsModal = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Scroller"]}
-                      >
-                        <Row className="mt-3">
+                        className={styles["Scroller"]}>
+                        <Row className='mt-3'>
                           <Col lg={12} md={12} sm={12}>
                             <span className={styles["Access_heading"]}>
                               {t("Who-has-access")}
                             </span>
                           </Col>
                         </Row>
-                        <Row className="mt-2">
-                          <Col lg={2} md={2} sm={2} className="gap-3 d-flex">
+                        <Row className='mt-2'>
+                          <Col lg={2} md={2} sm={2} className='gap-3 d-flex'>
                             <img
                               src={`data:image/jpeg;base64,${documentDetails.ownerDetails.base64Img}`}
-                              alt=""
-                              height="30px"
-                              width="30px"
+                              alt=''
+                              height='30px'
+                              width='30px'
                               className={styles["profileClass"]}
                             />
                             <span
-                              className={styles["Vertical_Seperator"]}
-                            ></span>
+                              className={styles["Vertical_Seperator"]}></span>
                           </Col>
-                          <Col lg={10} md={10} sm={10} className="d-flex gap-2">
+                          <Col lg={10} md={10} sm={10} className='d-flex gap-2'>
                             {Number(documentDetails.generalAccess) === 1 ? (
                               <>
                                 {" "}
@@ -277,9 +276,9 @@ const ViewDetailsModal = ({
                                       return (
                                         <img
                                           src={`data:image/jpeg;base64,${data.base64Img}`}
-                                          alt=""
-                                          height="30px"
-                                          width="30px"
+                                          alt=''
+                                          height='30px'
+                                          width='30px'
                                           className={`${styles["profileClass"]} title_tooltip`}
                                           title={`${data.userName} can ${
                                             data.permissionID === 1
@@ -301,10 +300,10 @@ const ViewDetailsModal = ({
                                 <span className={styles["icon_outer_circle"]}>
                                   <img
                                     src={OrganizationIcon}
-                                    alt=""
+                                    alt=''
                                     width={20}
                                     height={20}
-                                    className=""
+                                    className=''
                                     title={t(
                                       "Anyone-in-my-organization-can-find-and-view"
                                     )}
@@ -318,7 +317,7 @@ const ViewDetailsModal = ({
                                   {/* <Tooltip title="Hello"> */}
                                   <img
                                     src={AnyineIcon}
-                                    alt=""
+                                    alt=''
                                     width={17}
                                     height={17}
                                     title={t(
@@ -331,10 +330,19 @@ const ViewDetailsModal = ({
                             ) : null}
                           </Col>
                         </Row>
-                        <Row className="mt-2">
+                        <Row className='mt-2'>
                           <Col lg={12} md={12} sm={12}>
                             <span className={styles["owned_heading"]}>
-                              {t("Owned-by-you-shared-with")}{" "}
+                              {`${t("Owned-by")} ${
+                                Number(
+                                  documentDetails?.ownerDetails?.userID
+                                ) === Number(currentUserID)
+                                  ? t("You")
+                                  : `${
+                                      documentDetails?.ownerDetails?.userName
+                                    } ${t("Shared-with")} `
+                              }`}
+                              {/* {t("Owned-by-you-shared-with")}{" "} */}
                               {documentDetails.sharedUsers.length > 0
                                 ? documentDetails.sharedUsers.map(
                                     (data, index) => (
@@ -351,7 +359,7 @@ const ViewDetailsModal = ({
                             </span>
                           </Col>
                         </Row>
-                        <Row className="mt-2">
+                        <Row className='mt-2'>
                           {documentDetails.sharedUsers.map(
                             (sharedData, index) => {
                               if (
@@ -376,7 +384,7 @@ const ViewDetailsModal = ({
                         </Row>
 
                         <span className={styles["Horizontal_seperator"]}></span>
-                        <Row className="mt-4">
+                        <Row className='mt-4'>
                           <Col lg={12} mg={12} sm={12}>
                             <span className={styles["File_Detials_Heading"]}>
                               {documentDetails.type
@@ -396,35 +404,31 @@ const ViewDetailsModal = ({
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Type")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {documentDetails?.type}
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Storage-used")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {`${convertToArabicNumerals(
                                     documentDetails?.sizeOnDisk,
                                     CurrentLanguage
@@ -432,21 +436,19 @@ const ViewDetailsModal = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Owner")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {Number(
                                     documentDetails?.ownerDetails?.userID
                                   ) === Number(currentUserID)
@@ -455,21 +457,19 @@ const ViewDetailsModal = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Opened")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {`${
                                     documentDetails?.openedDate !== ""
                                       ? newTimeFormaterAsPerUTCTalkDate(
@@ -488,21 +488,19 @@ const ViewDetailsModal = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Download-permissions")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {documentDetails?.downloadPermission}
                                 </span>
                               </Col>
@@ -514,16 +512,14 @@ const ViewDetailsModal = ({
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Size")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {`${convertToArabicNumerals(
                                     documentDetails?.size,
                                     CurrentLanguage
@@ -531,40 +527,36 @@ const ViewDetailsModal = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Location")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {documentDetails?.location}
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Modified")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {`${
                                     documentDetails?.modifiedDate !== ""
                                       ? newTimeFormaterAsPerUTCTalkDate(
@@ -584,21 +576,19 @@ const ViewDetailsModal = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row className="mt-2">
+                            <Row className='mt-2'>
                               <Col
                                 lg={12}
                                 sm={12}
                                 md={12}
-                                className="d-flex flex-column flex-wrap"
-                              >
+                                className='d-flex flex-column flex-wrap'>
                                 <span className={styles["DetialsHeading"]}>
                                   {t("Created")}:
                                 </span>
                                 <span
                                   className={
                                     styles["DetialsHeading_subHeading"]
-                                  }
-                                >
+                                  }>
                                   {newTimeFormaterAsPerUTCTalkDate(
                                     documentDetails?.createdDate + "000000",
                                     CurrentLanguage
@@ -611,10 +601,10 @@ const ViewDetailsModal = ({
                         <Row>
                           <Col lg={12} md={12} sm={12}>
                             <TextField
-                              applyClass="text-area-create-Notify-organizors"
-                              type="text"
+                              applyClass='text-area-create-Notify-organizors'
+                              type='text'
                               as={"textarea"}
-                              rows="4"
+                              rows='4'
                               value={documentDetails?.description}
                               placeholder={t("Add-description")}
                               onBlur={handleBluronDescription}
@@ -630,13 +620,12 @@ const ViewDetailsModal = ({
                   </>
                 ) : activityState ? (
                   <>
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Scroller"]}
-                      >
+                        className={styles["Scroller"]}>
                         {documentActivityDetails?.today?.length > 0 && (
                           <Row>
                             <Col lg={12} md={12} sm={12}>
@@ -656,13 +645,13 @@ const ViewDetailsModal = ({
                               );
                               return (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col lg={1} md={1} sm={1}>
                                       <img
                                         src={`data:image/jpeg;base64,${todayData.base64ImgOwner}`}
-                                        alt=""
-                                        height="30px"
-                                        width="30px"
+                                        alt=''
+                                        height='30px'
+                                        width='30px'
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -670,20 +659,17 @@ const ViewDetailsModal = ({
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-4"
-                                    >
+                                      className='d-flex flex-column  flex-wrap px-4'>
                                       {Number(todayData.actionID) === 1 ? (
                                         <>
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {todayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
                                                 todayData.createdDateTime,
@@ -695,23 +681,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     todayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {todayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -722,13 +706,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {todayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
                                                 todayData.createdDateTime,
@@ -740,23 +722,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     todayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {todayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -768,13 +748,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {todayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
                                                 todayData.createdDateTime,
@@ -786,23 +764,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     todayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {todayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -814,13 +790,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {todayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
                                                 todayData.createdDateTime,
@@ -832,23 +806,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     todayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {todayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -860,13 +832,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {todayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {todayData.createdDateTime !== "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
                                                 todayData.createdDateTime,
@@ -878,23 +848,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     todayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {todayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -924,13 +892,13 @@ const ViewDetailsModal = ({
                             (YesterDayData, index) => {
                               return (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col lg={1} md={1} sm={1}>
                                       <img
                                         src={`data:image/jpeg;base64,${YesterDayData.base64ImgOwner}`}
-                                        alt=""
-                                        height="30px"
-                                        width="30px"
+                                        alt=''
+                                        height='30px'
+                                        width='30px'
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -938,20 +906,17 @@ const ViewDetailsModal = ({
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-4"
-                                    >
+                                      className='d-flex flex-column  flex-wrap px-4'>
                                       {Number(YesterDayData.actionID) === 1 ? (
                                         <>
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {YesterDayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -964,23 +929,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     YesterDayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {YesterDayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -992,13 +955,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {YesterDayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1011,23 +972,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     YesterDayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {YesterDayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1039,13 +998,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {YesterDayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1058,23 +1015,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     YesterDayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {YesterDayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1086,13 +1041,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {YesterDayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1105,23 +1058,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     YesterDayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {YesterDayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1132,13 +1083,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {YesterDayData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {YesterDayData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1151,23 +1100,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     YesterDayData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {YesterDayData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1197,13 +1144,13 @@ const ViewDetailsModal = ({
                             (thisweekData, index) => {
                               return (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col lg={1} md={1} sm={1}>
                                       <img
                                         src={`data:image/jpeg;base64,${thisweekData.base64ImgOwner}`}
-                                        alt=""
-                                        height="30px"
-                                        width="30px"
+                                        alt=''
+                                        height='30px'
+                                        width='30px'
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -1211,21 +1158,18 @@ const ViewDetailsModal = ({
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-4"
-                                    >
+                                      className='d-flex flex-column  flex-wrap px-4'>
                                       {Number(thisweekData.actionID) === 1 ? (
                                         <>
                                           {" "}
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisweekData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1238,23 +1182,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisweekData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisweekData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1266,13 +1208,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisweekData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1285,23 +1225,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisweekData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisweekData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1313,13 +1251,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisweekData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1332,23 +1268,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisweekData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisweekData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1361,13 +1295,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisweekData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1380,23 +1312,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisweekData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisweekData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1408,13 +1338,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisweekData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisweekData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1427,23 +1355,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisweekData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisweekData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1473,13 +1399,13 @@ const ViewDetailsModal = ({
                             (thisMonthData, index) => {
                               return (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col lg={1} md={1} sm={1}>
                                       <img
                                         src={profilepic}
-                                        alt=""
-                                        height="30.25px"
-                                        width="30.25px"
+                                        alt=''
+                                        height='30.25px'
+                                        width='30.25px'
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -1487,20 +1413,17 @@ const ViewDetailsModal = ({
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-4"
-                                    >
+                                      className='d-flex flex-column  flex-wrap px-4'>
                                       {Number(thisMonthData.actionID) === 1 ? (
                                         <>
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1513,23 +1436,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisMonthData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1541,13 +1462,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1560,23 +1479,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisMonthData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1588,13 +1505,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1607,23 +1522,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisMonthData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1635,13 +1548,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1654,23 +1565,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisMonthData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1681,13 +1590,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {thisMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {thisMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1700,23 +1607,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     thisMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {thisMonthData?.displayFileName}
                                               </span>
                                             </Col>
@@ -1746,13 +1651,13 @@ const ViewDetailsModal = ({
                             (previousMonthData, index) => {
                               return (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row className='mt-2'>
                                     <Col lg={1} md={1} sm={1}>
                                       <img
                                         src={`data:image/jpeg;base64,${previousMonthData.base64ImgOwner}`}
-                                        alt=""
-                                        height="30px"
-                                        width="30px"
+                                        alt=''
+                                        height='30px'
+                                        width='30px'
                                         className={styles["profileClass"]}
                                       />
                                     </Col>
@@ -1760,21 +1665,18 @@ const ViewDetailsModal = ({
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-3"
-                                    >
+                                      className='d-flex flex-column  flex-wrap px-3'>
                                       {Number(previousMonthData.actionID) ===
                                       1 ? (
                                         <>
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {previousMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1787,23 +1689,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     previousMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   previousMonthData?.displayFileName
                                                 }
@@ -1817,13 +1717,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {previousMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1836,23 +1734,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     previousMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   previousMonthData?.displayFileName
                                                 }
@@ -1866,13 +1762,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {previousMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1885,23 +1779,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     previousMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   previousMonthData?.displayFileName
                                                 }
@@ -1915,13 +1807,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {previousMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1934,23 +1824,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     previousMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   previousMonthData?.displayFileName
                                                 }
@@ -1963,13 +1851,11 @@ const ViewDetailsModal = ({
                                           <span
                                             className={
                                               styles["activity_heading"]
-                                            }
-                                          >
+                                            }>
                                             {previousMonthData?.description}
                                           </span>
                                           <span
-                                            className={styles["date_heading"]}
-                                          >
+                                            className={styles["date_heading"]}>
                                             {previousMonthData.createdDateTime !==
                                               "" &&
                                               newTimeFormaterAsPerUTCTalkDate(
@@ -1982,23 +1868,21 @@ const ViewDetailsModal = ({
                                               lg={12}
                                               md={12}
                                               sm={12}
-                                              className="d-flex gap-2 align-items-center"
-                                            >
+                                              className='d-flex gap-2 align-items-center'>
                                               <img
                                                 src={getIconSource(
                                                   getFileExtension(
                                                     previousMonthData?.displayFileName
                                                   )
                                                 )}
-                                                alt=""
-                                                height="17px"
-                                                width="17px"
+                                                alt=''
+                                                height='17px'
+                                                width='17px'
                                               />
                                               <span
                                                 className={
                                                   styles["Filename_heading"]
-                                                }
-                                              >
+                                                }>
                                                 {
                                                   previousMonthData?.displayFileName
                                                 }

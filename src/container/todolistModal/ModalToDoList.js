@@ -109,7 +109,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     Description: "",
     IsMainTask: true,
     creationDate: "",
-    creationTime: "",
   });
   console.log(task, "tasktasktask");
   //To Set task Creater ID
@@ -140,7 +139,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         // CreationDateTime: currentTime,
         // timeforView: dateObject,
         creationDate: dateObject,
-        creationTime: dateObject,
       });
       dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
       return () => {
@@ -153,7 +151,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           Description: "",
           IsMainTask: true,
           creationDate: "",
-          creationTime: "",
         });
         setCreateTodoDate("");
         setTaskAssignedTo([]);
@@ -353,6 +350,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let taskDate = new Date(date);
+    taskDate.setHours(23);
+    taskDate.setMinutes(59);
+    taskDate.setSeconds(59);
     setTask({
       ...task,
       creationDate: taskDate,
@@ -376,16 +376,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
       return;
     }
-    if (!task.creationTime) {
-      showMessage(t("Creation time is required"), "error", setOpen); // Validate task creation time
-      return;
-    }
 
     let newDate = multiDatePickerDateChangIntoUTC(task.creationDate).slice(
       0,
       8
     ); // Extract UTC date
-    let newTime = multiDatePickerDateChangIntoUTC(task.creationTime).slice(
+    let newTime = multiDatePickerDateChangIntoUTC(task.creationDate).slice(
       8,
       14
     ); // Extract UTC time
@@ -399,11 +395,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       showMessage(t("Deadline date is required"), "error", setOpen); // Validate deadline date
       return;
     }
-    if (!newTime) {
-      showMessage(t("Deadline time is required"), "error", setOpen); // Validate deadline time
-      return;
-    }
-
     // Step 4: Construct the task object
     let Task = {
       PK_TID: task.PK_TID, // Task ID
@@ -494,25 +485,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo(newDataTaskAssignedTo);
   };
 
-  const handleTimeChange = (newTime) => {
-    let newDate = new Date(newTime);
-    if (newDate instanceof Date && !isNaN(newDate)) {
-      console.log(newDate, "newDatenewDate");
-      // const hours = ("0" + newDate.getHours()).slice(-2);
-      // const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-      //   .toString()
-      //   .padStart(2, "0")}${"00"}`;
-      setTask({
-        ...task,
-        // DeadLineTime: formattedTime,
-        creationTime: newDate,
-        // timeforView: newTime,
-      });
-    }
-  };
-
   function CustomInput({ onFocus, value, onChange }) {
     return (
       <input
@@ -547,38 +519,71 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           }}
           show={show}
           setShow={setShow}
-          className='modaldialogTodoCreate'
-          modalBodyClassName={"bodytodoCreateModal"}
-          modalFooterClassName='footertodoCreateModal'
-          modalHeaderClassName='headertodoCreateModal'
+          size={"md"}
+          // className='modaldialogTodoCreate'
+          modalBodyClassName={" createTask__body p-4"}
+          modalFooterClassName='d-block'
+          modalHeaderClassName='d-none'
           ButtonTitle={ModalTitle}
           ModalBody={
             isCreateTodo ? (
               <>
-                <div>
-                  <Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className='createtask__heading'>
+                      {t("Create-task")}
+                    </span>
+                  </Col>
+                </Row>
+                <div className='createTask__contet'>
+                  <Row className='mt-4'>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='todolist-modal-fields'>
+                      <span className='createTask_label'>{`${t(
+                        "Task-title"
+                      )}*`}</span>
+                      <TextField
+                        change={taskHandler}
+                        name='Title'
+                        applyClass='createtodo-title'
+                        labelclass={"d-none"}
+                        type='text'
+                        placeholder={t("Task-title") + "*"}
+                        required
+                        value={task.Title}
+                        maxLength={200}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className='my-3'>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <span className='createTask_label'>{`${t(
+                        "Add-assignee"
+                      )}*`}</span>
+                      <Select
+                        options={allPresenters}
+                        maxMenuHeight={140}
+                        onChange={onChangeSearch}
+                        value={
+                          presenterValue.value === 0 ? null : presenterValue
+                        }
+                        placeholder={t("Add-assignee")}
+                        applyClass='assigneeFindInCreateToDo'
+                        filterOption={filterFunc}
+                      />
+                    </Col>
                     <Col
                       lg={6}
                       md={6}
                       sm={6}
                       xs={12}
-                      className='CreateMeetingTime d-flex align-items-center gap-2 h-100'>
-                      <DatePicker
-                        arrowClassName='arrowClass'
-                        value={task.creationTime}
-                        containerClassName='containerClassTimePicker'
-                        className='timePicker'
-                        disableDayPicker
-                        inputClass='inputTImeMeeting'
-                        calendar={calendarValue}
-                        locale={localValue}
-                        format='hh:mm A'
-                        render={<CustomInput />}
-                        plugins={[<TimePicker hideSeconds />]}
-                        onChange={handleTimeChange}
-                        editable={false}
-                      />
-
+                      className='d-flex flex-column'>
+                      <span className='createTask_label'>{`${t(
+                        "Deadline"
+                      )}*`}</span>
                       <DatePicker
                         onFocusedDateChange={toDoDateHandler}
                         format={"DD/MM/YYYY"}
@@ -600,27 +605,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         ref={calendRef}
                       />
                     </Col>
-
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={6}
-                      xs={12}
-                      className='todolist-modal-fields margin-top-0 d-flex  flex-column'>
-                      <Select
-                        options={allPresenters}
-                        maxMenuHeight={140}
-                        onChange={onChangeSearch}
-                        value={
-                          presenterValue.value === 0 ? null : presenterValue
-                        }
-                        placeholder={t("Add-assignee")}
-                        applyClass='assigneeFindInCreateToDo'
-                        filterOption={filterFunc}
-                      />
-                    </Col>
                   </Row>
-                  <Row className='create_todo_assignee d-flex justify-content-end'>
+                  {/* <Row className='create_todo_assignee d-flex justify-content-end'>
                     {assignees.length > 0 ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
@@ -655,29 +641,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         ))}
                       </>
                     ) : null}
-                  </Row>
-                  <Row className='my-0'>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='todolist-modal-fields'>
-                      <TextField
-                        change={taskHandler}
-                        name='Title'
-                        applyClass='createtodo-title'
-                        type='text'
-                        placeholder={t("Title") + "*"}
-                        required
-                        value={task.Title}
-                        maxLength={200}
-                      />
-                    </Col>
-                  </Row>
+                  </Row> */}
+
                   <Row>
-                    <Col lg={12} md={12} xs={12} className='FontArabicRegular'>
+                    <Col lg={12} md={12} xs={12}>
+                      <span className='createTask_label'>{`${t(
+                        "Description"
+                      )}*`}</span>
                       <TextField
                         change={taskHandler}
+                        labelclass={"d-none"}
                         name='Description'
                         applyClass='createtodo-description'
                         type='text'

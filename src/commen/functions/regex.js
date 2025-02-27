@@ -77,7 +77,7 @@ export const convertToArabicNumerals = (input, locale) => {
   }
 
   // Pad the number with a leading zero if it's less than 10
-  const paddedNumber = number < 10 ? `0${number}` : number.toString();
+  const paddedNumber = number < 10 ? `0${number}` : number;
 
   // If locale is 'ar', replace digits with Arabic numerals
   if (currentLanguage === "ar") {

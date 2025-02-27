@@ -1676,7 +1676,7 @@ const saveTaskDocumentsApi = (
                   )
                 );
               }
-
+              dispatch(createUpdateTaskDataRoom_fail(""))
               // Create Task from main TOdo list
               if (value === 1) {
                 setShow(false);
