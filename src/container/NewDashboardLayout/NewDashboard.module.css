@@ -13,7 +13,7 @@
 }
 
 .CalendarBox {
-  flex: 1 !important;
+  /* flex: 1 !important; */
   background-color: #fff;
   border-top: 1px solid #e1e1e1;
   border-right: 1px solid #e1e1e1;

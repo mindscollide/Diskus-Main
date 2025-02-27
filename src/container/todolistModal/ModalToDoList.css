@@ -5,11 +5,6 @@
   }
 } */
 
-.headertodoCreateModal {
-  border-bottom: none;
-  height: 20px;
-}
-
 .modal-header {
   border-bottom: none;
 }
@@ -101,23 +96,6 @@
   margin-left: -15px;
 }
 
-.headertodoCreateModal {
-  height: 5% !important;
-}
-
-.headertodoCreateModal button {
-  margin: 10px 0px 0 20px !important;
-}
-
-.footertodoCreateModal {
-  margin: 10px 10px;
-  /* height : 5%; */
-  /* height : 80px !important; */
-  min-height: 20% !important;
-  max-height: 20% !important;
-  display: block;
-}
-
 body[dir="rtl"] .footertodoCreateModal {
   margin: 10px 27px !important;
 }
@@ -176,7 +154,6 @@ body[dir="rtl"] .footertodoCreateModal {
 
 body[dir="rtl"] .ArabicFontSemiBold {
   font-weight: 600;
-
 }
 
 .Confirmationmodal_body_text {
@@ -214,4 +191,28 @@ body[dir="rtl"] .ArabicFontSemiBold {
   max-height: 120px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.createtask__heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+}
+.createTask_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6172d6;
+}
+.createTask__body {
+  height: 100%;
+}
+.createTask__contet {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  max-height: 450px !important;
+}
+
+.datePickerTodoCreate2 .rmdp-calendar {
+  padding: 7px !important;
 }

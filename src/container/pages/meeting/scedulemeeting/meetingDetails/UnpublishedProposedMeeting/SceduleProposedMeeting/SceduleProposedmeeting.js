@@ -248,30 +248,27 @@ const SceduleProposedmeeting = ({
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
       console.log(organizerRows, columnIndex, "organizerRowsorganizerRows");
+  
       const count = organizerRows.reduce((total, row) => {
-        console.log(
-          row.selectedProposedDates[columnIndex].isSelected,
-          "organizerRowsorganizerRows"
-        );
-
         if (
           row &&
           row.selectedProposedDates.length > 0 &&
-          row.selectedProposedDates[columnIndex].isSelected
+          row.selectedProposedDates[columnIndex]?.isSelected
         ) {
-          return convertToArabicNumerals(total + 1);
+          return total + 1;
         }
-        return convertToArabicNumerals(total);
+        return total;
       }, 0);
-
+  
       // Add a zero prefix to the count if it's a single digit
-      return count < 10
-        ? convertToArabicNumerals(`0${count}`)
-        : convertToArabicNumerals(count);
+      const formattedCount = count < 10 ? `0${count}` : `${count}`;
+  
+      return convertToArabicNumerals(formattedCount);
     } else {
       return convertToArabicNumerals("00");
     }
   };
+  
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
@@ -446,11 +443,12 @@ const SceduleProposedmeeting = ({
         const counter = record.selectedProposedDates.filter(
           (date) => date.proposedDate === "10000101" && date.isSelected
         );
-
         const formattedCounter = String(counter).padStart(2, "0");
+        console.log(counter, "countercountercounter")
+
         if (record?.userName === "Total") {
           return (
-            <span className={styles["TotalCount"]}>{formattedCounter}</span>
+            <span className={styles["TotalCount"]}>{convertToArabicNumerals(formattedCounter)}</span>
           );
         }
 
