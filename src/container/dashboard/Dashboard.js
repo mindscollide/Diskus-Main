@@ -2983,9 +2983,10 @@ const Dashboard = () => {
         ) {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
-          let callTypeID = localStorage.getItem("callTypeID");
-          let isCaller = localStorage.getItem("isCaller");
+          let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let roomID = 0;
           if (activeRoomID) {
             if (Number(activeRoomID) !== 0 && !isCaller) {
@@ -3004,11 +3005,12 @@ const Dashboard = () => {
               roomID = initiateCallRoomID;
             }
           }
+          console.log("mqtt", roomID);
+
           if (
             Number(roomID) === Number(data.payload.roomID) &&
-            (Number(callTypeID) === 1 || Number(callTypeID) === 2)
+            !isMeetingVideo
           ) {
-            let callStatus = JSON.parse(localStorage.getItem("activeCall"));
             let callerID = JSON.parse(localStorage.getItem("callerID"));
             let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
             if (IncomingVideoCallFlagReducer === true && callStatus === false) {
@@ -3126,6 +3128,7 @@ const Dashboard = () => {
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.setItem("activeCall", false);
               }
+            } else {
             }
             console.log("Check 123");
             dispatch(leaveCallModal(false));
