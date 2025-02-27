@@ -1327,7 +1327,8 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {getMeetingHostInfo.isDashboardVideo && (
+
+          {getMeetingHostInfo?.isDashboardVideo && (
             <div
               className={
                 LeaveCallModalFlag === true ||
@@ -1341,7 +1342,7 @@ const VideoCallNormalHeader = ({
               <Tooltip
                 placement="topRight"
                 title={
-                  getMeetingHostInfo.isHost
+                  getMeetingHostInfo?.isHost
                     ? handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
@@ -1352,12 +1353,12 @@ const VideoCallNormalHeader = ({
               >
                 <img
                   onClick={
-                    getMeetingHostInfo.isHost
+                    getMeetingHostInfo?.isHost
                       ? raiseHandFunction
                       : raiseUnRaiseForParticipant
                   }
                   src={
-                    getMeetingHostInfo.isHost
+                    getMeetingHostInfo?.isHost
                       ? handStatus
                         ? LowerHand
                         : RaiseHand
@@ -1370,7 +1371,8 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {(!presenterViewFlag && getMeetingHostInfo.isHost) ||
+
+          {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
           (presenterViewHostFlag && presenterViewFlag) ? (
             <div
               className={
@@ -1566,7 +1568,7 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           ) : (LeaveCallModalFlag === false && callerID === currentUserID) ||
-            getMeetingHostInfo.isDashboardVideo ? (
+            getMeetingHostInfo?.isDashboardVideo ? (
             <Tooltip placement="topRight" title={t("Leave-call")}>
               <div className="inactive-state">
                 <img
