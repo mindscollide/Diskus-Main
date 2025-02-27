@@ -1558,7 +1558,7 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           ) : (LeaveCallModalFlag === false && callerID === currentUserID) ||
-            getMeetingHostInfo.isDashboardVideo ? (
+            getMeetingHostInfo?.isDashboardVideo ? (
             <Tooltip placement="topRight" title={t("Leave-call")}>
               <div className="inactive-state">
                 <img
