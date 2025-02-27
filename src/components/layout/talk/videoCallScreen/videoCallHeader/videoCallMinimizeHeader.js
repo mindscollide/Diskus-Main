@@ -143,12 +143,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   );
 
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
-
+  
   let RoomID =
     presenterViewFlag && !JSON.parse(localStorage.getItem("activeCall"))
       ? roomID
       : JSON.parse(localStorage.getItem("activeCall"))
-      ? localStorage.getItem("activeRoomID")
+      ? localStorage.getItem("activeRoomID") != 0 &&
+        localStorage.getItem("activeRoomID") != null
+        ? localStorage.getItem("activeRoomID")
+        : localStorage.getItem("initiateCallRoomID")
       : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
       ? newRoomID
       : localStorage.getItem("participantRoomId");
@@ -319,7 +322,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
   let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
 
   const minimizeEndCallParticipant = async (flag, flag2, flag3, flag4) => {
-    console.log("busyCall");
+    console.log("busyCall")
+
     if (isMeeting === true) {
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
@@ -367,7 +371,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       await dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
-    // dispatch(LeaveCall(Data, navigate, t));
 
     if (flag) {
       console.log("busyCall");

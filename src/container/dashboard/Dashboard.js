@@ -2913,38 +2913,43 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_RINGING".toLowerCase()
         ) {
-          localStorage.setItem("initiateCallRoomID", data.payload.roomID);
-          localStorage.setItem("ringerRoomId", data.payload.roomID);
-          localStorage.setItem("initiateVideoCall", true);
-          dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
-          let existingData =
-            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-          let newData = {
-            RecipientName: data.payload.recepientName,
-            RecipientID: data.payload.recepientID,
-            CallStatus: "Ringing",
-            RoomID: data.payload.roomID,
-          };
-          let existingObjectIndex = existingData.findIndex(
-            (item) =>
-              item.RecipientName === newData.RecipientName &&
-              item.RecipientID === newData.RecipientID &&
-              item.RoomID === newData.RoomID
-          );
-          if (existingObjectIndex !== -1) {
-            existingData[existingObjectIndex] = newData;
-          } else {
-            existingData.push(newData);
+          let userID = localStorage.setItem("userID");
+          if (data.senderID === userID) {
+            localStorage.setItem("initiateCallRoomID", data.payload.roomID);
+            localStorage.setItem("ringerRoomId", data.payload.roomID);
+            localStorage.setItem("initiateVideoCall", true);
+            dispatch(
+              callRequestReceivedMQTT(data.payload, data.payload.message)
+            );
+            let existingData =
+              JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+            let newData = {
+              RecipientName: data.payload.recepientName,
+              RecipientID: data.payload.recepientID,
+              CallStatus: "Ringing",
+              RoomID: data.payload.roomID,
+            };
+            let existingObjectIndex = existingData.findIndex(
+              (item) =>
+                item.RecipientName === newData.RecipientName &&
+                item.RecipientID === newData.RecipientID &&
+                item.RoomID === newData.RoomID
+            );
+            if (existingObjectIndex !== -1) {
+              existingData[existingObjectIndex] = newData;
+            } else {
+              existingData.push(newData);
+            }
+            localStorage.setItem(
+              "callerStatusObject",
+              JSON.stringify(existingData)
+            );
+            let Dataa = {
+              OrganizationID: Number(currentOrganization),
+              RoomID: data.payload.roomID,
+            };
+            dispatch(CallRequestReceived(Dataa, navigate, t));
           }
-          localStorage.setItem(
-            "callerStatusObject",
-            JSON.stringify(existingData)
-          );
-          let Dataa = {
-            OrganizationID: Number(currentOrganization),
-            RoomID: data.payload.roomID,
-          };
-          dispatch(CallRequestReceived(Dataa, navigate, t));
         } else if (
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
@@ -3093,7 +3098,7 @@ const Dashboard = () => {
               : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
               ? newRoomID
               : localStorage.getItem("participantRoomId");
-          if (RoomID === data.payload.roomID&&activeCall) {
+          if (RoomID === data.payload.roomID && activeCall) {
             let callerID = Number(localStorage.getItem("callerID"));
             let callTypeID = Number(localStorage.getItem("CallType"));
             localStorage.setItem("newCallerID", callerID);
