@@ -21,6 +21,15 @@
   justify-content: center;
   align-items: center;
 }
+.CalendarBox__hasdata {
+  flex: 1 !important;
+  background-color: #fff;
+  border-top: 1px solid #e1e1e1;
+  border-right: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  justify-content: center;
+  align-items: center;
+}
 .EventBox {
   padding: 0 10px;
   flex: 1;
