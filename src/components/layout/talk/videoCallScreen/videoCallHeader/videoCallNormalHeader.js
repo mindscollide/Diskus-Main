@@ -983,7 +983,7 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
-        console.log("busyCall",leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,);
+        console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup ? 3 : 0);
 
         dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(
@@ -997,7 +997,7 @@ const VideoCallNormalHeader = ({
             setLeaveMeetingVideoForOneToOneOrGroup
           )
         );
-  
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -1319,7 +1319,8 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {getMeetingHostInfo.isDashboardVideo && (
+
+          {getMeetingHostInfo?.isDashboardVideo && (
             <div
               className={
                 LeaveCallModalFlag === true ||
@@ -1333,7 +1334,7 @@ const VideoCallNormalHeader = ({
               <Tooltip
                 placement="topRight"
                 title={
-                  getMeetingHostInfo.isHost
+                  getMeetingHostInfo?.isHost
                     ? handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
@@ -1344,12 +1345,12 @@ const VideoCallNormalHeader = ({
               >
                 <img
                   onClick={
-                    getMeetingHostInfo.isHost
+                    getMeetingHostInfo?.isHost
                       ? raiseHandFunction
                       : raiseUnRaiseForParticipant
                   }
                   src={
-                    getMeetingHostInfo.isHost
+                    getMeetingHostInfo?.isHost
                       ? handStatus
                         ? LowerHand
                         : RaiseHand
@@ -1362,7 +1363,8 @@ const VideoCallNormalHeader = ({
               </Tooltip>
             </div>
           )}
-          {(!presenterViewFlag && getMeetingHostInfo.isHost) ||
+
+          {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
           (presenterViewHostFlag && presenterViewFlag) ? (
             <div
               className={
