@@ -1151,7 +1151,7 @@ const VideoPanelNormal = () => {
                     MinimizeVideoFlag === false &&
                     MaximizeVideoFlag === true &&
                     VideoChatPanel === false &&
-                    presenterViewFlag
+                    presenterViewFlag&&!(JSON.parse(localStorage.getItem("activeCall")))
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
               }
@@ -1214,7 +1214,7 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            presenterViewFlag
+                            presenterViewFlag&&!(JSON.parse(localStorage.getItem("activeCall")))
                               ? "normal-Presenter-avatar-large"
                               : NormalizeVideoFlag === true &&
                                 MinimizeVideoFlag === false &&

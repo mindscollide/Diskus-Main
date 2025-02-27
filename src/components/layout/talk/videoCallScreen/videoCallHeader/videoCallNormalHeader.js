@@ -208,11 +208,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
 
-  console.log(
-    { presenterViewFlag, presenterViewHostFlag },
-    "presenterViewFlag && presenterViewHostFlag"
-  );
-
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
@@ -380,7 +375,6 @@ const VideoCallNormalHeader = ({
   const closeVideoPanel = () => {
     console.log("cancel");
     dispatch(leaveCallModal(false));
-    localStorage.setItem("activeCall", false);
   };
 
   const openVideoPanel = () => {
@@ -920,7 +914,10 @@ const VideoCallNormalHeader = ({
 
     if (isMeeting === true) {
       console.log("busyCall");
-      if (presenterViewFlag) {
+      if (
+        presenterViewFlag &&
+        !JSON.parse(localStorage.getItem("activeCall"))
+      ) {
         console.log("busyCall");
         handlePresenterViewFunc();
       } else if (isMeetingVideo && isMeetingVideoHostCheck) {
@@ -983,7 +980,7 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
-        console.log("busyCall",leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,);
+        console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup ? 3 : 0);
 
         dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(
@@ -997,7 +994,7 @@ const VideoCallNormalHeader = ({
             setLeaveMeetingVideoForOneToOneOrGroup
           )
         );
-  
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -1172,7 +1169,10 @@ const VideoCallNormalHeader = ({
         <Col lg={3} md={3} sm={12} className="mt-1">
           <p
             className={
-              presenterViewFlag ? "title-for-presenter" : "title-heading"
+              presenterViewFlag &&
+              !JSON.parse(localStorage.getItem("activeCall"))
+                ? "title-for-presenter"
+                : "title-heading"
             }
           >
             {currentCallType === 2 && callTypeID === 2
@@ -1298,7 +1298,8 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag === true ||
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
-                  : presenterViewFlag
+                  : presenterViewFlag &&
+                    !JSON.parse(localStorage.getItem("activeCall"))
                   ? "presenterImage"
                   : "screenShare-Toggle inactive-state"
               }
@@ -1306,13 +1307,20 @@ const VideoCallNormalHeader = ({
               <Tooltip
                 placement="topRight"
                 title={
-                  isScreenActive || presenterViewFlag
+                  isScreenActive ||
+                  (presenterViewFlag &&
+                    !JSON.parse(localStorage.getItem("activeCall")))
                     ? t("Stop-sharing")
                     : t("Screen-share")
                 }
               >
                 <img
-                  onClick={!presenterViewFlag ? screenShareButton : null}
+                  onClick={
+                    !presenterViewFlag &&
+                    !JSON.parse(localStorage.getItem("activeCall"))
+                      ? screenShareButton
+                      : null
+                  }
                   src={NonActiveScreenShare}
                   alt="Screen Share"
                 />
@@ -1396,7 +1404,9 @@ const VideoCallNormalHeader = ({
                 <img
                   className={"cursor-pointer"}
                   onClick={
-                    presenterViewFlag && !presenterViewHostFlag
+                    presenterViewFlag &&
+                    !presenterViewHostFlag &&
+                    !JSON.parse(localStorage.getItem("activeCall"))
                       ? null
                       : layoutCurrentChange
                   }
@@ -1510,7 +1520,7 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {!presenterViewHostFlag && !presenterViewFlag && (
+          {JSON.parse(localStorage.getItem("activeCall")) && (
             <>
               {currentCallType === 1 && checkFeatureIDAvailability(3) && (
                 <div
@@ -1593,7 +1603,8 @@ const VideoCallNormalHeader = ({
                 className={
                   LeaveCallModalFlag === true
                     ? "grayScaleImage"
-                    : presenterViewFlag
+                    : presenterViewFlag &&
+                      !JSON.parse(localStorage.getItem("activeCall"))
                     ? "presenterImage"
                     : "inactive-state"
                 }
@@ -1609,7 +1620,9 @@ const VideoCallNormalHeader = ({
                   onClick={
                     NormalizeVideoFlag
                       ? otoMaximizeVideoPanel
-                      : presenterViewFlag && MaximizeVideoFlag
+                      : presenterViewFlag &&
+                        MaximizeVideoFlag &&
+                        !JSON.parse(localStorage.getItem("activeCall"))
                       ? null
                       : MaximizeVideoFlag
                       ? normalizeScreen
@@ -1638,13 +1651,17 @@ const VideoCallNormalHeader = ({
                   <Button
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
-                      presenterViewFlag && presenterViewHostFlag
+                      presenterViewFlag &&
+                      presenterViewHostFlag &&
+                      !JSON.parse(localStorage.getItem("activeCall"))
                         ? t("Stop-presentation")
-                        : presenterViewFlag && !presenterViewHostFlag
+                        : presenterViewFlag &&
+                          !presenterViewHostFlag &&
+                          !JSON.parse(localStorage.getItem("activeCall"))
                         ? t("Leave-presentation")
                         : t("Leave-call")
                     }
-                    onClick={() => leaveCall(false, false, false)}
+                    onClick={() => leaveCall(false, false, false, false)}
                   />
                   <Button
                     className="leave-meeting-options__btn leave-meeting-gray-button"
@@ -1657,9 +1674,13 @@ const VideoCallNormalHeader = ({
                   <Button
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     text={
-                      presenterViewFlag && presenterViewHostFlag
+                      presenterViewFlag &&
+                      presenterViewHostFlag &&
+                      !JSON.parse(localStorage.getItem("activeCall"))
                         ? t("Stop-presentation")
-                        : presenterViewFlag && !presenterViewHostFlag
+                        : presenterViewFlag &&
+                          !presenterViewHostFlag &&
+                          !JSON.parse(localStorage.getItem("activeCall"))
                         ? t("Leave-presentation")
                         : t("Leave-call")
                     }
