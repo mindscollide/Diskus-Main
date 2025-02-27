@@ -2955,16 +2955,29 @@ const Dashboard = () => {
           "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
         ) {
           let activeRoomID = localStorage.getItem("activeRoomID");
-          if (activeRoomID === data.payload.roomID) {
+          let NewRoomID = localStorage.getItem("NewRoomID");
+          let callTypeID = localStorage.getItem("callTypeID");
+          let roomID = 0;
+          if (activeRoomID) {
+            if (Number(activeRoomID) !== 0) {
+              roomID = activeRoomID;
+            } else {
+              roomID = NewRoomID;
+            }
+          } else {
+            roomID = NewRoomID;
+          }
+          if (
+            Number(roomID) === Number(data.payload.roomID) &&
+            (Number(callTypeID) === 1 || Number(callTypeID) === 2)
+          ) {
             let callStatus = JSON.parse(localStorage.getItem("activeCall"));
             let callerID = JSON.parse(localStorage.getItem("callerID"));
             let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
             if (IncomingVideoCallFlagReducer === true && callStatus === false) {
-              console.log("Check 123");
               let callerID = Number(localStorage.getItem("callerID"));
               let newCallerID = Number(localStorage.getItem("newCallerID"));
               if (callerID === newCallerID) {
-                console.log("Check 123");
                 localStorage.setItem("activeCall", false);
               }
               localStorage.setItem("newCallerID", callerID);
@@ -2975,18 +2988,15 @@ const Dashboard = () => {
 
               dispatch(incomingVideoCallFlag(false));
               if (activeRoomID !== acceptedRoomID) {
-                console.log("Check 123");
                 dispatch(incomingVideoCallFlag(false));
                 localStorage.setItem("activeRoomID", acceptedRoomID);
               }
               if (activeRoomID === acceptedRoomID) {
-                console.log("Check 123");
                 if (
                   NormalizeVideoFlag === true ||
                   IncomingVideoCallFlagReducer === true ||
                   MaximizeVideoFlag === true
                 ) {
-                  console.log("Check 123");
                   setNotification({
                     ...notification,
                     notificationShow: true,
