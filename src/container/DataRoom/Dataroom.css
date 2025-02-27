@@ -22,6 +22,8 @@
   max-width: 125px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+
 }
 .dataroombreadCrumbs ol li span.ant-breadcrumb-link:not(:first-child) {
   padding: 5px;
@@ -32,6 +34,7 @@
   width: 100%;
   height: 25px;
   padding: 5px 10px;
+
 }
 .ant-popover.overClass .ant-popover-content {
   border-radius: 4px !important;

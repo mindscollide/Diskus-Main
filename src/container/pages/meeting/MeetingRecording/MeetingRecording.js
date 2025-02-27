@@ -11,7 +11,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { requestMeetingRecordingTranscriptApi, requestMeetingRecordingTranscript_clear } from "../../../../store/actions/NewMeetingActions";
+import {
+  requestMeetingRecordingTranscriptApi,
+  requestMeetingRecordingTranscript_clear,
+} from "../../../../store/actions/NewMeetingActions";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import {
@@ -26,6 +29,9 @@ const MeetingRecording = ({ title }) => {
   );
   const meetingtranscribeResponse = useSelector(
     (state) => state.NewMeetingreducer.meetingTranscriptResponse
+  );
+  const meetingTranscriptDownloaded = useSelector(
+    (state) => state.NewMeetingreducer.meetingTranscriptDownloaded
   );
   console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
   const dispatch = useDispatch();
@@ -54,7 +60,7 @@ const MeetingRecording = ({ title }) => {
             fileID: meetingRecording.fileID,
             fileName: meetingRecording.fileName,
             fileSize: meetingRecording.fileSize,
-            transcriptStatus: 2,
+            transcriptStatus: transcriptionStatusID,
             meetingID: MeetingID,
           });
         } else if (
@@ -102,10 +108,45 @@ const MeetingRecording = ({ title }) => {
           copyData[0].transcriptStatus = 3;
           setData(copyData);
         }
-        dispatch(requestMeetingRecordingTranscript_clear())
+        dispatch(requestMeetingRecordingTranscript_clear());
       }
     }
   }, [meetingtranscribeResponse]);
+
+  useEffect(() => {
+    if (meetingTranscriptDownloaded !== null) {
+      try {
+        const { transcriptFileDetails, minutesFileDetails, meetingID } =
+          meetingTranscriptDownloaded;
+        let copyData = [...data];
+        copyData[0].transcriptStatus = 4;
+        copyData.push(
+          {
+            fileID: transcriptFileDetails.pK_FileID,
+            fileName: transcriptFileDetails.displayFileName,
+            fileSize: transcriptFileDetails.fileSize,
+            transcriptStatus: 4,
+            meetingID: meetingID,
+          },
+          {
+            fileID: minutesFileDetails.pK_FileID,
+            fileName: minutesFileDetails.displayFileName,
+            fileSize: minutesFileDetails.fileSize,
+            transcriptStatus: 4,
+            meetingID: meetingID,
+          }
+        );
+        setData(copyData);
+        dispatch(meetingTranscriptDownloaded(null));
+        console.log(
+          { meetingTranscriptDownloaded, copyData },
+          "meetingTranscriptDownloaded"
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [meetingTranscriptDownloaded]);
 
   const handleClickTranscribe = (record) => {
     console.log("record", record);
@@ -211,7 +252,7 @@ const MeetingRecording = ({ title }) => {
                 lg={12}
                 className='d-flex justify-content-center align-items-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
-                  {`${t("Transcibing")}...`}
+                  {`${t("Transcribing")}...`}
                 </span>
                 <Button
                   className={styles["DownloadBtn"]}

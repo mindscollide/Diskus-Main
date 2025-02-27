@@ -540,6 +540,8 @@ const SearchComponent = ({
                     draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
+                    width={"25px"}
+                    height={"25px"}
                   />
                   <abbr title={text}>
                     <span
@@ -578,6 +580,8 @@ const SearchComponent = ({
                     draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
+                    width={"25px"}
+                    height={"25px"}
                   />
 
                   <abbr title={text} onClick={(e) => handleLinkClick(e, data)}>
