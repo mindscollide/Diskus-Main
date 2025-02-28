@@ -2139,6 +2139,15 @@ const leavePresenterJoinOneToOneOrOtherCall = (response) => {
   };
 };
 
+// state for ACCEPT HOST TRANSFER ACCESS
+const acceptHostTransferAccessGlobalFunc = (response) => {
+  console.log("checkHostTransfer", response);
+  return {
+    type: actions.ACCEPT_HOST_TRANSFER_ACCESS,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -2241,4 +2250,5 @@ export {
   presenterLeaveParticipant,
   clearPresenterParticipants,
   leavePresenterJoinOneToOneOrOtherCall,
+  acceptHostTransferAccessGlobalFunc,
 };

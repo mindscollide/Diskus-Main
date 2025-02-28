@@ -98,6 +98,7 @@ const initialState = {
   leavePresenterParticipant: [],
   closeVideoStreamForParticipant: false,
   leavePresenterOrJoinOtherCalls: false,
+  accpetAccessOfHostTransfer: false,
   // startOrStopPresenter: false,
 };
 
@@ -1112,12 +1113,12 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.LEAVE_PRESENTER_VIEW_FAIL: {
+    // accept host transfer access reducer
+    case actions.ACCEPT_HOST_TRANSFER_ACCESS: {
+      console.log("Check Host Transfer");
       return {
         ...state,
-        Loading: false,
-        leavePresenterView: null,
-        ResponseMessage: action.message,
+        accpetAccessOfHostTransfer: action.response,
       };
     }
 
