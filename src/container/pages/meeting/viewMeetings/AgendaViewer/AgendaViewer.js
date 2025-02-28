@@ -54,6 +54,8 @@ import {
   startPresenterViewMainApi,
   presenterFlagForAlreadyInParticipantMeetingVideo,
   closeWaitingParticipantVideoStream,
+  participantWaitingListBox,
+  toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -783,6 +785,8 @@ const AgendaViewer = () => {
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let currentCallType = JSON.parse(localStorage.getItem("CallType"));
+    dispatch(participantWaitingListBox(false));
+    dispatch(toggleParticipantsVisibility(false));
     if (activeCallState && currentCallType === 1) {
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
