@@ -844,6 +844,9 @@ const AgendaViewer = () => {
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
     try {
+
+      dispatch(participantWaitingListBox(false));
+      dispatch(toggleParticipantsVisibility(false));
       // if (presenterMeetingId === currentMeeting) {
       console.log("Check Stop");
       if (value === 1) {
