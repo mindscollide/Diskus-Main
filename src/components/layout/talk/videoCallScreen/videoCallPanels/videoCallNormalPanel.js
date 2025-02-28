@@ -1232,8 +1232,7 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            presenterViewFlag &&
-                            !JSON.parse(localStorage.getItem("activeCall"))
+                            presenterViewFlag &&(presenterViewHostFlag||presenterViewJoinFlag)
                               ? "normal-Presenter-avatar-large"
                               : NormalizeVideoFlag === true &&
                                 MinimizeVideoFlag === false &&

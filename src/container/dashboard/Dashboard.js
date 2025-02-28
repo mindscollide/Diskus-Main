@@ -2876,7 +2876,7 @@ const Dashboard = () => {
           let newRoomID = localStorage.getItem("newRoomId");
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let RoomID =
-            presenterViewFlag && !JSON.parse(localStorage.getItem("activeCall"))
+            presenterViewFlag && (presenterViewHostFlag||presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
               ? localStorage.getItem("activeRoomID") != 0 &&
