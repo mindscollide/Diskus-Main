@@ -1369,10 +1369,13 @@ const Dashboard = () => {
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
               let userID = Number(localStorage.getItem("userID"));
-              console.log("hhhhhhhhhhhhhh", userID);
-              console.log("hhhhhhhhhhhhhh", data.receiverID[0]);
-              if (userID !== data.receiverID[0]) {
-                console.log("hhhhhhhhhhhhhh");
+              let isMeetingVideo = Number(
+                localStorage.getItem("isMeetingVideo")
+              );
+              console.log("mqtt check 22", userID);
+              console.log("mqtt check 22", data.receiverID[0]);
+              if (userID === data.receiverID[0] && isMeetingVideo) {
+                console.log("mqtt check 22");
 
                 const meetingHost = {
                   isHost: true,
@@ -1383,26 +1386,36 @@ const Dashboard = () => {
                   "meetinHostInfo",
                   JSON.stringify(meetingHost)
                 );
-                let getMeetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
+                console.log("mqtt check 22");
+                dispatch(videoIconOrButtonState(true));
+                dispatch(participantVideoButtonState(false));
+                localStorage.setItem("isMeetingVideoHostCheck", true);
+                localStorage.setItem("isHost", true);
+                // change room id for host
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+                localStorage.setItem("newRoomId", participantRoomId);
+                // remove room id of participant
+                localStorage.removeItem("participantRoomId");
+                // set host url 
+                let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
+                localStorage.setItem("hostUrl", refinedVideoUrl);
+                // remove host url
+                localStorage.removeItem("refinedVideoUrl");
+                // change participant id to host id
+                let participantUID =
+                localStorage.getItem("participantUID");
+                localStorage.setItem("isGuid", participantUID);
+                dispatch(participantWaitingListBox(false));
+                dispatch(toggleParticipantsVisibility(false));
+                dispatch(acceptHostTransferAccessGlobalFunc(true))
+                let Data = {
+                  RoomID: String(newRoomId),
+                };
+                await dispatch(
+                  getVideoCallParticipantsMainApi(Data, navigate, t)
                 );
-                let isMicEnabled = JSON.parse(
-                  localStorage.getItem("isMicEnabled")
-                );
-                if (getMeetingHost.isHost) {
-                  console.log("check 22");
-                  dispatch(videoIconOrButtonState(true));
-                  dispatch(participantVideoButtonState(false));
-                  localStorage.setItem("isMeetingVideoHostCheck", true);
-                } else {
-                  console.log("check 22");
-                  dispatch(videoIconOrButtonState(false));
-                  dispatch(participantVideoButtonState(true));
-                  localStorage.setItem("isMeetingVideoHostCheck", false);
-                }
               }
-
-              // console.log(getMeetingHost.isHost, "getMeetingHostisHost");
             } else if (
               data?.payload?.message?.toLowerCase() ===
               "MeetingReminderNotification".toLowerCase()
@@ -2983,7 +2996,9 @@ const Dashboard = () => {
         ) {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
-          let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));

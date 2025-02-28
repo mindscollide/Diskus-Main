@@ -188,6 +188,10 @@ const VideoPanelNormal = () => {
     (state) => state.GuestVideoReducer.hostTransferFlag
   );
 
+  const accpetAccessOfHostTransfer = useSelector(
+    (state) => state.videoFeatureReducer.accpetAccessOfHostTransfer
+  );
+
   const InitiateVideoCallData = useSelector(
     (state) => state.VideoMainReducer.InitiateVideoCallData
   );
@@ -1105,6 +1109,17 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
+  
+  // useEffect(() => {
+  //   try {
+  //     console.log("videoHideUnHideForHost", meetingHost);
+  //     if (accpetAccessOfHostTransfer) {
+  //       console.log("videoHideUnHideForHost", hostTransferFlag);
+  //       setIsMeetingHost(true);
+  //       dispatch(acceptHostTransferAccessGlobalFunc(false));
+  //     }
+  //   } catch {}
+  // }, [accpetAccessOfHostTransfer]);
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
