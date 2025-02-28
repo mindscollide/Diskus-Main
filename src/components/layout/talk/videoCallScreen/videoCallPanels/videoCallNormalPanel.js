@@ -21,6 +21,7 @@ import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticip
 import { transferMeetingHostSuccess } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import {
+  acceptHostTransferAccessGlobalFunc,
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
   incomingVideoCallFlag,
@@ -1009,7 +1010,7 @@ const VideoPanelNormal = () => {
   };
 
   const disableMicFunction = () => {
-    console.log("disableMicFunction")
+    console.log("disableMicFunction");
     try {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow && presenterViewFlag) {
@@ -1017,7 +1018,7 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);
         localStorage.setItem("MicOff", !isMicActive);
-      }else if(iframe && iframe.contentWindow){
+      } else if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);
@@ -1109,17 +1110,18 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [hostTransferFlag]);
-  
-  // useEffect(() => {
-  //   try {
-  //     console.log("videoHideUnHideForHost", meetingHost);
-  //     if (accpetAccessOfHostTransfer) {
-  //       console.log("videoHideUnHideForHost", hostTransferFlag);
-  //       setIsMeetingHost(true);
-  //       dispatch(acceptHostTransferAccessGlobalFunc(false));
-  //     }
-  //   } catch {}
-  // }, [accpetAccessOfHostTransfer]);
+
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      if (accpetAccessOfHostTransfer) {
+        console.log("videoHideUnHideForHost", hostTransferFlag);
+        setIsMeetingHost(true);
+        dispatch(acceptHostTransferAccessGlobalFunc(false));
+        dispatch(toggleParticipantsVisibility(false));
+      }
+    } catch {}
+  }, [accpetAccessOfHostTransfer]);
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
@@ -1166,7 +1168,8 @@ const VideoPanelNormal = () => {
                     MinimizeVideoFlag === false &&
                     MaximizeVideoFlag === true &&
                     VideoChatPanel === false &&
-                    presenterViewFlag&&!(JSON.parse(localStorage.getItem("activeCall")))
+                    presenterViewFlag &&
+                    !JSON.parse(localStorage.getItem("activeCall"))
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
               }
@@ -1229,7 +1232,8 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            presenterViewFlag&&!(JSON.parse(localStorage.getItem("activeCall")))
+                            presenterViewFlag &&
+                            !JSON.parse(localStorage.getItem("activeCall"))
                               ? "normal-Presenter-avatar-large"
                               : NormalizeVideoFlag === true &&
                                 MinimizeVideoFlag === false &&

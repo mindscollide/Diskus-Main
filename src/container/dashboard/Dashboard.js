@@ -69,6 +69,7 @@ import {
   presenterLeaveParticipant,
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
+  acceptHostTransferAccessGlobalFunc,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -1369,7 +1370,7 @@ const Dashboard = () => {
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
               let userID = Number(localStorage.getItem("userID"));
-              let isMeetingVideo = Number(
+              let isMeetingVideo = JSON.parse(
                 localStorage.getItem("isMeetingVideo")
               );
               console.log("mqtt check 22", userID);
@@ -1395,26 +1396,25 @@ const Dashboard = () => {
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
                 localStorage.setItem("newRoomId", participantRoomId);
-                // remove room id of participant
-                localStorage.removeItem("participantRoomId");
-                // set host url 
+                // set host url
                 let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
                 localStorage.setItem("hostUrl", refinedVideoUrl);
                 // remove host url
                 localStorage.removeItem("refinedVideoUrl");
                 // change participant id to host id
-                let participantUID =
-                localStorage.getItem("participantUID");
+                let participantUID = localStorage.getItem("participantUID");
                 localStorage.setItem("isGuid", participantUID);
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
-                dispatch(acceptHostTransferAccessGlobalFunc(true))
+                dispatch(acceptHostTransferAccessGlobalFunc(true));
                 let Data = {
-                  RoomID: String(newRoomId),
+                  RoomID: String(participantRoomId),
                 };
                 await dispatch(
                   getVideoCallParticipantsMainApi(Data, navigate, t)
                 );
+                // remove room id of participant
+                localStorage.removeItem("participantRoomId");
               }
             } else if (
               data?.payload?.message?.toLowerCase() ===
