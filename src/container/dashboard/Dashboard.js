@@ -1416,7 +1416,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  getVideoCallParticipantsMainApi(Data, navigate, t)
+                  participantListWaitingListMainApi(Data, navigate, t)
                 );
               }
             } else if (

@@ -1291,8 +1291,9 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag === true ||
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
-                  : presenterViewFlag &&
-                    !JSON.parse(localStorage.getItem("isMeetingVideo"))
+                  : presenterViewFlag && presenterViewHostFlag
+                  ? "presenterImage"
+                  : presenterViewFlag && presenterViewJoinFlag
                   ? "presenterImage"
                   : "screenShare-Toggle inactive-state"
               }
