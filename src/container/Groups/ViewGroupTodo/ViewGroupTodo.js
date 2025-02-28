@@ -361,7 +361,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "25%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -399,7 +399,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "220px",
+      width: "10%",
+      align: "left",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       onHeaderCell: () => ({
@@ -447,7 +448,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           </span>
         </>
       ),
-      width: "220px",
+      width: "10%",
+      align: "left",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -515,7 +517,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "15%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -548,7 +550,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "10%",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -624,7 +626,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       title: "",
       dataIndex: "",
       key: "taskCreator",
-      width: "120px",
+      width: "5%",
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (

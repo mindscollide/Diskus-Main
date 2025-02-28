@@ -1130,10 +1130,12 @@ export const get_CurrentDateTime = () => {
   const year = currentDate.getFullYear();
   const month = `0${currentDate.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
   const day = `0${currentDate.getDate()}`.slice(-2);
-  const hours = `0${currentDate.getHours()}`.slice(-2);
-  const minutes = `0${currentDate.getMinutes()}`.slice(-2);
+  const hours = currentDate.setHours(23);
+  const minutes = currentDate.setMinutes(59);
+  const seconds = currentDate.setSeconds(58);
 
-  const currentTime = `${hours}${minutes}${"00"}`;
+
+  const currentTime = `${hours}${minutes}${seconds}`;
   const current_Date = `${year}${month}${day}`;
   const current_value = `${day}/${month}/${year}`;
   return { currentTime, current_Date, dateObject: currentDate, current_value };
