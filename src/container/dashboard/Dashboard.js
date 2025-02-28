@@ -1364,7 +1364,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
             ) {
-              dispatch(makeParticipantHost(data.payload, true));
+              // dispatch(makeParticipantHost(data.payload, true));
             } else if (
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
@@ -1395,7 +1395,10 @@ const Dashboard = () => {
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
+                console.log("mqtt check 22",participantRoomId);
                 localStorage.setItem("newRoomId", participantRoomId);
+                // remove room id of participant
+                localStorage.removeItem("participantRoomId");
                 // set host url
                 let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
                 localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -1407,14 +1410,14 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
+                let newRoomId = localStorage.getItem("newRoomId");
+                console.log("mqtt check 22",newRoomId);
                 let Data = {
-                  RoomID: String(participantRoomId),
+                  RoomID: String(newRoomId),
                 };
                 await dispatch(
                   getVideoCallParticipantsMainApi(Data, navigate, t)
                 );
-                // remove room id of participant
-                localStorage.removeItem("participantRoomId");
               }
             } else if (
               data?.payload?.message?.toLowerCase() ===
