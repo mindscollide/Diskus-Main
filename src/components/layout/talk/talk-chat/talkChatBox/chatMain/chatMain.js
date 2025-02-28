@@ -214,7 +214,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [replyFeature, setReplyFeature] = useState(false);
 
   const [allMessages, setAllMessages] = useState([]);
-  console.log(allMessages, "allMessagesallMessagesallMessages")
+  console.log(allMessages, "allMessagesallMessagesallMessages");
   const [allUsers, setAllUsers] = useState([]);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
@@ -1498,7 +1498,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   useEffect(() => {
     let allChatMessages = talkStateData.AllMessagesData;
-    console.log(allChatMessages, "allChatMessages")
+    console.log(allChatMessages, "allChatMessages");
 
     if (
       allChatMessages !== undefined &&
@@ -1511,7 +1511,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       allChatMessages !== null &&
       talkStateData.ActiveChatData.messageType === "G"
     ) {
-      console.log(allChatMessages, "allChatMessages")
+      console.log(allChatMessages, "allChatMessages");
       groupMessages(allChatMessages.groupMessages, setAllMessages);
     } else if (
       allChatMessages !== undefined &&
@@ -2950,7 +2950,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
     const filteredArray = newArray.filter(
       (item) => item.userID !== Number(currentUserId)
     );
-
+    let newData = [];
+    filteredArray.map((data) => {
+      newData.push({
+        RecipientName: data.userName,
+        RecipientID: data.userID,
+        CallStatus: "Ringging...",
+        RoomID: 0,
+      });
+    });
+    localStorage.setItem("callerStatusObject", JSON.stringify(newData));
     const recipientIDs = filteredArray.map((item) => item.userID);
 
     let Data = {
@@ -4258,7 +4267,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 "G" &&
                               talkStateData.ChatSpinner === false ? (
                               allMessages.map((messageData, index) => {
-                                console.log(messageData, "messageDatamessageDatamessageData")
+                                console.log(
+                                  messageData,
+                                  "messageDatamessageDatamessageData"
+                                );
                                 var ext = messageData.attachmentLocation
                                   .split(".")
                                   .pop();
