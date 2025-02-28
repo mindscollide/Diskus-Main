@@ -1293,85 +1293,74 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
             ) {
-              let isMeetingVideoCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+              
+              // dispatch(maxParticipantVideoCallPanel(false));
+              // dispatch(maximizeVideoPanelFlag(true));
+              dispatch(globalNavigatorVideoStream(2));
+
+              dispatch(globalStateForAudioStream(true));
+              dispatch(globalStateForVideoStream(true));
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("activeCall", true);
+              console.log("iframeiframe", data.payload.userID);
+              localStorage.setItem("acceptedRecipientID", data.payload.userID);
+              localStorage.setItem("isMeetingVideo", true);
+              localStorage.setItem(
+                "currentMeetingVideoUrl",
+                data.payload.videoUrl
               );
-              if (isMeetingVideoCheck) {
-                // dispatch(maxParticipantVideoCallPanel(false));
-                // dispatch(maximizeVideoPanelFlag(true));
-                dispatch(globalNavigatorVideoStream(2));
-
-                dispatch(globalStateForAudioStream(true));
-                dispatch(globalStateForVideoStream(true));
-                localStorage.setItem("CallType", 2);
-                localStorage.setItem("isMeeting", true);
-                localStorage.setItem("activeCall", true);
+              console.log("iframeiframe", data.payload.userID);
+              if (data?.payload?.videoUrl) {
+                // Fetch values from localStorage and Redux
                 console.log("iframeiframe", data.payload.userID);
-                localStorage.setItem(
-                  "acceptedRecipientID",
-                  data.payload.userID
+                console.log("isMeetingVideo", audioControlForParticipant);
+                console.log("isMeetingVideo", videoControlForParticipant);
+                let videoControlForParticipantLoacl = JSON.parse(
+                  localStorage.getItem("isWebCamEnabled")
                 );
-                localStorage.setItem("isMeetingVideo", true);
-                localStorage.setItem(
-                  "currentMeetingVideoUrl",
-                  data.payload.videoUrl
+                let audioControlForParticipantLocal = JSON.parse(
+                  localStorage.getItem("isMicEnabled")
                 );
                 console.log("iframeiframe", data.payload.userID);
-                if (data?.payload?.videoUrl) {
-                  // Fetch values from localStorage and Redux
-                  console.log("iframeiframe", data.payload.userID);
-                  console.log("isMeetingVideo", audioControlForParticipant);
-                  console.log("isMeetingVideo", videoControlForParticipant);
-                  let videoControlForParticipantLoacl = JSON.parse(
-                    localStorage.getItem("isWebCamEnabled")
-                  );
-                  let audioControlForParticipantLocal = JSON.parse(
-                    localStorage.getItem("isMicEnabled")
-                  );
-                  console.log("iframeiframe", data.payload.userID);
-                  dispatch(
-                    setAudioControlHost(audioControlForParticipantLocal)
-                  );
-                  console.log("iframeiframe", data.payload.userID);
-                  dispatch(
-                    setVideoControlHost(videoControlForParticipantLoacl)
-                  );
+                dispatch(setAudioControlHost(audioControlForParticipantLocal));
+                console.log("iframeiframe", data.payload.userID);
+                dispatch(setVideoControlHost(videoControlForParticipantLoacl));
 
-                  const currentParticipantUser = localStorage.getItem("name");
-                  // Refine the URL by replacing placeholders
-                  let refinedUrl = "";
-                  let isZoomEnabled = JSON.parse(
-                    localStorage.getItem("isZoomEnabled")
-                  );
-                  if (isZoomEnabled) {
-                    refinedUrl = data.payload.videoUrl;
-                  } else {
-                    refinedUrl = data.payload.videoUrl
-                      .replace("$ParticipantFullName$", currentParticipantUser)
-                      .replace(
-                        "$IsMute$",
-                        audioControlForParticipantLocal.toString()
-                      )
-                      .replace(
-                        "$IsHideCamera$",
-                        videoControlForParticipantLoacl.toString()
-                      );
-                  }
-
-                  // Store the refined URL in localStorage
-                  localStorage.setItem("refinedVideoUrl", refinedUrl);
-                  localStorage.setItem("refinedVideoGiven", true);
+                const currentParticipantUser = localStorage.getItem("name");
+                // Refine the URL by replacing placeholders
+                let refinedUrl = "";
+                let isZoomEnabled = JSON.parse(
+                  localStorage.getItem("isZoomEnabled")
+                );
+                if (isZoomEnabled) {
+                  refinedUrl = data.payload.videoUrl;
                 } else {
-                  console.error("Invalid data or missing videoUrl in payload");
+                  refinedUrl = data.payload.videoUrl
+                    .replace("$ParticipantFullName$", currentParticipantUser)
+                    .replace(
+                      "$IsMute$",
+                      audioControlForParticipantLocal.toString()
+                    )
+                    .replace(
+                      "$IsHideCamera$",
+                      videoControlForParticipantLoacl.toString()
+                    );
                 }
 
-                console.log("iframeiframe", data.payload);
-                dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
-                localStorage.setItem("participantRoomId", data.payload.roomID);
-                localStorage.setItem("participantUID", data.payload.uid);
-                localStorage.setItem("activeRoomID", data.payload.roomID);
-                // dispatch(participantVideoNavigationScreen(3));
+                // Store the refined URL in localStorage
+                localStorage.setItem("refinedVideoUrl", refinedUrl);
+                localStorage.setItem("refinedVideoGiven", true);
+              } else {
+                console.error("Invalid data or missing videoUrl in payload");
               }
+
+              console.log("iframeiframe", data.payload);
+              dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
+              localStorage.setItem("participantRoomId", data.payload.roomID);
+              localStorage.setItem("participantUID", data.payload.uid);
+              localStorage.setItem("activeRoomID", data.payload.roomID);
+              // dispatch(participantVideoNavigationScreen(3));
             } else if (
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
@@ -1407,7 +1396,7 @@ const Dashboard = () => {
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
-                console.log("mqtt check 22", participantRoomId);
+                console.log("mqtt check 22",participantRoomId);
                 localStorage.setItem("newRoomId", participantRoomId);
                 // remove room id of participant
                 localStorage.removeItem("participantRoomId");
@@ -1423,7 +1412,7 @@ const Dashboard = () => {
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
                 let newRoomId = localStorage.getItem("newRoomId");
-                console.log("mqtt check 22", newRoomId);
+                console.log("mqtt check 22",newRoomId);
                 let Data = {
                   RoomID: String(newRoomId),
                 };
@@ -1459,15 +1448,10 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PARTICIPANT_DELETED".toLowerCase()
             ) {
-              let isMeetingVideoCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
-              );
-              if (isMeetingVideoCheck) {
-                dispatch(meetingParticipantRemoved(data.payload));
+              dispatch(meetingParticipantRemoved(data.payload));
 
-                if (data.viewable) {
-                  setNotificationID(id);
-                }
+              if (data.viewable) {
+                setNotificationID(id);
               }
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2893,8 +2877,7 @@ const Dashboard = () => {
           let newRoomID = localStorage.getItem("newRoomId");
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let RoomID =
-            presenterViewFlag &&
-            (presenterViewHostFlag || presenterViewJoinFlag)
+            presenterViewFlag && (presenterViewHostFlag||presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
               ? localStorage.getItem("activeRoomID") != 0 &&
