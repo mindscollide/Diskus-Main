@@ -1169,7 +1169,7 @@ const VideoPanelNormal = () => {
                     MaximizeVideoFlag === true &&
                     VideoChatPanel === false &&
                     presenterViewFlag &&
-                    !JSON.parse(localStorage.getItem("activeCall"))
+                    (presenterViewHostFlag || presenterViewJoinFlag)
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
               }

@@ -263,7 +263,7 @@ const VideoCallNormalHeader = ({
     localStorage.getItem("isMeetingVideoHostCheck")
   );
   let RoomID =
-    presenterViewFlag && !localStorage.getItem("activeCall")
+    presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
       : isMeetingVideoHostCheck
       ? newRoomID
@@ -374,7 +374,7 @@ const VideoCallNormalHeader = ({
   };
 
   const closeVideoPanel = () => {
-    console.log("cancel");
+    console.log("busyCall");
     dispatch(leaveCallModal(false));
   };
 
@@ -530,10 +530,14 @@ const VideoCallNormalHeader = ({
       console.log("busyCall");
 
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
-      if (presenterViewFlag) {
+      if (
+        presenterViewFlag &&
+        (presenterViewHostFlag || presenterViewJoinFlag)
+      ) {
         console.log("Check Presenter");
         handlePresenterViewFunc();
-      } else if (isMeetingVideoHostCheck) {
+      } else if (isMeetingVideo && isMeetingVideoHostCheck) {
+        console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(UID),
@@ -543,9 +547,8 @@ const VideoCallNormalHeader = ({
         };
 
         dispatch(LeaveMeetingVideo(Data, navigate, t));
-      } else {
+      } else if (isMeetingVideo) {
         dispatch(toggleParticipantsVisibility(false));
-
         let Data = {
           RoomID: String(participantRoomId),
           UserGUID: String(UID),
@@ -695,10 +698,13 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
     if (isMeeting === true) {
       console.log("busyCall");
-      if (presenterViewFlag) {
+      if (
+        presenterViewFlag &&
+        (presenterViewHostFlag || presenterViewJoinFlag)
+      ) {
         console.log("Check Presenter");
         handlePresenterViewFunc();
-      } else if (isMeetingVideoHostCheck) {
+      } else if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
@@ -710,7 +716,7 @@ const VideoCallNormalHeader = ({
 
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
-      } else {
+      } else if (isMeetingVideo) {
         console.log("busyCall");
         let Data = {
           RoomID: String(participantRoomId),
