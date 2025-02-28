@@ -50,7 +50,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   );
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoDate, setCreateTodoDate] = useState(null);
 
   const toDoListReducerAllAssigneesData = useSelector(
     (state) => state.toDoListReducer.AllAssigneesData
@@ -72,7 +71,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     severity: "error",
   });
 
-  const [toDoDate, setToDoDate] = useState(null);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenterValue, setPresenterValue] = useState({
     value: 0,
@@ -131,8 +129,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //To Set task Creater ID
   useEffect(() => {
     try {
-      setCreateTodoDate(current_Date);
-      setToDoDate(current_value);
       setTaskCreatorID(parseInt(createrID));
       setTask({
         ...task,
@@ -152,10 +148,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           IsMainTask: true,
           creationDate: "",
         });
-        setCreateTodoDate("");
         setTaskAssignedTo([]);
         setTaskAssignedName([]);
-        setToDoDate("");
         setAssignees([]);
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
@@ -164,6 +158,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       console.log(error, "toDoListReducerAllAssigneesData");
     }
   }, []);
+
+  console.log(task, "tasktask");
 
   //To Set task Creater ID
   useEffect(() => {
@@ -559,7 +555,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     </Col>
                   </Row>
                   <Row className='my-3'>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <span className='createTask_label'>{`${t(
                         "Add-assignee"
                       )}*`}</span>
@@ -575,10 +571,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         filterOption={filterFunc}
                       />
                     </Col>
+                    <Col sm={12} md={2} lg={2}></Col>
                     <Col
-                      lg={6}
-                      md={6}
-                      sm={6}
+                      lg={5}
+                      md={5}
+                      sm={12}
                       xs={12}
                       className='d-flex flex-column'>
                       <span className='createTask_label'>{`${t(
@@ -647,7 +644,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <Col lg={12} md={12} xs={12}>
                       <span className='createTask_label'>{`${t(
                         "Description"
-                      )}*`}</span>
+                      )}`}</span>
                       <TextField
                         change={taskHandler}
                         labelclass={"d-none"}
