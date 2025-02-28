@@ -889,7 +889,17 @@ const VideoCallNormalHeader = ({
   }, [leavePresenterViewToJoinOneToOne]);
   // For Participant Leave Call
   const participantLeaveCall = async () => {
-    dispatch(toggleParticipantsVisibility(false));
+    if (
+      presenterViewFlag &&
+      (presenterViewHostFlag || presenterViewJoinFlag)
+    ) {
+      if(presenterViewJoinFlag){
+        dispatch(toggleParticipantsVisibility(false))
+      }else{
+        dispatch(participantWaitingListBox(false));
+      }
+    ;}
+
     console.log("busyCall");
     let meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -902,7 +912,7 @@ const VideoCallNormalHeader = ({
       console.log("busyCall");
       if (
         presenterViewFlag &&
-        !JSON.parse(localStorage.getItem("activeCall"))
+        (presenterViewHostFlag || presenterViewJoinFlag)
       ) {
         console.log("busyCall");
         handlePresenterViewFunc();
