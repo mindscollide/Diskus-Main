@@ -15,6 +15,7 @@ import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
 import {
+  convertIntoDateObject,
   newTimeFormaterViewPoll,
   resolutionResultTable,
   utcConvertintoGMT,
@@ -248,7 +249,7 @@ const SceduleProposedmeeting = ({
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
       console.log(organizerRows, columnIndex, "organizerRowsorganizerRows");
-  
+
       const count = organizerRows.reduce((total, row) => {
         if (
           row &&
@@ -259,16 +260,15 @@ const SceduleProposedmeeting = ({
         }
         return total;
       }, 0);
-  
+
       // Add a zero prefix to the count if it's a single digit
       const formattedCount = count < 10 ? `0${count}` : `${count}`;
-  
+
       return convertToArabicNumerals(formattedCount);
     } else {
       return convertToArabicNumerals("00");
     }
   };
-  
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
@@ -307,6 +307,12 @@ const SceduleProposedmeeting = ({
     }
   };
 
+  const getCurrentYYYYMMDD = (dateVal) => {
+    let convertDateTime = convertIntoDateObject(dateVal);
+
+    return moment(convertDateTime).format("YYYYMMDD");
+  };
+
   const scheduleColumn = [
     {
       dataIndex: "userName",
@@ -317,8 +323,7 @@ const SceduleProposedmeeting = ({
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}
-              >
+                title={record.userName}>
                 {record.userName}
               </span>
             ) : (
@@ -368,8 +373,7 @@ const SceduleProposedmeeting = ({
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}
-          >
+            onClick={() => toggleActive(index, record, formattedDate)}>
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -394,17 +398,22 @@ const SceduleProposedmeeting = ({
           } else {
             const proposedDate = record?.selectedProposedDates?.find(
               (date) =>
-                date.proposedDate === moment(formattedDate).format("YYYYMMDD")
+                getCurrentYYYYMMDD(date.proposedDate + date.startTime) ===
+                moment(formattedDate).format("YYYYMMDD")
             );
-            console.log(proposedDate, "proposedDateasaddad");
+            console.log(
+              proposedDate,
+              record?.selectedProposedDates,
+              "proposedDateasaddad selectedProposedDates"
+            );
             if (proposedDate?.isSelected) {
               return (
                 <img
                   src={BlueTick}
                   className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
                 />
               );
             }
@@ -431,8 +440,7 @@ const SceduleProposedmeeting = ({
               isActiveDateSelected
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail_disabled"]
-            }
-          >
+            }>
             {t("None-of-above")}
           </span>
         );
@@ -444,11 +452,13 @@ const SceduleProposedmeeting = ({
           (date) => date.proposedDate === "10000101" && date.isSelected
         );
         const formattedCounter = String(counter).padStart(2, "0");
-        console.log(counter, "countercountercounter")
+        console.log(counter, "countercountercounter");
 
         if (record?.userName === "Total") {
           return (
-            <span className={styles["TotalCount"]}>{convertToArabicNumerals(formattedCounter)}</span>
+            <span className={styles["TotalCount"]}>
+              {convertToArabicNumerals(formattedCounter)}
+            </span>
           );
         }
 
@@ -461,9 +471,9 @@ const SceduleProposedmeeting = ({
           <img
             src={BlueTick}
             className={styles["TickIconClass"]}
-            width="20.7px"
-            height="14.21px"
-            alt=""
+            width='20.7px'
+            height='14.21px'
+            alt=''
           />
         ) : null;
       },
@@ -492,10 +502,10 @@ const SceduleProposedmeeting = ({
                   {t("Schedule-proposed-meetings")}
                 </span>
               </Col>
-              <Col lg={1} md={1} sm={1} className="d-flex justify-content-end">
+              <Col lg={1} md={1} sm={1} className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}
-                  alt=""
+                  alt=''
                   width={15}
                   onClick={handleCrossIconClass}
                 />
@@ -512,7 +522,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className="SceduleProposedMeeting"
+                    className='SceduleProposedMeeting'
                     rows={updateTableRows}
                   />
                   <span>
@@ -521,8 +531,7 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center mt-4"
-                      >
+                        className='d-flex justify-content-center mt-4'>
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}
