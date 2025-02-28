@@ -684,7 +684,7 @@ const VideoCallNormalHeader = ({
   // for Host leave Call
   const leaveCall = async (flag, flag2, flag3, flag4) => {
     console.log("busyCall");
-
+    let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
         console.log("busyCall");
@@ -694,13 +694,11 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     if (isMeeting === true) {
-      let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-      let currentCallType = Number(localStorage.getItem("CallType"));
       console.log("busyCall");
-      if (presenterViewFlag && !activeCall) {
+      if (presenterViewFlag) {
         console.log("Check Presenter");
         handlePresenterViewFunc();
-      } else if (isMeetingVideoHostCheck && !activeCall) {
+      } else if (isMeetingVideoHostCheck) {
         console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
@@ -712,7 +710,7 @@ const VideoCallNormalHeader = ({
 
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
-      } else if (activeCall) {
+      } else {
         console.log("busyCall");
         let Data = {
           RoomID: String(participantRoomId),
@@ -725,14 +723,6 @@ const VideoCallNormalHeader = ({
         await dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
-      } else {
-        let Data = {
-          OrganizationID: currentOrganization,
-          RoomID: initiateRoomID,
-          IsCaller: true,
-          CallTypeID: currentCallType,
-        };
-        await dispatch(LeaveCall(Data, navigate, t));
       }
     } else if (getDashboardVideo.isDashboardVideo === false) {
       console.log("leaveCallleaveCallleaveCallleaveCall");
