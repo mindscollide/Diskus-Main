@@ -889,16 +889,13 @@ const VideoCallNormalHeader = ({
   }, [leavePresenterViewToJoinOneToOne]);
   // For Participant Leave Call
   const participantLeaveCall = async () => {
-    if (
-      presenterViewFlag &&
-      (presenterViewHostFlag || presenterViewJoinFlag)
-    ) {
-      if(presenterViewJoinFlag){
-        dispatch(toggleParticipantsVisibility(false))
-      }else{
+    if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
+      if (presenterViewJoinFlag) {
+        dispatch(toggleParticipantsVisibility(false));
+      } else {
         dispatch(participantWaitingListBox(false));
       }
-    ;}
+    }
 
     console.log("busyCall");
     let meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -1303,20 +1300,13 @@ const VideoCallNormalHeader = ({
               <Tooltip
                 placement="topRight"
                 title={
-                  isScreenActive ||
-                  (presenterViewFlag &&
-                    !JSON.parse(localStorage.getItem("isMeetingVideo")))
+                  isScreenActive || (presenterViewFlag && presenterViewHostFlag)
                     ? t("Stop-sharing")
                     : t("Screen-share")
                 }
               >
                 <img
-                  onClick={
-                    !presenterViewFlag &&
-                    !JSON.parse(localStorage.getItem("isMeetingVideo"))
-                      ? screenShareButton
-                      : null
-                  }
+                  onClick={!presenterViewFlag ? screenShareButton : null}
                   src={NonActiveScreenShare}
                   alt="Screen Share"
                 />
