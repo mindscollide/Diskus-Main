@@ -619,7 +619,22 @@ const getParticipantMeetingJoinMainApi = (
                 "isHost",
                 response.data.responseResult.isHost
               );
-              sessionStorage.setItem("isWaiting", true);
+              localStorage.setItem(
+                "isHost",
+                response.data.responseResult.isHost
+              );
+              if (!response.data.responseResult.isHost) {
+                localStorage.setItem(
+                  "participantRoomId",
+                  response.data.responseResult.roomID
+                );
+                localStorage.setItem(
+                  "participantUID",
+                  response.data.responseResult.guid
+                );
+                sessionStorage.setItem("isWaiting", true);
+              }
+
               // await dispatch(maxHostVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               try {
