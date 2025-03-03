@@ -18,6 +18,7 @@ import {
   GetInvoiceHTMLByOrganizatonID,
   DownloadInvoiceRM,
   ValidateEncryptedStringForOTPEmailLinkRM,
+  ValidateUserPasswordRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
@@ -37,6 +38,8 @@ import {
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
 import { changeNewLanguage } from "./Language_actions";
+import { message } from "antd";
+import { endMeetingStatusApi } from "./NewMeetingActions";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -3504,6 +3507,124 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
       });
   };
 };
+const validatePassword_init = () => {
+  return {
+    type: actions.VALIDATEPASSWORD_INIT,
+  };
+};
+const validatePassword_success = (response, message) => {
+  return {
+    type: actions.VALIDATEPASSWORD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validatePassword_fail = (message) => {
+  return {
+    type: actions.VALIDATEPASSWORD_FAIL,
+    response: null,
+    message,
+    message,
+  };
+};
+
+const validatePasswordActionApi = (
+  Data,
+  navigate,
+  t,
+  deleteMeetingRecord,
+  setDeleteMeetingConfirmationModal,
+  setShowErrorMessage,
+  setShowError
+) => {
+  return (dispatch) => {
+    dispatch(validatePassword_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", ValidateUserPasswordRM.RequestMethod);
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: JSON.parse(localStorage.getItem("token")),
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          await dispatch(
+            validatePasswordActionApi(
+              Data,
+              navigate,
+              t,
+              deleteMeetingRecord,
+              setDeleteMeetingConfirmationModal,
+              setShowErrorMessage,
+              setShowError
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateUserPassword_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                validatePassword_success(
+                  response.data.responseResult,
+                  t("Password-verified")
+                )
+              );
+              await dispatch(
+                endMeetingStatusApi(
+                  navigate,
+                  t,
+                  deleteMeetingRecord,
+                  false,
+                  false,
+                  5,
+                  setDeleteMeetingConfirmationModal
+                )
+              );
+              // navigate("/updatepassword");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidateUserPassword_02".toLowerCase()
+                )
+            ) {
+              dispatch(validatePassword_fail(t("Password-not-verified")));
+              setShowError(true)
+              setShowErrorMessage(t("Password-not-verified"));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_ValidatePassword_03".toLowerCase()
+                )
+            ) {
+              dispatch(validatePassword_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(validatePassword_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(validatePassword_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(validatePassword_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(validatePassword_fail(t("Something-went-wrong")));
+      });
+  };
+};
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,
@@ -3512,6 +3633,7 @@ const setClient = (response) => {
 };
 
 export {
+  validatePasswordActionApi,
   validateStringOTPEmail_Api,
   DownlaodInvoiceLApi,
   getInvocieHTMLApi,

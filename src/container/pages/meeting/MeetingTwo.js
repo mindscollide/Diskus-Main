@@ -5,6 +5,8 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import VideoRecordIcon from "../../../assets/images/Meeting listing Video Download Icon.svg";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
+import deleteIcon from "../../../assets/images/del.png";
+
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
@@ -137,6 +139,7 @@ import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuic
 import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import { useResolutionContext } from "../../../context/ResolutionContext";
 import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
+import DeleteMeetingConfirmationModal from "./deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -170,6 +173,9 @@ const NewMeeting = () => {
     setBoardDeckMeetingTitle,
     downloadMeetinModal,
     setDownloadMeeting,
+    setDeleteMeetingRecord,
+    setDeleteMeetingConfirmationModal,
+    deleteMeetingConfirmationModal,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -301,7 +307,7 @@ const NewMeeting = () => {
   const [isProposedMeetEdit, setIsProposedMeetEdit] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [isDownloadAvailable, setIsDownloadAvailable] = useState(false);
-  const [downloadMeetingRecord, setDownloadMeetingRecord] = useState(null)
+  const [downloadMeetingRecord, setDownloadMeetingRecord] = useState(null);
 
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
@@ -1950,15 +1956,24 @@ const NewMeeting = () => {
 
   const handleClickDownloadBtn = (record) => {
     console.log("recordrecordrecord", record);
-    if(record.isVideoCall && record.isRecordingAvailable) {
+    if (record.isVideoCall && record.isRecordingAvailable) {
       setIsDownloadAvailable(true);
-  
     }
     // downloadMeetinModal,
-    setDownloadMeetingRecord(record)
-    setDownloadMeeting(true)
+    setDownloadMeetingRecord(record);
+    setDownloadMeeting(true);
   };
   //Filteration Work Meeting Type Ends
+
+  const handleClickDeleteMeeting = async (record) => {
+    let Data = {
+      MeetingID: record.pK_MDID,
+      StatusID: 4,
+    };
+
+    setDeleteMeetingRecord(Data);
+    setDeleteMeetingConfirmationModal(true);
+  };
 
   const MeetingColoumns = [
     {
@@ -2554,6 +2569,25 @@ const NewMeeting = () => {
       },
     },
     {
+      dataIndex: "Delete",
+      key: "Delete",
+      align: "center",
+      width: "10px",
+      render: (text, record) => {
+        console.log(record, "deleteIcon");
+        if (record.isPrimaryOrganizer && Number(record.status) === 1) {
+          return (
+            <img
+              src={deleteIcon}
+              style={{ cursor: "pointer" }}
+              onClick={() => handleClickDeleteMeeting(record)}
+              // onClick={() => setDeleteMeetingConfirmationModal(true)}
+            />
+          );
+        }
+      },
+    },
+    {
       dataIndex: "Edit",
       key: "Edit",
       width: "33px",
@@ -2762,8 +2796,6 @@ const NewMeeting = () => {
       setentereventIcon(true);
     }
   };
-
-
 
   const callStartMeetingFromEvents = async (dashboardEventData) => {
     let startMeetingRequest = {
@@ -4125,12 +4157,16 @@ const NewMeeting = () => {
           setBoarddeckOptions={setBoarddeckOptions}
         />
       )}
-      <DownloadOptionsModal isDownloadAvailable={isDownloadAvailable} downloadMeetingRecord={downloadMeetingRecord} />
+      <DownloadOptionsModal
+        isDownloadAvailable={isDownloadAvailable}
+        downloadMeetingRecord={downloadMeetingRecord}
+      />
       {shareViaDataRoomPathConfirmModal && (
         <ShareViaDataRoomPathModal
           boardDeckMeetingTitle={boardDeckMeetingTitle}
         />
       )}
+      {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </>
   );
 };

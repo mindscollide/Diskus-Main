@@ -6,18 +6,46 @@ import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg"
 import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { validatePasswordActionApi } from "../../../../store/actions/Auth2_actions";
 const DeleteMeetingConfirmationModal = () => {
-  const { setDeleteMeetingConfirmationModal, deleteMeetingConfirmationModal } =
-    useMeetingContext();
+  const {
+    setDeleteMeetingConfirmationModal,
+    deleteMeetingConfirmationModal,
+    deleteMeetingRecord,
+  } = useMeetingContext();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
   const [showError, setShowError] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(
-    "Please Enter Correct Password"
-  );
+  const [showErrorMessage, setShowErrorMessage] = useState(null);
   const [confirmPasswordBtnDisabled, setConfirmPasswordBtnDisabled] =
     useState(false);
+
+  const confirmPasswordBtn = () => {
+    if (passwordValue !== "") {
+      let Data = {
+        UserPassword: passwordValue,
+      };
+      dispatch(
+        validatePasswordActionApi(
+          Data,
+          navigate,
+          t,
+          deleteMeetingRecord,
+          setDeleteMeetingConfirmationModal,
+          setShowErrorMessage,
+          setShowError
+        )
+      );
+    } else {
+      setShowError(true);
+      setShowErrorMessage(t("Password-is-required"));
+    }
+  };
   return (
     <>
       <Modal
@@ -97,6 +125,7 @@ const DeleteMeetingConfirmationModal = () => {
                     styles["ConfirmPasswordBtnTextDisabled"]
                   }
                   disableBtn={confirmPasswordBtnDisabled}
+                  onClick={confirmPasswordBtn}
                 />
               </Col>
             </Row>
