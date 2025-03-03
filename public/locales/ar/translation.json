@@ -2219,7 +2219,7 @@
   "File-shared-successfully": "File Shared Successfully",
   "Your-file-has-been-shared": "Your file has been shared",
   "View-in-dataroom": "View in Dataroom",
-  "Waiting-for-entry": "Waiting for entry",
+  "Waiting-for-entry": "Waiting for Entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
   "Device-Id": "DeviceID",
@@ -2398,5 +2398,8 @@
   "Meeting-recording": "Meeting Recording",
   "Owned-by": "Owned by",
   "You": "You",
-  "Shared-with": "Shared with"
+  "Shared-with": "Shared with",
+  "UnMute": "Unmute",
+  "UnHide-video": "Unhide Video",
+  "Join-meeting-video": "Join Meeting Video"
 }

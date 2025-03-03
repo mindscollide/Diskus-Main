@@ -2182,7 +2182,7 @@
   "Auto-close-resolution-days": "Auto Close Resolution (days)",
   "Seeking-opinions-on-something": "Seeking opinions on something?",
   "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next": "This space is ready to showcase yourlatest additions. What will you add next?",
-  "Leave-call": "Leave Call",
+  "Leave-call": "Leave Meeting Video",
   "Upload-image": "Photos & videos",
   "Please-at-least-one-partcipant-required": "Please at least one partcipant required",
   "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED": "You have been removed as a Agenda Contributor from this [Place holder]",
@@ -2269,7 +2269,7 @@
   "File-shared-successfully": "File Shared Successfully",
   "Your-file-has-been-shared": "Your file has been shared",
   "View-in-dataroom": "View in Dataroom",
-  "Waiting-for-entry": "Waiting for entry",
+  "Waiting-for-entry": "Waiting for Entry",
   "Allow-all": "Allow All",
   "Deny-all": "Deny All",
   "Device-Id": "DeviceID",
@@ -2449,5 +2449,8 @@
   "Meeting-recording": "Meeting Recording",
   "Owned-by": "Owned by",
   "You": "You",
-  "Shared-with": "Shared with"
+  "Shared-with": "Shared with",
+  "UnMute": "Unmute",
+  "UnHide-video": "Unhide Video",
+  "Join-meeting-video": "Join Meeting Video"
 }

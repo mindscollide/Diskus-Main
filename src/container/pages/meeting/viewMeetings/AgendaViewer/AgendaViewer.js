@@ -844,7 +844,6 @@ const AgendaViewer = () => {
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
     try {
-
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
       // if (presenterMeetingId === currentMeeting) {
@@ -1013,7 +1012,7 @@ const AgendaViewer = () => {
                         videoTalk?.isVideoCall && (
                           <Tooltip
                             placement="topRight"
-                            title={t("Enable-video-call")}
+                            title={t("Join-meeting-video")}
                           >
                             <div
                               className={
